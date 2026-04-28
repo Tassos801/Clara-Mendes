@@ -407,7 +407,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop');
+  background-image: url(https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -418,7 +418,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop');
+  background-image: url(https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop);
   background-size: cover;
   background-position: center;
   filter: blur(30px) brightness(0.8) sepia(0.3);
@@ -436,7 +436,7 @@ html:has(.home-root) main {
   opacity: 0.08;
   pointer-events: none;
   mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.8%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
 }
 
 .hm-noise-overlay::after {
