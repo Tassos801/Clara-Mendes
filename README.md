@@ -52,6 +52,7 @@ PUBLIC_STORE_DOMAIN=
 PUBLIC_CHECKOUT_DOMAIN=
 PUBLIC_STOREFRONT_API_TOKEN=
 PRIVATE_STOREFRONT_API_TOKEN=
+SHOPIFY_WEBHOOK_SECRET=
 ```
 
 Do not commit `.env`. It is ignored by git.
@@ -127,6 +128,19 @@ Known state:
 
 If deploying through Shopify Admin, configure the required environment variables
 in the storefront environment instead of relying on local `.env`.
+
+## Fulfillment Intake
+
+Paid order fulfillment starts at:
+
+```text
+POST /webhooks/orders-paid
+```
+
+The endpoint verifies Shopify webhook HMAC signatures with
+`SHOPIFY_WEBHOOK_SECRET`, normalizes order line items, and stays in dry-run mode
+unless supplier credentials and `FULFILLMENT_AUTO_SUBMIT=true` are configured.
+See `docs/fulfillment-automation.md` before enabling supplier submission.
 
 ## Storefront API Credential Check
 
