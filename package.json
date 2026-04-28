@@ -11,6 +11,8 @@
     "lint": "eslint --no-error-on-unmatched-pattern .",
     "typecheck": "react-router typegen && tsc --noEmit",
     "codegen": "shopify hydrogen codegen && react-router typegen",
+    "fulfillment:map-template": "node ./scripts/generate-cj-line-item-map-template.mjs",
+    "fulfillment:register-webhook": "node ./scripts/register-orders-paid-webhook.mjs",
     "clean": "node ./scripts/clean.mjs",
     "clean:deps": "node ./scripts/clean.mjs --deps"
   },

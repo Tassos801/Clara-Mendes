@@ -53,6 +53,19 @@ PUBLIC_CHECKOUT_DOMAIN=
 PUBLIC_STOREFRONT_API_TOKEN=
 PRIVATE_STOREFRONT_API_TOKEN=
 SHOPIFY_WEBHOOK_SECRET=
+SHOPIFY_ADMIN_ACCESS_TOKEN=
+SHOPIFY_ADMIN_API_VERSION=
+SHOPIFY_WEBHOOK_CALLBACK_URL=
+SHOPIFY_STOREFRONT_API_VERSION=
+FULFILLMENT_AUTO_SUBMIT=
+CJ_LINE_ITEM_MAP=
+CJ_ACCESS_TOKEN=
+CJ_PLATFORM_TOKEN=
+CJ_DEFAULT_LOGISTIC_NAME=
+CJ_FROM_COUNTRY_CODE=
+CJ_SHOP_LOGISTICS_TYPE=
+CJ_STORE_NAME=
+CJ_STORAGE_ID=
 ```
 
 Do not commit `.env`. It is ignored by git.
@@ -142,6 +155,13 @@ The endpoint verifies Shopify webhook HMAC signatures with
 unless supplier credentials and `FULFILLMENT_AUTO_SUBMIT=true` are configured.
 See `docs/fulfillment-automation.md` before enabling supplier submission.
 
+Use the helper scripts while setting this up:
+
+```powershell
+npm run fulfillment:map-template      # generate docs/cj-line-item-map.template.json
+npm run fulfillment:register-webhook  # register Shopify orders/paid webhook
+```
+
 ## Storefront API Credential Check
 
 After updating credentials or permissions in Shopify Admin, verify API access
@@ -164,5 +184,7 @@ npm run build      # production build and codegen
 npm run typecheck  # React Router typegen and TypeScript
 npm run lint       # ESLint
 npm run codegen    # Shopify Hydrogen codegen and route typegen
+npm run fulfillment:map-template
+npm run fulfillment:register-webhook
 npm run clean      # remove generated build state
 ```

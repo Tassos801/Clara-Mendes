@@ -40,6 +40,19 @@ SHOPIFY_WEBHOOK_SECRET=<app client secret used for Shopify webhook HMAC>
 Shopify signs HTTPS webhooks with the app client secret and sends the signature
 in `X-Shopify-Hmac-Sha256`.
 
+After the custom app has a token with `read_orders`, the webhook subscription can
+be registered from this repo:
+
+```powershell
+$env:SHOPIFY_ADMIN_ACCESS_TOKEN="<custom app Admin API access token>"
+$env:SHOPIFY_WEBHOOK_CALLBACK_URL="https://<public-storefront-domain>/webhooks/orders-paid"
+npm run fulfillment:register-webhook
+```
+
+Do not use the Admin API access token as `SHOPIFY_WEBHOOK_SECRET`. The webhook
+secret should be the custom app client secret used by Shopify for webhook HMAC
+signing.
+
 ## CJ Dry-Run To Auto-Submit
 
 Leave this unset or set it to anything other than `true` until test orders are
@@ -84,16 +97,28 @@ SKUs. Prefixes are also supported for clarity.
 
 Recommended mapping key: `variant:<shopify_variant_id>`.
 
+Generate a template from the products currently published to the Headless
+channel:
+
+```powershell
+npm run fulfillment:map-template
+```
+
+This writes `docs/cj-line-item-map.template.json`. Fill `cjVid` or `cjSku` for
+each Shopify variant, then copy the JSON into `CJ_LINE_ITEM_MAP` in Oxygen.
+
 ## What Still Needs To Be Done
 
 1. Make the Oxygen storefront publicly accessible or attach the final domain.
 2. Create/install the Shopify custom app that owns the webhook secret.
 3. Subscribe `orders/paid` to `/webhooks/orders-paid`.
 4. Add `SHOPIFY_WEBHOOK_SECRET` to the Oxygen production environment.
-5. Run a paid test order with `FULFILLMENT_AUTO_SUBMIT=false`.
-6. Read logs and fill `CJ_LINE_ITEM_MAP` for each product variant.
-7. Choose the CJ logistics method and confirm destination-country handling.
-8. Enable `FULFILLMENT_AUTO_SUBMIT=true` only after the dry-run payloads are
+5. Run `npm run fulfillment:map-template` and fill the CJ variant mappings.
+6. Add `CJ_LINE_ITEM_MAP` to the Oxygen production environment.
+7. Run a paid test order with `FULFILLMENT_AUTO_SUBMIT=false`.
+8. Read logs and confirm all line items have mappings.
+9. Choose the CJ logistics method and confirm destination-country handling.
+10. Enable `FULFILLMENT_AUTO_SUBMIT=true` only after the dry-run payloads are
    correct.
 
 ## Important Operational Notes
