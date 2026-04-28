@@ -102,6 +102,12 @@ const OFF_THEME_PRODUCT_HANDLES = new Set([
   'the-daily-carry-pouch',
 ]);
 
+const UNFULFILLABLE_PRODUCT_HANDLES = new Set([
+  'drawer-reset-bundle',
+  'soft-reset-candle',
+  'the-home-ritual-warmer',
+]);
+
 const HOME_GOODS_PRODUCT_TERMS = [
   'accent',
   'basket',
@@ -218,7 +224,11 @@ export function isOffThemeProduct(product: CatalogProductLike) {
 }
 
 export function isStoreThemeProduct(product: CatalogProductLike) {
-  return isHomeGoodsProduct(product) && !isOffThemeProduct(product);
+  return (
+    isHomeGoodsProduct(product) &&
+    !isOffThemeProduct(product) &&
+    !isUnfulfillableProductHandle(product.handle)
+  );
 }
 
 export function isDemoProduct(product: CatalogProductLike) {
@@ -227,6 +237,12 @@ export function isDemoProduct(product: CatalogProductLike) {
 
 export function isOffThemeProductHandle(handle?: string | null) {
   return Boolean(handle && OFF_THEME_PRODUCT_HANDLES.has(handle.toLowerCase()));
+}
+
+export function isUnfulfillableProductHandle(handle?: string | null) {
+  return Boolean(
+    handle && UNFULFILLABLE_PRODUCT_HANDLES.has(handle.toLowerCase()),
+  );
 }
 
 export function isOffThemeCollectionHandle(handle?: string | null) {

@@ -1,10 +1,13 @@
 export type FulfillmentEnv = {
   CJ_ACCESS_TOKEN?: string;
+  CJ_AUTO_MAP_SKU?: string;
+  CJ_API_KEY?: string;
   CJ_DEFAULT_LOGISTIC_NAME?: string;
   CJ_FROM_COUNTRY_CODE?: string;
   CJ_LINE_ITEM_MAP?: string;
   CJ_PLATFORM_TOKEN?: string;
   CJ_SHOP_LOGISTICS_TYPE?: string;
+  CJ_SHOPIFY_SKU_PREFIXES?: string;
   CJ_STORAGE_ID?: string;
   CJ_STORE_NAME?: string;
   FULFILLMENT_AUTO_SUBMIT?: string;
@@ -69,10 +72,17 @@ type SupplierMapping = {
   cjVid?: string;
 };
 
+type MappingSource = 'explicit' | 'shopify-sku';
+
+type ResolvedSupplierMapping = SupplierMapping & {
+  source: MappingSource;
+};
+
 export type FulfillmentIntakeLine = {
   cjSku?: string;
   cjVid?: string;
   lineItemId: string;
+  mappingSource?: MappingSource;
   missingMapping: boolean;
   productId?: string;
   quantity: number;
@@ -131,7 +141,9 @@ export async function parseVerifiedShopifyWebhook({
   if (headers.topic !== 'orders/paid') {
     return {
       error: jsonResponse(
-        {error: `Unsupported Shopify webhook topic: ${headers.topic ?? 'missing'}`},
+        {
+          error: `Unsupported Shopify webhook topic: ${headers.topic ?? 'missing'}`,
+        },
         400,
       ),
     };
@@ -160,10 +172,10 @@ export function createFulfillmentIntake({
   const mappings = parseLineItemMappings(env.CJ_LINE_ITEM_MAP);
   const lines = (order.line_items ?? [])
     .filter((line) => line.requires_shipping !== false)
-    .map((line) => normalizeFulfillmentLine(line, mappings))
+    .map((line) => normalizeFulfillmentLine(line, mappings, env))
     .filter((line) => line.quantity > 0);
   const missingMappings = lines.filter((line) => line.missingMapping);
-  const autoSubmit = env.FULFILLMENT_AUTO_SUBMIT?.toLowerCase() === 'true';
+  const autoSubmit = shouldAutoSubmit(env);
 
   return {
     autoSubmit,
@@ -173,7 +185,7 @@ export function createFulfillmentIntake({
     eventId: headers.eventId ?? undefined,
     lines,
     missingMappings,
-    mode: autoSubmit && env.CJ_ACCESS_TOKEN ? 'cj' : 'dry-run',
+    mode: autoSubmit && hasCjCredentials(env) ? 'cj' : 'dry-run',
     orderId: String(order.id),
     orderName: order.name || String(order.order_number || order.id),
     shopDomain: headers.shopDomain ?? undefined,
@@ -232,16 +244,19 @@ function getShopifyWebhookHeaders(headers: Headers): ShopifyWebhookHeaders {
 function normalizeFulfillmentLine(
   line: ShopifyLineItem,
   mappings: Record<string, SupplierMapping>,
+  env: FulfillmentEnv,
 ): FulfillmentIntakeLine {
-  const mapping = resolveSupplierMapping(line, mappings);
+  const mapping = resolveSupplierMapping(line, mappings, env);
   const fulfillableQuantity = Number(line.fulfillable_quantity ?? 0);
   const orderedQuantity = Number(line.quantity ?? 0);
-  const quantity = fulfillableQuantity > 0 ? fulfillableQuantity : orderedQuantity;
+  const quantity =
+    fulfillableQuantity > 0 ? fulfillableQuantity : orderedQuantity;
 
   return {
     cjSku: mapping?.cjSku,
     cjVid: mapping?.cjVid,
     lineItemId: String(line.id),
+    mappingSource: mapping?.source,
     missingMapping: !mapping?.cjSku && !mapping?.cjVid,
     productId: line.product_id ? String(line.product_id) : undefined,
     quantity,
@@ -255,7 +270,8 @@ function normalizeFulfillmentLine(
 function resolveSupplierMapping(
   line: ShopifyLineItem,
   mappings: Record<string, SupplierMapping>,
-) {
+  env: FulfillmentEnv,
+): ResolvedSupplierMapping | null {
   const keys = [
     line.variant_id ? `variant:${line.variant_id}` : null,
     line.variant_id ? String(line.variant_id) : null,
@@ -267,7 +283,13 @@ function resolveSupplierMapping(
   ].filter(Boolean) as string[];
 
   for (const key of keys) {
-    if (mappings[key]) return mappings[key];
+    const mapping = normalizeSupplierMapping(mappings[key]);
+    if (mapping) return {...mapping, source: 'explicit' as const};
+  }
+
+  const derivedSku = deriveCjSkuFromShopifySku(line.sku, env);
+  if (derivedSku) {
+    return {cjSku: derivedSku, source: 'shopify-sku' as const};
   }
 
   return null;
@@ -279,9 +301,61 @@ function parseLineItemMappings(value?: string) {
   try {
     return JSON.parse(value) as Record<string, SupplierMapping>;
   } catch {
-    console.warn('Invalid CJ_LINE_ITEM_MAP JSON; supplier submission will be skipped.');
+    console.warn(
+      'Invalid CJ_LINE_ITEM_MAP JSON; supplier submission will be skipped.',
+    );
     return {};
   }
+}
+
+function shouldAutoSubmit(env: FulfillmentEnv) {
+  return ['1', 'true', 'yes'].includes(
+    env.FULFILLMENT_AUTO_SUBMIT?.trim().toLowerCase() ?? '',
+  );
+}
+
+function hasCjCredentials(env: FulfillmentEnv) {
+  return Boolean(env.CJ_API_KEY?.trim() || env.CJ_ACCESS_TOKEN?.trim());
+}
+
+function normalizeSupplierMapping(mapping?: SupplierMapping) {
+  const cjSku = mapping?.cjSku?.trim();
+  const cjVid = mapping?.cjVid?.trim();
+
+  if (!cjSku && !cjVid) return null;
+
+  return {
+    ...(cjSku ? {cjSku} : {}),
+    ...(cjVid ? {cjVid} : {}),
+  };
+}
+
+function deriveCjSkuFromShopifySku(
+  sku: string | null | undefined,
+  env: FulfillmentEnv,
+) {
+  if (!sku || env.CJ_AUTO_MAP_SKU?.trim().toLowerCase() === 'false') {
+    return null;
+  }
+
+  const trimmed = sku.trim();
+  const candidates = [trimmed];
+  const prefixes = (env.CJ_SHOPIFY_SKU_PREFIXES || 'CM-')
+    .split(',')
+    .map((prefix) => prefix.trim())
+    .filter(Boolean);
+
+  for (const prefix of prefixes) {
+    if (trimmed.toLowerCase().startsWith(prefix.toLowerCase())) {
+      candidates.push(trimmed.slice(prefix.length).trim());
+    }
+  }
+
+  return candidates.find(isLikelyCjSku) ?? null;
+}
+
+function isLikelyCjSku(value: string) {
+  return /^CJ[A-Z0-9]+(?:-[A-Z0-9]+)*$/i.test(value);
 }
 
 function base64Encode(buffer: ArrayBuffer) {
@@ -305,7 +379,9 @@ function timingSafeEqual(left: string, right: string) {
   if (leftBytes.length === 0 || rightBytes.length === 0) return false;
 
   for (let index = 0; index < length; index += 1) {
-    diff |= leftBytes[index % leftBytes.length] ^ rightBytes[index % rightBytes.length];
+    diff |=
+      leftBytes[index % leftBytes.length] ^
+      rightBytes[index % rightBytes.length];
   }
 
   return diff === 0;

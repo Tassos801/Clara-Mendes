@@ -36,8 +36,18 @@ export async function action({context, request}: Route.ActionArgs) {
       fulfillment: {
         eventId: intake.eventId,
         lineCount: intake.lines.length,
+        mappedLines: intake.lines
+          .filter((line) => !line.missingMapping)
+          .map((line) => ({
+            lineItemId: line.lineItemId,
+            mappingSource: line.mappingSource,
+            shopifySku: line.shopifySku,
+            title: line.title,
+            variantId: line.variantId,
+          })),
         missingMappings: intake.missingMappings.map((line) => ({
           lineItemId: line.lineItemId,
+          shopifySku: line.shopifySku,
           title: line.title,
           variantId: line.variantId,
         })),

@@ -50,11 +50,14 @@ async function main() {
   const endpoint = `https://${storeDomain}/api/${apiVersion}/graphql.json`;
   const outputPath = resolve(
     process.cwd(),
-    env.CJ_LINE_ITEM_MAP_TEMPLATE_PATH ||
-      'docs/cj-line-item-map.template.json',
+    env.CJ_LINE_ITEM_MAP_TEMPLATE_PATH || 'docs/cj-line-item-map.template.json',
   );
   const products = await fetchAllProducts({endpoint, token});
-  const template = buildTemplate({products, storeDomain});
+  const template = buildTemplate({
+    products,
+    skuPrefixes: env.CJ_SHOPIFY_SKU_PREFIXES || 'CM-',
+    storeDomain,
+  });
 
   mkdirSync(dirname(outputPath), {recursive: true});
   writeFileSync(outputPath, `${JSON.stringify(template, null, 2)}\n`);
@@ -100,7 +103,7 @@ async function fetchAllProducts({endpoint, token}) {
   return products;
 }
 
-function buildTemplate({products, storeDomain}) {
+function buildTemplate({products, skuPrefixes, storeDomain}) {
   const template = {
     _instructions:
       'Fill cjVid or cjSku for each variant, then copy this JSON into CJ_LINE_ITEM_MAP in Oxygen. Metadata fields are ignored by the webhook.',
@@ -116,7 +119,7 @@ function buildTemplate({products, storeDomain}) {
         .join(', ');
 
       template[`variant:${variantId}`] = {
-        cjSku: '',
+        cjSku: deriveCjSkuFromShopifySku(variant.sku, skuPrefixes) || '',
         cjVid: '',
         shopifyHandle: product.handle,
         shopifyProduct: product.title,
@@ -136,12 +139,37 @@ function extractShopifyId(gid) {
   return String(gid).split('/').pop();
 }
 
+function deriveCjSkuFromShopifySku(sku, skuPrefixes) {
+  if (!sku) return '';
+
+  const trimmed = sku.trim();
+  const candidates = [trimmed];
+  const prefixes = skuPrefixes
+    .split(',')
+    .map((prefix) => prefix.trim())
+    .filter(Boolean);
+
+  for (const prefix of prefixes) {
+    if (trimmed.toLowerCase().startsWith(prefix.toLowerCase())) {
+      candidates.push(trimmed.slice(prefix.length).trim());
+    }
+  }
+
+  return candidates.find(isLikelyCjSku) || '';
+}
+
+function isLikelyCjSku(value) {
+  return /^CJ[A-Z0-9]+(?:-[A-Z0-9]+)*$/i.test(value);
+}
+
 function sortObject(value) {
-  return Object.fromEntries(Object.entries(value).sort(([left], [right]) => {
-    if (left.startsWith('_') && !right.startsWith('_')) return -1;
-    if (!left.startsWith('_') && right.startsWith('_')) return 1;
-    return left.localeCompare(right);
-  }));
+  return Object.fromEntries(
+    Object.entries(value).sort(([left], [right]) => {
+      if (left.startsWith('_') && !right.startsWith('_')) return -1;
+      if (!left.startsWith('_') && right.startsWith('_')) return 1;
+      return left.localeCompare(right);
+    }),
+  );
 }
 
 main().catch((error) => {

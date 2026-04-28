@@ -15,12 +15,14 @@ order payload.
 - Rejects requests without a valid `X-Shopify-Hmac-Sha256` signature.
 - Accepts only the `orders/paid` topic.
 - Normalizes shippable line items into a fulfillment intake payload.
+- Auto-maps line items whose Shopify SKU is a CJ SKU or starts with the
+  configured store prefix, such as `CM-CJ...`.
 - Logs missing supplier mappings by line item and Shopify variant ID.
-- Stays in dry-run mode unless auto-submit and CJ credentials are explicitly
-  configured.
+- Stays in dry-run mode unless `FULFILLMENT_AUTO_SUBMIT=true`, CJ credentials,
+  and the required shipping and logistics settings are configured.
 
-This is intentional. It prevents accidental supplier orders while product-to-CJ
-variant mappings are incomplete.
+The endpoint refuses to submit an order if any shippable line item is missing a
+CJ SKU or CJ variant ID.
 
 ## Required Shopify Setup
 
@@ -55,31 +57,44 @@ signing.
 
 ## CJ Dry-Run To Auto-Submit
 
-Leave this unset or set it to anything other than `true` until test orders are
-verified:
+Set this while testing so paid-order webhooks are logged without creating CJ
+orders:
 
 ```text
 FULFILLMENT_AUTO_SUBMIT=false
 ```
 
-When ready to submit mapped orders to CJ, configure:
+When ready to submit mapped orders to CJ, set it to `true`, then configure:
 
 ```text
 FULFILLMENT_AUTO_SUBMIT=true
-CJ_ACCESS_TOKEN=<CJ API access token>
+CJ_API_KEY=<CJ API key>
+CJ_ACCESS_TOKEN=<optional short-lived CJ access token>
 CJ_PLATFORM_TOKEN=<optional CJ platform token>
 CJ_DEFAULT_LOGISTIC_NAME=<CJ logistics method, for example PostNL>
 CJ_FROM_COUNTRY_CODE=CN
 CJ_SHOP_LOGISTICS_TYPE=2
 CJ_STORE_NAME=Clara Mendes
+CJ_AUTO_MAP_SKU=true
+CJ_SHOPIFY_SKU_PREFIXES=CM-
 ```
 
 `CJ_STORAGE_ID` is only needed for CJ logistics modes that require a storage ID.
+`CJ_API_KEY` is preferred because the webhook can exchange it for a fresh CJ
+access token automatically and reuse it in-process until shortly before expiry.
+`CJ_ACCESS_TOKEN` is still supported, but CJ access tokens expire and must be
+replaced when they do.
+`CJ_AUTO_MAP_SKU` defaults to enabled. Set it to `false` if every product should
+require an explicit `CJ_LINE_ITEM_MAP` entry.
 
 ## Line Item Mapping
 
 CJ order creation requires a CJ variant ID (`vid`) or CJ variant SKU (`sku`) for
-each line item. Keep those mappings private in Oxygen environment variables.
+each line item. If a Shopify SKU already looks like `CJ...`, or like
+`CM-CJ...`, the webhook automatically sends the CJ part as `sku`.
+
+Use explicit mappings for products whose Shopify SKU does not contain the CJ SKU.
+Keep those mappings private in Oxygen environment variables.
 
 Use `CJ_LINE_ITEM_MAP` as JSON. Keys can be Shopify variant IDs, product IDs, or
 SKUs. Prefixes are also supported for clarity.
@@ -104,8 +119,9 @@ channel:
 npm run fulfillment:map-template
 ```
 
-This writes `docs/cj-line-item-map.template.json`. Fill `cjVid` or `cjSku` for
-each Shopify variant, then copy the JSON into `CJ_LINE_ITEM_MAP` in Oxygen.
+This writes `docs/cj-line-item-map.template.json`. Variants with `CM-CJ...`
+SKUs are pre-filled. Fill `cjVid` or `cjSku` for any remaining blank Shopify
+variant, then copy only the needed JSON into `CJ_LINE_ITEM_MAP` in Oxygen.
 
 ## What Still Needs To Be Done
 
@@ -113,13 +129,14 @@ each Shopify variant, then copy the JSON into `CJ_LINE_ITEM_MAP` in Oxygen.
 2. Create/install the Shopify custom app that owns the webhook secret.
 3. Subscribe `orders/paid` to `/webhooks/orders-paid`.
 4. Add `SHOPIFY_WEBHOOK_SECRET` to the Oxygen production environment.
-5. Run `npm run fulfillment:map-template` and fill the CJ variant mappings.
+5. Run `npm run fulfillment:map-template` and fill any remaining blank CJ
+   variant mappings.
 6. Add `CJ_LINE_ITEM_MAP` to the Oxygen production environment.
 7. Run a paid test order with `FULFILLMENT_AUTO_SUBMIT=false`.
 8. Read logs and confirm all line items have mappings.
 9. Choose the CJ logistics method and confirm destination-country handling.
-10. Enable `FULFILLMENT_AUTO_SUBMIT=true` only after the dry-run payloads are
-   correct.
+10. Set `FULFILLMENT_AUTO_SUBMIT=true` only after the dry-run payloads are
+    correct.
 
 ## Important Operational Notes
 
@@ -128,6 +145,9 @@ each Shopify variant, then copy the JSON into `CJ_LINE_ITEM_MAP` in Oxygen.
   queue/database should be added before high-volume use.
 - The current endpoint logs intake and can call CJ, but it does not yet write
   fulfillment/tracking back to Shopify.
+- CJ's `getAccessToken` endpoint is rate-limited, so the webhook caches the
+  access token in-process. A durable token store should be added before
+  high-volume use.
 - The next production-grade step is storing webhook event IDs and CJ order IDs,
   then syncing CJ tracking updates back to Shopify fulfillments through the
   Admin API.
