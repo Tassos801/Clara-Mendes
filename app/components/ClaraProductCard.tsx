@@ -40,7 +40,7 @@ export function ClaraProductCard({
     product.productType ||
     getVendorLabel(product.vendor) ||
     product.tags?.slice(0, 2).map(formatTag).join(' / ') ||
-    'Supplier sourced';
+    'Home edit';
   const price = product.priceRange?.minVariantPrice;
 
   return (
@@ -72,7 +72,7 @@ export function ClaraProductCard({
           )}
           <div className="cm-card-veil" aria-hidden />
           <span className="cm-card-chip">
-            {product.productType || 'Dropship ready'}
+            {product.productType || 'Curated object'}
           </span>
         </div>
         <div className="product-card-copy cm-card-copy">

@@ -303,9 +303,8 @@ export default function Homepage() {
           <p className="eyebrow">Sourcing now</p>
           <h2>The first home-goods edit is being built.</h2>
           <p>
-            The storefront is being prepared for supplier-backed home goods.
-            Lighting, textiles, ceramics, storage, and accent pieces will
-            appear here once vendor partners are confirmed.
+            The storefront is being prepared around lighting, textiles,
+            ceramics, storage, and accent pieces chosen for quiet rooms.
           </p>
           <Link className="primary-button" to="/collections/all">
             Preview the catalog

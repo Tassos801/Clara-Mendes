@@ -150,7 +150,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           <h2>The first home-goods edit is being sourced.</h2>
           <p>
             Lighting, textiles, ceramics, storage, and small accents will
-            appear here once supplier partners are confirmed.
+            appear here as the Clara Mendes edit expands.
           </p>
           <Link className="primary-button" to="/our-story">
             Read the story

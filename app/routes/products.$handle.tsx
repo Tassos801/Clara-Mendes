@@ -10,6 +10,7 @@ import {
 import {useAside} from '~/components/Aside';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {getProductDescription} from '~/lib/productCopy';
 
 type MoneyAmount = {
   amount: string;
@@ -41,7 +42,6 @@ type ProductVariant = {
   id: string;
   title: string;
   availableForSale: boolean;
-  sku?: string | null;
   price: MoneyAmount;
   compareAtPrice?: MoneyAmount | null;
   selectedOptions: SelectedOption[];
@@ -64,13 +64,14 @@ type ProductDetail = ClaraCardProduct & {
 
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
+  const description = product ? getProductDescription(product) : null;
 
   return [
     {title: `Clara Mendes | ${product?.title ?? 'Product'}`},
     {
       name: 'description',
       content:
-        product?.description ||
+        description ||
         'Shop this Clara Mendes product through secure Shopify checkout.',
     },
   ];
@@ -116,6 +117,7 @@ export default function Product() {
     product.selectedOrFirstAvailableVariant ?? product.variants.nodes[0];
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
+  const productDescription = getProductDescription(product);
   const galleryImages = useMemo(() => {
     const images = [
       ...(primaryImage ? [primaryImage] : []),
@@ -156,13 +158,10 @@ export default function Product() {
           <p className="eyebrow">
             {product.productType ||
               getVendorLabel(product.vendor) ||
-              'Supplier sourced'}
+              'Curated object'}
           </p>
           <h1>{product.title}</h1>
-          <p className="product-lede">
-            {product.description ||
-              'A Shopify product ready for supplier-backed fulfillment.'}
-          </p>
+          <p className="product-lede">{productDescription}</p>
           {selectedVariant ? (
             <ProductPrice
               price={selectedVariant.price}
@@ -227,18 +226,12 @@ export default function Product() {
           <dl className="product-details-list">
             <div>
               <dt>Fulfillment</dt>
-              <dd>Prepared by a supplier partner after order review.</dd>
+              <dd>Prepared after order review with tracked delivery updates.</dd>
             </div>
             <div>
               <dt>Checkout</dt>
               <dd>Secure checkout with taxes and shipping confirmed before payment.</dd>
             </div>
-            {selectedVariant?.sku ? (
-              <div>
-                <dt>SKU</dt>
-                <dd>{selectedVariant.sku}</dd>
-              </div>
-            ) : null}
           </dl>
         </div>
       </section>
@@ -397,7 +390,6 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
     id
     title
     availableForSale
-    sku
     price {
       amount
       currencyCode

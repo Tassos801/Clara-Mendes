@@ -756,7 +756,7 @@ export type PoliciesQuery = {
 
 export type ClaraProductVariantFragment = Pick<
   StorefrontAPI.ProductVariant,
-  'id' | 'title' | 'availableForSale' | 'sku'
+  'id' | 'title' | 'availableForSale'
 > & {
   price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
   compareAtPrice?: StorefrontAPI.Maybe<
@@ -802,7 +802,7 @@ export type ProductQuery = {
       selectedOrFirstAvailableVariant?: StorefrontAPI.Maybe<
         Pick<
           StorefrontAPI.ProductVariant,
-          'id' | 'title' | 'availableForSale' | 'sku'
+          'id' | 'title' | 'availableForSale'
         > & {
           price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
           compareAtPrice?: StorefrontAPI.Maybe<
@@ -824,7 +824,7 @@ export type ProductQuery = {
         nodes: Array<
           Pick<
             StorefrontAPI.ProductVariant,
-            'id' | 'title' | 'availableForSale' | 'sku'
+            'id' | 'title' | 'availableForSale'
           > & {
             price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
             compareAtPrice?: StorefrontAPI.Maybe<
@@ -1174,7 +1174,7 @@ interface GeneratedQueryTypes {
     return: PoliciesQuery;
     variables: PoliciesQueryVariables;
   };
-  '#graphql\n  query Product(\n    $country: CountryCode\n    $first: Int!\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...ClaraProductCard\n      description\n      descriptionHtml\n      options {\n        id\n        name\n        optionValues {\n          id\n          name\n        }\n      }\n      selectedOrFirstAvailableVariant(\n        selectedOptions: $selectedOptions\n        ignoreUnknownOptions: true\n        caseInsensitiveMatch: true\n      ) {\n        ...ClaraProductVariant\n      }\n      variants(first: 100) {\n        nodes {\n          ...ClaraProductVariant\n        }\n      }\n    }\n    relatedProducts: products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n  #graphql\n  fragment ClaraProductVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    sku\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    product {\n      handle\n      title\n    }\n  }\n\n': {
+  '#graphql\n  query Product(\n    $country: CountryCode\n    $first: Int!\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...ClaraProductCard\n      description\n      descriptionHtml\n      options {\n        id\n        name\n        optionValues {\n          id\n          name\n        }\n      }\n      selectedOrFirstAvailableVariant(\n        selectedOptions: $selectedOptions\n        ignoreUnknownOptions: true\n        caseInsensitiveMatch: true\n      ) {\n        ...ClaraProductVariant\n      }\n      variants(first: 100) {\n        nodes {\n          ...ClaraProductVariant\n        }\n      }\n    }\n    relatedProducts: products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n  #graphql\n  fragment ClaraProductVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    product {\n      handle\n      title\n    }\n  }\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
   };
