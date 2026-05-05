@@ -1,9 +1,11 @@
 import {Link, useLoaderData} from 'react-router';
+import {getPaginationVariables} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.all';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {
   filterDemoCollections,
   filterDemoProducts,
@@ -26,12 +28,22 @@ export type CollectionLink = {
   title: string;
 };
 
+export type CollectionProductConnection = {
+  nodes: ClaraCardProduct[];
+  pageInfo: {
+    endCursor?: string | null;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor?: string | null;
+  };
+};
+
 export type CollectionViewData = {
   activeHandle: string;
   collections: CollectionLink[];
   description?: string | null;
   heading: string;
-  products: ClaraCardProduct[];
+  products: CollectionProductConnection;
 };
 
 export const meta: Route.MetaFunction = () => {
@@ -45,10 +57,14 @@ export const meta: Route.MetaFunction = () => {
   ];
 };
 
-export async function loader({context}: Route.LoaderArgs) {
+export async function loader({context, request}: Route.LoaderArgs) {
+  const paginationVariables = getPaginationVariables(request, {
+    pageBy: 60,
+  });
+
   const data = await context.storefront.query(ALL_COLLECTION_QUERY, {
     variables: {
-      first: 24,
+      ...paginationVariables,
     },
   });
 
@@ -58,7 +74,9 @@ export async function loader({context}: Route.LoaderArgs) {
     description:
       'Curated home objects selected for quiet rooms, useful rituals, and slower living.',
     heading: 'Shop All',
-    products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+    products: filterProductConnection(
+      data.products as CollectionProductConnection,
+    ),
   } satisfies CollectionViewData;
 }
 
@@ -129,20 +147,25 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           : null}
       </nav>
 
-      {data.products.length > 0 ? (
-        <section className="cv-grid" aria-label="Products">
-          {data.products.map((product, index) => (
-            <div
-              key={product.id}
-              className="cv-card-wrap"
-              style={{animationDelay: `${Math.min(index, 11) * 70}ms`}}
-            >
-              <ClaraProductCard
-                product={product}
-                loading={index < 4 ? 'eager' : 'lazy'}
-              />
-            </div>
-          ))}
+      {data.products.nodes.length > 0 ? (
+        <section className="cv-products" aria-label="Products">
+          <PaginatedResourceSection<ClaraCardProduct>
+            connection={data.products}
+            resourcesClassName="cv-grid"
+          >
+            {({node: product, index}) => (
+              <div
+                key={product.id}
+                className="cv-card-wrap"
+                style={{animationDelay: `${Math.min(index, 11) * 70}ms`}}
+              >
+                <ClaraProductCard
+                  product={product}
+                  loading={index < 4 ? 'eager' : 'lazy'}
+                />
+              </div>
+            )}
+          </PaginatedResourceSection>
         </section>
       ) : (
         <section className="empty-state collection-empty">
@@ -167,15 +190,39 @@ function splitTitle(str: string): {italic: string; rest: string} {
   return {italic: parts[0], rest: parts.slice(1).join(' ')};
 }
 
+function filterProductConnection(
+  connection: CollectionProductConnection,
+): CollectionProductConnection {
+  return {
+    ...connection,
+    nodes: filterDemoProducts(connection.nodes),
+  };
+}
+
 const ALL_COLLECTION_QUERY = `#graphql
   query AllCollection(
     $country: CountryCode
-    $first: Int!
+    $endCursor: String
+    $first: Int
     $language: LanguageCode
+    $last: Int
+    $startCursor: String
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, sortKey: BEST_SELLING) {
+    products(
+      after: $endCursor
+      before: $startCursor
+      first: $first
+      last: $last
+      sortKey: BEST_SELLING
+    ) {
       nodes {
         ...ClaraProductCard
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
       }
     }
     collections(first: 12) {
@@ -391,8 +438,36 @@ const collectionCss = `
   gap: clamp(28px, 3vw, 52px) clamp(18px, 2.4vw, 36px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
   padding: clamp(42px, 5.5vw, 80px) clamp(18px, 4vw, 70px)
-           clamp(72px, 9vw, 130px);
+           clamp(36px, 5vw, 72px);
   background: var(--cv-paper);
+}
+
+.cv-products {
+  background: var(--cv-paper);
+  padding-bottom: clamp(56px, 7vw, 110px);
+}
+
+.cv-products > div > a {
+  display: flex;
+  width: fit-content;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: center;
+  color: var(--cv-ink);
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cv-products > div > a:first-child {
+  padding-top: clamp(28px, 4vw, 48px);
+  padding-bottom: clamp(10px, 2vw, 22px);
+}
+
+.cv-products > div > a:last-child {
+  padding-top: clamp(8px, 1.5vw, 18px);
 }
 
 .cv-card-wrap {

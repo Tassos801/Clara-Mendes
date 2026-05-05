@@ -1,0 +1,11 @@
+Rank,Decision,Score,Product,Handle,Source SKU,Source Cost Range,Retail Range,Gross Margin Range,Weight Range,Variant Count,Warnings,Blockers
+1,approved,100,Sol Linen Cushion Cover,sol-linen-cushion-cover,CJZT102408801AZ,$3.05,$22.00,86.1%,171 g,4,,
+2,approved,99,Sera Woven Table Runner,sera-woven-table-runner,CJYD239088001AZ,$2.72-$4.80,$24.00-$32.00,85.0%-88.7%,190 g-240 g,9,,
+3,approved,98,Mara Linen Dining Placemat,mara-linen-dining-placemat,CJYD206843001AZ,$0.80,$12.00,93.3%,100 g,4,,
+4,approved,97,Nora Round Cotton Trivet,nora-round-cotton-trivet,CJYD206667601AZ,$0.85-$1.65,$14.00-$22.00,92.5%-93.9%,85 g-185 g,9,,
+5,approved,95,Ayla Cotton Bath Towel,ayla-cotton-bath-towel,CJJJJFMJ00217,$2.83,$28.00,89.9%,450 g,4,,
+6,approved,88,Alba Cotton-Linen Cushion,alba-cotton-linen-cushion,CJZT113551601AZ,$1.92-$7.68,$19.00-$34.00,77.4%-89.9%,70 g-600 g,6,,
+7,approved,87,Tali Tassel Table Mat,tali-tassel-table-mat,CJCJ177046101AZ,$2.14-$6.36,$18.00-$28.00,77.3%-88.1%,80 g-422 g,2,,
+8,approved,84,Luma Tassel Cotton Throw,luma-tassel-cotton-throw,CJYD205807501AZ,$8.51-$19.70,$29.00-$69.00,70.7%-73.1%,320 g-820 g,9,,
+9,approved,81,Vale Walnut Storage Tray,vale-walnut-storage-tray,CJYD231130901AZ,$3.35-$11.44,$24.00-$49.00,76.7%-86.0%,240 g-870 g,3,,
+10,sample-first,72,Clara Waffle Cotton Throw,clara-waffle-cotton-throw,CJYD205705801AZ,$5.80-$15.75,$39.00-$79.00,80.1%-85.1%,420 g-1420 g,9,shipping_cost_check_required; needs_image_review,

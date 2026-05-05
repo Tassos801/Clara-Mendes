@@ -134,7 +134,7 @@ export default function Product() {
     <div className="product-page">
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link to="/collections/all">Shop</Link>
-        <span>/</span>
+        <span aria-hidden="true">›</span>
         <span>{product.title}</span>
       </nav>
 

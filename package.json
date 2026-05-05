@@ -13,6 +13,12 @@
     "codegen": "shopify hydrogen codegen && react-router typegen",
     "fulfillment:map-template": "node ./scripts/generate-cj-line-item-map-template.mjs",
     "fulfillment:register-webhook": "node ./scripts/register-orders-paid-webhook.mjs",
+    "products:cj:audit": "node ./scripts/audit-cj-products-shopify.mjs",
+    "products:cj:score": "node ./scripts/score-cj-products.mjs",
+    "products:cj:csv": "node ./scripts/generate-cj-product-import.mjs",
+    "products:cj:connections": "node ./scripts/export-cj-connection-worksheet.mjs",
+    "products:cj:publish:dry": "node ./scripts/publish-cj-products-shopify.mjs",
+    "products:cj:publish:live": "node ./scripts/publish-cj-products-shopify.mjs --live",
     "clean": "node ./scripts/clean.mjs",
     "clean:deps": "node ./scripts/clean.mjs --deps"
   },

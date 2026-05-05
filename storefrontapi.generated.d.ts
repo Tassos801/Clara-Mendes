@@ -570,9 +570,16 @@ export type BlogsQuery = {
 
 export type CollectionQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  first: StorefrontAPI.Scalars['Int']['input'];
+  endCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
+  first?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
   handle: StorefrontAPI.Scalars['String']['input'];
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  last?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  startCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
 }>;
 
 export type CollectionQuery = {
@@ -609,6 +616,10 @@ export type CollectionQuery = {
             };
           }
         >;
+        pageInfo: Pick<
+          StorefrontAPI.PageInfo,
+          'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'
+        >;
       };
     }
   >;
@@ -630,8 +641,15 @@ export type CollectionQuery = {
 
 export type AllCollectionQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  first: StorefrontAPI.Scalars['Int']['input'];
+  endCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
+  first?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  last?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  startCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
 }>;
 
 export type AllCollectionQuery = {
@@ -662,6 +680,10 @@ export type AllCollectionQuery = {
           >;
         };
       }
+    >;
+    pageInfo: Pick<
+      StorefrontAPI.PageInfo,
+      'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'
     >;
   };
   collections: {
@@ -1154,11 +1176,11 @@ interface GeneratedQueryTypes {
     return: BlogsQuery;
     variables: BlogsQueryVariables;
   };
-  '#graphql\n  query Collection(\n    $country: CountryCode\n    $first: Int!\n    $handle: String!\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      products(first: $first, sortKey: COLLECTION_DEFAULT) {\n        nodes {\n          ...ClaraProductCard\n        }\n      }\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query Collection(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $handle: String!\n    $language: LanguageCode\n    $last: Int\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      products(\n        after: $endCursor\n        before: $startCursor\n        first: $first\n        last: $last\n        sortKey: COLLECTION_DEFAULT\n      ) {\n        nodes {\n          ...ClaraProductCard\n        }\n        pageInfo {\n          hasNextPage\n          hasPreviousPage\n          startCursor\n          endCursor\n        }\n      }\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n': {
     return: CollectionQuery;
     variables: CollectionQueryVariables;
   };
-  '#graphql\n  query AllCollection(\n    $country: CountryCode\n    $first: Int!\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query AllCollection(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(\n      after: $endCursor\n      before: $startCursor\n      first: $first\n      last: $last\n      sortKey: BEST_SELLING\n    ) {\n      nodes {\n        ...ClaraProductCard\n      }\n      pageInfo {\n        hasNextPage\n        hasPreviousPage\n        startCursor\n        endCursor\n      }\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n': {
     return: AllCollectionQuery;
     variables: AllCollectionQueryVariables;
   };

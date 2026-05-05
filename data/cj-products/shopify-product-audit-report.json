@@ -1,0 +1,338 @@
+{
+  "store": "vre00g-8b.myshopify.com",
+  "generatedAt": "2026-05-05T21:21:31.776Z",
+  "summary": {
+    "productCount": 10,
+    "missingProductCount": 0,
+    "activeProductCount": 10,
+    "publishedProductCount": 10,
+    "productIssueCount": 0,
+    "productWarningCount": 1,
+    "imageWarningCount": 1,
+    "variantIssueCount": 0
+  },
+  "products": [
+    {
+      "handle": "clara-waffle-cotton-throw",
+      "title": "Clara Waffle Cotton Throw",
+      "id": "gid://shopify/Product/15813039587662",
+      "status": "ACTIVE",
+      "mediaCount": 2,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 9,
+      "actualVariantCount": 9,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [
+        "low_product_media_count"
+      ],
+      "issues": []
+    },
+    {
+      "handle": "luma-tassel-cotton-throw",
+      "title": "Luma Tassel Cotton Throw",
+      "id": "gid://shopify/Product/15813039882574",
+      "status": "ACTIVE",
+      "mediaCount": 3,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 9,
+      "actualVariantCount": 9,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "sera-woven-table-runner",
+      "title": "Sera Woven Table Runner",
+      "id": "gid://shopify/Product/15813040013646",
+      "status": "ACTIVE",
+      "mediaCount": 3,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 9,
+      "actualVariantCount": 9,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "sol-linen-cushion-cover",
+      "title": "Sol Linen Cushion Cover",
+      "id": "gid://shopify/Product/15813040177486",
+      "status": "ACTIVE",
+      "mediaCount": 3,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 4,
+      "actualVariantCount": 4,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "alba-cotton-linen-cushion",
+      "title": "Alba Cotton-Linen Cushion",
+      "id": "gid://shopify/Product/15813040374094",
+      "status": "ACTIVE",
+      "mediaCount": 3,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 6,
+      "actualVariantCount": 6,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "vale-walnut-storage-tray",
+      "title": "Vale Walnut Storage Tray",
+      "id": "gid://shopify/Product/15813040537934",
+      "status": "ACTIVE",
+      "mediaCount": 3,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 3,
+      "actualVariantCount": 3,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "ayla-cotton-bath-towel",
+      "title": "Ayla Cotton Bath Towel",
+      "id": "gid://shopify/Product/15813040669006",
+      "status": "ACTIVE",
+      "mediaCount": 5,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 4,
+      "actualVariantCount": 4,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "mara-linen-dining-placemat",
+      "title": "Mara Linen Dining Placemat",
+      "id": "gid://shopify/Product/15813040931150",
+      "status": "ACTIVE",
+      "mediaCount": 4,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 4,
+      "actualVariantCount": 4,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "nora-round-cotton-trivet",
+      "title": "Nora Round Cotton Trivet",
+      "id": "gid://shopify/Product/15813041094990",
+      "status": "ACTIVE",
+      "mediaCount": 4,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 9,
+      "actualVariantCount": 9,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    },
+    {
+      "handle": "tali-tassel-table-mat",
+      "title": "Tali Tassel Table Mat",
+      "id": "gid://shopify/Product/15813041258830",
+      "status": "ACTIVE",
+      "mediaCount": 4,
+      "publicationCount": 3,
+      "publications": [
+        {
+          "id": "gid://shopify/Publication/344975081806",
+          "title": "Channel Catalog 344975081806 for Online Store",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346010157390",
+          "title": "Channel Catalog 346010157390 for Clara Mendes",
+          "isPublished": true
+        },
+        {
+          "id": "gid://shopify/Publication/346679640398",
+          "title": "Channel Catalog 346679640398 for Clara Mendes Headless",
+          "isPublished": true
+        }
+      ],
+      "expectedVariantCount": 2,
+      "actualVariantCount": 2,
+      "missingVariants": [],
+      "extraVariants": [],
+      "priceMismatches": [],
+      "warnings": [],
+      "issues": []
+    }
+  ]
+}

@@ -36,12 +36,26 @@ export async function action({request, context}: Route.ActionArgs) {
     case CartForm.ACTIONS.LinesRemove:
       result = await cart.removeLines(inputs.lineIds);
       break;
-    case CartForm.ACTIONS.DiscountCodesUpdate:
-      result = await cart.updateDiscountCodes(inputs.discountCodes);
+    case CartForm.ACTIONS.DiscountCodesUpdate: {
+      const formDiscountCode = formData.get('discountCode');
+      const discountCodes = [
+        ...(typeof formDiscountCode === 'string' && formDiscountCode
+          ? [formDiscountCode]
+          : []),
+        ...((inputs.discountCodes as string[] | undefined) ?? []),
+      ];
+      result = await cart.updateDiscountCodes(discountCodes);
       break;
-    case CartForm.ACTIONS.GiftCardCodesAdd:
-      result = await cart.addGiftCardCodes(inputs.giftCardCodes);
+    }
+    case CartForm.ACTIONS.GiftCardCodesAdd: {
+      const formGiftCardCode = formData.get('giftCardCode');
+      const giftCardCodes =
+        typeof formGiftCardCode === 'string' && formGiftCardCode
+          ? [formGiftCardCode]
+          : ((inputs.giftCardCodes as string[] | undefined) ?? []);
+      result = await cart.addGiftCardCodes(giftCardCodes);
       break;
+    }
     case CartForm.ACTIONS.GiftCardCodesRemove:
       result = await cart.removeGiftCardCodes(inputs.giftCardCodes);
       break;

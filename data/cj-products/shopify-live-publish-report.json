@@ -1,0 +1,173 @@
+{
+  "store": "vre00g-8b.myshopify.com",
+  "publicationIds": [
+    "gid://shopify/Publication/344975081806",
+    "gid://shopify/Publication/346010157390",
+    "gid://shopify/Publication/346679640398"
+  ],
+  "createdAt": "2026-05-05T21:18:37.794Z",
+  "fulfillmentMode": "manual",
+  "productStatus": "ACTIVE",
+  "products": [
+    {
+      "handle": "clara-waffle-cotton-throw",
+      "title": "Clara Waffle Cotton Throw",
+      "id": "gid://shopify/Product/15813039587662",
+      "status": "ACTIVE",
+      "variants": 9,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "luma-tassel-cotton-throw",
+      "title": "Luma Tassel Cotton Throw",
+      "id": "gid://shopify/Product/15813039882574",
+      "status": "ACTIVE",
+      "variants": 9,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "sera-woven-table-runner",
+      "title": "Sera Woven Table Runner",
+      "id": "gid://shopify/Product/15813040013646",
+      "status": "ACTIVE",
+      "variants": 9,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "sol-linen-cushion-cover",
+      "title": "Sol Linen Cushion Cover",
+      "id": "gid://shopify/Product/15813040177486",
+      "status": "ACTIVE",
+      "variants": 4,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "alba-cotton-linen-cushion",
+      "title": "Alba Cotton-Linen Cushion",
+      "id": "gid://shopify/Product/15813040374094",
+      "status": "ACTIVE",
+      "variants": 6,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "vale-walnut-storage-tray",
+      "title": "Vale Walnut Storage Tray",
+      "id": "gid://shopify/Product/15813040537934",
+      "status": "ACTIVE",
+      "variants": 3,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "ayla-cotton-bath-towel",
+      "title": "Ayla Cotton Bath Towel",
+      "id": "gid://shopify/Product/15813040669006",
+      "status": "ACTIVE",
+      "variants": 4,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "mara-linen-dining-placemat",
+      "title": "Mara Linen Dining Placemat",
+      "id": "gid://shopify/Product/15813040931150",
+      "status": "ACTIVE",
+      "variants": 4,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "nora-round-cotton-trivet",
+      "title": "Nora Round Cotton Trivet",
+      "id": "gid://shopify/Product/15813041094990",
+      "status": "ACTIVE",
+      "variants": 9,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    },
+    {
+      "handle": "tali-tassel-table-mat",
+      "title": "Tali Tassel Table Mat",
+      "id": "gid://shopify/Product/15813041258830",
+      "status": "ACTIVE",
+      "variants": 2,
+      "publication": {
+        "availablePublicationsCount": {
+          "count": 3
+        },
+        "resourcePublicationsCount": {
+          "count": 3
+        }
+      },
+      "mode": "updated"
+    }
+  ]
+}

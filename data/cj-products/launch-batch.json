@@ -1,0 +1,550 @@
+{
+  "batchName": "Clara Mendes CJ Launch Batch",
+  "date": "2026-04-26",
+  "storeDomain": "firemerch-7685.myshopify.com",
+  "adminStoreDomain": "vre00g-8b.myshopify.com",
+  "status": "active",
+  "published": true,
+  "publicationIds": [
+    "gid://shopify/Publication/344975081806",
+    "gid://shopify/Publication/346010157390",
+    "gid://shopify/Publication/346679640398"
+  ],
+  "notes": [
+    "Use CJ Dropshipping's List flow for live fulfillment linkage when possible.",
+    "Use the generated Shopify CSV as a draft catalog, copy, pricing, and collection worksheet.",
+    "Final landed shipping and inventory must be checked in the connected CJ account before activation."
+  ],
+  "products": [
+    {
+      "priority": 1,
+      "handle": "clara-waffle-cotton-throw",
+      "title": "Clara Waffle Cotton Throw",
+      "sourceTitle": "Cotton Waffle Knit Chenille Towel Sofa Cover Blanket",
+      "sourceSku": "CJYD205705801AZ",
+      "cjUrl": "https://cjdropshipping.com/product/cotton-waffle-knit-chenille-towel-sofa-cover-blanket-p-2406100547151615200.html",
+      "vendor": "Clara Mendes",
+      "type": "Textiles",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:textiles",
+        "batch:cj-2026-04-26",
+        "blanket",
+        "throw",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A quietly textured cotton throw for sofas, reading chairs, and slower evening rituals. The waffle knit brings depth without visual noise, making it easy to layer across calm interiors.</p><ul><li>Solid color woven texture</li><li>Soft cotton-rich hand feel</li><li>Use as a throw, sofa cover, or light bed layer</li></ul>",
+      "seoTitle": "Clara Waffle Cotton Throw | Clara Mendes",
+      "seoDescription": "A softly textured waffle cotton throw for calm rooms, sofas, and layered living spaces.",
+      "imageUrls": [
+        "https://www.gifttree.co.nz/media/commerce_products/8175/2406100816070323600.jpg",
+        "https://www.gifttree.co.nz/media/commerce_products/8175/2406100816070323600(1).jpg"
+      ],
+      "options": [
+        {
+          "name": "Color",
+          "values": ["Khaki", "Silver Gray", "Green"]
+        },
+        {
+          "name": "Size",
+          "values": ["100 x 150 cm", "150 x 200 cm", "200 x 230 cm"]
+        }
+      ],
+      "variantDefaultsBySize": {
+        "100 x 150 cm": {
+          "price": "39.00",
+          "compareAtPrice": "49.00",
+          "cost": "5.80",
+          "grams": 420
+        },
+        "150 x 200 cm": {
+          "price": "59.00",
+          "compareAtPrice": "72.00",
+          "cost": "10.75",
+          "grams": 850
+        },
+        "200 x 230 cm": {
+          "price": "79.00",
+          "compareAtPrice": "96.00",
+          "cost": "15.75",
+          "grams": 1420
+        }
+      }
+    },
+    {
+      "priority": 2,
+      "handle": "luma-tassel-cotton-throw",
+      "title": "Luma Tassel Cotton Throw",
+      "sourceTitle": "Household Fashion Tassel Simple Cloth Blanket",
+      "sourceSku": "CJYD205807501AZ",
+      "cjUrl": "https://cjdropshipping.com/product/household-fashion-tassel-simple-cloth-blanket-p-2406110909121605500.html",
+      "vendor": "Clara Mendes",
+      "type": "Textiles",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:textiles",
+        "batch:cj-2026-04-26",
+        "blanket",
+        "throw",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A light cotton throw finished with understated tassels. Designed for sofa arms, bed ends, and soft everyday layering.</p><ul><li>Solid color finish</li><li>Cotton fabric with tasseled edge</li><li>Lightweight and easy to fold or drape</li></ul>",
+      "seoTitle": "Luma Tassel Cotton Throw | Clara Mendes",
+      "seoDescription": "A simple tasseled cotton throw for warm, relaxed layering at home.",
+      "imageUrls": [
+        "https://cf.cjdropshipping.com/quick/product/e2b94382-8f39-43a1-93f1-7331269c055b.jpg",
+        "https://cf.cjdropshipping.com/quick/product/97c66e3b-c373-4a9f-bfdf-07ec6d0d5d98.jpg",
+        "https://cf.cjdropshipping.com/quick/product/173c071e-9278-4b9c-a247-461f31f86fcf.jpg"
+      ],
+      "options": [
+        {
+          "name": "Color",
+          "values": ["Curry", "Beige", "Gray"]
+        },
+        {
+          "name": "Size",
+          "values": ["80 x 130 cm", "130 x 170 cm", "150 x 200 cm"]
+        }
+      ],
+      "variantDefaultsBySize": {
+        "80 x 130 cm": {
+          "price": "29.00",
+          "compareAtPrice": "38.00",
+          "cost": "8.51",
+          "grams": 320
+        },
+        "130 x 170 cm": {
+          "price": "49.00",
+          "compareAtPrice": "62.00",
+          "cost": "13.20",
+          "grams": 560
+        },
+        "150 x 200 cm": {
+          "price": "69.00",
+          "compareAtPrice": "86.00",
+          "cost": "19.70",
+          "grams": 820
+        }
+      }
+    },
+    {
+      "priority": 3,
+      "handle": "sera-woven-table-runner",
+      "title": "Sera Woven Table Runner",
+      "sourceTitle": "Home Decoration Simple Woven Cotton And Linen Table Runner",
+      "sourceSku": "CJYD239088001AZ",
+      "cjUrl": "https://cjdropshipping.com/product/home-decoration-simple-woven-cotton-and-linen-table-runner-p-2506020359111604900.html",
+      "vendor": "Clara Mendes",
+      "type": "Table Textiles",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:table",
+        "batch:cj-2026-04-26",
+        "table-runner",
+        "table",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A woven cotton-linen table runner for quiet dining tables, consoles, and shelves. Its texture adds a collected layer without feeling formal.</p><ul><li>Cotton and linen look</li><li>Works across dining tables, sideboards, and low shelves</li><li>Easy styling piece for bundles and room edits</li></ul>",
+      "seoTitle": "Sera Woven Table Runner | Clara Mendes",
+      "seoDescription": "A simple woven table runner for calm dining tables, consoles, and layered home styling.",
+      "imageUrls": [
+        "https://cf.cjdropshipping.com/quick/product/736254ae-2e5d-4e82-bc88-4c1d737f823c.jpg",
+        "https://cf.cjdropshipping.com/quick/product/dcac4183-7fb7-4de5-b16c-13e3ecbd3cad.jpg",
+        "https://cf.cjdropshipping.com/quick/product/584fa6fe-cfc0-4fe6-9276-a56d03dfee8f.jpg"
+      ],
+      "options": [
+        {
+          "name": "Pattern",
+          "values": ["Waffle", "Wavy", "Beijing Hemp"]
+        },
+        {
+          "name": "Size",
+          "values": ["33 x 160 cm", "33 x 183 cm", "33 x 200 cm"]
+        }
+      ],
+      "variantDefaultsBySize": {
+        "33 x 160 cm": {
+          "price": "24.00",
+          "compareAtPrice": "32.00",
+          "cost": "2.72",
+          "grams": 190
+        },
+        "33 x 183 cm": {
+          "price": "28.00",
+          "compareAtPrice": "36.00",
+          "cost": "3.95",
+          "grams": 220
+        },
+        "33 x 200 cm": {
+          "price": "32.00",
+          "compareAtPrice": "42.00",
+          "cost": "4.80",
+          "grams": 240
+        }
+      }
+    },
+    {
+      "priority": 4,
+      "handle": "sol-linen-cushion-cover",
+      "title": "Sol Linen Cushion Cover",
+      "sourceTitle": "Solid Color Linen Sofa Pillow Cushion Living Room Pillow Cover",
+      "sourceSku": "CJZT102408801AZ",
+      "cjUrl": "https://www.cjdropshipping.com/product/solid-color-linen-sofa-pillow-cushion-living-room-pillow-cover-p-1365950473881915392.html",
+      "vendor": "Clara Mendes",
+      "type": "Cushion Covers",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:textiles",
+        "batch:cj-2026-04-26",
+        "cushion-cover",
+        "pillow-cover",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A plain linen-look cushion cover for easy sofa and bed refreshes. The simple surface keeps the room quiet while adding a tactile layer.</p><ul><li>45 x 45 cm cover</li><li>Solid color finish</li><li>Insert not included</li></ul>",
+      "seoTitle": "Sol Linen Cushion Cover | Clara Mendes",
+      "seoDescription": "A simple solid linen-look cushion cover for sofas, beds, and calm layered rooms.",
+      "imageUrls": [
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/1614502737923.jpg",
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/1614502737902.jpg",
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/1614502737925.jpg"
+      ],
+      "options": [
+        {
+          "name": "Color",
+          "values": ["Light Grey", "Khaki", "Coffee", "Green"]
+        }
+      ],
+      "variantDefaults": {
+        "price": "22.00",
+        "compareAtPrice": "28.00",
+        "cost": "3.05",
+        "grams": 171
+      }
+    },
+    {
+      "priority": 5,
+      "handle": "alba-cotton-linen-cushion",
+      "title": "Alba Cotton-Linen Cushion",
+      "sourceTitle": "Plain Cotton Linen Sofa Cushion Thickened Square Pillow",
+      "sourceSku": "CJZT113551601AZ",
+      "cjUrl": "https://cjdropshipping.com/product/plain-cotton-linen-sofa-cushion-thickened-square-pillow-p-1394921392557920256.html",
+      "vendor": "Clara Mendes",
+      "type": "Cushions",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:textiles",
+        "batch:cj-2026-04-26",
+        "cushion",
+        "pillow",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A thickened cotton-linen cushion for everyday comfort. Choose the cover alone for existing inserts, or the full cushion when building a room from scratch.</p><ul><li>45 x 45 cm format</li><li>Available as cover only or with insert</li><li>Plain woven look for calm interiors</li></ul>",
+      "seoTitle": "Alba Cotton-Linen Cushion | Clara Mendes",
+      "seoDescription": "A plain cotton-linen cushion available as a cover or complete cushion with insert.",
+      "imageUrls": [
+        "https://cf.cjdropshipping.com/17125344/2404081247420328400.jpg",
+        "https://cf.cjdropshipping.com/17125344/2404081247430321900.jpg",
+        "https://cf.cjdropshipping.com/17125344/2404081247430323800.jpg"
+      ],
+      "options": [
+        {
+          "name": "Color",
+          "values": ["Beige", "Khaki", "Grey"]
+        },
+        {
+          "name": "Style",
+          "values": ["Pillowcase", "Pillow with insert"]
+        }
+      ],
+      "variantDefaultsByStyle": {
+        "Pillowcase": {
+          "price": "19.00",
+          "compareAtPrice": "25.00",
+          "cost": "1.92",
+          "grams": 70
+        },
+        "Pillow with insert": {
+          "price": "34.00",
+          "compareAtPrice": "44.00",
+          "cost": "7.68",
+          "grams": 600
+        }
+      }
+    },
+    {
+      "priority": 6,
+      "handle": "vale-walnut-storage-tray",
+      "title": "Vale Walnut Storage Tray",
+      "sourceTitle": "Household Fruit Plate Wooden Storage Tray",
+      "sourceSku": "CJYD231130901AZ",
+      "cjUrl": "https://cjdropshipping.com/product/household-fruit-plate-wooden-storage-tray-p-2502280831271616600.html",
+      "vendor": "Clara Mendes",
+      "type": "Storage",
+      "collection": "Storage",
+      "tags": [
+        "clara-launch",
+        "clara-storage",
+        "source:cj",
+        "launch:ready",
+        "category:storage",
+        "batch:cj-2026-04-26",
+        "tray",
+        "wood",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A walnut-tone wooden tray for keys, bedside objects, candles, or dining-table fruit. Its low profile keeps everyday pieces gathered without feeling overdesigned.</p><ul><li>Wooden tray in a walnut finish</li><li>Useful for tables, entryways, nightstands, and shelves</li><li>Available in three practical sizes</li></ul>",
+      "seoTitle": "Vale Walnut Storage Tray | Clara Mendes",
+      "seoDescription": "A walnut-tone wooden storage tray for tables, shelves, entryways, and bedside objects.",
+      "imageUrls": [
+        "https://cf.cjdropshipping.com/quick/product/84199d1c-0e0f-46f2-9418-cd8797feed0f.jpg",
+        "https://cf.cjdropshipping.com/quick/product/b991dab9-f42c-42e6-8ca1-904f13e0cea8.jpg",
+        "https://cf.cjdropshipping.com/quick/product/a5393acf-ef4f-4cdc-b4d5-ac8ae3856133.jpg"
+      ],
+      "options": [
+        {
+          "name": "Size",
+          "values": ["14 x 14 x 3.3 cm", "28 x 14 x 3.3 cm", "42 x 14 x 3.3 cm"]
+        }
+      ],
+      "variantDefaultsBySize": {
+        "14 x 14 x 3.3 cm": {
+          "price": "24.00",
+          "compareAtPrice": "32.00",
+          "cost": "3.35",
+          "grams": 240
+        },
+        "28 x 14 x 3.3 cm": {
+          "price": "34.00",
+          "compareAtPrice": "44.00",
+          "cost": "7.25",
+          "grams": 570
+        },
+        "42 x 14 x 3.3 cm": {
+          "price": "49.00",
+          "compareAtPrice": "62.00",
+          "cost": "11.44",
+          "grams": 870
+        }
+      }
+    },
+    {
+      "priority": 7,
+      "handle": "ayla-cotton-bath-towel",
+      "title": "Ayla Cotton Bath Towel",
+      "sourceTitle": "Pure Cotton Bath Towel",
+      "sourceSku": "CJJJJFMJ00217",
+      "cjUrl": "https://cjdropshipping.com/product/pure-cotton-bath-towel-p-0F71F755-035C-49CE-9E54-8103862C06AE.html",
+      "vendor": "Clara Mendes",
+      "type": "Towels",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:bath",
+        "batch:cj-2026-04-26",
+        "bath-towel",
+        "cotton",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A soft cotton bath towel with a calm, tonal finish for everyday bathrooms and guest spaces. It is sized for daily use while staying light enough to ship economically.</p><ul><li>70 x 140 cm bath towel</li><li>Pure cotton feel</li><li>Neutral tones for warm, quiet bathroom styling</li></ul>",
+      "seoTitle": "Ayla Cotton Bath Towel | Clara Mendes",
+      "seoDescription": "A soft neutral cotton bath towel for calm bathrooms, guest rooms, and everyday rituals.",
+      "imageUrls": [
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/203103/8881900609975.jpg",
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/203103/540475867316.jpg",
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/203103/14106751408025.jpg",
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/203103/5207590413934.jpg",
+        "https://cc-west-usa.oss-accelerate.aliyuncs.com/203103/594299151120.jpg"
+      ],
+      "options": [
+        {
+          "name": "Color",
+          "values": ["Beige", "Khaki", "Light Brown", "Dark Brown"]
+        }
+      ],
+      "variantDefaults": {
+        "price": "28.00",
+        "compareAtPrice": "36.00",
+        "cost": "2.83",
+        "grams": 450
+      }
+    },
+    {
+      "priority": 8,
+      "handle": "mara-linen-dining-placemat",
+      "title": "Mara Linen Dining Placemat",
+      "sourceTitle": "Linen Dining Table Cover Heat Insulation And Anti Scald",
+      "sourceSku": "CJYD206843001AZ",
+      "cjUrl": "https://cjdropshipping.com/product/linen-dining-table-cover-heat-insulation-and-anti-scald-p-2406250742051603200.html",
+      "vendor": "Clara Mendes",
+      "type": "Table Textiles",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:table",
+        "batch:cj-2026-04-26",
+        "placemat",
+        "table",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A linen-look dining placemat for simple table settings, breakfast trays, and layered entertaining. The flat woven texture keeps place settings grounded without adding visual clutter.</p><ul><li>30 x 46 cm format</li><li>Heat-insulating table layer</li><li>Easy to mix across neutral table palettes</li></ul>",
+      "seoTitle": "Mara Linen Dining Placemat | Clara Mendes",
+      "seoDescription": "A simple linen-look dining placemat for neutral table settings and everyday meals.",
+      "imageUrls": [
+        "https://cf.cjdropshipping.com/quick/product/4e2da50d-b38d-435e-8ddc-bc8d73ab421f.jpg",
+        "https://cf.cjdropshipping.com/quick/product/b9daec74-80b5-42f4-a301-a06ee32efee9.jpg",
+        "https://cf.cjdropshipping.com/quick/product/2f948746-e746-48af-9eca-24d9cdfc679c.jpg",
+        "https://cf.cjdropshipping.com/quick/product/b9d0f875-d216-402d-91a5-539e8b6648dc.jpg"
+      ],
+      "options": [
+        {
+          "name": "Color",
+          "values": ["Off White", "Khaki", "Light Brown", "Dark Coffee"]
+        }
+      ],
+      "variantDefaults": {
+        "price": "12.00",
+        "compareAtPrice": "16.00",
+        "cost": "0.80",
+        "grams": 100
+      }
+    },
+    {
+      "priority": 9,
+      "handle": "nora-round-cotton-trivet",
+      "title": "Nora Round Cotton Trivet",
+      "sourceTitle": "Home Dining Table Coaster Western-style Placemat",
+      "sourceSku": "CJYD206667601AZ",
+      "cjUrl": "https://cjdropshipping.com/product/home-dining-table-coaster-western-style-placemat-p-2406230620351620400.html",
+      "vendor": "Clara Mendes",
+      "type": "Table Textiles",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:table",
+        "batch:cj-2026-04-26",
+        "trivet",
+        "coaster",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A round woven cotton trivet for mugs, bowls, candles, and warm serving dishes. It adds a small natural texture to the table while staying light and easy to bundle.</p><ul><li>Round cotton table layer</li><li>Useful as a trivet, coaster, or small placemat</li><li>Three sizes for cups, bowls, and serving pieces</li></ul>",
+      "seoTitle": "Nora Round Cotton Trivet | Clara Mendes",
+      "seoDescription": "A round woven cotton trivet for mugs, bowls, candles, and relaxed table styling.",
+      "imageUrls": [
+        "https://cf.cjdropshipping.com/quick/product/93f16a56-0f02-4bf2-8b9c-8ae6362f18c7.jpg",
+        "https://cf.cjdropshipping.com/quick/product/a95431c3-5c62-43f3-8bba-f50909738d8c.jpg",
+        "https://cf.cjdropshipping.com/quick/product/030861e3-ad3e-492d-b5d5-5420ffdd4055.jpg",
+        "https://cf.cjdropshipping.com/quick/product/ee7f9bb6-dfef-468a-95a1-d24c9ebef1c2.jpg"
+      ],
+      "options": [
+        {
+          "name": "Style",
+          "values": ["Type A", "Type B", "Type C"]
+        },
+        {
+          "name": "Size",
+          "values": ["18 cm", "24 cm", "30 cm"]
+        }
+      ],
+      "variantDefaultsBySize": {
+        "18 cm": {
+          "price": "14.00",
+          "compareAtPrice": "18.00",
+          "cost": "0.85",
+          "grams": 85
+        },
+        "24 cm": {
+          "price": "18.00",
+          "compareAtPrice": "24.00",
+          "cost": "1.20",
+          "grams": 135
+        },
+        "30 cm": {
+          "price": "22.00",
+          "compareAtPrice": "28.00",
+          "cost": "1.65",
+          "grams": 185
+        }
+      }
+    },
+    {
+      "priority": 10,
+      "handle": "tali-tassel-table-mat",
+      "title": "Tali Tassel Table Mat",
+      "sourceTitle": "Tassel Grass Insulated Dining Table Mat",
+      "sourceSku": "CJCJ177046101AZ",
+      "cjUrl": "https://cjdropshipping.com/product/tassel-grass-insulated-dining-table-mat-p-1664950078802505728.html",
+      "vendor": "Clara Mendes",
+      "type": "Table Textiles",
+      "collection": "Textiles",
+      "tags": [
+        "clara-launch",
+        "clara-textiles",
+        "source:cj",
+        "launch:ready",
+        "category:table",
+        "batch:cj-2026-04-26",
+        "placemat",
+        "trivet",
+        "cj-dropshipping"
+      ],
+      "bodyHtml": "<p>A tassel-edged table mat for warm serving pieces, teapots, candles, and layered dining settings. The natural woven look brings a quiet handmade note to the table.</p><ul><li>Tassel-edge woven mat</li><li>Useful as a trivet, teapot mat, or decorative table layer</li><li>Available in small and large sizes</li></ul>",
+      "seoTitle": "Tali Tassel Table Mat | Clara Mendes",
+      "seoDescription": "A tassel-edged woven table mat for warm serving pieces, candles, and neutral table styling.",
+      "imageUrls": [
+        "https://www.gifttree.co.nz/media/commerce_products/206295/4_d1e57cae-5c43-4d93-ada5-c0a710d27b8d.jpg",
+        "https://www.gifttree.co.nz/media/commerce_products/206295/2_c24a77d9-4da6-41fa-b814-0d9a1c341cf6_trans.jpeg",
+        "https://www.gifttree.co.nz/media/commerce_products/206295/3_20ea99f7-e01a-4d60-b1d3-5961b9383260_trans.jpeg",
+        "https://www.gifttree.co.nz/media/commerce_products/206295/5_6aaad418-6946-4994-b322-bd8016d6d77f.jpg"
+      ],
+      "options": [
+        {
+          "name": "Size",
+          "values": ["Small", "Large"]
+        }
+      ],
+      "variantDefaultsBySize": {
+        "Small": {
+          "price": "18.00",
+          "compareAtPrice": "24.00",
+          "cost": "2.14",
+          "grams": 80
+        },
+        "Large": {
+          "price": "28.00",
+          "compareAtPrice": "36.00",
+          "cost": "6.36",
+          "grams": 422
+        }
+      }
+    }
+  ]
+}

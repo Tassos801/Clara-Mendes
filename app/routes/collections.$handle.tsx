@@ -1,8 +1,12 @@
 import {redirect, useLoaderData} from 'react-router';
+import {getPaginationVariables} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.$handle';
 import {CollectionView} from './collections.all';
-import type {CollectionLink, CollectionViewData} from './collections.all';
-import type {ClaraCardProduct} from '~/components/ClaraProductCard';
+import type {
+  CollectionLink,
+  CollectionProductConnection,
+  CollectionViewData,
+} from './collections.all';
 import {
   filterDemoCollections,
   filterDemoProducts,
@@ -24,16 +28,20 @@ export const meta: Route.MetaFunction = ({data}) => {
   ];
 };
 
-export async function loader({context, params}: Route.LoaderArgs) {
+export async function loader({context, params, request}: Route.LoaderArgs) {
   const handle = params.handle;
 
   if (!handle || handle === 'all' || isDemoCollection({handle})) {
     throw redirect('/collections/all');
   }
 
+  const paginationVariables = getPaginationVariables(request, {
+    pageBy: 60,
+  });
+
   const data = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
-      first: 24,
+      ...paginationVariables,
       handle,
     },
   });
@@ -55,9 +63,12 @@ export async function loader({context, params}: Route.LoaderArgs) {
       data.collection.description ||
       'A focused edit of objects selected for texture, utility, and atmosphere.',
     heading: data.collection.title,
-    products: filterDemoProducts(
-      data.collection.products.nodes as ClaraCardProduct[],
-    ),
+    products: {
+      ...(data.collection.products as CollectionProductConnection),
+      nodes: filterDemoProducts(
+        (data.collection.products as CollectionProductConnection).nodes,
+      ),
+    },
   } satisfies CollectionViewData;
 }
 
@@ -69,18 +80,33 @@ export default function Collection() {
 const COLLECTION_QUERY = `#graphql
   query Collection(
     $country: CountryCode
-    $first: Int!
+    $endCursor: String
+    $first: Int
     $handle: String!
     $language: LanguageCode
+    $last: Int
+    $startCursor: String
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
       handle
       title
       description
-      products(first: $first, sortKey: COLLECTION_DEFAULT) {
+      products(
+        after: $endCursor
+        before: $startCursor
+        first: $first
+        last: $last
+        sortKey: COLLECTION_DEFAULT
+      ) {
         nodes {
           ...ClaraProductCard
+        }
+        pageInfo {
+          hasNextPage
+          hasPreviousPage
+          startCursor
+          endCursor
         }
       }
     }
