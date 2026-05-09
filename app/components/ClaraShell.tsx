@@ -37,11 +37,11 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
         <NavLink to="/our-story" prefetch="intent">
           Our Story
         </NavLink>
+        <NavLink to="/contact" prefetch="intent">
+          Contact
+        </NavLink>
         <NavLink to="/search" prefetch="intent">
           Search
-        </NavLink>
-        <NavLink to="/policies" prefetch="intent">
-          Policies
         </NavLink>
       </nav>
       <button className="cart-button" type="button" onClick={() => open('cart')}>
@@ -77,10 +77,10 @@ function ClaraFooter() {
       </div>
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
-        <Link to="/search">Search</Link>
-        <Link to="/account">Account</Link>
+        <Link to="/our-story">Our Story</Link>
+        <Link to="/contact">Contact</Link>
         <Link to="/policies">Policies</Link>
-        <Link to="/cart">Cart</Link>
+        <Link to="/account">Account</Link>
       </nav>
     </footer>
   );

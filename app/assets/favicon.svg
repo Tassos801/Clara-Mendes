@@ -1,28 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
   <style>
-    .stroke {
-      stroke: #000;
-    }
-    .fill {
-      fill: #000;
-    }
+    .vessel { fill: #9c6f5d; }
     @media (prefers-color-scheme: dark) {
-      .stroke {
-        stroke: #fff;
-      }
-      .fill {
-        fill: #fff;
-      }
+      .vessel { fill: #c4a08e; }
     }
   </style>
-  <path
-    class="stroke"
-    fill-rule="evenodd"
-    d="M16.1 16.04 1 8.02 6.16 5.3l5.82 3.09 4.88-2.57-5.82-3.1L16.21 0l15.1 8.02-5.17 2.72-5.5-2.91-4.88 2.57 5.5 2.92-5.16 2.72Z"
-  />
-  <path
-    class="fill"
-    fill-rule="evenodd"
-    d="M16.1 32 1 23.98l5.16-2.72 5.82 3.08 4.88-2.57-5.82-3.08 5.17-2.73 15.1 8.02-5.17 2.72-5.5-2.92-4.88 2.58 5.5 2.92L16.1 32Z"
-  />
+  <path class="vessel" d="M13.5 4 C13.5 4, 12.8 4, 12.8 4.6 L12.8 7.2 C10.2 8.8, 8 12, 8 16.5 C8 21.5, 10 25, 11.5 26.5 C12.2 27.2, 13 27.8, 14.2 28 L17.8 28 C19 27.8, 19.8 27.2, 20.5 26.5 C22 25, 24 21.5, 24 16.5 C24 12, 21.8 8.8, 19.2 7.2 L19.2 4.6 C19.2 4, 18.5 4, 18.5 4 Z M14.5 7.2 L14.5 5.5 L17.5 5.5 L17.5 7.2 C17 7.1, 16.5 7, 16 7 C15.5 7, 15 7.1, 14.5 7.2 Z"/>
 </svg>

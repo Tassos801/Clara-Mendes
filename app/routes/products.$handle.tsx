@@ -225,12 +225,38 @@ export default function Product() {
 
           <dl className="product-details-list">
             <div>
-              <dt>Fulfillment</dt>
-              <dd>Prepared after order review with tracked delivery updates.</dd>
+              <dt>Shipping</dt>
+              <dd>
+                Ships within 3–7 business days. Tracking provided via email
+                once dispatched. Delivery times vary by location.
+              </dd>
+            </div>
+            <div>
+              <dt>Returns</dt>
+              <dd>
+                14-day return window from delivery. Items must be unused and in
+                original packaging.{' '}
+                <Link to="/policies/refund-policy" className="text-link">
+                  Full policy
+                </Link>
+              </dd>
+            </div>
+            <div>
+              <dt>Support</dt>
+              <dd>
+                Questions before or after your purchase? We respond within one
+                business day.{' '}
+                <Link to="/contact" className="text-link">
+                  Get in touch
+                </Link>
+              </dd>
             </div>
             <div>
               <dt>Checkout</dt>
-              <dd>Secure checkout with taxes and shipping confirmed before payment.</dd>
+              <dd>
+                Secure checkout powered by Shopify with taxes and shipping
+                confirmed before payment.
+              </dd>
             </div>
           </dl>
         </div>
