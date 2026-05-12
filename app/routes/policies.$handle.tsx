@@ -1,6 +1,10 @@
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/policies.$handle';
 import {type Shop} from '@shopify/hydrogen/storefront-api-types';
+import {
+  cleanStorefrontPolicy,
+  type PolicyName,
+} from '~/lib/policyContent';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -19,7 +23,7 @@ export async function loader({params, context}: Route.LoaderArgs) {
   const policyName = params.handle.replace(
     /-([a-z])/g,
     (_: unknown, m1: string) => m1.toUpperCase(),
-  ) as SelectedPolicies;
+  ) as SelectedPolicies & PolicyName;
 
   const data = await context.storefront.query(POLICY_CONTENT_QUERY, {
     variables: {
@@ -32,7 +36,7 @@ export async function loader({params, context}: Route.LoaderArgs) {
     },
   });
 
-  const policy = data.shop?.[policyName];
+  const policy = cleanStorefrontPolicy(policyName, data.shop?.[policyName]);
 
   if (!policy) {
     throw new Response('Could not find the policy', {status: 404});

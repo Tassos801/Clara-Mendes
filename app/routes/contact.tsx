@@ -1,5 +1,6 @@
 import {Link} from 'react-router';
 import type {Route} from './+types/contact';
+import {RETURN_WINDOW_DAYS, SUPPORT_EMAIL} from '~/lib/storefrontBasics';
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -34,8 +35,8 @@ export default function Contact() {
               The quickest way to reach us. We respond to every message within
               one business day.
             </p>
-            <a href="mailto:hello@claramendes.com" className="contact-link">
-              hello@claramendes.com
+            <a href={`mailto:${SUPPORT_EMAIL}`} className="contact-link">
+              {SUPPORT_EMAIL}
             </a>
           </div>
 
@@ -46,7 +47,10 @@ export default function Contact() {
               or changes — include your order number and we&apos;ll get back to you
               within 24 hours.
             </p>
-            <a href="mailto:hello@claramendes.com?subject=Order%20Support" className="contact-link">
+            <a
+              href={`mailto:${SUPPORT_EMAIL}?subject=Order%20Support`}
+              className="contact-link"
+            >
               Email about an order
             </a>
           </div>
@@ -54,8 +58,9 @@ export default function Contact() {
           <div className="contact-channel">
             <h2>Returns &amp; exchanges</h2>
             <p>
-              If something isn&apos;t right, let us know within 14 days of delivery.
-              We&apos;ll walk you through the return or exchange process.
+              If something isn&apos;t right, let us know within{' '}
+              {RETURN_WINDOW_DAYS} days of delivery. We&apos;ll walk you through
+              the return or exchange process.
             </p>
             <Link to="/policies/refund-policy" className="contact-link">
               View return policy

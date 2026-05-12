@@ -11,6 +11,7 @@ import {useAside} from '~/components/Aside';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {getProductDescription} from '~/lib/productCopy';
+import {RETURN_WINDOW_DAYS} from '~/lib/storefrontBasics';
 
 type MoneyAmount = {
   amount: string;
@@ -234,8 +235,8 @@ export default function Product() {
             <div>
               <dt>Returns</dt>
               <dd>
-                14-day return window from delivery. Items must be unused and in
-                original packaging.{' '}
+                {RETURN_WINDOW_DAYS}-day return window from delivery. Items must
+                be unused and in original packaging.{' '}
                 <Link to="/policies/refund-policy" className="text-link">
                   Full policy
                 </Link>

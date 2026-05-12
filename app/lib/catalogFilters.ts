@@ -268,25 +268,33 @@ export function filterDemoProducts<T extends CatalogProductLike>(
 }
 
 export function isDemoCollection(collection: CatalogCollectionLike) {
-  const products = collection.products?.nodes?.filter(Boolean) ?? [];
-  if (products.some((product) => !isDemoProduct(product))) return false;
-  if (products.length > 0) return true;
-
   const handle = collection.handle?.toLowerCase();
   if (handle && DEMO_COLLECTION_HANDLES.has(handle)) return true;
 
   const title = collection.title?.toLowerCase() ?? '';
-  return [
-    'beauty',
-    'dress',
-    'formal',
-    'gown',
-    'health',
-    'mock',
-    'snowboard',
-    'tux',
-    'wellness reset',
-  ].some((term) => title.includes(term));
+  if (
+    [
+      'beauty',
+      'daily carry',
+      'dress',
+      'formal',
+      'glow tools',
+      'gown',
+      'health',
+      'mock',
+      'snowboard',
+      'tux',
+      'wellness reset',
+    ].some((term) => title.includes(term))
+  ) {
+    return true;
+  }
+
+  const products = collection.products?.nodes?.filter(Boolean) ?? [];
+  if (products.some((product) => !isDemoProduct(product))) return false;
+  if (products.length > 0) return true;
+
+  return false;
 }
 
 export function filterDemoCollections<T extends CatalogCollectionLike>(
