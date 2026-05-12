@@ -80,7 +80,6 @@ function ClaraFooter() {
         <Link to="/our-story">Our Story</Link>
         <Link to="/contact">Contact</Link>
         <Link to="/policies">Policies</Link>
-        <Link to="/account">Account</Link>
       </nav>
     </footer>
   );
