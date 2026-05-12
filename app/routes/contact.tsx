@@ -18,11 +18,11 @@ export default function Contact() {
       <header className="page-hero compact-hero">
         <p className="eyebrow">Get in touch</p>
         <h1>
-          We're here to <i>help</i>.
+          We&apos;re here to <i>help</i>.
         </h1>
         <p>
-          Whether it's an order question, a product inquiry, or something else
-          entirely — we'd love to hear from you.
+          Whether it&apos;s an order question, a product inquiry, or something else
+          entirely — we&apos;d love to hear from you.
         </p>
       </header>
 
@@ -43,7 +43,7 @@ export default function Contact() {
             <h2>Order support</h2>
             <p>
               For questions about an existing order — tracking, delivery timing,
-              or changes — include your order number and we'll get back to you
+              or changes — include your order number and we&apos;ll get back to you
               within 24 hours.
             </p>
             <a href="mailto:hello@claramendes.com?subject=Order%20Support" className="contact-link">
@@ -54,8 +54,8 @@ export default function Contact() {
           <div className="contact-channel">
             <h2>Returns &amp; exchanges</h2>
             <p>
-              If something isn't right, let us know within 14 days of delivery.
-              We'll walk you through the return or exchange process.
+              If something isn&apos;t right, let us know within 14 days of delivery.
+              We&apos;ll walk you through the return or exchange process.
             </p>
             <Link to="/policies/refund-policy" className="contact-link">
               View return policy
