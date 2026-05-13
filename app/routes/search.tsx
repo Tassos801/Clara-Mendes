@@ -16,9 +16,16 @@ import {
   filterDemoCollections,
   isDemoProduct,
 } from '~/lib/catalogFilters';
+import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: `Clara Mendes | Search`}];
+export const meta: Route.MetaFunction = ({data}) => {
+  return buildSeoMeta({
+    description:
+      'Search the Clara Mendes edit for soft lighting, textiles, ceramics, storage, table rituals, and quiet home accents.',
+    noIndex: true,
+    title: 'Search | Clara Mendes',
+    url: data?.seoUrl ?? 'https://clara-mendes.com/search',
+  });
 };
 
 export async function loader({request, context}: Route.LoaderArgs) {
@@ -34,7 +41,10 @@ export async function loader({request, context}: Route.LoaderArgs) {
     return {term: '', result: null, error: error.message};
   });
 
-  return await searchPromise;
+  return {
+    ...(await searchPromise),
+    seoUrl: getCanonicalUrl(request, '/search'),
+  };
 }
 
 /**
@@ -405,7 +415,7 @@ async function predictiveSearch({
   const {storefront} = context;
   const url = new URL(request.url);
   const term = String(url.searchParams.get('q') || '').trim();
-  const limit = Number(url.searchParams.get('limit') || 10);
+  const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 10, 1), 20);
   const type = 'predictive';
 
   if (!term) return {type, term, result: getEmptyPredictiveSearchResult()};

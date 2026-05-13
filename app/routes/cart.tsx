@@ -3,6 +3,7 @@ import {data, useLoaderData} from 'react-router';
 import type {Route} from './+types/cart';
 import {CartMain} from '~/components/CartMain';
 import {getCartOrNull} from '~/lib/cart';
+import {isLocalPath} from '~/lib/redirect';
 
 export const meta: Route.MetaFunction = () => {
   return [{title: 'Clara Mendes | Cart'}];
@@ -70,7 +71,7 @@ export async function action({request, context}: Route.ActionArgs) {
   const headers = cartResult?.id ? cart.setCartId(cartResult.id) : new Headers();
   const redirectTo = formData.get('redirectTo');
 
-  if (typeof redirectTo === 'string') {
+  if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
     status = 303;
     headers.set('Location', redirectTo);
   }

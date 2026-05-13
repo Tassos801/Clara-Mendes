@@ -1,5 +1,6 @@
 import {redirect} from 'react-router';
 import type {Route} from './+types/discount.$code';
+import {isLocalPath} from '~/lib/redirect';
 
 /**
  * Automatically applies a discount found on the url
@@ -21,8 +22,7 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
   let redirectParam =
     searchParams.get('redirect') || searchParams.get('return_to') || '/';
 
-  if (redirectParam.includes('//')) {
-    // Avoid redirecting to external URLs to prevent phishing attacks
+  if (!isLocalPath(redirectParam)) {
     redirectParam = '/';
   }
 

@@ -1,5 +1,12 @@
 import {redirect} from 'react-router';
 
+export function isLocalPath(value: string): boolean {
+  if (!value || typeof value !== 'string') return false;
+  if (!value.startsWith('/')) return false;
+  if (value.startsWith('//') || value.startsWith('/\\')) return false;
+  return true;
+}
+
 export function redirectIfHandleIsLocalized(
   request: Request,
   ...localizedResources: Array<{
