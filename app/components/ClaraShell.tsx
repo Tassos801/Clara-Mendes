@@ -5,6 +5,13 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
 
+const NAV_LINKS = [
+  {to: '/collections/all', label: 'Shop'},
+  {to: '/our-story', label: 'Our Story'},
+  {to: '/contact', label: 'Contact'},
+  {to: '/search', label: 'Search'},
+] as const;
+
 export function ClaraShell({
   cart,
   children,
@@ -18,6 +25,7 @@ export function ClaraShell({
       <main>{children}</main>
       <ClaraFooter />
       <ClaraCartDrawer cart={cart} />
+      <ClaraMobileNav />
     </Aside.Provider>
   );
 }
@@ -27,22 +35,29 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
 
   return (
     <header className="site-header">
-      <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
-        Clara Mendes
-      </Link>
+      <div className="header-left">
+        <button
+          className="mobile-menu-button"
+          type="button"
+          onClick={() => open('mobile')}
+          aria-label="Open menu"
+        >
+          <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true">
+            <line x1="0" y1="1" x2="22" y2="1" stroke="currentColor" strokeWidth="1.4" />
+            <line x1="0" y1="7" x2="22" y2="7" stroke="currentColor" strokeWidth="1.4" />
+            <line x1="0" y1="13" x2="22" y2="13" stroke="currentColor" strokeWidth="1.4" />
+          </svg>
+        </button>
+        <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
+          Clara Mendes
+        </Link>
+      </div>
       <nav className="site-nav" aria-label="Primary navigation">
-        <NavLink to="/collections/all" prefetch="intent">
-          Shop
-        </NavLink>
-        <NavLink to="/our-story" prefetch="intent">
-          Our Story
-        </NavLink>
-        <NavLink to="/contact" prefetch="intent">
-          Contact
-        </NavLink>
-        <NavLink to="/search" prefetch="intent">
-          Search
-        </NavLink>
+        {NAV_LINKS.map(({to, label}) => (
+          <NavLink key={to} to={to} prefetch="intent">
+            {label}
+          </NavLink>
+        ))}
       </nav>
       <button className="cart-button" type="button" onClick={() => open('cart')}>
         Cart{' '}
@@ -82,6 +97,50 @@ function ClaraFooter() {
         <Link to="/policies">Policies</Link>
       </nav>
     </footer>
+  );
+}
+
+function ClaraMobileNav() {
+  const {type, close} = useAside();
+  const isOpen = type === 'mobile';
+
+  return (
+    <div
+      className={`mobile-nav-backdrop ${isOpen ? 'is-open' : ''}`}
+      aria-hidden={!isOpen}
+    >
+      <button
+        className="mobile-nav-scrim"
+        type="button"
+        onClick={close}
+        aria-label="Close menu"
+      />
+      <nav
+        className="mobile-nav-drawer"
+        aria-label="Mobile navigation"
+        aria-modal={isOpen}
+        role="dialog"
+      >
+        <header className="mobile-nav-header">
+          <Link className="brand-mark" to="/" onClick={close}>
+            Clara Mendes
+          </Link>
+          <button type="button" onClick={close} aria-label="Close menu">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <line x1="1" y1="1" x2="17" y2="17" stroke="currentColor" strokeWidth="1.4" />
+              <line x1="17" y1="1" x2="1" y2="17" stroke="currentColor" strokeWidth="1.4" />
+            </svg>
+          </button>
+        </header>
+        <div className="mobile-nav-links">
+          {NAV_LINKS.map(({to, label}) => (
+            <NavLink key={to} to={to} prefetch="intent" onClick={close}>
+              {label}
+            </NavLink>
+          ))}
+        </div>
+      </nav>
+    </div>
   );
 }
 

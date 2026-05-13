@@ -121,6 +121,24 @@ button {
   text-transform: none;
 }
 
+.header-left {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.mobile-menu-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--color-ink);
+  display: none;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+}
+
 .cart-button {
   align-items: center;
   background: transparent;
@@ -1142,6 +1160,10 @@ button {
     display: none;
   }
 
+  .mobile-menu-button {
+    display: flex;
+  }
+
   .brand-mark {
     font-size: 1.35rem;
   }
@@ -1157,9 +1179,13 @@ button {
   }
 
   .hero-content h1 {
-    font-size: 4.05rem;
+    font-size: clamp(2.6rem, 11vw, 4.05rem);
     letter-spacing: -0.045em;
     line-height: 0.94;
+  }
+
+  .sticky-atc-bar {
+    display: flex;
   }
 
   .collection-intro h2,
@@ -1242,6 +1268,10 @@ button {
 
   .product-details-list div {
     grid-template-columns: 1fr;
+  }
+
+  .product-page {
+    padding-bottom: calc(clamp(60px, 8vw, 120px) + 72px);
   }
 }
 
@@ -1661,6 +1691,186 @@ button {
   .breadcrumb {
     font-size: 0.7rem;
   }
+
+  .category-filter a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .site-footer nav a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .product-page {
+    padding-bottom: calc(clamp(60px, 8vw, 120px) + 72px);
+  }
+}
+
+/* ── Mobile nav drawer ── */
+
+.mobile-nav-backdrop {
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: 50;
+}
+
+.mobile-nav-backdrop.is-open {
+  pointer-events: auto;
+}
+
+.mobile-nav-scrim {
+  background: rgba(20, 18, 15, 0.36);
+  border: 0;
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 240ms ease;
+  width: 100%;
+}
+
+.mobile-nav-backdrop.is-open .mobile-nav-scrim {
+  opacity: 1;
+}
+
+.mobile-nav-drawer {
+  background: var(--color-paper);
+  box-shadow: 30px 0 80px rgba(0, 0, 0, 0.22);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  left: 0;
+  max-width: min(340px, 85vw);
+  padding: 24px;
+  position: absolute;
+  top: 0;
+  transform: translateX(-105%);
+  transition: transform 280ms cubic-bezier(0.25, 1, 0.5, 1);
+  width: 340px;
+}
+
+.mobile-nav-backdrop.is-open .mobile-nav-drawer {
+  transform: translateX(0);
+}
+
+.mobile-nav-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.mobile-nav-header button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: var(--color-ink);
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+}
+
+.mobile-nav-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.mobile-nav-links a {
+  border-bottom: 1px solid rgba(38, 35, 31, 0.1);
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  transition: color 160ms ease;
+}
+
+.mobile-nav-links a:first-child {
+  border-top: 1px solid rgba(38, 35, 31, 0.1);
+}
+
+.mobile-nav-links a.active {
+  color: var(--color-clay);
+}
+
+/* ── Sticky ATC bar ── */
+
+.sticky-atc-bar {
+  align-items: center;
+  backdrop-filter: blur(18px);
+  background: rgba(251, 250, 246, 0.92);
+  border-top: 1px solid rgba(38, 35, 31, 0.1);
+  bottom: 0;
+  display: none;
+  gap: 14px;
+  justify-content: space-between;
+  left: 0;
+  opacity: 0;
+  padding: 12px 18px calc(12px + env(safe-area-inset-bottom));
+  pointer-events: none;
+  position: fixed;
+  right: 0;
+  transform: translateY(100%);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+  z-index: 40;
+}
+
+.sticky-atc-bar.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.sticky-atc-info {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+}
+
+.sticky-atc-thumb {
+  border-radius: 4px;
+  height: 44px;
+  object-fit: cover;
+  width: 44px;
+}
+
+.sticky-atc-title {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sticky-atc-price {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  margin: 2px 0 0;
+}
+
+.sticky-atc-button {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  min-height: 44px;
+  padding: 0 20px;
+  width: auto;
 }
 
 /* ── Contact page ── */

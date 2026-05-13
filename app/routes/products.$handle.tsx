@@ -1,4 +1,4 @@
-import {useMemo, useState} from 'react';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Link, redirect, useLoaderData, useLocation} from 'react-router';
 import {getSelectedProductOptions} from '@shopify/hydrogen';
 import type {Route} from './+types/products.$handle';
@@ -114,6 +114,8 @@ export default function Product() {
   const {product, relatedProducts} = useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
+  const atcRef = useRef<HTMLDivElement>(null);
+  const [showStickyATC, setShowStickyATC] = useState(false);
   const selectedVariant =
     product.selectedOrFirstAvailableVariant ?? product.variants.nodes[0];
   const primaryImage =
@@ -130,6 +132,19 @@ export default function Product() {
         image?.url && list.findIndex((item) => item.url === image.url) === index,
     );
   }, [primaryImage, product.images?.nodes]);
+
+  useEffect(() => {
+    const target = atcRef.current;
+    if (!target) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyATC(!entry.isIntersecting),
+      {threshold: 0},
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
+
+  const openCart = useCallback(() => open('cart'), [open]);
 
   return (
     <div className="product-page">
@@ -193,36 +208,38 @@ export default function Product() {
             </div>
           </div>
 
-          <AddToCartButton
-            analytics={{
-              products: [
-                {
-                  productGid: product.id,
-                  variantGid: selectedVariant?.id,
-                  name: product.title,
-                  variantName: selectedVariant?.title,
-                  price: selectedVariant?.price.amount,
-                  quantity,
-                },
-              ],
-            }}
-            className="primary-button full-width"
-            disabled={!selectedVariant?.availableForSale}
-            lines={
-              selectedVariant
-                ? [
-                    {
-                      merchandiseId: selectedVariant.id,
-                      quantity,
-                      selectedVariant,
-                    },
-                  ]
-                : []
-            }
-            onClick={() => open('cart')}
-          >
-            {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-          </AddToCartButton>
+          <div ref={atcRef}>
+            <AddToCartButton
+              analytics={{
+                products: [
+                  {
+                    productGid: product.id,
+                    variantGid: selectedVariant?.id,
+                    name: product.title,
+                    variantName: selectedVariant?.title,
+                    price: selectedVariant?.price.amount,
+                    quantity,
+                  },
+                ],
+              }}
+              className="primary-button full-width"
+              disabled={!selectedVariant?.availableForSale}
+              lines={
+                selectedVariant
+                  ? [
+                      {
+                        merchandiseId: selectedVariant.id,
+                        quantity,
+                        selectedVariant,
+                      },
+                    ]
+                  : []
+              }
+              onClick={openCart}
+            >
+              {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+            </AddToCartButton>
+          </div>
 
           <dl className="product-details-list">
             <div>
@@ -281,6 +298,57 @@ export default function Product() {
           </div>
         </section>
       ) : null}
+
+      <div className={`sticky-atc-bar ${showStickyATC ? 'is-visible' : ''}`}>
+        <div className="sticky-atc-info">
+          {primaryImage ? (
+            <img
+              className="sticky-atc-thumb"
+              src={primaryImage.url}
+              alt=""
+              aria-hidden="true"
+            />
+          ) : null}
+          <div>
+            <p className="sticky-atc-title">{product.title}</p>
+            {selectedVariant ? (
+              <p className="sticky-atc-price">
+                {formatMoney(selectedVariant.price)}
+              </p>
+            ) : null}
+          </div>
+        </div>
+        <AddToCartButton
+          analytics={{
+            products: [
+              {
+                productGid: product.id,
+                variantGid: selectedVariant?.id,
+                name: product.title,
+                variantName: selectedVariant?.title,
+                price: selectedVariant?.price.amount,
+                quantity,
+              },
+            ],
+          }}
+          className="primary-button sticky-atc-button"
+          disabled={!selectedVariant?.availableForSale}
+          lines={
+            selectedVariant
+              ? [
+                  {
+                    merchandiseId: selectedVariant.id,
+                    quantity,
+                    selectedVariant,
+                  },
+                ]
+              : []
+          }
+          onClick={openCart}
+        >
+          {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        </AddToCartButton>
+      </div>
     </div>
   );
 }
