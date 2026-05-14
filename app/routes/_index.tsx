@@ -61,18 +61,22 @@ export const meta: Route.MetaFunction = () => {
 };
 
 export async function loader({context}: Route.LoaderArgs) {
-  const data = await context.storefront.query(HOMEPAGE_QUERY, {
-    variables: {
-      first: 8,
-    },
-  });
+  try {
+    const data = await context.storefront.query(HOMEPAGE_QUERY, {
+      variables: {
+        first: 8,
+      },
+    });
 
-  return {
-    collections: filterDemoCollections(
-      data.collections.nodes as HomeCollection[],
-    ),
-    products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
-  };
+    return {
+      collections: filterDemoCollections(
+        data.collections.nodes as HomeCollection[],
+      ),
+      products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+    };
+  } catch {
+    return {collections: [] as HomeCollection[], products: []};
+  }
 }
 
 export default function Homepage() {
@@ -278,27 +282,40 @@ export default function Homepage() {
         </p>
       </section>
 
-      <section
-        className="category-band"
-        aria-label={collections.length > 0 ? 'Collections' : 'Sourcing focus'}
-      >
-        {collections.length > 0
-          ? collections.slice(0, 5).map((collection) => (
-              <Link
-                key={collection.id}
-                to={`/collections/${collection.handle}`}
-              >
-                <small>Collection</small>
-                <span>{collection.title}</span>
-              </Link>
-            ))
-          : HOME_GOODS_COLLECTIONS.map((collection) => (
-              <div className="category-preview-card" key={collection.id}>
-                <small>Sourcing</small>
-                <span>{collection.title}</span>
-              </div>
-            ))}
-      </section>
+      {collections.length > 0 ? (
+        <section
+          className={`featured-collections${collections.length === 1 ? ' featured-collections--solo' : ''}`}
+          aria-label="Collections"
+        >
+          {collections.map((collection) => (
+            <Link
+              key={collection.id}
+              className="featured-collection-card"
+              to={`/collections/${collection.handle}`}
+            >
+              <small className="eyebrow">Collection</small>
+              <h2 className="featured-collection-title">
+                {collection.title}
+              </h2>
+              {collection.description && (
+                <p className="featured-collection-desc">
+                  {collection.description}
+                </p>
+              )}
+              <span className="text-link">Explore collection</span>
+            </Link>
+          ))}
+        </section>
+      ) : (
+        <section className="category-band" aria-label="Sourcing focus">
+          {HOME_GOODS_COLLECTIONS.map((collection) => (
+            <div className="category-preview-card" key={collection.id}>
+              <small>Sourcing</small>
+              <span>{collection.title}</span>
+            </div>
+          ))}
+        </section>
+      )}
 
       <section
         className="home-atmosphere-section"
@@ -318,7 +335,7 @@ export default function Homepage() {
           </figure>
 
           <div className="home-atmosphere-copy">
-            <p className="eyebrow">Store character</p>
+            <p className="eyebrow">Quiet rooms</p>
             <h2 id="home-atmosphere-title">
               A room that feels collected, not decorated.
             </h2>
@@ -744,6 +761,70 @@ html:has(.home-root) main {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
 }
 
+.featured-collections {
+  background: var(--color-deep);
+  color: var(--color-paper);
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+}
+
+.featured-collections--solo {
+  grid-template-columns: 1fr;
+}
+
+.featured-collection-card {
+  background: var(--color-deep);
+  color: var(--color-paper);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.5vw, 36px);
+  padding: clamp(52px, 8vw, 104px) clamp(24px, 4vw, 70px);
+  text-decoration: none;
+  transition: background 0.5s ease;
+}
+
+.featured-collections--solo .featured-collection-card {
+  align-items: center;
+  text-align: center;
+}
+
+.featured-collection-card:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.featured-collection-title {
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 6.5vw, 6rem);
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+  margin: 0;
+}
+
+.featured-collection-desc {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.05rem;
+  line-height: 1.72;
+  margin: 0;
+  max-width: 460px;
+}
+
+.featured-collection-card .eyebrow {
+  color: rgba(255, 255, 255, 0.45);
+  margin: 0;
+}
+
+.featured-collection-card .text-link {
+  color: rgba(255, 255, 255, 0.6);
+  margin-top: clamp(6px, 1.5vw, 18px);
+  transition: color 0.3s ease;
+}
+
+.featured-collection-card:hover .text-link {
+  color: var(--color-paper);
+}
+
 .home-atmosphere-section {
   background:
     linear-gradient(180deg, var(--color-paper) 0%, #f6f2eb 100%);
@@ -962,6 +1043,18 @@ html:has(.home-root) main {
   .hm-cursor-dot,
   .hm-cursor-outline {
     display: none;
+  }
+
+  .featured-collections {
+    grid-template-columns: 1fr;
+  }
+
+  .featured-collection-card {
+    padding: 42px 24px;
+  }
+
+  .featured-collection-title {
+    font-size: clamp(2.4rem, 10vw, 3.6rem);
   }
 
   .home-atmosphere-section {
