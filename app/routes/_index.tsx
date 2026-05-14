@@ -29,38 +29,25 @@ type HomeCollection = {
   };
 };
 
-const STORE_CHARACTER_IMAGES = [
-  {
-    src: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
-    alt: 'Layered neutral textiles in a quiet living room',
-    label: 'Muted linens',
-    variant: 'store-character-card--tall',
+const HOME_ATMOSPHERE_IMAGES = {
+  lead: {
+    src: 'https://images.unsplash.com/photo-1771888703723-01d85da1dae1?q=80&w=1800&auto=format&fit=crop',
+    alt: 'Neutral living room with soft earth tones and modern furniture',
+    caption: 'Soft living',
   },
-  {
-    src: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop',
-    alt: 'Soft daylight across a composed home interior',
-    label: 'Soft light',
-    variant: 'store-character-card--wide',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1600&auto=format&fit=crop',
-    alt: 'Warm room with simple furniture and open space',
-    label: 'Open calm',
-    variant: 'store-character-card--small',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1600&auto=format&fit=crop',
-    alt: 'Natural textures arranged in a restrained interior',
-    label: 'Natural texture',
-    variant: 'store-character-card--medium',
-  },
-  {
-    src: 'https://images.unsplash.com/photo-1617103996702-96ff29b1c467?q=80&w=1600&auto=format&fit=crop',
-    alt: 'Quiet corner with considered home objects',
-    label: 'Collected quiet',
-    variant: 'store-character-card--medium',
-  },
-] as const;
+  supporting: [
+    {
+      src: 'https://images.unsplash.com/photo-1755401324208-7ead4696b351?q=80&w=1200&auto=format&fit=crop',
+      alt: 'Sculptural ceramic jars arranged on folded linen',
+      caption: 'Quiet objects',
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1772453609632-2f4aa857f56e?q=80&w=1200&auto=format&fit=crop',
+      alt: 'Neutral ceramic tableware with wooden accents and eucalyptus',
+      caption: 'Table rituals',
+    },
+  ],
+} as const;
 
 export const meta: Route.MetaFunction = () => {
   return [
@@ -314,36 +301,62 @@ export default function Homepage() {
       </section>
 
       <section
-        className="store-character-section"
-        aria-labelledby="store-character-title"
+        className="home-atmosphere-section"
+        aria-labelledby="home-atmosphere-title"
       >
-        <div className="store-character-copy">
-          <div>
+        <div className="home-atmosphere-rule" aria-hidden />
+
+        <div className="home-atmosphere-layout">
+          <figure className="home-atmosphere-figure home-atmosphere-figure--lead">
+            <img
+              src={HOME_ATMOSPHERE_IMAGES.lead.src}
+              alt={HOME_ATMOSPHERE_IMAGES.lead.alt}
+              loading="lazy"
+              decoding="async"
+            />
+            <figcaption>{HOME_ATMOSPHERE_IMAGES.lead.caption}</figcaption>
+          </figure>
+
+          <div className="home-atmosphere-copy">
             <p className="eyebrow">Store character</p>
-            <h2 id="store-character-title">The room comes first.</h2>
+            <h2 id="home-atmosphere-title">
+              A room that feels collected, not decorated.
+            </h2>
+            <p>
+              Clara Mendes starts with atmosphere: softened light, grounded
+              texture, and useful objects chosen for the way they settle into
+              daily rituals.
+            </p>
+            <Link
+              className="text-link home-atmosphere-link"
+              to="/collections/all"
+            >
+              Shop the edit
+            </Link>
           </div>
-          <p>
-            Clara Mendes is built around atmosphere before assortment: soft
-            light, quiet surfaces, useful shapes, and materials that make a room
-            feel settled.
-          </p>
+
+          <div
+            className="home-atmosphere-supporting"
+            aria-label="Store mood details"
+          >
+            {HOME_ATMOSPHERE_IMAGES.supporting.map((image) => (
+              <figure className="home-atmosphere-figure" key={image.caption}>
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <figcaption>{image.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
         </div>
 
-        <div className="store-character-mosaic" aria-label="Store mood images">
-          {STORE_CHARACTER_IMAGES.map((image) => (
-            <figure
-              className={`store-character-card ${image.variant}`}
-              key={image.label}
-            >
-              <img
-                src={image.src}
-                alt={image.alt}
-                loading="lazy"
-                decoding="async"
-              />
-              <figcaption>{image.label}</figcaption>
-            </figure>
-          ))}
+        <div className="home-atmosphere-footer" aria-hidden>
+          <span>Atmosphere</span>
+          <span>Texture</span>
+          <span>Ritual</span>
         </div>
       </section>
 
@@ -731,98 +744,128 @@ html:has(.home-root) main {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
 }
 
-.store-character-section {
-  background: var(--color-paper);
+.home-atmosphere-section {
+  background:
+    linear-gradient(180deg, var(--color-paper) 0%, #f6f2eb 100%);
   display: grid;
-  gap: clamp(34px, 5vw, 72px);
-  padding: clamp(60px, 8vw, 120px) clamp(18px, 4vw, 70px);
+  gap: clamp(26px, 4vw, 58px);
+  padding: clamp(64px, 9vw, 132px) clamp(18px, 4vw, 70px)
+    clamp(52px, 7vw, 96px);
 }
 
-.store-character-copy {
-  align-items: end;
+.home-atmosphere-rule {
+  background: rgba(38, 35, 31, 0.16);
+  height: 1px;
+  width: 100%;
+}
+
+.home-atmosphere-layout {
+  align-items: start;
   display: grid;
-  gap: clamp(24px, 4vw, 60px);
-  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
-}
-
-.store-character-copy h2 {
-  color: var(--color-ink);
-  font-family: var(--serif);
-  font-size: clamp(3.4rem, 7vw, 7.4rem);
-  font-weight: 400;
-  letter-spacing: -0.055em;
-  line-height: 0.9;
-  margin: 0;
-  max-width: 820px;
-  text-wrap: balance;
-}
-
-.store-character-copy p:not(.eyebrow) {
-  color: var(--color-muted);
-  font-size: 1.08rem;
-  line-height: 1.7;
-  margin: 0;
-  max-width: 560px;
-}
-
-.store-character-mosaic {
-  align-items: end;
-  display: grid;
-  gap: clamp(12px, 1.6vw, 22px);
+  gap: clamp(18px, 2vw, 30px);
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
-.store-character-card {
+.home-atmosphere-figure {
   display: grid;
   gap: 12px;
   margin: 0;
   min-width: 0;
 }
 
-.store-character-card img {
-  aspect-ratio: 4 / 5;
+.home-atmosphere-figure img {
   background: var(--color-soft);
   height: 100%;
   object-fit: cover;
   width: 100%;
-  filter: saturate(0.82) sepia(0.08) contrast(0.96);
+  filter: saturate(0.78) sepia(0.12) contrast(0.96);
 }
 
-.store-character-card figcaption {
+.home-atmosphere-figure figcaption,
+.home-atmosphere-footer {
   color: var(--color-muted);
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   line-height: 1.45;
-  margin: 0;
-  min-height: 1em;
   text-transform: uppercase;
 }
 
-.store-character-card--tall {
-  grid-column: span 3;
+.home-atmosphere-figure--lead {
+  grid-column: 1 / span 7;
+  grid-row: 1 / span 2;
 }
 
-.store-character-card--wide {
-  grid-column: span 4;
-  align-self: start;
+.home-atmosphere-figure--lead img {
+  aspect-ratio: 5 / 6;
 }
 
-.store-character-card--wide img {
-  aspect-ratio: 1 / 1;
+.home-atmosphere-copy {
+  align-content: start;
+  display: grid;
+  gap: clamp(20px, 2.5vw, 34px);
+  grid-column: 8 / -1;
+  padding-bottom: clamp(18px, 3vw, 42px);
+  padding-left: clamp(4px, 1vw, 18px);
 }
 
-.store-character-card--small {
-  grid-column: span 2;
-  margin-bottom: clamp(36px, 7vw, 92px);
+.home-atmosphere-copy h2 {
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: clamp(3.2rem, 6.4vw, 7rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  margin: 0;
+  text-wrap: balance;
 }
 
-.store-character-card--medium {
-  grid-column: span 3;
+.home-atmosphere-copy p:not(.eyebrow) {
+  color: var(--color-muted);
+  font-size: 1.08rem;
+  line-height: 1.72;
+  margin: 0;
+  max-width: 520px;
 }
 
-.store-character-card--medium img {
-  aspect-ratio: 3 / 4;
+.home-atmosphere-link {
+  justify-self: start;
+  margin-top: clamp(2px, 1vw, 12px);
+}
+
+.home-atmosphere-supporting {
+  align-items: end;
+  display: grid;
+  gap: clamp(14px, 1.7vw, 24px);
+  grid-column: 7 / -1;
+  grid-row: 2;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  padding-top: clamp(20px, 3.5vw, 54px);
+}
+
+.home-atmosphere-supporting .home-atmosphere-figure:first-child {
+  margin-top: clamp(34px, 7vw, 112px);
+}
+
+.home-atmosphere-supporting .home-atmosphere-figure:first-child img {
+  aspect-ratio: 4 / 5;
+}
+
+.home-atmosphere-supporting .home-atmosphere-figure:last-child img {
+  aspect-ratio: 5 / 4;
+}
+
+.home-atmosphere-footer {
+  border-top: 1px solid rgba(38, 35, 31, 0.12);
+  display: flex;
+  gap: clamp(18px, 5vw, 88px);
+  justify-content: flex-end;
+  padding-top: clamp(18px, 2.5vw, 30px);
+}
+
+.featured-grid-section {
+  background:
+    linear-gradient(180deg, #f6f2eb 0%, var(--color-paper) 28%);
 }
 
 .home-story-return {
@@ -921,41 +964,66 @@ html:has(.home-root) main {
     display: none;
   }
 
-  .store-character-copy {
+  .home-atmosphere-section {
+    gap: 24px;
+    padding-bottom: 54px;
+    padding-top: 58px;
+  }
+
+  .home-atmosphere-layout {
     grid-template-columns: 1fr;
   }
 
-  .store-character-copy h2 {
-    font-size: clamp(2.7rem, 13vw, 4.2rem);
+  .home-atmosphere-copy,
+  .home-atmosphere-figure--lead,
+  .home-atmosphere-supporting {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 0;
+  }
+
+  .home-atmosphere-copy {
+    order: 1;
+  }
+
+  .home-atmosphere-figure--lead {
+    order: 2;
+  }
+
+  .home-atmosphere-supporting {
+    gap: 18px;
+    grid-template-columns: 1fr;
+    order: 3;
+  }
+
+  .home-atmosphere-copy h2 {
+    font-size: clamp(2.6rem, 12.5vw, 4.1rem);
     letter-spacing: -0.045em;
   }
 
-  .store-character-copy p:not(.eyebrow) {
+  .home-atmosphere-copy p:not(.eyebrow) {
     font-size: 1rem;
   }
 
-  .store-character-mosaic {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .store-character-card,
-  .store-character-card--tall,
-  .store-character-card--wide,
-  .store-character-card--small,
-  .store-character-card--medium {
-    grid-column: auto;
-    margin-bottom: 0;
-  }
-
-  .store-character-card img,
-  .store-character-card--wide img,
-  .store-character-card--medium img {
+  .home-atmosphere-figure--lead img,
+  .home-atmosphere-supporting .home-atmosphere-figure:first-child img,
+  .home-atmosphere-supporting .home-atmosphere-figure:last-child img {
     aspect-ratio: 4 / 5;
   }
 
-  .store-character-card figcaption {
+  .home-atmosphere-supporting .home-atmosphere-figure:first-child {
+    margin-top: 0;
+  }
+
+  .home-atmosphere-figure figcaption,
+  .home-atmosphere-footer {
     font-size: 0.62rem;
     letter-spacing: 0.14em;
+  }
+
+  .home-atmosphere-footer {
+    justify-content: flex-start;
+    overflow: hidden;
   }
 }
 
