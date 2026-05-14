@@ -101,6 +101,12 @@ const COLLECTION_QUERY = `#graphql
       ) {
         nodes {
           ...ClaraProductCard
+          variants(first: 1) {
+            nodes {
+              id
+              availableForSale
+            }
+          }
         }
         pageInfo {
           hasNextPage

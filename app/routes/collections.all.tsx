@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import {getPaginationVariables} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.all';
@@ -90,6 +91,9 @@ export function CollectionView({data}: {data: CollectionViewData}) {
     {id: 'all', handle: 'all', title: 'All'},
     ...data.collections,
   ];
+  const [sortKey, setSortKey] = useState('featured');
+
+  const sortedProducts = sortProducts(data.products.nodes, sortKey);
 
   return (
     <div className="collection-page cv-root">
@@ -107,53 +111,64 @@ export function CollectionView({data}: {data: CollectionViewData}) {
               ? ' ' + splitTitle(data.heading).rest
               : ''}
           </h1>
-          {data.description ? (
-            <p className="cv-tagline">{data.description}</p>
-          ) : null}
         </div>
-
-        <div className="cv-coords">Secure checkout / tracked delivery</div>
         <div className="cv-hero-rule" aria-hidden />
       </section>
 
-      <nav className="cv-filter" aria-label="Collection categories">
-        {categories.map((collection) => (
-          <Link
-            key={collection.id}
-            to={
-              collection.handle === 'all'
-                ? '/collections/all'
-                : `/collections/${collection.handle}`
-            }
-            className={`cv-filter-link${
-              collection.handle === data.activeHandle ? ' is-active' : ''
-            }`}
+      <div className="cv-toolbar" aria-label="Collection toolbar">
+        <nav className="cv-filter" aria-label="Collection categories">
+          {categories.map((collection) => (
+            <Link
+              key={collection.id}
+              to={
+                collection.handle === 'all'
+                  ? '/collections/all'
+                  : `/collections/${collection.handle}`
+              }
+              className={`cv-filter-link${
+                collection.handle === data.activeHandle ? ' is-active' : ''
+              }`}
+            >
+              <span className="cv-filter-label">{collection.title}</span>
+              <span className="cv-filter-underline" aria-hidden />
+            </Link>
+          ))}
+          {data.collections.length === 0
+            ? HOME_GOODS_COLLECTIONS.map((collection) => (
+                <span
+                  aria-disabled="true"
+                  className="cv-filter-link cv-filter-link--preview"
+                  key={collection.id}
+                >
+                  <span className="cv-filter-label">{collection.title}</span>
+                  <span className="cv-filter-underline" aria-hidden />
+                </span>
+              ))
+            : null}
+        </nav>
+        <div className="cv-sort">
+          <label className="cv-sort-label" htmlFor="cv-sort-select">Sort</label>
+          <select
+            id="cv-sort-select"
+            className="cv-sort-select"
+            value={sortKey}
+            onChange={(e) => setSortKey(e.target.value)}
           >
-            <span className="cv-filter-label">{collection.title}</span>
-            <span className="cv-filter-underline" aria-hidden />
-          </Link>
-        ))}
-        {data.collections.length === 0
-          ? HOME_GOODS_COLLECTIONS.map((collection) => (
-              <span
-                aria-disabled="true"
-                className="cv-filter-link cv-filter-link--preview"
-                key={collection.id}
-              >
-                <span className="cv-filter-label">{collection.title}</span>
-                <span className="cv-filter-underline" aria-hidden />
-              </span>
-            ))
-          : null}
-      </nav>
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="alpha-asc">A – Z</option>
+            <option value="alpha-desc">Z – A</option>
+          </select>
+        </div>
+      </div>
 
-      {data.products.nodes.length > 0 ? (
+      <p className="cv-count">{sortedProducts.length} pieces</p>
+
+      {sortedProducts.length > 0 ? (
         <section className="cv-products" aria-label="Products">
-          <PaginatedResourceSection<ClaraCardProduct>
-            connection={data.products}
-            resourcesClassName="cv-grid"
-          >
-            {({node: product, index}) => (
+          <div className="cv-grid">
+            {sortedProducts.map((product, index) => (
               <div
                 key={product.id}
                 className="cv-card-wrap"
@@ -164,8 +179,8 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                   loading={index < 4 ? 'eager' : 'lazy'}
                 />
               </div>
-            )}
-          </PaginatedResourceSection>
+            ))}
+          </div>
         </section>
       ) : (
         <section className="empty-state collection-empty">
@@ -182,6 +197,28 @@ export function CollectionView({data}: {data: CollectionViewData}) {
       )}
     </div>
   );
+}
+
+function sortProducts(products: ClaraCardProduct[], key: string): ClaraCardProduct[] {
+  const sorted = [...products];
+  switch (key) {
+    case 'price-asc':
+      return sorted.sort((a, b) =>
+        Number(a.priceRange?.minVariantPrice?.amount ?? 0) -
+        Number(b.priceRange?.minVariantPrice?.amount ?? 0)
+      );
+    case 'price-desc':
+      return sorted.sort((a, b) =>
+        Number(b.priceRange?.minVariantPrice?.amount ?? 0) -
+        Number(a.priceRange?.minVariantPrice?.amount ?? 0)
+      );
+    case 'alpha-asc':
+      return sorted.sort((a, b) => a.title.localeCompare(b.title));
+    case 'alpha-desc':
+      return sorted.sort((a, b) => b.title.localeCompare(a.title));
+    default:
+      return sorted;
+  }
 }
 
 function splitTitle(str: string): {italic: string; rest: string} {
@@ -217,6 +254,12 @@ const ALL_COLLECTION_QUERY = `#graphql
     ) {
       nodes {
         ...ClaraProductCard
+        variants(first: 1) {
+          nodes {
+            id
+            availableForSale
+          }
+        }
       }
       pageInfo {
         hasNextPage
@@ -256,6 +299,7 @@ const collectionCss = `
   padding-right: 0 !important;
 }
 
+/* ── Hero (compact on mobile) ── */
 .cv-hero {
   position: relative;
   overflow: hidden;
@@ -321,7 +365,7 @@ const collectionCss = `
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.02;
-  margin: 0 0 28px;
+  margin: 0;
   color: #fff;
   text-wrap: balance;
   opacity: 0;
@@ -331,31 +375,6 @@ const collectionCss = `
 .cv-title i {
   font-style: italic;
   font-weight: 400;
-}
-
-.cv-tagline {
-  color: rgba(255,255,255,0.76);
-  font-size: clamp(1rem, 1.8vw, 1.28rem);
-  line-height: 1.65;
-  margin: 0;
-  max-width: min(58ch, calc(100vw - 36px));
-  opacity: 0;
-  animation: cvFade 2.4s var(--cv-ease) forwards 1.1s;
-}
-
-.cv-coords {
-  position: absolute;
-  bottom: clamp(30px, 5vw, 56px);
-  left: clamp(18px, 4vw, 70px);
-  z-index: 2;
-  font-family: var(--sans);
-  font-variant-numeric: tabular-nums;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.4);
-  opacity: 0;
-  animation: cvFade 2s var(--cv-ease) forwards 1.6s;
 }
 
 .cv-hero-rule {
@@ -371,15 +390,28 @@ const collectionCss = `
   animation: cvScaleX 1.8s var(--cv-ease) forwards 1.8s;
 }
 
+/* ── Sticky toolbar (categories + sort) ── */
+.cv-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--cv-paper);
+  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  opacity: 0;
+  animation: cvFade 1.8s var(--cv-ease) forwards 0.3s;
+}
+
 .cv-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 8px clamp(26px, 3.4vw, 48px);
-  padding: clamp(26px, 3.2vw, 38px) clamp(18px, 4vw, 70px);
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
-  background: var(--cv-paper);
-  opacity: 0;
-  animation: cvFade 1.8s var(--cv-ease) forwards 0.3s;
+  padding: clamp(18px, 2.4vw, 32px) clamp(18px, 4vw, 70px);
+  flex: 1;
+  min-width: 0;
 }
 
 .cv-filter-link {
@@ -392,6 +424,7 @@ const collectionCss = `
   text-transform: uppercase;
   padding: 4px 0;
   transition: color 400ms var(--cv-ease);
+  white-space: nowrap;
 }
 
 .cv-filter-link:hover { color: var(--cv-ink); }
@@ -433,11 +466,57 @@ const collectionCss = `
   background: var(--cv-ink);
 }
 
+/* Sort dropdown */
+.cv-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: clamp(18px, 4vw, 70px);
+  flex-shrink: 0;
+}
+
+.cv-sort-label {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+}
+
+.cv-sort-select {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--cv-ink);
+  background: transparent;
+  border: 1px solid rgba(38,35,31,0.18);
+  border-radius: 6px;
+  padding: 6px 28px 6px 10px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2326231f' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+}
+
+/* Product count */
+.cv-count {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+  padding: 18px clamp(18px, 4vw, 70px) 0;
+  margin: 0;
+  background: var(--cv-paper);
+}
+
 .cv-grid {
   display: grid;
   gap: clamp(28px, 3vw, 52px) clamp(18px, 2.4vw, 36px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  padding: clamp(42px, 5.5vw, 80px) clamp(18px, 4vw, 70px)
+  padding: clamp(24px, 3vw, 48px) clamp(18px, 4vw, 70px)
            clamp(36px, 5vw, 72px);
   background: var(--cv-paper);
 }
@@ -504,29 +583,73 @@ const collectionCss = `
 @media (max-width: 1100px) {
   .cv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
+
 @media (max-width: 780px) {
   .cv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cv-hero { min-height: 50vh; }
 }
+
+/* ── Mobile: compact hero, 2-col grid, scrollable categories ── */
+@media (max-width: 720px) {
+  .cv-hero {
+    min-height: auto;
+    padding: calc(var(--header-height) + 32px) 18px 32px;
+  }
+
+  .cv-eyebrow { margin-bottom: 14px; }
+  .cv-title { font-size: clamp(2rem, 9vw, 3rem); margin: 0; }
+
+  .cv-toolbar {
+    top: var(--header-height, 68px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .cv-filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 0 20px;
+    padding: 12px 18px;
+  }
+  .cv-filter::-webkit-scrollbar { display: none; }
+
+  .cv-sort {
+    padding: 0 18px 12px;
+    justify-content: flex-end;
+  }
+
+  .cv-count {
+    padding: 12px 18px 0;
+    font-size: 0.66rem;
+  }
+
+  .cv-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 12px;
+    padding: 16px 14px 36px;
+  }
+}
+
 @media (max-width: 520px) {
-  .cv-tagline,
   .collection-empty p {
     max-width: none;
     width: calc(100vw - 70px);
   }
 
-  .cv-filter {
-    display: grid;
-    gap: 18px 20px;
+  .cv-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 10px;
+    padding: 14px 12px 32px;
   }
+}
 
-  .cv-filter-link {
-    max-width: 100%;
-    width: fit-content;
+@media (max-width: 360px) {
+  .cv-grid {
+    grid-template-columns: 1fr;
   }
-
-  .cv-grid { grid-template-columns: 1fr; }
 }
 
 @media (prefers-reduced-motion: reduce) {

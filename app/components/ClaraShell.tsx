@@ -59,16 +59,24 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
           </NavLink>
         ))}
       </nav>
-      <button className="cart-button" type="button" onClick={() => open('cart')}>
-        Cart{' '}
-        <span>
-          <Suspense fallback="0">
-            <Await resolve={cart}>
-              <CartCount />
-            </Await>
-          </Suspense>
-        </span>
-      </button>
+      <div className="header-right">
+        <Link className="mobile-search-button" to="/search" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.4"/>
+            <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" strokeWidth="1.4"/>
+          </svg>
+        </Link>
+        <button className="cart-button" type="button" onClick={() => open('cart')}>
+          Cart{' '}
+          <span>
+            <Suspense fallback="0">
+              <Await resolve={cart}>
+                <CartCount />
+              </Await>
+            </Suspense>
+          </span>
+        </button>
+      </div>
     </header>
   );
 }
