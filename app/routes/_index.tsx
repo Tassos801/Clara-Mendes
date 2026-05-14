@@ -29,6 +29,39 @@ type HomeCollection = {
   };
 };
 
+const STORE_CHARACTER_IMAGES = [
+  {
+    src: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?q=80&w=1600&auto=format&fit=crop',
+    alt: 'Layered neutral textiles in a quiet living room',
+    label: 'Muted linens',
+    variant: 'store-character-card--tall',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?q=80&w=1600&auto=format&fit=crop',
+    alt: 'Soft daylight across a composed home interior',
+    label: 'Soft light',
+    variant: 'store-character-card--wide',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1600&auto=format&fit=crop',
+    alt: 'Warm room with simple furniture and open space',
+    label: 'Open calm',
+    variant: 'store-character-card--small',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45?q=80&w=1600&auto=format&fit=crop',
+    alt: 'Natural textures arranged in a restrained interior',
+    label: 'Natural texture',
+    variant: 'store-character-card--medium',
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1617103996702-96ff29b1c467?q=80&w=1600&auto=format&fit=crop',
+    alt: 'Quiet corner with considered home objects',
+    label: 'Collected quiet',
+    variant: 'store-character-card--medium',
+  },
+] as const;
+
 export const meta: Route.MetaFunction = () => {
   return [
     {title: 'Clara Mendes | Objects with Soul'},
@@ -48,7 +81,9 @@ export async function loader({context}: Route.LoaderArgs) {
   });
 
   return {
-    collections: filterDemoCollections(data.collections.nodes as HomeCollection[]),
+    collections: filterDemoCollections(
+      data.collections.nodes as HomeCollection[],
+    ),
     products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
   };
 }
@@ -260,21 +295,56 @@ export default function Homepage() {
         className="category-band"
         aria-label={collections.length > 0 ? 'Collections' : 'Sourcing focus'}
       >
-        {collections.length > 0 ? (
-          collections.slice(0, 5).map((collection) => (
-            <Link key={collection.id} to={`/collections/${collection.handle}`}>
-              <small>Collection</small>
-              <span>{collection.title}</span>
-            </Link>
-          ))
-        ) : (
-          HOME_GOODS_COLLECTIONS.map((collection) => (
-            <div className="category-preview-card" key={collection.id}>
-              <small>Sourcing</small>
-              <span>{collection.title}</span>
-            </div>
-          ))
-        )}
+        {collections.length > 0
+          ? collections.slice(0, 5).map((collection) => (
+              <Link
+                key={collection.id}
+                to={`/collections/${collection.handle}`}
+              >
+                <small>Collection</small>
+                <span>{collection.title}</span>
+              </Link>
+            ))
+          : HOME_GOODS_COLLECTIONS.map((collection) => (
+              <div className="category-preview-card" key={collection.id}>
+                <small>Sourcing</small>
+                <span>{collection.title}</span>
+              </div>
+            ))}
+      </section>
+
+      <section
+        className="store-character-section"
+        aria-labelledby="store-character-title"
+      >
+        <div className="store-character-copy">
+          <div>
+            <p className="eyebrow">Store character</p>
+            <h2 id="store-character-title">The room comes first.</h2>
+          </div>
+          <p>
+            Clara Mendes is built around atmosphere before assortment: soft
+            light, quiet surfaces, useful shapes, and materials that make a room
+            feel settled.
+          </p>
+        </div>
+
+        <div className="store-character-mosaic" aria-label="Store mood images">
+          {STORE_CHARACTER_IMAGES.map((image) => (
+            <figure
+              className={`store-character-card ${image.variant}`}
+              key={image.label}
+            >
+              <img
+                src={image.src}
+                alt={image.alt}
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>{image.label}</figcaption>
+            </figure>
+          ))}
+        </div>
       </section>
 
       {products.length > 0 ? (
@@ -661,6 +731,100 @@ html:has(.home-root) main {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
 }
 
+.store-character-section {
+  background: var(--color-paper);
+  display: grid;
+  gap: clamp(34px, 5vw, 72px);
+  padding: clamp(60px, 8vw, 120px) clamp(18px, 4vw, 70px);
+}
+
+.store-character-copy {
+  align-items: end;
+  display: grid;
+  gap: clamp(24px, 4vw, 60px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(260px, 0.95fr);
+}
+
+.store-character-copy h2 {
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: clamp(3.4rem, 7vw, 7.4rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.9;
+  margin: 0;
+  max-width: 820px;
+  text-wrap: balance;
+}
+
+.store-character-copy p:not(.eyebrow) {
+  color: var(--color-muted);
+  font-size: 1.08rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 560px;
+}
+
+.store-character-mosaic {
+  align-items: end;
+  display: grid;
+  gap: clamp(12px, 1.6vw, 22px);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.store-character-card {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  min-width: 0;
+}
+
+.store-character-card img {
+  aspect-ratio: 4 / 5;
+  background: var(--color-soft);
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  filter: saturate(0.82) sepia(0.08) contrast(0.96);
+}
+
+.store-character-card figcaption {
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.45;
+  margin: 0;
+  min-height: 1em;
+  text-transform: uppercase;
+}
+
+.store-character-card--tall {
+  grid-column: span 3;
+}
+
+.store-character-card--wide {
+  grid-column: span 4;
+  align-self: start;
+}
+
+.store-character-card--wide img {
+  aspect-ratio: 1 / 1;
+}
+
+.store-character-card--small {
+  grid-column: span 2;
+  margin-bottom: clamp(36px, 7vw, 92px);
+}
+
+.store-character-card--medium {
+  grid-column: span 3;
+}
+
+.store-character-card--medium img {
+  aspect-ratio: 3 / 4;
+}
+
 .home-story-return {
   margin-top: 0;
 }
@@ -755,6 +919,43 @@ html:has(.home-root) main {
   .hm-cursor-dot,
   .hm-cursor-outline {
     display: none;
+  }
+
+  .store-character-copy {
+    grid-template-columns: 1fr;
+  }
+
+  .store-character-copy h2 {
+    font-size: clamp(2.7rem, 13vw, 4.2rem);
+    letter-spacing: -0.045em;
+  }
+
+  .store-character-copy p:not(.eyebrow) {
+    font-size: 1rem;
+  }
+
+  .store-character-mosaic {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .store-character-card,
+  .store-character-card--tall,
+  .store-character-card--wide,
+  .store-character-card--small,
+  .store-character-card--medium {
+    grid-column: auto;
+    margin-bottom: 0;
+  }
+
+  .store-character-card img,
+  .store-character-card--wide img,
+  .store-character-card--medium img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .store-character-card figcaption {
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
   }
 }
 
