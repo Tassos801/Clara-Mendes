@@ -393,7 +393,7 @@ const collectionCss = `
 /* ── Sticky toolbar (categories + sort) ── */
 .cv-toolbar {
   position: sticky;
-  top: 0;
+  top: var(--header-height);
   z-index: 20;
   background: var(--cv-paper);
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
@@ -401,8 +401,6 @@ const collectionCss = `
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  opacity: 0;
-  animation: cvFade 1.8s var(--cv-ease) forwards 0.3s;
 }
 
 .cv-filter {

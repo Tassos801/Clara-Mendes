@@ -50,34 +50,49 @@ export function ClaraProductCard({
 
   return (
     <article className="product-card cm-card">
+      <div className="cm-card-media-wrap">
+        <Link
+          to={`/products/${product.handle}`}
+          prefetch="intent"
+          className="cm-card-media-link"
+          aria-label={product.title}
+        >
+          <div className="product-card-media cm-card-media">
+            {baseImage ? (
+              <>
+                <img
+                  className="cm-card-img cm-card-img--base"
+                  src={baseImage.url}
+                  alt={baseImage.altText || product.title}
+                  loading={loading}
+                />
+                <img
+                  className="cm-card-img cm-card-img--hover"
+                  src={(hoverImage ?? baseImage).url}
+                  alt=""
+                  aria-hidden
+                  loading="lazy"
+                />
+              </>
+            ) : (
+              <div className="cm-card-img cm-card-img--empty" aria-hidden />
+            )}
+            <div className="cm-card-veil" aria-hidden />
+            <span className="cm-card-chip">{chip}</span>
+          </div>
+        </Link>
+        {firstVariant ? (
+          <QuickAddButton
+            variantId={firstVariant.id}
+            available={firstVariant.availableForSale !== false}
+          />
+        ) : null}
+      </div>
       <Link
         to={`/products/${product.handle}`}
         prefetch="intent"
-        className="cm-card-link"
+        className="cm-card-copy-link"
       >
-        <div className="product-card-media cm-card-media">
-          {baseImage ? (
-            <>
-              <img
-                className="cm-card-img cm-card-img--base"
-                src={baseImage.url}
-                alt={baseImage.altText || product.title}
-                loading={loading}
-              />
-              <img
-                className="cm-card-img cm-card-img--hover"
-                src={(hoverImage ?? baseImage).url}
-                alt=""
-                aria-hidden
-                loading="lazy"
-              />
-            </>
-          ) : (
-            <div className="cm-card-img cm-card-img--empty" aria-hidden />
-          )}
-          <div className="cm-card-veil" aria-hidden />
-          <span className="cm-card-chip">{chip}</span>
-        </div>
         <div className="product-card-copy cm-card-copy">
           <h3 className="cm-card-title">
             <i>{product.title.split(' ')[0]}</i>
@@ -91,10 +106,6 @@ export function ClaraProductCard({
         </div>
       </Link>
 
-      {firstVariant ? (
-        <QuickAddButton variantId={firstVariant.id} available={firstVariant.availableForSale !== false} />
-      ) : null}
-
       <style suppressHydrationWarning>{cardCss}</style>
     </article>
   );
@@ -103,25 +114,44 @@ export function ClaraProductCard({
 function QuickAddButton({variantId, available}: {variantId: string; available: boolean}) {
   const {open} = useAside();
 
+  if (!available) {
+    return (
+      <button
+        type="button"
+        className="cm-quick-add cm-quick-add--unavailable"
+        disabled
+        aria-label="Sold out"
+      >
+        <svg width="14" height="2" viewBox="0 0 14 2" fill="none" aria-hidden="true">
+          <line x1="0" y1="1" x2="14" y2="1" stroke="currentColor" strokeWidth="1.4" />
+        </svg>
+      </button>
+    );
+  }
+
   return (
     <CartForm
       route="/cart"
       inputs={{lines: [{merchandiseId: variantId, quantity: 1}]}}
       action={CartForm.ACTIONS.LinesAdd}
     >
-      {(fetcher) => (
-        <button
-          type="submit"
-          className="cm-quick-add"
-          disabled={!available || fetcher.state !== 'idle'}
-          aria-label={available ? 'Quick add to cart' : 'Sold out'}
-          onClick={() => {
-            setTimeout(() => open('cart'), 300);
-          }}
-        >
-          {available ? '+' : ''}
-        </button>
-      )}
+      {(fetcher) => {
+        const isBusy = fetcher.state !== 'idle';
+        return (
+          <button
+            type="submit"
+            className="cm-quick-add"
+            disabled={isBusy}
+            aria-busy={isBusy}
+            aria-label="Quick add to cart"
+            onClick={() => {
+              setTimeout(() => open('cart'), 350);
+            }}
+          >
+            {isBusy ? '…' : '+'}
+          </button>
+        );
+      }}
     </CartForm>
   );
 }
@@ -136,11 +166,15 @@ function formatMoney(price: MoneyAmount) {
 const cardCss = `
 .cm-card {
   min-width: 0;
-  position: relative;
   --cm-ease: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-.cm-card-link {
+.cm-card-media-wrap {
+  position: relative;
+}
+
+.cm-card-media-link,
+.cm-card-copy-link {
   display: block;
   color: inherit;
 }
@@ -260,19 +294,19 @@ const cardCss = `
   flex-shrink: 0;
 }
 
-/* Quick-add button */
+/* Quick-add button (positioned over bottom-right of image) */
 .cm-quick-add {
   position: absolute;
-  bottom: 56px;
-  right: 10px;
+  bottom: 12px;
+  right: 12px;
   z-index: 5;
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   border: none;
   background: var(--color-ink, #26231f);
   color: #fff;
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 300;
   line-height: 1;
   cursor: pointer;
@@ -280,19 +314,23 @@ const cardCss = `
   align-items: center;
   justify-content: center;
   opacity: 0;
-  transform: translateY(4px);
+  transform: translateY(6px);
   transition: opacity 400ms var(--cm-ease), transform 400ms var(--cm-ease), background 200ms;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.22);
 }
 
-.cm-card:hover .cm-quick-add,
-.cm-card:focus-within .cm-quick-add {
+.cm-card-media-wrap:hover .cm-quick-add,
+.cm-card-media-wrap:focus-within .cm-quick-add {
   opacity: 1;
   transform: translateY(0);
 }
 
-.cm-quick-add:hover { background: #3d3832; }
-.cm-quick-add:disabled { opacity: 0.3 !important; cursor: default; }
+.cm-quick-add:hover:not(:disabled) { background: #3d3832; }
+.cm-quick-add[aria-busy="true"] { background: #5a534a; cursor: wait; }
+.cm-quick-add--unavailable {
+  background: rgba(38,35,31,0.35) !important;
+  cursor: not-allowed;
+}
 
 /* ── Mobile compact layout ── */
 @media (max-width: 720px) {
@@ -322,10 +360,10 @@ const cardCss = `
   .cm-quick-add {
     opacity: 1;
     transform: translateY(0);
-    width: 32px;
-    height: 32px;
-    font-size: 1.1rem;
-    bottom: 48px;
+    width: 34px;
+    height: 34px;
+    font-size: 1.15rem;
+    bottom: 8px;
     right: 8px;
   }
 }
