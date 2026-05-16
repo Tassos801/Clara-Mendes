@@ -385,22 +385,73 @@ button {
 .category-band {
   background: var(--color-deep);
   color: var(--color-paper);
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  overflow: hidden;
+  position: relative;
 }
 
-.category-band a,
-.category-preview-card {
+.category-carousel-toolbar {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px clamp(18px, 4vw, 70px);
+}
+
+.category-carousel-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.category-carousel-button {
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  color: var(--color-paper);
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+  width: 42px;
+}
+
+.category-carousel-button:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.62);
+}
+
+.category-carousel-button:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.category-carousel-track {
+  display: flex;
+  overscroll-behavior-x: contain;
+  overflow-x: auto;
+  scroll-padding-inline: clamp(18px, 4vw, 70px);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.category-carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.category-carousel-card {
   border-right: 1px solid rgba(255, 255, 255, 0.14);
   display: grid;
+  flex: 0 0 clamp(230px, 27vw, 340px);
   gap: 64px;
   min-height: 220px;
   padding: 24px;
-}
-
-.category-band a:last-child,
-.category-preview-card:last-child {
-  border-right: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .category-preview-card {
@@ -1138,13 +1189,8 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .category-band {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .category-band a:last-child,
-  .category-preview-card:last-child {
-    grid-column: 1 / -1;
+  .category-carousel-card {
+    flex-basis: clamp(250px, 42vw, 380px);
   }
 
   .collection-intro,
@@ -1258,17 +1304,12 @@ button {
     row-gap: 28px;
   }
 
-  .category-band {
-    grid-template-columns: 1fr;
+  .category-carousel-toolbar {
+    padding: 14px 18px;
   }
 
-  .category-band a,
-  .category-band a:last-child,
-  .category-preview-card,
-  .category-preview-card:last-child {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-    border-right: 0;
-    grid-column: auto;
+  .category-carousel-card {
+    flex-basis: min(82vw, 340px);
     min-height: 150px;
   }
 
@@ -1668,8 +1709,8 @@ button {
     gap: 20px;
   }
 
-  .category-band a,
-  .category-preview-card {
+  .category-carousel-card {
+    flex-basis: min(calc(100vw - 36px), 340px);
     gap: 24px;
     min-height: 130px;
     padding: 18px;

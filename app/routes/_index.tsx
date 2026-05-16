@@ -89,6 +89,40 @@ export default function Homepage() {
   const orbRef = useRef<HTMLButtonElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subRef = useRef<HTMLParagraphElement | null>(null);
+  const collectionTrackRef = useRef<HTMLDivElement | null>(null);
+  const hasLiveCollections = collections.length > 0;
+  const categoryItems = hasLiveCollections
+    ? collections
+    : HOME_GOODS_COLLECTIONS;
+
+  const scrollCollectionCarousel = (direction: -1 | 1) => {
+    const track = collectionTrackRef.current;
+    if (!track) return;
+
+    const cards = Array.from(
+      track.querySelectorAll<HTMLElement>('.category-carousel-card'),
+    );
+    if (cards.length === 0) return;
+
+    const getCardLeft = (card: HTMLElement) =>
+      card.offsetLeft - track.offsetLeft;
+    const currentIndex = cards.reduce((closestIndex, card, index) => {
+      const closestDistance = Math.abs(
+        getCardLeft(cards[closestIndex]) - track.scrollLeft,
+      );
+      const distance = Math.abs(getCardLeft(card) - track.scrollLeft);
+      return distance < closestDistance ? index : closestIndex;
+    }, 0);
+    const nextIndex = Math.min(
+      Math.max(currentIndex + direction, 0),
+      cards.length - 1,
+    );
+
+    track.scrollTo({
+      behavior: 'smooth',
+      left: getCardLeft(cards[nextIndex]),
+    });
+  };
 
   useEffect(() => {
     const blur = blurRef.current;
@@ -282,40 +316,77 @@ export default function Homepage() {
         </p>
       </section>
 
-      {collections.length > 0 ? (
-        <section
-          className={`featured-collections${collections.length === 1 ? ' featured-collections--solo' : ''}`}
-          aria-label="Collections"
-        >
-          {collections.map((collection) => (
-            <Link
-              key={collection.id}
-              className="featured-collection-card"
-              to={`/collections/${collection.handle}`}
+      <section
+        className={`featured-collections featured-collections--carousel${
+          categoryItems.length === 1 ? ' featured-collections--solo' : ''
+        }`}
+        aria-label={hasLiveCollections ? 'Collections' : 'Sourcing focus'}
+      >
+        <div className="category-carousel-toolbar featured-collections-toolbar">
+          <div
+            className="category-carousel-controls"
+            aria-label="Collection carousel controls"
+          >
+            <button
+              aria-label="Previous collections"
+              className="category-carousel-button"
+              disabled={categoryItems.length <= 1}
+              onClick={() => scrollCollectionCarousel(-1)}
+              type="button"
             >
-              <small className="eyebrow">Collection</small>
-              <h2 className="featured-collection-title">
-                {collection.title}
-              </h2>
-              {collection.description && (
-                <p className="featured-collection-desc">
-                  {collection.description}
-                </p>
-              )}
-              <span className="text-link">Explore collection</span>
-            </Link>
-          ))}
-        </section>
-      ) : (
-        <section className="category-band" aria-label="Sourcing focus">
-          {HOME_GOODS_COLLECTIONS.map((collection) => (
-            <div className="category-preview-card" key={collection.id}>
-              <small>Sourcing</small>
-              <span>{collection.title}</span>
-            </div>
-          ))}
-        </section>
-      )}
+              <span aria-hidden="true">&larr;</span>
+            </button>
+            <button
+              aria-label="Next collections"
+              className="category-carousel-button"
+              disabled={categoryItems.length <= 1}
+              onClick={() => scrollCollectionCarousel(1)}
+              type="button"
+            >
+              <span aria-hidden="true">&rarr;</span>
+            </button>
+          </div>
+        </div>
+
+        <div
+          className="category-carousel-track featured-collections-track"
+          ref={collectionTrackRef}
+        >
+          {categoryItems.map((collection) =>
+            hasLiveCollections ? (
+              <Link
+                className="featured-collection-card category-carousel-card"
+                key={collection.id}
+                to={`/collections/${collection.handle}`}
+              >
+                <small className="eyebrow">Collection</small>
+                <h2 className="featured-collection-title">
+                  {collection.title}
+                </h2>
+                {'description' in collection && collection.description ? (
+                  <p className="featured-collection-desc">
+                    {collection.description}
+                  </p>
+                ) : null}
+                <span className="text-link">Explore collection</span>
+              </Link>
+            ) : (
+              <div
+                className="featured-collection-card category-preview-card category-carousel-card"
+                key={collection.id}
+              >
+                <small className="eyebrow">Sourcing</small>
+                <h2 className="featured-collection-title">
+                  {collection.title}
+                </h2>
+                {'note' in collection && collection.note ? (
+                  <p className="featured-collection-desc">{collection.note}</p>
+                ) : null}
+              </div>
+            ),
+          )}
+        </div>
+      </section>
 
       <section
         className="home-atmosphere-section"
@@ -441,7 +512,7 @@ const HOMEPAGE_QUERY = `#graphql
         ...ClaraProductCard
       }
     }
-    collections(first: 6) {
+    collections(first: 12) {
       nodes {
         id
         handle
@@ -773,6 +844,46 @@ html:has(.home-root) main {
   grid-template-columns: 1fr;
 }
 
+.featured-collections--carousel {
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.featured-collections-toolbar {
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+
+.featured-collections-track {
+  background: var(--color-deep);
+  display: flex;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: clamp(18px, 4vw, 70px);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+}
+
+.featured-collections-track::-webkit-scrollbar {
+  display: none;
+}
+
+.featured-collections-track .featured-collection-card {
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+  flex: 0 0 clamp(280px, 32vw, 440px);
+  min-height: clamp(300px, 30vw, 420px);
+  padding: clamp(36px, 5vw, 70px) clamp(24px, 4vw, 46px);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.featured-collections--solo .featured-collections-track .featured-collection-card {
+  border-right: 0;
+  flex-basis: 100%;
+}
+
 .featured-collection-card {
   background: var(--color-deep);
   color: var(--color-paper);
@@ -800,6 +911,11 @@ html:has(.home-root) main {
   letter-spacing: -0.045em;
   line-height: 0.92;
   margin: 0;
+}
+
+.featured-collections-track .featured-collection-title {
+  font-size: clamp(2.45rem, 4.8vw, 4.8rem);
+  overflow-wrap: anywhere;
 }
 
 .featured-collection-desc {
@@ -1049,12 +1165,31 @@ html:has(.home-root) main {
     grid-template-columns: 1fr;
   }
 
+  .featured-collections-toolbar {
+    padding: 14px 18px;
+  }
+
+  .featured-collections-track {
+    scroll-padding-inline: 18px;
+  }
+
   .featured-collection-card {
     padding: 42px 24px;
   }
 
+  .featured-collections-track .featured-collection-card {
+    flex-basis: min(82vw, 340px);
+    gap: 22px;
+    min-height: 248px;
+    padding: 32px 22px;
+  }
+
   .featured-collection-title {
     font-size: clamp(2.4rem, 10vw, 3.6rem);
+  }
+
+  .featured-collections-track .featured-collection-title {
+    font-size: clamp(2.25rem, 12vw, 3.2rem);
   }
 
   .home-atmosphere-section {
@@ -1117,6 +1252,13 @@ html:has(.home-root) main {
   .home-atmosphere-footer {
     justify-content: flex-start;
     overflow: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .featured-collections-track .featured-collection-card {
+    flex-basis: min(calc(100vw - 36px), 340px);
+    min-height: 230px;
   }
 }
 

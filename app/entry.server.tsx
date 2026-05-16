@@ -25,6 +25,7 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://images.unsplash.com',
     ],
+    scriptSrc: ["'self'"],
   });
 
   const body = await renderToReadableStream(
