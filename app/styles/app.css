@@ -1598,8 +1598,9 @@ button {
 
   .product-grid,
   .compact-grid {
-    grid-template-columns: 1fr;
-    row-gap: 24px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 22px;
   }
 
   .primary-button,
@@ -1682,17 +1683,22 @@ button {
   }
 
   .product-card-copy {
-    padding-top: 12px;
-    gap: 6px;
+    padding-top: 10px;
+    gap: 4px;
   }
 
   .product-card-copy h3 {
-    font-size: 1.25rem;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
   }
 
   .product-card-copy span,
   .small-muted {
-    font-size: 0.66rem;
+    font-size: 0.58rem;
+  }
+
+  .product-card-copy p {
+    font-size: 0.82rem;
   }
 
   .story-section {
