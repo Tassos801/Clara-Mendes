@@ -845,9 +845,7 @@ html:has(.home-root) main {
 }
 
 .featured-collections--carousel {
-  background: linear-gradient(180deg, #f6f2eb 0%, var(--color-paper) 100%);
-  border-bottom: 1px solid rgba(38, 35, 31, 0.1);
-  border-top: 1px solid rgba(38, 35, 31, 0.08);
+  background: linear-gradient(180deg, var(--color-soft) 0%, var(--color-paper) 100%);
   color: var(--color-ink);
   display: block;
   overflow: hidden;
@@ -855,27 +853,28 @@ html:has(.home-root) main {
 }
 
 .featured-collections-toolbar {
-  border-bottom-color: rgba(38, 35, 31, 0.08);
-  padding-bottom: 12px;
-  padding-top: 12px;
+  border-bottom-color: rgba(38, 35, 31, 0.07);
+  padding-bottom: 14px;
+  padding-top: 14px;
 }
 
 .featured-collections--carousel .category-carousel-controls {
-  gap: 8px;
+  gap: 10px;
 }
 
 .featured-collections--carousel .category-carousel-button {
-  background: rgba(251, 250, 246, 0.58);
-  border-color: rgba(38, 35, 31, 0.18);
+  background: transparent;
+  border-color: rgba(38, 35, 31, 0.22);
   border-radius: 999px;
-  color: rgba(38, 35, 31, 0.52);
-  height: 34px;
-  width: 34px;
+  color: rgba(38, 35, 31, 0.55);
+  height: 36px;
+  transition: border-color 0.3s ease, color 0.3s ease;
+  width: 36px;
 }
 
 .featured-collections--carousel .category-carousel-button:hover {
-  background: rgba(38, 35, 31, 0.06);
-  border-color: rgba(38, 35, 31, 0.32);
+  background: transparent;
+  border-color: var(--color-ink);
   color: var(--color-ink);
 }
 
@@ -884,6 +883,7 @@ html:has(.home-root) main {
   display: flex;
   overflow-x: auto;
   overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
   scroll-padding-inline: clamp(18px, 4vw, 70px);
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
@@ -935,7 +935,7 @@ html:has(.home-root) main {
 }
 
 .featured-collections--carousel .featured-collection-card:hover {
-  background: rgba(38, 35, 31, 0.035);
+  background: rgba(38, 35, 31, 0.025);
 }
 
 .featured-collection-title {
@@ -949,7 +949,8 @@ html:has(.home-root) main {
 
 .featured-collections-track .featured-collection-title {
   font-size: clamp(2rem, 3.4vw, 3.4rem);
-  letter-spacing: 0;
+  letter-spacing: -0.012em;
+  line-height: 1;
   overflow-wrap: anywhere;
 }
 
@@ -963,8 +964,9 @@ html:has(.home-root) main {
 
 .featured-collections--carousel .featured-collection-desc {
   color: var(--color-muted);
-  font-size: 0.96rem;
-  line-height: 1.62;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  max-width: 320px;
 }
 
 .featured-collection-card .eyebrow {
@@ -973,7 +975,8 @@ html:has(.home-root) main {
 }
 
 .featured-collections--carousel .featured-collection-card .eyebrow {
-  color: rgba(38, 35, 31, 0.46);
+  color: var(--color-muted);
+  opacity: 0.7;
 }
 
 .featured-collection-card .text-link {
@@ -983,11 +986,12 @@ html:has(.home-root) main {
 }
 
 .featured-collections--carousel .featured-collection-card .text-link {
-  color: var(--color-muted);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  opacity: 0.78;
+  color: var(--color-ink);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
 }
 
 .featured-collection-card:hover .text-link {
@@ -996,6 +1000,7 @@ html:has(.home-root) main {
 
 .featured-collections--carousel .featured-collection-card:hover .text-link {
   color: var(--color-ink);
+  opacity: 1;
 }
 
 .home-atmosphere-section {
