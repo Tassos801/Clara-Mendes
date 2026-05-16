@@ -923,7 +923,6 @@ html:has(.home-root) main {
 .featured-collections--carousel .featured-collection-card {
   background: transparent;
   color: var(--color-ink);
-  justify-content: space-between;
 }
 
 .featured-collections--solo .featured-collection-card {
@@ -991,6 +990,7 @@ html:has(.home-root) main {
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.22em;
+  margin-top: auto;
   opacity: 0.7;
   transition: opacity 0.3s ease;
 }
