@@ -845,17 +845,42 @@ html:has(.home-root) main {
 }
 
 .featured-collections--carousel {
+  background: linear-gradient(180deg, #f6f2eb 0%, var(--color-paper) 100%);
+  border-bottom: 1px solid rgba(38, 35, 31, 0.1);
+  border-top: 1px solid rgba(38, 35, 31, 0.08);
+  color: var(--color-ink);
   display: block;
   overflow: hidden;
   position: relative;
 }
 
 .featured-collections-toolbar {
-  border-bottom-color: rgba(255, 255, 255, 0.16);
+  border-bottom-color: rgba(38, 35, 31, 0.08);
+  padding-bottom: 12px;
+  padding-top: 12px;
+}
+
+.featured-collections--carousel .category-carousel-controls {
+  gap: 8px;
+}
+
+.featured-collections--carousel .category-carousel-button {
+  background: rgba(251, 250, 246, 0.58);
+  border-color: rgba(38, 35, 31, 0.18);
+  border-radius: 999px;
+  color: rgba(38, 35, 31, 0.52);
+  height: 34px;
+  width: 34px;
+}
+
+.featured-collections--carousel .category-carousel-button:hover {
+  background: rgba(38, 35, 31, 0.06);
+  border-color: rgba(38, 35, 31, 0.32);
+  color: var(--color-ink);
 }
 
 .featured-collections-track {
-  background: var(--color-deep);
+  background: transparent;
   display: flex;
   overflow-x: auto;
   overscroll-behavior-x: contain;
@@ -871,10 +896,10 @@ html:has(.home-root) main {
 }
 
 .featured-collections-track .featured-collection-card {
-  border-right: 1px solid rgba(255, 255, 255, 0.14);
-  flex: 0 0 clamp(280px, 32vw, 440px);
-  min-height: clamp(300px, 30vw, 420px);
-  padding: clamp(36px, 5vw, 70px) clamp(24px, 4vw, 46px);
+  border-right: 1px solid rgba(38, 35, 31, 0.09);
+  flex: 0 0 clamp(250px, 28vw, 380px);
+  min-height: clamp(240px, 24vw, 320px);
+  padding: clamp(28px, 4vw, 52px) clamp(22px, 3vw, 38px);
   scroll-snap-align: start;
   scroll-snap-stop: always;
 }
@@ -895,6 +920,11 @@ html:has(.home-root) main {
   transition: background 0.5s ease;
 }
 
+.featured-collections--carousel .featured-collection-card {
+  background: transparent;
+  color: var(--color-ink);
+}
+
 .featured-collections--solo .featured-collection-card {
   align-items: center;
   text-align: center;
@@ -902,6 +932,10 @@ html:has(.home-root) main {
 
 .featured-collection-card:hover {
   background: rgba(255, 255, 255, 0.03);
+}
+
+.featured-collections--carousel .featured-collection-card:hover {
+  background: rgba(38, 35, 31, 0.035);
 }
 
 .featured-collection-title {
@@ -914,7 +948,8 @@ html:has(.home-root) main {
 }
 
 .featured-collections-track .featured-collection-title {
-  font-size: clamp(2.45rem, 4.8vw, 4.8rem);
+  font-size: clamp(2rem, 3.4vw, 3.4rem);
+  letter-spacing: 0;
   overflow-wrap: anywhere;
 }
 
@@ -926,9 +961,19 @@ html:has(.home-root) main {
   max-width: 460px;
 }
 
+.featured-collections--carousel .featured-collection-desc {
+  color: var(--color-muted);
+  font-size: 0.96rem;
+  line-height: 1.62;
+}
+
 .featured-collection-card .eyebrow {
   color: rgba(255, 255, 255, 0.45);
   margin: 0;
+}
+
+.featured-collections--carousel .featured-collection-card .eyebrow {
+  color: rgba(38, 35, 31, 0.46);
 }
 
 .featured-collection-card .text-link {
@@ -937,8 +982,20 @@ html:has(.home-root) main {
   transition: color 0.3s ease;
 }
 
+.featured-collections--carousel .featured-collection-card .text-link {
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  opacity: 0.78;
+}
+
 .featured-collection-card:hover .text-link {
   color: var(--color-paper);
+}
+
+.featured-collections--carousel .featured-collection-card:hover .text-link {
+  color: var(--color-ink);
 }
 
 .home-atmosphere-section {
@@ -1179,9 +1236,9 @@ html:has(.home-root) main {
 
   .featured-collections-track .featured-collection-card {
     flex-basis: min(82vw, 340px);
-    gap: 22px;
-    min-height: 248px;
-    padding: 32px 22px;
+    gap: 20px;
+    min-height: 220px;
+    padding: 28px 22px;
   }
 
   .featured-collection-title {
@@ -1189,7 +1246,7 @@ html:has(.home-root) main {
   }
 
   .featured-collections-track .featured-collection-title {
-    font-size: clamp(2.25rem, 12vw, 3.2rem);
+    font-size: clamp(2rem, 10vw, 2.85rem);
   }
 
   .home-atmosphere-section {
@@ -1258,7 +1315,7 @@ html:has(.home-root) main {
 @media (max-width: 480px) {
   .featured-collections-track .featured-collection-card {
     flex-basis: min(calc(100vw - 36px), 340px);
-    min-height: 230px;
+    min-height: 210px;
   }
 }
 
