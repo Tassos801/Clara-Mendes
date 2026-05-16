@@ -853,7 +853,7 @@ html:has(.home-root) main {
 }
 
 .featured-collections-toolbar {
-  border-bottom-color: rgba(38, 35, 31, 0.07);
+  border-bottom-color: transparent;
   padding-bottom: 14px;
   padding-top: 14px;
 }
@@ -896,7 +896,7 @@ html:has(.home-root) main {
 }
 
 .featured-collections-track .featured-collection-card {
-  border-right: 1px solid rgba(38, 35, 31, 0.09);
+  border-right: none;
   flex: 0 0 clamp(250px, 28vw, 380px);
   min-height: clamp(240px, 24vw, 320px);
   padding: clamp(28px, 4vw, 52px) clamp(22px, 3vw, 38px);
@@ -993,6 +993,10 @@ html:has(.home-root) main {
   margin-top: auto;
   opacity: 0.7;
   transition: opacity 0.3s ease;
+}
+
+.featured-collections--carousel .featured-collection-card .text-link::after {
+  display: none;
 }
 
 .featured-collection-card:hover .text-link {
