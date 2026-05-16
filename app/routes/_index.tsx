@@ -1260,12 +1260,13 @@ html:has(.home-root) main {
   }
 
   .home-atmosphere-section {
-    gap: 24px;
+    gap: 32px;
     padding-bottom: 54px;
     padding-top: 58px;
   }
 
   .home-atmosphere-layout {
+    gap: 28px;
     grid-template-columns: 1fr;
   }
 
@@ -1278,6 +1279,7 @@ html:has(.home-root) main {
   }
 
   .home-atmosphere-copy {
+    gap: 22px;
     order: 1;
   }
 
@@ -1286,22 +1288,30 @@ html:has(.home-root) main {
   }
 
   .home-atmosphere-supporting {
-    gap: 18px;
-    grid-template-columns: 1fr;
+    gap: 14px;
+    grid-template-columns: 1fr 1fr;
     order: 3;
   }
 
   .home-atmosphere-copy h2 {
-    font-size: clamp(2.6rem, 12.5vw, 4.1rem);
-    letter-spacing: -0.045em;
+    font-size: clamp(2.8rem, 13vw, 4.2rem);
+    letter-spacing: -0.05em;
+    line-height: 0.88;
   }
 
   .home-atmosphere-copy p:not(.eyebrow) {
-    font-size: 1rem;
+    font-size: 1.02rem;
+    line-height: 1.78;
   }
 
-  .home-atmosphere-figure--lead img,
-  .home-atmosphere-supporting .home-atmosphere-figure:first-child img,
+  .home-atmosphere-figure--lead img {
+    aspect-ratio: 3 / 2;
+  }
+
+  .home-atmosphere-supporting .home-atmosphere-figure:first-child img {
+    aspect-ratio: 4 / 5;
+  }
+
   .home-atmosphere-supporting .home-atmosphere-figure:last-child img {
     aspect-ratio: 4 / 5;
   }
