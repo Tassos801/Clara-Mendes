@@ -923,6 +923,7 @@ html:has(.home-root) main {
 .featured-collections--carousel .featured-collection-card {
   background: transparent;
   color: var(--color-ink);
+  justify-content: space-between;
 }
 
 .featured-collections--solo .featured-collection-card {
