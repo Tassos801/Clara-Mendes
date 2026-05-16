@@ -1,6 +1,6 @@
 import {Link} from 'react-router';
-import {CartForm} from '@shopify/hydrogen';
 import {useAside} from './Aside';
+import {AddToCartButton} from './AddToCartButton';
 
 type MoneyAmount = {
   amount: string;
@@ -8,8 +8,28 @@ type MoneyAmount = {
 };
 
 type ProductImage = {
+  id?: string;
   altText?: string | null;
+  height?: number;
   url: string;
+  width?: number;
+};
+
+type ProductVariant = {
+  id: string;
+  availableForSale?: boolean;
+  compareAtPrice?: MoneyAmount | null;
+  image?: ProductImage | null;
+  price: MoneyAmount;
+  product: {
+    handle: string;
+    title: string;
+  };
+  selectedOptions: Array<{
+    name: string;
+    value: string;
+  }>;
+  title: string;
 };
 
 export type ClaraCardProduct = {
@@ -26,11 +46,11 @@ export type ClaraCardProduct = {
   priceRange?: {
     minVariantPrice?: MoneyAmount;
   };
+  cardVariant?: {
+    nodes: ProductVariant[];
+  };
   variants?: {
-    nodes: Array<{
-      id: string;
-      availableForSale?: boolean;
-    }>;
+    nodes: ProductVariant[];
   };
 };
 
@@ -46,7 +66,8 @@ export function ClaraProductCard({
   const hoverImage = images.find((image) => image.url !== baseImage?.url);
   const price = product.priceRange?.minVariantPrice;
   const chip = product.productType || 'Curated object';
-  const firstVariant = product.variants?.nodes?.[0];
+  const firstVariant =
+    product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
 
   return (
     <article className="product-card cm-card">
@@ -83,8 +104,7 @@ export function ClaraProductCard({
         </Link>
         {firstVariant ? (
           <QuickAddButton
-            variantId={firstVariant.id}
-            available={firstVariant.availableForSale !== false}
+            variant={firstVariant}
           />
         ) : null}
       </div>
@@ -111,8 +131,9 @@ export function ClaraProductCard({
   );
 }
 
-function QuickAddButton({variantId, available}: {variantId: string; available: boolean}) {
+function QuickAddButton({variant}: {variant: ProductVariant}) {
   const {open} = useAside();
+  const available = variant.availableForSale !== false;
 
   if (!available) {
     return (
@@ -130,29 +151,21 @@ function QuickAddButton({variantId, available}: {variantId: string; available: b
   }
 
   return (
-    <CartForm
-      route="/cart"
-      inputs={{lines: [{merchandiseId: variantId, quantity: 1}]}}
-      action={CartForm.ACTIONS.LinesAdd}
+    <AddToCartButton
+      ariaLabel="Quick add to cart"
+      className="cm-quick-add"
+      lines={[
+        {
+          merchandiseId: variant.id,
+          quantity: 1,
+          selectedVariant: variant,
+        },
+      ]}
+      onSuccess={() => open('cart')}
+      showErrors={false}
     >
-      {(fetcher) => {
-        const isBusy = fetcher.state !== 'idle';
-        return (
-          <button
-            type="submit"
-            className="cm-quick-add"
-            disabled={isBusy}
-            aria-busy={isBusy}
-            aria-label="Quick add to cart"
-            onClick={() => {
-              setTimeout(() => open('cart'), 350);
-            }}
-          >
-            {isBusy ? '…' : '+'}
-          </button>
-        );
-      }}
-    </CartForm>
+      +
+    </AddToCartButton>
   );
 }
 
@@ -315,8 +328,9 @@ const cardCss = `
   justify-content: center;
   opacity: 0;
   transform: translateY(6px);
-  transition: opacity 400ms var(--cm-ease), transform 400ms var(--cm-ease), background 200ms;
+  transition: opacity 400ms var(--cm-ease), transform 400ms var(--cm-ease), background 220ms var(--cm-ease), box-shadow 220ms var(--cm-ease);
   box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+  will-change: opacity, transform;
 }
 
 .cm-card-media-wrap:hover .cm-quick-add,
@@ -326,10 +340,29 @@ const cardCss = `
 }
 
 .cm-quick-add:hover:not(:disabled) { background: #3d3832; }
-.cm-quick-add[aria-busy="true"] { background: #5a534a; cursor: wait; }
+.cm-quick-add[aria-busy="true"] {
+  background: var(--color-clay, #9c6f5d);
+  color: transparent;
+  cursor: progress;
+  transform: translateY(0) scale(0.98);
+}
+.cm-quick-add[aria-busy="true"]::after {
+  animation: cmQuickAddSpin 720ms linear infinite;
+  border: 1px solid rgba(255, 255, 255, 0.44);
+  border-radius: 999px;
+  border-top-color: #fff;
+  content: "";
+  height: 14px;
+  position: absolute;
+  width: 14px;
+}
 .cm-quick-add--unavailable {
   background: rgba(38,35,31,0.35) !important;
   cursor: not-allowed;
+}
+
+@keyframes cmQuickAddSpin {
+  to { transform: rotate(360deg); }
 }
 
 /* ── Mobile compact layout ── */

@@ -1,16 +1,18 @@
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartLayout, LineItemChildrenMap} from '~/components/CartMain';
 import {CartForm, Image, type OptimisticCartLine} from '@shopify/hydrogen';
+import {useEffect, useRef, useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
+import {getSwipeIntent} from '~/lib/cartSwipe';
 import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
-import type {
-  CartApiQueryFragment,
-  CartLineFragment,
-} from 'storefrontapi.generated';
+import type {CartApiQueryFragment} from 'storefrontapi.generated';
 
 export type CartLine = OptimisticCartLine<CartApiQueryFragment>;
+
+const SWIPE_ACTION_WIDTH = 96;
+const SWIPE_REVEAL_THRESHOLD = 8;
 
 /**
  * A single line item in the cart. It displays the product image, title, price.
@@ -33,66 +35,205 @@ export function CartLineItem({
   const {close} = useAside();
   const lineItemChildren = childrenMap[id];
   const childrenLabelId = `cart-line-children-${id}`;
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const pointerStart = useRef<{
+    pointerId: number;
+    startX: number;
+    startY: number;
+  } | null>(null);
+  const swipeFrame = useRef<number | null>(null);
+  const canSwipeRemove = !line.isOptimistic;
+  const isSwipeRevealed = swipeOffset <= -SWIPE_REVEAL_THRESHOLD;
+  const isSwipeOpen = swipeOffset <= -SWIPE_ACTION_WIDTH;
+
+  useEffect(() => {
+    return () => {
+      if (swipeFrame.current !== null) {
+        window.cancelAnimationFrame(swipeFrame.current);
+      }
+    };
+  }, []);
+
+  function setSwipeOffsetNow(offset: number) {
+    if (swipeFrame.current !== null) {
+      window.cancelAnimationFrame(swipeFrame.current);
+      swipeFrame.current = null;
+    }
+
+    setSwipeOffset(offset);
+  }
+
+  function scheduleSwipeOffset(offset: number) {
+    if (typeof window === 'undefined') {
+      setSwipeOffset(offset);
+      return;
+    }
+
+    if (swipeFrame.current !== null) {
+      window.cancelAnimationFrame(swipeFrame.current);
+    }
+
+    swipeFrame.current = window.requestAnimationFrame(() => {
+      swipeFrame.current = null;
+      setSwipeOffset(offset);
+    });
+  }
+
+  function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
+    if (
+      !canSwipeRemove ||
+      (typeof window !== 'undefined' &&
+        !window.matchMedia('(max-width: 720px)').matches)
+    ) {
+      return;
+    }
+
+    if (
+      event.target instanceof HTMLElement &&
+      event.target.closest('a, button, input, select, textarea')
+    ) {
+      return;
+    }
+
+    pointerStart.current = {
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startY: event.clientY,
+    };
+    setIsDragging(true);
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+
+  function handlePointerMove(event: React.PointerEvent<HTMLDivElement>) {
+    const start = pointerStart.current;
+    if (!start) return;
+
+    const intent = getSwipeIntent({
+      currentX: event.clientX,
+      currentY: event.clientY,
+      startX: start.startX,
+      startY: start.startY,
+    });
+
+    if (intent.direction === 'vertical') return;
+    if (event.cancelable) event.preventDefault();
+
+    scheduleSwipeOffset(intent.offset);
+  }
+
+  function handlePointerUp(event: React.PointerEvent<HTMLDivElement>) {
+    const start = pointerStart.current;
+    if (!start) return;
+
+    const intent = getSwipeIntent({
+      currentX: event.clientX,
+      currentY: event.clientY,
+      startX: start.startX,
+      startY: start.startY,
+    });
+
+    setSwipeOffsetNow(intent.shouldOpen ? -SWIPE_ACTION_WIDTH : 0);
+    setIsDragging(false);
+    pointerStart.current = null;
+
+    if (event.currentTarget.hasPointerCapture(start.pointerId)) {
+      event.currentTarget.releasePointerCapture(start.pointerId);
+    }
+  }
+
+  function handlePointerCancel() {
+    setSwipeOffsetNow(0);
+    setIsDragging(false);
+    pointerStart.current = null;
+  }
 
   return (
-    <li key={id} className="cart-line">
-      <div className="cart-line-inner">
-        {image && (
-          <Image
-            alt={title}
-            aspectRatio="1/1"
-            data={image}
-            height={100}
-            loading="lazy"
-            width={100}
+    <li
+      key={id}
+      className={`cart-line ${isSwipeRevealed ? 'is-swipe-revealed' : ''} ${
+        isSwipeOpen ? 'is-swipe-open' : ''
+      } ${isDragging ? 'is-dragging' : ''}`}
+    >
+      {canSwipeRemove ? (
+        <div className="cart-line-swipe-action" aria-hidden={!isSwipeRevealed}>
+          <CartLineRemoveButton
+            className="cart-line-swipe-remove"
+            disabled={!isSwipeOpen}
+            lineIds={[id]}
           />
-        )}
-
-        <div>
-          <Link
-            prefetch="intent"
-            to={lineItemUrl}
-            onClick={() => {
-              if (layout === 'aside') {
-                close();
-              }
-            }}
-          >
-            <p>
-              <strong>{product.title}</strong>
-            </p>
-          </Link>
-          <ProductPrice price={line?.cost?.totalAmount} />
-          <ul>
-            {selectedOptions.map((option) => (
-              <li key={option.name}>
-                <small>
-                  {option.name}: {option.value}
-                </small>
-              </li>
-            ))}
-          </ul>
-          <CartLineQuantity line={line} />
-        </div>
-      </div>
-
-      {lineItemChildren ? (
-        <div>
-          <p id={childrenLabelId} className="sr-only">
-            Line items with {product.title}
-          </p>
-          <ul aria-labelledby={childrenLabelId} className="cart-line-children">
-            {lineItemChildren.map((childLine) => (
-              <CartLineItem
-                childrenMap={childrenMap}
-                key={childLine.id}
-                line={childLine}
-                layout={layout}
-              />
-            ))}
-          </ul>
         </div>
       ) : null}
+
+      <div
+        className="cart-line-swipe-surface"
+        onPointerCancel={handlePointerCancel}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        style={{transform: `translateX(${swipeOffset}px)`}}
+      >
+        <div className="cart-line-inner">
+          {image && (
+            <Image
+              alt={title}
+              aspectRatio="1/1"
+              data={image}
+              height={100}
+              loading="lazy"
+              width={100}
+            />
+          )}
+
+          <div>
+            <Link
+              prefetch="intent"
+              to={lineItemUrl}
+              onClick={() => {
+                if (layout === 'aside') {
+                  close();
+                }
+              }}
+            >
+              <p>
+                <strong>{product.title}</strong>
+              </p>
+            </Link>
+            <ProductPrice price={line?.cost?.totalAmount} />
+            <ul>
+              {selectedOptions.map((option) => (
+                <li key={option.name}>
+                  <small>
+                    {option.name}: {option.value}
+                  </small>
+                </li>
+              ))}
+            </ul>
+            <CartLineQuantity line={line} />
+          </div>
+        </div>
+
+        {lineItemChildren ? (
+          <div>
+            <p id={childrenLabelId} className="sr-only">
+              Line items with {product.title}
+            </p>
+            <ul
+              aria-labelledby={childrenLabelId}
+              className="cart-line-children"
+            >
+              {lineItemChildren.map((childLine) => (
+                <CartLineItem
+                  childrenMap={childrenMap}
+                  key={childLine.id}
+                  line={childLine}
+                  layout={layout}
+                />
+              ))}
+            </ul>
+          </div>
+        ) : null}
+      </div>
     </li>
   );
 }
@@ -133,7 +274,11 @@ function CartLineQuantity({line}: {line: CartLine}) {
         </button>
       </CartLineUpdateButton>
       &nbsp;
-      <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
+      <CartLineRemoveButton
+        className="cart-line-remove"
+        lineIds={[lineId]}
+        disabled={!!isOptimistic}
+      />
     </div>
   );
 }
@@ -144,22 +289,30 @@ function CartLineQuantity({line}: {line: CartLine}) {
  * that it was successfully added to the cart.
  */
 function CartLineRemoveButton({
+  className,
   lineIds,
   disabled,
 }: {
+  className?: string;
   lineIds: string[];
   disabled: boolean;
 }) {
   return (
     <CartForm
-      fetcherKey={getUpdateKey(lineIds)}
+      fetcherKey={getLineActionKey(CartForm.ACTIONS.LinesRemove, lineIds)}
       route="/cart"
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button disabled={disabled} type="submit">
-        Remove
-      </button>
+      {(fetcher) => (
+        <button
+          className={className}
+          disabled={disabled || fetcher.state !== 'idle'}
+          type="submit"
+        >
+          {fetcher.state === 'idle' ? 'Remove' : 'Removing...'}
+        </button>
+      )}
     </CartForm>
   );
 }
@@ -175,7 +328,7 @@ function CartLineUpdateButton({
 
   return (
     <CartForm
-      fetcherKey={getUpdateKey(lineIds)}
+      fetcherKey={getLineActionKey(CartForm.ACTIONS.LinesUpdate, lineIds)}
       route="/cart"
       action={CartForm.ACTIONS.LinesUpdate}
       inputs={{lines}}
@@ -192,6 +345,6 @@ function CartLineUpdateButton({
  * @param lineIds - line ids affected by the update
  * @returns
  */
-function getUpdateKey(lineIds: string[]) {
-  return [CartForm.ACTIONS.LinesUpdate, ...lineIds].join('-');
+function getLineActionKey(action: string, lineIds: string[]) {
+  return [action, ...lineIds].join('-');
 }

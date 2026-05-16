@@ -235,7 +235,7 @@ export default function Product() {
                     ]
                   : []
               }
-              onClick={openCart}
+              onSuccess={openCart}
             >
               {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
             </AddToCartButton>
@@ -344,7 +344,7 @@ export default function Product() {
                 ]
               : []
           }
-          onClick={openCart}
+          onSuccess={openCart}
         >
           {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
         </AddToCartButton>

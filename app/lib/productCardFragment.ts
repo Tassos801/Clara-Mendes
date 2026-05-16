@@ -28,5 +28,35 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
         currencyCode
       }
     }
+    cardVariant: variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        compareAtPrice {
+          amount
+          currencyCode
+        }
+        image {
+          id
+          url
+          altText
+          width
+          height
+        }
+        price {
+          amount
+          currencyCode
+        }
+        product {
+          handle
+          title
+        }
+        selectedOptions {
+          name
+          value
+        }
+        title
+      }
+    }
   }
 ` as const;
