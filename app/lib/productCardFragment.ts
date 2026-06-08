@@ -27,11 +27,16 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
         amount
         currencyCode
       }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
     }
     cardVariant: variants(first: 1) {
       nodes {
         id
         availableForSale
+        barcode
         compareAtPrice {
           amount
           currencyCode
@@ -55,6 +60,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
           name
           value
         }
+        sku
         title
       }
     }

@@ -3,6 +3,7 @@ import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
+import {buildCheckoutUrlWithAttribution} from '~/lib/marketingAttribution';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -47,11 +48,24 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
 }
 
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+  const [attributedCheckoutUrl, setAttributedCheckoutUrl] =
+    useState(checkoutUrl);
+
+  useEffect(() => {
+    setAttributedCheckoutUrl(
+      checkoutUrl ? buildCheckoutUrlWithAttribution(checkoutUrl) : checkoutUrl,
+    );
+  }, [checkoutUrl]);
+
   if (!checkoutUrl) return null;
 
   return (
     <div className="cart-checkout-actions">
-      <a className="primary-button full-width" href={checkoutUrl} target="_self">
+      <a
+        className="primary-button full-width"
+        href={attributedCheckoutUrl || checkoutUrl}
+        target="_self"
+      >
         Continue to checkout
       </a>
     </div>

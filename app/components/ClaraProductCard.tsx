@@ -18,6 +18,7 @@ type ProductImage = {
 type ProductVariant = {
   id: string;
   availableForSale?: boolean;
+  barcode?: string | null;
   compareAtPrice?: MoneyAmount | null;
   image?: ProductImage | null;
   price: MoneyAmount;
@@ -29,6 +30,7 @@ type ProductVariant = {
     name: string;
     value: string;
   }>;
+  sku?: string | null;
   title: string;
 };
 
@@ -45,6 +47,7 @@ export type ClaraCardProduct = {
   };
   priceRange?: {
     minVariantPrice?: MoneyAmount;
+    maxVariantPrice?: MoneyAmount;
   };
   cardVariant?: {
     nodes: ProductVariant[];
@@ -103,9 +106,7 @@ export function ClaraProductCard({
           </div>
         </Link>
         {firstVariant ? (
-          <QuickAddButton
-            variant={firstVariant}
-          />
+          <QuickAddButton product={product} variant={firstVariant} />
         ) : null}
       </div>
       <Link
@@ -131,7 +132,13 @@ export function ClaraProductCard({
   );
 }
 
-function QuickAddButton({variant}: {variant: ProductVariant}) {
+function QuickAddButton({
+  product,
+  variant,
+}: {
+  product: ClaraCardProduct;
+  variant: ProductVariant;
+}) {
   const {open} = useAside();
   const available = variant.availableForSale !== false;
 
@@ -143,8 +150,21 @@ function QuickAddButton({variant}: {variant: ProductVariant}) {
         disabled
         aria-label="Sold out"
       >
-        <svg width="14" height="2" viewBox="0 0 14 2" fill="none" aria-hidden="true">
-          <line x1="0" y1="1" x2="14" y2="1" stroke="currentColor" strokeWidth="1.4" />
+        <svg
+          width="14"
+          height="2"
+          viewBox="0 0 14 2"
+          fill="none"
+          aria-hidden="true"
+        >
+          <line
+            x1="0"
+            y1="1"
+            x2="14"
+            y2="1"
+            stroke="currentColor"
+            strokeWidth="1.4"
+          />
         </svg>
       </button>
     );
@@ -153,6 +173,22 @@ function QuickAddButton({variant}: {variant: ProductVariant}) {
   return (
     <AddToCartButton
       ariaLabel="Quick add to cart"
+      analytics={{
+        products: [
+          {
+            productGid: product.id,
+            variantGid: variant.id,
+            name: product.title,
+            variantName: variant.title,
+            brand: product.vendor || 'Clara Mendes',
+            price: variant.price.amount,
+            currency: variant.price.currencyCode,
+            quantity: 1,
+            category: product.productType || undefined,
+            sku: variant.sku || undefined,
+          },
+        ],
+      }}
       className="cm-quick-add"
       lines={[
         {

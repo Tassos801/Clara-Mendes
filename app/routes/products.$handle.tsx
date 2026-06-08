@@ -11,6 +11,7 @@ import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {AdPlatformProductView} from '~/components/AdPlatformAnalytics';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
@@ -54,9 +55,11 @@ type ProductVariant = {
   id: string;
   title: string;
   availableForSale: boolean;
+  barcode?: string | null;
   price: MoneyAmount;
   compareAtPrice?: MoneyAmount | null;
   selectedOptions: SelectedOption[];
+  sku?: string | null;
   image?: ProductImage | null;
   product: {
     handle: string;
@@ -178,6 +181,67 @@ export default function Product() {
   }, []);
 
   const openCart = useCallback(() => open('cart'), [open]);
+  const productViewAnalytics = useMemo(
+    () => ({
+      products: selectedVariant
+        ? [
+            {
+              id: product.id,
+              productGid: product.id,
+              title: product.title,
+              name: product.title,
+              price: selectedVariant.price.amount,
+              currency: selectedVariant.price.currencyCode,
+              vendor: product.vendor || 'Clara Mendes',
+              brand: product.vendor || 'Clara Mendes',
+              variantId: selectedVariant.id,
+              variantGid: selectedVariant.id,
+              variantTitle: selectedVariant.title,
+              variantName: selectedVariant.title,
+              quantity: 1,
+              sku: selectedVariant.sku || undefined,
+              productType: product.productType || undefined,
+              category: product.productType || undefined,
+            },
+          ]
+        : [],
+    }),
+    [
+      product.id,
+      product.productType,
+      product.title,
+      product.vendor,
+      selectedVariant,
+    ],
+  );
+  const addToCartAnalytics = useMemo(
+    () => ({
+      products: selectedVariant
+        ? [
+            {
+              productGid: product.id,
+              variantGid: selectedVariant.id,
+              name: product.title,
+              variantName: selectedVariant.title,
+              brand: product.vendor || 'Clara Mendes',
+              price: selectedVariant.price.amount,
+              currency: selectedVariant.price.currencyCode,
+              quantity,
+              category: product.productType || undefined,
+              sku: selectedVariant.sku || undefined,
+            },
+          ]
+        : [],
+    }),
+    [
+      product.id,
+      product.productType,
+      product.title,
+      product.vendor,
+      quantity,
+      selectedVariant,
+    ],
+  );
 
   return (
     <div className="product-page">
@@ -186,12 +250,16 @@ export default function Product() {
           productSchema({
             availableForSale: productAvailableForSale,
             description: productDescription,
+            gtin: selectedVariant?.barcode,
             image: primaryImage?.url,
             priceRange: product.priceRange,
+            productId: product.id,
             productType: product.productType,
+            sku: selectedVariant?.sku,
             title: product.title,
             url: seoUrl,
             vendor: product.vendor,
+            variants: product.variants.nodes,
           }),
           breadcrumbSchema({
             items: [
@@ -203,22 +271,10 @@ export default function Product() {
       />
       {selectedVariant ? (
         <Analytics.ProductView
-          data={{
-            products: [
-              {
-                id: product.id,
-                title: product.title,
-                price: selectedVariant.price.amount,
-                vendor: product.vendor || 'Clara Mendes',
-                variantId: selectedVariant.id,
-                variantTitle: selectedVariant.title,
-                quantity,
-                productType: product.productType || undefined,
-              },
-            ],
-          }}
+          data={productViewAnalytics}
         />
       ) : null}
+      <AdPlatformProductView analytics={productViewAnalytics} />
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link to="/collections/all">Shop</Link>
         <span aria-hidden="true">›</span>
@@ -253,7 +309,10 @@ export default function Product() {
             />
           ) : null}
 
-          <div className="product-availability-row" aria-label="Purchase status">
+          <div
+            className="product-availability-row"
+            aria-label="Purchase status"
+          >
             <span
               className={`product-availability-chip ${
                 selectedVariant?.availableForSale
@@ -275,9 +334,7 @@ export default function Product() {
               <div className="quantity-control" aria-label="Product quantity">
                 <button
                   type="button"
-                  onClick={() =>
-                    setQuantity((value) => Math.max(1, value - 1))
-                  }
+                  onClick={() => setQuantity((value) => Math.max(1, value - 1))}
                   aria-label="Decrease quantity"
                 >
                   -
@@ -297,18 +354,7 @@ export default function Product() {
 
             <div ref={atcRef}>
               <AddToCartButton
-                analytics={{
-                  products: [
-                    {
-                      productGid: product.id,
-                      variantGid: selectedVariant?.id,
-                      name: product.title,
-                      variantName: selectedVariant?.title,
-                      price: selectedVariant?.price.amount,
-                      quantity,
-                    },
-                  ],
-                }}
+                analytics={addToCartAnalytics}
                 className="primary-button full-width"
                 disabled={!selectedVariant?.availableForSale}
                 lines={
@@ -454,18 +500,7 @@ export default function Product() {
           </div>
         </div>
         <AddToCartButton
-          analytics={{
-            products: [
-              {
-                productGid: product.id,
-                variantGid: selectedVariant?.id,
-                name: product.title,
-                variantName: selectedVariant?.title,
-                price: selectedVariant?.price.amount,
-                quantity,
-              },
-            ],
-          }}
+          analytics={addToCartAnalytics}
           className="primary-button sticky-atc-button"
           disabled={!selectedVariant?.availableForSale}
           lines={
@@ -630,6 +665,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
     id
     title
     availableForSale
+    barcode
     price {
       amount
       currencyCode
@@ -653,6 +689,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       handle
       title
     }
+    sku
   }
 ` as const;
 

@@ -16,7 +16,9 @@ import {
 } from '@shopify/hydrogen';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
+import {AdPlatformAnalytics} from '~/components/AdPlatformAnalytics';
 import {ClaraShell} from '~/components/ClaraShell';
+import {MarketingAttributionCapture} from '~/components/MarketingAttribution';
 import {getCartOrNull} from '~/lib/cart';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
@@ -90,6 +92,8 @@ export default function App() {
       consent={data.consent}
       shop={data.shop}
     >
+      <MarketingAttributionCapture />
+      <AdPlatformAnalytics />
       <ClaraShell cart={data.cart}>
         <Outlet />
       </ClaraShell>

@@ -3,6 +3,11 @@ import {data, useLoaderData} from 'react-router';
 import type {Route} from './+types/cart';
 import {CartMain} from '~/components/CartMain';
 import {getCartOrNull} from '~/lib/cart';
+import {
+  marketingAttributionToCartAttributes,
+  MARKETING_ATTRIBUTION_INPUT_NAME,
+  mergeCartAttributes,
+} from '~/lib/marketingAttribution';
 import {isLocalPath} from '~/lib/redirect';
 
 export const meta: Route.MetaFunction = () => {
@@ -30,6 +35,11 @@ export async function action({request, context}: Route.ActionArgs) {
   switch (action) {
     case CartForm.ACTIONS.LinesAdd:
       result = await cart.addLines(inputs.lines);
+      result = await updateCartAttribution({
+        cart,
+        formData,
+        result,
+      });
       break;
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);
@@ -86,6 +96,58 @@ export async function action({request, context}: Route.ActionArgs) {
     },
     {status, headers},
   );
+}
+
+async function updateCartAttribution({
+  cart,
+  formData,
+  result,
+}: {
+  cart: Route.ActionArgs['context']['cart'];
+  formData: FormData;
+  result: any;
+}) {
+  const cartResult = result?.cart;
+  const attributionAttributes = marketingAttributionToCartAttributes(
+    formData.get(MARKETING_ATTRIBUTION_INPUT_NAME),
+  );
+
+  if (!cartResult?.id || attributionAttributes.length === 0) {
+    return result;
+  }
+
+  const attributes = mergeCartAttributes(
+    cartResult.attributes,
+    attributionAttributes,
+  );
+
+  try {
+    const updatedResult = await cart.updateAttributes(attributes, {
+      cartId: cartResult.id,
+    });
+
+    if (updatedResult?.errors?.length) {
+      console.warn(
+        'Unable to persist marketing attribution cart attributes.',
+        updatedResult.errors,
+      );
+      return result;
+    }
+
+    return updatedResult?.cart
+      ? {
+          ...result,
+          cart: updatedResult.cart,
+          warnings: [
+            ...((result?.warnings as unknown[]) ?? []),
+            ...((updatedResult?.warnings as unknown[]) ?? []),
+          ],
+        }
+      : result;
+  } catch (error) {
+    console.warn('Unable to update cart attribution attributes.', error);
+    return result;
+  }
 }
 
 export default function Cart() {

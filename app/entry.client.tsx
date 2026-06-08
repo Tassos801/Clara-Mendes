@@ -31,7 +31,7 @@ function removeExternalDocumentChildren() {
   externalChildren.forEach((element) => element.remove());
 
   return () => {
-    window.requestAnimationFrame(() => {
+    window.setTimeout(() => {
       window.requestAnimationFrame(() => {
         externalChildren.forEach((element) => {
           if (!element.isConnected) {
@@ -39,6 +39,6 @@ function removeExternalDocumentChildren() {
           }
         });
       });
-    });
+    }, 1000);
   };
 }

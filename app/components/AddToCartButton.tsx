@@ -1,6 +1,13 @@
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
-import {useEffect, useRef} from 'react';
+import {useCallback, useEffect, useMemo, useRef} from 'react';
+import {useLocation} from 'react-router';
+import {sendAdPlatformCommerceEvent} from '~/components/AdPlatformAnalytics';
 import {getCartFormErrorMessages} from '~/lib/cartFormErrors';
+import {
+  getSerializedMarketingAttributionFromUrl,
+  getSerializedMarketingAttribution,
+  MARKETING_ATTRIBUTION_INPUT_NAME,
+} from '~/lib/marketingAttribution';
 
 type CartFetcher = {
   data?: unknown;
@@ -70,8 +77,26 @@ function AddToCartButtonContent({
   showErrors: boolean;
 }) {
   const wasSubmitting = useRef(false);
+  const attributionInputRef = useRef<HTMLInputElement>(null);
+  const location = useLocation();
   const errors = getCartFormErrorMessages(fetcher.data);
   const isBusy = fetcher.state !== 'idle';
+  const initialMarketingAttribution = useMemo(
+    () =>
+      getSerializedMarketingAttributionFromUrl(
+        `${location.pathname}${location.search}`,
+      ),
+    [location.pathname, location.search],
+  );
+  const refreshMarketingAttribution = useCallback(() => {
+    if (attributionInputRef.current) {
+      attributionInputRef.current.value = getSerializedMarketingAttribution();
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshMarketingAttribution();
+  }, [refreshMarketingAttribution]);
 
   useEffect(() => {
     if (fetcher.state !== 'idle') {
@@ -84,19 +109,30 @@ function AddToCartButtonContent({
     wasSubmitting.current = false;
 
     if (getCartFormErrorMessages(fetcher.data).length === 0) {
+      sendAdPlatformCommerceEvent('AddToCart', analytics, {
+        sourceEvent: 'cart_form_success',
+      });
       onSuccess?.();
     }
-  }, [fetcher.data, fetcher.state, onSuccess]);
+  }, [analytics, fetcher.data, fetcher.state, onSuccess]);
 
   return (
     <>
       <input name="analytics" type="hidden" value={JSON.stringify(analytics)} />
+      <input
+        name={MARKETING_ATTRIBUTION_INPUT_NAME}
+        type="hidden"
+        defaultValue={initialMarketingAttribution}
+        ref={attributionInputRef}
+      />
       <button
         aria-busy={isBusy}
         aria-label={ariaLabel}
         className={className}
         type="submit"
         disabled={disabled || isBusy}
+        onClick={refreshMarketingAttribution}
+        onPointerDown={refreshMarketingAttribution}
       >
         {isBusy && pendingChildren ? pendingChildren : children}
       </button>

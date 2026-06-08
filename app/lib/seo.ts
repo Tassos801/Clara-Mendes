@@ -16,20 +16,35 @@ type SeoMetaInput = {
 
 type ProductSchemaInput = {
   availableForSale?: boolean;
+  gtin?: string | null;
   description: string;
   image?: string | null;
   priceRange?: {
     minVariantPrice?: MoneyAmount;
     maxVariantPrice?: MoneyAmount;
   };
+  productId?: string | null;
   productType?: string | null;
   reviewSummary?: {
     count: number;
     averageRating: number | null;
   };
+  sku?: string | null;
   title: string;
   url: string;
   vendor?: string | null;
+  variants?: Array<{
+    availableForSale: boolean;
+    barcode?: string | null;
+    id: string;
+    price: MoneyAmount;
+    selectedOptions: Array<{
+      name: string;
+      value: string;
+    }>;
+    sku?: string | null;
+    title: string;
+  }>;
 };
 
 type BreadcrumbInput = {
@@ -160,14 +175,18 @@ export function collectionSchema({
 
 export function productSchema({
   availableForSale = true,
+  gtin,
   description,
   image,
   priceRange,
+  productId,
   productType,
   reviewSummary,
+  sku,
   title,
   url,
   vendor,
+  variants,
 }: ProductSchemaInput) {
   const minPrice = priceRange?.minVariantPrice;
   const maxPrice = priceRange?.maxVariantPrice;
@@ -184,6 +203,9 @@ export function productSchema({
     name: title,
     description: truncate(description, 500),
     image: image ? [image] : undefined,
+    productID: gidNumber(productId),
+    sku: sku || undefined,
+    gtin: gtin || undefined,
     category: productType || undefined,
     brand: {
       '@type': 'Brand',
@@ -211,6 +233,17 @@ export function productSchema({
         : minPrice
           ? offerFromPrice({availableForSale, price: minPrice, url})
           : undefined,
+    hasVariant:
+      variants && variants.length > 1
+        ? variants.slice(0, 50).map((variant) =>
+            productVariantSchema({
+              parentTitle: title,
+              url,
+              variant,
+              vendor,
+            }),
+          )
+        : undefined,
   };
 }
 
@@ -246,6 +279,40 @@ function offerFromPrice({
   };
 }
 
+function productVariantSchema({
+  parentTitle,
+  url,
+  variant,
+  vendor,
+}: {
+  parentTitle: string;
+  url: string;
+  variant: NonNullable<ProductSchemaInput['variants']>[number];
+  vendor?: string | null;
+}) {
+  const optionLabel = variant.selectedOptions
+    .map((option) => option.value)
+    .filter(Boolean)
+    .join(' / ');
+
+  return {
+    '@type': 'Product',
+    name: optionLabel ? `${parentTitle} - ${optionLabel}` : variant.title,
+    productID: gidNumber(variant.id),
+    sku: variant.sku || undefined,
+    gtin: variant.barcode || undefined,
+    brand: {
+      '@type': 'Brand',
+      name: vendor || SITE_NAME,
+    },
+    offers: offerFromPrice({
+      availableForSale: variant.availableForSale,
+      price: variant.price,
+      url,
+    }),
+  };
+}
+
 function schemaAvailability(availableForSale: boolean) {
   return availableForSale
     ? 'https://schema.org/InStock'
@@ -254,6 +321,11 @@ function schemaAvailability(availableForSale: boolean) {
 
 function normalizePrice(value: string) {
   return Number(value).toFixed(2);
+}
+
+function gidNumber(value?: string | null) {
+  if (!value) return undefined;
+  return value.split('/').pop();
 }
 
 function truncate(value: string, maxLength: number) {
