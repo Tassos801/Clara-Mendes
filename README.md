@@ -51,7 +51,11 @@ SESSION_SECRET=
 PUBLIC_STORE_DOMAIN=
 PUBLIC_CHECKOUT_DOMAIN=
 PUBLIC_STOREFRONT_API_TOKEN=
+PUBLIC_STOREFRONT_ID=
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID=
+PUBLIC_CUSTOMER_ACCOUNT_API_URL=
 PRIVATE_STOREFRONT_API_TOKEN=
+SHOP_ID=
 SHOPIFY_WEBHOOK_SECRET=
 SHOPIFY_ADMIN_ACCESS_TOKEN=
 SHOPIFY_ADMIN_API_VERSION=
@@ -76,6 +80,12 @@ Do not commit `.env`. It is ignored by git.
 Important: private Storefront API tokens are secrets. If a private token is
 shared outside the hosting provider's secret store, revoke it in Shopify Admin
 and generate a fresh token before production deployment.
+
+`PUBLIC_STOREFRONT_ID` lets the Hydrogen analytics provider attribute events to
+the deployed storefront. Shopify can provide it in an Oxygen environment; add it
+locally when validating analytics against a connected storefront.
+Customer account routes also depend on the Customer Account API variables from a
+linked Hydrogen or Headless storefront.
 
 ## Validation
 
@@ -144,6 +154,9 @@ Known state:
 
 If deploying through Shopify Admin, configure the required environment variables
 in the storefront environment instead of relying on local `.env`.
+
+Before launch, work through `docs/launch-readiness.md` alongside the focused
+catalog cleanup in `docs/shopify-admin-cleanup.md`.
 
 ## Fulfillment Intake
 

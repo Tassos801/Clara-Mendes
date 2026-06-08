@@ -8,7 +8,12 @@ import {
   useLoaderData,
   useRouteError,
 } from 'react-router';
-import {useNonce} from '@shopify/hydrogen';
+import {
+  Analytics,
+  getShopAnalytics,
+  useNonce,
+  type CartReturn,
+} from '@shopify/hydrogen';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
 import {ClaraShell} from '~/components/ClaraShell';
@@ -49,18 +54,46 @@ export function Layout({children}: {children?: React.ReactNode}) {
 }
 
 export async function loader({context}: Route.LoaderArgs) {
+  const {env, storefront} = context;
+
   return {
     cart: getCartOrNull(context.cart),
+    shop: getShopAnalytics({
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID ?? '0',
+    }).catch((error) => {
+      console.warn(
+        'Unable to load Shopify analytics configuration; continuing without it.',
+        error,
+      );
+      return null;
+    }),
+    consent: {
+      checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
+      storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+      withPrivacyBanner: false,
+      country: storefront.i18n.country,
+      language: storefront.i18n.language,
+    },
   };
 }
 
 export default function App() {
   const data = useLoaderData<typeof loader>();
+  // The generated fragment selects the fields analytics uses, while the
+  // provider exposes the broader Storefront API cart type.
+  const analyticsCart = data.cart as unknown as Promise<CartReturn | null>;
 
   return (
-    <ClaraShell cart={data.cart}>
-      <Outlet />
-    </ClaraShell>
+    <Analytics.Provider
+      cart={analyticsCart}
+      consent={data.consent}
+      shop={data.shop}
+    >
+      <ClaraShell cart={data.cart}>
+        <Outlet />
+      </ClaraShell>
+    </Analytics.Provider>
   );
 }
 

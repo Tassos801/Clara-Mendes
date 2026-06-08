@@ -5,6 +5,7 @@ import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
   filterDemoCollections,
@@ -12,6 +13,13 @@ import {
   HOME_GOODS_COLLECTIONS,
 } from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {
+  buildSeoMeta,
+  getCanonicalUrl,
+  organizationSchema,
+  websiteSchema,
+} from '~/lib/seo';
+import {RETURN_WINDOW_DAYS} from '~/lib/storefrontBasics';
 
 type HomeCollection = {
   id: string;
@@ -49,18 +57,16 @@ const HOME_ATMOSPHERE_IMAGES = {
   ],
 } as const;
 
-export const meta: Route.MetaFunction = () => {
-  return [
-    {title: 'Clara Mendes | Objects with Soul'},
-    {
-      name: 'description',
-      content:
-        'Curated supplier-sourced home goods with secure Shopify checkout and tracked fulfillment.',
-    },
-  ];
+export const meta: Route.MetaFunction = ({data}) => {
+  return buildSeoMeta({
+    description:
+      'Curated supplier-sourced home goods with secure Shopify checkout and tracked fulfillment.',
+    title: 'Objects with Soul | Clara Mendes',
+    url: data?.seoUrl ?? 'https://clara-mendes.com/',
+  });
 };
 
-export async function loader({context}: Route.LoaderArgs) {
+export async function loader({context, request}: Route.LoaderArgs) {
   try {
     const data = await context.storefront.query(HOMEPAGE_QUERY, {
       variables: {
@@ -73,16 +79,24 @@ export async function loader({context}: Route.LoaderArgs) {
         data.collections.nodes as HomeCollection[],
       ),
       products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+      seoUrl: getCanonicalUrl(request, '/'),
     };
   } catch {
-    return {collections: [] as HomeCollection[], products: []};
+    return {
+      collections: [] as HomeCollection[],
+      products: [] as ClaraCardProduct[],
+      seoUrl: getCanonicalUrl(request, '/'),
+    };
   }
 }
 
 export default function Homepage() {
-  const {collections, products} = useLoaderData<typeof loader>();
+  const {collections, products, seoUrl} = useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
+  const quickShopProducts = products.slice(0, 3);
+  const featuredProducts =
+    products.length > 3 ? products.slice(3, 7) : products.slice(0, 4);
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const outlineRef = useRef<HTMLDivElement | null>(null);
@@ -239,6 +253,9 @@ export default function Homepage() {
   return (
     <div className="commerce-home">
       <style suppressHydrationWarning>{homeCss}</style>
+      <StructuredData
+        data={[organizationSchema(seoUrl), websiteSchema(seoUrl)]}
+      />
 
       <section className="home-root" aria-labelledby="home-title">
         <div className="hm-layer-sharp" />
@@ -278,6 +295,17 @@ export default function Homepage() {
             <p ref={subRef} className="hm-prompt-sub">
               Timeless pieces for mindful living
             </p>
+            <div className="hm-hero-actions">
+              <Link
+                className="hm-hero-action hm-hero-action--primary"
+                to="/collections/all"
+              >
+                Shop the edit
+              </Link>
+              <Link className="hm-hero-action" to="/our-story">
+                Our story
+              </Link>
+            </div>
           </div>
 
           <div className="hm-coords">34.0522 N, 118.2437 W</div>
@@ -299,6 +327,67 @@ export default function Homepage() {
         <div ref={dotRef} className="hm-cursor-dot" />
         <div ref={outlineRef} className="hm-cursor-outline" />
       </section>
+
+      <section className="home-trust-band" aria-label="Store service">
+        <p>Secure Shopify checkout</p>
+        <p>Tracked delivery updates</p>
+        <p>{RETURN_WINDOW_DAYS}-day returns</p>
+      </section>
+
+      {quickShopProducts.length > 0 ? (
+        <section
+          className="home-shop-accelerator"
+          aria-labelledby="home-shop-accelerator-title"
+        >
+          <div className="home-shop-accelerator-copy">
+            <p className="eyebrow">Ready now</p>
+            <h2 id="home-shop-accelerator-title">
+              The fastest path to a calmer room.
+            </h2>
+            <p>
+              Start with best-selling pieces selected for instant atmosphere,
+              then check out through Shopify with delivery tracking and clear
+              return terms.
+            </p>
+            <div className="home-shop-accelerator-actions">
+              <Link className="primary-button" to="/collections/all">
+                Shop all pieces
+              </Link>
+              <Link className="text-link" to="/policies">
+                View policies
+              </Link>
+            </div>
+          </div>
+
+          <div
+            className="home-shop-accelerator-products"
+            aria-label="Ready to shop products"
+          >
+            {quickShopProducts.map((product, index) => (
+              <ClaraProductCard
+                key={product.id}
+                product={product}
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+            ))}
+          </div>
+
+          <div className="home-shop-accelerator-proof" aria-label="Buying support">
+            <p>
+              <strong>Checkout</strong>
+              <span>Shopify protected payment</span>
+            </p>
+            <p>
+              <strong>Delivery</strong>
+              <span>Tracking sent after dispatch</span>
+            </p>
+            <p>
+              <strong>Returns</strong>
+              <span>{RETURN_WINDOW_DAYS} days from delivery</span>
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       <section className="collection-intro home-commerce-intro">
         <div>
@@ -448,19 +537,21 @@ export default function Homepage() {
         </div>
       </section>
 
-      {products.length > 0 ? (
+      {featuredProducts.length > 0 ? (
         <section className="featured-grid-section" aria-labelledby="featured">
           <div className="section-heading-row">
             <div>
               <p className="eyebrow">Featured edit</p>
-              <h2 id="featured">Objects available now</h2>
+              <h2 id="featured">
+                {products.length > 3 ? 'More from the edit' : 'Objects available now'}
+              </h2>
             </div>
             <Link className="text-link" to="/collections/all">
               Shop all
             </Link>
           </div>
           <div className="product-grid">
-            {products.slice(0, 4).map((product, index) => (
+            {featuredProducts.map((product, index) => (
               <ClaraProductCard
                 key={product.id}
                 product={product}
@@ -710,6 +801,49 @@ html:has(.home-root) main {
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 1.5s;
 }
 
+.hm-hero-actions {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: clamp(28px, 4vw, 44px);
+  pointer-events: auto;
+}
+
+.hm-hero-action {
+  align-items: center;
+  background: rgba(20, 18, 15, 0.18);
+  border: 1px solid rgba(255,255,255,0.42);
+  color: var(--hm-text-main);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.16em;
+  min-height: 46px;
+  min-width: 150px;
+  padding: 0 20px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 240ms ease, border-color 240ms ease, color 240ms ease;
+}
+
+.hm-hero-action:hover {
+  background: rgba(20, 18, 15, 0.38);
+  border-color: rgba(255,255,255,0.72);
+}
+
+.hm-hero-action--primary {
+  background: rgba(255,255,255,0.94);
+  border-color: rgba(255,255,255,0.94);
+  color: #26231f;
+}
+
+.hm-hero-action--primary:hover {
+  background: white;
+  color: #26231f;
+}
+
 .hm-interaction-anchor {
   position: absolute;
   bottom: 4rem;
@@ -830,6 +964,114 @@ html:has(.home-root) main {
 
 .home-commerce-intro {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+}
+
+.home-trust-band {
+  background: var(--color-deep);
+  color: rgba(255,255,255,0.78);
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home-trust-band p {
+  background: var(--color-deep);
+  border-right: 1px solid rgba(255,255,255,0.12);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  line-height: 1.45;
+  margin: 0;
+  padding: clamp(18px, 2.5vw, 30px);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.home-trust-band p:last-child {
+  border-right: 0;
+}
+
+.home-shop-accelerator {
+  align-items: start;
+  background:
+    linear-gradient(90deg, var(--color-paper) 0%, #f4f0e8 58%, #dde4d9 100%);
+  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  display: grid;
+  gap: clamp(28px, 4vw, 58px);
+  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
+  padding: clamp(44px, 6vw, 88px) clamp(18px, 4vw, 70px);
+}
+
+.home-shop-accelerator-copy {
+  display: grid;
+  gap: clamp(18px, 2vw, 28px);
+  position: sticky;
+  top: 96px;
+}
+
+.home-shop-accelerator-copy h2 {
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: clamp(2.7rem, 5.4vw, 5.6rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.93;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.home-shop-accelerator-copy p:not(.eyebrow) {
+  color: var(--color-muted);
+  font-size: 1.04rem;
+  line-height: 1.72;
+  margin: 0;
+  max-width: 44ch;
+}
+
+.home-shop-accelerator-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.home-shop-accelerator-products {
+  display: grid;
+  gap: clamp(16px, 2vw, 28px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home-shop-accelerator-proof {
+  border-top: 1px solid rgba(38, 35, 31, 0.14);
+  display: grid;
+  gap: 0;
+  grid-column: 1 / -1;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.home-shop-accelerator-proof p {
+  border-right: 1px solid rgba(38, 35, 31, 0.12);
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding: clamp(16px, 2.4vw, 28px) clamp(0px, 2vw, 28px);
+}
+
+.home-shop-accelerator-proof p:last-child {
+  border-right: 0;
+}
+
+.home-shop-accelerator-proof strong {
+  color: var(--color-ink);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.home-shop-accelerator-proof span {
+  color: var(--color-muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
 }
 
 .featured-collections {
@@ -1213,6 +1455,17 @@ html:has(.home-root) main {
     line-height: 1.8;
   }
 
+  .hm-hero-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .hm-hero-action {
+    min-height: 42px;
+    min-width: min(220px, 100%);
+  }
+
   .hm-interaction-anchor {
     bottom: 4.7rem;
     gap: 1.35rem;
@@ -1238,6 +1491,53 @@ html:has(.home-root) main {
 
   .featured-collections-track {
     scroll-padding-inline: 18px;
+  }
+
+  .home-trust-band {
+    grid-template-columns: 1fr;
+  }
+
+  .home-trust-band p {
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    border-right: 0;
+    padding: 16px 18px;
+  }
+
+  .home-trust-band p:last-child {
+    border-bottom: 0;
+  }
+
+  .home-shop-accelerator {
+    grid-template-columns: 1fr;
+    padding-bottom: 54px;
+    padding-top: 48px;
+  }
+
+  .home-shop-accelerator-copy {
+    position: static;
+  }
+
+  .home-shop-accelerator-copy h2 {
+    font-size: clamp(2.35rem, 11vw, 4rem);
+  }
+
+  .home-shop-accelerator-products {
+    grid-template-columns: 1fr;
+  }
+
+  .home-shop-accelerator-proof {
+    grid-template-columns: 1fr;
+  }
+
+  .home-shop-accelerator-proof p {
+    border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+    border-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .home-shop-accelerator-proof p:last-child {
+    border-bottom: 0;
   }
 
   .featured-collection-card {

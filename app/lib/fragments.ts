@@ -32,6 +32,7 @@ export const CART_QUERY_FRAGMENT = `#graphql
         price {
           ...Money
         }
+        sku
         requiresShipping
         title
         image {
@@ -47,6 +48,7 @@ export const CART_QUERY_FRAGMENT = `#graphql
           title
           id
           vendor
+          productType
         }
         selectedOptions {
           name
@@ -88,6 +90,7 @@ export const CART_QUERY_FRAGMENT = `#graphql
         price {
           ...Money
         }
+        sku
         requiresShipping
         title
         image {
@@ -102,6 +105,7 @@ export const CART_QUERY_FRAGMENT = `#graphql
           title
           id
           vendor
+          productType
         }
         selectedOptions {
           name

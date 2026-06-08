@@ -15,6 +15,7 @@ type SeoMetaInput = {
 };
 
 type ProductSchemaInput = {
+  availableForSale?: boolean;
   description: string;
   image?: string | null;
   priceRange?: {
@@ -56,7 +57,9 @@ export function buildSeoMeta({
   type = 'website',
   url,
 }: SeoMetaInput) {
-  const metaTitle = title.includes(SITE_NAME) ? title : `${title} | ${SITE_NAME}`;
+  const metaTitle = title.includes(SITE_NAME)
+    ? title
+    : `${title} | ${SITE_NAME}`;
   const metaDescription = truncate(description, 155);
   const shareImage = image || DEFAULT_SHARE_IMAGE;
 
@@ -156,6 +159,7 @@ export function collectionSchema({
 }
 
 export function productSchema({
+  availableForSale = true,
   description,
   image,
   priceRange,
@@ -170,7 +174,9 @@ export function productSchema({
   const hasPriceRange =
     minPrice && maxPrice && Number(minPrice.amount) !== Number(maxPrice.amount);
   const hasRating =
-    reviewSummary && reviewSummary.count >= 3 && reviewSummary.averageRating != null;
+    reviewSummary &&
+    reviewSummary.count >= 3 &&
+    reviewSummary.averageRating != null;
 
   return {
     '@context': 'https://schema.org',
@@ -199,11 +205,11 @@ export function productSchema({
             lowPrice: normalizePrice(minPrice.amount),
             highPrice: normalizePrice(maxPrice.amount),
             priceCurrency: minPrice.currencyCode,
-            availability: 'https://schema.org/InStock',
+            availability: schemaAvailability(availableForSale),
             url,
           }
         : minPrice
-          ? offerFromPrice({price: minPrice, url})
+          ? offerFromPrice({availableForSale, price: minPrice, url})
           : undefined,
   };
 }
@@ -221,15 +227,29 @@ export function breadcrumbSchema({items}: BreadcrumbInput) {
   };
 }
 
-function offerFromPrice({price, url}: {price: MoneyAmount; url: string}) {
+function offerFromPrice({
+  availableForSale = true,
+  price,
+  url,
+}: {
+  availableForSale?: boolean;
+  price: MoneyAmount;
+  url: string;
+}) {
   return {
     '@type': 'Offer',
     price: normalizePrice(price.amount),
     priceCurrency: price.currencyCode,
-    availability: 'https://schema.org/InStock',
+    availability: schemaAvailability(availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
     url,
   };
+}
+
+function schemaAvailability(availableForSale: boolean) {
+  return availableForSale
+    ? 'https://schema.org/InStock'
+    : 'https://schema.org/OutOfStock';
 }
 
 function normalizePrice(value: string) {

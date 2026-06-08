@@ -1,16 +1,27 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Link, redirect, useLoaderData, useLocation} from 'react-router';
-import {getSelectedProductOptions} from '@shopify/hydrogen';
+import {
+  Analytics,
+  getSelectedProductOptions,
+  ShopPayButton,
+} from '@shopify/hydrogen';
 import type {Route} from './+types/products.$handle';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {getProductDescription} from '~/lib/productCopy';
+import {
+  breadcrumbSchema,
+  buildSeoMeta,
+  getCanonicalUrl,
+  productSchema,
+} from '~/lib/seo';
 import {RETURN_WINDOW_DAYS} from '~/lib/storefrontBasics';
 
 type MoneyAmount = {
@@ -67,15 +78,15 @@ export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
   const description = product ? getProductDescription(product) : null;
 
-  return [
-    {title: `Clara Mendes | ${product?.title ?? 'Product'}`},
-    {
-      name: 'description',
-      content:
-        description ||
-        'Shop this Clara Mendes product through secure Shopify checkout.',
-    },
-  ];
+  return buildSeoMeta({
+    description:
+      description ||
+      'Shop this Clara Mendes product through secure Shopify checkout.',
+    image: product?.featuredImage?.url,
+    title: product?.title ?? 'Product',
+    type: 'product',
+    url: data?.seoUrl ?? 'https://clara-mendes.com/products',
+  });
 };
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
@@ -107,20 +118,39 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     relatedProducts: filterDemoProducts(
       data.relatedProducts.nodes as ClaraCardProduct[],
     ).filter((product) => product.handle !== handle),
+    seoUrl: getCanonicalUrl(request, `/products/${data.product.handle}`),
+    storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
 
 export default function Product() {
-  const {product, relatedProducts} = useLoaderData<typeof loader>();
+  const {product, relatedProducts, seoUrl, storeDomain} =
+    useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
   const atcRef = useRef<HTMLDivElement>(null);
   const [showStickyATC, setShowStickyATC] = useState(false);
   const selectedVariant =
     product.selectedOrFirstAvailableVariant ?? product.variants.nodes[0];
+  const selectedVariantPrice = selectedVariant
+    ? formatMoney(selectedVariant.price)
+    : null;
+  const purchaseButtonLabel =
+    selectedVariant?.availableForSale && selectedVariantPrice
+      ? `Add to cart - ${selectedVariantPrice}`
+      : 'Sold out';
+  const stickyButtonLabel =
+    selectedVariant?.availableForSale && selectedVariantPrice
+      ? `Add - ${selectedVariantPrice}`
+      : 'Sold out';
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
   const productDescription = getProductDescription(product);
+  const productAvailableForSale = product.variants.nodes.some(
+    (variant) => variant.availableForSale,
+  );
+  const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
+  const shopUrl = new URL('/collections/all', seoUrl).toString();
   const galleryImages = useMemo(() => {
     const images = [
       ...(primaryImage ? [primaryImage] : []),
@@ -129,9 +159,12 @@ export default function Product() {
 
     return images.filter(
       (image, index, list) =>
-        image?.url && list.findIndex((item) => item.url === image.url) === index,
+        image?.url &&
+        list.findIndex((item) => item.url === image.url) === index,
     );
   }, [primaryImage, product.images?.nodes]);
+  const leadGalleryImage = galleryImages[0];
+  const supportingGalleryImages = galleryImages.slice(1);
 
   useEffect(() => {
     const target = atcRef.current;
@@ -148,6 +181,44 @@ export default function Product() {
 
   return (
     <div className="product-page">
+      <StructuredData
+        data={[
+          productSchema({
+            availableForSale: productAvailableForSale,
+            description: productDescription,
+            image: primaryImage?.url,
+            priceRange: product.priceRange,
+            productType: product.productType,
+            title: product.title,
+            url: seoUrl,
+            vendor: product.vendor,
+          }),
+          breadcrumbSchema({
+            items: [
+              {name: 'Shop', url: shopUrl},
+              {name: product.title, url: seoUrl},
+            ],
+          }),
+        ]}
+      />
+      {selectedVariant ? (
+        <Analytics.ProductView
+          data={{
+            products: [
+              {
+                id: product.id,
+                title: product.title,
+                price: selectedVariant.price.amount,
+                vendor: product.vendor || 'Clara Mendes',
+                variantId: selectedVariant.id,
+                variantTitle: selectedVariant.title,
+                quantity,
+                productType: product.productType || undefined,
+              },
+            ],
+          }}
+        />
+      ) : null}
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link to="/collections/all">Shop</Link>
         <span aria-hidden="true">›</span>
@@ -155,16 +226,13 @@ export default function Product() {
       </nav>
 
       <section className="product-detail-layout">
-        <div className="product-gallery">
-          {galleryImages.length > 0 ? (
-            galleryImages.map((image, index) => (
-              <img
-                key={image.url}
-                src={image.url}
-                alt={image.altText || `${product.title} ${index + 1}`}
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
-            ))
+        <div className="product-gallery product-gallery--lead">
+          {leadGalleryImage ? (
+            <img
+              src={leadGalleryImage.url}
+              alt={leadGalleryImage.altText || product.title}
+              loading="eager"
+            />
           ) : (
             <div className="product-image-placeholder" aria-hidden />
           )}
@@ -185,68 +253,122 @@ export default function Product() {
             />
           ) : null}
 
+          <div className="product-availability-row" aria-label="Purchase status">
+            <span
+              className={`product-availability-chip ${
+                selectedVariant?.availableForSale
+                  ? 'is-available'
+                  : 'is-unavailable'
+              }`}
+            >
+              {selectedVariant?.availableForSale ? 'In stock' : 'Sold out'}
+            </span>
+            <span>Ships in 3-7 business days</span>
+            <span>{RETURN_WINDOW_DAYS}-day returns</span>
+          </div>
+
           <VariantOptions product={product} selectedVariant={selectedVariant} />
 
-          <div className="quantity-row">
-            <span>Quantity</span>
-            <div className="quantity-control" aria-label="Product quantity">
-              <button
-                type="button"
-                onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-                aria-label="Decrease quantity"
-              >
-                -
-              </button>
-              <span>{quantity}</span>
-              <button
-                type="button"
-                onClick={() => setQuantity((value) => Math.min(99, value + 1))}
-                aria-label="Increase quantity"
-              >
-                +
-              </button>
+          <div className="product-buy-box">
+            <div className="quantity-row">
+              <span>Quantity</span>
+              <div className="quantity-control" aria-label="Product quantity">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setQuantity((value) => Math.max(1, value - 1))
+                  }
+                  aria-label="Decrease quantity"
+                >
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button
+                  type="button"
+                  onClick={() =>
+                    setQuantity((value) => Math.min(99, value + 1))
+                  }
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
             </div>
+
+            <div ref={atcRef}>
+              <AddToCartButton
+                analytics={{
+                  products: [
+                    {
+                      productGid: product.id,
+                      variantGid: selectedVariant?.id,
+                      name: product.title,
+                      variantName: selectedVariant?.title,
+                      price: selectedVariant?.price.amount,
+                      quantity,
+                    },
+                  ],
+                }}
+                className="primary-button full-width"
+                disabled={!selectedVariant?.availableForSale}
+                lines={
+                  selectedVariant
+                    ? [
+                        {
+                          merchandiseId: selectedVariant.id,
+                          quantity,
+                          selectedVariant,
+                        },
+                      ]
+                    : []
+                }
+                onSuccess={openCart}
+                pendingChildren="Adding..."
+              >
+                {purchaseButtonLabel}
+              </AddToCartButton>
+            </div>
+
+            {selectedVariant?.availableForSale && shopPayStoreUrl ? (
+              <div
+                className="shop-pay-accelerator"
+                aria-label="Express checkout with Shop Pay"
+              >
+                <ShopPayButton
+                  storeDomain={shopPayStoreUrl}
+                  variantIdsAndQuantities={[{id: selectedVariant.id, quantity}]}
+                  width="100%"
+                />
+              </div>
+            ) : null}
+
+            <p className="product-buy-note">
+              Taxes and shipping are confirmed before payment. Cart opens after
+              adding so you can review the order before checkout.
+            </p>
           </div>
 
-          <div ref={atcRef}>
-            <AddToCartButton
-              analytics={{
-                products: [
-                  {
-                    productGid: product.id,
-                    variantGid: selectedVariant?.id,
-                    name: product.title,
-                    variantName: selectedVariant?.title,
-                    price: selectedVariant?.price.amount,
-                    quantity,
-                  },
-                ],
-              }}
-              className="primary-button full-width"
-              disabled={!selectedVariant?.availableForSale}
-              lines={
-                selectedVariant
-                  ? [
-                      {
-                        merchandiseId: selectedVariant.id,
-                        quantity,
-                        selectedVariant,
-                      },
-                    ]
-                  : []
-              }
-              onSuccess={openCart}
-            >
-              {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
-            </AddToCartButton>
-          </div>
+          <ul className="product-assurance-list" aria-label="Order reassurance">
+            <li>
+              <span aria-hidden />
+              Secure checkout powered by Shopify.
+            </li>
+            <li>
+              <span aria-hidden />
+              Tracking details are emailed after dispatch.
+            </li>
+            <li>
+              <span aria-hidden />
+              Support responds within one business day.
+            </li>
+          </ul>
 
           <dl className="product-details-list">
             <div>
               <dt>Shipping</dt>
               <dd>
-                Ships within 3–7 business days. Tracking provided via email
-                once dispatched. Delivery times vary by location.
+                Ships within 3–7 business days. Tracking provided via email once
+                dispatched. Delivery times vary by location.
               </dd>
             </div>
             <div>
@@ -278,6 +400,19 @@ export default function Product() {
             </div>
           </dl>
         </div>
+
+        {supportingGalleryImages.length > 0 ? (
+          <div className="product-gallery product-gallery--supporting">
+            {supportingGalleryImages.map((image, index) => (
+              <img
+                key={image.url}
+                src={image.url}
+                alt={image.altText || `${product.title} ${index + 2}`}
+                loading="lazy"
+              />
+            ))}
+          </div>
+        ) : null}
       </section>
 
       {relatedProducts.length > 0 ? (
@@ -346,7 +481,7 @@ export default function Product() {
           }
           onSuccess={openCart}
         >
-          {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+          {stickyButtonLabel}
         </AddToCartButton>
       </div>
     </div>
@@ -418,6 +553,10 @@ function VariantOptions({
 
               return (
                 <Link
+                  aria-current={selected ? 'true' : undefined}
+                  aria-disabled={
+                    variant?.availableForSale === false ? 'true' : undefined
+                  }
                   className={[
                     selected ? 'is-selected' : '',
                     variant?.availableForSale === false ? 'is-unavailable' : '',
@@ -478,6 +617,12 @@ function getVendorLabel(vendor?: string | null) {
   if (!vendor) return null;
   if (vendor.toLowerCase().includes('mock')) return null;
   return vendor;
+}
+
+function getStoreUrl(storeDomain: string) {
+  return /^https?:\/\//i.test(storeDomain)
+    ? storeDomain
+    : `https://${storeDomain}`;
 }
 
 const PRODUCT_VARIANT_FRAGMENT = `#graphql

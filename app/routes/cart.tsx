@@ -1,4 +1,4 @@
-import {CartForm} from '@shopify/hydrogen';
+import {Analytics, CartForm} from '@shopify/hydrogen';
 import {data, useLoaderData} from 'react-router';
 import type {Route} from './+types/cart';
 import {CartMain} from '~/components/CartMain';
@@ -68,7 +68,9 @@ export async function action({request, context}: Route.ActionArgs) {
   }
 
   const cartResult = result?.cart;
-  const headers = cartResult?.id ? cart.setCartId(cartResult.id) : new Headers();
+  const headers = cartResult?.id
+    ? cart.setCartId(cartResult.id)
+    : new Headers();
   const redirectTo = formData.get('redirectTo');
 
   if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
@@ -91,12 +93,11 @@ export default function Cart() {
 
   return (
     <div className="cart-page">
+      <Analytics.CartView />
       <header className="page-hero compact-hero">
         <p className="eyebrow">Cart</p>
         <h1>Your current edit</h1>
-        <p>
-          Review your pieces, apply codes, and continue to secure checkout.
-        </p>
+        <p>Review your pieces, apply codes, and continue to secure checkout.</p>
       </header>
 
       <CartMain cart={cart} layout="page" />
