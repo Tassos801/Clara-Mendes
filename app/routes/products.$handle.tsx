@@ -14,8 +14,10 @@ import {
 import {AdPlatformProductView} from '~/components/AdPlatformAnalytics';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
+import {RecentlyViewed} from '~/components/RecentlyViewed';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription} from '~/lib/productCopy';
 import {
   breadcrumbSchema,
@@ -179,6 +181,34 @@ export default function Product() {
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    recordRecentlyViewed({
+      amount:
+        selectedVariant?.price.amount ??
+        product.priceRange?.minVariantPrice?.amount,
+      currencyCode:
+        selectedVariant?.price.currencyCode ??
+        product.priceRange?.minVariantPrice?.currencyCode,
+      handle: product.handle,
+      id: product.id,
+      imageAlt: primaryImage?.altText ?? undefined,
+      imageUrl: primaryImage?.url,
+      productType: product.productType ?? undefined,
+      title: product.title,
+    });
+  }, [
+    primaryImage?.altText,
+    primaryImage?.url,
+    product.handle,
+    product.id,
+    product.priceRange?.minVariantPrice?.amount,
+    product.priceRange?.minVariantPrice?.currencyCode,
+    product.productType,
+    product.title,
+    selectedVariant?.price.amount,
+    selectedVariant?.price.currencyCode,
+  ]);
 
   const openCart = useCallback(() => open('cart'), [open]);
   const productViewAnalytics = useMemo(
@@ -479,6 +509,8 @@ export default function Product() {
           </div>
         </section>
       ) : null}
+
+      <RecentlyViewed excludeHandles={[product.handle]} />
 
       <div className={`sticky-atc-bar ${showStickyATC ? 'is-visible' : ''}`}>
         <div className="sticky-atc-info">
