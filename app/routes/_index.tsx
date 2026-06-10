@@ -330,7 +330,11 @@ export default function Homepage() {
         <div ref={outlineRef} className="hm-cursor-outline" />
       </section>
 
-      <section className="home-trust-band" aria-label="Store service">
+      <section
+        className="home-trust-band"
+        aria-label="Store service"
+        data-chapter="linen"
+      >
         <p>Secure Shopify checkout</p>
         <p>Tracked delivery updates</p>
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
@@ -340,8 +344,9 @@ export default function Homepage() {
         <section
           className="home-shop-accelerator"
           aria-labelledby="home-shop-accelerator-title"
+          data-chapter="linen"
         >
-          <div className="home-shop-accelerator-copy">
+          <div className="home-shop-accelerator-copy" data-reveal>
             <p className="eyebrow">Ready now</p>
             <h2 id="home-shop-accelerator-title">
               The fastest path to a calmer room.
@@ -364,6 +369,7 @@ export default function Homepage() {
           <div
             className="home-shop-accelerator-products"
             aria-label="Ready to shop products"
+            data-reveal
           >
             {quickShopProducts.map((product, index) => (
               <ClaraProductCard
@@ -391,8 +397,11 @@ export default function Homepage() {
         </section>
       ) : null}
 
-      <section className="collection-intro home-commerce-intro">
-        <div>
+      <section
+        className="collection-intro home-commerce-intro"
+        data-chapter="clay"
+      >
+        <div data-reveal>
           <p className="eyebrow">Home goods edit</p>
           <h2>
             {products.length > 0
@@ -412,6 +421,7 @@ export default function Homepage() {
           categoryItems.length === 1 ? ' featured-collections--solo' : ''
         }`}
         aria-label={hasLiveCollections ? 'Collections' : 'Sourcing focus'}
+        data-chapter="clay"
       >
         <div className="category-carousel-toolbar featured-collections-toolbar">
           <div
@@ -482,11 +492,15 @@ export default function Homepage() {
       <section
         className="home-atmosphere-section"
         aria-labelledby="home-atmosphere-title"
+        data-chapter="umber"
       >
         <div className="home-atmosphere-rule" aria-hidden />
 
         <div className="home-atmosphere-layout">
-          <figure className="home-atmosphere-figure home-atmosphere-figure--lead">
+          <figure
+            className="home-atmosphere-figure home-atmosphere-figure--lead"
+            data-reveal
+          >
             <img
               src={HOME_ATMOSPHERE_IMAGES.lead.src}
               alt={HOME_ATMOSPHERE_IMAGES.lead.alt}
@@ -496,7 +510,7 @@ export default function Homepage() {
             <figcaption>{HOME_ATMOSPHERE_IMAGES.lead.caption}</figcaption>
           </figure>
 
-          <div className="home-atmosphere-copy">
+          <div className="home-atmosphere-copy" data-reveal>
             <p className="eyebrow">Quiet rooms</p>
             <h2 id="home-atmosphere-title">
               A room that feels collected, not decorated.
@@ -517,6 +531,7 @@ export default function Homepage() {
           <div
             className="home-atmosphere-supporting"
             aria-label="Store mood details"
+            data-reveal
           >
             {HOME_ATMOSPHERE_IMAGES.supporting.map((image) => (
               <figure className="home-atmosphere-figure" key={image.caption}>
@@ -540,8 +555,12 @@ export default function Homepage() {
       </section>
 
       {featuredProducts.length > 0 ? (
-        <section className="featured-grid-section" aria-labelledby="featured">
-          <div className="section-heading-row">
+        <section
+          className="featured-grid-section"
+          aria-labelledby="featured"
+          data-chapter="linen"
+        >
+          <div className="section-heading-row" data-reveal>
             <div>
               <p className="eyebrow">Featured edit</p>
               <h2 id="featured">
@@ -576,9 +595,9 @@ export default function Homepage() {
         </section>
       )}
 
-      <section className="story-section home-story-return">
+      <section className="story-section home-story-return" data-chapter="ink">
         <div className="story-image" aria-hidden />
-        <div className="story-copy">
+        <div className="story-copy" data-reveal>
           <p className="eyebrow">Considered sourcing</p>
           <h2>Atmosphere first, details underneath.</h2>
           <p>
@@ -637,7 +656,9 @@ html:has(.home-root) main {
 }
 
 .commerce-home {
-  background: var(--color-paper);
+  /* Translucent wash lets the cinematic painted canvas breathe through;
+     falls back to the solid paper body background without WebGL */
+  background: rgba(251, 250, 246, 0.85);
 }
 
 .home-root {

@@ -61,7 +61,8 @@ export function Aside({
       aria-labelledby={id}
     >
       <button className="close-outside" onClick={close} />
-      <aside>
+      {/* data-lenis-prevent keeps drawer scrolling native under smooth scroll */}
+      <aside data-lenis-prevent>
         <header>
           <h3 id={id}>{heading}</h3>
           <button className="close reset" onClick={close} aria-label="Close">

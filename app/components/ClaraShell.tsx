@@ -4,6 +4,7 @@ import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
+import {CinematicProvider} from './cinematic/CinematicProvider';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
@@ -21,11 +22,13 @@ export function ClaraShell({
 }) {
   return (
     <Aside.Provider>
-      <ClaraHeader cart={cart} />
-      <main>{children}</main>
-      <ClaraFooter />
-      <ClaraCartDrawer cart={cart} />
-      <ClaraMobileNav />
+      <CinematicProvider>
+        <ClaraHeader cart={cart} />
+        <main>{children}</main>
+        <ClaraFooter />
+        <ClaraCartDrawer cart={cart} />
+        <ClaraMobileNav />
+      </CinematicProvider>
     </Aside.Provider>
   );
 }
@@ -128,6 +131,7 @@ function ClaraMobileNav() {
         aria-label="Mobile navigation"
         aria-modal={isOpen}
         role="dialog"
+        data-lenis-prevent
       >
         <header className="mobile-nav-header">
           <Link className="brand-mark" to="/" onClick={close}>
@@ -172,6 +176,7 @@ function ClaraCartDrawer({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
         aria-label="Shopping cart"
         aria-modal={isOpen}
         role="dialog"
+        data-lenis-prevent
       >
         <header className="cart-drawer-header">
           <p className="eyebrow">Cart</p>
