@@ -1,17 +1,21 @@
-import {useState} from 'react';
-import {Link, useLoaderData} from 'react-router';
-import {getPaginationVariables} from '@shopify/hydrogen';
+import {useEffect, useState} from 'react';
+import {Link, useLoaderData, useNavigate, useSearchParams} from 'react-router';
+import {getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.all';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
-import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {
   filterDemoCollections,
   filterDemoProducts,
   HOME_GOODS_COLLECTIONS,
 } from '~/lib/catalogFilters';
+import {
+  COLLECTION_SORT_OPTIONS,
+  getCollectionSortValue,
+  getProductsSortInput,
+} from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 
 export type CollectionLink = {
@@ -60,12 +64,14 @@ export const meta: Route.MetaFunction = () => {
 
 export async function loader({context, request}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 60,
+    pageBy: 24,
   });
+  const sort = getCollectionSortValue(new URL(request.url).searchParams);
 
   const data = await context.storefront.query(ALL_COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
+      ...getProductsSortInput(sort),
     },
   });
 
@@ -91,9 +97,27 @@ export function CollectionView({data}: {data: CollectionViewData}) {
     {id: 'all', handle: 'all', title: 'All'},
     ...data.collections,
   ];
-  const [sortKey, setSortKey] = useState('featured');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const sort = getCollectionSortValue(searchParams);
+  const {ref: loadMoreRef, inView} = useInView();
 
-  const sortedProducts = sortProducts(data.products.nodes, sortKey);
+  const onSortChange = (value: string) => {
+    void setSearchParams(
+      (params) => {
+        const next = new URLSearchParams(params);
+        // Reset pagination cursors so the new sort starts from page one
+        next.delete('cursor');
+        next.delete('direction');
+        if (value === 'featured') {
+          next.delete('sort');
+        } else {
+          next.set('sort', value);
+        }
+        return next;
+      },
+      {preventScrollReset: true},
+    );
+  };
 
   return (
     <div className="collection-page cv-root">
@@ -151,74 +175,136 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           <select
             id="cv-sort-select"
             className="cv-sort-select"
-            value={sortKey}
-            onChange={(e) => setSortKey(e.target.value)}
+            value={sort}
+            onChange={(e) => onSortChange(e.target.value)}
           >
-            <option value="featured">Featured</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="alpha-asc">A – Z</option>
-            <option value="alpha-desc">Z – A</option>
+            {COLLECTION_SORT_OPTIONS.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
         </div>
       </div>
 
-      <p className="cv-count">{sortedProducts.length} pieces</p>
+      <Pagination connection={data.products}>
+        {({
+          nodes,
+          isLoading,
+          hasNextPage,
+          nextPageUrl,
+          state,
+          PreviousLink,
+          NextLink,
+        }) => (
+          <>
+            <p className="cv-count">
+              {nodes.length}
+              {hasNextPage ? '+' : ''} pieces
+            </p>
 
-      {sortedProducts.length > 0 ? (
-        <section className="cv-products" aria-label="Products">
-          <div className="cv-grid">
-            {sortedProducts.map((product, index) => (
-              <div
-                key={product.id}
-                className="cv-card-wrap"
-                style={{animationDelay: `${Math.min(index, 11) * 70}ms`}}
-              >
-                <ClaraProductCard
-                  product={product}
-                  loading={index < 4 ? 'eager' : 'lazy'}
+            {nodes.length > 0 ? (
+              <section className="cv-products" aria-label="Products">
+                <PreviousLink className="cv-load cv-load--prev">
+                  {isLoading ? 'Loading…' : 'Load previous'}
+                </PreviousLink>
+                <AutoLoadGrid
+                  products={nodes}
+                  inView={inView}
+                  hasNextPage={hasNextPage}
+                  nextPageUrl={nextPageUrl}
+                  state={state}
                 />
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="empty-state collection-empty">
-          <p className="eyebrow">Sourcing now</p>
-          <h2>The first home-goods edit is being sourced.</h2>
-          <p>
-            Lighting, textiles, ceramics, storage, and small accents will
-            appear here as the Clara Mendes edit expands.
-          </p>
-          <Link className="primary-button" to="/our-story">
-            Read the story
-          </Link>
-        </section>
-      )}
+                <NextLink className="cv-load" ref={loadMoreRef}>
+                  {isLoading ? 'Loading…' : 'Load more'}
+                </NextLink>
+              </section>
+            ) : (
+              <section className="empty-state collection-empty">
+                <p className="eyebrow">Sourcing now</p>
+                <h2>The first home-goods edit is being sourced.</h2>
+                <p>
+                  Lighting, textiles, ceramics, storage, and small accents will
+                  appear here as the Clara Mendes edit expands.
+                </p>
+                <Link className="primary-button" to="/our-story">
+                  Read the story
+                </Link>
+              </section>
+            )}
+          </>
+        )}
+      </Pagination>
     </div>
   );
 }
 
-function sortProducts(products: ClaraCardProduct[], key: string): ClaraCardProduct[] {
-  const sorted = [...products];
-  switch (key) {
-    case 'price-asc':
-      return sorted.sort((a, b) =>
-        Number(a.priceRange?.minVariantPrice?.amount ?? 0) -
-        Number(b.priceRange?.minVariantPrice?.amount ?? 0)
-      );
-    case 'price-desc':
-      return sorted.sort((a, b) =>
-        Number(b.priceRange?.minVariantPrice?.amount ?? 0) -
-        Number(a.priceRange?.minVariantPrice?.amount ?? 0)
-      );
-    case 'alpha-asc':
-      return sorted.sort((a, b) => a.title.localeCompare(b.title));
-    case 'alpha-desc':
-      return sorted.sort((a, b) => b.title.localeCompare(a.title));
-    default:
-      return sorted;
-  }
+/**
+ * Renders the product grid and auto-loads the next page when the
+ * "Load more" link scrolls into view (Hydrogen infinite-scroll recipe).
+ */
+function AutoLoadGrid({
+  products,
+  inView,
+  hasNextPage,
+  nextPageUrl,
+  state,
+}: {
+  products: ClaraCardProduct[];
+  inView: boolean;
+  hasNextPage: boolean;
+  nextPageUrl: string;
+  state: unknown;
+}) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      void navigate(nextPageUrl, {
+        replace: true,
+        preventScrollReset: true,
+        state,
+      });
+    }
+  }, [inView, hasNextPage, navigate, nextPageUrl, state]);
+
+  return (
+    <div className="cv-grid">
+      {products.map((product, index) => (
+        <div
+          key={product.id}
+          className="cv-card-wrap"
+          style={{animationDelay: `${Math.min(index % 24, 11) * 70}ms`}}
+        >
+          <ClaraProductCard
+            product={product}
+            loading={index < 4 ? 'eager' : 'lazy'}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Minimal IntersectionObserver hook (callback-ref based) so we don't
+ * need the react-intersection-observer dependency.
+ */
+function useInView() {
+  const [node, setNode] = useState<HTMLElement | null>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    if (!node || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      (entries) => setInView(entries[0]?.isIntersecting ?? false),
+      {rootMargin: '600px 0px'},
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [node]);
+
+  return {ref: setNode, inView};
 }
 
 function splitTitle(str: string): {italic: string; rest: string} {
@@ -243,6 +329,8 @@ const ALL_COLLECTION_QUERY = `#graphql
     $first: Int
     $language: LanguageCode
     $last: Int
+    $reverse: Boolean
+    $sortKey: ProductSortKeys
     $startCursor: String
   ) @inContext(country: $country, language: $language) {
     products(
@@ -250,16 +338,11 @@ const ALL_COLLECTION_QUERY = `#graphql
       before: $startCursor
       first: $first
       last: $last
-      sortKey: BEST_SELLING
+      reverse: $reverse
+      sortKey: $sortKey
     ) {
       nodes {
         ...ClaraProductCard
-        variants(first: 1) {
-          nodes {
-            id
-            availableForSale
-          }
-        }
       }
       pageInfo {
         hasNextPage
@@ -524,7 +607,7 @@ const collectionCss = `
   padding-bottom: clamp(56px, 7vw, 110px);
 }
 
-.cv-products > div > a {
+.cv-load {
   display: flex;
   width: fit-content;
   margin: 0 auto;
@@ -536,15 +619,12 @@ const collectionCss = `
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  padding: clamp(8px, 1.5vw, 18px) 16px clamp(20px, 2.5vw, 32px);
 }
 
-.cv-products > div > a:first-child {
+.cv-load--prev {
   padding-top: clamp(28px, 4vw, 48px);
   padding-bottom: clamp(10px, 2vw, 22px);
-}
-
-.cv-products > div > a:last-child {
-  padding-top: clamp(8px, 1.5vw, 18px);
 }
 
 .cv-card-wrap {

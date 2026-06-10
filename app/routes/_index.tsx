@@ -70,7 +70,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
   try {
     const data = await context.storefront.query(HOMEPAGE_QUERY, {
       variables: {
-        first: 8,
+        // Headroom above the 7 cards rendered, since demo/off-theme
+        // products are filtered out after fetching
+        first: 12,
       },
     });
 

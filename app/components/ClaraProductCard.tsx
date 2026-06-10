@@ -1,6 +1,10 @@
 import {Link} from 'react-router';
+import {Image} from '@shopify/hydrogen';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
+
+const CARD_IMAGE_SIZES =
+  '(min-width: 1100px) 25vw, (min-width: 781px) 33vw, 50vw';
 
 type MoneyAmount = {
   amount: string;
@@ -84,17 +88,21 @@ export function ClaraProductCard({
           <div className="product-card-media cm-card-media">
             {baseImage ? (
               <>
-                <img
+                <Image
                   className="cm-card-img cm-card-img--base"
-                  src={baseImage.url}
+                  data={baseImage}
                   alt={baseImage.altText || product.title}
+                  aspectRatio="4/5"
+                  sizes={CARD_IMAGE_SIZES}
                   loading={loading}
                 />
-                <img
+                <Image
                   className="cm-card-img cm-card-img--hover"
-                  src={(hoverImage ?? baseImage).url}
+                  data={hoverImage ?? baseImage}
                   alt=""
                   aria-hidden
+                  aspectRatio="4/5"
+                  sizes={CARD_IMAGE_SIZES}
                   loading="lazy"
                 />
               </>
@@ -239,8 +247,9 @@ const cardCss = `
 .cm-card-img {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
+  /* !important beats the Hydrogen Image component's inline width/height */
+  width: 100% !important;
+  height: 100% !important;
   object-fit: cover;
   transition: transform 900ms var(--cm-ease), opacity 700ms var(--cm-ease);
   filter: saturate(0.92);

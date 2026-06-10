@@ -12,6 +12,10 @@ import {
   filterDemoProducts,
   isDemoCollection,
 } from '~/lib/catalogFilters';
+import {
+  getCollectionProductsSortInput,
+  getCollectionSortValue,
+} from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 
 export const meta: Route.MetaFunction = ({data}) => {
@@ -36,12 +40,14 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   }
 
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 60,
+    pageBy: 24,
   });
+  const sort = getCollectionSortValue(new URL(request.url).searchParams);
 
   const data = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
+      ...getCollectionProductsSortInput(sort),
       handle,
     },
   });
@@ -85,6 +91,8 @@ const COLLECTION_QUERY = `#graphql
     $handle: String!
     $language: LanguageCode
     $last: Int
+    $reverse: Boolean
+    $sortKey: ProductCollectionSortKeys
     $startCursor: String
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
@@ -97,16 +105,11 @@ const COLLECTION_QUERY = `#graphql
         before: $startCursor
         first: $first
         last: $last
-        sortKey: COLLECTION_DEFAULT
+        reverse: $reverse
+        sortKey: $sortKey
       ) {
         nodes {
           ...ClaraProductCard
-          variants(first: 1) {
-            nodes {
-              id
-              availableForSale
-            }
-          }
         }
         pageInfo {
           hasNextPage
