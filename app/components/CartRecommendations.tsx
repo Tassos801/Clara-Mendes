@@ -192,9 +192,10 @@ const recsCss = `
 
 .cart-recs-media {
   background: #efeae0;
+  border-radius: 50%;
   display: block;
   flex-shrink: 0;
-  height: 70px;
+  height: 56px;
   overflow: hidden;
   width: 56px;
 }
