@@ -39,27 +39,37 @@ function SearchResultsArticles({
   }
 
   return (
-    <div className="search-result">
-      <h2>Articles</h2>
-      <div>
+    <section className="search-result" aria-labelledby="search-articles">
+      <div className="section-heading-row">
+        <div>
+          <p className="eyebrow">Journal</p>
+          <h2 id="search-articles">Articles</h2>
+        </div>
+      </div>
+      <div className="search-link-rows">
         {articles?.nodes?.map((article) => {
           const articleUrl = urlWithTrackingParams({
-            baseUrl: `/blogs/${article.handle}`,
+            baseUrl: article.blog?.handle
+              ? `/blogs/${article.blog.handle}/${article.handle}`
+              : `/blogs/${article.handle}`,
             trackingParams: article.trackingParameters,
             term,
           });
 
           return (
-            <div className="search-results-item" key={article.id}>
-              <Link prefetch="intent" to={articleUrl}>
-                {article.title}
-              </Link>
-            </div>
+            <Link
+              className="search-link-row"
+              key={article.id}
+              prefetch="intent"
+              to={articleUrl}
+            >
+              <span>{article.title}</span>
+              <span aria-hidden="true">→</span>
+            </Link>
           );
         })}
       </div>
-      <br />
-    </div>
+    </section>
   );
 }
 
@@ -69,9 +79,14 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
   }
 
   return (
-    <div className="search-result">
-      <h2>Pages</h2>
-      <div>
+    <section className="search-result" aria-labelledby="search-pages">
+      <div className="section-heading-row">
+        <div>
+          <p className="eyebrow">Information</p>
+          <h2 id="search-pages">Pages</h2>
+        </div>
+      </div>
+      <div className="search-link-rows">
         {pages?.nodes?.map((page) => {
           const pageUrl = urlWithTrackingParams({
             baseUrl: `/pages/${page.handle}`,
@@ -80,16 +95,19 @@ function SearchResultsPages({term, pages}: PartialSearchResult<'pages'>) {
           });
 
           return (
-            <div className="search-results-item" key={page.id}>
-              <Link prefetch="intent" to={pageUrl}>
-                {page.title}
-              </Link>
-            </div>
+            <Link
+              className="search-link-row"
+              key={page.id}
+              prefetch="intent"
+              to={pageUrl}
+            >
+              <span>{page.title}</span>
+              <span aria-hidden="true">→</span>
+            </Link>
           );
         })}
       </div>
-      <br />
-    </div>
+    </section>
   );
 }
 
@@ -102,60 +120,89 @@ function SearchResultsProducts({
   }
 
   return (
-    <div className="search-result">
-      <h2>Products</h2>
+    <section className="search-result" aria-labelledby="search-products">
+      <div className="section-heading-row">
+        <div>
+          <p className="eyebrow">Results for &ldquo;{term}&rdquo;</p>
+          <h2 id="search-products">Pieces</h2>
+        </div>
+      </div>
       <Pagination connection={products}>
-        {({nodes, isLoading, NextLink, PreviousLink}) => {
-          const ItemsMarkup = nodes.map((product) => {
-            const productUrl = urlWithTrackingParams({
-              baseUrl: `/products/${product.handle}`,
-              trackingParams: product.trackingParameters,
-              term,
-            });
-
-            const price = product?.selectedOrFirstAvailableVariant?.price;
-            const image = product?.selectedOrFirstAvailableVariant?.image;
-
-            return (
-              <div className="search-results-item" key={product.id}>
-                <Link prefetch="intent" to={productUrl}>
-                  {image && (
-                    <Image data={image} alt={product.title} width={50} />
-                  )}
-                  <div>
-                    <p>{product.title}</p>
-                    <small>{price && <Money data={price} />}</small>
-                  </div>
-                </Link>
-              </div>
-            );
-          });
-
-          return (
-            <div>
-              <div>
-                <PreviousLink>
-                  {isLoading ? 'Loading...' : <span>Load previous</span>}
-                </PreviousLink>
-              </div>
-              <div>
-                {ItemsMarkup}
-                <br />
-              </div>
-              <div>
-                <NextLink>
-                  {isLoading ? 'Loading...' : <span>Load more</span>}
-                </NextLink>
-              </div>
+        {({nodes, isLoading, NextLink, PreviousLink}) => (
+          <>
+            <div className="search-pagination search-pagination--top">
+              <PreviousLink className="secondary-button">
+                {isLoading ? 'Loading…' : 'Load previous'}
+              </PreviousLink>
             </div>
-          );
-        }}
+            <div className="search-product-grid">
+              {nodes.map((product) => {
+                const productUrl = urlWithTrackingParams({
+                  baseUrl: `/products/${product.handle}`,
+                  trackingParams: product.trackingParameters,
+                  term,
+                });
+
+                const price = product?.selectedOrFirstAvailableVariant?.price;
+                const image = product?.selectedOrFirstAvailableVariant?.image;
+
+                return (
+                  <Link
+                    className="search-product-card"
+                    key={product.id}
+                    prefetch="intent"
+                    to={productUrl}
+                  >
+                    <span className="search-product-media">
+                      {image ? (
+                        <Image
+                          data={image}
+                          alt={product.title}
+                          aspectRatio="1/1"
+                          sizes="(min-width: 720px) 240px, 44vw"
+                        />
+                      ) : null}
+                    </span>
+                    <span className="search-product-title">
+                      {product.title}
+                    </span>
+                    {price ? (
+                      <span className="search-product-price">
+                        <Money as="span" data={price} />
+                      </span>
+                    ) : null}
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="search-pagination">
+              <NextLink className="secondary-button">
+                {isLoading ? 'Loading…' : 'Load more'}
+              </NextLink>
+            </div>
+          </>
+        )}
       </Pagination>
-      <br />
-    </div>
+    </section>
   );
 }
 
-function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+function SearchResultsEmpty({term}: {term?: string}) {
+  return (
+    <section className="empty-state compact search-empty">
+      <p className="eyebrow">Search</p>
+      <h2>
+        {term
+          ? `Nothing in the edit for “${term}” yet.`
+          : 'What are you looking for?'}
+      </h2>
+      <p>
+        Try a simpler word — lamp, linen, vase — or start from the full edit
+        and browse by feel.
+      </p>
+      <Link className="primary-button" to="/collections/all">
+        Shop all pieces
+      </Link>
+    </section>
+  );
 }

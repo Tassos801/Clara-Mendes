@@ -55,30 +55,47 @@ export default function SearchPage() {
   if (type === 'predictive') return null;
 
   return (
-    <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
+    <div className="search-page">
+      <header className="page-hero compact-hero">
+        <p className="eyebrow">Search</p>
+        <h1>Find your piece.</h1>
+        <p>
+          Look through the edit — lighting, textiles, ceramics, storage, and
+          quiet accents for calmer rooms.
+        </p>
+      </header>
+      <SearchForm className="search-page-form">
         {({inputRef}) => (
           <>
+            <label className="sr-only" htmlFor="search-page-input">
+              Search the shop
+            </label>
             <input
+              className="search-page-input"
               defaultValue={term}
+              id="search-page-input"
               name="q"
-              placeholder="Search..."
+              placeholder="Try “lamp”, “linen”, “vase”…"
               ref={inputRef}
               type="search"
             />
-            &nbsp;
-            <button type="submit">Search</button>
+            <button className="primary-button" type="submit">
+              Search
+            </button>
           </>
         )}
       </SearchForm>
-      {error && <p style={{color: 'red'}}>{error}</p>}
+      {error && (
+        <p className="search-page-error" role="alert">
+          {error}
+        </p>
+      )}
       {!term || !result?.total ? (
-        <SearchResults.Empty />
+        <SearchResults.Empty term={term} />
       ) : (
         <SearchResults result={result} term={term}>
           {({articles, pages, products, term}) => (
-            <div>
+            <div className="search-page-results">
               <SearchResults.Products products={products} term={term} />
               <SearchResults.Pages pages={pages} term={term} />
               <SearchResults.Articles articles={articles} term={term} />
@@ -155,6 +172,9 @@ const SEARCH_ARTICLE_FRAGMENT = `#graphql
     id
     title
     trackingParameters
+    blog {
+      handle
+    }
   }
 ` as const;
 
