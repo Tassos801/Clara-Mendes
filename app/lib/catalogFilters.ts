@@ -108,47 +108,6 @@ const UNFULFILLABLE_PRODUCT_HANDLES = new Set([
   'the-home-ritual-warmer',
 ]);
 
-const HOME_GOODS_PRODUCT_TERMS = [
-  'accent',
-  'basket',
-  'baskets',
-  'bathroom-reset',
-  'bowl',
-  'candle',
-  'candle-warmer',
-  'catchall',
-  'ceramic',
-  'ceramics',
-  'cozy-home',
-  'curtain',
-  'decor',
-  'drawer-reset',
-  'frame',
-  'home ritual',
-  'home rituals',
-  'home-rituals',
-  'lamp',
-  'lighting',
-  'linen',
-  'mirror',
-  'object',
-  'organizer',
-  'planter',
-  'pillow',
-  'rug',
-  'scent',
-  'sculpture',
-  'storage',
-  'tabletop',
-  'textile',
-  'textiles',
-  'throw',
-  'tray',
-  'vase',
-  'warmer',
-  'woven',
-];
-
 const OFF_THEME_VENDOR_TERMS = [
   'mock.shop',
   'hydrogen',
@@ -156,90 +115,21 @@ const OFF_THEME_VENDOR_TERMS = [
   'tux-usa',
 ];
 
-const OFF_THEME_PRODUCT_TERMS = [
-  'acne',
-  'antiseptic',
-  'arthro',
-  'bamboo-shoe',
-  'beauty-tool',
-  'bookcase',
-  'bookshelf',
-  'collagen',
-  'desk-organizer',
-  'dress',
-  'entertainment-center',
-  'facial',
-  'formal',
-  'furniture',
-  'gown',
-  'gua-sha',
-  'hoodie',
-  'ice-roller',
-  'jacket',
-  'journal',
-  'mens pants',
-  'mob',
-  'nightgown',
-  'nightstand',
-  'pants',
-  'phone-case',
-  'pocket square',
-  'prom',
-  'satin-set',
-  'shoe-rack',
-  'shoe rack',
-  'shoe-shelf',
-  'sneaker',
-  'snowboard',
-  'supplement',
-  'sweatpant',
-  't-shirt',
-  'tshirt',
-  'tux',
-  'tuxedo',
-  'tv-stand',
-  'tv stand',
-  'water-bottle',
-  'wedding',
-];
-
-function getSearchableProductText(product: CatalogProductLike) {
-  return [
-    product.handle,
-    product.productType,
-    product.title,
-    product.vendor,
-    ...(product.tags ?? []),
-  ]
-    .filter(Boolean)
-    .join(' ')
-    .toLowerCase();
-}
-
-export function isHomeGoodsProduct(product: CatalogProductLike) {
-  const searchable = getSearchableProductText(product);
-  return HOME_GOODS_PRODUCT_TERMS.some((term) =>
-    searchable.includes(term.toLowerCase()),
-  );
-}
-
+/**
+ * Products are visible by default. Only exact demo handles and known demo
+ * vendors are hidden, so a large supplier catalog never needs this file
+ * updated for new products to appear.
+ */
 export function isOffThemeProduct(product: CatalogProductLike) {
   if (isOffThemeProductHandle(product.handle)) return true;
 
   const vendor = product.vendor?.toLowerCase() ?? '';
-  if (OFF_THEME_VENDOR_TERMS.some((term) => vendor.includes(term))) {
-    return true;
-  }
-
-  const searchable = getSearchableProductText(product);
-  return OFF_THEME_PRODUCT_TERMS.some((term) => searchable.includes(term));
+  return OFF_THEME_VENDOR_TERMS.some((term) => vendor.includes(term));
 }
 
 export function isStoreThemeProduct(product: CatalogProductLike) {
   return (
-    isHomeGoodsProduct(product) &&
-    !isOffThemeProduct(product) &&
-    !isUnfulfillableProductHandle(product.handle)
+    !isOffThemeProduct(product) && !isUnfulfillableProductHandle(product.handle)
   );
 }
 
@@ -271,25 +161,8 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
   const handle = collection.handle?.toLowerCase();
   if (handle && DEMO_COLLECTION_HANDLES.has(handle)) return true;
 
-  const title = collection.title?.toLowerCase() ?? '';
-  if (
-    [
-      'beauty',
-      'daily carry',
-      'dress',
-      'formal',
-      'glow tools',
-      'gown',
-      'health',
-      'mock',
-      'snowboard',
-      'tux',
-      'wellness reset',
-    ].some((term) => title.includes(term))
-  ) {
-    return true;
-  }
-
+  // A collection whose sampled products are all demo products is demo too;
+  // collections with any real product (or no products yet) stay visible.
   const products = collection.products?.nodes?.filter(Boolean) ?? [];
   if (products.some((product) => !isDemoProduct(product))) return false;
   if (products.length > 0) return true;

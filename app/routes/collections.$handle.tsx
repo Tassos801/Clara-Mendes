@@ -13,6 +13,12 @@ import {
   isDemoCollection,
 } from '~/lib/catalogFilters';
 import {
+  buildCollectionProductFilters,
+  extractFacetOptions,
+  parseFacetSelection,
+  type StorefrontFilterFacet,
+} from '~/lib/catalogFacets';
+import {
   getCollectionProductsSortInput,
   getCollectionSortValue,
 } from '~/lib/collectionSort';
@@ -42,12 +48,17 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 24,
   });
-  const sort = getCollectionSortValue(new URL(request.url).searchParams);
+  const searchParams = new URL(request.url).searchParams;
+  const sort = getCollectionSortValue(searchParams);
+  const productFilters = buildCollectionProductFilters(
+    parseFacetSelection(searchParams),
+  );
 
   const data = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
       ...getCollectionProductsSortInput(sort),
+      filters: productFilters.length > 0 ? productFilters : null,
       handle,
     },
   });
@@ -60,6 +71,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw redirect('/collections/all');
   }
 
+  const products = data.collection.products as CollectionProductConnection & {
+    filters?: StorefrontFilterFacet[];
+  };
+
   return {
     activeHandle: data.collection.handle,
     collections: filterDemoCollections(
@@ -68,12 +83,11 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     description:
       data.collection.description ||
       'A focused edit of objects selected for texture, utility, and atmosphere.',
+    facets: extractFacetOptions(products.filters),
     heading: data.collection.title,
     products: {
-      ...(data.collection.products as CollectionProductConnection),
-      nodes: filterDemoProducts(
-        (data.collection.products as CollectionProductConnection).nodes,
-      ),
+      ...products,
+      nodes: filterDemoProducts(products.nodes),
     },
   } satisfies CollectionViewData;
 }
@@ -87,6 +101,7 @@ const COLLECTION_QUERY = `#graphql
   query Collection(
     $country: CountryCode
     $endCursor: String
+    $filters: [ProductFilter!]
     $first: Int
     $handle: String!
     $language: LanguageCode
@@ -103,11 +118,20 @@ const COLLECTION_QUERY = `#graphql
       products(
         after: $endCursor
         before: $startCursor
+        filters: $filters
         first: $first
         last: $last
         reverse: $reverse
         sortKey: $sortKey
       ) {
+        filters {
+          id
+          label
+          values {
+            count
+            label
+          }
+        }
         nodes {
           ...ClaraProductCard
         }
@@ -119,7 +143,7 @@ const COLLECTION_QUERY = `#graphql
         }
       }
     }
-    collections(first: 12) {
+    collections(first: 24) {
       nodes {
         id
         handle

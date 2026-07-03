@@ -12,6 +12,13 @@ import {
   HOME_GOODS_COLLECTIONS,
 } from '~/lib/catalogFilters';
 import {
+  buildProductsSearchQuery,
+  countActiveFacets,
+  parseFacetSelection,
+  type CatalogFacetOptions,
+} from '~/lib/catalogFacets';
+import {CatalogFilterPanel} from '~/components/CatalogFilterPanel';
+import {
   COLLECTION_SORT_OPTIONS,
   getCollectionSortValue,
   getProductsSortInput,
@@ -47,6 +54,7 @@ export type CollectionViewData = {
   activeHandle: string;
   collections: CollectionLink[];
   description?: string | null;
+  facets: CatalogFacetOptions;
   heading: string;
   products: CollectionProductConnection;
 };
@@ -66,20 +74,33 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 24,
   });
-  const sort = getCollectionSortValue(new URL(request.url).searchParams);
+  const searchParams = new URL(request.url).searchParams;
+  const sort = getCollectionSortValue(searchParams);
+  const facetSelection = parseFacetSelection(searchParams);
 
   const data = await context.storefront.query(ALL_COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
       ...getProductsSortInput(sort),
+      query: buildProductsSearchQuery(facetSelection) ?? null,
     },
   });
+
+  const productTypes = (
+    (data.productTypes?.edges ?? []) as Array<{node: string}>
+  )
+    .map((edge) => edge.node)
+    .filter(Boolean);
 
   return {
     activeHandle: 'all',
     collections: filterDemoCollections(data.collections.nodes as CollectionLink[]),
     description:
       'Curated home objects selected for quiet rooms, useful rituals, and slower living.',
+    facets: {
+      productTypes: productTypes.map((label) => ({label})),
+      vendors: [],
+    },
     heading: 'Shop All',
     products: filterProductConnection(
       data.products as CollectionProductConnection,
@@ -99,6 +120,8 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   ];
   const [searchParams, setSearchParams] = useSearchParams();
   const sort = getCollectionSortValue(searchParams);
+  const activeFacetCount = countActiveFacets(parseFacetSelection(searchParams));
+  const [filtersOpen, setFiltersOpen] = useState(activeFacetCount > 0);
   const {ref: loadMoreRef, inView} = useInView();
 
   const onSortChange = (value: string) => {
@@ -170,22 +193,36 @@ export function CollectionView({data}: {data: CollectionViewData}) {
               ))
             : null}
         </nav>
-        <div className="cv-sort">
-          <label className="cv-sort-label" htmlFor="cv-sort-select">Sort</label>
-          <select
-            id="cv-sort-select"
-            className="cv-sort-select"
-            value={sort}
-            onChange={(e) => onSortChange(e.target.value)}
+        <div className="cv-toolbar-actions">
+          <button
+            className={`cv-filter-toggle${
+              filtersOpen || activeFacetCount > 0 ? ' is-active' : ''
+            }`}
+            type="button"
+            aria-expanded={filtersOpen}
+            onClick={() => setFiltersOpen((open) => !open)}
           >
-            {COLLECTION_SORT_OPTIONS.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
+            Filters{activeFacetCount > 0 ? ` · ${activeFacetCount}` : ''}
+          </button>
+          <div className="cv-sort">
+            <label className="cv-sort-label" htmlFor="cv-sort-select">Sort</label>
+            <select
+              id="cv-sort-select"
+              className="cv-sort-select"
+              value={sort}
+              onChange={(e) => onSortChange(e.target.value)}
+            >
+              {COLLECTION_SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
+
+      <CatalogFilterPanel facets={data.facets} open={filtersOpen} />
 
       <Pagination connection={data.products}>
         {({
@@ -218,6 +255,41 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                 <NextLink className="cv-load" ref={loadMoreRef}>
                   {isLoading ? 'Loading…' : 'Load more'}
                 </NextLink>
+              </section>
+            ) : activeFacetCount > 0 ? (
+              <section className="empty-state collection-empty">
+                <p className="eyebrow">No matches</p>
+                <h2>Nothing fits those filters yet.</h2>
+                <p>
+                  Try widening the price range or removing a filter to see
+                  more of the edit.
+                </p>
+                <button
+                  className="primary-button"
+                  type="button"
+                  onClick={() =>
+                    setSearchParams(
+                      (params) => {
+                        const next = new URLSearchParams(params);
+                        for (const key of [
+                          'available',
+                          'min',
+                          'max',
+                          'type',
+                          'vendor',
+                          'cursor',
+                          'direction',
+                        ]) {
+                          next.delete(key);
+                        }
+                        return next;
+                      },
+                      {preventScrollReset: true},
+                    )
+                  }
+                >
+                  Clear filters
+                </button>
               </section>
             ) : (
               <section className="empty-state collection-empty">
@@ -329,6 +401,7 @@ const ALL_COLLECTION_QUERY = `#graphql
     $first: Int
     $language: LanguageCode
     $last: Int
+    $query: String
     $reverse: Boolean
     $sortKey: ProductSortKeys
     $startCursor: String
@@ -338,6 +411,7 @@ const ALL_COLLECTION_QUERY = `#graphql
       before: $startCursor
       first: $first
       last: $last
+      query: $query
       reverse: $reverse
       sortKey: $sortKey
     ) {
@@ -351,7 +425,12 @@ const ALL_COLLECTION_QUERY = `#graphql
         endCursor
       }
     }
-    collections(first: 12) {
+    productTypes(first: 60) {
+      edges {
+        node
+      }
+    }
+    collections(first: 24) {
       nodes {
         id
         handle
@@ -550,12 +629,193 @@ const collectionCss = `
   background: var(--cv-ink);
 }
 
+/* Toolbar actions (filter toggle + sort) */
+.cv-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.6vw, 22px);
+  padding-right: clamp(18px, 4vw, 70px);
+  flex-shrink: 0;
+}
+
+.cv-filter-toggle {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+  background: transparent;
+  border: 1px solid rgba(38,35,31,0.18);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 400ms var(--cv-ease), border-color 400ms var(--cv-ease);
+}
+
+.cv-filter-toggle:hover,
+.cv-filter-toggle.is-active {
+  color: var(--cv-ink);
+  border-color: rgba(38,35,31,0.42);
+}
+
+/* Facet panel */
+.cv-facets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 48px);
+  align-items: flex-start;
+  padding: clamp(18px, 2.4vw, 30px) clamp(18px, 4vw, 70px);
+  background: var(--cv-paper);
+  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+}
+
+.cv-facet-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cv-facet-group--clear {
+  margin-left: auto;
+  align-self: center;
+}
+
+.cv-facet-title {
+  font-family: var(--sans);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+  margin: 0;
+}
+
+.cv-facet-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--cv-ink);
+  cursor: pointer;
+}
+
+.cv-facet-check input {
+  accent-color: var(--cv-ink);
+}
+
+.cv-facet-price {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cv-facet-input {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  color: var(--cv-ink);
+  background: transparent;
+  border: 1px solid rgba(38,35,31,0.18);
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 84px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.cv-facet-input::-webkit-outer-spin-button,
+.cv-facet-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.cv-facet-dash {
+  color: var(--cv-muted);
+}
+
+.cv-facet-apply {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cv-ink);
+  background: transparent;
+  border: 1px solid rgba(38,35,31,0.3);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 400ms var(--cv-ease), color 400ms var(--cv-ease);
+}
+
+.cv-facet-apply:hover {
+  background: var(--cv-ink);
+  color: #fbfaf6;
+}
+
+.cv-facet-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-width: min(560px, 100%);
+}
+
+.cv-facet-chip {
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  color: var(--cv-muted);
+  background: transparent;
+  border: 1px solid rgba(38,35,31,0.18);
+  border-radius: 999px;
+  padding: 5px 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 300ms var(--cv-ease), border-color 300ms var(--cv-ease),
+    background 300ms var(--cv-ease);
+}
+
+.cv-facet-chip:hover {
+  color: var(--cv-ink);
+  border-color: rgba(38,35,31,0.42);
+}
+
+.cv-facet-chip.is-active {
+  color: #fbfaf6;
+  background: var(--cv-ink);
+  border-color: var(--cv-ink);
+}
+
+.cv-facet-chip-count {
+  opacity: 0.65;
+  font-size: 0.66rem;
+}
+
+.cv-facet-clear {
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--cv-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid currentColor;
+  padding: 2px 0;
+  cursor: pointer;
+}
+
+.cv-facet-clear:hover {
+  color: var(--cv-ink);
+}
+
 /* Sort dropdown */
 .cv-sort {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-right: clamp(18px, 4vw, 70px);
   flex-shrink: 0;
 }
 
@@ -697,9 +957,14 @@ const collectionCss = `
   }
   .cv-filter::-webkit-scrollbar { display: none; }
 
-  .cv-sort {
+  .cv-toolbar-actions {
     padding: 0 18px 12px;
-    justify-content: flex-end;
+    justify-content: space-between;
+  }
+
+  .cv-facets {
+    padding: 14px 18px 18px;
+    gap: 18px;
   }
 
   .cv-count {
