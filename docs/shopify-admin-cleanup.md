@@ -24,8 +24,8 @@ If they are no longer needed anywhere, set them to draft or delete them.
 | The Daily Carry Pouch     | `the-daily-carry-pouch`     | https://admin.shopify.com/store/vre00g-8b/products/15778584363342 |
 
 These GoddessYou-origin products fit the home-goods edit, but they are now
-hidden from the custom storefront until each variant has a CJ SKU or CJ variant
-ID for automatic fulfillment:
+hidden from the custom storefront until each variant has a confirmed supplier
+and fulfillment mapping:
 
 | Product                | Handle                   | Reason                   |
 | ---------------------- | ------------------------ | ------------------------ |

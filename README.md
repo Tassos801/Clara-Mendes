@@ -56,23 +56,7 @@ PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID=
 PUBLIC_CUSTOMER_ACCOUNT_API_URL=
 PRIVATE_STOREFRONT_API_TOKEN=
 SHOP_ID=
-SHOPIFY_WEBHOOK_SECRET=
-SHOPIFY_ADMIN_ACCESS_TOKEN=
-SHOPIFY_ADMIN_API_VERSION=
-SHOPIFY_WEBHOOK_CALLBACK_URL=
 SHOPIFY_STOREFRONT_API_VERSION=
-FULFILLMENT_AUTO_SUBMIT=
-CJ_AUTO_MAP_SKU=
-CJ_API_KEY=
-CJ_LINE_ITEM_MAP=
-CJ_SHOPIFY_SKU_PREFIXES=
-CJ_ACCESS_TOKEN=
-CJ_PLATFORM_TOKEN=
-CJ_DEFAULT_LOGISTIC_NAME=
-CJ_FROM_COUNTRY_CODE=
-CJ_SHOP_LOGISTICS_TYPE=
-CJ_STORE_NAME=
-CJ_STORAGE_ID=
 ```
 
 Do not commit `.env`. It is ignored by git.
@@ -158,26 +142,6 @@ in the storefront environment instead of relying on local `.env`.
 Before launch, work through `docs/launch-readiness.md` alongside the focused
 catalog cleanup in `docs/shopify-admin-cleanup.md`.
 
-## Fulfillment Intake
-
-Paid order fulfillment starts at:
-
-```text
-POST /webhooks/orders-paid
-```
-
-The endpoint verifies Shopify webhook HMAC signatures with
-`SHOPIFY_WEBHOOK_SECRET`, normalizes order line items, and stays in dry-run mode
-unless supplier credentials and `FULFILLMENT_AUTO_SUBMIT=true` are configured.
-See `docs/fulfillment-automation.md` before enabling supplier submission.
-
-Use the helper scripts while setting this up:
-
-```powershell
-npm run fulfillment:map-template      # generate docs/cj-line-item-map.template.json
-npm run fulfillment:register-webhook  # register Shopify orders/paid webhook
-```
-
 ## Storefront API Credential Check
 
 After updating credentials or permissions in Shopify Admin, verify API access
@@ -200,7 +164,5 @@ npm run build      # production build and codegen
 npm run typecheck  # React Router typegen and TypeScript
 npm run lint       # ESLint
 npm run codegen    # Shopify Hydrogen codegen and route typegen
-npm run fulfillment:map-template
-npm run fulfillment:register-webhook
 npm run clean      # remove generated build state
 ```

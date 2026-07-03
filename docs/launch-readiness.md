@@ -6,8 +6,7 @@ Use it before sending paid traffic to Clara Mendes.
 ## Storefront And Measurement
 
 - Configure every production environment variable in `README.md`, including
-  `PUBLIC_STOREFRONT_ID`, checkout domain, Storefront API token, webhook secret,
-  and fulfillment settings.
+  `PUBLIC_STOREFRONT_ID`, checkout domain, and Storefront API token.
 - Confirm the Hydrogen privacy banner loads for a new visitor and Shopify
   analytics receives page, search, product, cart, add-to-cart, and checkout
   journey data in the connected storefront.
@@ -32,7 +31,7 @@ Use it before sending paid traffic to Clara Mendes.
 
 - Finish `docs/shopify-admin-cleanup.md` so off-brand products and collections
   cannot leak into Headless search, sitemaps, feeds, or advertising catalogs.
-- Review every live variant for sellable inventory, SKU or CJ mapping, price,
+- Review every live variant for sellable inventory, SKU mapping, price,
   margin after shipping and refunds, image quality, alt text, shipping weight,
   delivery expectation, and policy fit.
 - Order samples for products with fragile packaging, uncertain media, or margin
@@ -43,12 +42,11 @@ Use it before sending paid traffic to Clara Mendes.
 
 ## Operations
 
-- Run fulfillment in dry-run mode until paid-order webhook intake, supplier
-  mapping, tracking sync, cancellations, and exception handling have been
-  verified on real test orders.
-- Set monitoring for storefront availability, server errors, webhook failures,
-  fulfillment failures, checkout conversion, refund rate, payment disputes, and
-  margin by product.
+- Verify the supplier/fulfillment workflow, tracking sync, cancellations, and
+  exception handling on real test orders before taking live traffic.
+- Set monitoring for storefront availability, server errors, fulfillment
+  failures, checkout conversion, refund rate, payment disputes, and margin by
+  product.
 - Keep a release checklist with build, typecheck, lint, route check, production
   smoke test, rollback owner, and incident contact.
 - Coordinate load testing and traffic spikes with Shopify support when the

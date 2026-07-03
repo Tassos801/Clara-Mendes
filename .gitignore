@@ -27,3 +27,9 @@ Thumbs.db
 .vscode/
 .cursor/
 .claude/
+
+# Obsidian editor state
+.obsidian/
+
+# Operational state (product restore list)
+scripts/unpublished-products-backup.json
