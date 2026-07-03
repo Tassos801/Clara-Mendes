@@ -14,6 +14,8 @@ const graphqlConfig: IGraphQLConfig = {
         './*.{ts,tsx,js,jsx}',
         './app/**/*.{ts,tsx,js,jsx}',
         '!./app/graphql/**/*.{ts,tsx,js,jsx}',
+        // Admin API operations — not part of the Storefront schema
+        '!./app/lib/reviews.server.ts',
       ],
     },
 

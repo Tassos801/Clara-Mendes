@@ -26,6 +26,12 @@ import {
   productSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS} from '~/lib/storefrontBasics';
+import {ReviewsSection} from '~/components/reviews/ReviewsSection';
+import {
+  parseReviewsMetafield,
+  type ReviewsMetafieldResponse,
+} from '~/lib/reviews';
+import {summarizeReviews, type ProductReviewsData} from '~/lib/reviewTypes';
 
 type MoneyAmount = {
   amount: string;
@@ -118,18 +124,28 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw redirect('/collections/all');
   }
 
+  const parsedReviews = parseReviewsMetafield(
+    (data.product as {reviewsMetafield?: ReviewsMetafieldResponse})
+      .reviewsMetafield ?? null,
+  );
+  const reviews: ProductReviewsData = {
+    reviews: parsedReviews,
+    summary: summarizeReviews(parsedReviews),
+  };
+
   return {
     product: data.product as ProductDetail,
     relatedProducts: filterDemoProducts(
       data.relatedProducts.nodes as ClaraCardProduct[],
     ).filter((product) => product.handle !== handle),
+    reviews,
     seoUrl: getCanonicalUrl(request, `/products/${data.product.handle}`),
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
 
 export default function Product() {
-  const {product, relatedProducts, seoUrl, storeDomain} =
+  const {product, relatedProducts, reviews, seoUrl, storeDomain} =
     useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
@@ -285,6 +301,13 @@ export default function Product() {
             priceRange: product.priceRange,
             productId: product.id,
             productType: product.productType,
+            reviewSummary:
+              reviews.summary.total > 0
+                ? {
+                    averageRating: reviews.summary.average,
+                    count: reviews.summary.total,
+                  }
+                : undefined,
             sku: selectedVariant?.sku,
             title: product.title,
             url: seoUrl,
@@ -490,6 +513,12 @@ export default function Product() {
           </div>
         ) : null}
       </section>
+
+      <ReviewsSection
+        productGid={product.id}
+        productTitle={product.title}
+        data={reviews}
+      />
 
       {relatedProducts.length > 0 ? (
         <section className="related-section" aria-labelledby="related">
@@ -755,6 +784,31 @@ const PRODUCT_QUERY = `#graphql
       variants(first: 100) {
         nodes {
           ...ClaraProductVariant
+        }
+      }
+      reviewsMetafield: metafield(namespace: "custom", key: "reviews") {
+        references(first: 50) {
+          nodes {
+            ... on Metaobject {
+              id
+              fields {
+                key
+                value
+                references(first: 3) {
+                  nodes {
+                    ... on MediaImage {
+                      image {
+                        url
+                        altText
+                        width
+                        height
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

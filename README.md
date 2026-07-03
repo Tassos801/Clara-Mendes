@@ -166,3 +166,56 @@ npm run lint       # ESLint
 npm run codegen    # Shopify Hydrogen codegen and route typegen
 npm run clean      # remove generated build state
 ```
+
+## Product reviews
+
+Customers can leave star-rated reviews with photos on product pages. Reviews
+are stored as Shopify metaobjects and moderated in the Shopify admin before
+they appear on the storefront.
+
+### 1. Provision an Admin API token
+
+The feature writes data through the Admin GraphQL API, so it needs an admin
+access token in addition to the Storefront tokens. Create a custom app (or use
+the Headless channel's admin credentials) with these access scopes:
+
+- `read_products`, `write_products`
+- `read_metaobjects`, `write_metaobjects`
+- `read_metaobject_definitions`, `write_metaobject_definitions`
+- `read_files`, `write_files`
+
+Add the token to `.env` (server-side only — never expose it to the client):
+
+```
+SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Until this variable is set, the review form degrades gracefully: the storefront
+still renders, and submitting a review returns "Reviews are not enabled yet —
+check back soon." instead of erroring.
+
+### 2. Run the one-time setup script
+
+The setup script creates the `product_review` metaobject definition and the
+`custom.reviews` product metafield definition. It is idempotent — running it
+again reports and skips anything that already exists.
+
+```powershell
+node scripts/setup-reviews.mjs            # create/skip against the store
+node scripts/setup-reviews.mjs --dry-run  # print the exact definition JSON
+                                          # without calling the API (no token
+                                          # required)
+```
+
+### 3. Moderate submitted reviews
+
+New reviews are created as **Draft** (pending moderation) and are not visible on
+the storefront. To approve one:
+
+1. Open the Shopify admin and go to **Content → Metaobjects → Product review**.
+2. Open the review entry.
+3. Change its status from **Draft** to **Active** and save.
+
+The Storefront API only resolves Active entries, so approved reviews appear on
+the product page automatically. Setting an entry back to Draft (or deleting it)
+removes it from the storefront.
