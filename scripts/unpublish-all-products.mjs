@@ -6,7 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {
-  envWithLocalDefaults,
+  envWithAdminDefaults,
   getRequiredEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
@@ -83,6 +83,42 @@ function createAdminClient({endpoint, accessToken}) {
   };
 }
 
+async function getAdminAccessToken({clientId, clientSecret, storeDomain}) {
+  const response = await fetch(
+    `https://${storeDomain}/admin/oauth/access_token`,
+    {
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: 'client_credentials',
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      method: 'POST',
+    },
+  );
+  const body = await response.json().catch(() => null);
+
+  if (!response.ok || !body?.access_token) {
+    throw new Error(
+      `Admin token exchange failed: ${JSON.stringify(body?.errors || body)}`,
+    );
+  }
+
+  const grantedScopes = String(body.scope || '')
+    .split(',')
+    .map((scope) => scope.trim());
+  if (!grantedScopes.includes('write_products')) {
+    throw new Error(
+      'The installed Shopify app is missing the write_products access scope.',
+    );
+  }
+
+  console.log(
+    `Admin authorization refreshed (${body.expires_in || 'unknown'} seconds).`,
+  );
+  return body.access_token;
+}
+
 // Respect leaky-bucket rate limits: back off when the available budget is low.
 async function throttle(extensions) {
   const throttleStatus = extensions?.cost?.throttleStatus;
@@ -157,7 +193,9 @@ async function runUnpublish({adminGraphql, dryRun}) {
     ) + '\n',
     'utf8',
   );
-  console.log(`\nBackup written to ${BACKUP_PATH} (${products.length} products).`);
+  console.log(
+    `\nBackup written to ${BACKUP_PATH} (${products.length} products).`,
+  );
 
   let updated = 0;
   const failures = [];
@@ -172,7 +210,9 @@ async function runUnpublish({adminGraphql, dryRun}) {
         );
       } else {
         updated += 1;
-        console.log(`  DRAFT  ${product.handle}  (${updated}/${products.length})`);
+        console.log(
+          `  DRAFT  ${product.handle}  (${updated}/${products.length})`,
+        );
       }
     } catch (error) {
       failures.push({product, error: error.message});
@@ -235,12 +275,17 @@ async function main() {
   const dryRun = args.has('--dry-run');
   const restore = args.has('--restore');
 
-  const env = envWithLocalDefaults();
+  const env = envWithAdminDefaults();
   const storeDomain = normalizeShopDomain(
-    getRequiredEnv(env, 'PUBLIC_STORE_DOMAIN'),
+    env.SHOPIFY_ADMIN_STORE || getRequiredEnv(env, 'PUBLIC_STORE_DOMAIN'),
   );
-  const accessToken = getRequiredEnv(env, 'SHOPIFY_ADMIN_ACCESS_TOKEN');
-  const apiVersion = env.SHOPIFY_ADMIN_API_VERSION || '2025-01';
+  const clientId = String(env.SHOPIFY_CLIENT_ID || '').trim();
+  const clientSecret = String(env.SHOPIFY_CLIENT_SECRET || '').trim();
+  const accessToken =
+    clientId && clientSecret
+      ? await getAdminAccessToken({clientId, clientSecret, storeDomain})
+      : getRequiredEnv(env, 'SHOPIFY_ADMIN_ACCESS_TOKEN');
+  const apiVersion = env.SHOPIFY_ADMIN_API_VERSION || '2026-07';
   const endpoint = `https://${storeDomain}/admin/api/${apiVersion}/graphql.json`;
   const adminGraphql = createAdminClient({endpoint, accessToken});
 

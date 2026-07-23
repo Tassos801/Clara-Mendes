@@ -53,12 +53,17 @@ Preview without changing Shopify:
 npm run catalog:art:dry-run
 ```
 
-After the web assets are deployed and a current token with `write_products`
-scope is available:
+After the web assets are deployed and Admin credentials with `write_products`
+scope are available:
 
 ```powershell
 npm run catalog:art:sync
 ```
+
+For an owner-built Dev Dashboard app, configure `SHOPIFY_CLIENT_ID`,
+`SHOPIFY_CLIENT_SECRET`, and `SHOPIFY_ADMIN_STORE`. The sync exchanges those
+credentials for Shopify's short-lived Admin token automatically. A legacy
+`SHOPIFY_ADMIN_ACCESS_TOKEN` remains supported as a fallback.
 
 Shopify's current `productSet` mutation supports product files, options,
 variants, SKUs, prices, and Draft status in one idempotent operation:
@@ -89,35 +94,31 @@ Printify and Printful both support free entry without inventory commitments:
 
 ## Existing Catalog Reset
 
-The live Storefront API check on 2026-07-23 returned 47 products, all available
-for sale. Many are generic, unrelated, heavy, electrical, or carry
-designer-authenticity risk.
+The live Storefront API check on 2026-07-23 initially returned 47 available
+products. The Admin API subsequently found 49 ACTIVE legacy products, including
+generic, unrelated, heavy, electrical, and designer-authenticity-risk items.
 
-`app/lib/catalogFilters.ts` now uses an explicit allowlist containing only the
-nine original-art handles. After this storefront deployment, the existing 47
-products cannot appear in the Hydrogen catalog, search, recommendations, or
-direct product routes. This is a customer-safety stopgap; it does not replace
-the Admin status reset because the products remain active in Shopify.
+On 2026-07-23, all 49 were moved to **DRAFT** with zero failures. The script
+wrote an ignored local restoration file at
+`scripts/unpublished-products-backup.json` before changing statuses, and the
+post-change Admin query confirmed `productsCount(status:active) = 0`.
 
-The saved Admin API token expired on 2026-04-29 and cannot perform the reset.
-Once a current token or signed-in Admin session is available:
+The nine original-art replacements were then created as **DRAFT** and read back
+from Shopify. All nine have one READY image, one untracked 8 × 10 shipping
+variant, a unique `CM-...-8X10` SKU, a $29 price, and no Online Store
+publication.
 
-1. Run `node .\scripts\unpublish-all-products.mjs --dry-run`.
-2. Review the backup list.
-3. Run `node .\scripts\unpublish-all-products.mjs`.
-4. Verify `productsCount(query: "status:active")` is zero.
-5. Run the original-art sync so the nine replacements exist as Draft.
-
-The existing script writes a restore backup before changing statuses. Draft is
+`app/lib/catalogFilters.ts` retains an explicit allowlist containing only the
+nine original-art handles as a second storefront safety layer. Draft is
 preferred to deletion because it preserves product media and data.
 
 ## Launch Sequence
 
-1. Deploy the original-art previews and the truthful early-access state.
-2. Restore Shopify Admin write access.
-3. Draft the 47 unfulfillable products.
-4. Create the nine replacement products as Draft.
-5. Connect one free POD provider and order samples.
+1. Completed: deploy the original-art previews and truthful early-access state.
+2. Completed: restore Shopify Admin write access.
+3. Completed: move all 49 legacy products to Draft with a restoration backup.
+4. Completed: create and verify the nine replacement products as Draft.
+5. Next: connect one free POD provider and order physical samples.
 6. Activate only sampled, mapped products.
 7. Launch the individual prints first; add a “pick any 3 for $79” automatic
    discount only after the three-item landed cost and fulfilment routing are

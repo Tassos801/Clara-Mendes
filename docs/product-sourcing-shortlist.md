@@ -12,9 +12,10 @@ another broad supplier catalog. The first assortment is nine original 4:5
 prints across Quiet Form, Patina Blue, and Neo Deco. See
 [Original Art Launch](original-art-launch.md).
 
-Move the current 47 active products to Draft once Shopify Admin write access is
-restored. Preserve their media and data; do not delete them. Do not keep or
-publish:
+On 2026-07-23, all 49 ACTIVE legacy products were moved to Draft after Shopify
+Admin write access was restored. Their media and data were preserved, and a
+local restoration backup was written before the status changes. Do not
+republish:
 
 - Unrelated gadgets, health products, gemstones, vacuums, plumbing fixtures,
   furniture, or other catalog drift.

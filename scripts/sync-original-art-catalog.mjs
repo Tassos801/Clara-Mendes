@@ -6,7 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 import {
-  envWithLocalDefaults,
+  envWithAdminDefaults,
   getRequiredEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
@@ -194,6 +194,42 @@ function createAdminClient({accessToken, endpoint}) {
   };
 }
 
+async function getAdminAccessToken({clientId, clientSecret, storeDomain}) {
+  const response = await fetch(
+    `https://${storeDomain}/admin/oauth/access_token`,
+    {
+      body: new URLSearchParams({
+        client_id: clientId,
+        client_secret: clientSecret,
+        grant_type: 'client_credentials',
+      }),
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      method: 'POST',
+    },
+  );
+  const body = await response.json().catch(() => null);
+
+  if (!response.ok || !body?.access_token) {
+    throw new Error(
+      `Admin token exchange failed: ${JSON.stringify(body?.errors || body)}`,
+    );
+  }
+
+  const grantedScopes = String(body.scope || '')
+    .split(',')
+    .map((scope) => scope.trim());
+  if (!grantedScopes.includes('write_products')) {
+    throw new Error(
+      'The installed Shopify app is missing the write_products access scope.',
+    );
+  }
+
+  console.log(
+    `Admin authorization refreshed (${body.expires_in || 'unknown'} seconds).`,
+  );
+  return body.access_token;
+}
+
 async function main() {
   validateLocalAssets();
 
@@ -212,7 +248,7 @@ async function main() {
 
   if (!apply) {
     console.log(
-      '\nDry run complete. Use --apply only after the public images are deployed and a current Admin API token is available.',
+      '\nDry run complete. Use --apply only after the public images are deployed and current Admin credentials are available.',
     );
     return;
   }
@@ -220,11 +256,16 @@ async function main() {
   console.log('\nChecking deployed image URLs...');
   await assertRemoteImages();
 
-  const env = envWithLocalDefaults();
+  const env = envWithAdminDefaults();
   const storeDomain = normalizeShopDomain(
-    getRequiredEnv(env, 'PUBLIC_STORE_DOMAIN'),
+    env.SHOPIFY_ADMIN_STORE || getRequiredEnv(env, 'PUBLIC_STORE_DOMAIN'),
   );
-  const accessToken = getRequiredEnv(env, 'SHOPIFY_ADMIN_ACCESS_TOKEN');
+  const clientId = String(env.SHOPIFY_CLIENT_ID || '').trim();
+  const clientSecret = String(env.SHOPIFY_CLIENT_SECRET || '').trim();
+  const accessToken =
+    clientId && clientSecret
+      ? await getAdminAccessToken({clientId, clientSecret, storeDomain})
+      : getRequiredEnv(env, 'SHOPIFY_ADMIN_ACCESS_TOKEN');
   const apiVersion = env.SHOPIFY_ADMIN_API_VERSION || '2026-07';
   const endpoint = `https://${storeDomain}/admin/api/${apiVersion}/graphql.json`;
   const adminGraphql = createAdminClient({accessToken, endpoint});
