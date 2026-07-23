@@ -6,6 +6,7 @@ import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {
   filterDemoCollections,
   filterDemoProducts,
@@ -65,7 +66,7 @@ export const meta: Route.MetaFunction = () => {
     {
       name: 'description',
       content:
-        'Shop supplier-sourced home objects through Clara Mendes and Shopify checkout.',
+        'Shop original Clara Mendes wall art and considered home accents.',
     },
   ];
 };
@@ -94,7 +95,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
 
   return {
     activeHandle: 'all',
-    collections: filterDemoCollections(data.collections.nodes as CollectionLink[]),
+    collections: filterDemoCollections(
+      data.collections.nodes as CollectionLink[],
+    ),
     description:
       'Curated home objects selected for quiet rooms, useful rituals, and slower living.',
     facets: {
@@ -205,7 +208,9 @@ export function CollectionView({data}: {data: CollectionViewData}) {
             Filters{activeFacetCount > 0 ? ` · ${activeFacetCount}` : ''}
           </button>
           <div className="cv-sort">
-            <label className="cv-sort-label" htmlFor="cv-sort-select">Sort</label>
+            <label className="cv-sort-label" htmlFor="cv-sort-select">
+              Sort
+            </label>
             <select
               id="cv-sort-select"
               className="cv-sort-select"
@@ -261,8 +266,8 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                 <p className="eyebrow">No matches</p>
                 <h2>Nothing fits those filters yet.</h2>
                 <p>
-                  Try widening the price range or removing a filter to see
-                  more of the edit.
+                  Try widening the price range or removing a filter to see more
+                  of the edit.
                 </p>
                 <button
                   className="primary-button"
@@ -292,17 +297,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                 </button>
               </section>
             ) : (
-              <section className="empty-state collection-empty">
-                <p className="eyebrow">Sourcing now</p>
-                <h2>The first home-goods edit is being sourced.</h2>
-                <p>
-                  Lighting, textiles, ceramics, storage, and small accents will
-                  appear here as the Clara Mendes edit expands.
-                </p>
-                <Link className="primary-button" to="/our-story">
-                  Read the story
-                </Link>
-              </section>
+              <OriginalArtPreview />
             )}
           </>
         )}

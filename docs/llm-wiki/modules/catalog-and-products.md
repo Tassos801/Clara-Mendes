@@ -2,45 +2,38 @@
 
 ## Current Picture
 
-The store is intentionally focused on a small Clara Mendes home-goods catalog
-with a 10-product launch batch. The latest recorded Shopify audit summary says
-those 10 products were active and published at the time of that audit, with one
-media-count warning.
+The live Storefront API check on 2026-07-23 returned 47 products and all 47 were
+available for sale. This is not the intended launch state: the catalog includes
+generic, unrelated, heavy, electrical, and designer-authenticity-risk products.
+The saved Admin API token expired on 2026-04-29, so the status reset is pending
+restored Shopify Admin write access.
 
-## Launch Batch Products
+The replacement strategy is an owned nine-product wall-art collection, staged
+as Draft until a print provider is connected and samples pass. The storefront
+can truthfully preview the works before they are sellable.
 
-| Product | Handle |
-| --- | --- |
-| Clara Waffle Cotton Throw | `clara-waffle-cotton-throw` |
-| Luma Tassel Cotton Throw | `luma-tassel-cotton-throw` |
-| Sera Woven Table Runner | `sera-woven-table-runner` |
-| Sol Linen Cushion Cover | `sol-linen-cushion-cover` |
-| Alba Cotton-Linen Cushion | `alba-cotton-linen-cushion` |
-| Vale Walnut Storage Tray | `vale-walnut-storage-tray` |
-| Ayla Cotton Bath Towel | `ayla-cotton-bath-towel` |
-| Mara Linen Dining Placemat | `mara-linen-dining-placemat` |
-| Nora Round Cotton Trivet | `nora-round-cotton-trivet` |
-| Tali Tassel Table Mat | `tali-tassel-table-mat` |
+## Original Art Replacement
 
-## Audit Snapshot
+| Capsule     | Product handles                                                                    |
+| ----------- | ---------------------------------------------------------------------------------- |
+| Quiet Form  | `quiet-form-i-art-print`, `quiet-form-ii-art-print`, `quiet-form-iii-art-print`    |
+| Patina Blue | `patina-blue-i-art-print`, `patina-blue-ii-art-print`, `patina-blue-iii-art-print` |
+| Neo Deco    | `neo-deco-i-art-print`, `neo-deco-ii-art-print`, `neo-deco-iii-art-print`          |
 
-Latest stored audit summary:
+Each planned Draft product has one 8 × 10 inch, $29 variant. Larger formats are
+blocked until higher-resolution production and sample review. Source metadata is
+in `data/original-art-catalog.json`; staging is handled by
+`scripts/sync-original-art-catalog.mjs`.
 
-- Product count: 10.
-- Missing product count: 0.
-- Active product count: 10.
-- Published product count: 10.
-- Product issue count: 0.
-- Product warning count: 1.
-- Image warning count: 1.
-- Variant issue count: 0.
-
-Known warning: `clara-waffle-cotton-throw` has `low_product_media_count`.
+Source: [Original Art Launch](../../original-art-launch.md).
 
 ## Catalog Filtering
 
-`app/lib/catalogFilters.ts` is the central filtering layer used to keep
-off-theme, demo, and unfulfillable products out of the storefront.
+`app/lib/catalogFilters.ts` now uses an explicit nine-handle launch allowlist.
+Old or supplier-imported products cannot appear in catalog, search,
+recommendations, or direct product routes merely because they are active in
+Shopify. Admin status is still the authoritative cross-channel control, so the
+47-product Draft reset remains required.
 
 It defines:
 
@@ -48,6 +41,7 @@ It defines:
 - Demo/off-theme collection handles.
 - Off-theme product handles.
 - Unfulfillable product handles.
+- The nine approved original-art product handles.
 - Home-goods terms.
 - Off-theme vendor and product terms.
 - `isStoreThemeProduct`.

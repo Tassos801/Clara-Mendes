@@ -5,6 +5,7 @@ import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
@@ -19,7 +20,11 @@ import {
   organizationSchema,
   websiteSchema,
 } from '~/lib/seo';
-import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {
+  RETURN_WINDOW_DAYS,
+  STOREFRONT_ORIGIN,
+  SUPPORT_EMAIL,
+} from '~/lib/storefrontBasics';
 
 type HomeCollection = {
   id: string;
@@ -60,7 +65,7 @@ const HOME_ATMOSPHERE_IMAGES = {
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
-      'Curated supplier-sourced home goods with secure Shopify checkout and tracked fulfillment.',
+      'Original wall art and considered home accents for calm, collected rooms.',
     title: 'Objects with Soul | Clara Mendes',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
@@ -380,7 +385,10 @@ export default function Homepage() {
             ))}
           </div>
 
-          <div className="home-shop-accelerator-proof" aria-label="Buying support">
+          <div
+            className="home-shop-accelerator-proof"
+            aria-label="Buying support"
+          >
             <p>
               <strong>Checkout</strong>
               <span>Shopify protected payment</span>
@@ -554,6 +562,8 @@ export default function Homepage() {
         </div>
       </section>
 
+      <OriginalArtPreview compact />
+
       {featuredProducts.length > 0 ? (
         <section
           className="featured-grid-section"
@@ -564,7 +574,9 @@ export default function Homepage() {
             <div>
               <p className="eyebrow">Featured edit</p>
               <h2 id="featured">
-                {products.length > 3 ? 'More from the edit' : 'Objects available now'}
+                {products.length > 3
+                  ? 'More from the edit'
+                  : 'Objects available now'}
               </h2>
             </div>
             <Link className="text-link" to="/collections/all">
@@ -583,15 +595,18 @@ export default function Homepage() {
         </section>
       ) : (
         <section className="empty-state home-empty-catalog">
-          <p className="eyebrow">Sourcing now</p>
-          <h2>The first home-goods edit is being built.</h2>
+          <p className="eyebrow">First edition in preparation</p>
+          <h2>The original print collection is almost ready.</h2>
           <p>
-            The storefront is being prepared around lighting, textiles,
-            ceramics, storage, and accent pieces chosen for quiet rooms.
+            Paper, colour, packaging, and delivery are being checked before the
+            first nine works become available to order.
           </p>
-          <Link className="primary-button" to="/collections/all">
-            Preview the catalog
-          </Link>
+          <a
+            className="primary-button"
+            href={`mailto:${SUPPORT_EMAIL}?subject=Clara%20Mendes%20original%20art%20early%20access`}
+          >
+            Request early access
+          </a>
         </section>
       )}
 

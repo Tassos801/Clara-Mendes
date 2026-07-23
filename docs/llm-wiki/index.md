@@ -24,6 +24,7 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [Local Development And Launch](operations/local-development-and-launch.md) - Commands, environment variables, validation, launch gates, and deployment notes.
 - [Shopify Admin Cleanup](operations/shopify-admin-cleanup.md) - Off-theme products/collections and Admin cleanup source notes.
+- [Original Art Launch](../original-art-launch.md) - Nine-product owned-art catalog, assets, staging, supplier gates, and reset sequence.
 
 ## Source Notes
 

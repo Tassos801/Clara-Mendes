@@ -16,36 +16,36 @@ export type CatalogCollectionLike = {
 
 export const HOME_GOODS_COLLECTIONS = [
   {
-    id: 'home-goods-lighting',
-    handle: 'lighting',
-    note: 'Table lamps, pendants, and ambient fixtures',
-    title: 'Lighting',
+    id: 'original-art-quiet-form',
+    handle: 'quiet-form',
+    note: 'Warm architectural forms in ivory, oat, terracotta, and charcoal',
+    title: 'Quiet Form',
   },
   {
-    id: 'home-goods-textiles',
-    handle: 'textiles',
-    note: 'Throws, cushions, towels, and soft layers',
-    title: 'Textiles',
+    id: 'original-art-patina-blue',
+    handle: 'patina-blue',
+    note: 'Weathered indigo, cobalt, slate, and translucent mineral washes',
+    title: 'Patina Blue',
   },
   {
-    id: 'home-goods-ceramics',
-    handle: 'ceramics',
-    note: 'Vases, bowls, planters, and tabletop objects',
-    title: 'Ceramics',
-  },
-  {
-    id: 'home-goods-storage',
-    handle: 'storage',
-    note: 'Baskets, trays, boxes, and useful organizers',
-    title: 'Storage',
-  },
-  {
-    id: 'home-goods-accents',
-    handle: 'accents',
-    note: 'Small decor objects and finishing pieces',
-    title: 'Accents',
+    id: 'original-art-neo-deco',
+    handle: 'neo-deco',
+    note: 'Graphic black geometry with oxblood, green, and muted gold',
+    title: 'Neo Deco',
   },
 ] as const;
+
+const LAUNCH_PRODUCT_HANDLES = new Set([
+  'quiet-form-i-art-print',
+  'quiet-form-ii-art-print',
+  'quiet-form-iii-art-print',
+  'patina-blue-i-art-print',
+  'patina-blue-ii-art-print',
+  'patina-blue-iii-art-print',
+  'neo-deco-i-art-print',
+  'neo-deco-ii-art-print',
+  'neo-deco-iii-art-print',
+]);
 
 const DEMO_COLLECTION_HANDLES = new Set([
   'accessories',
@@ -116,9 +116,9 @@ const OFF_THEME_VENDOR_TERMS = [
 ];
 
 /**
- * Products are visible by default. Only exact demo handles and known demo
- * vendors are hidden, so a large supplier catalog never needs this file
- * updated for new products to appear.
+ * The current catalog is intentionally allowlisted. A product cannot become
+ * sellable through the Hydrogen storefront merely because a supplier app or
+ * old import publishes it in Shopify.
  */
 export function isOffThemeProduct(product: CatalogProductLike) {
   if (isOffThemeProductHandle(product.handle)) return true;
@@ -128,8 +128,12 @@ export function isOffThemeProduct(product: CatalogProductLike) {
 }
 
 export function isStoreThemeProduct(product: CatalogProductLike) {
+  const handle = product.handle?.toLowerCase();
+
   return (
-    !isOffThemeProduct(product) && !isUnfulfillableProductHandle(product.handle)
+    Boolean(handle && LAUNCH_PRODUCT_HANDLES.has(handle)) &&
+    !isOffThemeProduct(product) &&
+    !isUnfulfillableProductHandle(product.handle)
   );
 }
 
