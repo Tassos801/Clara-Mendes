@@ -13,14 +13,17 @@ Sources: [Launch readiness](../launch-readiness.md), [README](../../README.md).
 
 ## Shopify Admin And Catalog
 
-- Has Shopify Admin cleanup been completed for all off-theme products and
-  collections listed in `docs/shopify-admin-cleanup.md`?
-- Does the live product audit still show only one warning for
-  `clara-waffle-cotton-throw`, or has media count changed since the snapshot?
-- Are all live products still published to the intended Headless/Online Store
-  publications?
+- Has a current Admin API token or signed-in Admin session been restored?
+- Have the 47 currently available products been moved to Draft with the restore
+  backup preserved?
+- Which free POD provider and exact 8 × 10 paper product passed the physical
+  sample comparison?
+- Are the nine original-art SKUs mapped to the provider and still Draft until a
+  complete test order succeeds?
+- Has the planned $12 maximum landed cost been verified with real US shipping?
 
-Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md).
+Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md),
+[Original Art Launch](../original-art-launch.md).
 
 ## Measurement And Growth
 

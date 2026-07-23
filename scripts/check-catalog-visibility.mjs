@@ -4,8 +4,15 @@ import test from 'node:test';
 
 import {filterDemoProducts, isDemoProduct} from '../app/lib/catalogFilters.ts';
 
-test('keeps ordinary Shopify products that are not launch-tagged', () => {
+test('shows only explicitly approved original-art launch products', () => {
   const catalogProducts = [
+    {
+      handle: 'quiet-form-i-art-print',
+      productType: 'Art Prints',
+      tags: ['Clara Mendes Original'],
+      title: 'Quiet Form I Art Print',
+      vendor: 'Clara Mendes',
+    },
     {
       handle: 'linen-storage-basket',
       productType: 'Storage',
@@ -13,19 +20,13 @@ test('keeps ordinary Shopify products that are not launch-tagged', () => {
       title: 'Linen Storage Basket',
       vendor: 'Clara Mendes',
     },
-    {
-      handle: 'hydrogen-snowboard',
-      productType: 'Snowboards',
-      tags: ['demo'],
-      title: 'Hydrogen Snowboard',
-      vendor: 'Hydrogen',
-    },
   ];
 
   assert.equal(isDemoProduct(catalogProducts[0]), false);
+  assert.equal(isDemoProduct(catalogProducts[1]), true);
   assert.deepEqual(
     filterDemoProducts(catalogProducts).map((product) => product.handle),
-    ['linen-storage-basket'],
+    ['quiet-form-i-art-print'],
   );
 });
 
@@ -46,13 +47,13 @@ test('collection product queries are cursor-paginated', () => {
   }
 });
 
-test('collection pages request enough products for the full live catalog', () => {
+test('collection pages request enough products for the nine-item launch', () => {
   for (const routeFile of [
     'app/routes/collections.all.tsx',
     'app/routes/collections.$handle.tsx',
   ]) {
     const source = readFileSync(routeFile, 'utf8');
 
-    assert.match(source, /pageBy:\s*60/);
+    assert.match(source, /pageBy:\s*24/);
   }
 });

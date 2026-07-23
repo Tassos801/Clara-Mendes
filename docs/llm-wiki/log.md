@@ -21,3 +21,13 @@ fulfillment workflow.
 docs) from the repo and purged all CJ/fulfillment-webhook references from the
 wiki. Deleted wiki pages: modules/fulfillment-automation.md,
 modules/product-sourcing-automation.md.
+
+## [2026-07-23] catalog | Prepared original-art replacement launch
+
+Verified that the live Storefront API still exposed 47 available products and
+that the saved Admin token had expired. Added nine original 4:5 artworks across
+Quiet Form, Patina Blue, and Neo Deco; optimized storefront previews; prepared
+8 × 10 sample-print candidates; added an idempotent Draft product staging
+script; replaced the permissive supplier filter with a nine-product launch
+allowlist; and documented the provider, sample, landed-cost, and activation
+gates.

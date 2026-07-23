@@ -7,20 +7,26 @@ phone accessories, or generic personal-care products.
 
 ## Current Catalog Decision
 
-Keep or prioritize:
+The 2026-07-23 decision is to lead with owned, original wall art instead of
+another broad supplier catalog. The first assortment is nine original 4:5
+prints across Quiet Form, Patina Blue, and Neo Deco. See
+[Original Art Launch](original-art-launch.md).
 
-- Drawer Reset Bundle: fits storage, bathroom reset, and home rituals.
-- Soft Reset Candle: fits scent, atmosphere, and gifting.
-- The Home Ritual Warmer: fits lighting, home ritual, and small-appliance decor.
+Move the current 47 active products to Draft once Shopify Admin write access is
+restored. Preserve their media and data; do not delete them. Do not keep or
+publish:
 
-Hide from the Clara Mendes storefront:
+- Unrelated gadgets, health products, gemstones, vacuums, plumbing fixtures,
+  furniture, or other catalog drift.
+- Heavy mirrors, bookcases, and fragile decor with poor dropship economics.
+- Electrical lighting without verified certification and supplier traceability.
+- Products presented with names associated with known designer originals unless
+  authenticity and resale rights are documented.
+- Any item without a sampled provider mapping, reliable tracked shipping, and a
+  landed-cost record.
 
-- Tux-USA formalwear: tuxedo jackets, tuxedo pants, gowns, dresses, wedding
-  dresses, pocket squares.
-- Stlouisbeautyline health and beauty products: acne cream, antiseptic wash,
-  collagen, supplements.
-- GoddessYou products outside the home-goods lane: phone case, ice roller,
-  facial tools, hydration bottle, journal, satin sleep set, tech pouch.
+The product families below are secondary expansion ideas only. They do not
+override the original-art launch or its sample and margin gates.
 
 ## Product Families To Source Next
 
