@@ -1,4 +1,5 @@
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 type MoneyAmount = {
   amount: string;
@@ -60,8 +61,8 @@ export const DEFAULT_META_DESCRIPTION =
 export const DEFAULT_SHARE_IMAGE =
   'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1600&auto=format&fit=crop';
 
-export function getCanonicalUrl(request: Request, pathname: string) {
-  return new URL(pathname, request.url).toString();
+export function getCanonicalUrl(_request: Request, pathname: string) {
+  return new URL(pathname, STOREFRONT_ORIGIN).toString();
 }
 
 export function buildSeoMeta({

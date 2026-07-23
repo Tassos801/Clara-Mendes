@@ -1,3 +1,5 @@
+import {STOREFRONT_ORIGIN} from './storefrontBasics';
+
 export const MARKETING_ATTRIBUTION_INPUT_NAME = 'marketingAttribution';
 
 const ATTRIBUTION_STORAGE_KEY = 'clara.marketingAttribution.v1';
@@ -206,7 +208,7 @@ function createTouchFromUrl(
   referrer: string,
   capturedAt: string,
 ): MarketingTouch {
-  const url = safeUrl(value) ?? new URL(value, 'https://clara-mendes.com');
+  const url = safeUrl(value) ?? new URL(value, STOREFRONT_ORIGIN);
   const params = url.searchParams;
   const touch: MarketingTouch = {
     captured_at: capturedAt,

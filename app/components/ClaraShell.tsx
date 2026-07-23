@@ -34,7 +34,7 @@ export function ClaraShell({
 }
 
 function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
-  const {open} = useAside();
+  const {open, type} = useAside();
 
   return (
     <header className="site-header">
@@ -44,6 +44,8 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
           type="button"
           onClick={() => open('mobile')}
           aria-label="Open menu"
+          aria-expanded={type === 'mobile'}
+          aria-haspopup="dialog"
         >
           <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true">
             <line x1="0" y1="1" x2="22" y2="1" stroke="currentColor" strokeWidth="1.4" />
@@ -69,7 +71,13 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
             <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" strokeWidth="1.4"/>
           </svg>
         </Link>
-        <button className="cart-button" type="button" onClick={() => open('cart')}>
+        <button
+          aria-expanded={type === 'cart'}
+          aria-haspopup="dialog"
+          className="cart-button"
+          type="button"
+          onClick={() => open('cart')}
+        >
           Cart{' '}
           <span>
             <Suspense fallback="0">
@@ -128,10 +136,12 @@ function ClaraMobileNav() {
       />
       <nav
         className="mobile-nav-drawer"
+        data-aside-panel="mobile"
         aria-label="Mobile navigation"
         aria-modal={isOpen}
         role="dialog"
         data-lenis-prevent
+        tabIndex={-1}
       >
         <header className="mobile-nav-header">
           <Link className="brand-mark" to="/" onClick={close}>
@@ -173,10 +183,12 @@ function ClaraCartDrawer({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
       />
       <aside
         className="cart-drawer"
+        data-aside-panel="cart"
         aria-label="Shopping cart"
         aria-modal={isOpen}
         role="dialog"
         data-lenis-prevent
+        tabIndex={-1}
       >
         <header className="cart-drawer-header">
           <p className="eyebrow">Cart</p>

@@ -5,6 +5,7 @@ node_modules/
 dist/
 build/
 .react-router/
+.vite/
 *.tsbuildinfo
 
 # Shopify and local dev state

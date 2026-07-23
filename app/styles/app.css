@@ -2324,11 +2324,15 @@ button {
   inset: 0;
   pointer-events: none;
   position: fixed;
+  transition: visibility 0s linear 280ms;
+  visibility: hidden;
   z-index: 50;
 }
 
 .mobile-nav-backdrop.is-open {
   pointer-events: auto;
+  transition-delay: 0s;
+  visibility: visible;
 }
 
 .mobile-nav-scrim {
