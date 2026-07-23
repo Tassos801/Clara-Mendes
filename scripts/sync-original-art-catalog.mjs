@@ -149,12 +149,25 @@ function validateLocalAssets() {
 async function assertRemoteImages() {
   for (const item of catalog) {
     const url = imageUrlFor(item);
-    const response = await fetch(url, {method: 'HEAD', redirect: 'follow'});
+    // Oxygen can reject HEAD while still serving the same static asset on GET.
+    // Use a range GET so the guard matches Shopify's actual image request.
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {Range: 'bytes=0-0'},
+      redirect: 'follow',
+    });
     if (!response.ok) {
       throw new Error(
         `Product image is not publicly reachable (${response.status}): ${url}`,
       );
     }
+    const contentType = response.headers.get('content-type') || '';
+    if (!contentType.startsWith('image/')) {
+      throw new Error(
+        `Product image returned an unexpected content type (${contentType || 'missing'}): ${url}`,
+      );
+    }
+    await response.body?.cancel();
     console.log(`  IMAGE OK  ${item.handle}`);
   }
 }
