@@ -1,11 +1,13 @@
 import {
   createContext,
   type ReactNode,
+  useCallback,
   useContext,
   useEffect,
+  useId,
+  useRef,
   useState,
 } from 'react';
-import {useId} from 'react';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -36,33 +38,18 @@ export function Aside({
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
   const id = useId();
-  useEffect(() => {
-    const abortController = new AbortController();
-
-    if (expanded) {
-      document.addEventListener(
-        'keydown',
-        function handler(event: KeyboardEvent) {
-          if (event.key === 'Escape') {
-            close();
-          }
-        },
-        {signal: abortController.signal},
-      );
-    }
-    return () => abortController.abort();
-  }, [close, expanded]);
 
   return (
     <div
-      aria-modal
+      aria-hidden={!expanded}
+      aria-modal={expanded}
       className={`overlay ${expanded ? 'expanded' : ''}`}
       role="dialog"
       aria-labelledby={id}
     >
       <button className="close-outside" onClick={close} />
       {/* data-lenis-prevent keeps drawer scrolling native under smooth scroll */}
-      <aside data-lenis-prevent>
+      <aside data-aside-panel={type} data-lenis-prevent>
         <header>
           <h3 id={id}>{heading}</h3>
           <button className="close reset" onClick={close} aria-label="Close">
@@ -79,13 +66,61 @@ const AsideContext = createContext<AsideContextValue | null>(null);
 
 Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const close = useCallback(() => setType('closed'), []);
+  const open = useCallback(
+    (mode: AsideType) => {
+      if (mode === 'closed') {
+        close();
+        return;
+      }
+
+      returnFocusRef.current =
+        document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
+      setType(mode);
+    },
+    [close],
+  );
+
+  useEffect(() => {
+    if (type === 'closed') return;
+
+    const previousOverflow = document.body.style.overflow;
+    const returnFocus = returnFocusRef.current;
+    const panel = document.querySelector<HTMLElement>(
+      `[data-aside-panel="${type}"]`,
+    );
+    const focusTarget = panel?.querySelector<HTMLElement>(
+      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    const focusFrame = window.requestAnimationFrame(() => {
+      (focusTarget ?? panel)?.focus();
+    });
+    const handleKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close();
+    };
+
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeydown);
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeydown);
+      if (returnFocus?.isConnected) {
+        window.requestAnimationFrame(() => returnFocus.focus());
+      }
+    };
+  }, [close, type]);
 
   return (
     <AsideContext.Provider
       value={{
         type,
-        open: setType,
-        close: () => setType('closed'),
+        open,
+        close,
       }}
     >
       {children}

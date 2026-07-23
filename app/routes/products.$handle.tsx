@@ -25,7 +25,7 @@ import {
   getCanonicalUrl,
   productSchema,
 } from '~/lib/seo';
-import {RETURN_WINDOW_DAYS} from '~/lib/storefrontBasics';
+import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {ReviewsSection} from '~/components/reviews/ReviewsSection';
 import {
   parseReviewsMetafield,
@@ -96,7 +96,7 @@ export const meta: Route.MetaFunction = ({data}) => {
     image: product?.featuredImage?.url,
     title: product?.title ?? 'Product',
     type: 'product',
-    url: data?.seoUrl ?? 'https://clara-mendes.com/products',
+    url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/products`,
   });
 };
 

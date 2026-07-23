@@ -17,6 +17,7 @@ import {
   isDemoProduct,
 } from '~/lib/catalogFilters';
 import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
@@ -24,7 +25,7 @@ export const meta: Route.MetaFunction = ({data}) => {
       'Search the Clara Mendes edit for soft lighting, textiles, ceramics, storage, table rituals, and quiet home accents.',
     noIndex: true,
     title: 'Search | Clara Mendes',
-    url: data?.seoUrl ?? 'https://clara-mendes.com/search',
+    url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/search`,
   });
 };
 

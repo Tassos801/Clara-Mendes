@@ -19,7 +19,7 @@ import {
   organizationSchema,
   websiteSchema,
 } from '~/lib/seo';
-import {RETURN_WINDOW_DAYS} from '~/lib/storefrontBasics';
+import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 type HomeCollection = {
   id: string;
@@ -62,7 +62,7 @@ export const meta: Route.MetaFunction = ({data}) => {
     description:
       'Curated supplier-sourced home goods with secure Shopify checkout and tracked fulfillment.',
     title: 'Objects with Soul | Clara Mendes',
-    url: data?.seoUrl ?? 'https://clara-mendes.com/',
+    url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
 };
 

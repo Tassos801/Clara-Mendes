@@ -16,7 +16,8 @@ export default async function handleRequest(
 ) {
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
-      checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
+      checkoutDomain:
+        context.env.PUBLIC_CHECKOUT_DOMAIN ?? context.env.PUBLIC_STORE_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
     imgSrc: [
@@ -25,7 +26,6 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://images.unsplash.com',
     ],
-    scriptSrc: ["'self'"],
   });
 
   const body = await renderToReadableStream(
