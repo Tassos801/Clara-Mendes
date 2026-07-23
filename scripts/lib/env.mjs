@@ -8,6 +8,14 @@ export function envWithLocalDefaults(fileName = '.env') {
   };
 }
 
+export function envWithAdminDefaults() {
+  return {
+    ...loadLocalEnv('.env'),
+    ...loadLocalEnv('.env.shopify-admin.local'),
+    ...process.env,
+  };
+}
+
 export function getRequiredEnv(env, key) {
   const value = String(env[key] ?? '').trim();
 

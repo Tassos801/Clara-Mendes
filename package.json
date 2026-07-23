@@ -13,6 +13,9 @@
     "codegen": "shopify hydrogen codegen && react-router typegen",
     "catalog:art:dry-run": "node ./scripts/sync-original-art-catalog.mjs",
     "catalog:art:sync": "node ./scripts/sync-original-art-catalog.mjs --apply",
+    "catalog:legacy:dry-run": "node ./scripts/unpublish-all-products.mjs --dry-run",
+    "catalog:legacy:draft": "node ./scripts/unpublish-all-products.mjs",
+    "catalog:legacy:restore": "node ./scripts/unpublish-all-products.mjs --restore",
     "clean": "node ./scripts/clean.mjs",
     "clean:deps": "node ./scripts/clean.mjs --deps"
   },
