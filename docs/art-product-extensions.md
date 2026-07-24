@@ -30,6 +30,10 @@ models. The 2026 calendar combines all five capsules into one edition.
 
 Total: 12 Draft products and 71 variants.
 
+On 2026-07-24, the guarded sync created all 12 products in Shopify as
+`DRAFT`. The live readback passed for 12/12 products, all 71 variants, expected
+prices and inventory flags, and READY product images. None were published.
+
 ## Artwork Policy
 
 The production files preserve the original Clara Mendes artwork. Product
