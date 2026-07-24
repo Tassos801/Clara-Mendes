@@ -115,5 +115,83 @@
     "fileName": "neo-deco-03.webp",
     "palette": "Ivory · Black · Deep Green",
     "skuPrefix": "CM-ND-03"
+  },
+  {
+    "handle": "midnight-garden-i-art-print",
+    "title": "Midnight Garden I Art Print",
+    "shortTitle": "Midnight Garden I",
+    "capsule": "Midnight Garden",
+    "sequence": 1,
+    "description": "A moonlit collage of imagined leaves, pale blooms, and copper-threaded seed forms.",
+    "alt": "Dark botanical wall art with layered navy leaves, cream blooms, plum foliage, and copper details",
+    "image": "/images/product-art/midnight-garden/midnight-garden-01.webp",
+    "fileName": "midnight-garden-01.webp",
+    "palette": "Midnight · Forest · Aubergine · Copper",
+    "skuPrefix": "CM-MG-01"
+  },
+  {
+    "handle": "midnight-garden-ii-art-print",
+    "title": "Midnight Garden II Art Print",
+    "shortTitle": "Midnight Garden II",
+    "capsule": "Midnight Garden",
+    "sequence": 2,
+    "description": "Layered moon flowers and sculptural seed pods rise through a deep nocturnal field.",
+    "alt": "Moody botanical wall art with cream flowers, plum leaves, seed pods, and translucent moon forms",
+    "image": "/images/product-art/midnight-garden/midnight-garden-02.webp",
+    "fileName": "midnight-garden-02.webp",
+    "palette": "Ink · Plum · Antique Cream · Copper",
+    "skuPrefix": "CM-MG-02"
+  },
+  {
+    "handle": "midnight-garden-iii-art-print",
+    "title": "Midnight Garden III Art Print",
+    "shortTitle": "Midnight Garden III",
+    "capsule": "Midnight Garden",
+    "sequence": 3,
+    "description": "Elongated leaves, pale star blooms, and drifting seeds sweep beneath a mineral moon.",
+    "alt": "Night garden wall art with layered teal leaves, pale star flowers, drifting seeds, and a crescent glow",
+    "image": "/images/product-art/midnight-garden/midnight-garden-03.webp",
+    "fileName": "midnight-garden-03.webp",
+    "palette": "Navy · Teal · Aubergine · Antique Cream",
+    "skuPrefix": "CM-MG-03"
+  },
+  {
+    "handle": "sunlit-mosaic-i-art-print",
+    "title": "Sunlit Mosaic I Art Print",
+    "shortTitle": "Sunlit Mosaic I",
+    "capsule": "Sunlit Mosaic",
+    "sequence": 1,
+    "description": "Torn-paper arches, mineral colour, and rhythmic marks assemble into a warm architectural collage.",
+    "alt": "Warm abstract wall art with terracotta arches, ochre shapes, cobalt blocks, dots, and hand-drawn lines",
+    "image": "/images/product-art/sunlit-mosaic/sunlit-mosaic-01.webp",
+    "fileName": "sunlit-mosaic-01.webp",
+    "palette": "Terracotta · Saffron · Olive · Cobalt",
+    "skuPrefix": "CM-SM-01"
+  },
+  {
+    "handle": "sunlit-mosaic-ii-art-print",
+    "title": "Sunlit Mosaic II Art Print",
+    "shortTitle": "Sunlit Mosaic II",
+    "capsule": "Sunlit Mosaic",
+    "sequence": 2,
+    "description": "Overlapping circles and slanted bands turn sun-baked pigment into a lively geometric rhythm.",
+    "alt": "Warm geometric wall art with large ochre circles, terracotta forms, cobalt accents, grids, and dots",
+    "image": "/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp",
+    "fileName": "sunlit-mosaic-02.webp",
+    "palette": "Ochre · Sienna · Coral · Cobalt",
+    "skuPrefix": "CM-SM-02"
+  },
+  {
+    "handle": "sunlit-mosaic-iii-art-print",
+    "title": "Sunlit Mosaic III Art Print",
+    "shortTitle": "Sunlit Mosaic III",
+    "capsule": "Sunlit Mosaic",
+    "sequence": 3,
+    "description": "Nested arches, offset checks, and hand-drawn stripes build a richly collected abstract cityscape.",
+    "alt": "Complex abstract wall art with nested terracotta arches, cobalt shapes, olive blocks, checks, and stripes",
+    "image": "/images/product-art/sunlit-mosaic/sunlit-mosaic-03.webp",
+    "fileName": "sunlit-mosaic-03.webp",
+    "palette": "Terracotta · Olive · Cream · Cobalt",
+    "skuPrefix": "CM-SM-03"
   }
 ]

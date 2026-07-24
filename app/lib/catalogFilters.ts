@@ -33,6 +33,18 @@ export const HOME_GOODS_COLLECTIONS = [
     note: 'Graphic black geometry with oxblood, green, and muted gold',
     title: 'Neo Deco',
   },
+  {
+    id: 'original-art-midnight-garden',
+    handle: 'midnight-garden',
+    note: 'Layered moonlit botanicals in navy, plum, teal, and copper',
+    title: 'Midnight Garden',
+  },
+  {
+    id: 'original-art-sunlit-mosaic',
+    handle: 'sunlit-mosaic',
+    note: 'Warm collage rhythms in terracotta, ochre, olive, and cobalt',
+    title: 'Sunlit Mosaic',
+  },
 ] as const;
 
 const LAUNCH_PRODUCT_HANDLES = new Set([
@@ -45,6 +57,12 @@ const LAUNCH_PRODUCT_HANDLES = new Set([
   'neo-deco-i-art-print',
   'neo-deco-ii-art-print',
   'neo-deco-iii-art-print',
+  'midnight-garden-i-art-print',
+  'midnight-garden-ii-art-print',
+  'midnight-garden-iii-art-print',
+  'sunlit-mosaic-i-art-print',
+  'sunlit-mosaic-ii-art-print',
+  'sunlit-mosaic-iii-art-print',
 ]);
 
 const DEMO_COLLECTION_HANDLES = new Set([
