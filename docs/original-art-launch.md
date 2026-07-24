@@ -101,6 +101,63 @@ Prodigi setup references:
 - https://support.prodigi.com/hc/en-us/articles/13157931074076-Can-I-pause-orders
 - https://www.prodigi.com/products/prints-and-posters/art-prints/enhanced-matte-art/
 
+## Prodigi Mapping Status — 2026-07-24
+
+All fifteen SKUs are mapped in the Prodigi sales channel
+(vre00g-8b.myshopify.com) to **ART-FAP-EMA-8X10** — EMA, Enhanced Matte Art
+Paper, 200gsm, 8x10in, unframed, giclée. ART-FAP-EMA-8X10 and GLOBAL-FAP-8X10
+are spec- and price-identical; ART-FAP was chosen for the explicit EMA family
+code and its listed US/NL/UK facilities. Every production upload is the exact
+2400 × 3000 px 300-DPI JPEG; Prodigi rates each "Excellent" (matches its
+recommended dimensions exactly). Crop verified per product in the design
+editor: scale 100%, offsets 0, border 0cm, full bleed, no cut-off, no
+distortion. Per-product shipping preference is set to **Standard**. The
+account-level order pause is **"Pause indefinitely, until manually released"**
+(set and re-verified 2026-07-24). No order, sample, or payment was made.
+
+**Billing blocker:** Prodigi shows "You will need to set up billing details to
+automatically fulfil orders" on every configurator. Auto-fulfilment cannot run
+until the owner adds billing in Prodigi → Settings → Billing.
+
+**Cost gate result: FAIL at Standard shipping.** Live Prodigi quotes for
+ART-FAP-EMA-8X10 (account bills in EUR; ECB rate 1.1392 USD/EUR, 2026-07-23):
+
+| Destination | Method   | Item  | Shipping | Tax   | Landed (EUR) | Landed (USD) | ≤ $12? |
+| ----------- | -------- | ----- | -------- | ----- | ------------ | ------------ | ------ |
+| US          | Budget   | €7.91 | €6.02    | €0.00 | €13.93       | $15.87       | No     |
+| US          | Standard | €7.91 | €10.41   | €0.00 | €18.32       | $20.87       | No     |
+| CY          | Budget   | €5.00 | €3.75    | €1.75 | €10.50       | $11.96       | Yes    |
+| CY          | Standard | €5.00 | €10.25   | €3.05 | €18.30       | $20.84       | No     |
+
+Quotes are identical for every one of the 15 products (same Prodigi SKU).
+Because landed cost exceeds $12 at the $29 retail price for the USD-market
+destination (US) under the selected Standard method, **all 15 products remain
+DRAFT and unpublished**. Options for the owner: accept Budget shipping and a
+higher gate, raise retail, print larger/multi-buy formats, or accept the
+margin. Catalog audit (`npm run catalog:art:audit`) passed 15/15 on 2026-07-24
+after mapping.
+
+| Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status    |
+| ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ----------------- |
+| Quiet Form I        | CM-QF-01-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-01-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Quiet Form II       | CM-QF-02-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-02-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Quiet Form III      | CM-QF-03-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-03-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Patina Blue I       | CM-PB-01-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-01-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Patina Blue II      | CM-PB-02-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-02-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Patina Blue III     | CM-PB-03-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-03-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Neo Deco I          | CM-ND-01-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-01-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Neo Deco II         | CM-ND-02-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-02-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Neo Deco III        | CM-ND-03-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-03-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Midnight Garden I   | CM-MG-01-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-01-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Midnight Garden II  | CM-MG-02-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-02-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Midnight Garden III | CM-MG-03-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-03-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Sunlit Mosaic I     | CM-SM-01-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-01-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Sunlit Mosaic II    | CM-SM-02-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-02-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Sunlit Mosaic III   | CM-SM-03-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-03-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+
+Print quality "Excellent" refers to Prodigi's resolution rating of the file,
+not a physical print inspection; no samples were ordered by explicit decision.
+
 ## Existing Catalog Reset
 
 The live Storefront API check on 2026-07-23 initially returned 47 available
@@ -128,9 +185,10 @@ preferred to deletion because it preserves product media and data.
 3. Completed: move all 49 legacy products to Draft with a restoration backup.
 4. Completed: create and verify the nine replacement products as Draft.
 5. Completed: connect Prodigi to Shopify.
-6. Next: map each exact SKU to Enhanced Matte Art and verify crop, price,
-   shipping, and the account-level order pause.
-7. Activate only mapped products.
+6. Completed 2026-07-24: mapped all 15 SKUs to ART-FAP-EMA-8X10, verified
+   crop/price/shipping and the indefinite order pause.
+7. Blocked: activation withheld — landed cost exceeds the $12 gate at Standard
+   shipping (see Prodigi Mapping Status); Prodigi billing details also missing.
 8. Launch the individual prints first; add a “pick any 3 for $79” automatic
    discount only after the three-item landed cost and fulfilment routing are
    verified.
