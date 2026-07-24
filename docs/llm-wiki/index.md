@@ -1,9 +1,9 @@
 # Clara Mendes LLM Wiki Index
 
-Snapshot: 2026-07-02
+Snapshot: 2026-07-24
 
 Source: local Shopify Hydrogen storefront repository at
-`C:\Users\admin\Desktop\Mine\shopify\clara-mendes`
+`C:\Users\admin\Desktop\4. Work & Projects\shopify\clara-mendes`
 
 ## Start Here
 
@@ -24,7 +24,8 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [Local Development And Launch](operations/local-development-and-launch.md) - Commands, environment variables, validation, launch gates, and deployment notes.
 - [Shopify Admin Cleanup](operations/shopify-admin-cleanup.md) - Off-theme products/collections and Admin cleanup source notes.
-- [Original Art Launch](../original-art-launch.md) - Nine-product owned-art catalog, assets, staging, supplier gates, and reset sequence.
+- [Original Art Launch](../original-art-launch.md) - Fifteen-product owned-art catalog, extension asset lab, staging, supplier gates, and reset sequence.
+- [Art for Everyday Living](../art-product-extensions.md) - Draft product-extension architecture, generated assets, sync workflow, and release gates.
 
 ## Source Notes
 

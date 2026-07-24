@@ -45,6 +45,31 @@ The catalog metadata and stable product handles live in
 python .\scripts\prepare-original-art-assets.py
 ```
 
+## Product Extension Asset Lab
+
+`data/art-product-extensions.json` defines a Draft-only collection of twelve
+additional product families, including larger prints, framed prints, paper
+goods, textiles, a tote, a calendar, canvas, and selected phone cases. These
+records are not launch approval. Any `verified-public` Prodigi SKU still
+requires confirmation inside the connected account, a real shipping quote,
+margin review, and a physical sample before it can be sold.
+
+Generate the deterministic production candidates and storefront review
+previews with:
+
+```powershell
+python .\scripts\prepare-art-product-extensions.py
+```
+
+The production files and manifest stay under the ignored
+`output/prodigi-product-files/` directory. Lightweight review previews are
+committed under `public/images/art-product-extensions/`. The separate
+`scripts/sync-art-product-extensions.mjs` command creates or updates the Shopify
+records as **DRAFT** only after an explicit `--apply`; it never publishes them.
+See
+[Art for Everyday Living](art-product-extensions.md) for the full product
+architecture, reproduction commands, and release gates.
+
 ## Shopify Product Staging
 
 `scripts/sync-original-art-catalog.mjs` idempotently upserts all fifteen products
@@ -169,13 +194,14 @@ wrote an ignored local restoration file at
 `scripts/unpublished-products-backup.json` before changing statuses, and the
 post-change Admin query confirmed `productsCount(status:active) = 0`.
 
-The nine original-art replacements were then created as **DRAFT** and read back
-from Shopify. All nine have one READY image, one untracked 8 × 10 shipping
-variant, a unique `CM-...-8X10` SKU, a $29 price, and no Online Store
-publication.
+The first nine original-art replacements were created as **DRAFT** on
+2026-07-23; the six Midnight Garden and Sunlit Mosaic products followed on
+2026-07-24. All fifteen were read back from Shopify with one READY image, one
+untracked 8 × 10 shipping variant, a unique `CM-...-8X10` SKU, a $29 price, and
+no Online Store publication.
 
 `app/lib/catalogFilters.ts` retains an explicit allowlist containing only the
-nine original-art handles as a second storefront safety layer. Draft is
+fifteen original-art handles as a second storefront safety layer. Draft is
 preferred to deletion because it preserves product media and data.
 
 ## Launch Sequence
@@ -183,7 +209,7 @@ preferred to deletion because it preserves product media and data.
 1. Completed: deploy the original-art previews and truthful early-access state.
 2. Completed: restore Shopify Admin write access.
 3. Completed: move all 49 legacy products to Draft with a restoration backup.
-4. Completed: create and verify the nine replacement products as Draft.
+4. Completed: create and verify all fifteen replacement products as Draft.
 5. Completed: connect Prodigi to Shopify.
 6. Completed 2026-07-24: mapped all 15 SKUs to ART-FAP-EMA-8X10, verified
    crop/price/shipping and the indefinite order pause.

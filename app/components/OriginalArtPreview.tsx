@@ -26,13 +26,13 @@ export function OriginalArtPreview({compact = false}: OriginalArtPreviewProps) {
         <div>
           <p className="eyebrow">Original Clara Mendes art</p>
           <h2 id="original-art-preview-title">
-            Three moods. One <i>considered</i> collection.
+            Five moods. One <i>considered</i> collection.
           </h2>
         </div>
         <div className="original-art-preview__intro">
           <p>
-            Nine original works designed as coordinated sets for calmer walls.
-            The first print samples are now being prepared.
+            Fifteen original works across five capsules, designed as coordinated
+            sets for calmer walls. The first release is being prepared now.
           </p>
           <a className="text-link" href={earlyAccessHref}>
             Request early access
@@ -67,8 +67,8 @@ export function OriginalArtPreview({compact = false}: OriginalArtPreviewProps) {
 
       {compact ? (
         <p className="original-art-preview__note">
-          Each capsule contains three complementary works. Final paper, colour,
-          and shipping details will be published only after sample approval.
+          Each capsule contains three complementary works — unframed 8 × 10 in
+          giclée prints on 200gsm Enhanced Matte Art paper, printed to order.
         </p>
       ) : null}
     </section>
@@ -208,6 +208,12 @@ const previewCss = `
 
 .original-art-preview--compact .original-art-preview__grid {
   gap: clamp(18px, 2.5vw, 36px);
+}
+
+@media (min-width: 981px) {
+  .original-art-preview--compact .original-art-preview__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
 .original-art-preview__note {

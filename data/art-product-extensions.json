@@ -1,0 +1,212 @@
+{
+  "version": 1,
+  "currency": "USD",
+  "collectionHandle": "clara-mendes-art-living",
+  "collectionTitle": "Art for Everyday Living",
+  "status": "DRAFT",
+  "capsuleOrder": [
+    "Quiet Form",
+    "Patina Blue",
+    "Neo Deco",
+    "Midnight Garden",
+    "Sunlit Mosaic"
+  ],
+  "deviceVariants": [
+    {
+      "label": "iPhone 15",
+      "code": "IP15",
+      "prodigiSku": "GLOBAL-TECH-IP15-CS-G",
+      "template": "phone-iphone15.png"
+    },
+    {
+      "label": "iPhone 15 Pro",
+      "code": "IP15PR",
+      "prodigiSku": "GLOBAL-TECH-IP15PR-CS-G",
+      "template": "phone-iphone15-pro.png"
+    },
+    {
+      "label": "iPhone 15 Plus",
+      "code": "IP15PL",
+      "prodigiSku": "GLOBAL-TECH-IP15PL-CS-M",
+      "template": "phone-iphone15-plus.png"
+    },
+    {
+      "label": "iPhone 15 Pro Max",
+      "code": "IP15PM",
+      "prodigiSku": "GLOBAL-TECH-IP15PM-CS-M",
+      "template": "phone-iphone15-pro-max.png"
+    }
+  ],
+  "families": [
+    {
+      "id": "large-print",
+      "handle": "large-fine-art-print-16x20",
+      "title": "Large Fine Art Print — 16 × 20 in",
+      "productType": "Art Prints",
+      "price": "49.00",
+      "assetKind": "large_print",
+      "sourceSequence": 1,
+      "skuSuffix": "FAP-16X20",
+      "prodigiSku": "GLOBAL-FAP-16X20",
+      "prodigiSkuStatus": "candidate",
+      "material": "200gsm Enhanced Matte Art paper",
+      "format": "Unframed 16 × 20 inch giclée print"
+    },
+    {
+      "id": "classic-frame",
+      "handle": "classic-framed-art-print-16x20",
+      "title": "Classic Framed Art Print — 16 × 20 in",
+      "productType": "Framed Art",
+      "price": "99.00",
+      "assetKind": "classic_frame",
+      "sourceSequence": 1,
+      "skuSuffix": "CFP-16X20",
+      "prodigiSku": "GLOBAL-CFP-16X20",
+      "prodigiSkuStatus": "candidate",
+      "material": "Giclée fine-art print with natural wood-effect classic frame",
+      "format": "Ready-to-hang 16 × 20 inch framed print"
+    },
+    {
+      "id": "greeting-card",
+      "handle": "fine-art-greeting-card",
+      "title": "Fine Art Greeting Card",
+      "productType": "Cards",
+      "price": "8.00",
+      "assetKind": "greeting_card",
+      "sourceSequence": 2,
+      "skuSuffix": "GRE-7X5",
+      "prodigiSku": "GLOBAL-GRE-MOH-7X5-BLA",
+      "prodigiSkuStatus": "verified-public",
+      "material": "324gsm Mohawk fine-art card with kraft envelope",
+      "format": "Blank 5 × 7 inch portrait greeting card"
+    },
+    {
+      "id": "postcard",
+      "handle": "fine-art-postcard",
+      "title": "Fine Art Postcard",
+      "productType": "Postcards",
+      "price": "6.00",
+      "assetKind": "postcard",
+      "sourceSequence": 2,
+      "skuSuffix": "POST-7X5",
+      "prodigiSku": "GLOBAL-POST-MOH-7X5",
+      "prodigiSkuStatus": "verified-public",
+      "material": "Fine-art postcard stock",
+      "format": "7 × 5 inch art postcard"
+    },
+    {
+      "id": "spiral-notebook",
+      "handle": "art-cover-spiral-notebook",
+      "title": "Art-Cover Spiral Notebook",
+      "productType": "Notebooks",
+      "price": "24.00",
+      "assetKind": "notebook",
+      "sourceSequence": 3,
+      "skuSuffix": "NOTE-6X8",
+      "prodigiSku": "US-NB-LINED-6X8",
+      "prodigiSkuStatus": "verified-public",
+      "material": "Custom cover with lined paper and Wire-O binding",
+      "format": "6 × 8 inch spiral notebook"
+    },
+    {
+      "id": "gratitude-journal",
+      "handle": "art-cover-gratitude-journal",
+      "title": "Art-Cover Gratitude Journal",
+      "productType": "Journals",
+      "price": "32.00",
+      "assetKind": "journal",
+      "sourceSequence": 3,
+      "skuSuffix": "GJ-A5",
+      "prodigiSku": "GJ-A5-SB-S-C-P",
+      "prodigiSkuStatus": "verified-public",
+      "material": "Custom cover with 120 print-ready gratitude pages",
+      "format": "A5 softcover spiral gratitude journal"
+    },
+    {
+      "id": "calendar",
+      "handle": "clara-mendes-art-calendar-2026",
+      "title": "Clara Mendes Art Calendar 2026",
+      "productType": "Calendars",
+      "price": "29.00",
+      "assetKind": "calendar",
+      "sourceSequence": 0,
+      "skuSuffix": "CAL-A4-2026",
+      "prodigiSku": "CALENDAR-A4-L-DATED",
+      "prodigiSkuStatus": "verified-public",
+      "material": "300gsm silk-coated paper with Wire-O binding",
+      "format": "A4 landscape calendar with 12 original artworks",
+      "collectionVariant": true
+    },
+    {
+      "id": "stretched-canvas",
+      "handle": "stretched-canvas-art-16x20",
+      "title": "Stretched Canvas Art — 16 × 20 in",
+      "productType": "Canvas Art",
+      "price": "89.00",
+      "assetKind": "canvas",
+      "sourceSequence": 2,
+      "skuSuffix": "CAN-16X20",
+      "prodigiSku": "GLOBAL-CAN-16X20",
+      "prodigiSkuStatus": "verified-public",
+      "material": "400gsm artist-grade canvas on a 38mm pine frame",
+      "format": "Hand-stretched 16 × 20 inch canvas"
+    },
+    {
+      "id": "canvas-tote",
+      "handle": "art-canvas-tote",
+      "title": "Art Canvas Tote",
+      "productType": "Bags",
+      "price": "45.00",
+      "assetKind": "tote",
+      "sourceSequence": 1,
+      "skuSuffix": "TOTE",
+      "prodigiSku": "H-BAG-CTB",
+      "prodigiSkuStatus": "verified-public",
+      "material": "360gsm polyester canvas with black handles",
+      "format": "14 × 18.5 inch full-coverage tote"
+    },
+    {
+      "id": "linen-cushion",
+      "handle": "art-linen-cushion-24x24",
+      "title": "Art Linen Cushion — 24 × 24 in",
+      "productType": "Cushions",
+      "price": "69.00",
+      "assetKind": "cushion",
+      "sourceSequence": 0,
+      "skuSuffix": "CUSH-24",
+      "prodigiSku": "GLOBAL-CUSH-24X24-LIN",
+      "prodigiSkuStatus": "verified-public",
+      "material": "Full-colour faux linen cushion with fibre fill",
+      "format": "Single-sided 24 × 24 inch cushion"
+    },
+    {
+      "id": "fleece-blanket",
+      "handle": "art-premium-fleece-blanket-30x40",
+      "title": "Art Premium Fleece Blanket — 30 × 40 in",
+      "productType": "Blankets",
+      "price": "79.00",
+      "assetKind": "blanket",
+      "sourceSequence": 0,
+      "skuSuffix": "BLANK-30X40",
+      "prodigiSku": "GLOBAL-BLANKET-PREMIUM-FLEECE-30X40",
+      "prodigiSkuStatus": "verified-public",
+      "material": "Single-sided premium polyester fleece",
+      "format": "30 × 40 inch hemmed blanket"
+    },
+    {
+      "id": "snap-phone-case",
+      "handle": "art-snap-phone-case",
+      "title": "Art Snap Phone Case",
+      "productType": "Phone Cases",
+      "price": "34.00",
+      "assetKind": "phone_case",
+      "sourceSequence": 2,
+      "skuSuffix": "CASE",
+      "prodigiSku": "device-specific",
+      "prodigiSkuStatus": "verified-public",
+      "material": "Impact-resistant polycarbonate with all-over print",
+      "format": "Slim snap case for selected iPhone 15 models",
+      "deviceOptions": true
+    }
+  ]
+}

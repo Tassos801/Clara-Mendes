@@ -18,7 +18,7 @@ import {RecentlyViewed} from '~/components/RecentlyViewed';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
-import {getProductDescription} from '~/lib/productCopy';
+import {getProductDescription, getProductLede} from '~/lib/productCopy';
 import {
   breadcrumbSchema,
   buildSeoMeta,
@@ -167,6 +167,8 @@ export default function Product() {
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
   const productDescription = getProductDescription(product);
+  const productLede = getProductLede(product);
+  const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
@@ -352,7 +354,7 @@ export default function Product() {
               'Curated object'}
           </p>
           <h1>{product.title}</h1>
-          <p className="product-lede">{productDescription}</p>
+          <p className="product-lede">{productLede}</p>
           {selectedVariant ? (
             <ProductPrice
               price={selectedVariant.price}
@@ -463,6 +465,17 @@ export default function Product() {
           </ul>
 
           <dl className="product-details-list">
+            {isArtPrint ? (
+              <div>
+                <dt>Print</dt>
+                <dd>
+                  Giclée print in archival pigment inks on 200gsm Enhanced Matte
+                  Art paper. Unframed 8 × 10 in portrait, printed to order.
+                  Frame not included; screen and print colours can vary
+                  slightly.
+                </dd>
+              </div>
+            ) : null}
             <div>
               <dt>Shipping</dt>
               <dd>

@@ -31,3 +31,11 @@ Quiet Form, Patina Blue, and Neo Deco; optimized storefront previews; prepared
 script; replaced the permissive supplier filter with a nine-product launch
 allowlist; and documented the provider, sample, landed-cost, and activation
 gates.
+
+## [2026-07-24] catalog | Prepared Draft product-extension assets
+
+Added deterministic production candidates and 56 review previews for twelve
+possible art-product families across the five capsules. Recorded the extension
+catalog as Draft-only planning data, kept Shopify creation out of the generator,
+updated the storefront's fifteen-work copy and print specifications, and
+retained SKU, shipping, margin, billing, and physical-sample gates.

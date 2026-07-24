@@ -34,6 +34,20 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
     'A walnut-tone wooden tray for keys, bedside objects, candles, or dining-table fruit. Its low profile gathers everyday pieces without feeling overdesigned.',
 };
 
+/**
+ * Art-print descriptions carry the full spec sheet (paper, inks, size) for
+ * SEO and other channels; the on-page lede only needs the composition line.
+ */
+export function getProductLede(product: ProductCopyInput) {
+  const description = getProductDescription(product);
+  if (product.productType?.toLowerCase() !== 'art prints') return description;
+
+  const sentenceEnd = description.indexOf('. ');
+  return sentenceEnd === -1
+    ? description
+    : description.slice(0, sentenceEnd + 1);
+}
+
 export function getProductDescription(product: ProductCopyInput) {
   const handle = product.handle?.toLowerCase();
   if (handle && CURATED_PRODUCT_DESCRIPTIONS[handle]) {
@@ -52,13 +66,34 @@ function cleanProductDescription(description?: string | null) {
 
   return description
     .replace(/\s*Supplier reference:\s*\S+/gi, '')
-    .replace(/\s*Shipping and returns details to be added before launch\.?/gi, '')
-    .replace(/\s*Materials, dimensions, and care details to be confirmed with the supplier\.?/gi, '')
-    .replace(/\s*Materials and care details to be confirmed with the supplier\.?/gi, '')
-    .replace(/\s*Wax, wick, fragrance, allergens, and care details to be confirmed with the supplier\.?/gi, '')
-    .replace(/\s*Includes one candle with scent notes and burn guidance to be finalized before publishing\.?/gi, '')
-    .replace(/\s*Includes one candle warmer lamp; bulb, plug, voltage, and certification details to be confirmed before publishing\.?/gi, '')
-    .replace(/\s*Includes organizer pieces and suggested use cases to be finalized before publishing\.?/gi, '')
+    .replace(
+      /\s*Shipping and returns details to be added before launch\.?/gi,
+      '',
+    )
+    .replace(
+      /\s*Materials, dimensions, and care details to be confirmed with the supplier\.?/gi,
+      '',
+    )
+    .replace(
+      /\s*Materials and care details to be confirmed with the supplier\.?/gi,
+      '',
+    )
+    .replace(
+      /\s*Wax, wick, fragrance, allergens, and care details to be confirmed with the supplier\.?/gi,
+      '',
+    )
+    .replace(
+      /\s*Includes one candle with scent notes and burn guidance to be finalized before publishing\.?/gi,
+      '',
+    )
+    .replace(
+      /\s*Includes one candle warmer lamp; bulb, plug, voltage, and certification details to be confirmed before publishing\.?/gi,
+      '',
+    )
+    .replace(
+      /\s*Includes organizer pieces and suggested use cases to be finalized before publishing\.?/gi,
+      '',
+    )
     .replace(/\s+/g, ' ')
     .trim();
 }
