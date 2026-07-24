@@ -1,18 +1,20 @@
 # Clara Mendes Original Art Launch
 
-Updated: 2026-07-23
+Updated: 2026-07-24
 
 ## Launch Decision
 
-Clara Mendes will lead with a small owned collection rather than another large
-catalog of generic supplier products. The first collection contains nine
-original 4:5 wall-art works across three coordinated capsules:
+Clara Mendes will lead with a focused owned collection rather than another
+large catalog of generic supplier products. The catalog contains fifteen
+original 4:5 wall-art works across five coordinated capsules:
 
-| Capsule     | Products               | Palette                                          |
-| ----------- | ---------------------- | ------------------------------------------------ |
-| Quiet Form  | Quiet Form I, II, III  | Ivory, oat, sand, terracotta, charcoal           |
-| Patina Blue | Patina Blue I, II, III | Chalk, indigo, cobalt, slate, sienna             |
-| Neo Deco    | Neo Deco I, II, III    | Antique cream, black, oxblood, green, muted gold |
+| Capsule         | Products                   | Palette                                          |
+| --------------- | -------------------------- | ------------------------------------------------ |
+| Quiet Form      | Quiet Form I, II, III      | Ivory, oat, sand, terracotta, charcoal           |
+| Patina Blue     | Patina Blue I, II, III     | Chalk, indigo, cobalt, slate, sienna             |
+| Neo Deco        | Neo Deco I, II, III        | Antique cream, black, oxblood, green, muted gold |
+| Midnight Garden | Midnight Garden I, II, III | Midnight navy, teal, plum, antique cream, copper |
+| Sunlit Mosaic   | Sunlit Mosaic I, II, III   | Terracotta, saffron, olive, cobalt, warm cream   |
 
 The initial sellable format is deliberately limited to one unframed 8 × 10 inch
 print at $29. Larger sizes must not be added until a higher-resolution production
@@ -20,16 +22,18 @@ workflow and physical samples have passed review.
 
 ## Asset State And Provenance
 
-- The nine source artworks were generated with the built-in OpenAI image
+- The first nine source artworks were generated with the built-in OpenAI image
   generator on 2026-07-23 from original, text-free briefs.
-- Every source is a 1120 × 1400 RGB PNG with a 4:5 aspect ratio.
+- Six more complex source artworks were generated on 2026-07-24 as the
+  Midnight Garden and Sunlit Mosaic triptychs.
+- Sources are normalized to a 4:5 RGB production canvas before export.
 - The artwork contains no product mockup, room scene, frame, logo, signature,
   readable text, or watermark.
 - Web previews are optimized WebP files under
   `public/images/product-art/<capsule>/`.
-- Local 2400 × 3000, 300-DPI JPEG sample files are prepared under
-  `output/product-art/print-8x10-300dpi/`. They are sample candidates created
-  with a lossless-quality resize; they are not evidence of print quality.
+- Local 2400 × 3000, 300-DPI JPEG production files are prepared under
+  `output/product-art/print-8x10-300dpi/`. Resizing creates the required file
+  dimensions but is not evidence of physical print quality.
 - AI generation cannot guarantee that no visual resemblance exists anywhere in
   the wider art market. Run a visual-similarity and trademark review before
   paid scale.
@@ -43,7 +47,7 @@ python .\scripts\prepare-original-art-assets.py
 
 ## Shopify Product Staging
 
-`scripts/sync-original-art-catalog.mjs` idempotently upserts the nine products
+`scripts/sync-original-art-catalog.mjs` idempotently upserts all fifteen products
 by handle. It creates them as **DRAFT**, adds the public artwork, and creates one
 8 × 10 inch variant at $29.
 
@@ -71,15 +75,19 @@ https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet
 
 ## Supplier And Activation Gate
 
-Use Printify or Printful for the first sample comparison. Do not activate or
-publish a product until all of these are confirmed:
+Prodigi is the selected provider, and its Shopify sales channel was connected
+on 2026-07-24. Enhanced Matte Art paper (EMA), 200gsm, Giclée, unframed 8 × 10
+inches is the intended product. Do not activate or publish a product until all
+of these are confirmed:
 
 1. The print-provider product is connected to the exact Shopify variant SKU.
-2. An 8 × 10 sample has acceptable colour, paper, edge detail, and packaging.
-3. US tracked delivery time and the real landed cost are documented.
+2. Prodigi's crop preview shows the complete composition with no unintended
+   border or edge loss.
+3. The selected shipping method and real landed cost are documented.
 4. Landed cost is no more than $12 at the $29 retail price.
-5. A test order reaches the correct provider automatically.
-6. The Shopify product description matches the sampled paper and fulfilment
+5. The account uses an order pause during the controlled launch so the first
+   orders can be reviewed before production.
+6. The Shopify product description matches the configured paper and fulfilment
    facts.
 7. The product is published only to the intended sales channels.
 
@@ -87,10 +95,11 @@ At $29 retail, a $12 landed cost and a 2.9% + $0.30 payment-fee assumption leave
 about $15.86, or 54.7%, before advertising, returns, support, and tax. This is a
 gate, not a profit promise.
 
-Printify and Printful both support free entry without inventory commitments:
+Prodigi setup references:
 
-- https://printify.com/pricing/
-- https://www.printful.com/pricing
+- https://www.prodigi.com/shopify-print-on-demand-app/support/configure-your-products/
+- https://support.prodigi.com/hc/en-us/articles/13157931074076-Can-I-pause-orders
+- https://www.prodigi.com/products/prints-and-posters/art-prints/enhanced-matte-art/
 
 ## Existing Catalog Reset
 
@@ -118,8 +127,10 @@ preferred to deletion because it preserves product media and data.
 2. Completed: restore Shopify Admin write access.
 3. Completed: move all 49 legacy products to Draft with a restoration backup.
 4. Completed: create and verify the nine replacement products as Draft.
-5. Next: connect one free POD provider and order physical samples.
-6. Activate only sampled, mapped products.
-7. Launch the individual prints first; add a “pick any 3 for $79” automatic
+5. Completed: connect Prodigi to Shopify.
+6. Next: map each exact SKU to Enhanced Matte Art and verify crop, price,
+   shipping, and the account-level order pause.
+7. Activate only mapped products.
+8. Launch the individual prints first; add a “pick any 3 for $79” automatic
    discount only after the three-item landed cost and fulfilment routing are
    verified.

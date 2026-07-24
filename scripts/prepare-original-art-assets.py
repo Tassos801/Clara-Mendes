@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Prepare web previews and 8x10 sample-print files from generated PNG art."""
 
+import json
 from pathlib import Path
 
 from PIL import Image
@@ -10,16 +11,41 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 SOURCE_ROOT = REPO_ROOT / "output" / "product-art"
 PUBLIC_ROOT = REPO_ROOT / "public" / "images" / "product-art"
 PRINT_ROOT = SOURCE_ROOT / "print-8x10-300dpi"
+CATALOG_PATH = REPO_ROOT / "data" / "original-art-catalog.json"
+
+
+def crop_to_four_by_five(image: Image.Image) -> Image.Image:
+    width, height = image.size
+    target_ratio = 4 / 5
+    source_ratio = width / height
+
+    if abs(source_ratio - target_ratio) > 0.01:
+        raise RuntimeError(
+            f"Source must be approximately 4:5, found {width}x{height}"
+        )
+
+    if source_ratio > target_ratio:
+        crop_width = round(height * target_ratio)
+        left = (width - crop_width) // 2
+        return image.crop((left, 0, left + crop_width, height))
+
+    crop_height = round(width / target_ratio)
+    top = (height - crop_height) // 2
+    return image.crop((0, top, width, top + crop_height))
 
 
 def main() -> None:
+    catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
+    expected_count = len(catalog)
     sources = sorted(
         source
         for source in SOURCE_ROOT.glob("*/*.png")
         if source.parent.name != PRINT_ROOT.name
     )
-    if len(sources) != 9:
-        raise RuntimeError(f"Expected 9 source PNGs, found {len(sources)}")
+    if len(sources) != expected_count:
+        raise RuntimeError(
+            f"Expected {expected_count} source PNGs, found {len(sources)}"
+        )
 
     PRINT_ROOT.mkdir(parents=True, exist_ok=True)
 
@@ -30,13 +56,10 @@ def main() -> None:
         web_path.parent.mkdir(parents=True, exist_ok=True)
 
         with Image.open(source) as opened:
-            image = opened.convert("RGB")
-            if image.size != (1120, 1400):
-                raise RuntimeError(
-                    f"{source.name} must be 1120x1400, found {image.size}"
-                )
+            image = crop_to_four_by_five(opened.convert("RGB"))
+            web_image = image.resize((1120, 1400), Image.Resampling.LANCZOS)
 
-            image.save(web_path, "WEBP", quality=88, method=6)
+            web_image.save(web_path, "WEBP", quality=88, method=6)
             image.resize((2400, 3000), Image.Resampling.LANCZOS).save(
                 print_path,
                 "JPEG",
@@ -50,10 +73,10 @@ def main() -> None:
 
     web_files = list(PUBLIC_ROOT.glob("*/*.webp"))
     print_files = list(PRINT_ROOT.glob("*.jpg"))
-    if len(web_files) != 9 or len(print_files) != 9:
+    if len(web_files) != expected_count or len(print_files) != expected_count:
         raise RuntimeError(
-            f"Expected 9 web and 9 print files, found {len(web_files)} and "
-            f"{len(print_files)}"
+            f"Expected {expected_count} web and print files, found "
+            f"{len(web_files)} and {len(print_files)}"
         )
 
 

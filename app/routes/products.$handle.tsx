@@ -323,9 +323,7 @@ export default function Product() {
         ]}
       />
       {selectedVariant ? (
-        <Analytics.ProductView
-          data={productViewAnalytics}
-        />
+        <Analytics.ProductView data={productViewAnalytics} />
       ) : null}
       <AdPlatformProductView analytics={productViewAnalytics} />
       <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -373,9 +371,11 @@ export default function Product() {
                   : 'is-unavailable'
               }`}
             >
-              {selectedVariant?.availableForSale ? 'In stock' : 'Sold out'}
+              {selectedVariant?.availableForSale
+                ? 'Made to order'
+                : 'Unavailable'}
             </span>
-            <span>Ships in 3-7 business days</span>
+            <span>Processes in 1–3 business days</span>
             <span>{RETURN_WINDOW_DAYS}-day returns</span>
           </div>
 
@@ -466,8 +466,9 @@ export default function Product() {
             <div>
               <dt>Shipping</dt>
               <dd>
-                Ships within 3–7 business days. Tracking provided via email once
-                dispatched. Delivery times vary by location.
+                Printed to order within 1–3 business days. Standard US delivery
+                is estimated at 7–15 business days after dispatch. Delivery
+                updates are emailed when available.
               </dd>
             </div>
             <div>

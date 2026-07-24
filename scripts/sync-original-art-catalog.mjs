@@ -75,11 +75,11 @@ function descriptionHtmlFor(item) {
     `<p>${item.description}</p>`,
     '<p>An original Clara Mendes composition designed to work alone or as part of its coordinated three-print capsule.</p>',
     '<ul>',
-    '<li>Unframed portrait art print</li>',
-    '<li>Printed to order in a 4:5 format</li>',
-    '<li>First edition size: 8 × 10 inches</li>',
+    '<li>200gsm enhanced matte fine-art paper</li>',
+    '<li>Giclée printed with archival pigment inks</li>',
+    '<li>Unframed 8 × 10 inch portrait print</li>',
     '</ul>',
-    '<p>Frame not included. Screen and print colours can vary slightly.</p>',
+    '<p>Printed to order. Frame not included. Screen and print colours can vary slightly.</p>',
   ].join('');
 }
 
