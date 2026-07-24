@@ -35,7 +35,8 @@ gates.
 ## [2026-07-24] catalog | Prepared Draft product-extension assets
 
 Added deterministic production candidates and 56 review previews for twelve
-possible art-product families across the five capsules. Recorded the extension
-catalog as Draft-only planning data, kept Shopify creation out of the generator,
-updated the storefront's fifteen-work copy and print specifications, and
-retained SKU, shipping, margin, billing, and physical-sample gates.
+art-product families across the five capsules. Created and audited all twelve
+Shopify records as Draft, totalling 71 variants; kept the production generator
+separate from the guarded Shopify sync; updated the storefront's fifteen-work
+copy and print specifications; and retained SKU, shipping, margin, billing, and
+physical-sample gates.

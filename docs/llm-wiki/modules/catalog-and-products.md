@@ -33,6 +33,8 @@ families and generate local Prodigi production candidates plus committed review
 previews. `scripts/sync-art-product-extensions.mjs` is dry-run by default and
 creates or updates the Shopify records as **DRAFT** only after an explicit
 `--apply`. SKU, shipping, margin, and physical-sample gates still apply.
+All twelve records, totalling 71 variants, were created and passed live Shopify
+readback on 2026-07-24; none were published.
 
 Sources: [Original Art Launch](../../original-art-launch.md),
 [Art for Everyday Living](../../art-product-extensions.md).
