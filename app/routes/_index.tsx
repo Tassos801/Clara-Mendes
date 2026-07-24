@@ -598,8 +598,8 @@ export default function Homepage() {
           <p className="eyebrow">First edition in preparation</p>
           <h2>The original print collection is almost ready.</h2>
           <p>
-            Paper, colour, packaging, and delivery are being checked before the
-            first nine works become available to order.
+            Paper and format are locked; packaging and delivery are being
+            checked before all fifteen works become available to order.
           </p>
           <a
             className="primary-button"

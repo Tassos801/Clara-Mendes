@@ -7,6 +7,8 @@ build/
 .react-router/
 .vite/
 *.tsbuildinfo
+__pycache__/
+*.py[cod]
 /output/
 /public/images/product-art/**/*.png
 
