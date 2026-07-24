@@ -11,7 +11,7 @@ import {useAside} from '~/components/Aside';
 import {
   filterDemoCollections,
   filterDemoProducts,
-  HOME_GOODS_COLLECTIONS,
+  ORIGINAL_ART_COLLECTIONS,
 } from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {
@@ -20,11 +20,7 @@ import {
   organizationSchema,
   websiteSchema,
 } from '~/lib/seo';
-import {
-  RETURN_WINDOW_DAYS,
-  STOREFRONT_ORIGIN,
-  SUPPORT_EMAIL,
-} from '~/lib/storefrontBasics';
+import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 type HomeCollection = {
   id: string;
@@ -114,7 +110,7 @@ export default function Homepage() {
   const hasLiveCollections = collections.length > 0;
   const categoryItems = hasLiveCollections
     ? collections
-    : HOME_GOODS_COLLECTIONS;
+    : ORIGINAL_ART_COLLECTIONS;
 
   const scrollCollectionCarousel = (direction: -1 | 1) => {
     const track = collectionTrackRef.current;
@@ -277,7 +273,7 @@ export default function Homepage() {
             </Link>
             <nav className="hm-nav-group" aria-label="Home navigation">
               <Link to="/collections/all" className="hm-nav-text">
-                Collection
+                Shop
               </Link>
               <Link to="/our-story" className="hm-nav-text">
                 Our Story
@@ -300,7 +296,7 @@ export default function Homepage() {
               <i>Objects</i> with soul
             </h1>
             <p ref={subRef} className="hm-prompt-sub">
-              Timeless pieces for mindful living
+              Original art now. Considered products for collected spaces.
             </p>
             <div className="hm-hero-actions">
               <Link
@@ -354,16 +350,15 @@ export default function Homepage() {
           <div className="home-shop-accelerator-copy" data-reveal>
             <p className="eyebrow">Ready now</p>
             <h2 id="home-shop-accelerator-title">
-              The fastest path to a calmer room.
+              Start with an original piece.
             </h2>
             <p>
-              Start with best-selling pieces selected for instant atmosphere,
-              then check out through Shopify with delivery tracking and clear
-              return terms.
+              Browse available Clara Mendes products, then check out through
+              Shopify with delivery tracking and clear return terms.
             </p>
             <div className="home-shop-accelerator-actions">
               <Link className="primary-button" to="/collections/all">
-                Shop all pieces
+                Shop all products
               </Link>
               <Link className="text-link" to="/policies">
                 View policies
@@ -410,17 +405,17 @@ export default function Homepage() {
         data-chapter="clay"
       >
         <div data-reveal>
-          <p className="eyebrow">Home goods edit</p>
+          <p className="eyebrow">The Clara Mendes collection</p>
           <h2>
             {products.length > 0
-              ? 'Quiet pieces, ready to live with.'
-              : 'Supplier selection is in progress.'}
+              ? 'Original work, ready to live with.'
+              : 'The first print edition is being prepared.'}
           </h2>
         </div>
         <p>
           {products.length > 0
-            ? 'A restrained selection of pieces chosen for texture, warmth, and rooms that feel collected over time.'
-            : 'We are building the first Clara Mendes home catalog around lighting, textiles, ceramics, storage, and small accents.'}
+            ? 'The collection begins with original prints and leaves room for considered objects and editions to follow.'
+            : 'Fifteen original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.'}
         </p>
       </section>
 
@@ -428,7 +423,7 @@ export default function Homepage() {
         className={`featured-collections featured-collections--carousel${
           categoryItems.length === 1 ? ' featured-collections--solo' : ''
         }`}
-        aria-label={hasLiveCollections ? 'Collections' : 'Sourcing focus'}
+        aria-label={hasLiveCollections ? 'Collections' : 'Art capsules'}
         data-chapter="clay"
       >
         <div className="category-carousel-toolbar featured-collections-toolbar">
@@ -484,7 +479,7 @@ export default function Homepage() {
                 className="featured-collection-card category-preview-card category-carousel-card"
                 key={collection.id}
               >
-                <small className="eyebrow">Sourcing</small>
+                <small className="eyebrow">Art capsule</small>
                 <h2 className="featured-collection-title">
                   {collection.title}
                 </h2>
@@ -524,9 +519,9 @@ export default function Homepage() {
               A room that feels collected, not decorated.
             </h2>
             <p>
-              Clara Mendes starts with atmosphere: softened light, grounded
-              texture, and useful objects chosen for the way they settle into
-              daily rituals.
+              Clara Mendes starts with atmosphere: original art, grounded
+              texture, and considered products chosen for how they settle into
+              daily life.
             </p>
             <Link
               className="text-link home-atmosphere-link"
@@ -562,7 +557,10 @@ export default function Homepage() {
         </div>
       </section>
 
-      <OriginalArtPreview compact />
+      <OriginalArtPreview
+        availableProductHandles={products.map((product) => product.handle)}
+        compact
+      />
 
       {featuredProducts.length > 0 ? (
         <section
@@ -576,7 +574,7 @@ export default function Homepage() {
               <h2 id="featured">
                 {products.length > 3
                   ? 'More from the edit'
-                  : 'Objects available now'}
+                  : 'Products available now'}
               </h2>
             </div>
             <Link className="text-link" to="/collections/all">
@@ -595,29 +593,27 @@ export default function Homepage() {
         </section>
       ) : (
         <section className="empty-state home-empty-catalog">
-          <p className="eyebrow">First edition in preparation</p>
-          <h2>The original print collection is almost ready.</h2>
+          <p className="eyebrow">Original art collection</p>
+          <h2>Explore the complete first print edition.</h2>
           <p>
-            Paper and format are locked; packaging and delivery are being
-            checked before all fifteen works become available to order.
+            Browse all fifteen works now. Product pages and secure Shopify
+            checkout appear automatically as each print becomes available.
           </p>
-          <a
-            className="primary-button"
-            href={`mailto:${SUPPORT_EMAIL}?subject=Clara%20Mendes%20original%20art%20early%20access`}
-          >
-            Request early access
-          </a>
+          <Link className="primary-button" to="/collections/all">
+            Browse the print collection
+          </Link>
         </section>
       )}
 
       <section className="story-section home-story-return" data-chapter="ink">
         <div className="story-image" aria-hidden />
         <div className="story-copy" data-reveal>
-          <p className="eyebrow">Considered sourcing</p>
-          <h2>Atmosphere first, details underneath.</h2>
+          <p className="eyebrow">Considered editions</p>
+          <h2>Original art first, room to grow.</h2>
           <p>
-            Every product is selected to support a calm room, then fulfilled
-            with clear delivery expectations and a simple checkout path.
+            New product types can join the collection over time, each with clear
+            production details, delivery expectations, and a simple checkout
+            path.
           </p>
           <Link className="text-link" to="/our-story">
             Read the story

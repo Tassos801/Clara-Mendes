@@ -40,3 +40,12 @@ Shopify records as Draft, totalling 71 variants; kept the production generator
 separate from the guarded Shopify sync; updated the storefront's fifteen-work
 copy and print specifications; and retained SKU, shipping, margin, billing, and
 physical-sample gates.
+
+## [2026-07-24] storefront | Removed legacy navigation and email gate
+
+Filtered empty collections from the former home-goods catalog, replaced
+home-goods-only copy with print-led and product-neutral language, and removed
+the customer-facing early-access mail links. Original-art previews now become
+product links automatically when their handles are available through the
+Storefront API; Draft works remain honest non-interactive previews until the
+documented cost and billing gates are resolved.

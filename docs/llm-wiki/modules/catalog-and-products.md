@@ -2,15 +2,16 @@
 
 ## Current Picture
 
-The live Storefront API check on 2026-07-23 returned 47 products and all 47 were
-available for sale. This is not the intended launch state: the catalog includes
-generic, unrelated, heavy, electrical, and designer-authenticity-risk products.
-The saved Admin API token expired on 2026-04-29, so the status reset is pending
-restored Shopify Admin write access.
+The 49 legacy products were moved to Draft on 2026-07-23. The replacement is an
+owned fifteen-product wall-art collection. All fifteen Shopify records exist as
+Draft products and are mapped to Prodigi, but remain unpublished because
+Standard-shipping landed cost exceeds the documented $12 gate and Prodigi
+billing is not configured.
 
-The replacement strategy is an owned fifteen-product wall-art collection, staged
-as Draft until a print provider is connected and samples pass. The storefront
-can truthfully preview the works before they are sellable.
+The storefront previews the works while they are unavailable. It no longer
+uses an email-only early-access CTA: once a Shopify print is active and
+published to the connected storefront, its preview becomes a product link and
+the existing product, cart, and checkout path takes over automatically.
 
 ## Original Art Replacement
 
@@ -41,16 +42,17 @@ Sources: [Original Art Launch](../../original-art-launch.md),
 
 ## Catalog Filtering
 
-`app/lib/catalogFilters.ts` now uses an explicit fifteen-handle launch allowlist.
+`app/lib/catalogFilters.ts` uses an explicit fifteen-handle launch allowlist.
 Old or supplier-imported products cannot appear in catalog, search,
 recommendations, or direct product routes merely because they are active in
 Shopify. Admin status is still the authoritative cross-channel control, so the
-47-product Draft reset remains required.
+Draft reset remains the authoritative catalog state.
 
 It defines:
 
-- Preview home-goods collection categories.
-- Demo/off-theme collection handles.
+- Five original-art capsule previews.
+- Legacy/off-theme collection handles, including empty home-goods navigation
+  left by the previous catalog.
 - Off-theme product handles.
 - Unfulfillable product handles.
 - The fifteen approved original-art product handles.

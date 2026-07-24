@@ -106,7 +106,8 @@ function ClaraFooter() {
           Clara Mendes
         </Link>
         <p>
-          Curated home objects with secure checkout and tracked delivery.
+          Original art and considered products with secure checkout and tracked
+          delivery.
         </p>
       </div>
       <nav aria-label="Footer navigation">

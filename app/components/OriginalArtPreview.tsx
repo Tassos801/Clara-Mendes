@@ -1,17 +1,20 @@
 import artCatalog from '../../data/original-art-catalog.json';
-import {SUPPORT_EMAIL} from '~/lib/storefrontBasics';
+import {Link} from 'react-router';
 
 type OriginalArtPreviewProps = {
+  availableProductHandles?: string[];
   compact?: boolean;
 };
 
-export function OriginalArtPreview({compact = false}: OriginalArtPreviewProps) {
+export function OriginalArtPreview({
+  availableProductHandles = [],
+  compact = false,
+}: OriginalArtPreviewProps) {
   const items = compact
     ? artCatalog.filter((item) => item.sequence === 1)
     : artCatalog;
-  const earlyAccessHref = `mailto:${SUPPORT_EMAIL}?subject=${encodeURIComponent(
-    'Clara Mendes original art early access',
-  )}`;
+  const availableHandles = new Set(availableProductHandles);
+  const hasAvailableProducts = availableHandles.size > 0;
 
   return (
     <section
@@ -31,38 +34,64 @@ export function OriginalArtPreview({compact = false}: OriginalArtPreviewProps) {
         </div>
         <div className="original-art-preview__intro">
           <p>
-            Fifteen original works across five capsules, designed as coordinated
-            sets for calmer walls. The first release is being prepared now.
+            {hasAvailableProducts
+              ? 'Explore fifteen original works across five coordinated capsules, with product details and secure checkout on every available print.'
+              : 'Fifteen original works across five coordinated capsules introduce the Clara Mendes collection, with more considered product types able to follow over time.'}
           </p>
-          <a className="text-link" href={earlyAccessHref}>
-            Request early access
-          </a>
+          {compact ? (
+            <Link className="text-link" to="/collections/all">
+              {hasAvailableProducts
+                ? 'Shop available prints'
+                : 'Browse the print collection'}
+            </Link>
+          ) : null}
         </div>
       </header>
 
       <div className="original-art-preview__grid">
-        {items.map((item) => (
-          <article className="original-art-card" key={item.handle}>
-            <div className="original-art-card__image">
-              <img
-                alt={item.alt}
-                decoding="async"
-                loading="lazy"
-                src={item.image}
-              />
-              <span className="original-art-card__status">First edition</span>
-            </div>
-            <div className="original-art-card__copy">
-              <p className="original-art-card__capsule">{item.capsule}</p>
-              <h3>{item.shortTitle}</h3>
-              <p>{item.description}</p>
-              <div className="original-art-card__meta">
-                <span>{item.palette}</span>
-                <span>Planned from $29</span>
+        {items.map((item) => {
+          const isAvailable = availableHandles.has(item.handle);
+          const content = (
+            <>
+              <div className="original-art-card__image">
+                <img
+                  alt={item.alt}
+                  decoding="async"
+                  loading="lazy"
+                  src={item.image}
+                />
+                <span className="original-art-card__status">
+                  {isAvailable ? 'Available now' : 'First edition'}
+                </span>
               </div>
-            </div>
-          </article>
-        ))}
+              <div className="original-art-card__copy">
+                <p className="original-art-card__capsule">{item.capsule}</p>
+                <h3>{item.shortTitle}</h3>
+                <p>{item.description}</p>
+                <div className="original-art-card__meta">
+                  <span>{item.palette}</span>
+                  <span>{isAvailable ? 'View product' : '$29 at release'}</span>
+                </div>
+              </div>
+            </>
+          );
+
+          return isAvailable ? (
+            <Link
+              aria-label={`View ${item.shortTitle}`}
+              className="original-art-card original-art-card--link"
+              key={item.handle}
+              prefetch="intent"
+              to={`/products/${item.handle}`}
+            >
+              {content}
+            </Link>
+          ) : (
+            <article className="original-art-card" key={item.handle}>
+              {content}
+            </article>
+          );
+        })}
       </div>
 
       {compact ? (
@@ -129,6 +158,12 @@ const previewCss = `
 
 .original-art-card {
   min-width: 0;
+}
+
+.original-art-card--link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
 }
 
 .original-art-card__image {

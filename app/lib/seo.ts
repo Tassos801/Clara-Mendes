@@ -57,7 +57,7 @@ type BreadcrumbInput = {
 
 export const SITE_NAME = 'Clara Mendes';
 export const DEFAULT_META_DESCRIPTION =
-  'Clara Mendes curates quiet home objects, soft lighting, tactile textiles, ceramics, storage, and table rituals for slower rooms.';
+  'Clara Mendes presents original art and considered products for calm, collected spaces.';
 export const DEFAULT_SHARE_IMAGE =
   'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1600&auto=format&fit=crop';
 

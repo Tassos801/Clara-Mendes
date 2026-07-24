@@ -102,7 +102,7 @@ export default function OurStory() {
           </Link>
           <div className="os-nav-group">
             <Link to="/collections/all" className="os-nav-text">
-              Collection
+              Shop
             </Link>
             <Link to="/our-story" className="os-nav-text os-active-tab">
               Our Story
@@ -116,15 +116,15 @@ export default function OurStory() {
           </h1>
           <div className="os-story-body">
             <p>
-              Clara Mendes was born from a singular belief: that the objects we
-              live with should hold a history of their own. We curate pieces
-              that bridge the gap between utility and sculpture.
+              Clara Mendes was born from a singular belief: the art and objects
+              we live with should bring character, calm, and a point of view to
+              everyday spaces.
             </p>
             <p>
-              Our journey takes us across remote workshops and quiet studios,
-              seeking the makers who still understand the language of raw clay,
-              solid timber, and hand-spun linen. Every object in our collection
-              is chosen for its ability to age with grace and silence.
+              The collection begins with fifteen original works across five
+              coordinated art capsules. Future product types can join them over
+              time, chosen for creative coherence, production quality, and the
+              way they live alongside the art.
             </p>
           </div>
         </main>

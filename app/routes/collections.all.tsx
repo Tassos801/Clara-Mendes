@@ -10,7 +10,7 @@ import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {
   filterDemoCollections,
   filterDemoProducts,
-  HOME_GOODS_COLLECTIONS,
+  ORIGINAL_ART_COLLECTIONS,
 } from '~/lib/catalogFilters';
 import {
   buildProductsSearchQuery,
@@ -99,7 +99,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       data.collections.nodes as CollectionLink[],
     ),
     description:
-      'Curated home objects selected for quiet rooms, useful rituals, and slower living.',
+      'Original Clara Mendes art and considered products for calm, collected spaces.',
     facets: {
       productTypes: productTypes.map((label) => ({label})),
       vendors: [],
@@ -154,7 +154,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         <div className="cv-hero-vignette" />
 
         <div className="cv-hero-inner">
-          <p className="cv-eyebrow">Curated Home Goods</p>
+          <p className="cv-eyebrow">Original art &amp; considered products</p>
           <h1 id="cv-hero-title" className="cv-title">
             <i>{splitTitle(data.heading).italic}</i>
             {splitTitle(data.heading).rest
@@ -184,7 +184,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
             </Link>
           ))}
           {data.collections.length === 0
-            ? HOME_GOODS_COLLECTIONS.map((collection) => (
+            ? ORIGINAL_ART_COLLECTIONS.map((collection) => (
                 <span
                   aria-disabled="true"
                   className="cv-filter-link cv-filter-link--preview"
@@ -242,7 +242,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           <>
             <p className="cv-count">
               {nodes.length}
-              {hasNextPage ? '+' : ''} pieces
+              {hasNextPage ? '+' : ''} products
             </p>
 
             {nodes.length > 0 ? (

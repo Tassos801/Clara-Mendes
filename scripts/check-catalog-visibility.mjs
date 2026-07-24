@@ -2,7 +2,11 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import test from 'node:test';
 
-import {filterDemoProducts, isDemoProduct} from '../app/lib/catalogFilters.ts';
+import {
+  filterDemoCollections,
+  filterDemoProducts,
+  isDemoProduct,
+} from '../app/lib/catalogFilters.ts';
 
 test('shows only explicitly approved original-art launch products', () => {
   const catalogProducts = [
@@ -30,6 +34,49 @@ test('shows only explicitly approved original-art launch products', () => {
   );
 });
 
+test('hides empty collections from the previous catalog', () => {
+  const collections = [
+    {
+      handle: 'home-rituals',
+      products: {nodes: []},
+      title: 'Home Rituals',
+    },
+    {
+      handle: 'gift-sets',
+      products: {nodes: []},
+      title: 'Gift Sets',
+    },
+    {
+      handle: 'quiet-form',
+      products: {nodes: []},
+      title: 'Quiet Form',
+    },
+  ];
+
+  assert.deepEqual(
+    filterDemoCollections(collections).map((collection) => collection.handle),
+    ['quiet-form'],
+  );
+});
+
+test('removes the early-access gate from customer-facing storefront code', () => {
+  for (const routeFile of [
+    'app/components/OriginalArtPreview.tsx',
+    'app/routes/_index.tsx',
+  ]) {
+    const source = readFileSync(routeFile, 'utf8');
+
+    assert.doesNotMatch(source, /Request early access/i);
+    assert.doesNotMatch(source, /original art early access/i);
+  }
+
+  const previewSource = readFileSync(
+    'app/components/OriginalArtPreview.tsx',
+    'utf8',
+  );
+  assert.match(previewSource, /to=\{`\/products\/\$\{item\.handle\}`\}/);
+});
+
 test('collection product queries are cursor-paginated', () => {
   for (const routeFile of [
     'app/routes/collections.all.tsx',
@@ -47,7 +94,7 @@ test('collection product queries are cursor-paginated', () => {
   }
 });
 
-test('collection pages request enough products for the nine-item launch', () => {
+test('collection pages request enough products for the fifteen-item launch', () => {
   for (const routeFile of [
     'app/routes/collections.all.tsx',
     'app/routes/collections.$handle.tsx',

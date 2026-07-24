@@ -14,7 +14,7 @@ export type CatalogCollectionLike = {
   title?: string | null;
 };
 
-export const HOME_GOODS_COLLECTIONS = [
+export const ORIGINAL_ART_COLLECTIONS = [
   {
     id: 'original-art-quiet-form',
     handle: 'quiet-form',
@@ -47,6 +47,10 @@ export const HOME_GOODS_COLLECTIONS = [
   },
 ] as const;
 
+const ORIGINAL_ART_COLLECTION_HANDLES = new Set(
+  ORIGINAL_ART_COLLECTIONS.map((collection) => collection.handle),
+);
+
 const LAUNCH_PRODUCT_HANDLES = new Set([
   'quiet-form-i-art-print',
   'quiet-form-ii-art-print',
@@ -65,20 +69,27 @@ const LAUNCH_PRODUCT_HANDLES = new Set([
   'sunlit-mosaic-iii-art-print',
 ]);
 
-const DEMO_COLLECTION_HANDLES = new Set([
+const LEGACY_COLLECTION_HANDLES = new Set([
   'accessories',
   'automated-collection',
   'bottoms',
+  'ceramics',
   'daily-carry',
   'evening-gowns-formal-dresses',
   'featured',
   'frontpage',
+  'gift-sets',
   'glow-tools',
   'health-wellness',
+  'home-rituals',
   'hydrogen',
+  'lighting',
   'men',
   'shoes',
   'snowboards',
+  'storage',
+  'accents',
+  'textiles',
   'tops',
   'unisex',
   'wellness-reset',
@@ -170,7 +181,7 @@ export function isUnfulfillableProductHandle(handle?: string | null) {
 }
 
 export function isOffThemeCollectionHandle(handle?: string | null) {
-  return Boolean(handle && DEMO_COLLECTION_HANDLES.has(handle.toLowerCase()));
+  return Boolean(handle && LEGACY_COLLECTION_HANDLES.has(handle.toLowerCase()));
 }
 
 export function filterDemoProducts<T extends CatalogProductLike>(
@@ -181,15 +192,17 @@ export function filterDemoProducts<T extends CatalogProductLike>(
 
 export function isDemoCollection(collection: CatalogCollectionLike) {
   const handle = collection.handle?.toLowerCase();
-  if (handle && DEMO_COLLECTION_HANDLES.has(handle)) return true;
+  if (handle && LEGACY_COLLECTION_HANDLES.has(handle)) return true;
 
-  // A collection whose sampled products are all demo products is demo too;
-  // collections with any real product (or no products yet) stay visible.
+  // Keep populated collections only when they contain an approved product.
+  // Empty legacy collections were the source of stale navigation leaking into
+  // the live storefront, so only the five intentional art capsule handles may
+  // appear before Shopify products are assigned.
   const products = collection.products?.nodes?.filter(Boolean) ?? [];
   if (products.some((product) => !isDemoProduct(product))) return false;
   if (products.length > 0) return true;
 
-  return false;
+  return !handle || !ORIGINAL_ART_COLLECTION_HANDLES.has(handle);
 }
 
 export function filterDemoCollections<T extends CatalogCollectionLike>(

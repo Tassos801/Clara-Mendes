@@ -98,6 +98,19 @@ Shopify's current `productSet` mutation supports product files, options,
 variants, SKUs, prices, and Draft status in one idempotent operation:
 https://shopify.dev/docs/api/admin-graphql/latest/mutations/productSet
 
+## Storefront Availability Behavior
+
+The storefront does not use an email-only early-access gate. The original-art
+preview receives the product handles returned by the Storefront API. Available
+handles become links to `/products/<handle>`; the product page then uses the
+existing Hydrogen cart and Shopify checkout flow. Draft or unpublished works
+remain non-interactive previews so shoppers are not sent to a 404 or an
+unfulfillable checkout.
+
+Empty collections from the former home-goods catalog are filtered from
+navigation. Customer-facing copy leads with original prints while remaining
+broad enough for later product types.
+
 ## Supplier And Activation Gate
 
 Prodigi is the selected provider, and its Shopify sales channel was connected

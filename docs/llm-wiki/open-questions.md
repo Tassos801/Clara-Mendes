@@ -13,14 +13,13 @@ Sources: [Launch readiness](../launch-readiness.md), [README](../../README.md).
 
 ## Shopify Admin And Catalog
 
-- Has a current Admin API token or signed-in Admin session been restored?
-- Have the 47 currently available products been moved to Draft with the restore
-  backup preserved?
-- Which free POD provider and exact 8 × 10 paper product passed the physical
-  sample comparison?
-- Are the nine original-art SKUs mapped to the provider and still Draft until a
-  complete test order succeeds?
-- Has the planned $12 maximum landed cost been verified with real US shipping?
+- Will the owner switch the first release to Budget shipping, raise the $29
+  retail price, or accept a landed cost above the planned $12 maximum?
+- When will the owner add Prodigi billing details?
+- Should all fifteen prints be activated together after those decisions, or
+  should a smaller controlled batch launch first?
+- Which products have passed a physical sample review? The current "Excellent"
+  status verifies file resolution only.
 
 Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md),
 [Original Art Launch](../original-art-launch.md).

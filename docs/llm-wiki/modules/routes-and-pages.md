@@ -28,7 +28,9 @@ Source: `app/routes.ts`, `app/routes/*`.
 
 The home page queries products and collections, filters out demo/off-theme
 catalog entries, and renders a high-touch commerce landing experience for Clara
-Mendes.
+Mendes. The original-art preview accepts the handles that are actually
+available through the Storefront API; matching cards link to their product
+pages, while unavailable Draft works remain non-interactive previews.
 
 Important dependencies:
 
@@ -62,6 +64,7 @@ Collection pages support:
 - Shop-all products with sorting and pagination.
 - Specific collections by handle.
 - Demo/off-theme collection filtering and redirects.
+- Removal of empty legacy categories from the previous catalog.
 - Infinite loading with an `IntersectionObserver` helper.
 
 Sources: `app/routes/collections.all.tsx`,

@@ -17,29 +17,18 @@ Admin store domain recorded by the cleanup document:
 
 ## Product Cleanup
 
-The cleanup document lists off-brand products that should be unpublished from
-the Headless channel, set to draft, or deleted if no longer needed. Examples
-include Daily Hydration Bottle, Glow Reset Ice Roller, Glow Tools Duo,
-GoddessYou Signature Case, Reset Journal, Soft Sleep Satin Set, and The Daily
-Carry Pouch.
-
-It also lists three GoddessYou-origin home-fit products that were hidden until
-each variant had a confirmed supplier fulfillment mapping:
-
-- Drawer Reset Bundle
-- Soft Reset Candle
-- The Home Ritual Warmer
-
-The condition for un-hiding these products should be updated to whatever the
-current supplier or fulfillment workflow requires.
+All 49 legacy products were moved to Draft on 2026-07-23. The fifteen
+replacement art prints also remain Draft until the documented cost, billing,
+and launch decisions are resolved. See `docs/original-art-launch.md` for the
+current product and Prodigi mapping state.
 
 ## Collection Cleanup
 
-Collections listed for removal from Headless publication or deletion include
-Daily Carry, Evening Gowns & Formal Dresses, Home page, Glow Tools, Health &
-Wellness, and Wellness Reset.
-
-Collections to keep or build around include Gift Sets and Home Rituals.
+Legacy navigation includes Daily Carry, formalwear, health, beauty, Gift Sets,
+Home Rituals, Lighting, Textiles, Ceramics, Storage, and Accents. The Hydrogen
+filter now hides these old or empty collections. Shopify Admin should still
+remove their Headless publication or archive them so other channels cannot
+surface them.
 
 ## Verification After Cleanup
 
@@ -54,8 +43,8 @@ npx shopify hydrogen check routes
 
 Then verify:
 
-- `/collections/all` only shows Clara Mendes home goods plus approved
-  home-ritual products.
+- `/collections/all` only shows published Clara Mendes products plus the five
+  original-art capsule previews.
 - `/sitemap/products/1.xml` excludes off-theme product handles.
 - `/sitemap/collections/1.xml` only includes intended public collections.
 

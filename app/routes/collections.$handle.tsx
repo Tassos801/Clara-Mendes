@@ -82,7 +82,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     ),
     description:
       data.collection.description ||
-      'A focused edit of objects selected for texture, utility, and atmosphere.',
+      'A focused Clara Mendes collection of original art and considered products.',
     facets: extractFacetOptions(products.filters),
     heading: data.collection.title,
     products: {
