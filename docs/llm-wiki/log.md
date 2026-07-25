@@ -49,3 +49,12 @@ the customer-facing early-access mail links. Original-art previews now become
 product links automatically when their handles are available through the
 Storefront API; Draft works remain honest non-interactive previews until the
 documented cost and billing gates are resolved.
+
+## [2026-07-25] storefront | Added product-aware homepage editorial
+
+Replaced the homepage's unrelated stock imagery with a coordinated art-in-room
+suite built around Quiet Form, Patina Blue, and Sunlit Mosaic. Extracted the
+section into a reusable component and content model, and added a
+`homepage-editorial` Shopify collection integration so published product media,
+titles, alt text, ordering, and links can replace the branded fallbacks without
+changing storefront code.

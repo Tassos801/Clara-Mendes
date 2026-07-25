@@ -9,20 +9,20 @@ Source: `app/routes.ts`, `app/routes/*`.
 
 ## Main Storefront Routes
 
-| Route | File | Purpose |
-| --- | --- | --- |
-| `/` | `app/routes/_index.tsx` | Home page, featured products, collection previews, trust band, structured data. |
-| `/collections/all` | `app/routes/collections.all.tsx` | Shop-all collection, sorting, pagination, infinite loading, product grid. |
-| `/collections/:handle` | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all. |
-| `/products/:handle` | `app/routes/products.$handle.tsx` | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics. |
-| `/cart` | `app/routes/cart.tsx` | Cart page loader/action and cart mutation endpoint for `CartForm`. |
-| `/search` | `app/routes/search.tsx` | Regular and predictive search for products, pages, articles, and suggestions. |
-| `/our-story` | `app/routes/our-story.tsx` | Brand story content. |
-| `/contact` | `app/routes/contact.tsx` | Contact/support page. |
-| `/policies` and `/policies/:handle` | `app/routes/policies.*.tsx` | Policy listing and policy detail from Shopify. |
-| `/pages/:handle` | `app/routes/pages.$handle.tsx` | Shopify pages. |
-| `/blogs` and blog/article routes | `app/routes/blogs.*.tsx` | Blog lists and article pages. |
-| `/robots.txt`, `/sitemap.xml`, sitemap children | bracketed route files | SEO crawler routes. |
+| Route                                           | File                                 | Purpose                                                                         |
+| ----------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------- |
+| `/`                                             | `app/routes/_index.tsx`              | Home page, featured products, collection previews, trust band, structured data. |
+| `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
+| `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all.          |
+| `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
+| `/cart`                                         | `app/routes/cart.tsx`                | Cart page loader/action and cart mutation endpoint for `CartForm`.              |
+| `/search`                                       | `app/routes/search.tsx`              | Regular and predictive search for products, pages, articles, and suggestions.   |
+| `/our-story`                                    | `app/routes/our-story.tsx`           | Brand story content.                                                            |
+| `/contact`                                      | `app/routes/contact.tsx`             | Contact/support page.                                                           |
+| `/policies` and `/policies/:handle`             | `app/routes/policies.*.tsx`          | Policy listing and policy detail from Shopify.                                  |
+| `/pages/:handle`                                | `app/routes/pages.$handle.tsx`       | Shopify pages.                                                                  |
+| `/blogs` and blog/article routes                | `app/routes/blogs.*.tsx`             | Blog lists and article pages.                                                   |
+| `/robots.txt`, `/sitemap.xml`, sitemap children | bracketed route files                | SEO crawler routes.                                                             |
 
 ## Home Page
 
@@ -32,6 +32,15 @@ Mendes. The original-art preview accepts the handles that are actually
 available through the Storefront API; matching cards link to their product
 pages, while unavailable Draft works remain non-interactive previews.
 
+The homepage editorial is product-aware. It first reads up to three published
+products from the manually ordered Shopify collection with handle
+`homepage-editorial`. If that collection is missing or empty, it uses the
+approved products already returned by the homepage query. If no approved
+products are published, three local Clara Mendes art-in-room images keep the
+section complete. Shopify product media, title, alt text, and product URL replace
+each fallback slot automatically, so changing the collection contents is the
+normal content-management workflow.
+
 Important dependencies:
 
 - `filterDemoProducts`
@@ -39,8 +48,11 @@ Important dependencies:
 - `PRODUCT_CARD_FRAGMENT`
 - SEO helpers and structured data helpers
 - `ClaraProductCard`
+- `HomepageEditorial`
+- `HOME_EDITORIAL_COLLECTION_HANDLE`
 
-Source: `app/routes/_index.tsx`.
+Sources: `app/routes/_index.tsx`, `app/components/HomepageEditorial.tsx`,
+`app/content/homeEditorial.ts`.
 
 ## Product Page
 

@@ -5,9 +5,11 @@ import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
+import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
+import {HOME_EDITORIAL_COLLECTION_HANDLE} from '~/content/homeEditorial';
 import {
   filterDemoCollections,
   filterDemoProducts,
@@ -38,26 +40,6 @@ type HomeCollection = {
   };
 };
 
-const HOME_ATMOSPHERE_IMAGES = {
-  lead: {
-    src: 'https://images.unsplash.com/photo-1771888703723-01d85da1dae1?q=80&w=1800&auto=format&fit=crop',
-    alt: 'Neutral living room with soft earth tones and modern furniture',
-    caption: 'Soft living',
-  },
-  supporting: [
-    {
-      src: 'https://images.unsplash.com/photo-1755401324208-7ead4696b351?q=80&w=1200&auto=format&fit=crop',
-      alt: 'Sculptural ceramic jars arranged on folded linen',
-      caption: 'Quiet objects',
-    },
-    {
-      src: 'https://images.unsplash.com/photo-1772453609632-2f4aa857f56e?q=80&w=1200&auto=format&fit=crop',
-      alt: 'Neutral ceramic tableware with wooden accents and eucalyptus',
-      caption: 'Table rituals',
-    },
-  ],
-} as const;
-
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
@@ -73,6 +55,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       variables: {
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
+        editorialCollectionHandle: HOME_EDITORIAL_COLLECTION_HANDLE,
         first: 12,
       },
     });
@@ -81,12 +64,16 @@ export async function loader({context, request}: Route.LoaderArgs) {
       collections: filterDemoCollections(
         data.collections.nodes as HomeCollection[],
       ),
+      editorialProducts: filterDemoProducts(
+        (data.editorialCollection?.products.nodes ?? []) as ClaraCardProduct[],
+      ),
       products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
       seoUrl: getCanonicalUrl(request, '/'),
     };
   } catch {
     return {
       collections: [] as HomeCollection[],
+      editorialProducts: [] as ClaraCardProduct[],
       products: [] as ClaraCardProduct[],
       seoUrl: getCanonicalUrl(request, '/'),
     };
@@ -94,7 +81,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function Homepage() {
-  const {collections, products, seoUrl} = useLoaderData<typeof loader>();
+  const {collections, editorialProducts, products, seoUrl} =
+    useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
   const quickShopProducts = products.slice(0, 3);
@@ -492,70 +480,9 @@ export default function Homepage() {
         </div>
       </section>
 
-      <section
-        className="home-atmosphere-section"
-        aria-labelledby="home-atmosphere-title"
-        data-chapter="umber"
-      >
-        <div className="home-atmosphere-rule" aria-hidden />
-
-        <div className="home-atmosphere-layout">
-          <figure
-            className="home-atmosphere-figure home-atmosphere-figure--lead"
-            data-reveal
-          >
-            <img
-              src={HOME_ATMOSPHERE_IMAGES.lead.src}
-              alt={HOME_ATMOSPHERE_IMAGES.lead.alt}
-              loading="lazy"
-              decoding="async"
-            />
-            <figcaption>{HOME_ATMOSPHERE_IMAGES.lead.caption}</figcaption>
-          </figure>
-
-          <div className="home-atmosphere-copy" data-reveal>
-            <p className="eyebrow">Quiet rooms</p>
-            <h2 id="home-atmosphere-title">
-              A room that feels collected, not decorated.
-            </h2>
-            <p>
-              Clara Mendes starts with atmosphere: original art, grounded
-              texture, and considered products chosen for how they settle into
-              daily life.
-            </p>
-            <Link
-              className="text-link home-atmosphere-link"
-              to="/collections/all"
-            >
-              Shop the edit
-            </Link>
-          </div>
-
-          <div
-            className="home-atmosphere-supporting"
-            aria-label="Store mood details"
-            data-reveal
-          >
-            {HOME_ATMOSPHERE_IMAGES.supporting.map((image) => (
-              <figure className="home-atmosphere-figure" key={image.caption}>
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  loading="lazy"
-                  decoding="async"
-                />
-                <figcaption>{image.caption}</figcaption>
-              </figure>
-            ))}
-          </div>
-        </div>
-
-        <div className="home-atmosphere-footer" aria-hidden>
-          <span>Atmosphere</span>
-          <span>Texture</span>
-          <span>Ritual</span>
-        </div>
-      </section>
+      <HomepageEditorial
+        products={editorialProducts.length > 0 ? editorialProducts : products}
+      />
 
       <OriginalArtPreview
         availableProductHandles={products.map((product) => product.handle)}
@@ -627,12 +554,20 @@ export default function Homepage() {
 const HOMEPAGE_QUERY = `#graphql
   query Homepage(
     $country: CountryCode
+    $editorialCollectionHandle: String!
     $first: Int!
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
     products(first: $first, sortKey: BEST_SELLING) {
       nodes {
         ...ClaraProductCard
+      }
+    }
+    editorialCollection: collection(handle: $editorialCollectionHandle) {
+      products(first: 3) {
+        nodes {
+          ...ClaraProductCard
+        }
       }
     }
     collections(first: 12) {
@@ -1284,125 +1219,6 @@ html:has(.home-root) main {
   opacity: 1;
 }
 
-.home-atmosphere-section {
-  background:
-    linear-gradient(180deg, var(--color-paper) 0%, #f6f2eb 100%);
-  display: grid;
-  gap: clamp(26px, 4vw, 58px);
-  padding: clamp(64px, 9vw, 132px) clamp(18px, 4vw, 70px)
-    clamp(52px, 7vw, 96px);
-}
-
-.home-atmosphere-rule {
-  background: rgba(38, 35, 31, 0.16);
-  height: 1px;
-  width: 100%;
-}
-
-.home-atmosphere-layout {
-  align-items: start;
-  display: grid;
-  gap: clamp(18px, 2vw, 30px);
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-}
-
-.home-atmosphere-figure {
-  display: grid;
-  gap: 12px;
-  margin: 0;
-  min-width: 0;
-}
-
-.home-atmosphere-figure img {
-  background: var(--color-soft);
-  height: 100%;
-  object-fit: cover;
-  width: 100%;
-  filter: saturate(0.78) sepia(0.12) contrast(0.96);
-}
-
-.home-atmosphere-figure figcaption,
-.home-atmosphere-footer {
-  color: var(--color-muted);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  line-height: 1.45;
-  text-transform: uppercase;
-}
-
-.home-atmosphere-figure--lead {
-  grid-column: 1 / span 7;
-  grid-row: 1 / span 2;
-}
-
-.home-atmosphere-figure--lead img {
-  aspect-ratio: 5 / 6;
-}
-
-.home-atmosphere-copy {
-  align-content: start;
-  display: grid;
-  gap: clamp(20px, 2.5vw, 34px);
-  grid-column: 8 / -1;
-  padding-bottom: clamp(18px, 3vw, 42px);
-  padding-left: clamp(4px, 1vw, 18px);
-}
-
-.home-atmosphere-copy h2 {
-  color: var(--color-ink);
-  font-family: var(--serif);
-  font-size: clamp(3.2rem, 6.4vw, 7rem);
-  font-weight: 400;
-  letter-spacing: -0.055em;
-  line-height: 0.9;
-  margin: 0;
-  text-wrap: balance;
-}
-
-.home-atmosphere-copy p:not(.eyebrow) {
-  color: var(--color-muted);
-  font-size: 1.08rem;
-  line-height: 1.72;
-  margin: 0;
-  max-width: 520px;
-}
-
-.home-atmosphere-link {
-  justify-self: start;
-  margin-top: clamp(2px, 1vw, 12px);
-}
-
-.home-atmosphere-supporting {
-  align-items: end;
-  display: grid;
-  gap: clamp(14px, 1.7vw, 24px);
-  grid-column: 7 / -1;
-  grid-row: 2;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  padding-top: clamp(20px, 3.5vw, 54px);
-}
-
-.home-atmosphere-supporting .home-atmosphere-figure:first-child {
-  margin-top: clamp(34px, 7vw, 112px);
-}
-
-.home-atmosphere-supporting .home-atmosphere-figure:first-child img {
-  aspect-ratio: 4 / 5;
-}
-
-.home-atmosphere-supporting .home-atmosphere-figure:last-child img {
-  aspect-ratio: 5 / 4;
-}
-
-.home-atmosphere-footer {
-  border-top: 1px solid rgba(38, 35, 31, 0.12);
-  display: flex;
-  gap: clamp(18px, 5vw, 88px);
-  justify-content: flex-end;
-  padding-top: clamp(18px, 2.5vw, 30px);
-}
-
 .featured-grid-section {
   background:
     linear-gradient(180deg, #f6f2eb 0%, var(--color-paper) 28%);
@@ -1593,77 +1409,6 @@ html:has(.home-root) main {
     font-size: clamp(2rem, 10vw, 2.85rem);
   }
 
-  .home-atmosphere-section {
-    gap: 32px;
-    padding-bottom: 54px;
-    padding-top: 58px;
-  }
-
-  .home-atmosphere-layout {
-    gap: 28px;
-    grid-template-columns: 1fr;
-  }
-
-  .home-atmosphere-copy,
-  .home-atmosphere-figure--lead,
-  .home-atmosphere-supporting {
-    grid-column: 1;
-    grid-row: auto;
-    padding: 0;
-  }
-
-  .home-atmosphere-copy {
-    gap: 22px;
-    order: 1;
-  }
-
-  .home-atmosphere-figure--lead {
-    order: 2;
-  }
-
-  .home-atmosphere-supporting {
-    gap: 14px;
-    grid-template-columns: 1fr 1fr;
-    order: 3;
-  }
-
-  .home-atmosphere-copy h2 {
-    font-size: clamp(2.8rem, 13vw, 4.2rem);
-    letter-spacing: -0.05em;
-    line-height: 0.88;
-  }
-
-  .home-atmosphere-copy p:not(.eyebrow) {
-    font-size: 1.02rem;
-    line-height: 1.78;
-  }
-
-  .home-atmosphere-figure--lead img {
-    aspect-ratio: 3 / 2;
-  }
-
-  .home-atmosphere-supporting .home-atmosphere-figure:first-child img {
-    aspect-ratio: 4 / 5;
-  }
-
-  .home-atmosphere-supporting .home-atmosphere-figure:last-child img {
-    aspect-ratio: 4 / 5;
-  }
-
-  .home-atmosphere-supporting .home-atmosphere-figure:first-child {
-    margin-top: 0;
-  }
-
-  .home-atmosphere-figure figcaption,
-  .home-atmosphere-footer {
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
-  }
-
-  .home-atmosphere-footer {
-    justify-content: flex-start;
-    overflow: hidden;
-  }
 }
 
 @media (max-width: 480px) {
