@@ -23,19 +23,17 @@ import {
   getCollectionSortValue,
 } from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [
-    {
-      title: `Clara Mendes | ${data?.heading ?? 'Collection'}`,
-    },
-    data?.description
-      ? {
-          name: 'description',
-          content: data.description,
-        }
-      : {},
-  ];
+  return buildSeoMeta({
+    description:
+      data?.description ??
+      'A focused Clara Mendes collection of original art and considered products.',
+    title: data?.heading ?? 'Collection',
+    url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
+  });
 };
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
@@ -89,6 +87,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       ...products,
       nodes: filterDemoProducts(products.nodes),
     },
+    seoUrl: getCanonicalUrl(request, `/collections/${data.collection.handle}`),
   } satisfies CollectionViewData;
 }
 
