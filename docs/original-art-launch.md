@@ -166,7 +166,7 @@ account-level order pause is **"Pause indefinitely, until manually released"**
 automatically fulfil orders" on every configurator. Auto-fulfilment cannot run
 until the owner adds billing in Prodigi → Settings → Billing.
 
-**Cost gate result: FAIL at Standard shipping.** Live Prodigi quotes for
+**Legacy fixed-cost gate result: FAIL at Standard shipping.** Live Prodigi quotes for
 ART-FAP-EMA-8X10 (account bills in EUR; ECB rate 1.1392 USD/EUR, 2026-07-23):
 
 | Destination | Method   | Item  | Shipping | Tax   | Landed (EUR) | Landed (USD) | ≤ $12? |
@@ -177,14 +177,30 @@ ART-FAP-EMA-8X10 (account bills in EUR; ECB rate 1.1392 USD/EUR, 2026-07-23):
 | CY          | Standard | €5.00 | €10.25   | €3.05 | €18.30       | $20.84       | No     |
 
 Quotes are identical for every one of the 15 products (same Prodigi SKU).
-The Standard quote failed the documented $12 ceiling. Despite that unresolved
-result, all 15 products were later activated and are visible through the
-configured production Storefront API. Shopify reports a base price of EUR 29;
-the US storefront presents USD 34 through contextual pricing. Activation did
-not add Prodigi billing, approve the margin, or verify physical quality.
-Options for the owner are to return the prints to Draft, accept a different
-shipping method and ceiling, change contextual pricing, or explicitly accept
-the lower margin.
+The Standard quote failed the original $12 landed-cost ceiling. That ceiling
+does not account for the delivery charge collected from the customer. A
+2026-07-28 Storefront API cart check produced the following provisional
+single-print economics:
+
+| Destination | Item charged | Delivery charged | Customer total | Prodigi landed cost | Gross contribution | Contribution rate |
+| ----------- | ------------ | ---------------- | -------------- | ------------------- | ------------------ | ----------------- |
+| Cyprus      | EUR 29.00    | EUR 3.99         | EUR 32.99      | EUR 18.30           | EUR 14.69          | 44.5%             |
+| US          | USD 34.00    | USD 19.00        | USD 53.00      | USD 20.87           | USD 32.13          | 60.6%             |
+
+The contribution figures are before Shopify payment fees, refunds, chargebacks,
+and any later tax, shipping, or FX changes. They use the 2026-07-24 Prodigi
+quote and must be refreshed before the final launch decision. On this basis,
+Standard shipping has a positive provisional margin even though the legacy
+fixed-cost ceiling failed. Owner acceptance replaces the old ceiling only when
+recorded explicitly.
+
+All 15 products are active and visible through the configured production
+Storefront API. Shopify can create a one-item cart, returns the delivery rates
+above, and reports Visa, Mastercard, American Express, Shop Pay, Apple Pay, and
+Google Pay support. Shopify rejects automated requests that follow the generated
+checkout URL with `403 Request Forbidden`, so final checkout and payment must be
+verified in a real browser. Activation did not add Prodigi billing or verify
+physical quality.
 
 | Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status     |
 | ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ------------------ |

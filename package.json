@@ -12,6 +12,7 @@
     "test": "node --test \"scripts/*.node-test.mjs\"",
     "typecheck": "react-router typegen && tsc --noEmit",
     "codegen": "shopify hydrogen codegen && react-router typegen",
+    "storefront:purchase-path:audit": "node ./scripts/audit-customer-purchase-path.mjs",
     "catalog:art:audit": "node ./scripts/audit-original-art-catalog.mjs && node ./scripts/audit-art-product-extensions.mjs",
     "catalog:art:dry-run": "node ./scripts/sync-original-art-catalog.mjs",
     "catalog:art:sync": "node ./scripts/sync-original-art-catalog.mjs --apply",
