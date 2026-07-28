@@ -1,221 +1,84 @@
-# Clara Mendes Hydrogen Storefront
+# Clara Mendes Storefront
 
-Custom Shopify Hydrogen storefront for Clara Mendes, built with React Router,
-Hydrogen, Vite, and Shopify Storefront API.
+Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopclaramendes.com) — original art for calm, collected spaces.
 
-## Current Status
+**Stack:** Shopify Hydrogen (2026.4) · React Router 7 · Vite · Shopify Oxygen · Storefront API.
 
-- Local Git repository is initialized on `main`.
-- Initial source commit exists: `98f03e6 Initial Hydrogen storefront`.
-- Build, lint, typecheck, and standard Shopify route checks pass.
-- Headless channel credentials have been added locally in `.env`.
-- `.env`, `.shopify`, `node_modules`, `dist`, logs, and generated build state are ignored by git.
+## Catalog state
 
-## Requirements
+- **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Unframed 8 × 10 in giclée prints on 200gsm Enhanced Matte Art paper, printed to order. Source of truth: `data/original-art-catalog.json`.
+- **Draft / unpublished:** 12 extension product families, 71 variants (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). These must stay Draft and off every sales channel until pricing, Prodigi mapping verification, billing, and samples are signed off (`docs/launch-readiness.md`). The storefront allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, and the sitemap even if they are published by mistake.
 
-- Node.js `^22 || ^24`
-- npm
-- Git
-- Shopify CLI
-- GitHub CLI, if creating/pushing the GitHub repository from this machine
+## Local development
 
-GitHub CLI is installed at:
-
-```powershell
-C:\Program Files\GitHub CLI\gh.exe
-```
-
-If a new terminal does not recognize `gh`, either reopen the terminal or use the
-full executable path.
-
-## Local Development
-
-Install dependencies:
-
-```powershell
-npm install
-```
-
-Start the Hydrogen dev server:
-
-```powershell
+```sh
+npm ci
 npm run dev
 ```
 
-## Environment Variables
-
-Create a local `.env` file with these variables:
+Requires Node `^22 || ^24` and a `.env` file (never committed) with:
 
 ```text
-SESSION_SECRET=
-PUBLIC_STORE_DOMAIN=
-PUBLIC_CHECKOUT_DOMAIN=
-PUBLIC_STOREFRONT_API_TOKEN=
-PUBLIC_STOREFRONT_ID=
-PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID=
-PUBLIC_CUSTOMER_ACCOUNT_API_URL=
-PRIVATE_STOREFRONT_API_TOKEN=
-SHOP_ID=
-SHOPIFY_STOREFRONT_API_VERSION=
+SESSION_SECRET
+PUBLIC_STORE_DOMAIN
+PUBLIC_CHECKOUT_DOMAIN
+PUBLIC_STOREFRONT_API_TOKEN
+PUBLIC_STOREFRONT_ID
+PUBLIC_CUSTOMER_ACCOUNT_API_CLIENT_ID
+PUBLIC_CUSTOMER_ACCOUNT_API_URL
+PRIVATE_STOREFRONT_API_TOKEN
+SHOP_ID
+SHOPIFY_STOREFRONT_API_VERSION
+SHOPIFY_ADMIN_ACCESS_TOKEN   # server-side only; powers reviews + catalog scripts
 ```
 
-Do not commit `.env`. It is ignored by git.
-
-Important: private Storefront API tokens are secrets. If a private token is
-shared outside the hosting provider's secret store, revoke it in Shopify Admin
-and generate a fresh token before production deployment.
-
-`PUBLIC_STOREFRONT_ID` lets the Hydrogen analytics provider attribute events to
-the deployed storefront. Shopify can provide it in an Oxygen environment; add it
-locally when validating analytics against a connected storefront.
-Customer account routes also depend on the Customer Account API variables from a
-linked Hydrogen or Headless storefront.
+Values live in the Oxygen environment for deployments. If a private token leaks outside a secret store, revoke and reissue it in Shopify Admin.
 
 ## Validation
 
-Run these checks before pushing or deploying:
+All four must pass before merging; CI enforces them.
 
-```powershell
-npm run typecheck
+```sh
 npm run lint
+npm run typecheck
+npm test          # node --test over scripts/*.node-test.mjs
 npm run build
-npx shopify hydrogen check routes
 ```
 
-Expected current result:
+Dependency-audit status and accepted findings: `docs/dependency-security.md`.
 
-- TypeScript passes.
-- ESLint passes.
-- Production build passes.
-- Shopify route check reports all standard Shopify routes present.
+## Catalog scripts
 
-## GitHub Repository Setup
+Read-only (safe anytime):
 
-Shopify's storefront creation screen expects a valid GitHub repository name.
-Use a repository name with no spaces, for example:
+- `npm run catalog:art:audit` — verify the 15 live prints against Shopify.
+- `npm run catalog:extensions:audit` — verify Draft extension products.
+- `npm run catalog:art:dry-run` / `catalog:extensions:dry-run` / `catalog:legacy:dry-run` — print planned changes without applying.
 
-```text
-clara-mendes
-```
+**Mutating — writes to the live Shopify store. Run only with explicit sign-off:**
 
-Do not use:
+- `npm run catalog:art:sync` — creates/updates the 15 print products.
+- `npm run catalog:extensions:sync` — creates/updates Draft extension products.
+- `npm run catalog:legacy:draft` / `catalog:legacy:restore` — unpublish or restore legacy products.
+- `node scripts/setup-reviews.mjs` — one-time metaobject/metafield definitions (idempotent; `--dry-run` available).
 
-```text
-Clara Mendes
-```
+## Deployment
 
-To authenticate GitHub CLI:
-
-```powershell
-& 'C:\Program Files\GitHub CLI\gh.exe' auth login
-```
-
-To create a private GitHub repository from this local project and push `main`:
-
-```powershell
-& 'C:\Program Files\GitHub CLI\gh.exe' repo create clara-mendes --private --source . --remote origin --push
-```
-
-If the repository already exists:
-
-```powershell
-git remote add origin https://github.com/Tassos801/clara-mendes.git
-git push -u origin main
-```
-
-## Shopify Hosting Notes
-
-This project can run as a Hydrogen storefront, but Shopify Oxygen deployment
-depends on Shopify Admin channel availability.
-
-Known state:
-
-- The Hydrogen sales channel was not available through the CLI.
-- The Headless channel is available in Shopify Admin and can provide Storefront
-  API credentials.
-- GitHub-backed deployment setup in Shopify requires the code to be pushed to a
-  GitHub repository first.
-
-If deploying through Shopify Admin, configure the required environment variables
-in the storefront environment instead of relying on local `.env`.
-
-Before launch, work through `docs/launch-readiness.md` alongside the focused
-catalog cleanup in `docs/shopify-admin-cleanup.md`.
-
-## Storefront API Credential Check
-
-After updating credentials or permissions in Shopify Admin, verify API access
-with a small Storefront API query before deploying. The public token should be
-accepted with the `X-Shopify-Storefront-Access-Token` header, and the private
-token should only be used server-side.
-
-If a token returns `401` or `403`, check:
-
-- The token belongs to the same `.myshopify.com` store as `PUBLIC_STORE_DOMAIN`.
-- Storefront API permissions are enabled in the Headless channel.
-- The current public token was copied after saving permissions.
-- Products and collections are published to the Headless channel.
-
-## Useful Scripts
-
-```powershell
-npm run dev        # local Hydrogen development
-npm run build      # production build and codegen
-npm run typecheck  # React Router typegen and TypeScript
-npm run lint       # ESLint
-npm run codegen    # Shopify Hydrogen codegen and route typegen
-npm run clean      # remove generated build state
-```
+`.github/workflows/oxygen-deployment-1000130920.yml`: every push and PR runs lint → typecheck → test → build; deploys run only after validation, from push events. `main` deploys production; other branches get isolated Oxygen previews. Deployments queue per branch so an older run can never overwrite a newer one. The only secret used is `OXYGEN_DEPLOYMENT_TOKEN_1000130920`.
 
 ## Product reviews
 
-Customers can leave star-rated reviews with photos on product pages. Reviews
-are stored as Shopify metaobjects and moderated in the Shopify admin before
-they appear on the storefront.
+Customers submit star-rated reviews with photos; entries are stored as Shopify metaobjects, created as Draft, and appear only after being set Active in **Admin → Content → Metaobjects → Product review**. Requires `SHOPIFY_ADMIN_ACCESS_TOKEN` with product, metaobject, and file read/write scopes; without it the form degrades gracefully.
 
-### 1. Provision an Admin API token
+## SEO & sitemap
 
-The feature writes data through the Admin GraphQL API, so it needs an admin
-access token in addition to the Storefront tokens. Create a custom app (or use
-the Headless channel's admin credentials) with these access scopes:
+- Every indexable route sets a unique title, meta description, canonical on `https://shopclaramendes.com`, Open Graph/Twitter tags, and JSON-LD where relevant (`app/lib/seo.ts`).
+- `/sitemap.xml` is Shopify's index plus a custom child (`/sitemap/custom/1.xml`) covering `/`, `/collections/all`, `/our-story`, `/contact`, `/policies`. Off-theme products/collections, the obsolete `/pages/contact` (301 → `/contact`), and the empty `/blogs/news` are excluded; empty content resources are noindexed until they have content.
+- Capsule filtering on `/collections/all?capsule=<slug>` canonicalizes to `/collections/all`.
 
-- `read_products`, `write_products`
-- `read_metaobjects`, `write_metaobjects`
-- `read_metaobject_definitions`, `write_metaobject_definitions`
-- `read_files`, `write_files`
+## Operational safeguards
 
-Add the token to `.env` (server-side only — never expose it to the client):
-
-```
-SHOPIFY_ADMIN_ACCESS_TOKEN=shpat_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-```
-
-Until this variable is set, the review form degrades gracefully: the storefront
-still renders, and submitting a review returns "Reviews are not enabled yet —
-check back soon." instead of erroring.
-
-### 2. Run the one-time setup script
-
-The setup script creates the `product_review` metaobject definition and the
-`custom.reviews` product metafield definition. It is idempotent — running it
-again reports and skips anything that already exists.
-
-```powershell
-node scripts/setup-reviews.mjs            # create/skip against the store
-node scripts/setup-reviews.mjs --dry-run  # print the exact definition JSON
-                                          # without calling the API (no token
-                                          # required)
-```
-
-### 3. Moderate submitted reviews
-
-New reviews are created as **Draft** (pending moderation) and are not visible on
-the storefront. To approve one:
-
-1. Open the Shopify admin and go to **Content → Metaobjects → Product review**.
-2. Open the review entry.
-3. Change its status from **Draft** to **Active** and save.
-
-The Storefront API only resolves Active entries, so approved reviews appear on
-the product page automatically. Setting an entry back to Draft (or deleting it)
-removes it from the storefront.
+- Never run mutating catalog scripts against production without sign-off; use the dry-run first.
+- Draft extension products stay unpublished — publishing, price, SKU, inventory, fulfillment, and billing changes are out of scope for storefront work.
+- Checkout testing stops before payment: add to cart, open checkout, verify product/currency, do not place orders.
+- No secrets in code, logs, or Git history; `.env`, `.shopify`, and build output are ignored.
