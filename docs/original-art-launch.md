@@ -165,8 +165,8 @@ when last read on 2026-07-24. No order, sample, or payment was made.
 
 **Billing owner confirmation:** On 2026-07-28, the owner confirmed that the live
 Prodigi account already has one accepted billing card and instructed that it be
-used without adding or changing payment methods. A current dashboard readback
-is still required before calling billing verified.
+used without adding or changing payment methods. This is owner-confirmed account
+state; independent dashboard readback was unavailable.
 
 **Legacy fixed-cost gate result: FAIL at Standard shipping.** Live Prodigi quotes for
 ART-FAP-EMA-8X10 (account bills in EUR; ECB rate 1.1392 USD/EUR, 2026-07-23):
@@ -203,7 +203,7 @@ above, and reports Visa, Mastercard, American Express, Shop Pay, Apple Pay, and
 Google Pay support. Shopify rejects automated requests that follow the generated
 checkout URL with `403 Request Forbidden`, so final checkout and payment must be
 verified in a real browser. The owner reports an accepted Prodigi billing card,
-but current dashboard readback remains pending.
+but independent dashboard readback was unavailable.
 
 | Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status     |
 | ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ------------------ |
@@ -253,9 +253,11 @@ margin problem, pause the affected product before taking another order.
 - Replace the indefinite Prodigi hold with a 24-hour automatic-release window.
 - Do not create an order or charge the billing card merely to verify settings.
 
-The release-setting change is authorized but not yet verified in the live
-Prodigi dashboard. Until a readback shows the 24-hour window, operational status
-remains **indefinitely paused**.
+On 2026-07-28, the owner reported completing this change in the live Prodigi
+dashboard. Operational status is therefore **24-hour automatic release
+(owner-confirmed)**. Independent browser readback was unavailable; verify the
+first received order remains editable for the expected window before it enters
+production.
 
 ## Existing Catalog Reset
 
@@ -293,11 +295,12 @@ preferred to deletion because it preserves product media and data.
    storefront-visible.
 8. Owner-confirmed 2026-07-28: use the existing accepted billing card; keep
    current pricing and Standard shipping; waive physical samples.
-9. Owner-authorized, live readback pending: replace the indefinite Prodigi
-   pause with a 24-hour automatic-release window.
+9. Owner-reported completed 2026-07-28: replaced the indefinite Prodigi pause
+   with a 24-hour automatic-release window; independent readback was
+   unavailable.
 10. Pending: verify the final Shopify checkout in a real browser and verify the
-    live Prodigi billing, mapping, Standard shipping, and 24-hour release state
-    without creating an order.
+    first received Prodigi order uses the expected billing, mapping, Standard
+    shipping, and 24-hour edit window.
 11. Monitor the first customer order as the first physical-quality check and
     pause the affected product if any mapping, print, packaging, tracking, or
     margin issue appears.
