@@ -135,7 +135,8 @@ these to be confirmed:
    facts.
 7. The product is published only to the intended sales channels.
 8. A physical sample passes crop, colour, sharpness, trim, packaging, delivery,
-   and tracking review.
+   and tracking review, unless the owner explicitly waives that gate and accepts
+   the first-customer quality risk.
 
 The historical $29/$12 calculation was written before the current
 EUR-base/USD-contextual pricing was verified. Recalculate margin from a fresh
@@ -159,12 +160,13 @@ code and its listed US/NL/UK facilities. Every production upload is the exact
 recommended dimensions exactly). Crop verified per product in the design
 editor: scale 100%, offsets 0, border 0cm, full bleed, no cut-off, no
 distortion. Per-product shipping preference is set to **Standard**. The
-account-level order pause is **"Pause indefinitely, until manually released"**
-(set and re-verified 2026-07-24). No order, sample, or payment was made.
+account-level order pause was **"Pause indefinitely, until manually released"**
+when last read on 2026-07-24. No order, sample, or payment was made.
 
-**Billing blocker:** Prodigi shows "You will need to set up billing details to
-automatically fulfil orders" on every configurator. Auto-fulfilment cannot run
-until the owner adds billing in Prodigi → Settings → Billing.
+**Billing owner confirmation:** On 2026-07-28, the owner confirmed that the live
+Prodigi account already has one accepted billing card and instructed that it be
+used without adding or changing payment methods. A current dashboard readback
+is still required before calling billing verified.
 
 **Legacy fixed-cost gate result: FAIL at Standard shipping.** Live Prodigi quotes for
 ART-FAP-EMA-8X10 (account bills in EUR; ECB rate 1.1392 USD/EUR, 2026-07-23):
@@ -191,16 +193,17 @@ The contribution figures are before Shopify payment fees, refunds, chargebacks,
 and any later tax, shipping, or FX changes. They use the 2026-07-24 Prodigi
 quote and must be refreshed before the final launch decision. On this basis,
 Standard shipping has a positive provisional margin even though the legacy
-fixed-cost ceiling failed. Owner acceptance replaces the old ceiling only when
-recorded explicitly.
+fixed-cost ceiling failed. On 2026-07-28, the owner accepted the current
+pricing, customer delivery charges, Standard shipping, and these provisional
+margins.
 
 All 15 products are active and visible through the configured production
 Storefront API. Shopify can create a one-item cart, returns the delivery rates
 above, and reports Visa, Mastercard, American Express, Shop Pay, Apple Pay, and
 Google Pay support. Shopify rejects automated requests that follow the generated
 checkout URL with `403 Request Forbidden`, so final checkout and payment must be
-verified in a real browser. Activation did not add Prodigi billing or verify
-physical quality.
+verified in a real browser. The owner reports an accepted Prodigi billing card,
+but current dashboard readback remains pending.
 
 | Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status     |
 | ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ------------------ |
@@ -221,23 +224,38 @@ physical quality.
 | Sunlit Mosaic III   | CM-SM-03-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-03-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
 
 Print quality "Excellent" refers to Prodigi's resolution rating of the file,
-not a physical print inspection; no samples were ordered by explicit decision.
+not a physical print inspection. On 2026-07-28, the owner explicitly declined
+sample orders and accepted that the first customer order will be the first
+physical-quality check. This waiver applies to the fifteen mapped 8 × 10
+original prints only; the twelve Draft extension families retain their separate
+mapping, margin, and release gates.
 
-### Controlled sample acceptance
+### Waived sample acceptance checklist
 
-Use Quiet Form I (`CM-QF-01-8X10`), Patina Blue II
-(`CM-PB-02-8X10`), and Neo Deco III (`CM-ND-03-8X10`). Keep the order paused
-until the three variants, files, 8 × 10 EMA mapping, shipping method, and charge
-have been checked.
+No controlled sample order will be created. Apply these checks to the first
+customer order and any damage or quality report instead:
 
-All three must arrive with the complete uncropped composition, trim error no
+The print must arrive with the complete uncropped composition, trim error no
 more than 2 mm, clean colour and dark detail, no visible pixelation, banding,
 ink defects, scuffs, creases, or corner damage, and dry undamaged white-label
-packaging. Tracking must match the selected service. Retain the paused-order
-screenshot, release time, invoice, tracking dates, product and packaging
-photos, measurements, and per-design pass/fail. Approve recurring single-print
-economics from a single-unit quote; do not use consolidated sample shipping to
-approve the normal margin.
+packaging. Tracking must match the selected service. Retain the order record,
+invoice, tracking dates, and any customer-supplied product or packaging
+evidence. If the first order exposes a mapping, quality, packaging, delivery, or
+margin problem, pause the affected product before taking another order.
+
+### Owner-approved release settings — 2026-07-28
+
+- Use the existing accepted Prodigi billing card; do not add a second payment
+  method or replace the card.
+- Keep all fifteen original prints on Standard shipping.
+- Keep the current Shopify prices and customer delivery charges.
+- Do not place a sample order.
+- Replace the indefinite Prodigi hold with a 24-hour automatic-release window.
+- Do not create an order or charge the billing card merely to verify settings.
+
+The release-setting change is authorized but not yet verified in the live
+Prodigi dashboard. Until a readback shows the 24-hour window, operational status
+remains **indefinitely paused**.
 
 ## Existing Catalog Reset
 
@@ -273,14 +291,16 @@ preferred to deletion because it preserves product media and data.
    crop/price/shipping and the indefinite order pause.
 7. Completed outside the documented gate: all 15 originals are Active and
    storefront-visible.
-8. Blocked: automatic fulfillment cannot operate until the owner adds Prodigi
-   billing. The Standard cost gate failed and no physical samples have passed.
-9. Owner decision required: keep the prints Active or return them to Draft;
-   approve shipping method, target markets, pricing, and the recurring
-   single-print landed-cost ceiling.
-10. Owner payment approval required: order Quiet Form I, Patina Blue II, and
-    Neo Deco III as a controlled paused sample batch and retain inspection
-    evidence before scaling.
-11. Add a multi-buy offer only after three-item routing and economics are
+8. Owner-confirmed 2026-07-28: use the existing accepted billing card; keep
+   current pricing and Standard shipping; waive physical samples.
+9. Owner-authorized, live readback pending: replace the indefinite Prodigi
+   pause with a 24-hour automatic-release window.
+10. Pending: verify the final Shopify checkout in a real browser and verify the
+    live Prodigi billing, mapping, Standard shipping, and 24-hour release state
+    without creating an order.
+11. Monitor the first customer order as the first physical-quality check and
+    pause the affected product if any mapping, print, packaging, tracking, or
+    margin issue appears.
+12. Add a multi-buy offer only after three-item routing and economics are
     verified without using consolidated shipping to approve single-print
     economics.
