@@ -1,9 +1,29 @@
-import {useLoaderData} from 'react-router';
+import {redirect, useLoaderData} from 'react-router';
 import type {Route} from './+types/pages.$handle';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {buildSeoMeta} from '~/lib/seo';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+
+/**
+ * Shopify pages that duplicate dedicated storefront routes. Requests are
+ * permanently redirected so only the canonical route is served or indexed.
+ */
+const PAGE_REDIRECTS: Record<string, string> = {
+  contact: '/contact',
+};
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Clara Mendes | ${data?.page.title ?? ''}`}];
+  const page = data?.page;
+
+  return buildSeoMeta({
+    description:
+      page?.seo?.description ||
+      `${page?.title ?? 'Information'} from Clara Mendes.`,
+    // Pages without real content stay reachable but are kept out of the index
+    noIndex: !data?.hasBodyContent,
+    title: page?.seo?.title || page?.title || 'Page',
+    url: `${STOREFRONT_ORIGIN}/pages/${page?.handle ?? ''}`,
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -25,6 +45,11 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
     throw new Error('Missing page handle');
   }
 
+  const redirectTarget = PAGE_REDIRECTS[params.handle.toLowerCase()];
+  if (redirectTarget) {
+    throw redirect(redirectTarget, 301);
+  }
+
   const [{page}] = await Promise.all([
     context.storefront.query(PAGE_QUERY, {
       variables: {
@@ -41,8 +66,13 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
   redirectIfHandleIsLocalized(request, {handle: params.handle, data: page});
 
   return {
+    hasBodyContent: stripHtml(page.body).length > 0,
     page,
   };
+}
+
+function stripHtml(html?: string | null) {
+  return (html ?? '').replace(/<[^>]*>/g, '').trim();
 }
 
 /**

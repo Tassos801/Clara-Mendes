@@ -1,16 +1,19 @@
 import {Link} from 'react-router';
 import type {Route} from './+types/contact';
-import {RETURN_WINDOW_DAYS, SUPPORT_EMAIL} from '~/lib/storefrontBasics';
+import {buildSeoMeta} from '~/lib/seo';
+import {
+  RETURN_WINDOW_DAYS,
+  STOREFRONT_ORIGIN,
+  SUPPORT_EMAIL,
+} from '~/lib/storefrontBasics';
 
 export const meta: Route.MetaFunction = () => {
-  return [
-    {title: 'Contact | Clara Mendes'},
-    {
-      name: 'description',
-      content:
-        'Reach Clara Mendes for order questions, product inquiries, or general support.',
-    },
-  ];
+  return buildSeoMeta({
+    description:
+      'Reach Clara Mendes for order questions, product inquiries, returns, or general support. Every message is answered within one business day.',
+    title: 'Contact',
+    url: `${STOREFRONT_ORIGIN}/contact`,
+  });
 };
 
 export default function Contact() {

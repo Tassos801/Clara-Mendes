@@ -1,48 +1,40 @@
 import type {Route} from './+types/sitemap.$type.$page[.xml]';
 import {getSitemap} from '@shopify/hydrogen';
 import {
-  isOffThemeCollectionHandle,
-  isOffThemeProductHandle,
-} from '~/lib/catalogFilters';
+  buildCustomRoutesSitemapXml,
+  removeExcludedSitemapEntries,
+} from '~/lib/sitemap';
 
 export async function loader({
   request,
   params,
   context: {storefront},
 }: Route.LoaderArgs) {
+  if (params.type === 'custom') {
+    return new Response(buildCustomRoutesSitemapXml(), {
+      headers: {
+        'Content-Type': 'application/xml',
+        'Cache-Control': `max-age=${60 * 60 * 24}`,
+      },
+    });
+  }
+
   let response = await getSitemap({
     storefront,
     request,
     params,
-    locales: ['EN-US', 'EN-CA', 'FR-CA'],
-    getLink: ({type, baseUrl, handle, locale}) => {
-      if (!locale) return `${baseUrl}/${type}/${handle}`;
-      return `${baseUrl}/${locale}/${type}/${handle}`;
-    },
+    // No locale-prefixed routes exist in this storefront, so no hreflang
+    // alternates may be emitted — they would point at 404s.
+    locales: [],
+    getLink: ({type, baseUrl, handle}) => `${baseUrl}/${type}/${handle}`,
   });
 
-  if (params.type === 'products' || params.type === 'collections') {
-    const xml = await response.text();
-    response = new Response(removeOffThemeSitemapEntries(xml), {
-      headers: response.headers,
-    });
-  }
+  const xml = await response.text();
+  response = new Response(removeExcludedSitemapEntries(xml), {
+    headers: response.headers,
+  });
 
   response.headers.set('Cache-Control', `max-age=${60 * 60 * 24}`);
 
   return response;
-}
-
-function removeOffThemeSitemapEntries(xml: string) {
-  return xml.replace(/<url>[\s\S]*?<\/url>/g, (entry) => {
-    const loc = entry.match(/<loc>(.*?)<\/loc>/)?.[1] ?? '';
-    const match = loc.match(/\/(products|collections)\/([^/<]+)$/);
-    if (!match) return entry;
-
-    const [, type, handle] = match;
-    if (type === 'products' && isOffThemeProductHandle(handle)) return '';
-    if (type === 'collections' && isOffThemeCollectionHandle(handle)) return '';
-
-    return entry;
-  });
 }

@@ -6,8 +6,25 @@ import type {BlogsQuery} from 'storefrontapi.generated';
 
 type BlogNode = BlogsQuery['blogs']['nodes'][0];
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: `Clara Mendes | Journal`}];
+export const meta: Route.MetaFunction = ({data}) => {
+  const hasArticles = Boolean(
+    data?.blogs?.nodes?.some((blog) => blog.articles?.nodes?.length),
+  );
+
+  return [
+    {title: `Clara Mendes | Journal`},
+    {
+      name: 'description',
+      content: 'Notes and updates from the Clara Mendes studio.',
+    },
+    // The journal index stays out of search engines until it has content
+    {
+      name: 'robots',
+      content: hasArticles
+        ? 'index, follow, max-image-preview:large'
+        : 'noindex, follow',
+    },
+  ];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -102,6 +119,11 @@ const BLOGS_QUERY = `#graphql
         seo {
           title
           description
+        }
+        articles(first: 1) {
+          nodes {
+            id
+          }
         }
       }
     }
