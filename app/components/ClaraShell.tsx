@@ -114,7 +114,10 @@ function ClaraFooter() {
         <Link to="/collections/all">Shop</Link>
         <Link to="/our-story">Our Story</Link>
         <Link to="/contact">Contact</Link>
-        <Link to="/policies">Policies</Link>
+        <Link to="/policies/shipping-policy">Shipping</Link>
+        <Link to="/policies/refund-policy">Returns</Link>
+        <Link to="/policies/privacy-policy">Privacy</Link>
+        <Link to="/policies/terms-of-service">Terms</Link>
       </nav>
     </footer>
   );

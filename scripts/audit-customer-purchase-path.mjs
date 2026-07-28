@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+/* eslint-disable no-console */
+
 import {
   envWithLocalDefaults,
   getRequiredEnv,
@@ -225,3 +228,5 @@ async function storefrontRequest(query, variables) {
 
   return payload.data;
 }
+
+/* eslint-enable no-console */

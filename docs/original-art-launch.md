@@ -205,6 +205,22 @@ checkout URL with `403 Request Forbidden`, so final checkout and payment must be
 verified in a real browser. The owner reports an accepted Prodigi billing card,
 but independent dashboard readback was unavailable.
 
+**Real-browser checkout verification — 2026-07-28.** The full journey (product
+page → add to cart → cart → Shopify checkout) was walked in a real desktop
+browser and a 375 px mobile viewport, stopping before payment; no order was
+created. The checkout is Clara Mendes branded and serves express Shop Pay,
+PayPal, and Google Pay plus card entry (Visa, Mastercard, Amex, UnionPay) and
+links all four policies. A US address produced the shipping rate named
+"International" at USD 19.00 (total USD 53.00, no tax line, no delivery
+estimate shown); switching the delivery country to Cyprus re-priced the same
+checkout to EUR 29.00 + EUR 3.99 "Standard" with a dated delivery estimate
+(total EUR 32.99), matching the approved economics above. Checkout runs on
+`firemerch-7685.myshopify.com` (the store's primary domain — the same shop as
+`vre00g-8b.myshopify.com`, which remains the Admin URL alias). Owner follow-ups
+recorded in the launch report: the US rate's customer-facing name, a transit
+estimate on the US rate, the branded checkout domain, and the personal Gmail
+shown as the privacy-policy contact.
+
 | Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status     |
 | ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ------------------ |
 | Quiet Form I        | CM-QF-01-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-01-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
@@ -298,9 +314,11 @@ preferred to deletion because it preserves product media and data.
 9. Owner-reported completed 2026-07-28: replaced the indefinite Prodigi pause
    with a 24-hour automatic-release window; independent readback was
    unavailable.
-10. Pending: verify the final Shopify checkout in a real browser and verify the
-    first received Prodigi order uses the expected billing, mapping, Standard
-    shipping, and 24-hour edit window.
+10. Completed 2026-07-28 (checkout half): the final Shopify checkout was
+    verified in a real browser on desktop and mobile, stopping before payment.
+    Still pending: verify the first received Prodigi order uses the expected
+    billing, mapping, Standard shipping, and 24-hour edit window — follow
+    `docs/first-order-runbook.md`.
 11. Monitor the first customer order as the first physical-quality check and
     pause the affected product if any mapping, print, packaging, tracking, or
     margin issue appears.
