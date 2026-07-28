@@ -61,10 +61,23 @@ export function getProductDescription(product: ProductCopyInput) {
   return `A considered ${descriptor} selected for calm rooms, useful rituals, and everyday living.`;
 }
 
+/**
+ * Repairs sentence boundaries that lost their separating space when Shopify
+ * flattened adjacent HTML paragraphs into the plain-text description
+ * (e.g. "balance.An original" -> "balance. An original").
+ *
+ * The match is deliberately narrow — a lowercase letter, terminal
+ * punctuation, then a capitalized word — so decimals (34.00), initials
+ * (U.S.), dimensions (8 × 10 in), URLs, and filenames are left untouched.
+ */
+export function normalizeSentenceSpacing(text: string) {
+  return text.replace(/([a-z][.!?])([A-Z][a-z])/g, '$1 $2');
+}
+
 function cleanProductDescription(description?: string | null) {
   if (!description) return '';
 
-  return description
+  return normalizeSentenceSpacing(description)
     .replace(/\s*Supplier reference:\s*\S+/gi, '')
     .replace(
       /\s*Shipping and returns details to be added before launch\.?/gi,

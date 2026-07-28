@@ -7,10 +7,15 @@ import {
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
+import {StructuredData} from '~/components/StructuredData';
+import {
+  buildCapsuleTagQuery,
+  CAPSULES,
+  getCapsuleBySlug,
+} from '~/lib/capsules';
 import {
   filterDemoCollections,
   filterDemoProducts,
-  ORIGINAL_ART_COLLECTIONS,
 } from '~/lib/catalogFilters';
 import {
   buildProductsSearchQuery,
@@ -25,6 +30,8 @@ import {
   getProductsSortInput,
 } from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 export type CollectionLink = {
   id: string;
@@ -52,23 +59,29 @@ export type CollectionProductConnection = {
 };
 
 export type CollectionViewData = {
+  activeCapsule?: string | null;
   activeHandle: string;
   collections: CollectionLink[];
   description?: string | null;
   facets: CatalogFacetOptions;
   heading: string;
   products: CollectionProductConnection;
+  seoUrl?: string;
 };
 
-export const meta: Route.MetaFunction = () => {
-  return [
-    {title: 'Clara Mendes | Shop All'},
-    {
-      name: 'description',
-      content:
-        'Shop original Clara Mendes wall art and considered home accents.',
-    },
-  ];
+export const meta: Route.MetaFunction = ({data}) => {
+  const heading = data?.heading;
+  const isCapsule = Boolean(data?.activeCapsule) && heading;
+
+  return buildSeoMeta({
+    description:
+      data?.description ??
+      'Shop original Clara Mendes wall art and considered home accents.',
+    image: `${STOREFRONT_ORIGIN}/images/product-art/quiet-form/quiet-form-01.webp`,
+    title: isCapsule ? `${heading} Capsule` : 'Shop All',
+    // Capsule and filter selections canonicalize to the unfiltered page
+    url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
+  });
 };
 
 export async function loader({context, request}: Route.LoaderArgs) {
@@ -78,12 +91,20 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const searchParams = new URL(request.url).searchParams;
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
+  const capsule = getCapsuleBySlug(searchParams.get('capsule'));
+
+  const searchQuery = [
+    buildProductsSearchQuery(facetSelection),
+    capsule ? buildCapsuleTagQuery(capsule) : null,
+  ]
+    .filter(Boolean)
+    .join(' ');
 
   const data = await context.storefront.query(ALL_COLLECTION_QUERY, {
     variables: {
       ...paginationVariables,
       ...getProductsSortInput(sort),
-      query: buildProductsSearchQuery(facetSelection) ?? null,
+      query: searchQuery || null,
     },
   });
 
@@ -94,20 +115,23 @@ export async function loader({context, request}: Route.LoaderArgs) {
     .filter(Boolean);
 
   return {
+    activeCapsule: capsule?.slug ?? null,
     activeHandle: 'all',
     collections: filterDemoCollections(
       data.collections.nodes as CollectionLink[],
     ),
-    description:
-      'Original Clara Mendes art and considered products for calm, collected spaces.',
+    description: capsule
+      ? `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`
+      : 'Original Clara Mendes art and considered products for calm, collected spaces.',
     facets: {
       productTypes: productTypes.map((label) => ({label})),
       vendors: [],
     },
-    heading: 'Shop All',
+    heading: capsule ? capsule.title : 'Shop All',
     products: filterProductConnection(
       data.products as CollectionProductConnection,
     ),
+    seoUrl: getCanonicalUrl(request, '/collections/all'),
   } satisfies CollectionViewData;
 }
 
@@ -117,15 +141,33 @@ export default function AllCollection() {
 }
 
 export function CollectionView({data}: {data: CollectionViewData}) {
-  const categories = [
-    {id: 'all', handle: 'all', title: 'All'},
-    ...data.collections,
-  ];
   const [searchParams, setSearchParams] = useSearchParams();
   const sort = getCollectionSortValue(searchParams);
   const activeFacetCount = countActiveFacets(parseFacetSelection(searchParams));
   const [filtersOpen, setFiltersOpen] = useState(activeFacetCount > 0);
   const {ref: loadMoreRef, inView} = useInView();
+  const activeCapsule = data.activeCapsule ?? null;
+
+  // Capsule filtering lives in the URL (?capsule=slug) so selections are
+  // shareable and survive sort, facet, and back/forward navigation. A real
+  // Shopify collection with the same handle takes precedence when it exists.
+  const shadowedSlugs = new Set(data.collections.map((c) => c.handle));
+  const capsuleLinks = CAPSULES.filter(
+    (capsule) => !shadowedSlugs.has(capsule.slug),
+  );
+
+  const capsuleSearch = (slug: string | null) => {
+    const next = new URLSearchParams(searchParams);
+    next.delete('cursor');
+    next.delete('direction');
+    if (slug) {
+      next.set('capsule', slug);
+    } else {
+      next.delete('capsule');
+    }
+    const queryString = next.toString();
+    return queryString ? `?${queryString}` : '';
+  };
 
   const onSortChange = (value: string) => {
     void setSearchParams(
@@ -148,6 +190,18 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   return (
     <div className="collection-page cv-root">
       <style suppressHydrationWarning>{collectionCss}</style>
+      {data.seoUrl ? (
+        <StructuredData
+          data={[
+            collectionSchema({
+              description: data.description ?? data.heading,
+              products: data.products.nodes,
+              title: data.heading,
+              url: data.seoUrl,
+            }),
+          ]}
+        />
+      ) : null}
 
       <section className="cv-hero" aria-labelledby="cv-hero-title">
         <div className="cv-hero-noise" />
@@ -167,13 +221,24 @@ export function CollectionView({data}: {data: CollectionViewData}) {
 
       <div className="cv-toolbar" aria-label="Collection toolbar">
         <nav className="cv-filter" aria-label="Collection categories">
-          {categories.map((collection) => (
+          <Link
+            aria-current={
+              data.activeHandle === 'all' && !activeCapsule ? 'page' : undefined
+            }
+            className={`cv-filter-link${
+              data.activeHandle === 'all' && !activeCapsule ? ' is-active' : ''
+            }`}
+            to={`/collections/all${capsuleSearch(null)}`}
+          >
+            <span className="cv-filter-label">All</span>
+            <span className="cv-filter-underline" aria-hidden />
+          </Link>
+          {data.collections.map((collection) => (
             <Link
               key={collection.id}
-              to={
-                collection.handle === 'all'
-                  ? '/collections/all'
-                  : `/collections/${collection.handle}`
+              to={`/collections/${collection.handle}`}
+              aria-current={
+                collection.handle === data.activeHandle ? 'page' : undefined
               }
               className={`cv-filter-link${
                 collection.handle === data.activeHandle ? ' is-active' : ''
@@ -183,18 +248,19 @@ export function CollectionView({data}: {data: CollectionViewData}) {
               <span className="cv-filter-underline" aria-hidden />
             </Link>
           ))}
-          {data.collections.length === 0
-            ? ORIGINAL_ART_COLLECTIONS.map((collection) => (
-                <span
-                  aria-disabled="true"
-                  className="cv-filter-link cv-filter-link--preview"
-                  key={collection.id}
-                >
-                  <span className="cv-filter-label">{collection.title}</span>
-                  <span className="cv-filter-underline" aria-hidden />
-                </span>
-              ))
-            : null}
+          {capsuleLinks.map((capsule) => (
+            <Link
+              key={capsule.slug}
+              to={`/collections/all${capsuleSearch(capsule.slug)}`}
+              aria-current={activeCapsule === capsule.slug ? 'page' : undefined}
+              className={`cv-filter-link${
+                activeCapsule === capsule.slug ? ' is-active' : ''
+              }`}
+            >
+              <span className="cv-filter-label">{capsule.title}</span>
+              <span className="cv-filter-underline" aria-hidden />
+            </Link>
+          ))}
         </nav>
         <div className="cv-toolbar-actions">
           <button
@@ -587,13 +653,9 @@ const collectionCss = `
 
 .cv-filter-link:hover { color: var(--cv-ink); }
 
-.cv-filter-link--preview {
-  cursor: default;
-  opacity: 0.58;
-}
-
-.cv-filter-link--preview:hover {
-  color: var(--cv-muted);
+.cv-filter-link:focus-visible {
+  outline: 1.5px solid var(--cv-ink);
+  outline-offset: 4px;
 }
 
 .cv-filter-underline {
@@ -942,15 +1004,39 @@ const collectionCss = `
     gap: 0;
   }
 
+  /* Scrollable category row: the right-edge fade plus trailing padding
+     signal further options, and snap keeps items discoverable without a
+     visible scrollbar. */
   .cv-filter {
     flex-wrap: nowrap;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: 18px;
     gap: 0 20px;
-    padding: 12px 18px;
+    padding: 4px 48px 4px 18px;
+    mask-image: linear-gradient(
+      to right,
+      black 0,
+      black calc(100% - 36px),
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      black 0,
+      black calc(100% - 36px),
+      transparent 100%
+    );
   }
   .cv-filter::-webkit-scrollbar { display: none; }
+
+  .cv-filter-link {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+    scroll-snap-align: start;
+  }
 
   .cv-toolbar-actions {
     padding: 0 18px 12px;

@@ -4,9 +4,19 @@ import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {buildSeoMeta} from '~/lib/seo';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Clara Mendes | ${data?.blog.title ?? ''}`}];
+  return buildSeoMeta({
+    description:
+      data?.blog.seo?.description ||
+      'Notes and updates from the Clara Mendes studio.',
+    // An empty journal must not be indexed as a thin page
+    noIndex: !data?.hasArticles,
+    title: data?.blog.seo?.title || data?.blog.title || 'Journal',
+    url: `${STOREFRONT_ORIGIN}/blogs/${data?.blog.handle ?? ''}`,
+  });
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -48,7 +58,7 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
 
   redirectIfHandleIsLocalized(request, {handle: params.blogHandle, data: blog});
 
-  return {blog};
+  return {blog, hasArticles: blog.articles.nodes.length > 0};
 }
 
 /**

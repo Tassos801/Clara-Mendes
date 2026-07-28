@@ -80,7 +80,9 @@ function descriptionHtmlFor(item) {
     '<li>Unframed 8 × 10 inch portrait print</li>',
     '</ul>',
     '<p>Printed to order. Frame not included. Screen and print colours can vary slightly.</p>',
-  ].join('');
+    // Joined with newlines so Shopify's derived plain-text description keeps
+    // whitespace between paragraphs instead of merging sentence boundaries.
+  ].join('\n');
 }
 
 function productInputFor(item) {

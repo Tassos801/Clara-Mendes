@@ -15,6 +15,12 @@ import {
   filterDemoProducts,
   ORIGINAL_ART_COLLECTIONS,
 } from '~/lib/catalogFilters';
+import {
+  buildOriginalArtQuery,
+  buildOriginalArtProductMap,
+  ORIGINAL_ART_QUERY_FIRST,
+  type OriginalArtProductMap,
+} from '~/lib/originalArt';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {
   buildSeoMeta,
@@ -53,6 +59,12 @@ export async function loader({context, request}: Route.LoaderArgs) {
   try {
     const data = await context.storefront.query(HOMEPAGE_QUERY, {
       variables: {
+        // Availability for the original-art section is resolved with a
+        // dedicated catalog-tag query covering every expected print — the
+        // best-selling slice below is presentation-only and must never
+        // decide which prints exist.
+        artFirst: ORIGINAL_ART_QUERY_FIRST,
+        artQuery: buildOriginalArtQuery(),
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
         editorialCollectionHandle: HOME_EDITORIAL_COLLECTION_HANDLE,
@@ -67,6 +79,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
       editorialProducts: filterDemoProducts(
         (data.editorialCollection?.products.nodes ?? []) as ClaraCardProduct[],
       ),
+      originalArtProducts: buildOriginalArtProductMap(
+        (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
+      ),
       products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
       seoUrl: getCanonicalUrl(request, '/'),
     };
@@ -74,6 +89,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     return {
       collections: [] as HomeCollection[],
       editorialProducts: [] as ClaraCardProduct[],
+      originalArtProducts: {} as OriginalArtProductMap,
       products: [] as ClaraCardProduct[],
       seoUrl: getCanonicalUrl(request, '/'),
     };
@@ -81,7 +97,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function Homepage() {
-  const {collections, editorialProducts, products, seoUrl} =
+  const {collections, editorialProducts, originalArtProducts, products, seoUrl} =
     useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
@@ -484,10 +500,7 @@ export default function Homepage() {
         products={editorialProducts.length > 0 ? editorialProducts : products}
       />
 
-      <OriginalArtPreview
-        availableProductHandles={products.map((product) => product.handle)}
-        compact
-      />
+      <OriginalArtPreview products={originalArtProducts} compact />
 
       {featuredProducts.length > 0 ? (
         <section
@@ -553,12 +566,19 @@ export default function Homepage() {
 
 const HOMEPAGE_QUERY = `#graphql
   query Homepage(
+    $artFirst: Int!
+    $artQuery: String!
     $country: CountryCode
     $editorialCollectionHandle: String!
     $first: Int!
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
     products(first: $first, sortKey: BEST_SELLING) {
+      nodes {
+        ...ClaraProductCard
+      }
+    }
+    originalArtProducts: products(first: $artFirst, query: $artQuery) {
       nodes {
         ...ClaraProductCard
       }

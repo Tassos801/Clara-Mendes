@@ -15,6 +15,7 @@ import {AdPlatformProductView} from '~/components/AdPlatformAnalytics';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {RecentlyViewed} from '~/components/RecentlyViewed';
+import {buildCapsuleTagQuery, CAPSULES} from '~/lib/capsules';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
@@ -108,8 +109,18 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw new Response('Product handle is required', {status: 400});
   }
 
+  // "Pair with" prefers the two companion prints from the same capsule;
+  // best sellers only fill any remaining slots.
+  const capsule = CAPSULES.find((entry) => entry.handles.includes(handle));
+
   const data = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
+      // The fallback is a tag no product carries, so non-capsule products
+      // get zero capsule siblings (tag is a supported search field; an
+      // unsupported field would be silently ignored and match everything).
+      capsuleQuery: capsule
+        ? buildCapsuleTagQuery(capsule)
+        : 'tag:"__no-capsule__"',
       first: 4,
       handle,
       selectedOptions,
@@ -133,11 +144,20 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     summary: summarizeReviews(parsedReviews),
   };
 
+  const capsuleSiblings = filterDemoProducts(
+    (data.capsuleProducts?.nodes ?? []) as ClaraCardProduct[],
+  ).filter((product) => product.handle !== handle);
+  const bestSellingFill = filterDemoProducts(
+    data.relatedProducts.nodes as ClaraCardProduct[],
+  ).filter(
+    (product) =>
+      product.handle !== handle &&
+      !capsuleSiblings.some((sibling) => sibling.handle === product.handle),
+  );
+
   return {
     product: data.product as ProductDetail,
-    relatedProducts: filterDemoProducts(
-      data.relatedProducts.nodes as ClaraCardProduct[],
-    ).filter((product) => product.handle !== handle),
+    relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${data.product.handle}`),
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -149,6 +169,8 @@ export default function Product() {
     useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
+  const [zoomOpen, setZoomOpen] = useState(false);
+  const zoomCloseRef = useRef<HTMLButtonElement>(null);
   const atcRef = useRef<HTMLDivElement>(null);
   const [showStickyATC, setShowStickyATC] = useState(false);
   const selectedVariant =
@@ -199,6 +221,16 @@ export default function Product() {
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!zoomOpen) return;
+    zoomCloseRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setZoomOpen(false);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [zoomOpen]);
 
   useEffect(() => {
     recordRecentlyViewed({
@@ -337,11 +369,19 @@ export default function Product() {
       <section className="product-detail-layout">
         <div className="product-gallery product-gallery--lead">
           {leadGalleryImage ? (
-            <img
-              src={leadGalleryImage.url}
-              alt={leadGalleryImage.altText || product.title}
-              loading="eager"
-            />
+            <button
+              className="product-zoom-trigger"
+              type="button"
+              aria-haspopup="dialog"
+              onClick={() => setZoomOpen(true)}
+            >
+              <img
+                src={leadGalleryImage.url}
+                alt={leadGalleryImage.altText || product.title}
+                loading="eager"
+              />
+              <span className="product-zoom-hint">Tap to zoom</span>
+            </button>
           ) : (
             <div className="product-image-placeholder" aria-hidden />
           )}
@@ -514,7 +554,7 @@ export default function Product() {
           </dl>
         </div>
 
-        {supportingGalleryImages.length > 0 ? (
+        {supportingGalleryImages.length > 0 || isArtPrint ? (
           <div className="product-gallery product-gallery--supporting">
             {supportingGalleryImages.map((image, index) => (
               <img
@@ -524,9 +564,38 @@ export default function Product() {
                 loading="lazy"
               />
             ))}
+            {isArtPrint ? <PrintScaleDiagram /> : null}
           </div>
         ) : null}
       </section>
+
+      {zoomOpen && leadGalleryImage ? (
+        <div
+          className="product-zoom-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${product.title} enlarged view`}
+        >
+          <button
+            className="product-zoom-backdrop"
+            type="button"
+            aria-label="Close enlarged view"
+            onClick={() => setZoomOpen(false)}
+          />
+          <img
+            src={leadGalleryImage.url}
+            alt={leadGalleryImage.altText || product.title}
+          />
+          <button
+            className="product-zoom-close"
+            type="button"
+            ref={zoomCloseRef}
+            onClick={() => setZoomOpen(false)}
+          >
+            Close
+          </button>
+        </div>
+      ) : null}
 
       <ReviewsSection
         productGid={product.id}
@@ -538,7 +607,17 @@ export default function Product() {
         <section className="related-section" aria-labelledby="related">
           <div className="section-heading-row">
             <div>
-              <p className="eyebrow">Also in the catalog</p>
+              <p className="eyebrow">
+                {CAPSULES.some(
+                  (capsule) =>
+                    capsule.handles.includes(product.handle) &&
+                    relatedProducts.some((related) =>
+                      capsule.handles.includes(related.handle),
+                    ),
+                )
+                  ? 'From the same capsule'
+                  : 'Also in the catalog'}
+              </p>
               <h2 id="related">Pair with</h2>
             </div>
           </div>
@@ -595,6 +674,70 @@ export default function Product() {
         </AddToCartButton>
       </div>
     </div>
+  );
+}
+
+/**
+ * Line-art scale diagram: the 8 × 10 in print drawn at true proportion above
+ * a standard 84 in (three-seat) sofa, so buyers can judge the real size
+ * before ordering. Rendered as SVG — deliberately a diagram, not a staged
+ * photograph.
+ */
+function PrintScaleDiagram() {
+  // 3.5 SVG units per inch: sofa 84 in -> 294, print 8 × 10 in -> 28 × 35
+  return (
+    <figure className="product-scale">
+      <svg
+        viewBox="0 0 560 300"
+        role="img"
+        aria-label="Scale diagram: an unframed 8 by 10 inch portrait print shown at true proportion on a wall above a standard 84 inch sofa."
+      >
+        <g stroke="currentColor" strokeWidth="1.4" fill="none">
+          {/* floor */}
+          <line x1="40" y1="262" x2="520" y2="262" strokeOpacity="0.55" />
+          {/* sofa: back, seat, arms, legs (84 in wide, ~30 in tall) */}
+          <g strokeOpacity="0.55">
+            <rect x="133" y="157" width="294" height="60" rx="10" />
+            <rect x="121" y="187" width="318" height="44" rx="12" />
+            <line x1="133" y1="231" x2="133" y2="262" />
+            <line x1="427" y1="231" x2="427" y2="262" />
+          </g>
+          {/* print: 8 × 10 in portrait, hung above the sofa */}
+          <rect
+            x="266"
+            y="72"
+            width="28"
+            height="35"
+            fill="var(--color-paper, #fbfaf6)"
+          />
+          {/* dimension guides */}
+          <g strokeOpacity="0.4" strokeDasharray="3 4">
+            <line x1="266" y1="58" x2="294" y2="58" />
+            <line x1="308" y1="72" x2="308" y2="107" />
+          </g>
+        </g>
+        <g
+          fill="currentColor"
+          fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+          fontSize="11"
+        >
+          <text x="280" y="50" textAnchor="middle">
+            8 in
+          </text>
+          <text x="316" y="93">
+            10 in
+          </text>
+          <text x="280" y="284" textAnchor="middle" fillOpacity="0.6">
+            84 in sofa, for scale
+          </text>
+        </g>
+      </svg>
+      <figcaption>
+        True to size: an unframed 8 × 10 in (20.3 × 25.4 cm) portrait print,
+        shown to scale above a standard 84 in sofa. Hang it solo, or pair it
+        with its capsule companions.
+      </figcaption>
+    </figure>
   );
 }
 
@@ -770,6 +913,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
 
 const PRODUCT_QUERY = `#graphql
   query Product(
+    $capsuleQuery: String!
     $country: CountryCode
     $first: Int!
     $handle: String!
@@ -827,6 +971,11 @@ const PRODUCT_QUERY = `#graphql
       }
     }
     relatedProducts: products(first: $first, sortKey: BEST_SELLING) {
+      nodes {
+        ...ClaraProductCard
+      }
+    }
+    capsuleProducts: products(first: 3, query: $capsuleQuery) {
       nodes {
         ...ClaraProductCard
       }

@@ -197,8 +197,9 @@ function SearchResultsEmpty({term}: {term?: string}) {
           : 'What are you looking for?'}
       </h2>
       <p>
-        Try a simpler word — lamp, linen, vase — or start from the full edit
-        and browse by feel.
+        Try a capsule name — Quiet Form, Patina Blue, Neo Deco, Midnight
+        Garden, Sunlit Mosaic — or a mood like botanical print, neutral wall
+        art, geometric art, or blue abstract print.
       </p>
       <Link className="primary-button" to="/collections/all">
         Shop all pieces

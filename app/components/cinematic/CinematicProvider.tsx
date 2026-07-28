@@ -17,7 +17,10 @@ import {
  * a persistent painted WebGL background (cursor + scroll reactive, palette
  * lerped per chapter), Lenis smooth scrolling, and GSAP ScrollTrigger
  * chapter reveals. Everything loads via dynamic import after hydration is
- * idle; if anything fails the site renders exactly as before.
+ * idle, and only when the visitor has not requested reduced motion, the
+ * device is not memory/data constrained, and WebGL is available — otherwise
+ * no cinematic code is downloaded and the site renders on its CSS fallback
+ * backgrounds exactly as designed.
  */
 export function CinematicProvider({children}: {children: React.ReactNode}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -79,12 +82,43 @@ type BootHandle = {
   destroy: () => void;
 };
 
+/**
+ * Gates the ~190 kB gzip (Three.js + GSAP + Lenis) cinematic download.
+ * Reduced-motion visitors and constrained devices keep the CSS paper
+ * fallback the layouts are designed over — no cinematic code is fetched.
+ */
+function canBootCinematic(canvas: HTMLCanvasElement) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return false;
+  }
+
+  const connection = (
+    navigator as Navigator & {connection?: {saveData?: boolean}}
+  ).connection;
+  if (connection?.saveData) return false;
+
+  const deviceMemory = (navigator as Navigator & {deviceMemory?: number})
+    .deviceMemory;
+  if (deviceMemory != null && deviceMemory < 2) return false;
+
+  // Probe WebGL support before paying for the Three.js chunk
+  try {
+    const probe = document.createElement('canvas');
+    const gl =
+      probe.getContext('webgl2') ??
+      probe.getContext('webgl') ??
+      probe.getContext('experimental-webgl');
+    if (!gl) return false;
+  } catch {
+    return false;
+  }
+
+  return Boolean(canvas);
+}
+
 async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
   if (typeof window === 'undefined') return null;
-
-  const reduceMotion = window.matchMedia(
-    '(prefers-reduced-motion: reduce)',
-  ).matches;
+  if (!canBootCinematic(canvas)) return null;
 
   const [THREE, {gsap}, {ScrollTrigger}, {default: Lenis}] = await Promise.all([
     import('three'),
@@ -158,26 +192,22 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
   const onResize = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
-    if (reduceMotion) renderer.render(scene, camera);
   };
   window.addEventListener('resize', onResize);
 
   // --- Smooth scroll --------------------------------------------------------
-  let lenis: InstanceType<typeof Lenis> | null = null;
   let scrollVelTarget = 0;
 
-  if (!reduceMotion) {
-    lenis = new Lenis({lerp: 0.1});
-    lenis.on('scroll', (instance: {velocity: number}) => {
-      ScrollTrigger.update();
-      scrollVelTarget = Math.max(-1, Math.min(1, instance.velocity / 60));
-    });
-    gsap.ticker.lagSmoothing(0);
-  }
+  const lenis = new Lenis({lerp: 0.1});
+  lenis.on('scroll', (instance: {velocity: number}) => {
+    ScrollTrigger.update();
+    scrollVelTarget = Math.max(-1, Math.min(1, instance.velocity / 60));
+  });
+  gsap.ticker.lagSmoothing(0);
 
   // --- Render loop (one ticker drives Lenis + shader) -----------------------
   const tick = (time: number) => {
-    lenis?.raf(time * 1000);
+    lenis.raf(time * 1000);
 
     uniforms.uTime.value = time;
 
@@ -201,19 +231,16 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
     renderer.render(scene, camera);
   };
 
-  if (reduceMotion) {
-    // Single static painted frame; no animation loop, no smooth scroll.
-    renderer.render(scene, camera);
-  } else {
-    gsap.ticker.add(tick);
-  }
+  gsap.ticker.add(tick);
 
   // --- Chapters --------------------------------------------------------------
   const orchestrator = createChapterOrchestrator({
     gsap,
     ScrollTrigger,
     setTargetPalette,
-    reduceMotion,
+    // Reduced-motion visitors never reach boot(), so chapter reveals can
+    // always animate here.
+    reduceMotion: false,
   });
 
   return {
@@ -221,7 +248,7 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
     destroy: () => {
       orchestrator.destroy();
       gsap.ticker.remove(tick);
-      lenis?.destroy();
+      lenis.destroy();
       window.removeEventListener('mousemove', onPointerMove);
       window.removeEventListener('resize', onResize);
       mesh.geometry.dispose();

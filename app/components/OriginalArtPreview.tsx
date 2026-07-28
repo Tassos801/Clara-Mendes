@@ -1,20 +1,23 @@
 import artCatalog from '../../data/original-art-catalog.json';
 import {Link} from 'react-router';
+import {
+  formatOriginalArtPrice,
+  type OriginalArtProductMap,
+} from '~/lib/originalArt';
 
 type OriginalArtPreviewProps = {
-  availableProductHandles?: string[];
+  products?: OriginalArtProductMap;
   compact?: boolean;
 };
 
 export function OriginalArtPreview({
-  availableProductHandles = [],
+  products = {},
   compact = false,
 }: OriginalArtPreviewProps) {
   const items = compact
     ? artCatalog.filter((item) => item.sequence === 1)
     : artCatalog;
-  const availableHandles = new Set(availableProductHandles);
-  const hasAvailableProducts = availableHandles.size > 0;
+  const hasAvailableProducts = Object.keys(products).length > 0;
 
   return (
     <section
@@ -50,7 +53,13 @@ export function OriginalArtPreview({
 
       <div className="original-art-preview__grid">
         {items.map((item) => {
-          const isAvailable = availableHandles.has(item.handle);
+          const liveProduct = products[item.handle];
+          const price = formatOriginalArtPrice(liveProduct?.price);
+          const status = liveProduct
+            ? liveProduct.availableForSale
+              ? 'Available now'
+              : 'Sold out'
+            : 'Coming soon';
           const content = (
             <>
               <div className="original-art-card__image">
@@ -60,9 +69,7 @@ export function OriginalArtPreview({
                   loading="lazy"
                   src={item.image}
                 />
-                <span className="original-art-card__status">
-                  {isAvailable ? 'Available now' : 'First edition'}
-                </span>
+                <span className="original-art-card__status">{status}</span>
               </div>
               <div className="original-art-card__copy">
                 <p className="original-art-card__capsule">{item.capsule}</p>
@@ -70,19 +77,23 @@ export function OriginalArtPreview({
                 <p>{item.description}</p>
                 <div className="original-art-card__meta">
                   <span>{item.palette}</span>
-                  <span>{isAvailable ? 'View product' : '$29 at release'}</span>
+                  <span>
+                    {liveProduct
+                      ? (price ?? 'View product')
+                      : 'Not yet released'}
+                  </span>
                 </div>
               </div>
             </>
           );
 
-          return isAvailable ? (
+          return liveProduct ? (
             <Link
               aria-label={`View ${item.shortTitle}`}
               className="original-art-card original-art-card--link"
               key={item.handle}
               prefetch="intent"
-              to={`/products/${item.handle}`}
+              to={liveProduct.url}
             >
               {content}
             </Link>

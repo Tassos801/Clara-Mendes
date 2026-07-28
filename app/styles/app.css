@@ -690,6 +690,104 @@ button {
   aspect-ratio: 16 / 10;
 }
 
+/* Zoomable lead image */
+.product-zoom-trigger {
+  background: none;
+  border: 0;
+  cursor: zoom-in;
+  display: block;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.product-zoom-trigger:focus-visible {
+  outline: 1.5px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.product-zoom-hint {
+  background: rgba(251, 250, 246, 0.85);
+  backdrop-filter: blur(6px);
+  bottom: 14px;
+  color: var(--color-ink);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  padding: 7px 10px;
+  position: absolute;
+  right: 14px;
+  text-transform: uppercase;
+}
+
+.product-zoom-overlay {
+  align-items: center;
+  background: rgba(24, 22, 19, 0.92);
+  cursor: zoom-out;
+  display: flex;
+  inset: 0;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  position: fixed;
+  z-index: 120;
+}
+
+.product-zoom-backdrop {
+  background: transparent;
+  border: 0;
+  cursor: zoom-out;
+  inset: 0;
+  position: absolute;
+}
+
+.product-zoom-overlay img {
+  aspect-ratio: auto;
+  background: transparent;
+  height: auto;
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  position: relative;
+  width: auto;
+}
+
+.product-zoom-close {
+  background: rgba(251, 250, 246, 0.92);
+  border: 0;
+  color: var(--color-ink);
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  padding: 12px 18px;
+  position: absolute;
+  right: clamp(14px, 3vw, 28px);
+  text-transform: uppercase;
+  top: clamp(14px, 3vw, 28px);
+}
+
+/* True-to-size diagram (art prints) */
+.product-scale {
+  background: var(--color-soft);
+  color: var(--color-ink);
+  margin: 0;
+  padding: clamp(18px, 2.5vw, 30px);
+}
+
+.product-scale svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.product-scale figcaption {
+  color: var(--color-muted);
+  font-size: 0.86rem;
+  line-height: 1.6;
+  margin-top: 12px;
+  max-width: 56ch;
+}
+
 .product-purchase-panel {
   align-self: start;
   background:

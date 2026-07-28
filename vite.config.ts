@@ -10,6 +10,12 @@ export default defineConfig({
     // Allow a strict Content-Security-Policy
     // without inlining assets as base64:
     assetsInlineLimit: 0,
+    // Three.js is a single ~187 kB gzip chunk that is only ever loaded
+    // lazily (idle-time dynamic import behind reduced-motion/device gates in
+    // CinematicProvider) — it is never part of the critical path. Raise the
+    // warning threshold above it so genuine critical-path regressions stay
+    // visible instead of drowning in a known, intentional warning.
+    chunkSizeWarningLimit: 800,
   },
   ssr: {
     optimizeDeps: {

@@ -1,36 +1,77 @@
+# Validation gate + Oxygen deployment for the Clara Mendes storefront.
+#
+# - Pull requests run the full validation suite and never deploy.
+# - Branch pushes deploy an Oxygen preview only after validation passes.
+# - Pushes to main deploy production only after validation passes.
 name: Storefront 1000130920
-on: [push]
 
-permissions:
-  contents: read
-  deployments: write
+on:
+  push:
+  pull_request:
+
+# Jobs declare their own least-privilege permissions.
+permissions: {}
 
 jobs:
-  deploy:
-    name: Deploy to Oxygen
-    timeout-minutes: 30
+  validate:
+    name: Validate
+    # PRs from the same repo would otherwise run twice (push + pull_request)
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    timeout-minutes: 20
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: validate-${{ github.workflow }}-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
-          check-latest: true
+          node-version: "22"
+          cache: npm
 
-      - name: Cache node modules
-        id: cache-npm
-        uses: actions/cache@v4
-        env:
-          cache-name: cache-node-modules
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    name: Deploy to Oxygen
+    needs: validate
+    # Deployments only ever run from pushes; main deploys to production,
+    # other branches produce isolated Oxygen preview environments.
+    if: github.event_name == 'push'
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    # Queue deployments per ref in commit order so an older run can never
+    # finish after (and overwrite) a newer one.
+    concurrency:
+      group: oxygen-deploy-${{ github.ref }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-${{ env.cache-name }}-
-            ${{ runner.os }}-build-
-            ${{ runner.os }}-
+          node-version: "22"
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
