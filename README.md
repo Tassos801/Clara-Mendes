@@ -11,12 +11,12 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 
 Operational warning (verified 2026-07-28): the 15 prints are available through
 the production Storefront API. Shopify can create a cart, calculates delivery
-rates, and advertises card and wallet payment methods. Prodigi billing and
-physical samples are still missing. The original fixed landed-cost ceiling
-failed, but current customer revenue including delivery leaves a positive
-provisional fulfilment margin for Cyprus and the US; owner acceptance and a
-fresh Prodigi quote are still required. Active means sellable in Shopify; it
-does not yet mean automatically fulfillable or physically approved. See
+rates, and advertises card and wallet payment methods. The owner reports an
+accepted Prodigi billing card and has approved the current prices, Standard
+shipping, no physical samples, and a 24-hour automatic-release window. The live
+Prodigi account was last verified with an indefinite pause, so automatic
+release remains pending until the dashboard shows the approved 24-hour setting.
+The first customer order will be the first physical-quality check. See
 `docs/original-art-launch.md`.
 
 ## Local development
