@@ -19,6 +19,12 @@ const catalog = JSON.parse(
     'utf8',
   ),
 );
+const extensionCatalog = JSON.parse(
+  readFileSync(
+    path.join(repoRoot, 'data', 'art-product-extensions.json'),
+    'utf8',
+  ),
+);
 
 const PRODUCTS_QUERY = `#graphql
   query AuditOriginalArtProducts($first: Int!, $query: String!) {
@@ -105,8 +111,8 @@ function validateProduct(product, expected) {
   const media = product?.media?.nodes ?? [];
 
   if (!product) issues.push('missing from Shopify');
-  if (product?.status !== 'DRAFT') {
-    issues.push(`status is ${product?.status || 'missing'}, expected DRAFT`);
+  if (product?.status !== 'ACTIVE') {
+    issues.push(`status is ${product?.status || 'missing'}, expected ACTIVE`);
   }
   if (variants.length !== 1) {
     issues.push(`${variants.length} variants, expected 1`);
@@ -163,7 +169,7 @@ async function main() {
   let issueCount = 0;
 
   console.log(
-    `Shopify returned ${body.data?.productsCount?.count ?? products.length} Clara Mendes original-art product(s).`,
+    `Shopify returned ${body.data?.productsCount?.count ?? products.length} Clara Mendes tagged product(s).`,
   );
 
   for (const expected of catalog) {
@@ -178,7 +184,11 @@ async function main() {
   }
 
   const unexpected = products.filter(
-    (product) => !catalog.some((item) => item.handle === product.handle),
+    (product) =>
+      !catalog.some((item) => item.handle === product.handle) &&
+      !extensionCatalog.families.some(
+        (family) => family.handle === product.handle,
+      ),
   );
   if (unexpected.length) {
     issueCount += unexpected.length;
@@ -192,7 +202,7 @@ async function main() {
   }
 
   console.log(
-    `Catalog audit passed for ${catalog.length}/${catalog.length} products.`,
+    `Original-art catalog audit passed for ${catalog.length}/${catalog.length} ACTIVE products.`,
   );
 }
 

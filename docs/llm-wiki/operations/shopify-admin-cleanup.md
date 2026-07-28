@@ -18,9 +18,10 @@ Admin store domain recorded by the cleanup document:
 ## Product Cleanup
 
 All 49 legacy products were moved to Draft on 2026-07-23. The fifteen
-replacement art prints also remain Draft until the documented cost, billing,
-and launch decisions are resolved. See `docs/original-art-launch.md` for the
-current product and Prodigi mapping state.
+replacement art prints are now Active and visible through the configured
+production Storefront API. The 12 extension families remain Draft. The original
+prints were activated before the documented cost, billing, and physical-sample
+gates were resolved; see `docs/original-art-launch.md`.
 
 ## Collection Cleanup
 

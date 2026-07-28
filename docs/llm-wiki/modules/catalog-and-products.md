@@ -3,15 +3,15 @@
 ## Current Picture
 
 The 49 legacy products were moved to Draft on 2026-07-23. The replacement is an
-owned fifteen-product wall-art collection. All fifteen Shopify records exist as
-Draft products and are mapped to Prodigi, but remain unpublished because
-Standard-shipping landed cost exceeds the documented $12 gate and Prodigi
-billing is not configured.
+owned fifteen-product wall-art collection. All fifteen Shopify records are
+Active, available for sale, visible through the configured production
+Storefront API, and mapped to Prodigi. Activation did not resolve the failed
+Standard-shipping cost gate, missing Prodigi billing, or missing physical
+samples.
 
-The storefront previews the works while they are unavailable. It no longer
-uses an email-only early-access CTA: once a Shopify print is active and
-published to the connected storefront, its preview becomes a product link and
-the existing product, cart, and checkout path takes over automatically.
+The storefront no longer uses an email-only early-access CTA. All 15 previews
+now resolve to the Active products and the existing product, cart, and checkout
+path. A Draft or unpublished handle would remain a non-interactive preview.
 
 ## Original Art Replacement
 
@@ -23,10 +23,12 @@ the existing product, cart, and checkout path takes over automatically.
 | Midnight Garden | `midnight-garden-i-art-print`, `midnight-garden-ii-art-print`, `midnight-garden-iii-art-print` |
 | Sunlit Mosaic   | `sunlit-mosaic-i-art-print`, `sunlit-mosaic-ii-art-print`, `sunlit-mosaic-iii-art-print`       |
 
-Each planned Draft product has one 8 × 10 inch, $29 variant. Larger formats are
-blocked until higher-resolution production and sample review. Source metadata is
-in `data/original-art-catalog.json`; staging is handled by
-`scripts/sync-original-art-catalog.mjs`.
+Each live product has one 8 × 10 inch variant with a base price of EUR 29.
+Shopify Markets presents a contextual USD 34 price to the US storefront.
+Larger formats are blocked until higher-resolution production and sample
+review. Source metadata is in `data/original-art-catalog.json`; the mutating
+`scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
+not be run as a way to preserve the current Active state.
 
 `data/art-product-extensions.json` and
 `scripts/prepare-art-product-extensions.py` define twelve additional product
@@ -45,8 +47,9 @@ Sources: [Original Art Launch](../../original-art-launch.md),
 `app/lib/catalogFilters.ts` uses an explicit fifteen-handle launch allowlist.
 Old or supplier-imported products cannot appear in catalog, search,
 recommendations, or direct product routes merely because they are active in
-Shopify. Admin status is still the authoritative cross-channel control, so the
-Draft reset remains the authoritative catalog state.
+Shopify. Admin status is still the authoritative cross-channel control. The
+intended state is now 15 Active originals, 12 Draft extensions, and 49 Draft
+legacy products.
 
 It defines:
 

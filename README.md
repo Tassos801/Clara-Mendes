@@ -9,6 +9,12 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 - **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Unframed 8 × 10 in giclée prints on 200gsm Enhanced Matte Art paper, printed to order. Source of truth: `data/original-art-catalog.json`.
 - **Draft / unpublished:** 12 extension product families, 71 variants (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). These must stay Draft and off every sales channel until pricing, Prodigi mapping verification, billing, and samples are signed off (`docs/launch-readiness.md`). The storefront allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, and the sitemap even if they are published by mistake.
 
+Operational warning (verified 2026-07-28): the 15 prints are available through
+the production Storefront API, but Prodigi billing and physical samples are
+still missing and the documented Standard-shipping cost gate failed. Active
+means sellable in Shopify; it does not yet mean automatically fulfillable or
+physically approved. See `docs/original-art-launch.md`.
+
 ## Local development
 
 ```sh
@@ -51,7 +57,8 @@ Dependency-audit status and accepted findings: `docs/dependency-security.md`.
 
 Read-only (safe anytime):
 
-- `npm run catalog:art:audit` — verify the 15 live prints against Shopify.
+- `npm run catalog:art:audit` — verify the 15 Active prints and 12 Draft
+  extension families against Shopify.
 - `npm run catalog:extensions:audit` — verify Draft extension products.
 - `npm run catalog:art:dry-run` / `catalog:extensions:dry-run` / `catalog:legacy:dry-run` — print planned changes without applying.
 

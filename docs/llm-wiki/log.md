@@ -58,3 +58,12 @@ section into a reusable component and content model, and added a
 `homepage-editorial` Shopify collection integration so published product media,
 titles, alt text, ordering, and links can replace the branded fallbacks without
 changing storefront code.
+
+## [2026-07-28] catalog | Reconciled Active prints with open Prodigi gates
+
+Verified exactly 15 Active original prints available through the production
+Storefront API and exactly 12 Draft extension families with 71 variants. Updated
+the combined catalog audit to accept the intended split and removed the false
+extension-product warnings. Recorded that activation occurred while Prodigi
+billing, the Standard-shipping cost decision, and physical samples remain open,
+and added acceptance criteria for a controlled three-design sample batch.

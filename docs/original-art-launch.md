@@ -1,6 +1,6 @@
 # Clara Mendes Original Art Launch
 
-Updated: 2026-07-24
+Updated: 2026-07-28
 
 ## Launch Decision
 
@@ -17,8 +17,9 @@ original 4:5 wall-art works across five coordinated capsules:
 | Sunlit Mosaic   | Sunlit Mosaic I, II, III   | Terracotta, saffron, olive, cobalt, warm cream   |
 
 The initial sellable format is deliberately limited to one unframed 8 × 10 inch
-print at $29. Larger sizes must not be added until a higher-resolution production
-workflow and physical samples have passed review.
+print. Shopify's base catalog price is EUR 29; Shopify Markets currently
+presents USD 34 to the US storefront. Larger sizes must not be added until a
+higher-resolution production workflow and physical samples have passed review.
 
 ## Asset State And Provenance
 
@@ -89,6 +90,10 @@ scope are available:
 npm run catalog:art:sync
 ```
 
+This remains a staging/reset command: applying it will set the 15 originals to
+Draft at the EUR 29 base price. It is not an idempotent representation of the
+current Active state and must not be run merely to "refresh" the live products.
+
 For an owner-built Dev Dashboard app, configure `SHOPIFY_CLIENT_ID`,
 `SHOPIFY_CLIENT_SECRET`, and `SHOPIFY_ADMIN_STORE`. The sync exchanges those
 credentials for Shopify's short-lived Admin token automatically. A legacy
@@ -115,22 +120,26 @@ broad enough for later product types.
 
 Prodigi is the selected provider, and its Shopify sales channel was connected
 on 2026-07-24. Enhanced Matte Art paper (EMA), 200gsm, Giclée, unframed 8 × 10
-inches is the intended product. Do not activate or publish a product until all
-of these are confirmed:
+inches is the intended product. The documented activation gate requires all of
+these to be confirmed:
 
 1. The print-provider product is connected to the exact Shopify variant SKU.
 2. Prodigi's crop preview shows the complete composition with no unintended
    border or edge loss.
 3. The selected shipping method and real landed cost are documented.
-4. Landed cost is no more than $12 at the $29 retail price.
+4. Landed cost is no more than the owner-approved ceiling; the original ceiling
+   was $12 per single-print order.
 5. The account uses an order pause during the controlled launch so the first
    orders can be reviewed before production.
 6. The Shopify product description matches the configured paper and fulfilment
    facts.
 7. The product is published only to the intended sales channels.
+8. A physical sample passes crop, colour, sharpness, trim, packaging, delivery,
+   and tracking review.
 
-At $29 retail, a $12 landed cost and a 2.9% + $0.30 payment-fee assumption leave
-about $15.86, or 54.7%, before advertising, returns, support, and tax. This is a
+The historical $29/$12 calculation was written before the current
+EUR-base/USD-contextual pricing was verified. Recalculate margin from a fresh
+Prodigi quote in the sale currency before changing the gate. This is a release
 gate, not a profit promise.
 
 Prodigi setup references:
@@ -168,33 +177,51 @@ ART-FAP-EMA-8X10 (account bills in EUR; ECB rate 1.1392 USD/EUR, 2026-07-23):
 | CY          | Standard | €5.00 | €10.25   | €3.05 | €18.30       | $20.84       | No     |
 
 Quotes are identical for every one of the 15 products (same Prodigi SKU).
-Because landed cost exceeds $12 at the $29 retail price for the USD-market
-destination (US) under the selected Standard method, **all 15 products remain
-DRAFT and unpublished**. Options for the owner: accept Budget shipping and a
-higher gate, raise retail, print larger/multi-buy formats, or accept the
-margin. Catalog audit (`npm run catalog:art:audit`) passed 15/15 on 2026-07-24
-after mapping.
+The Standard quote failed the documented $12 ceiling. Despite that unresolved
+result, all 15 products were later activated and are visible through the
+configured production Storefront API. Shopify reports a base price of EUR 29;
+the US storefront presents USD 34 through contextual pricing. Activation did
+not add Prodigi billing, approve the margin, or verify physical quality.
+Options for the owner are to return the prints to Draft, accept a different
+shipping method and ceiling, change contextual pricing, or explicitly accept
+the lower margin.
 
-| Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status    |
-| ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ----------------- |
-| Quiet Form I        | CM-QF-01-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-01-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Quiet Form II       | CM-QF-02-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-02-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Quiet Form III      | CM-QF-03-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-03-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Patina Blue I       | CM-PB-01-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-01-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Patina Blue II      | CM-PB-02-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-02-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Patina Blue III     | CM-PB-03-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-03-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Neo Deco I          | CM-ND-01-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-01-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Neo Deco II         | CM-ND-02-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-02-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Neo Deco III        | CM-ND-03-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-03-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Midnight Garden I   | CM-MG-01-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-01-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Midnight Garden II  | CM-MG-02-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-02-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Midnight Garden III | CM-MG-03-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-03-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Sunlit Mosaic I     | CM-SM-01-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-01-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Sunlit Mosaic II    | CM-SM-02-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-02-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
-| Sunlit Mosaic III   | CM-SM-03-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-03-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Draft (cost gate) |
+| Product             | Shopify SKU   | Prodigi product / size   | Production file                    | Crop                 | Mapping                        | Shopify status     |
+| ------------------- | ------------- | ------------------------ | ---------------------------------- | -------------------- | ------------------------------ | ------------------ |
+| Quiet Form I        | CM-QF-01-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-01-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Quiet Form II       | CM-QF-02-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-02-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Quiet Form III      | CM-QF-03-8X10 | ART-FAP-EMA-8X10, 8x10in | quiet-form-03-8x10-300dpi.jpg      | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Patina Blue I       | CM-PB-01-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-01-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Patina Blue II      | CM-PB-02-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-02-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Patina Blue III     | CM-PB-03-8X10 | ART-FAP-EMA-8X10, 8x10in | patina-blue-03-8x10-300dpi.jpg     | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Neo Deco I          | CM-ND-01-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-01-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Neo Deco II         | CM-ND-02-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-02-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Neo Deco III        | CM-ND-03-8X10 | ART-FAP-EMA-8X10, 8x10in | neo-deco-03-8x10-300dpi.jpg        | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Midnight Garden I   | CM-MG-01-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-01-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Midnight Garden II  | CM-MG-02-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-02-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Midnight Garden III | CM-MG-03-8X10 | ART-FAP-EMA-8X10, 8x10in | midnight-garden-03-8x10-300dpi.jpg | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Sunlit Mosaic I     | CM-SM-01-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-01-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Sunlit Mosaic II    | CM-SM-02-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-02-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
+| Sunlit Mosaic III   | CM-SM-03-8X10 | ART-FAP-EMA-8X10, 8x10in | sunlit-mosaic-03-8x10-300dpi.jpg   | Full bleed, verified | Fulfilled by Prodigi, Standard | Active; gates open |
 
 Print quality "Excellent" refers to Prodigi's resolution rating of the file,
 not a physical print inspection; no samples were ordered by explicit decision.
+
+### Controlled sample acceptance
+
+Use Quiet Form I (`CM-QF-01-8X10`), Patina Blue II
+(`CM-PB-02-8X10`), and Neo Deco III (`CM-ND-03-8X10`). Keep the order paused
+until the three variants, files, 8 × 10 EMA mapping, shipping method, and charge
+have been checked.
+
+All three must arrive with the complete uncropped composition, trim error no
+more than 2 mm, clean colour and dark detail, no visible pixelation, banding,
+ink defects, scuffs, creases, or corner damage, and dry undamaged white-label
+packaging. Tracking must match the selected service. Retain the paused-order
+screenshot, release time, invoice, tracking dates, product and packaging
+photos, measurements, and per-design pass/fail. Approve recurring single-print
+economics from a single-unit quote; do not use consolidated sample shipping to
+approve the normal margin.
 
 ## Existing Catalog Reset
 
@@ -209,9 +236,11 @@ post-change Admin query confirmed `productsCount(status:active) = 0`.
 
 The first nine original-art replacements were created as **DRAFT** on
 2026-07-23; the six Midnight Garden and Sunlit Mosaic products followed on
-2026-07-24. All fifteen were read back from Shopify with one READY image, one
-untracked 8 × 10 shipping variant, a unique `CM-...-8X10` SKU, a $29 price, and
-no Online Store publication.
+2026-07-24. By 2026-07-28, all fifteen were **ACTIVE**, available for sale, and
+visible through the configured production Storefront API. Each has one READY
+image, one untracked 8 × 10 shipping variant, a unique `CM-...-8X10` SKU, and a
+base price of EUR 29. The US storefront presents USD 34 through contextual
+Shopify Markets pricing.
 
 `app/lib/catalogFilters.ts` retains an explicit allowlist containing only the
 fifteen original-art handles as a second storefront safety layer. Draft is
@@ -226,8 +255,16 @@ preferred to deletion because it preserves product media and data.
 5. Completed: connect Prodigi to Shopify.
 6. Completed 2026-07-24: mapped all 15 SKUs to ART-FAP-EMA-8X10, verified
    crop/price/shipping and the indefinite order pause.
-7. Blocked: activation withheld — landed cost exceeds the $12 gate at Standard
-   shipping (see Prodigi Mapping Status); Prodigi billing details also missing.
-8. Launch the individual prints first; add a “pick any 3 for $79” automatic
-   discount only after the three-item landed cost and fulfilment routing are
-   verified.
+7. Completed outside the documented gate: all 15 originals are Active and
+   storefront-visible.
+8. Blocked: automatic fulfillment cannot operate until the owner adds Prodigi
+   billing. The Standard cost gate failed and no physical samples have passed.
+9. Owner decision required: keep the prints Active or return them to Draft;
+   approve shipping method, target markets, pricing, and the recurring
+   single-print landed-cost ceiling.
+10. Owner payment approval required: order Quiet Form I, Patina Blue II, and
+    Neo Deco III as a controlled paused sample batch and retain inspection
+    evidence before scaling.
+11. Add a multi-buy offer only after three-item routing and economics are
+    verified without using consolidated shipping to approve single-print
+    economics.

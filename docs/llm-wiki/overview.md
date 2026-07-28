@@ -19,20 +19,22 @@ Sources: [README](../../README.md), [package.json](../../package.json).
 
 ## Current Catalog Snapshot
 
-The store has fifteen original 8 × 10 art prints across five capsules. All are
-Draft and unpublished because the US landed-cost gate fails at the selected
-Standard shipping method and Prodigi billing is not configured.
+The store has fifteen original 8 × 10 art prints across five capsules. All
+fifteen are Active, available for sale, and visible through the configured
+production Storefront API. They were activated even though the selected
+Standard shipping method fails the documented landed-cost gate, Prodigi
+billing is not configured, and no physical samples have been inspected.
 
-| Metric                  | Value |
-| ----------------------- | ----: |
-| Product count           |    15 |
-| Missing product count   |     0 |
-| Active product count    |     0 |
-| Published product count |     0 |
-| Product issue count     |     0 |
-| Product warning count   |     0 |
-| Image warning count     |     0 |
-| Variant issue count     |     0 |
+| Metric                   | Value |
+| ------------------------ | ----: |
+| Product count            |    15 |
+| Missing product count    |     0 |
+| Active product count     |    15 |
+| Storefront-visible count |    15 |
+| Product issue count      |     0 |
+| Product warning count    |     0 |
+| Image warning count      |     0 |
+| Variant issue count      |     0 |
 
 ## Current Launch Batch
 
@@ -50,7 +52,9 @@ Current launch capsules:
   confirmed before launch.
 - Shopify checkout, payments, taxes, order emails, policies, and support process
   must be verified in Shopify Admin.
-- Prodigi billing, physical samples, and the landed-cost decision remain open.
+- Active Shopify products can accept orders while Prodigi automatic
+  fulfillment is blocked by missing billing. The cost decision and physical
+  samples also remain open.
 - Catalog cleanup in Shopify Admin should remain aligned with storefront
   filtering so off-theme products cannot leak into search, feeds, SEO, or
   future routes.
