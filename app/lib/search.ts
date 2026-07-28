@@ -66,9 +66,11 @@ export function urlWithTrackingParams({
   params: extraParams,
   term,
 }: UrlWithTrackingParams) {
+  // URLSearchParams encodes values itself; pre-encoding the term here would
+  // double-encode it (e.g. "quiet form" -> "quiet%2520form").
   let search = new URLSearchParams({
     ...extraParams,
-    q: encodeURIComponent(term),
+    q: term,
   }).toString();
 
   if (trackingParams) {
