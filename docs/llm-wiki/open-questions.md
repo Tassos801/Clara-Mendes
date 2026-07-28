@@ -13,13 +13,15 @@ Sources: [Launch readiness](../launch-readiness.md), [README](../../README.md).
 
 ## Shopify Admin And Catalog
 
-- Will the owner switch the first release to Budget shipping, raise the $29
-  retail price, or accept a landed cost above the planned $12 maximum?
+- Should the owner keep the 15 prints Active while automatic fulfillment is
+  blocked, or return them to Draft until the remaining gates pass?
+- Will the owner switch to Budget shipping, change the contextual retail
+  price, or formally replace the planned $12 landed-cost ceiling?
 - When will the owner add Prodigi billing details?
-- Should all fifteen prints be activated together after those decisions, or
-  should a smaller controlled batch launch first?
-- Which products have passed a physical sample review? The current "Excellent"
-  status verifies file resolution only.
+- When will Quiet Form I, Patina Blue II, and Neo Deco III be ordered as the
+  controlled three-design sample batch?
+- Which products have passed physical inspection? The current "Excellent"
+  status verifies file resolution only; none have passed a sample review.
 
 Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md),
 [Original Art Launch](../original-art-launch.md).

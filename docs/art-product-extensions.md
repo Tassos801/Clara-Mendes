@@ -1,6 +1,6 @@
 # Art for Everyday Living
 
-Updated: 2026-07-24
+Updated: 2026-07-28
 
 ## Collection Shape
 
@@ -33,6 +33,11 @@ Total: 12 Draft products and 71 variants.
 On 2026-07-24, the guarded sync created all 12 products in Shopify as
 `DRAFT`. The live readback passed for 12/12 products, all 71 variants, expected
 prices and inventory flags, and READY product images. None were published.
+
+The 2026-07-28 preflight repeated the live 12/12 Draft audit and validated 94
+production/review files plus 56 Shopify preview images. This proves local file
+integrity and Shopify staging only. The 71 variants are not yet confirmed as
+mapped inside the connected Prodigi account.
 
 ## Artwork Policy
 
