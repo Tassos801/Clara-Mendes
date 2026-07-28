@@ -67,3 +67,18 @@ the combined catalog audit to accept the intended split and removed the false
 extension-product warnings. Recorded that activation occurred while Prodigi
 billing, the Standard-shipping cost decision, and physical samples remain open,
 and added acceptance criteria for a controlled three-design sample batch.
+
+## [2026-07-28] storefront | Launch verification pass: consent banner, geo markets, checkout walk
+
+Walked the full production purchase journey in a real browser on desktop and a
+375 px mobile viewport (product → cart → Shopify checkout, stopping before
+payment): US delivery prices at USD 34 + 19 "International", Cyprus re-prices
+to EUR 29 + 3.99 "Standard" with a dated estimate. Enabled the Shopify privacy
+banner (`withPrivacyBanner: true`) because the store requires consent and no
+banner existed, so no analytics event could ever fire; consent now unlocks
+`_shopify_y`/monorail and the ad-platform dataLayer. Storefront market now
+follows `oxygen-buyer-country` (EU ship-to list + US, US fallback) so EU
+shoppers browse in EUR — the currency checkout already charges them. Footer
+links each policy directly, the purchase-path audit script carries the standard
+no-console header pair, and `docs/first-order-runbook.md` documents how to
+verify the first Prodigi order end to end.
