@@ -25,10 +25,6 @@ import appStyles from '~/styles/app.css?url';
 
 export function links() {
   return [
-    {
-      rel: 'preconnect',
-      href: 'https://images.unsplash.com',
-    },
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
   ];
 }

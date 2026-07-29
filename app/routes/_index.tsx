@@ -49,11 +49,21 @@ type HomeCollection = {
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
-      'Original wall art and considered home accents for calm, collected rooms.',
-    title: 'Objects with Soul | Clara Mendes',
+      'Fifteen original art prints across five coordinated capsules — abstract wall art giclée-printed to order on archival matte paper for calm, collected rooms.',
+    title: 'Original Art Prints — Objects with Soul | Clara Mendes',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
 };
+
+// The hero background is a CSS image, which browsers discover only after
+// the stylesheet parses — preloading it moves LCP earlier.
+export const links: Route.LinksFunction = () => [
+  {
+    as: 'image',
+    href: '/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp',
+    rel: 'preload',
+  },
+];
 
 export async function loader({context, request}: Route.LoaderArgs) {
   try {
@@ -479,9 +489,11 @@ export default function Homepage() {
                 <span className="text-link">Explore collection</span>
               </Link>
             ) : (
-              <div
-                className="featured-collection-card category-preview-card category-carousel-card"
+              <Link
+                className="featured-collection-card category-carousel-card"
                 key={collection.id}
+                to={`/collections/${collection.handle}`}
+                prefetch="intent"
               >
                 <small className="eyebrow">Art capsule</small>
                 <h2 className="featured-collection-title">
@@ -490,7 +502,8 @@ export default function Homepage() {
                 {'note' in collection && collection.note ? (
                   <p className="featured-collection-desc">{collection.note}</p>
                 ) : null}
-              </div>
+                <span className="text-link">Explore capsule</span>
+              </Link>
             ),
           )}
         </div>
@@ -657,7 +670,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop);
+  background-image: url(/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -668,7 +681,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop);
+  background-image: url(/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp);
   background-size: cover;
   background-position: center;
   filter: blur(30px) brightness(0.8) sepia(0.3);

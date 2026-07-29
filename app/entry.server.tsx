@@ -24,7 +24,6 @@ export default async function handleRequest(
       "'self'",
       'data:',
       'https://cdn.shopify.com',
-      'https://images.unsplash.com',
     ],
   });
 

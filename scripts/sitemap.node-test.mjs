@@ -33,16 +33,38 @@ assert.ok(
 assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));
 
-// Custom child sitemap covers the important storefront routes
+// Custom child sitemap covers the important storefront routes, including
+// the five tag-backed capsule landing pages Shopify cannot know about
 assert.deepEqual(
   [...CUSTOM_SITEMAP_PATHS],
-  ['/', '/collections/all', '/our-story', '/contact', '/policies'],
+  [
+    '/',
+    '/collections/all',
+    '/collections/quiet-form',
+    '/collections/patina-blue',
+    '/collections/neo-deco',
+    '/collections/midnight-garden',
+    '/collections/sunlit-mosaic',
+    '/our-story',
+    '/contact',
+    '/policies',
+  ],
 );
 const customXml = buildCustomRoutesSitemapXml();
 assert.ok(customXml.startsWith('<?xml'));
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com</loc>'));
 assert.ok(
   customXml.includes('<loc>https://shopclaramendes.com/collections/all</loc>'),
+);
+assert.ok(
+  customXml.includes(
+    '<loc>https://shopclaramendes.com/collections/quiet-form</loc>',
+  ),
+);
+assert.ok(
+  customXml.includes(
+    '<loc>https://shopclaramendes.com/collections/midnight-garden</loc>',
+  ),
 );
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com/our-story</loc>'));
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com/contact</loc>'));

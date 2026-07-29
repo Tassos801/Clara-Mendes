@@ -58,8 +58,9 @@ type BreadcrumbInput = {
 export const SITE_NAME = 'Clara Mendes';
 export const DEFAULT_META_DESCRIPTION =
   'Clara Mendes presents original art and considered products for calm, collected spaces.';
-export const DEFAULT_SHARE_IMAGE =
-  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1600&auto=format&fit=crop';
+// Owned 1200x630 crop of Quiet Form I — never a stock photo: the share
+// card is often the first impression of the brand's actual work.
+export const DEFAULT_SHARE_IMAGE = `${STOREFRONT_ORIGIN}/images/share/og-default.jpg`;
 
 export function getCanonicalUrl(_request: Request, pathname: string) {
   return new URL(pathname, STOREFRONT_ORIGIN).toString();
