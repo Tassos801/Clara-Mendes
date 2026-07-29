@@ -60,7 +60,7 @@ export const meta: Route.MetaFunction = ({data}) => {
 export const links: Route.LinksFunction = () => [
   {
     as: 'image',
-    href: '/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp',
+    href: '/images/backdrops/hero-interior.jpg',
     rel: 'preload',
   },
 ];
@@ -670,7 +670,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp);
+  background-image: url(/images/backdrops/hero-interior.jpg);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -681,7 +681,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/product-art/sunlit-mosaic/sunlit-mosaic-02.webp);
+  background-image: url(/images/backdrops/hero-interior.jpg);
   background-size: cover;
   background-position: center;
   filter: blur(30px) brightness(0.8) sepia(0.3);
