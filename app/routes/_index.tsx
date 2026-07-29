@@ -1118,7 +1118,9 @@ html:has(.home-root) main {
   scroll-padding-inline: clamp(18px, 4vw, 70px);
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
-  touch-action: pan-x;
+  /* pan-y must stay allowed: with pan-x alone, a vertical swipe that
+     starts on this strip cannot scroll the page at all. */
+  touch-action: pan-x pan-y;
   -webkit-overflow-scrolling: touch;
 }
 

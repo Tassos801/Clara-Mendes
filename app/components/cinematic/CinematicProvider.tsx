@@ -128,6 +128,10 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
   ]);
 
   gsap.registerPlugin(ScrollTrigger);
+  // The mobile URL bar collapsing during a downward flick fires a resize;
+  // ScrollTrigger's default response is a full refresh mid-fling, which
+  // stalls the main thread and interrupts native scroll momentum.
+  ScrollTrigger.config({ignoreMobileResize: true});
 
   // --- Painted background -------------------------------------------------
   const renderer = new THREE.WebGLRenderer({
@@ -192,7 +196,14 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
     window.addEventListener('mousemove', onPointerMove, {passive: true});
   }
 
+  // URL-bar show/hide fires height-only resizes on phones; reallocating
+  // the framebuffer for those mid-scroll is a visible hitch. The canvas is
+  // a soft background, so a briefly stale height is invisible — real
+  // orientation/layout changes always change the width too.
+  let lastResizeWidth = window.innerWidth;
   const onResize = () => {
+    if (coarsePointer && window.innerWidth === lastResizeWidth) return;
+    lastResizeWidth = window.innerWidth;
     renderer.setSize(window.innerWidth, window.innerHeight);
     uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
   };
