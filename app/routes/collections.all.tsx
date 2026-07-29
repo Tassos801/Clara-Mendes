@@ -78,8 +78,12 @@ export const meta: Route.MetaFunction = ({data}) => {
       data?.description ??
       'Shop original Clara Mendes wall art and considered home accents.',
     image: `${STOREFRONT_ORIGIN}/images/product-art/quiet-form/quiet-form-01.webp`,
-    title: isCapsule ? `${heading} Capsule` : 'Shop All',
-    // Capsule and filter selections canonicalize to the unfiltered page
+    title: isCapsule
+      ? `${heading} Capsule`
+      : 'Shop All Original Art Prints & Wall Art',
+    // Filter selections canonicalize to the unfiltered page; a capsule
+    // selection canonicalizes to that capsule's own landing page so the
+    // filtered view consolidates rather than competes with it.
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
 };
@@ -122,7 +126,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ),
     description: capsule
       ? `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`
-      : 'Original Clara Mendes art and considered products for calm, collected spaces.',
+      : 'Shop 15 original Clara Mendes art prints across five coordinated capsules. Giclée-printed to order on archival matte paper with secure Shopify checkout.',
     facets: {
       productTypes: productTypes.map((label) => ({label})),
       vendors: [],
@@ -131,7 +135,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
     products: filterProductConnection(
       data.products as CollectionProductConnection,
     ),
-    seoUrl: getCanonicalUrl(request, '/collections/all'),
+    seoUrl: getCanonicalUrl(
+      request,
+      capsule ? `/collections/${capsule.slug}` : '/collections/all',
+    ),
   } satisfies CollectionViewData;
 }
 
@@ -531,7 +538,7 @@ const collectionCss = `
   background-color: var(--cv-bg-base);
   background-image:
     linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-    url(https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2560&auto=format&fit=crop);
+    url(/images/product-art/patina-blue/patina-blue-01.webp);
   background-size: cover;
   background-position: center 40%;
   color: #fff;

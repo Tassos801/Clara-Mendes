@@ -16,6 +16,7 @@ import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {RecentlyViewed} from '~/components/RecentlyViewed';
 import {buildCapsuleTagQuery, CAPSULES} from '~/lib/capsules';
+import {capsulePagePath, getCapsulePage} from '~/lib/capsulePages';
 import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
@@ -155,7 +156,16 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       !capsuleSiblings.some((sibling) => sibling.handle === product.handle),
   );
 
+  const capsulePage = capsule ? getCapsulePage(capsule.slug) : null;
+
   return {
+    capsuleSummary: capsule
+      ? {
+          blurb: capsulePage?.pdpBlurb ?? null,
+          slug: capsule.slug,
+          title: capsule.title,
+        }
+      : null,
     product: data.product as ProductDetail,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
@@ -165,8 +175,14 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 }
 
 export default function Product() {
-  const {product, relatedProducts, reviews, seoUrl, storeDomain} =
-    useLoaderData<typeof loader>();
+  const {
+    capsuleSummary,
+    product,
+    relatedProducts,
+    reviews,
+    seoUrl,
+    storeDomain,
+  } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
   const [zoomOpen, setZoomOpen] = useState(false);
@@ -351,6 +367,17 @@ export default function Product() {
           breadcrumbSchema({
             items: [
               {name: 'Shop', url: shopUrl},
+              ...(capsuleSummary
+                ? [
+                    {
+                      name: capsuleSummary.title,
+                      url: new URL(
+                        capsulePagePath(capsuleSummary.slug),
+                        seoUrl,
+                      ).toString(),
+                    },
+                  ]
+                : []),
               {name: product.title, url: seoUrl},
             ],
           }),
@@ -363,6 +390,14 @@ export default function Product() {
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link to="/collections/all">Shop</Link>
         <span aria-hidden="true">›</span>
+        {capsuleSummary ? (
+          <>
+            <Link to={capsulePagePath(capsuleSummary.slug)} prefetch="intent">
+              {capsuleSummary.title}
+            </Link>
+            <span aria-hidden="true">›</span>
+          </>
+        ) : null}
         <span>{product.title}</span>
       </nav>
 
@@ -516,6 +551,21 @@ export default function Product() {
                 </dd>
               </div>
             ) : null}
+            {capsuleSummary?.blurb ? (
+              <div>
+                <dt>Capsule</dt>
+                <dd>
+                  {capsuleSummary.blurb}{' '}
+                  <Link
+                    className="text-link"
+                    to={capsulePagePath(capsuleSummary.slug)}
+                    prefetch="intent"
+                  >
+                    Explore {capsuleSummary.title}
+                  </Link>
+                </dd>
+              </div>
+            ) : null}
             <div>
               <dt>Shipping</dt>
               <dd>
@@ -620,6 +670,15 @@ export default function Product() {
               </p>
               <h2 id="related">Pair with</h2>
             </div>
+            {capsuleSummary ? (
+              <Link
+                className="text-link"
+                to={capsulePagePath(capsuleSummary.slug)}
+                prefetch="intent"
+              >
+                View {capsuleSummary.title}
+              </Link>
+            ) : null}
           </div>
           <div className="product-grid compact-grid">
             {relatedProducts.slice(0, 3).map((relatedProduct) => (

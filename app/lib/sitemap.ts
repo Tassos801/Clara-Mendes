@@ -3,20 +3,27 @@
 import {
   isOffThemeCollectionHandle,
   isOffThemeProductHandle,
+  ORIGINAL_ART_COLLECTIONS,
 } from './catalogFilters.ts';
 import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 
 /**
  * Storefront routes that Shopify's generated sitemaps cannot know about.
  * Served as the `custom` sitemap type referenced from the sitemap index.
+ * The five capsule landing pages are storefront-rendered from capsule tags
+ * (no Shopify collection required), so they are listed here rather than in
+ * Shopify's collections sitemap.
  */
-export const CUSTOM_SITEMAP_PATHS = [
+export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/',
   '/collections/all',
+  ...ORIGINAL_ART_COLLECTIONS.map(
+    (collection) => `/collections/${collection.handle}`,
+  ),
   '/our-story',
   '/contact',
   '/policies',
-] as const;
+];
 
 /**
  * Shopify resources excluded from the sitemap: `/pages/contact` permanently

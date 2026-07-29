@@ -872,6 +872,72 @@ export type BlogsQuery = {
   };
 };
 
+export type CapsulePageQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  first: StorefrontAPI.Scalars['Int']['input'];
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  query: StorefrontAPI.Scalars['String']['input'];
+}>;
+
+export type CapsulePageQuery = {
+  products: {
+    nodes: Array<
+      Pick<
+        StorefrontAPI.Product,
+        'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+      > & {
+        featuredImage?: StorefrontAPI.Maybe<
+          Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'altText' | 'width' | 'height'
+          >
+        >;
+        images: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Image,
+              'id' | 'url' | 'altText' | 'width' | 'height'
+            >
+          >;
+        };
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
+        cardVariant: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.ProductVariant,
+              'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
+            > & {
+              compareAtPrice?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+              >;
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'id' | 'url' | 'altText' | 'width' | 'height'
+                >
+              >;
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
 export type CollectionQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   endCursor?: StorefrontAPI.InputMaybe<
@@ -1685,6 +1751,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query Blogs(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    blogs(\n      first: $first,\n      last: $last,\n      before: $startCursor,\n      after: $endCursor\n    ) {\n      pageInfo {\n        hasNextPage\n        hasPreviousPage\n        startCursor\n        endCursor\n      }\n      nodes {\n        title\n        handle\n        seo {\n          title\n          description\n        }\n        articles(first: 1) {\n          nodes {\n            id\n          }\n        }\n      }\n    }\n  }\n': {
     return: BlogsQuery;
     variables: BlogsQueryVariables;
+  };
+  '#graphql\n  query CapsulePage(\n    $country: CountryCode\n    $first: Int!\n    $language: LanguageCode\n    $query: String!\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, query: $query) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
+    return: CapsulePageQuery;
+    variables: CapsulePageQueryVariables;
   };
   '#graphql\n  query Collection(\n    $country: CountryCode\n    $endCursor: String\n    $filters: [ProductFilter!]\n    $first: Int\n    $handle: String!\n    $language: LanguageCode\n    $last: Int\n    $reverse: Boolean\n    $sortKey: ProductCollectionSortKeys\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      id\n      handle\n      title\n      description\n      products(\n        after: $endCursor\n        before: $startCursor\n        filters: $filters\n        first: $first\n        last: $last\n        reverse: $reverse\n        sortKey: $sortKey\n      ) {\n        filters {\n          id\n          label\n          values {\n            count\n            label\n          }\n        }\n        nodes {\n          ...ClaraProductCard\n        }\n        pageInfo {\n          hasNextPage\n          hasPreviousPage\n          startCursor\n          endCursor\n        }\n      }\n    }\n    collections(first: 24) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 2) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
     return: CollectionQuery;

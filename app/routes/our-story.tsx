@@ -286,7 +286,7 @@ html:has(.our-story-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2560&auto=format&fit=crop);
+  background-image: url(/images/product-art/quiet-form/quiet-form-02.webp);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -297,7 +297,7 @@ html:has(.our-story-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?q=80&w=2560&auto=format&fit=crop);
+  background-image: url(/images/product-art/quiet-form/quiet-form-02.webp);
   background-size: cover;
   background-position: center;
   filter: blur(40px) brightness(0.7) sepia(0.4);

@@ -184,13 +184,15 @@ button {
   position: relative;
 }
 
+/* Owned artwork only — a hotlinked stock photo undermines the "original
+   art" claim on the page making it, and costs a third-party request. */
 .hero-sharp,
 .hero-blur,
 .hero-noise,
 .story-image {
   background-image:
     linear-gradient(rgba(61, 56, 48, 0.1), rgba(61, 56, 48, 0.7)),
-    url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=2400&auto=format&fit=crop');
+    url('/images/product-art/midnight-garden/midnight-garden-01.webp');
   background-position: center;
   background-size: cover;
   inset: 0;
@@ -579,7 +581,7 @@ button {
 .story-image {
   background-image:
     linear-gradient(rgba(61, 56, 48, 0.02), rgba(61, 56, 48, 0.1)),
-    url('https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2000&auto=format&fit=crop');
+    url('/images/product-art/midnight-garden/midnight-garden-01.webp');
   min-height: 520px;
   position: relative;
 }

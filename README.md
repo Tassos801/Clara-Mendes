@@ -84,8 +84,9 @@ Customers submit star-rated reviews with photos; entries are stored as Shopify m
 ## SEO & sitemap
 
 - Every indexable route sets a unique title, meta description, canonical on `https://shopclaramendes.com`, Open Graph/Twitter tags, and JSON-LD where relevant (`app/lib/seo.ts`).
-- `/sitemap.xml` is Shopify's index plus a custom child (`/sitemap/custom/1.xml`) covering `/`, `/collections/all`, `/our-story`, `/contact`, `/policies`. Off-theme products/collections, the obsolete `/pages/contact` (301 → `/contact`), and the empty `/blogs/news` are excluded; empty content resources are noindexed until they have content.
-- Capsule filtering on `/collections/all?capsule=<slug>` canonicalizes to `/collections/all`.
+- `/sitemap.xml` is Shopify's index plus a custom child (`/sitemap/custom/1.xml`) covering `/`, `/collections/all`, the five capsule landing pages, `/our-story`, `/contact`, `/policies`. Off-theme products/collections, the obsolete `/pages/contact` (301 → `/contact`), and the empty `/blogs/news` are excluded; empty content resources are noindexed until they have content.
+- The five capsule landing pages (`/collections/<capsule-slug>`) are storefront-rendered from the sync-guaranteed capsule tags — no Shopify collection required. Their editorial copy lives in `app/lib/capsulePages.ts`; capsule filtering on `/collections/all?capsule=<slug>` canonicalizes to the matching landing page.
+- Every image on the site is owned Clara Mendes artwork — no stock photography, no third-party image hosts (the CSP no longer allows any).
 
 ## Operational safeguards
 
