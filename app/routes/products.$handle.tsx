@@ -15,8 +15,17 @@ import {AdPlatformProductView} from '~/components/AdPlatformAnalytics';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {RecentlyViewed} from '~/components/RecentlyViewed';
+import {
+  buildPhoneCaseUrl,
+  formatPhoneCaseDeviceList,
+} from '~/lib/artExtensions';
 import {buildCapsuleTagQuery, CAPSULES} from '~/lib/capsules';
-import {filterDemoProducts, isDemoProduct} from '~/lib/catalogFilters';
+import {
+  filterDemoProducts,
+  isDemoProduct,
+  isReleasedExtensionHandle,
+  PHONE_CASE_HANDLE,
+} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription, getProductLede} from '~/lib/productCopy';
@@ -86,6 +95,20 @@ type ProductDetail = ClaraCardProduct & {
   };
 };
 
+type PhoneCaseVariantNode = {
+  availableForSale: boolean;
+  image?: ProductImage | null;
+  price?: MoneyAmount | null;
+  selectedOptions: SelectedOption[];
+};
+
+type PhoneCaseCrossSell = {
+  capsuleTitle: string;
+  image: ProductImage | null;
+  price: MoneyAmount | null;
+  url: string;
+};
+
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
   const description = product ? getProductDescription(product) : null;
@@ -112,6 +135,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // "Pair with" prefers the two companion prints from the same capsule;
   // best sellers only fill any remaining slots.
   const capsule = CAPSULES.find((entry) => entry.handles.includes(handle));
+  // Cross-sell stays dormant until the phone case's release flag flips —
+  // the sentinel handle matches no product, so the query returns null.
+  const phoneCaseEligible =
+    Boolean(capsule) && isReleasedExtensionHandle(PHONE_CASE_HANDLE);
 
   const data = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
@@ -123,6 +150,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
         : 'tag:"__no-capsule__"',
       first: 4,
       handle,
+      phoneCaseHandle: phoneCaseEligible
+        ? PHONE_CASE_HANDLE
+        : '__phone-case-staged__',
       selectedOptions,
     },
   });
@@ -155,7 +185,36 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       !capsuleSiblings.some((sibling) => sibling.handle === product.handle),
   );
 
+  const phoneCaseProduct = data.phoneCase as
+    | (ClaraCardProduct & {caseVariants?: {nodes?: PhoneCaseVariantNode[]}})
+    | null;
+  let phoneCaseCrossSell: PhoneCaseCrossSell | null = null;
+  if (capsule && phoneCaseProduct && !isDemoProduct(phoneCaseProduct)) {
+    // The case variant carrying this capsule's artwork supplies the image
+    // and price, so the cross-sell shows the artwork the buyer is viewing.
+    const artworkVariant = (phoneCaseProduct.caseVariants?.nodes ?? []).find(
+      (variant) =>
+        variant.availableForSale &&
+        variant.selectedOptions.some(
+          (option) =>
+            option.name === 'Artwork' && option.value === capsule.title,
+        ),
+    );
+    if (artworkVariant) {
+      phoneCaseCrossSell = {
+        capsuleTitle: capsule.title,
+        image: artworkVariant.image ?? phoneCaseProduct.featuredImage ?? null,
+        price:
+          artworkVariant.price ??
+          phoneCaseProduct.priceRange?.minVariantPrice ??
+          null,
+        url: buildPhoneCaseUrl(capsule.title),
+      };
+    }
+  }
+
   return {
+    phoneCaseCrossSell,
     product: data.product as ProductDetail,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
@@ -165,8 +224,14 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 }
 
 export default function Product() {
-  const {product, relatedProducts, reviews, seoUrl, storeDomain} =
-    useLoaderData<typeof loader>();
+  const {
+    phoneCaseCrossSell,
+    product,
+    relatedProducts,
+    reviews,
+    seoUrl,
+    storeDomain,
+  } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
   const [zoomOpen, setZoomOpen] = useState(false);
@@ -191,6 +256,8 @@ export default function Product() {
   const productDescription = getProductDescription(product);
   const productLede = getProductLede(product);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
+  const isPhoneCase =
+    (product.productType || '').toLowerCase() === 'phone cases';
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
@@ -516,6 +583,26 @@ export default function Product() {
                 </dd>
               </div>
             ) : null}
+            {isPhoneCase ? (
+              <>
+                <div>
+                  <dt>Case</dt>
+                  <dd>
+                    Slim snap case in impact-resistant polycarbonate with an
+                    all-over matte print of the original artwork. Printed to
+                    order; screen and print colours can vary slightly.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Fit</dt>
+                  <dd>
+                    Made for {formatPhoneCaseDeviceList()} only. Cases are cut
+                    per device and printed to order, so check your exact model
+                    before ordering.
+                  </dd>
+                </div>
+              </>
+            ) : null}
             <div>
               <dt>Shipping</dt>
               <dd>
@@ -552,6 +639,41 @@ export default function Product() {
               </dd>
             </div>
           </dl>
+
+          {phoneCaseCrossSell ? (
+            <aside
+              className="product-cross-sell"
+              aria-label="Also available as a phone case"
+            >
+              {phoneCaseCrossSell.image ? (
+                <img
+                  src={phoneCaseCrossSell.image.url}
+                  alt={
+                    phoneCaseCrossSell.image.altText ||
+                    `${phoneCaseCrossSell.capsuleTitle} snap phone case`
+                  }
+                  loading="lazy"
+                />
+              ) : null}
+              <div className="product-cross-sell-copy">
+                <p className="eyebrow">Also available</p>
+                <p className="product-cross-sell-title">
+                  {phoneCaseCrossSell.capsuleTitle} artwork on a slim snap
+                  phone case
+                  {phoneCaseCrossSell.price
+                    ? ` — ${formatMoney(phoneCaseCrossSell.price)}`
+                    : ''}
+                </p>
+                <Link
+                  className="text-link"
+                  to={phoneCaseCrossSell.url}
+                  prefetch="intent"
+                >
+                  View the case
+                </Link>
+              </div>
+            </aside>
+          ) : null}
         </div>
 
         {supportingGalleryImages.length > 0 || isArtPrint ? (
@@ -918,6 +1040,7 @@ const PRODUCT_QUERY = `#graphql
     $first: Int!
     $handle: String!
     $language: LanguageCode
+    $phoneCaseHandle: String!
     $selectedOptions: [SelectedOptionInput!]!
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
@@ -978,6 +1101,29 @@ const PRODUCT_QUERY = `#graphql
     capsuleProducts: products(first: 3, query: $capsuleQuery) {
       nodes {
         ...ClaraProductCard
+      }
+    }
+    phoneCase: product(handle: $phoneCaseHandle) {
+      ...ClaraProductCard
+      caseVariants: variants(first: 24) {
+        nodes {
+          availableForSale
+          image {
+            id
+            url
+            altText
+            width
+            height
+          }
+          price {
+            amount
+            currencyCode
+          }
+          selectedOptions {
+            name
+            value
+          }
+        }
       }
     }
   }

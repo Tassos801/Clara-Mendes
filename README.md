@@ -8,6 +8,7 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 
 - **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Unframed 8 × 10 in giclée prints on 200gsm Enhanced Matte Art paper, printed to order. Source of truth: `data/original-art-catalog.json`.
 - **Draft / unpublished:** 12 extension product families, 71 variants (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). These must stay Draft and off every sales channel until pricing, Prodigi mapping verification, billing, and samples are signed off (`docs/launch-readiness.md`). The storefront allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, and the sitemap even if they are published by mistake.
+- **Staged for release:** the Art Snap Phone Case's storefront experience (nav, collection, PDP copy, print-page cross-sell) is built and dormant behind `EXTENSION_RELEASE_FLAGS` in `app/lib/catalogFilters.ts`. Releasing it is a one-line flip plus Shopify publication — both required — per `docs/phone-case-release.md`.
 
 Operational warning (verified 2026-07-28): the 15 prints are available through
 the production Storefront API. Shopify can create a cart, calculates delivery

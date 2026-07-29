@@ -69,6 +69,45 @@ const LAUNCH_PRODUCT_HANDLES = new Set([
   'sunlit-mosaic-iii-art-print',
 ]);
 
+export const PHONE_CASE_HANDLE = 'art-snap-phone-case';
+
+/** Collection the extension sync assigns; hidden until a member releases. */
+export const EXTENSION_COLLECTION_HANDLE = 'clara-mendes-art-living';
+
+/**
+ * Draft extension products staged for release. Keys are Shopify product
+ * handles from `data/art-product-extensions.json`. A handle becomes
+ * storefront-visible (search, collections, recommendations, cross-sell,
+ * sitemap, PDP) only when its flag is true AND the product is Active and
+ * published to the Headless channel in Shopify Admin — both are required, so
+ * neither an accidental publish nor an accidental flip can release alone.
+ * Flip a flag only via its release runbook (docs/phone-case-release.md)
+ * after every gate is signed off.
+ */
+export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
+  [PHONE_CASE_HANDLE]: false,
+};
+
+export function isReleasedExtensionHandle(handle?: string | null) {
+  return Boolean(handle && EXTENSION_RELEASE_FLAGS[handle.toLowerCase()]);
+}
+
+/**
+ * The launch prints plus every released extension. Exported as a function so
+ * tests can prove what a flag flip changes without mutating module state.
+ */
+export function computeSellableHandles(
+  extensionFlags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
+): ReadonlySet<string> {
+  const handles = new Set(LAUNCH_PRODUCT_HANDLES);
+  for (const [handle, released] of Object.entries(extensionFlags)) {
+    if (released) handles.add(handle.toLowerCase());
+  }
+  return handles;
+}
+
+const SELLABLE_PRODUCT_HANDLES = computeSellableHandles();
+
 const LEGACY_COLLECTION_HANDLES = new Set([
   'accessories',
   'automated-collection',
@@ -160,7 +199,7 @@ export function isStoreThemeProduct(product: CatalogProductLike) {
   const handle = product.handle?.toLowerCase();
 
   return (
-    Boolean(handle && LAUNCH_PRODUCT_HANDLES.has(handle)) &&
+    Boolean(handle && SELLABLE_PRODUCT_HANDLES.has(handle)) &&
     !isOffThemeProduct(product) &&
     !isUnfulfillableProductHandle(product.handle)
   );
