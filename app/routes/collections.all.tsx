@@ -538,7 +538,7 @@ const collectionCss = `
   background-color: var(--cv-bg-base);
   background-image:
     linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-    url(/images/product-art/patina-blue/patina-blue-01.webp);
+    url(/images/backdrops/hero-interior.jpg);
   background-size: cover;
   background-position: center 40%;
   color: #fff;
