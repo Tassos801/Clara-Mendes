@@ -33,13 +33,30 @@ export function createChapterOrchestrator({
 }: OrchestratorOptions): ChapterOrchestrator {
   let ctx: ReturnType<typeof gsap.context> | null = null;
   let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+  let lastScrollAt = 0;
+
+  const onAnyScroll = () => {
+    lastScrollAt = Date.now();
+  };
+  window.addEventListener('scroll', onAnyScroll, {passive: true});
 
   // Infinite scroll appends products and changes the page height; keep
-  // trigger positions honest without rebuilding anything.
-  const observer = new MutationObserver(() => {
+  // trigger positions honest without rebuilding anything. The refresh is a
+  // forced layout pass over the whole page, so it must never land while a
+  // fling is in progress — a main-thread stall mid-momentum reads as the
+  // scroll "stopping dead". Wait for 300ms of scroll silence first.
+  const scheduleRefresh = () => {
     if (refreshTimer) clearTimeout(refreshTimer);
-    refreshTimer = setTimeout(() => ScrollTrigger.refresh(), 300);
-  });
+    refreshTimer = setTimeout(() => {
+      refreshTimer = null;
+      if (Date.now() - lastScrollAt < 300) {
+        scheduleRefresh();
+        return;
+      }
+      ScrollTrigger.refresh();
+    }, 300);
+  };
+  const observer = new MutationObserver(scheduleRefresh);
 
   const scan = () => {
     ctx?.revert();
@@ -89,6 +106,7 @@ export function createChapterOrchestrator({
     scan,
     destroy: () => {
       observer.disconnect();
+      window.removeEventListener('scroll', onAnyScroll);
       if (refreshTimer) clearTimeout(refreshTimer);
       ctx?.revert();
     },

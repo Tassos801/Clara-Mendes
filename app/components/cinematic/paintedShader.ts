@@ -31,7 +31,14 @@ export const PAINT_VERTEX_SHADER = /* glsl */ `
   }
 `;
 
-export const PAINT_FRAGMENT_SHADER = /* glsl */ `
+/**
+ * GLSL loop bounds must be compile-time constants, so octave count is baked
+ * in per device tier: 4 on fine pointers, 3 on coarse pointers where the
+ * shader runs on a phone GPU (5 fbm calls per pixel makes each octave ~25%
+ * of the whole background's cost).
+ */
+export function buildPaintFragmentShader(octaves: 3 | 4) {
+  return /* glsl */ `
   precision highp float;
 
   uniform float uTime;
@@ -62,7 +69,7 @@ export const PAINT_FRAGMENT_SHADER = /* glsl */ `
   float fbm(vec2 p) {
     float value = 0.0;
     float amplitude = 0.55;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < ${octaves}; i++) {
       value += amplitude * noise(p);
       p = p * 2.04 + vec2(13.7, 7.1);
       amplitude *= 0.5;
@@ -109,3 +116,4 @@ export const PAINT_FRAGMENT_SHADER = /* glsl */ `
     gl_FragColor = vec4(col, 1.0);
   }
 `;
+}

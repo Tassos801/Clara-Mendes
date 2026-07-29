@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import {Link} from 'react-router';
 import {Image} from '@shopify/hydrogen';
 import {useAside} from './Aside';
@@ -71,6 +72,16 @@ export function ClaraProductCard({
   const images = product.images?.nodes ?? [];
   const baseImage = product.featuredImage ?? images[0];
   const hoverImage = images.find((image) => image.url !== baseImage?.url);
+  // The hover crossfade can only ever show on hover-capable devices, so
+  // touch devices skip the second image's download and decode entirely.
+  // SSR renders without it; hover-capable browsers mount it after hydration
+  // (it sits at opacity 0 until :hover, so the late mount is invisible).
+  const [hoverCapable, setHoverCapable] = useState(false);
+  useEffect(() => {
+    setHoverCapable(
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches,
+    );
+  }, []);
   const price = product.priceRange?.minVariantPrice;
   const chip = product.productType || 'Curated object';
   const firstVariant =
@@ -96,15 +107,17 @@ export function ClaraProductCard({
                   sizes={CARD_IMAGE_SIZES}
                   loading={loading}
                 />
-                <Image
-                  className="cm-card-img cm-card-img--hover"
-                  data={hoverImage ?? baseImage}
-                  alt=""
-                  aria-hidden
-                  aspectRatio="4/5"
-                  sizes={CARD_IMAGE_SIZES}
-                  loading="lazy"
-                />
+                {hoverCapable ? (
+                  <Image
+                    className="cm-card-img cm-card-img--hover"
+                    data={hoverImage ?? baseImage}
+                    alt=""
+                    aria-hidden
+                    aspectRatio="4/5"
+                    sizes={CARD_IMAGE_SIZES}
+                    loading="lazy"
+                  />
+                ) : null}
               </>
             ) : (
               <div className="cm-card-img cm-card-img--empty" aria-hidden />
