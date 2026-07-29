@@ -1,8 +1,8 @@
 import {useEffect, useRef} from 'react';
 import {useLocation} from 'react-router';
 import {
+  buildPaintFragmentShader,
   DEFAULT_PALETTE,
-  PAINT_FRAGMENT_SHADER,
   PAINT_VERTEX_SHADER,
   PALETTES,
   type PaletteName,
@@ -135,8 +135,11 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
     antialias: false,
     powerPreference: 'low-power',
   });
+  // On phones the paint renders at reduced resolution and is CSS-stretched;
+  // the marbled texture has no hard edges, so the upscale is invisible while
+  // fragment cost drops with the square of the ratio.
   const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-  const maxDpr = coarsePointer ? 1.25 : 1.5;
+  const maxDpr = coarsePointer ? 0.75 : 1.5;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -164,7 +167,7 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
   const material = new THREE.ShaderMaterial({
     uniforms,
     vertexShader: PAINT_VERTEX_SHADER,
-    fragmentShader: PAINT_FRAGMENT_SHADER,
+    fragmentShader: buildPaintFragmentShader(coarsePointer ? 3 : 4),
     depthTest: false,
     depthWrite: false,
   });
@@ -206,8 +209,18 @@ async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
   gsap.ticker.lagSmoothing(0);
 
   // --- Render loop (one ticker drives Lenis + shader) -----------------------
+  // On phones the background renders every other frame (~30fps): the drift
+  // is slow enough that the halved cadence is imperceptible, and the freed
+  // GPU time goes to scroll compositing. Lenis always ticks at full rate so
+  // scrolling itself never slows.
+  let skipPaintFrame = false;
   const tick = (time: number) => {
     lenis.raf(time * 1000);
+
+    if (coarsePointer) {
+      skipPaintFrame = !skipPaintFrame;
+      if (skipPaintFrame) return;
+    }
 
     uniforms.uTime.value = time;
 

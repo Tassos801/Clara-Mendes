@@ -2584,6 +2584,25 @@ button {
   width: auto;
 }
 
+/* ── Touch-device scroll performance ──
+   A backdrop-filter on a fixed surface forces the GPU to re-blur the
+   scrolling page — including the animated paint canvas — every frame,
+   which is the main source of felt scroll lag on phones. Near-opaque
+   paper reads almost identically and costs nothing per frame. The hero
+   blur is halved for the same reason: blur cost grows with radius and
+   phone GPUs pay it in memory bandwidth. */
+@media (hover: none) and (pointer: coarse) {
+  .site-header,
+  .sticky-atc-bar {
+    backdrop-filter: none;
+    background: rgba(251, 250, 246, 0.97);
+  }
+
+  .hero-blur {
+    filter: blur(14px) brightness(0.82) sepia(0.28);
+  }
+}
+
 /* ── Contact page ── */
 
 .contact-page {
