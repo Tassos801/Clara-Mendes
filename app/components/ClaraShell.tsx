@@ -118,6 +118,27 @@ function ClaraFooter() {
         <Link to="/policies/refund-policy">Returns</Link>
         <Link to="/policies/privacy-policy">Privacy</Link>
         <Link to="/policies/terms-of-service">Terms</Link>
+        <a
+          href="https://www.instagram.com/dimitrioutasos/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Instagram
+        </a>
+        <a
+          href="https://www.pinterest.com/shopclaramendes/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Pinterest
+        </a>
+        <a
+          href="https://www.facebook.com/profile.php?id=61592403780420"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Facebook
+        </a>
       </nav>
     </footer>
   );

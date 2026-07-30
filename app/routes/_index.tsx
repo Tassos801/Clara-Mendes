@@ -325,7 +325,7 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="hm-coords">34.0522 N, 118.2437 W</div>
+          <div className="hm-coords">Five capsules · fifteen original works</div>
 
           <div className="hm-interaction-anchor">
             <button
