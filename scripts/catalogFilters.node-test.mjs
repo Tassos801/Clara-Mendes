@@ -4,12 +4,15 @@ import {
   computeSellableHandles,
   EXTENSION_COLLECTION_HANDLE,
   EXTENSION_RELEASE_FLAGS,
+  hasReleasedExtensions,
   isDemoCollection,
   isDemoProduct,
   isReleasedExtensionHandle,
   isStoreThemeProduct,
   PHONE_CASE_HANDLE,
 } from '../app/lib/catalogFilters.ts';
+
+const BLANKET_HANDLE = 'art-premium-fleece-blanket-30x40';
 
 const phoneCase = {
   handle: PHONE_CASE_HANDLE,
@@ -44,25 +47,36 @@ assert.equal(isReleasedExtensionHandle(PHONE_CASE_HANDLE), false);
 assert.equal(isStoreThemeProduct(phoneCase), false);
 assert.equal(isDemoProduct(phoneCase), true);
 
+// The fleece blanket is the first released extension (Prodigi-mapped
+// 2026-07-31): sellable alongside the 15 prints, while every other
+// extension stays staged.
+assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), true);
+assert.equal(hasReleasedExtensions(), true);
+const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
+  Boolean,
+).length;
+assert.equal(releasedCount, 1);
+
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
-assert.equal(sellableToday.size, 15);
+assert.equal(sellableToday.size, 15 + releasedCount);
+assert.ok(sellableToday.has(BLANKET_HANDLE));
 assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 
-// Flipping the flag adds exactly the phone case and keeps all 15 prints —
-// this is the one-line storefront release described in
-// docs/phone-case-release.md.
+// Flipping a flag adds exactly that handle and keeps all 15 prints — the
+// one-line storefront release described in docs/phone-case-release.md.
 const sellableReleased = computeSellableHandles({[PHONE_CASE_HANDLE]: true});
 assert.equal(sellableReleased.size, 16);
 assert.ok(sellableReleased.has(PHONE_CASE_HANDLE));
 assert.ok(sellableReleased.has('quiet-form-i-art-print'));
+assert.ok(!sellableReleased.has(BLANKET_HANDLE));
 
 // Handle matching is case-insensitive like every other filter here.
 assert.equal(isReleasedExtensionHandle('Art-Snap-Phone-Case'), false);
 
-// The Art for Everyday Living collection is hidden while its only member is
-// unreleased, and surfaces automatically once a member product is approved.
+// The Art for Everyday Living collection stays hidden when its sampled
+// members are all unreleased.
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,
@@ -70,14 +84,36 @@ assert.equal(
   }),
   true,
 );
+// The handle-only check (the collection route's pre-query guard) admits the
+// collection once any extension is live — the post-query content check still
+// hides it while it holds nothing sellable.
 assert.equal(
   isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}),
-  true,
+  false,
 );
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,
     products: {nodes: [print]},
+  }),
+  false,
+);
+
+// A released extension member surfaces the collection on its own.
+assert.equal(
+  isDemoCollection({
+    handle: EXTENSION_COLLECTION_HANDLE,
+    products: {
+      nodes: [
+        {
+          handle: BLANKET_HANDLE,
+          productType: 'Blankets',
+          tags: ['Clara Mendes Original', 'Art for Everyday Living'],
+          title: 'Art Premium Fleece Blanket — 30 × 40 in',
+          vendor: 'Clara Mendes',
+        },
+      ],
+    },
   }),
   false,
 );

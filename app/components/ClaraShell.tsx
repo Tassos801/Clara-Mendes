@@ -7,15 +7,14 @@ import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
   EXTENSION_COLLECTION_HANDLE,
-  isReleasedExtensionHandle,
-  PHONE_CASE_HANDLE,
+  hasReleasedExtensions,
 } from '~/lib/catalogFilters';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
-  // Appears only once the phone case releases; until then the collection
+  // Appears only once any extension releases; until then the collection
   // link would dead-end in a redirect to /collections/all.
-  ...(isReleasedExtensionHandle(PHONE_CASE_HANDLE)
+  ...(hasReleasedExtensions()
     ? [{to: `/collections/${EXTENSION_COLLECTION_HANDLE}`, label: 'Everyday'}]
     : []),
   {to: '/our-story', label: 'Our Story'},

@@ -269,6 +269,7 @@ export default function Product() {
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
+  const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
@@ -647,6 +648,16 @@ export default function Product() {
                   </dd>
                 </div>
               </>
+            ) : null}
+            {isBlanket ? (
+              <div>
+                <dt>Blanket</dt>
+                <dd>
+                  Single-sided premium polyester fleece, hemmed at 30 × 40 in
+                  with the artwork printed across the full face. Printed to
+                  order; screen and print colours can vary slightly.
+                </dd>
+              </div>
             ) : null}
             <div>
               <dt>Shipping</dt>

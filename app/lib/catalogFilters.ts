@@ -84,12 +84,42 @@ export const EXTENSION_COLLECTION_HANDLE = 'clara-mendes-art-living';
  * Flip a flag only via its release runbook (docs/phone-case-release.md)
  * after every gate is signed off.
  */
+// A handle flips to true only when its family is fully mapped in the
+// connected Prodigi account (every variant "Fulfilled by Prodigi
+// automatically") — releasing an unmapped family would sell orders no one
+// can fulfil. Notebook, tote, cushion, and phone case additionally wait on
+// Prodigi template assets that live outside this repo.
 export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
+  'art-canvas-tote': false,
+  'art-cover-gratitude-journal': false,
+  'art-cover-spiral-notebook': false,
+  'art-linen-cushion-24x24': false,
+  'art-premium-fleece-blanket-30x40': true,
   [PHONE_CASE_HANDLE]: false,
+  'clara-mendes-art-calendar-2026': false,
+  'classic-framed-art-print-16x20': false,
+  'fine-art-greeting-card': false,
+  'fine-art-postcard': false,
+  'large-fine-art-print-16x20': false,
+  'stretched-canvas-art-16x20': false,
 };
 
 export function isReleasedExtensionHandle(handle?: string | null) {
   return Boolean(handle && EXTENSION_RELEASE_FLAGS[handle.toLowerCase()]);
+}
+
+/** True once any extension family is live — gates the "Everyday" nav. */
+export function hasReleasedExtensions() {
+  return Object.values(EXTENSION_RELEASE_FLAGS).some(Boolean);
+}
+
+/** Staged (flagged but not yet released) extension handles — stripped from
+ * the sitemap even if a product is accidentally published. */
+export function isUnreleasedExtensionHandle(handle?: string | null) {
+  const key = handle?.toLowerCase();
+  return Boolean(
+    key && key in EXTENSION_RELEASE_FLAGS && !EXTENSION_RELEASE_FLAGS[key],
+  );
 }
 
 /**
@@ -240,6 +270,14 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
   const products = collection.products?.nodes?.filter(Boolean) ?? [];
   if (products.some((product) => !isDemoProduct(product))) return false;
   if (products.length > 0) return true;
+
+  // With no product sample to judge by (the collection route's pre-query
+  // guard), give the extension collection the benefit of the doubt once any
+  // extension is live — the route's post-query content check still hides it
+  // while it holds nothing sellable.
+  if (handle === EXTENSION_COLLECTION_HANDLE && hasReleasedExtensions()) {
+    return false;
+  }
 
   return !handle || !ORIGINAL_ART_COLLECTION_HANDLES.has(handle);
 }

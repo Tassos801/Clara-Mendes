@@ -1,8 +1,11 @@
 // Relative imports keep this module loadable by the plain-Node test runner,
 // which cannot resolve the Vite "~" alias.
 import {
+  EXTENSION_COLLECTION_HANDLE,
+  hasReleasedExtensions,
   isOffThemeCollectionHandle,
   isOffThemeProductHandle,
+  isUnreleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
 } from './catalogFilters.ts';
 import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
@@ -41,7 +44,15 @@ export function removeExcludedSitemapEntries(xml: string) {
     const [, type, handle] = match;
     if (EXCLUDED_RESOURCE_PATHS.has(`${type}/${handle}`)) return '';
     if (type === 'products' && isOffThemeProductHandle(handle)) return '';
+    if (type === 'products' && isUnreleasedExtensionHandle(handle)) return '';
     if (type === 'collections' && isOffThemeCollectionHandle(handle)) return '';
+    if (
+      type === 'collections' &&
+      handle === EXTENSION_COLLECTION_HANDLE &&
+      !hasReleasedExtensions()
+    ) {
+      return '';
+    }
 
     return entry;
   });
