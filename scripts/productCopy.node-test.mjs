@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {PHONE_CASE_DEVICE_LABELS} from '../app/lib/artExtensions.ts';
 import {
   getProductDescription,
   getProductLede,
@@ -82,4 +83,36 @@ assert.equal(
     title: 'Trivet',
   }),
   'A woven cotton trivet.',
+);
+
+// Phone case: curated copy exists and names every supported device, so the
+// description can never drift from data/art-product-extensions.json.
+const phoneCase = {
+  description: 'Shopify description is overridden by curated copy.',
+  handle: 'art-snap-phone-case',
+  productType: 'Phone Cases',
+  title: 'Art Snap Phone Case',
+};
+const phoneCaseDescription = getProductDescription(phoneCase);
+for (const label of PHONE_CASE_DEVICE_LABELS) {
+  assert.ok(
+    phoneCaseDescription.includes(label),
+    `phone case copy is missing device: ${label}`,
+  );
+}
+
+// Spec-sheet product types (prints, cases) trim the lede to the first
+// sentence; other product types keep the full description.
+assert.equal(
+  getProductLede(phoneCase),
+  'Original Clara Mendes artwork wrapped edge to edge around a slim snap phone case.',
+);
+assert.equal(
+  getProductLede({
+    description: 'A woven cotton trivet. It works in multiples.',
+    handle: 'unknown-product',
+    productType: 'Accents',
+    title: 'Trivet',
+  }),
+  'A woven cotton trivet. It works in multiples.',
 );

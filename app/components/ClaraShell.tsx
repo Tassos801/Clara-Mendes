@@ -5,9 +5,19 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
+import {
+  EXTENSION_COLLECTION_HANDLE,
+  isReleasedExtensionHandle,
+  PHONE_CASE_HANDLE,
+} from '~/lib/catalogFilters';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
+  // Appears only once the phone case releases; until then the collection
+  // link would dead-end in a redirect to /collections/all.
+  ...(isReleasedExtensionHandle(PHONE_CASE_HANDLE)
+    ? [{to: `/collections/${EXTENSION_COLLECTION_HANDLE}`, label: 'Everyday'}]
+    : []),
   {to: '/our-story', label: 'Our Story'},
   {to: '/contact', label: 'Contact'},
   {to: '/search', label: 'Search'},

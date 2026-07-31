@@ -30,10 +30,13 @@ export const ORIGINAL_ART_HANDLES: string[] = artCatalog.map(
 );
 
 /**
- * Query size for the dedicated availability lookup, with headroom so a
- * future capsule addition cannot silently fall off the end of the response.
+ * Query size for the dedicated availability lookup. The headroom covers a
+ * future capsule addition AND the 12 extension products, which share the
+ * `Clara Mendes Original` tag once published — without it, released
+ * extensions could push prints off the end of the response and make them
+ * read as unavailable.
  */
-export const ORIGINAL_ART_QUERY_FIRST = ORIGINAL_ART_HANDLES.length + 10;
+export const ORIGINAL_ART_QUERY_FIRST = ORIGINAL_ART_HANDLES.length + 25;
 
 /**
  * Storefront `products(query:)` clause targeting the original prints.
