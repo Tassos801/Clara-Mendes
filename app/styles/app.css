@@ -1753,6 +1753,21 @@ button {
   justify-content: flex-end;
 }
 
+.site-footer .footer-social {
+  gap: 20px;
+  justify-content: flex-start;
+  margin-top: 18px;
+}
+
+.site-footer .footer-social a {
+  color: rgba(251, 250, 246, 0.64);
+  transition: color 200ms ease;
+}
+
+.site-footer .footer-social a:hover {
+  color: var(--color-paper);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
