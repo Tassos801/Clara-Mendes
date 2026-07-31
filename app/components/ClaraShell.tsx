@@ -5,6 +5,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
+import {SOCIAL_PROFILES} from '~/lib/socialProfiles';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
@@ -109,6 +110,18 @@ function ClaraFooter() {
           Original art and considered products with secure checkout and tracked
           delivery.
         </p>
+        <nav className="footer-social" aria-label="Social profiles">
+          {SOCIAL_PROFILES.map((profile) => (
+            <a
+              key={profile.url}
+              href={profile.url}
+              target="_blank"
+              rel="me noreferrer"
+            >
+              {profile.label}
+            </a>
+          ))}
+        </nav>
       </div>
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
@@ -118,27 +131,6 @@ function ClaraFooter() {
         <Link to="/policies/refund-policy">Returns</Link>
         <Link to="/policies/privacy-policy">Privacy</Link>
         <Link to="/policies/terms-of-service">Terms</Link>
-        <a
-          href="https://www.instagram.com/shopclaramendes/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Instagram
-        </a>
-        <a
-          href="https://www.pinterest.com/shopclaramendes/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Pinterest
-        </a>
-        <a
-          href="https://www.facebook.com/shopclaramendes"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Facebook
-        </a>
       </nav>
     </footer>
   );

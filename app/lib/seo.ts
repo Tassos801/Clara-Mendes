@@ -1,4 +1,5 @@
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
+import {SOCIAL_PROFILES} from '~/lib/socialProfiles';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 type MoneyAmount = {
@@ -112,6 +113,7 @@ export function organizationSchema(url: string) {
     name: SITE_NAME,
     url: origin,
     description: DEFAULT_META_DESCRIPTION,
+    sameAs: SOCIAL_PROFILES.map((profile) => profile.url),
   };
 }
 
