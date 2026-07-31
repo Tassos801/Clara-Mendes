@@ -133,7 +133,7 @@ function ClaraFooter() {
           Pinterest
         </a>
         <a
-          href="https://www.facebook.com/profile.php?id=61592403780420"
+          href="https://www.facebook.com/shopclaramendes"
           target="_blank"
           rel="noreferrer"
         >
