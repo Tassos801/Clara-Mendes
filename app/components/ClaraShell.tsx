@@ -119,7 +119,7 @@ function ClaraFooter() {
         <Link to="/policies/privacy-policy">Privacy</Link>
         <Link to="/policies/terms-of-service">Terms</Link>
         <a
-          href="https://www.instagram.com/dimitrioutasos/"
+          href="https://www.instagram.com/shopclaramendes/"
           target="_blank"
           rel="noreferrer"
         >
