@@ -10,6 +10,7 @@ import {
   getRequiredEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
+import {EXTENSION_RELEASE_FLAGS} from '../app/lib/catalogFilters.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -401,6 +402,13 @@ async function main() {
 
   let synced = 0;
   for (const family of extensionCatalog.families) {
+    // Released families are live and Admin-managed: re-syncing would force
+    // them back to DRAFT (status is part of the upsert) and clobber
+    // post-release tag cleanup.
+    if (EXTENSION_RELEASE_FLAGS[family.handle]) {
+      console.log(`${family.handle}: RELEASED — skipped, manage in Admin.`);
+      continue;
+    }
     const body = await adminGraphql(PRODUCT_SET, {
       identifier: {handle: family.handle},
       input: productInput(family),

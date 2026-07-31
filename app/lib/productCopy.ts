@@ -6,6 +6,12 @@ type ProductCopyInput = {
 };
 
 const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
+  // Device list must stay in sync with data/art-product-extensions.json
+  // deviceVariants — enforced by scripts/productCopy.node-test.mjs.
+  'art-premium-fleece-blanket-30x40':
+    'The full capsule composition printed across a premium fleece blanket, 30 × 40 in. Soft-touch fleece with an all-over print of the original Clara Mendes artwork, made to order for sofas, reading chairs, and slow evenings.',
+  'art-snap-phone-case':
+    'Original Clara Mendes artwork wrapped edge to edge around a slim snap phone case. Impact-resistant polycarbonate with an all-over matte print, made to order for iPhone 15, iPhone 15 Pro, iPhone 15 Plus and iPhone 15 Pro Max.',
   'alba-cotton-linen-cushion':
     'A thick cotton-linen cushion for everyday comfort, sofa layering, and quiet bedroom styling. Choose the cover for an existing insert or the full cushion when building a room from scratch.',
   'ayla-cotton-bath-towel':
@@ -35,12 +41,20 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
 };
 
 /**
- * Art-print descriptions carry the full spec sheet (paper, inks, size) for
- * SEO and other channels; the on-page lede only needs the composition line.
+ * Product types whose descriptions carry a full spec sheet (paper, inks,
+ * size, device fit) for SEO and other channels; the on-page lede only needs
+ * the opening line.
  */
+const SPEC_SHEET_PRODUCT_TYPES = new Set([
+  'art prints',
+  'blankets',
+  'phone cases',
+]);
+
 export function getProductLede(product: ProductCopyInput) {
   const description = getProductDescription(product);
-  if (product.productType?.toLowerCase() !== 'art prints') return description;
+  const productType = product.productType?.toLowerCase() ?? '';
+  if (!SPEC_SHEET_PRODUCT_TYPES.has(productType)) return description;
 
   const sentenceEnd = description.indexOf('. ');
   return sentenceEnd === -1

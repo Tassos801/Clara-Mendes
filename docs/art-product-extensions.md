@@ -74,6 +74,13 @@ node .\scripts\audit-art-product-extensions.mjs
 Both scripts require the existing Shopify Admin credential file. The sync
 script creates or updates products as `DRAFT`; it does not publish them.
 
+## Storefront Staging
+
+The Hydrogen storefront hides every extension family via the allowlist in
+`app/lib/catalogFilters.ts`. The phone case additionally has its full
+storefront experience pre-built behind `EXTENSION_RELEASE_FLAGS`; its flip
+procedure is `docs/phone-case-release.md`.
+
 ## Release Gates
 
 Every family remains blocked from publication until:

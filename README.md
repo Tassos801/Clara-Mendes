@@ -7,7 +7,9 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 ## Catalog state
 
 - **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Unframed 8 × 10 in giclée prints on 200gsm Enhanced Matte Art paper, printed to order. Source of truth: `data/original-art-catalog.json`.
-- **Draft / unpublished:** 12 extension product families, 71 variants (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). These must stay Draft and off every sales channel until pricing, Prodigi mapping verification, billing, and samples are signed off (`docs/launch-readiness.md`). The storefront allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, and the sitemap even if they are published by mistake.
+- **Live extension:** the Art Premium Fleece Blanket (30 × 40 in) released 2026-07-31 — all five variants mapped in the connected Prodigi account (`GLOBAL-BLANKET-PREMIUM-FLEECE-30X40`), owner waived samples, flag flipped in `EXTENSION_RELEASE_FLAGS`.
+- **Draft / unpublished:** the remaining 11 extension families (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). A family stays Draft and off every sales channel until every variant is mapped in Prodigi and its flag flips. The storefront allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, and the sitemap even if they are published by mistake. Notebook, tote, cushion, and phone case additionally wait on Prodigi template assets held outside this repo.
+- **Staged for release:** the Art Snap Phone Case's storefront experience (PDP copy, print-page cross-sell) is built and dormant behind its flag. Releasing any family is a one-line flip plus Shopify publication — both required — per `docs/phone-case-release.md` (phone-case specifics; the flag mechanics generalise).
 
 Operational warning (verified 2026-07-28): the 15 prints are available through
 the production Storefront API. Shopify can create a cart, calculates delivery

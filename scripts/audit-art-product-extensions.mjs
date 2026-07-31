@@ -10,6 +10,7 @@ import {
   getRequiredEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
+import {EXTENSION_RELEASE_FLAGS} from '../app/lib/catalogFilters.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -67,8 +68,14 @@ function validateProduct(product, family) {
   const expectedCount = expectedVariantCount(family);
 
   if (!product) issues.push('missing from Shopify');
-  if (product?.status !== 'DRAFT') {
-    issues.push(`status is ${product?.status || 'missing'}, expected DRAFT`);
+  // Released families are live (ACTIVE); everything else must stay DRAFT.
+  const expectedStatus = EXTENSION_RELEASE_FLAGS[family.handle]
+    ? 'ACTIVE'
+    : 'DRAFT';
+  if (product?.status !== expectedStatus) {
+    issues.push(
+      `status is ${product?.status || 'missing'}, expected ${expectedStatus}`,
+    );
   }
   if (variants.length !== expectedCount) {
     issues.push(`${variants.length} variants, expected ${expectedCount}`);
