@@ -131,12 +131,15 @@ function validateProduct(product, expected) {
   if (variants[0]?.inventoryItem?.tracked !== false) {
     issues.push('inventory tracking is enabled');
   }
-  if (
-    media.length !== 1 ||
-    media[0]?.mediaContentType !== 'IMAGE' ||
-    media[0]?.status !== 'READY'
-  ) {
-    issues.push('expected one READY image');
+  // 1 = flat art only (pre room-mockup sync); 3 = flat art + the two room
+  // mockups added by scripts/generate-room-mockups.mjs + catalog:art:sync.
+  const badMedia = media.filter(
+    (node) => node?.mediaContentType !== 'IMAGE' || node?.status !== 'READY',
+  );
+  if (![1, 3].includes(media.length) || badMedia.length) {
+    issues.push(
+      `${media.length} media (expected 1 or 3), ${badMedia.length} not READY images`,
+    );
   }
 
   return issues;

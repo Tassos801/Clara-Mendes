@@ -95,3 +95,20 @@ Documented two latent constraints in `modules/hydrogen-runtime.md`:
 admin-authored HTML may only reference Shopify-hosted images, and installing
 the Meta/TikTok base pixels requires CSP host additions first. README's
 image-policy note now matches the served header.
+
+## [2026-08-07] catalog | Room-mockup pipeline for the 15 art prints
+
+Every print had exactly one flat artwork image; the card hover-crossfade and
+PDP supporting gallery were coded for more but starved. Added a deterministic
+compositor (`scripts/generate-room-mockups.mjs` + scene geometry in
+`scripts/lib/room-mockup-scenes.mjs`, sharp devDependency) that renders two
+mockups per print from the owned our-story-light backdrop: a sage-wall
+close-up and a context shot where the print appears at its true 8 x 10 in
+scale beside the reading lamp (~8.5 px/cm against the ~31 cm shade). 30
+images committed under `public/images/product-art-mockups/`. Apply path for
+the ACTIVE catalog is `catalog:art:mockups:sync` (productCreateMedia append
+only, idempotent by alt text) because the full art sync remains a Draft
+staging command; that staging sync now also declares all three files.
+`catalog:art:audit` accepts 1 or 3 READY images. Storefront now requests four
+images per product. Not yet applied to Shopify - requires deploy first (public
+URLs) plus sign-off.
