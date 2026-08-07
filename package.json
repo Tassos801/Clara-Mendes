@@ -16,6 +16,9 @@
     "catalog:art:audit": "node ./scripts/audit-original-art-catalog.mjs && node ./scripts/audit-art-product-extensions.mjs",
     "catalog:art:dry-run": "node ./scripts/sync-original-art-catalog.mjs",
     "catalog:art:sync": "node ./scripts/sync-original-art-catalog.mjs --apply",
+    "catalog:art:mockups": "node ./scripts/generate-room-mockups.mjs",
+    "catalog:art:mockups:dry-run": "node ./scripts/sync-room-mockups.mjs",
+    "catalog:art:mockups:sync": "node ./scripts/sync-room-mockups.mjs --apply",
     "catalog:extensions:prepare": "python ./scripts/prepare-art-product-extensions.py",
     "catalog:extensions:validate": "python ./scripts/validate-art-product-files.py",
     "catalog:extensions:dry-run": "node ./scripts/sync-art-product-extensions.mjs",
@@ -72,6 +75,7 @@
     "globals": "^15.14.0",
     "graphql-config": "^5.0.3",
     "prettier": "^3.4.2",
+    "sharp": "^0.35.3",
     "typescript": "^5.9.2",
     "vite": "^6.4.3",
     "vite-tsconfig-paths": "^4.3.1"

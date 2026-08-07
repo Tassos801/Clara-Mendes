@@ -13,7 +13,7 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
       width
       height
     }
-    images(first: 2) {
+    images(first: 4) {
       nodes {
         id
         url

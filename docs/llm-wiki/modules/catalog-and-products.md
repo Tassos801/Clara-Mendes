@@ -30,6 +30,19 @@ review. Source metadata is in `data/original-art-catalog.json`; the mutating
 `scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
 not be run as a way to preserve the current Active state.
 
+Each print's media is the flat artwork shot plus two generated room mockups
+(sage-wall close-up and true-scale lamp context), composited by
+`scripts/generate-room-mockups.mjs` from owned backdrops into
+`public/images/product-art-mockups/` (scene geometry in
+`scripts/lib/room-mockup-scenes.mjs`, layout-tested by
+`scripts/roomMockups.node-test.mjs`). `scripts/sync-room-mockups.mjs`
+(`catalog:art:mockups:sync`) appends them to the ACTIVE products via
+`productCreateMedia` only — it is the safe apply path for live products,
+idempotent by alt text; the staging sync also declares all three files for
+future full re-stages. The storefront requests four images per product
+(`app/lib/productCardFragment.ts`), so card hover crossfades to the close-up
+mockup and the PDP gallery shows all three.
+
 `data/art-product-extensions.json` and
 `scripts/prepare-art-product-extensions.py` define twelve additional product
 families and generate local Prodigi production candidates plus committed review
