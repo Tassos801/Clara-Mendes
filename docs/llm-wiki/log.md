@@ -82,3 +82,16 @@ shoppers browse in EUR — the currency checkout already charges them. Footer
 links each policy directly, the purchase-path audit script carries the standard
 no-console header pair, and `docs/first-order-runbook.md` documents how to
 verify the first Prodigi order end to end.
+
+## [2026-08-07] storefront | CSP img-src: blob: allowed, image policy made testable
+
+Review-photo upload previews render via `URL.createObjectURL`, but the CSP
+`img-src` allowlist omitted `blob:`, so browsers silently blocked the preview
+thumbnails (PR #21). Added `blob:`, moved the image allowlist to
+`app/lib/csp.ts`, and added `scripts/csp.node-test.mjs`, which validates entry
+syntax and scans `app/` for scheme usage (`URL.createObjectURL` -> `blob:`,
+`url(data:` -> `data:`), failing `npm test` when a used scheme is missing.
+Documented two latent constraints in `modules/hydrogen-runtime.md`:
+admin-authored HTML may only reference Shopify-hosted images, and installing
+the Meta/TikTok base pixels requires CSP host additions first. README's
+image-policy note now matches the served header.

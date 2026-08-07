@@ -86,6 +86,8 @@ export default function Article() {
       </h1>
 
       {image && <Image data={image} sizes="90vw" loading="eager" />}
+      {/* Admin-authored HTML: hand-pasted <img> tags must use Shopify-hosted
+          URLs — other hosts are blocked by the img-src allowlist in app/lib/csp.ts. */}
       <div
         dangerouslySetInnerHTML={{__html: contentHtml}}
         className="article"

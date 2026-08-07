@@ -31,6 +31,10 @@ type NormalizedProduct = {
   variantName?: string;
 };
 
+// fbq/ttq are installed by the Meta/TikTok base pixel snippets, which this
+// storefront does not ship. Installing them requires first allowlisting their
+// hosts (connect.facebook.net, www.facebook.com, analytics.tiktok.com) in the
+// CSP in app/entry.server.tsx; until both happen, the calls below are no-ops.
 type PixelWindow = Window & {
   dataLayer?: Array<Record<string, unknown>>;
   fbq?: (

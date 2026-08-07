@@ -92,6 +92,8 @@ export default function Page() {
       <header>
         <h1>{page.title}</h1>
       </header>
+      {/* Admin-authored HTML: hand-pasted <img> tags must use Shopify-hosted
+          URLs — other hosts are blocked by the img-src allowlist in app/lib/csp.ts. */}
       <main dangerouslySetInnerHTML={{__html: page.body}} />
     </div>
   );

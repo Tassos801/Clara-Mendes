@@ -6,6 +6,7 @@ import {
   type HydrogenRouterContextProvider,
 } from '@shopify/hydrogen';
 import type {EntryContext} from 'react-router';
+import {CSP_IMG_SRC} from '~/lib/csp';
 
 export default async function handleRequest(
   request: Request,
@@ -20,11 +21,7 @@ export default async function handleRequest(
         context.env.PUBLIC_CHECKOUT_DOMAIN ?? context.env.PUBLIC_STORE_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    imgSrc: [
-      "'self'",
-      'data:',
-      'https://cdn.shopify.com',
-    ],
+    imgSrc: [...CSP_IMG_SRC],
   });
 
   const body = await renderToReadableStream(

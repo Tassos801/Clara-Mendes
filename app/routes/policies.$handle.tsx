@@ -61,6 +61,8 @@ export default function Policy() {
         <h1>{policy.title}</h1>
       </header>
 
+      {/* Admin-authored HTML: hand-pasted <img> tags must use Shopify-hosted
+          URLs — other hosts are blocked by the img-src allowlist in app/lib/csp.ts. */}
       <article
         className="policy-body-content"
         dangerouslySetInnerHTML={{__html: policy.body}}

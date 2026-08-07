@@ -14,7 +14,7 @@ Source: local Shopify Hydrogen storefront repository at
 
 ## Store And Codebase Topics
 
-- [Hydrogen Runtime](modules/hydrogen-runtime.md) - Server entry, Hydrogen context, sessions, Storefront API, and routing shell.
+- [Hydrogen Runtime](modules/hydrogen-runtime.md) - Server entry, security headers (CSP), Hydrogen context, sessions, Storefront API, and routing shell.
 - [Routes And Pages](modules/routes-and-pages.md) - Customer-facing route map and page responsibilities.
 - [Catalog And Products](modules/catalog-and-products.md) - Product filtering, live catalog status, collections, and product page behavior.
 - [Cart And Checkout](modules/cart-and-checkout.md) - Add-to-cart, cart actions, drawer/page cart, checkout handoff, and attribution persistence.
