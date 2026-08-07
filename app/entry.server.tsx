@@ -23,6 +23,8 @@ export default async function handleRequest(
     imgSrc: [
       "'self'",
       'data:',
+      // blob: covers client-side image previews (review photo uploads).
+      'blob:',
       'https://cdn.shopify.com',
     ],
   });
