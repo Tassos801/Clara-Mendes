@@ -7,6 +7,7 @@ import {
   computePrintPlacement,
   mockupFileName,
   mockupRelativePath,
+  resolveMockupAppendPlan,
 } from './lib/room-mockup-scenes.mjs';
 
 // Two scenes with distinct suffixes and alt copy.
@@ -53,6 +54,39 @@ assert.throws(() =>
     key: 'bad',
     print: {centerXRatio: 0.95, centerYRatio: 0.5, widthRatio: 0.3},
   }),
+);
+
+// Append plan: fresh product (flat art only) appends every mockup.
+const planned = [{alt: 'detail alt'}, {alt: 'context alt'}];
+const fresh = resolveMockupAppendPlan([{alt: 'flat'}], planned);
+assert.equal(fresh.action, 'append');
+assert.equal(fresh.missing.length, 2);
+
+// Append plan: partial media (one mockup landed) appends only the gap.
+const partial = resolveMockupAppendPlan(
+  [{alt: 'flat'}, {alt: 'detail alt'}],
+  planned,
+);
+assert.equal(partial.action, 'append');
+assert.deepEqual(partial.missing, [{alt: 'context alt'}]);
+
+// Append plan: everything present is a no-op.
+assert.equal(
+  resolveMockupAppendPlan(
+    [{alt: 'flat'}, {alt: 'detail alt'}, {alt: 'context alt'}],
+    planned,
+  ).action,
+  'complete',
+);
+
+// Append plan: full media count with non-matching alts (scene copy edited
+// after an apply) must NOT append duplicates.
+assert.equal(
+  resolveMockupAppendPlan(
+    [{alt: 'flat'}, {alt: 'old detail alt'}, {alt: 'old context alt'}],
+    planned,
+  ).action,
+  'mismatch',
 );
 
 // File naming derives from the catalog image path.

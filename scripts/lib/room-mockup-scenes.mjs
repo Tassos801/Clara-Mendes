@@ -72,6 +72,29 @@ export function computePrintPlacement(scene, output = MOCKUP_OUTPUT) {
   return {left, top, width, height};
 }
 
+/**
+ * Decides what the media-append sync should do for one product, so the
+ * duplicate guard stays unit-testable without the Admin API.
+ *
+ * - 'complete': every planned mockup alt already exists — nothing to do.
+ * - 'mismatch': alts differ but the product already carries the full media
+ *   count (flat art + all mockups); appending would duplicate, so surface
+ *   it for manual resolution instead of mutating.
+ * - 'append': append `missing`.
+ */
+export function resolveMockupAppendPlan(existingMedia, plannedMedia) {
+  const existingAlts = new Set(existingMedia.map((node) => node.alt));
+  const missing = plannedMedia.filter((media) => !existingAlts.has(media.alt));
+
+  if (!missing.length) {
+    return {action: 'complete', missing: []};
+  }
+  if (existingMedia.length >= 1 + plannedMedia.length) {
+    return {action: 'mismatch', missing};
+  }
+  return {action: 'append', missing};
+}
+
 // 'quiet-form-01.webp' -> 'quiet-form-01-room-detail.webp'
 export function mockupFileName(sourceFileName, scene) {
   const base = sourceFileName.replace(/\.[a-z0-9]+$/i, '');

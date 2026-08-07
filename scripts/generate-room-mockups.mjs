@@ -4,8 +4,10 @@
 /**
  * Composites each original-art print into the owned room scenes defined in
  * scripts/lib/room-mockup-scenes.mjs and writes the results to
- * public/images/product-art-mockups/<capsule>/. Deterministic and idempotent:
- * re-running overwrites the same files.
+ * public/images/product-art-mockups/<capsule>/. Re-running overwrites the
+ * same files. Output bytes are only reproducible with the exact pinned
+ * sharp/libvips build (webp encoding varies across versions), so regenerate
+ * and commit only when the scenes or artwork actually change.
  *
  *   node ./scripts/generate-room-mockups.mjs            # all 15 prints
  *   node ./scripts/generate-room-mockups.mjs --only=quiet-form-01

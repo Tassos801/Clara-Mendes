@@ -26,6 +26,7 @@ import {resolveAdminClient} from './lib/admin.mjs';
 import {
   MOCKUP_SCENES,
   mockupRelativePath,
+  resolveMockupAppendPlan,
 } from './lib/room-mockup-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -157,6 +158,7 @@ async function main() {
 
   let appended = 0;
   let skipped = 0;
+  let mismatched = 0;
   for (const item of catalog) {
     const body = await adminGraphql(PRODUCT_MEDIA, {handle: item.handle});
     const product = body.data?.productByIdentifier;
@@ -164,18 +166,22 @@ async function main() {
       throw new Error(`${item.handle}: not found in Shopify`);
     }
 
-    const existingAlts = new Set(
-      (product.media?.nodes ?? []).map((node) => node.alt),
-    );
-    const missing = plannedMediaFor(item).filter(
-      (media) => !existingAlts.has(media.alt),
-    );
+    const mediaNodes = product.media?.nodes ?? [];
+    const plan = resolveMockupAppendPlan(mediaNodes, plannedMediaFor(item));
 
-    if (!missing.length) {
+    if (plan.action === 'complete') {
       skipped += 1;
       console.log(`  OK      ${item.handle} (mockups already present)`);
       continue;
     }
+    if (plan.action === 'mismatch') {
+      mismatched += 1;
+      console.log(
+        `  SKIP    ${item.handle} (${mediaNodes.length} media present but mockup alts don't match the current scene copy — delete the stale mockups in Admin or restore the alt text, then rerun)`,
+      );
+      continue;
+    }
+    const missing = plan.missing;
 
     for (const media of missing) {
       await assertRemoteImage(media.originalSource);
@@ -201,11 +207,16 @@ async function main() {
   }
 
   console.log(
-    `\nAppended ${appended} mockup(s); ${skipped} product(s) already complete.`,
+    `\nAppended ${appended} mockup(s); ${skipped} product(s) already complete${
+      mismatched ? `; ${mismatched} skipped on alt mismatch` : ''
+    }.`,
   );
   console.log(
     'Shopify processes new media asynchronously; run npm run catalog:art:audit shortly to confirm 3 READY images per product.',
   );
+  if (mismatched) {
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {
