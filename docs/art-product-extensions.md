@@ -1,6 +1,6 @@
 # Art for Everyday Living
 
-Updated: 2026-07-28
+Updated: 2026-08-10
 
 ## Collection Shape
 
@@ -38,6 +38,12 @@ The 2026-07-28 preflight repeated the live 12/12 Draft audit and validated 94
 production/review files plus 56 Shopify preview images. This proves local file
 integrity and Shopify staging only. The 71 variants are not yet confirmed as
 mapped inside the connected Prodigi account.
+
+The 2026-08-10 readback still found all 12 families Draft and unpublished. The
+blanket candidate's five Shopify variants were EUR 49 while this manifest
+requires EUR 79, so its storefront release flag was returned to `false`.
+"Everyday" remains absent from navigation and the direct collection URL
+redirects to the live print catalog until a release completes every gate below.
 
 ## Artwork Policy
 

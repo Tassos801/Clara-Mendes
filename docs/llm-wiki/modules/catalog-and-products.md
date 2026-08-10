@@ -52,6 +52,13 @@ creates or updates the Shopify records as **DRAFT** only after an explicit
 All twelve records, totalling 71 variants, were created and passed live Shopify
 readback on 2026-07-24; none were published.
 
+As of 2026-08-10, every extension release flag is `false`. The blanket remains
+Draft at EUR 49 per variant, which conflicts with the EUR 79 manifest price, so
+the "Everyday" navigation and collection stay hidden. The collection filter
+also distinguishes the route's handle-only preflight from an explicit empty
+Storefront API result, preventing a future flag from exposing a zero-product
+page before its product is actually published.
+
 Sources: [Original Art Launch](../../original-art-launch.md),
 [Art for Everyday Living](../../art-product-extensions.md).
 

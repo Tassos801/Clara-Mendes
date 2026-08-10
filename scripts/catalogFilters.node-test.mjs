@@ -47,21 +47,21 @@ assert.equal(isReleasedExtensionHandle(PHONE_CASE_HANDLE), false);
 assert.equal(isStoreThemeProduct(phoneCase), false);
 assert.equal(isDemoProduct(phoneCase), true);
 
-// The fleece blanket is the first released extension (Prodigi-mapped
-// 2026-07-31): sellable alongside the 15 prints, while every other
-// extension stays staged.
-assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), true);
-assert.equal(hasReleasedExtensions(), true);
+// No extension is released while the first candidate remains Draft at a
+// price that does not match the approved manifest. This keeps the blanket
+// hidden alongside every other extension family.
+assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
+assert.equal(hasReleasedExtensions(), false);
 const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
-assert.equal(releasedCount, 1);
+assert.equal(releasedCount, 0);
 
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
 assert.equal(sellableToday.size, 15 + releasedCount);
-assert.ok(sellableToday.has(BLANKET_HANDLE));
+assert.ok(!sellableToday.has(BLANKET_HANDLE));
 assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 
 // Flipping a flag adds exactly that handle and keeps all 15 prints — the
@@ -84,13 +84,24 @@ assert.equal(
   }),
   true,
 );
-// The handle-only check (the collection route's pre-query guard) admits the
-// collection once any extension is live — the post-query content check still
-// hides it while it holds nothing sellable.
+
+// Defense in depth: a future flag may admit the handle-only pre-query guard,
+// but an explicit empty Storefront API result must still redirect instead of
+// exposing another indexable zero-product collection.
+EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = true;
+assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
 assert.equal(
-  isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}),
-  false,
+  isDemoCollection({
+    handle: EXTENSION_COLLECTION_HANDLE,
+    products: {nodes: []},
+  }),
+  true,
 );
+EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = false;
+// The handle-only check is the collection route's pre-query guard. With no
+// released extension it must redirect the direct Everyday URL before Shopify
+// is queried, matching the hidden header and mobile navigation.
+assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), true);
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,
@@ -99,7 +110,8 @@ assert.equal(
   false,
 );
 
-// A released extension member surfaces the collection on its own.
+// A Shopify collection sample containing the unreleased blanket is hidden,
+// even if the product is accidentally published outside the storefront flag.
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,
@@ -115,5 +127,5 @@ assert.equal(
       ],
     },
   }),
-  false,
+  true,
 );
