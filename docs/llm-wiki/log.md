@@ -135,3 +135,11 @@ and alt text stay unchanged, while the large context uses true-scale
 `widthRatio: 0.384`. The PDP filters room mockups by selected size and changes
 its sofa scale diagram dynamically. This entry records local preparation only;
 no Shopify or Prodigi state was changed.
+
+## [2026-08-10] storefront | Invalidated stale Recently Viewed prices
+
+Changed the client-only Recently Viewed storage key from
+`cm:recently-viewed` to `cm:recently-viewed:v2`. Historical product snapshots,
+including the former EUR 29.00 original-art price, are ignored; newly viewed
+products repopulate the rail from the current PDP variant price. No Shopify
+catalog or customer records are mutated.
