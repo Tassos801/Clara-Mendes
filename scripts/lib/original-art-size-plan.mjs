@@ -10,7 +10,7 @@ export const BASE_SIZE = Object.freeze({
 export const LARGE_SIZE = Object.freeze({
   label: '16 × 20 in',
   price: '39.99',
-  prodigiSku: 'GLOBAL-FAP-16X20',
+  prodigiSku: 'ART-FAP-EMA-16X20',
   skuSuffix: '16X20',
 });
 

@@ -129,7 +129,7 @@ mutated.
 Added a guarded transition from the legacy 8 x 10 EUR 29.00 price to the
 approved EUR 29.99 price and staged 16 x 20 EUR 39.99 variants. The larger
 variants remain tracked, zero-stock, DENY, and unavailable until all 15
-Prodigi `GLOBAL-FAP-16X20` mappings are explicitly confirmed. The deterministic
+Prodigi `ART-FAP-EMA-16X20` mappings are explicitly confirmed. The deterministic
 room pipeline now has two additional 16 x 20 scenes; existing 8 x 10 filenames
 and alt text stay unchanged, while the large context uses true-scale
 `widthRatio: 0.384`. The PDP filters room mockups by selected size and changes
