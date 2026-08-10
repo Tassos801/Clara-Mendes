@@ -1,0 +1,69 @@
+import assert from 'node:assert/strict';
+import test from 'node:test';
+
+import {
+  filterGalleryImagesForSize,
+  printScaleGeometry,
+  selectedPrintSize,
+} from '../app/lib/productSizePresentation.ts';
+
+const flat = {altText: 'Quiet Form I art print', url: '/quiet-form-01.webp'};
+const smallDetail = {
+  altText: 'Quiet Form I art print shown unframed on a sage green wall',
+  url: '/quiet-form-01-room-detail.webp?v=1',
+};
+const smallContext = {
+  altText:
+    'Quiet Form I art print shown unframed at its true 8 by 10 inch size on a sage wall beside a reading lamp',
+  url: '/quiet-form-01-room-context.webp?v=1',
+};
+const largeDetail = {
+  altText:
+    'Quiet Form I 16 by 20 inch art print shown unframed on a sage green wall',
+  url: '/quiet-form-01-room-detail-16x20.webp?v=1',
+};
+const largeContext = {
+  altText:
+    'Quiet Form I art print shown unframed at its true 16 by 20 inch size on a sage wall beside a reading lamp',
+  url: '/quiet-form-01-room-context-16x20.webp?v=1',
+};
+const gallery = [flat, smallDetail, smallContext, largeDetail, largeContext];
+
+test('maps the selected Size option and defaults safely to 8x10', () => {
+  assert.equal(selectedPrintSize([]).key, '8x10');
+  assert.equal(
+    selectedPrintSize([{name: 'Size', value: '16 × 20 in'}]).key,
+    '16x20',
+  );
+});
+
+test('keeps flat art while showing only the selected-size room mockups', () => {
+  assert.deepEqual(filterGalleryImagesForSize(gallery, '8x10', true), [
+    flat,
+    smallDetail,
+    smallContext,
+  ]);
+  assert.deepEqual(filterGalleryImagesForSize(gallery, '16x20', true), [
+    flat,
+    largeDetail,
+    largeContext,
+  ]);
+  assert.equal(filterGalleryImagesForSize(gallery, '16x20', false).length, 5);
+});
+
+test('scales both diagrams against the same 84 inch sofa', () => {
+  assert.deepEqual(
+    {
+      height: printScaleGeometry('8x10').height,
+      width: printScaleGeometry('8x10').width,
+    },
+    {height: 35, width: 28},
+  );
+  assert.deepEqual(
+    {
+      height: printScaleGeometry('16x20').height,
+      width: printScaleGeometry('16x20').width,
+    },
+    {height: 70, width: 56},
+  );
+});

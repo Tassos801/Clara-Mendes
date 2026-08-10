@@ -5,13 +5,14 @@ import {
   MOCKUP_OUTPUT,
   MOCKUP_SCENES,
   computePrintPlacement,
+  filterMockupScenes,
   mockupFileName,
   mockupRelativePath,
   resolveMockupAppendPlan,
 } from './lib/room-mockup-scenes.mjs';
 
-// Two scenes with distinct suffixes and alt copy.
-assert.equal(MOCKUP_SCENES.length, 2);
+// Two existing 8x10 scenes plus two explicitly named 16x20 scenes.
+assert.equal(MOCKUP_SCENES.length, 4);
 assert.equal(
   new Set(MOCKUP_SCENES.map((scene) => scene.fileSuffix)).size,
   MOCKUP_SCENES.length,
@@ -21,6 +22,29 @@ for (const scene of MOCKUP_SCENES) {
   assert.ok(alt.includes('Quiet Form I'), `${scene.key}: alt names the print`);
   assert.ok(alt.includes('unframed'), `${scene.key}: alt states unframed`);
 }
+assert.deepEqual(
+  filterMockupScenes(MOCKUP_SCENES, '16x20').map((scene) => scene.key),
+  ['detail-16x20', 'context-16x20'],
+);
+assert.equal(filterMockupScenes(MOCKUP_SCENES, '8x10').length, 2);
+assert.equal(filterMockupScenes(MOCKUP_SCENES).length, 4);
+assert.throws(
+  () => filterMockupScenes(MOCKUP_SCENES, 'large'),
+  /Unknown mockup size filter/,
+);
+
+const largeScenes = filterMockupScenes(MOCKUP_SCENES, '16x20');
+assert.deepEqual(
+  largeScenes.map((scene) => scene.fileSuffix),
+  ['room-detail-16x20', 'room-context-16x20'],
+);
+for (const scene of largeScenes) {
+  assert.match(scene.altFor('Quiet Form I'), /16 by 20 inch/);
+}
+assert.equal(
+  largeScenes.find((scene) => scene.key === 'context-16x20').print.widthRatio,
+  0.384,
+);
 
 // Crops keep the output aspect ratio (no distortion when resizing).
 const outputRatio = MOCKUP_OUTPUT.width / MOCKUP_OUTPUT.height;
@@ -96,10 +120,17 @@ assert.equal(
   'quiet-form-01-room-detail.webp',
 );
 assert.equal(
-  mockupRelativePath('/images/product-art/quiet-form/quiet-form-01.webp', detail),
+  mockupRelativePath(
+    '/images/product-art/quiet-form/quiet-form-01.webp',
+    detail,
+  ),
   'quiet-form/quiet-form-01-room-detail.webp',
 );
 assert.equal(
   mockupRelativePath('flat-file.webp', detail),
   'flat-file-room-detail.webp',
+);
+assert.equal(
+  mockupFileName('quiet-form-01.webp', largeScenes[0]),
+  'quiet-form-01-room-detail-16x20.webp',
 );

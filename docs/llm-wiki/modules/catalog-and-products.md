@@ -23,25 +23,26 @@ path. A Draft or unpublished handle would remain a non-interactive preview.
 | Midnight Garden | `midnight-garden-i-art-print`, `midnight-garden-ii-art-print`, `midnight-garden-iii-art-print` |
 | Sunlit Mosaic   | `sunlit-mosaic-i-art-print`, `sunlit-mosaic-ii-art-print`, `sunlit-mosaic-iii-art-print`       |
 
-Each live product has one 8 × 10 inch variant with a base price of EUR 29.
-Shopify Markets presents a contextual USD 34 price to the US storefront.
-Larger formats are blocked until higher-resolution production and sample
-review. Source metadata is in `data/original-art-catalog.json`; the mutating
+Each live product still has one 8 × 10 inch variant at the legacy EUR 29.00
+price. A guarded local workflow prepares the approved EUR 29.99 base price and
+an unavailable EUR 39.99 16 × 20 variant; activation remains blocked until all
+15 Prodigi mappings are confirmed. Source metadata is in
+`data/original-art-catalog.json`; the mutating
 `scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
 not be run as a way to preserve the current Active state.
 
-Each print's media is the flat artwork shot plus two generated room mockups
-(sage-wall close-up and true-scale lamp context), composited by
+Each live print's media is currently the flat artwork shot plus two generated
+8 × 10 room mockups (sage-wall close-up and true-scale lamp context). The local
+pipeline now also prepares two explicitly named 16 × 20 scenes, composited by
 `scripts/generate-room-mockups.mjs` from owned backdrops into
 `public/images/product-art-mockups/` (scene geometry in
 `scripts/lib/room-mockup-scenes.mjs`, layout-tested by
 `scripts/roomMockups.node-test.mjs`). `scripts/sync-room-mockups.mjs`
 (`catalog:art:mockups:sync`) appends them to the ACTIVE products via
 `productCreateMedia` only — it is the safe apply path for live products,
-idempotent by alt text; the staging sync also declares all three files for
-future full re-stages. The storefront requests four images per product
-(`app/lib/productCardFragment.ts`), so card hover crossfades to the close-up
-mockup and the PDP gallery shows all three.
+idempotent by alt text; future media syncs plan all four mockups. Product cards
+retain their bounded image query, while the PDP fetches the larger gallery and
+shows only the selected size's room scenes plus the always-visible flat art.
 
 `data/art-product-extensions.json` and
 `scripts/prepare-art-product-extensions.py` define twelve additional product

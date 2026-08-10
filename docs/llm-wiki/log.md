@@ -123,3 +123,15 @@ live print catalog, and extension products remain excluded from customer-facing
 routes and the sitemap. Added a defensive post-query guard so a future flag
 cannot admit an explicit empty collection. Shopify catalog records were not
 mutated.
+
+## [2026-08-10] catalog | Prepared guarded original-art size expansion
+
+Added a guarded transition from the legacy 8 x 10 EUR 29.00 price to the
+approved EUR 29.99 price and staged 16 x 20 EUR 39.99 variants. The larger
+variants remain tracked, zero-stock, DENY, and unavailable until all 15
+Prodigi `GLOBAL-FAP-16X20` mappings are explicitly confirmed. The deterministic
+room pipeline now has two additional 16 x 20 scenes; existing 8 x 10 filenames
+and alt text stay unchanged, while the large context uses true-scale
+`widthRatio: 0.384`. The PDP filters room mockups by selected size and changes
+its sofa scale diagram dynamically. This entry records local preparation only;
+no Shopify or Prodigi state was changed.

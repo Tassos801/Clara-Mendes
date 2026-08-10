@@ -11,6 +11,7 @@
  *
  *   node ./scripts/generate-room-mockups.mjs            # all 15 prints
  *   node ./scripts/generate-room-mockups.mjs --only=quiet-form-01
+ *   node ./scripts/generate-room-mockups.mjs --size=16x20
  */
 
 import {mkdirSync, readFileSync} from 'node:fs';
@@ -23,19 +24,27 @@ import {
   MOCKUP_OUTPUT,
   MOCKUP_SCENES,
   computePrintPlacement,
+  filterMockupScenes,
   mockupRelativePath,
 } from './lib/room-mockup-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const catalog = JSON.parse(
-  readFileSync(path.join(repoRoot, 'data', 'original-art-catalog.json'), 'utf8'),
+  readFileSync(
+    path.join(repoRoot, 'data', 'original-art-catalog.json'),
+    'utf8',
+  ),
 );
 
 const onlyArg = process.argv
   .slice(2)
   .find((arg) => arg.startsWith('--only='))
   ?.slice('--only='.length);
+const sizeArg = process.argv
+  .slice(2)
+  .find((arg) => arg.startsWith('--size='))
+  ?.slice('--size='.length);
 
 const WEBP_QUALITY = 84;
 
@@ -90,8 +99,9 @@ async function main() {
   if (!items.length) {
     throw new Error(`--only=${onlyArg} matched no catalog entries`);
   }
+  const scenes = filterMockupScenes(MOCKUP_SCENES, sizeArg);
 
-  for (const scene of MOCKUP_SCENES) {
+  for (const scene of scenes) {
     const placement = computePrintPlacement(scene);
     const base = await sceneBaseBuffer(scene);
     const shadow = Buffer.from(shadowSvg(scene, placement));
@@ -126,12 +136,12 @@ async function main() {
         .webp({quality: WEBP_QUALITY})
         .toFile(outPath);
 
-      console.log(`  ${scene.key.padEnd(5)} ${relative}`);
+      console.log(`  ${scene.key.padEnd(16)} ${relative}`);
     }
   }
 
   console.log(
-    `\nGenerated ${items.length * MOCKUP_SCENES.length} mockups into public/images/product-art-mockups/.`,
+    `\nGenerated ${items.length * scenes.length} mockups into public/images/product-art-mockups/.`,
   );
 }
 

@@ -10,6 +10,13 @@ import {
   getRequiredEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
+import {
+  BASE_SIZE,
+  LARGE_SIZE,
+  expectedSku,
+  releaseState,
+  variantForSize,
+} from './lib/original-art-size-plan.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -41,11 +48,18 @@ const PRODUCTS_QUERY = `#graphql
         title
         variants(first: 20) {
           nodes {
+            availableForSale
             inventoryItem {
               requiresShipping
               tracked
             }
+            inventoryPolicy
+            inventoryQuantity
             price
+            selectedOptions {
+              name
+              value
+            }
             sku
             title
           }
@@ -106,39 +120,62 @@ async function getAdminAccessToken({clientId, clientSecret, storeDomain}) {
 
 function validateProduct(product, expected) {
   const issues = [];
-  const expectedSku = `${expected.skuPrefix}-8X10`;
   const variants = product?.variants?.nodes ?? [];
   const media = product?.media?.nodes ?? [];
+  const baseVariant = variantForSize(product, BASE_SIZE.label);
+  const largeVariant = variantForSize(product, LARGE_SIZE.label);
 
   if (!product) issues.push('missing from Shopify');
   if (product?.status !== 'ACTIVE') {
     issues.push(`status is ${product?.status || 'missing'}, expected ACTIVE`);
   }
-  if (variants.length !== 1) {
-    issues.push(`${variants.length} variants, expected 1`);
+  if (![1, 2].includes(variants.length)) {
+    issues.push(`${variants.length} variants, expected 1 or 2`);
   }
-  if (variants[0]?.sku !== expectedSku) {
+  if (baseVariant?.sku !== expectedSku(expected, BASE_SIZE)) {
     issues.push(
-      `SKU is ${variants[0]?.sku || 'missing'}, expected ${expectedSku}`,
+      `${BASE_SIZE.label} SKU is ${baseVariant?.sku || 'missing'}, expected ${expectedSku(expected, BASE_SIZE)}`,
     );
   }
-  if (variants[0]?.price !== '29.00') {
-    issues.push(`price is ${variants[0]?.price || 'missing'}, expected 29.00`);
+  if (![BASE_SIZE.legacyPrice, BASE_SIZE.price].includes(baseVariant?.price)) {
+    issues.push(
+      `${BASE_SIZE.label} price is ${baseVariant?.price || 'missing'}, expected ${BASE_SIZE.legacyPrice} or ${BASE_SIZE.price}`,
+    );
   }
-  if (variants[0]?.inventoryItem?.requiresShipping !== true) {
-    issues.push('variant is not marked as requiring shipping');
+  if (baseVariant?.inventoryItem?.requiresShipping !== true) {
+    issues.push(`${BASE_SIZE.label} variant does not require shipping`);
   }
-  if (variants[0]?.inventoryItem?.tracked !== false) {
-    issues.push('inventory tracking is enabled');
+  if (baseVariant?.inventoryItem?.tracked !== false) {
+    issues.push(`${BASE_SIZE.label} inventory tracking is enabled`);
   }
-  // 1 = flat art only (pre room-mockup sync); 3 = flat art + the two room
-  // mockups added by scripts/generate-room-mockups.mjs + catalog:art:sync.
+  if (largeVariant) {
+    if (largeVariant.sku !== expectedSku(expected)) {
+      issues.push(
+        `${LARGE_SIZE.label} SKU is ${largeVariant.sku || 'missing'}, expected ${expectedSku(expected)}`,
+      );
+    }
+    if (largeVariant.price !== LARGE_SIZE.price) {
+      issues.push(
+        `${LARGE_SIZE.label} price is ${largeVariant.price || 'missing'}, expected ${LARGE_SIZE.price}`,
+      );
+    }
+    if (largeVariant.inventoryPolicy !== 'DENY') {
+      issues.push(`${LARGE_SIZE.label} inventory policy is not DENY`);
+    }
+    if (largeVariant.inventoryItem?.requiresShipping !== true) {
+      issues.push(`${LARGE_SIZE.label} variant does not require shipping`);
+    }
+    if (!['STAGED', 'ACTIVE'].includes(releaseState(largeVariant))) {
+      issues.push(`${LARGE_SIZE.label} release state is unsafe`);
+    }
+  }
+  // 1 = flat only; 3 = flat + existing 8x10 scenes; 5 = flat + both sizes.
   const badMedia = media.filter(
     (node) => node?.mediaContentType !== 'IMAGE' || node?.status !== 'READY',
   );
-  if (![1, 3].includes(media.length) || badMedia.length) {
+  if (![1, 3, 5].includes(media.length) || badMedia.length) {
     issues.push(
-      `${media.length} media (expected 1 or 3), ${badMedia.length} not READY images`,
+      `${media.length} media (expected 1, 3, or 5), ${badMedia.length} not READY images`,
     );
   }
 

@@ -25,6 +25,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Local Development And Launch](operations/local-development-and-launch.md) - Commands, environment variables, validation, launch gates, and deployment notes.
 - [Shopify Admin Cleanup](operations/shopify-admin-cleanup.md) - Off-theme products/collections and Admin cleanup source notes.
 - [Original Art Launch](../original-art-launch.md) - Fifteen-product owned-art catalog, extension asset lab, staging, supplier gates, and reset sequence.
+- [Original Art Size Expansion](../original-art-size-expansion.md) - Safe 16 × 20 asset preparation, Shopify variant staging, Prodigi mapping, activation, and pause workflow.
 - [Art for Everyday Living](../art-product-extensions.md) - Draft product-extension architecture, generated assets, sync workflow, and release gates.
 
 ## Source Notes
