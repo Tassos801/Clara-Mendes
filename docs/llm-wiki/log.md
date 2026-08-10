@@ -152,3 +152,17 @@ full-bleed crop and the recommended 6000 x 7200 pixels. Added two size-specific
 wall scenes per artwork, selected-size gallery filtering, a true-scale diagram,
 and guarded stage, activate, and pause commands. Activation remains blocked
 until all 15 Prodigi mappings are explicitly confirmed.
+
+## [2026-08-10] catalog | Activated 20 x 24 across all 15 original-art prints
+
+Executed the guarded release after PR #27 deployed to Oxygen. Staged 15
+`CM-...-20X24` variants (tracked zero stock, DENY, EUR 49.99), verified all 30
+production mockup URLs live, then individually mapped and verified every SKU in
+Prodigi (`GLOBAL-FAP-20X24`, 6000 x 7200 upload, Excellent quality, exact-fit
+full bleed, automatic fulfilment, Standard shipping). Appended the 30 committed
+20 x 24 wall mockups (seven READY images per product) and activated; read-back
+verified 15/15 ACTIVE alongside the unchanged 16 x 20 and 8 x 10 sizes, with
+the three-size description copy applied. Live PDP checks on Quiet Form I and
+Sunlit Mosaic I confirmed the EUR 49.99 price, enabled add to cart,
+selected-size gallery filtering, and the 50.8 x 61 cm true-scale diagram. The
+12 extension families remain Draft; no order was placed.
