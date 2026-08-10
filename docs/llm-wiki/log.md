@@ -112,3 +112,14 @@ staging command; that staging sync now also declares all three files.
 `catalog:art:audit` accepts 1 or 3 READY images. Storefront now requests four
 images per product. Not yet applied to Shopify - requires deploy first (public
 URLs) plus sign-off.
+
+## [2026-08-10] storefront | Hid the unreleased Everyday collection
+
+Returned the fleece-blanket extension flag to `false` after Shopify readback
+showed the product still Draft and its five EUR 49 variant prices conflicting
+with the EUR 79 catalog manifest. With no released extension, the header and
+mobile navigation omit "Everyday", the direct collection URL redirects to the
+live print catalog, and extension products remain excluded from customer-facing
+routes and the sitemap. Added a defensive post-query guard so a future flag
+cannot admit an explicit empty collection. Shopify catalog records were not
+mutated.

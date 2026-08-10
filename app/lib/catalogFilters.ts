@@ -94,7 +94,7 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   'art-cover-gratitude-journal': false,
   'art-cover-spiral-notebook': false,
   'art-linen-cushion-24x24': false,
-  'art-premium-fleece-blanket-30x40': true,
+  'art-premium-fleece-blanket-30x40': false,
   [PHONE_CASE_HANDLE]: false,
   'clara-mendes-art-calendar-2026': false,
   'classic-framed-art-print-16x20': false,
@@ -267,16 +267,17 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
   // Empty legacy collections were the source of stale navigation leaking into
   // the live storefront, so only the five intentional art capsule handles may
   // appear before Shopify products are assigned.
+  const hasProductSample = Array.isArray(collection.products?.nodes);
   const products = collection.products?.nodes?.filter(Boolean) ?? [];
   if (products.some((product) => !isDemoProduct(product))) return false;
   if (products.length > 0) return true;
 
   // With no product sample to judge by (the collection route's pre-query
-  // guard), give the extension collection the benefit of the doubt once any
-  // extension is live — the route's post-query content check still hides it
-  // while it holds nothing sellable.
+  // guard), admit the extension collection once any extension is flagged.
+  // An explicit empty product sample is the post-query check and must remain
+  // hidden so a premature flag can never expose a zero-product page.
   if (handle === EXTENSION_COLLECTION_HANDLE && hasReleasedExtensions()) {
-    return false;
+    return hasProductSample;
   }
 
   return !handle || !ORIGINAL_ART_COLLECTION_HANDLES.has(handle);
