@@ -23,7 +23,7 @@ CATALOG_PATH = REPO_ROOT / "data" / "original-art-catalog.json"
 MANIFEST_PATH = OUTPUT_ROOT / "manifest.json"
 TARGET_SIZE = (4800, 6000)
 TARGET_DPI = 300
-PRODIGI_SKU = "GLOBAL-FAP-16X20"
+PRODIGI_SKU = "ART-FAP-EMA-16X20"
 
 
 def sha256(path: Path) -> str:

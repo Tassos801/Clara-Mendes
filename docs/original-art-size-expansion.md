@@ -5,7 +5,7 @@ Status: **prepared locally; no larger Shopify variant is live or staged yet**.
 The fifteen active original-art products currently offer one unframed 8 × 10
 inch print at the legacy €29.00 price. The approved transition moves that size
 to €29.99 and adds an unframed 16 × 20 inch print at €39.99 on Prodigi enhanced
-matte art paper (`GLOBAL-FAP-16X20`). Both sizes use the same 4:5 aspect ratio,
+matte art paper (`ART-FAP-EMA-16X20`). Both sizes use the same 4:5 aspect ratio,
 so the artwork composition does not require a crop change.
 
 The Hydrogen product route renders Shopify's `Size` values. Its flat artwork is
@@ -27,9 +27,10 @@ The larger files are high-quality resizes; the larger pixel dimensions do not
 create additional native artwork detail.
 
 Prodigi's dashboard currently lists 4800 × 6000 as the recommended dimensions
-for `GLOBAL-FAP-16X20`. The five existing capsule-representative uploads are
-rated **Excellent** and mapped for automatic fulfillment. The fifteen individual
-product variants still need their corresponding files mapped and verified.
+for `ART-FAP-EMA-16X20`. Prodigi's authenticated product selector confirms
+that this current account SKU ships from NL and supports Budget and Standard
+delivery to Cyprus. The fifteen individual product variants still need their
+corresponding files mapped and verified.
 
 ## Safe Shopify And Prodigi Release
 
@@ -56,7 +57,7 @@ considered complete.
 For every staged SKU in the Prodigi sales channel:
 
 1. Enable automatic fulfillment.
-2. Select `GLOBAL-FAP-16X20`.
+2. Select `ART-FAP-EMA-16X20`.
 3. Upload the matching `*-16x20-300dpi.jpg` file.
 4. Confirm the editor uses full bleed with no unexpected crop.
 5. Confirm image quality is **Excellent**.
@@ -65,7 +66,7 @@ For every staged SKU in the Prodigi sales channel:
 Only after all fifteen mappings pass, activate the variants:
 
 ```powershell
-node .\scripts\sync-original-art-size-variants.mjs --activate --prodigi-confirmed=GLOBAL-FAP-16X20
+node .\scripts\sync-original-art-size-variants.mjs --activate --prodigi-confirmed=ART-FAP-EMA-16X20
 ```
 
 Activation makes the mapped variants sellable and replaces the fixed-size

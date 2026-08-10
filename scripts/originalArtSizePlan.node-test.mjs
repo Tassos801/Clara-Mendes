@@ -55,6 +55,7 @@ test('derives deterministic SKU and asset names', () => {
   assert.equal(BASE_SIZE.legacyPrice, '29.00');
   assert.equal(BASE_SIZE.price, '29.99');
   assert.equal(LARGE_SIZE.price, '39.99');
+  assert.equal(LARGE_SIZE.prodigiSku, 'ART-FAP-EMA-16X20');
   assert.equal(expectedSku(item), 'CM-QF-01-16X20');
   assert.equal(expectedSku(item, BASE_SIZE), 'CM-QF-01-8X10');
   assert.equal(largeAssetFileName(item), 'quiet-form-01-16x20-300dpi.jpg');
