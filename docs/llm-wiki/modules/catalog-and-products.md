@@ -40,7 +40,7 @@ The local pipeline also prepares two explicitly named 20 × 24 scenes, composite
 `scripts/roomMockups.node-test.mjs`). `scripts/sync-room-mockups.mjs`
 (`catalog:art:mockups:sync`) appends them to the ACTIVE products via
 `productCreateMedia` only — it is the safe apply path for live products,
-idempotent by alt text; future media syncs plan all four mockups. Product cards
+idempotent by alt text; future media syncs plan all six mockups. Product cards
 retain their bounded image query, while the PDP fetches the larger gallery and
 shows only the selected size's room scenes plus the always-visible flat art.
 The 20 × 24 production and mockup assets use the same centred 5:6 full-bleed

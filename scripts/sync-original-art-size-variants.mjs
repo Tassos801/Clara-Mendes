@@ -384,7 +384,10 @@ function validateCatalog(
       );
     }
 
+    // The target size is judged below via its release state, so only the
+    // non-target expansion sizes need this existence-gated safety check.
     for (const size of EXPANSION_SIZES) {
+      if (size.key === targetSize.key) continue;
       const variant = variantForSize(product, size.label);
       if (variant && releaseState(variant) === 'INVALID') {
         inspection.issues.push(
