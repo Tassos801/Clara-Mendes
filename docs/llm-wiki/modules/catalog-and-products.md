@@ -23,17 +23,17 @@ path. A Draft or unpublished handle would remain a non-interactive preview.
 | Midnight Garden | `midnight-garden-i-art-print`, `midnight-garden-ii-art-print`, `midnight-garden-iii-art-print` |
 | Sunlit Mosaic   | `sunlit-mosaic-i-art-print`, `sunlit-mosaic-ii-art-print`, `sunlit-mosaic-iii-art-print`       |
 
-Each live product has an 8 × 10 inch variant at EUR 29.99 and a 16 × 20 variant
-at EUR 39.99. A guarded workflow prepares an unavailable EUR 49.99 20 × 24
-variant; activation remains blocked until all 15 `GLOBAL-FAP-20X24` Prodigi
-mappings are confirmed. Source metadata is in
+Each live product has an 8 × 10 inch variant at EUR 29.99, a 16 × 20 variant at
+EUR 39.99, and a 20 × 24 variant at EUR 49.99. The 20 × 24 size was activated
+2026-08-10 after all 15 `GLOBAL-FAP-20X24` Prodigi mappings were individually
+confirmed. Source metadata is in
 `data/original-art-catalog.json`; the mutating
 `scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
 not be run as a way to preserve the current Active state.
 
-Each live print's media is currently the flat artwork shot plus two generated
-mockups for each live size (sage-wall close-up and true-scale lamp context).
-The local pipeline also prepares two explicitly named 20 × 24 scenes, composited by
+Each live print's media is the flat artwork shot plus two generated mockups for
+each of the three live sizes — seven READY images per product since 2026-08-10.
+All scenes are composited by
 `scripts/generate-room-mockups.mjs` from owned backdrops into
 `public/images/product-art-mockups/` (scene geometry in
 `scripts/lib/room-mockup-scenes.mjs`, layout-tested by

@@ -1,13 +1,18 @@
 # Original Art Size Expansion
 
-Status: **8 × 10 and 16 × 20 live; 20 × 24 prepared behind the fulfilment gate**.
+Status: **all three sizes live** (20 × 24 activated 2026-08-10).
 
-The fifteen active original-art products currently offer an unframed 8 × 10
-inch print at €29.99 and a 16 × 20 inch print at €39.99 on Prodigi enhanced
-matte art paper (`ART-FAP-EMA-16X20`). The approved next transition adds an
-unframed 20 × 24 inch print at €49.99 (`GLOBAL-FAP-20X24`). The first two sizes
-are 4:5. The 20 × 24 size is 5:6 and uses a centred full-bleed crop that removes
-about 2% from the top and bottom instead of adding white side margins.
+The fifteen active original-art products offer an unframed 8 × 10 inch print at
+€29.99, a 16 × 20 inch print at €39.99 (`ART-FAP-EMA-16X20`), and a 20 × 24
+inch print at €49.99 (`GLOBAL-FAP-20X24`), all on Prodigi enhanced matte art
+paper. The first two sizes are 4:5. The 20 × 24 size is 5:6 and uses a centred
+full-bleed crop that removes about 2% from the top and bottom instead of adding
+white side margins. All 15 `CM-...-20X24` mappings were verified individually in
+Prodigi before activation: 6000 × 7200 file, Excellent print quality, exact-fit
+full bleed with 0 cm border, automatic fulfilment, Standard shipping. Prodigi
+markets `GLOBAL-FAP-20X24` as 50x60cm / 20x24"; its dashboard recommends
+5906 × 7087 px (300 DPI for the metric 50 × 60 cm print area), which the
+6000 × 7200 files exceed at the same 5:6 ratio.
 
 The Hydrogen product route renders Shopify's `Size` values. Its flat artwork is
 always visible, while room mockups and the true-scale sofa diagram follow the
@@ -37,11 +42,11 @@ This produces 6000 × 7200 pixel, 300-DPI JPEGs under
 `output/product-art/print-20x24-300dpi/`. Its manifest records the exact centred
 crop box, output hashes, and deterministic `CM-...-20X24` Shopify SKUs.
 
-Prodigi's dashboard currently lists 4800 × 6000 as the recommended dimensions
-for `ART-FAP-EMA-16X20`. Prodigi's authenticated product selector confirms
-that this current account SKU ships from NL and supports Budget and Standard
-delivery to Cyprus. The fifteen individual product variants still need their
-corresponding files mapped and verified.
+Prodigi's dashboard lists 4800 × 6000 as the recommended dimensions for
+`ART-FAP-EMA-16X20`. Prodigi's authenticated product selector confirms that
+this account SKU ships from NL and supports Budget and Standard delivery to
+Cyprus. All fifteen variants of both expansion sizes are mapped and verified in
+the Prodigi sales channel.
 
 ## Safe Shopify And Prodigi Release
 
