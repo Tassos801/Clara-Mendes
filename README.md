@@ -66,12 +66,12 @@ Read-only (safe anytime):
   extension families against Shopify.
 - `npm run catalog:extensions:audit` — verify Draft extension products.
 - `npm run catalog:art:dry-run` / `catalog:extensions:dry-run` / `catalog:legacy:dry-run` — print planned changes without applying.
-- `npm run catalog:art:mockups` — regenerate the committed room-mockup images (`public/images/product-art-mockups/`) from the flat art and owned backdrops; `catalog:art:mockups:dry-run` previews the media append.
+- `npm run catalog:art:mockups` — regenerate all 8 × 10 and 16 × 20 room mockups from the flat art and owned backdrop; `catalog:art:mockups:large` generates only the 30 large-size scenes, and `catalog:art:mockups:dry-run` previews the media append.
 
 **Mutating — writes to the live Shopify store. Run only with explicit sign-off:**
 
 - `npm run catalog:art:sync` — creates/updates the 15 print products.
-- `npm run catalog:art:mockups:sync` — appends the two room mockups to each live print's media (productCreateMedia only; never touches status, variants, or prices).
+- `npm run catalog:art:mockups:sync` — appends missing size-specific room mockups to each live print's media (productCreateMedia only; never touches status, variants, or prices).
 - `npm run catalog:extensions:sync` — creates/updates Draft extension products.
 - `npm run catalog:legacy:draft` / `catalog:legacy:restore` — unpublish or restore legacy products.
 - `node scripts/setup-reviews.mjs` — one-time metaobject/metafield definitions (idempotent; `--dry-run` available).

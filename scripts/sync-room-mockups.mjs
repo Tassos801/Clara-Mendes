@@ -32,7 +32,10 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const catalog = JSON.parse(
-  readFileSync(path.join(repoRoot, 'data', 'original-art-catalog.json'), 'utf8'),
+  readFileSync(
+    path.join(repoRoot, 'data', 'original-art-catalog.json'),
+    'utf8',
+  ),
 );
 const apply = process.argv.slice(2).includes('--apply');
 const mockupBaseUrl = (
@@ -139,7 +142,9 @@ async function main() {
       const planned = plannedMediaFor(item);
       console.log(`  ${item.handle}`);
       for (const media of planned) {
-        console.log(`    + ${media.sceneKey.padEnd(7)} ${media.originalSource}`);
+        console.log(
+          `    + ${media.sceneKey.padEnd(16)} ${media.originalSource}`,
+        );
         console.log(`      alt: ${media.alt}`);
       }
     }
@@ -212,7 +217,7 @@ async function main() {
     }.`,
   );
   console.log(
-    'Shopify processes new media asynchronously; run npm run catalog:art:audit shortly to confirm 3 READY images per product.',
+    'Shopify processes new media asynchronously; run npm run catalog:art:audit shortly to confirm 5 READY images per product.',
   );
   if (mismatched) {
     process.exitCode = 1;

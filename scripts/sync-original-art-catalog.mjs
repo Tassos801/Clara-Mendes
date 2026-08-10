@@ -10,10 +10,7 @@ import {
   getRequiredEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
-import {
-  MOCKUP_SCENES,
-  mockupRelativePath,
-} from './lib/room-mockup-scenes.mjs';
+import {MOCKUP_SCENES, mockupRelativePath} from './lib/room-mockup-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -30,7 +27,7 @@ const mockupBaseUrl = (
   'https://shopclaramendes.com/images/product-art-mockups'
 ).replace(/\/+$/, '');
 
-const sizes = [{label: '8 × 10 in', skuSuffix: '8X10', price: '29.00'}];
+const sizes = [{label: '8 × 10 in', skuSuffix: '8X10', price: '29.99'}];
 
 const UPSERT_PRODUCT = `#graphql
   mutation UpsertOriginalArtProduct(

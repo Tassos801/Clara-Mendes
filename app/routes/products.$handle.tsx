@@ -31,6 +31,12 @@ import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription, getProductLede} from '~/lib/productCopy';
 import {
+  filterGalleryImagesForSize,
+  printScaleGeometry,
+  selectedPrintSize,
+  type PrintSizeKey,
+} from '~/lib/productSizePresentation';
+import {
   breadcrumbSchema,
   buildSeoMeta,
   getCanonicalUrl,
@@ -89,6 +95,7 @@ type ProductVariant = {
 type ProductDetail = ClaraCardProduct & {
   description: string;
   descriptionHtml?: string;
+  galleryImages?: {nodes: ProductImage[]};
   options: ProductOption[];
   selectedOrFirstAvailableVariant?: ProductVariant | null;
   variants: {
@@ -270,6 +277,7 @@ export default function Product() {
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
   const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
+  const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
@@ -278,15 +286,22 @@ export default function Product() {
   const galleryImages = useMemo(() => {
     const images = [
       ...(primaryImage ? [primaryImage] : []),
-      ...(product.images?.nodes ?? []),
+      ...(product.galleryImages?.nodes ?? product.images?.nodes ?? []),
     ];
 
-    return images.filter(
+    const uniqueImages = images.filter(
       (image, index, list) =>
         image?.url &&
         list.findIndex((item) => item.url === image.url) === index,
     );
-  }, [primaryImage, product.images?.nodes]);
+    return filterGalleryImagesForSize(uniqueImages, printSize.key, isArtPrint);
+  }, [
+    isArtPrint,
+    primaryImage,
+    printSize.key,
+    product.galleryImages?.nodes,
+    product.images?.nodes,
+  ]);
   const leadGalleryImage = galleryImages[0];
   const supportingGalleryImages = galleryImages.slice(1);
 
@@ -608,8 +623,8 @@ export default function Product() {
                 <dt>Print</dt>
                 <dd>
                   Giclée print in archival pigment inks on 200gsm Enhanced Matte
-                  Art paper. Unframed 8 × 10 in portrait, printed to order.
-                  Frame not included; screen and print colours can vary
+                  Art paper. Unframed {printSize.label} portrait, printed to
+                  order. Frame not included; screen and print colours can vary
                   slightly.
                 </dd>
               </div>
@@ -714,8 +729,8 @@ export default function Product() {
               <div className="product-cross-sell-copy">
                 <p className="eyebrow">Also available</p>
                 <p className="product-cross-sell-title">
-                  {phoneCaseCrossSell.capsuleTitle} artwork on a slim snap
-                  phone case
+                  {phoneCaseCrossSell.capsuleTitle} artwork on a slim snap phone
+                  case
                   {phoneCaseCrossSell.price
                     ? ` — ${formatMoney(phoneCaseCrossSell.price)}`
                     : ''}
@@ -742,7 +757,7 @@ export default function Product() {
                 loading="lazy"
               />
             ))}
-            {isArtPrint ? <PrintScaleDiagram /> : null}
+            {isArtPrint ? <PrintScaleDiagram size={printSize.key} /> : null}
           </div>
         ) : null}
       </section>
@@ -865,19 +880,21 @@ export default function Product() {
 }
 
 /**
- * Line-art scale diagram: the 8 × 10 in print drawn at true proportion above
- * a standard 84 in (three-seat) sofa, so buyers can judge the real size
- * before ordering. Rendered as SVG — deliberately a diagram, not a staged
- * photograph.
+ * The selected print at true proportion above the same 84 in sofa reference.
  */
-function PrintScaleDiagram() {
-  // 3.5 SVG units per inch: sofa 84 in -> 294, print 8 × 10 in -> 28 × 35
+function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
+  const geometry = printScaleGeometry(size);
+  const left = 280 - geometry.width / 2;
+  const top = 107 - geometry.height;
+  const guideY = top - 14;
+  const guideX = left + geometry.width + 14;
+
   return (
     <figure className="product-scale">
       <svg
         viewBox="0 0 560 300"
         role="img"
-        aria-label="Scale diagram: an unframed 8 by 10 inch portrait print shown at true proportion on a wall above a standard 84 inch sofa."
+        aria-label={`Scale diagram: an unframed ${geometry.widthInches} by ${geometry.heightInches} inch portrait print shown at true proportion on a wall above a standard 84 inch sofa.`}
       >
         <g stroke="currentColor" strokeWidth="1.4" fill="none">
           {/* floor */}
@@ -889,18 +906,23 @@ function PrintScaleDiagram() {
             <line x1="133" y1="231" x2="133" y2="262" />
             <line x1="427" y1="231" x2="427" y2="262" />
           </g>
-          {/* print: 8 × 10 in portrait, hung above the sofa */}
+          {/* selected portrait print, hung above the sofa */}
           <rect
-            x="266"
-            y="72"
-            width="28"
-            height="35"
+            x={left}
+            y={top}
+            width={geometry.width}
+            height={geometry.height}
             fill="var(--color-paper, #fbfaf6)"
           />
           {/* dimension guides */}
           <g strokeOpacity="0.4" strokeDasharray="3 4">
-            <line x1="266" y1="58" x2="294" y2="58" />
-            <line x1="308" y1="72" x2="308" y2="107" />
+            <line
+              x1={left}
+              y1={guideY}
+              x2={left + geometry.width}
+              y2={guideY}
+            />
+            <line x1={guideX} y1={top} x2={guideX} y2={top + geometry.height} />
           </g>
         </g>
         <g
@@ -908,11 +930,11 @@ function PrintScaleDiagram() {
           fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
           fontSize="11"
         >
-          <text x="280" y="50" textAnchor="middle">
-            8 in
+          <text x="280" y={guideY - 8} textAnchor="middle">
+            {geometry.widthInches} in
           </text>
-          <text x="316" y="93">
-            10 in
+          <text x={guideX + 8} y={top + geometry.height / 2 + 4}>
+            {geometry.heightInches} in
           </text>
           <text x="280" y="284" textAnchor="middle" fillOpacity="0.6">
             84 in sofa, for scale
@@ -920,9 +942,9 @@ function PrintScaleDiagram() {
         </g>
       </svg>
       <figcaption>
-        True to size: an unframed 8 × 10 in (20.3 × 25.4 cm) portrait print,
-        shown to scale above a standard 84 in sofa. Hang it solo, or pair it
-        with its capsule companions.
+        True to size: an unframed {geometry.label} ({geometry.centimeters})
+        portrait print, shown to scale above a standard 84 in sofa. Hang it
+        solo, or pair it with its capsule companions.
       </figcaption>
     </figure>
   );
@@ -1112,6 +1134,12 @@ const PRODUCT_QUERY = `#graphql
       ...ClaraProductCard
       description
       descriptionHtml
+      galleryImages: images(first: 8) {
+        nodes {
+          altText
+          url
+        }
+      }
       options {
         id
         name
