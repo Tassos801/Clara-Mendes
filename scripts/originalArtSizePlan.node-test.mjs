@@ -3,7 +3,9 @@ import test from 'node:test';
 
 import {
   BASE_SIZE,
+  BIGGER_SIZE,
   LARGE_SIZE,
+  assetFileName,
   expectedSku,
   inspectOriginalArtProduct,
   largeAssetFileName,
@@ -56,9 +58,16 @@ test('derives deterministic SKU and asset names', () => {
   assert.equal(BASE_SIZE.price, '29.99');
   assert.equal(LARGE_SIZE.price, '39.99');
   assert.equal(LARGE_SIZE.prodigiSku, 'ART-FAP-EMA-16X20');
+  assert.equal(BIGGER_SIZE.price, '49.99');
+  assert.equal(BIGGER_SIZE.prodigiSku, 'GLOBAL-FAP-20X24');
   assert.equal(expectedSku(item), 'CM-QF-01-16X20');
+  assert.equal(expectedSku(item, BIGGER_SIZE), 'CM-QF-01-20X24');
   assert.equal(expectedSku(item, BASE_SIZE), 'CM-QF-01-8X10');
   assert.equal(largeAssetFileName(item), 'quiet-form-01-16x20-300dpi.jpg');
+  assert.equal(
+    assetFileName(item, BIGGER_SIZE),
+    'quiet-form-01-20x24-300dpi.jpg',
+  );
 });
 
 test('allows the legacy base price only for the guarded transition preflight', () => {
@@ -96,6 +105,40 @@ test('distinguishes a staged larger variant from an active one', () => {
   assert.equal(releaseState(active), 'ACTIVE');
 });
 
+test('validates the 20x24 variant independently from the active 16x20 size', () => {
+  const base = variant({
+    availableForSale: true,
+    label: BASE_SIZE.label,
+    price: BASE_SIZE.price,
+    sku: 'CM-QF-01-8X10',
+    tracked: false,
+  });
+  const large = variant({
+    availableForSale: true,
+    label: LARGE_SIZE.label,
+    price: LARGE_SIZE.price,
+    sku: 'CM-QF-01-16X20',
+    tracked: false,
+  });
+  const bigger = variant({
+    availableForSale: false,
+    label: BIGGER_SIZE.label,
+    price: BIGGER_SIZE.price,
+    sku: 'CM-QF-01-20X24',
+    tracked: true,
+  });
+
+  const inspection = inspectOriginalArtProduct(
+    product([base, large, bigger]),
+    item,
+  );
+
+  assert.deepEqual(inspection.issues, []);
+  assert.equal(inspection.largeVariant, large);
+  assert.equal(inspection.biggerVariant, bigger);
+  assert.equal(releaseState(inspection.biggerVariant), 'STAGED');
+});
+
 test('rejects a tracked large variant unless it is unavailable at zero stock', () => {
   const availableWhileTracked = variant({
     availableForSale: true,
@@ -120,6 +163,6 @@ test('updates the fixed-size description once', () => {
   const second = multiSizeDescription(first.html);
 
   assert.equal(first.changed, true);
-  assert.match(first.html, /8 × 10 and 16 × 20 inch sizes/);
+  assert.match(first.html, /8 × 10, 16 × 20, and 20 × 24 inch sizes/);
   assert.equal(second.changed, false);
 });

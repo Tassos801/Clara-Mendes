@@ -27,13 +27,35 @@ const largeContext = {
     'Quiet Form I art print shown unframed at its true 16 by 20 inch size on a sage wall beside a reading lamp',
   url: '/quiet-form-01-room-context-16x20.webp?v=1',
 };
-const gallery = [flat, smallDetail, smallContext, largeDetail, largeContext];
+const biggerDetail = {
+  altText:
+    'Quiet Form I 20 by 24 inch art print shown unframed on a sage green wall',
+  url: '/quiet-form-01-room-detail-20x24.webp?v=1',
+};
+const biggerContext = {
+  altText:
+    'Quiet Form I art print shown unframed at its true 20 by 24 inch size on a sage wall beside a reading lamp',
+  url: '/quiet-form-01-room-context-20x24.webp?v=1',
+};
+const gallery = [
+  flat,
+  smallDetail,
+  smallContext,
+  largeDetail,
+  largeContext,
+  biggerDetail,
+  biggerContext,
+];
 
 test('maps the selected Size option and defaults safely to 8x10', () => {
   assert.equal(selectedPrintSize([]).key, '8x10');
   assert.equal(
     selectedPrintSize([{name: 'Size', value: '16 × 20 in'}]).key,
     '16x20',
+  );
+  assert.equal(
+    selectedPrintSize([{name: 'Size', value: '20 × 24 in'}]).key,
+    '20x24',
   );
 });
 
@@ -48,7 +70,12 @@ test('keeps flat art while showing only the selected-size room mockups', () => {
     largeDetail,
     largeContext,
   ]);
-  assert.equal(filterGalleryImagesForSize(gallery, '16x20', false).length, 5);
+  assert.deepEqual(filterGalleryImagesForSize(gallery, '20x24', true), [
+    flat,
+    biggerDetail,
+    biggerContext,
+  ]);
+  assert.equal(filterGalleryImagesForSize(gallery, '20x24', false).length, 7);
 });
 
 test('scales both diagrams against the same 84 inch sofa', () => {
@@ -65,5 +92,12 @@ test('scales both diagrams against the same 84 inch sofa', () => {
       width: printScaleGeometry('16x20').width,
     },
     {height: 70, width: 56},
+  );
+  assert.deepEqual(
+    {
+      height: printScaleGeometry('20x24').height,
+      width: printScaleGeometry('20x24').width,
+    },
+    {height: 84, width: 70},
   );
 });

@@ -1,4 +1,4 @@
-export type PrintSizeKey = '8x10' | '16x20';
+export type PrintSizeKey = '8x10' | '16x20' | '20x24';
 
 export type GalleryImage = {
   altText?: string | null;
@@ -20,6 +20,13 @@ export const PRINT_SIZE_SPECS = Object.freeze({
     label: '16 × 20 in',
     widthInches: 16,
   }),
+  '20x24': Object.freeze({
+    centimeters: '50.8 × 61 cm',
+    heightInches: 24,
+    key: '20x24' as const,
+    label: '20 × 24 in',
+    widthInches: 20,
+  }),
 });
 
 export function selectedPrintSize(
@@ -28,9 +35,13 @@ export function selectedPrintSize(
   const value = selectedOptions.find(
     (option) => option.name.toLowerCase() === 'size',
   )?.value;
-  return /16\s*[×x]\s*20/i.test(value ?? '')
-    ? PRINT_SIZE_SPECS['16x20']
-    : PRINT_SIZE_SPECS['8x10'];
+  if (/20\s*[×x]\s*24/i.test(value ?? '')) {
+    return PRINT_SIZE_SPECS['20x24'];
+  }
+  if (/16\s*[×x]\s*20/i.test(value ?? '')) {
+    return PRINT_SIZE_SPECS['16x20'];
+  }
+  return PRINT_SIZE_SPECS['8x10'];
 }
 
 function roomMockupSize(image: GalleryImage): PrintSizeKey | null {
@@ -41,7 +52,9 @@ function roomMockupSize(image: GalleryImage): PrintSizeKey | null {
       (identity.includes('sage wall') || identity.includes('sage green wall')));
 
   if (!isRoomMockup) return null;
-  return /16(?:x|\s*(?:by|×)\s*)20/.test(identity) ? '16x20' : '8x10';
+  if (/20(?:x|\s*(?:by|×)\s*)24/.test(identity)) return '20x24';
+  if (/16(?:x|\s*(?:by|×)\s*)20/.test(identity)) return '16x20';
+  return '8x10';
 }
 
 export function filterGalleryImagesForSize(

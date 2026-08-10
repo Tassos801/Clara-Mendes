@@ -11,8 +11,8 @@ import {
   resolveMockupAppendPlan,
 } from './lib/room-mockup-scenes.mjs';
 
-// Two existing 8x10 scenes plus two explicitly named 16x20 scenes.
-assert.equal(MOCKUP_SCENES.length, 4);
+// Two scenes per sellable size.
+assert.equal(MOCKUP_SCENES.length, 6);
 assert.equal(
   new Set(MOCKUP_SCENES.map((scene) => scene.fileSuffix)).size,
   MOCKUP_SCENES.length,
@@ -26,8 +26,12 @@ assert.deepEqual(
   filterMockupScenes(MOCKUP_SCENES, '16x20').map((scene) => scene.key),
   ['detail-16x20', 'context-16x20'],
 );
+assert.deepEqual(
+  filterMockupScenes(MOCKUP_SCENES, '20x24').map((scene) => scene.key),
+  ['detail-20x24', 'context-20x24'],
+);
 assert.equal(filterMockupScenes(MOCKUP_SCENES, '8x10').length, 2);
-assert.equal(filterMockupScenes(MOCKUP_SCENES).length, 4);
+assert.equal(filterMockupScenes(MOCKUP_SCENES).length, 6);
 assert.throws(
   () => filterMockupScenes(MOCKUP_SCENES, 'large'),
   /Unknown mockup size filter/,
@@ -46,6 +50,19 @@ assert.equal(
   0.384,
 );
 
+const biggerScenes = filterMockupScenes(MOCKUP_SCENES, '20x24');
+assert.deepEqual(
+  biggerScenes.map((scene) => scene.fileSuffix),
+  ['room-detail-20x24', 'room-context-20x24'],
+);
+for (const scene of biggerScenes) {
+  assert.match(scene.altFor('Quiet Form I'), /20 by 24 inch/);
+}
+assert.equal(
+  biggerScenes.find((scene) => scene.key === 'context-20x24').print.widthRatio,
+  0.48,
+);
+
 // Crops keep the output aspect ratio (no distortion when resizing).
 const outputRatio = MOCKUP_OUTPUT.width / MOCKUP_OUTPUT.height;
 for (const scene of MOCKUP_SCENES) {
@@ -56,7 +73,7 @@ for (const scene of MOCKUP_SCENES) {
   );
 }
 
-// Placement stays inside the canvas and preserves the 4:5 art ratio.
+// Placement stays inside the canvas and preserves the size's print ratio.
 for (const scene of MOCKUP_SCENES) {
   const placement = computePrintPlacement(scene);
   assert.ok(placement.left >= 0 && placement.top >= 0, scene.key);
@@ -66,9 +83,10 @@ for (const scene of MOCKUP_SCENES) {
     scene.key,
   );
   const ratio = placement.width / placement.height;
+  const expectedRatio = scene.artRatio ?? ART_RATIO;
   assert.ok(
-    Math.abs(ratio - ART_RATIO.width / ART_RATIO.height) < 0.01,
-    `${scene.key}: print ratio ${ratio.toFixed(3)} is not 4:5`,
+    Math.abs(ratio - expectedRatio.width / expectedRatio.height) < 0.01,
+    `${scene.key}: print ratio ${ratio.toFixed(3)} is incorrect`,
   );
 }
 
@@ -133,4 +151,8 @@ assert.equal(
 assert.equal(
   mockupFileName('quiet-form-01.webp', largeScenes[0]),
   'quiet-form-01-room-detail-16x20.webp',
+);
+assert.equal(
+  mockupFileName('quiet-form-01.webp', biggerScenes[0]),
+  'quiet-form-01-room-detail-20x24.webp',
 );
