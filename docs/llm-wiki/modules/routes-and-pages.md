@@ -63,7 +63,9 @@ The product route:
 - Redirects demo/off-theme products to `/collections/all`.
 - Renders product schema and breadcrumb schema.
 - Tracks product views for Shopify analytics and ad platforms.
-- Persists recently viewed entries.
+- Persists recently viewed product snapshots under the versioned browser key
+  `cm:recently-viewed:v2`. Bumping the key intentionally drops older cached
+  price snapshots rather than rendering stale catalog prices.
 - Supports variant option URLs.
 - Supports add-to-cart and Shop Pay when the selected variant is available.
 

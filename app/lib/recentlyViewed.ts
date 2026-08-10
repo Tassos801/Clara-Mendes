@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'cm:recently-viewed';
+export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v2';
 const MAX_ENTRIES = 12;
 
 export type RecentlyViewedEntry = {
@@ -16,7 +16,7 @@ export type RecentlyViewedEntry = {
 function readEntries(): RecentlyViewedEntry[] {
   if (typeof window === 'undefined') return [];
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
+    const raw = window.localStorage.getItem(RECENTLY_VIEWED_STORAGE_KEY);
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return [];
@@ -41,7 +41,10 @@ export function recordRecentlyViewed(
       {...entry, viewedAt: Date.now()},
       ...readEntries().filter((existing) => existing.handle !== entry.handle),
     ].slice(0, MAX_ENTRIES);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify(entries),
+    );
   } catch {
     // Storage may be unavailable (private mode, quota); viewing history
     // is a progressive enhancement, so fail silently.
