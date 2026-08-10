@@ -12,7 +12,7 @@ import {
 } from './lib/env.mjs';
 import {
   BASE_SIZE,
-  LARGE_SIZE,
+  EXPANSION_SIZES,
   expectedSku,
   releaseState,
   variantForSize,
@@ -123,14 +123,13 @@ function validateProduct(product, expected) {
   const variants = product?.variants?.nodes ?? [];
   const media = product?.media?.nodes ?? [];
   const baseVariant = variantForSize(product, BASE_SIZE.label);
-  const largeVariant = variantForSize(product, LARGE_SIZE.label);
 
   if (!product) issues.push('missing from Shopify');
   if (product?.status !== 'ACTIVE') {
     issues.push(`status is ${product?.status || 'missing'}, expected ACTIVE`);
   }
-  if (![1, 2].includes(variants.length)) {
-    issues.push(`${variants.length} variants, expected 1 or 2`);
+  if (![1, 2, 3].includes(variants.length)) {
+    issues.push(`${variants.length} variants, expected 1, 2, or 3`);
   }
   if (baseVariant?.sku !== expectedSku(expected, BASE_SIZE)) {
     issues.push(
@@ -148,34 +147,36 @@ function validateProduct(product, expected) {
   if (baseVariant?.inventoryItem?.tracked !== false) {
     issues.push(`${BASE_SIZE.label} inventory tracking is enabled`);
   }
-  if (largeVariant) {
-    if (largeVariant.sku !== expectedSku(expected)) {
+  for (const size of EXPANSION_SIZES) {
+    const variant = variantForSize(product, size.label);
+    if (!variant) continue;
+    if (variant.sku !== expectedSku(expected, size)) {
       issues.push(
-        `${LARGE_SIZE.label} SKU is ${largeVariant.sku || 'missing'}, expected ${expectedSku(expected)}`,
+        `${size.label} SKU is ${variant.sku || 'missing'}, expected ${expectedSku(expected, size)}`,
       );
     }
-    if (largeVariant.price !== LARGE_SIZE.price) {
+    if (variant.price !== size.price) {
       issues.push(
-        `${LARGE_SIZE.label} price is ${largeVariant.price || 'missing'}, expected ${LARGE_SIZE.price}`,
+        `${size.label} price is ${variant.price || 'missing'}, expected ${size.price}`,
       );
     }
-    if (largeVariant.inventoryPolicy !== 'DENY') {
-      issues.push(`${LARGE_SIZE.label} inventory policy is not DENY`);
+    if (variant.inventoryPolicy !== 'DENY') {
+      issues.push(`${size.label} inventory policy is not DENY`);
     }
-    if (largeVariant.inventoryItem?.requiresShipping !== true) {
-      issues.push(`${LARGE_SIZE.label} variant does not require shipping`);
+    if (variant.inventoryItem?.requiresShipping !== true) {
+      issues.push(`${size.label} variant does not require shipping`);
     }
-    if (!['STAGED', 'ACTIVE'].includes(releaseState(largeVariant))) {
-      issues.push(`${LARGE_SIZE.label} release state is unsafe`);
+    if (!['STAGED', 'ACTIVE'].includes(releaseState(variant))) {
+      issues.push(`${size.label} release state is unsafe`);
     }
   }
-  // 1 = flat only; 3 = flat + existing 8x10 scenes; 5 = flat + both sizes.
+  // 1 = flat only; each configured size adds two room scenes.
   const badMedia = media.filter(
     (node) => node?.mediaContentType !== 'IMAGE' || node?.status !== 'READY',
   );
-  if (![1, 3, 5].includes(media.length) || badMedia.length) {
+  if (![1, 3, 5, 7].includes(media.length) || badMedia.length) {
     issues.push(
-      `${media.length} media (expected 1, 3, or 5), ${badMedia.length} not READY images`,
+      `${media.length} media (expected 1, 3, 5, or 7), ${badMedia.length} not READY images`,
     );
   }
 

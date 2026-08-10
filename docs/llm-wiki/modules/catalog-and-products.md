@@ -23,26 +23,28 @@ path. A Draft or unpublished handle would remain a non-interactive preview.
 | Midnight Garden | `midnight-garden-i-art-print`, `midnight-garden-ii-art-print`, `midnight-garden-iii-art-print` |
 | Sunlit Mosaic   | `sunlit-mosaic-i-art-print`, `sunlit-mosaic-ii-art-print`, `sunlit-mosaic-iii-art-print`       |
 
-Each live product still has one 8 × 10 inch variant at the legacy EUR 29.00
-price. A guarded local workflow prepares the approved EUR 29.99 base price and
-an unavailable EUR 39.99 16 × 20 variant; activation remains blocked until all
-15 Prodigi mappings are confirmed. Source metadata is in
+Each live product has an 8 × 10 inch variant at EUR 29.99 and a 16 × 20 variant
+at EUR 39.99. A guarded workflow prepares an unavailable EUR 49.99 20 × 24
+variant; activation remains blocked until all 15 `GLOBAL-FAP-20X24` Prodigi
+mappings are confirmed. Source metadata is in
 `data/original-art-catalog.json`; the mutating
 `scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
 not be run as a way to preserve the current Active state.
 
 Each live print's media is currently the flat artwork shot plus two generated
-8 × 10 room mockups (sage-wall close-up and true-scale lamp context). The local
-pipeline now also prepares two explicitly named 16 × 20 scenes, composited by
+mockups for each live size (sage-wall close-up and true-scale lamp context).
+The local pipeline also prepares two explicitly named 20 × 24 scenes, composited by
 `scripts/generate-room-mockups.mjs` from owned backdrops into
 `public/images/product-art-mockups/` (scene geometry in
 `scripts/lib/room-mockup-scenes.mjs`, layout-tested by
 `scripts/roomMockups.node-test.mjs`). `scripts/sync-room-mockups.mjs`
 (`catalog:art:mockups:sync`) appends them to the ACTIVE products via
 `productCreateMedia` only — it is the safe apply path for live products,
-idempotent by alt text; future media syncs plan all four mockups. Product cards
+idempotent by alt text; future media syncs plan all six mockups. Product cards
 retain their bounded image query, while the PDP fetches the larger gallery and
 shows only the selected size's room scenes plus the always-visible flat art.
+The 20 × 24 production and mockup assets use the same centred 5:6 full-bleed
+crop and a context width ratio of `0.48`, exactly 2.5 times the 8 × 10 width.
 
 `data/art-product-extensions.json` and
 `scripts/prepare-art-product-extensions.py` define twelve additional product

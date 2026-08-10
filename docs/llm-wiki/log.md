@@ -143,3 +143,12 @@ Changed the client-only Recently Viewed storage key from
 including the former EUR 29.00 original-art price, are ignored; newly viewed
 products repopulate the rail from the current PDP variant price. No Shopify
 catalog or customer records are mutated.
+
+## [2026-08-10] catalog | Prepared guarded 20 x 24 original-art size
+
+Extended the original-art workflow with a EUR 49.99 20 x 24 option mapped to
+Prodigi `GLOBAL-FAP-20X24`. Production files use a documented centred 5:6
+full-bleed crop and the recommended 6000 x 7200 pixels. Added two size-specific
+wall scenes per artwork, selected-size gallery filtering, a true-scale diagram,
+and guarded stage, activate, and pause commands. Activation remains blocked
+until all 15 Prodigi mappings are explicitly confirmed.

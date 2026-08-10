@@ -12,12 +12,18 @@ import {
   normalizeShopDomain,
 } from './lib/env.mjs';
 import {
+  ALL_SIZES,
   BASE_SIZE,
+  BIGGER_SIZE,
+  EXPANSION_SIZES,
   LARGE_SIZE,
+  assetFileName,
+  expansionSizeForKey,
   expectedSku,
   inspectOriginalArtProduct,
   multiSizeDescription,
   releaseState,
+  variantForSize,
 } from './lib/original-art-size-plan.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -28,14 +34,6 @@ const catalog = JSON.parse(
     'utf8',
   ),
 );
-const manifestPath = path.join(
-  repoRoot,
-  'output',
-  'product-art',
-  'print-16x20-300dpi',
-  'manifest.json',
-);
-
 const PRODUCTS_QUERY = `#graphql
   query OriginalArtSizeVariants($first: Int!, $query: String!) {
     products(first: $first, query: $query, sortKey: TITLE) {
@@ -155,16 +153,18 @@ const UPDATE_DESCRIPTION = `#graphql
 function usage() {
   console.log(`Usage:
   node scripts/sync-original-art-size-variants.mjs
-  node scripts/sync-original-art-size-variants.mjs --stage
-  node scripts/sync-original-art-size-variants.mjs --activate --prodigi-confirmed=${LARGE_SIZE.prodigiSku}
-  node scripts/sync-original-art-size-variants.mjs --pause
+  node scripts/sync-original-art-size-variants.mjs --size=20x24
+  node scripts/sync-original-art-size-variants.mjs --size=20x24 --stage
+  node scripts/sync-original-art-size-variants.mjs --size=20x24 --activate --prodigi-confirmed=${BIGGER_SIZE.prodigiSku}
+  node scripts/sync-original-art-size-variants.mjs --size=20x24 --pause
 
-Default mode is a read-only live audit. --stage creates the larger variants
+Default mode is a read-only live audit. --size defaults to ${LARGE_SIZE.key} for
+backwards compatibility and accepts ${EXPANSION_SIZES.map((size) => size.key).join(' or ')}. --stage creates the selected variants
 with tracked zero inventory, so they cannot be purchased while Prodigi is
 configured. It also changes the existing ${BASE_SIZE.label} price from ${BASE_SIZE.legacyPrice}
-to ${BASE_SIZE.price}; the ${LARGE_SIZE.label} price is fixed at ${LARGE_SIZE.price}. --activate makes the
-larger variants sellable only after explicit Prodigi confirmation. --pause
-returns all larger variants to the unavailable state.`);
+to ${BASE_SIZE.price}. --activate makes the selected variants sellable only after
+explicit Prodigi confirmation. --pause returns the selected variants to the
+unavailable state.`);
 }
 
 function argumentValue(name) {
@@ -189,22 +189,33 @@ function sha256(filePath) {
   return createHash('sha256').update(readFileSync(filePath)).digest('hex');
 }
 
-function validateAssets() {
+function manifestPathFor(size) {
+  return path.join(
+    repoRoot,
+    'output',
+    'product-art',
+    `print-${size.key}-300dpi`,
+    'manifest.json',
+  );
+}
+
+function validateAssets(size) {
+  const manifestPath = manifestPathFor(size);
   if (!existsSync(manifestPath)) {
     throw new Error(
-      `Missing 16x20 manifest. Run python scripts/prepare-original-art-size-assets.py first: ${manifestPath}`,
+      `Missing ${size.key} manifest. Run python scripts/prepare-original-art-size-assets.py --size=${size.key} first: ${manifestPath}`,
     );
   }
 
   const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
   if (
-    manifest.prodigiSku !== LARGE_SIZE.prodigiSku ||
-    manifest.target?.width !== 4800 ||
-    manifest.target?.height !== 6000 ||
+    manifest.prodigiSku !== size.prodigiSku ||
+    manifest.target?.width !== size.assetWidth ||
+    manifest.target?.height !== size.assetHeight ||
     manifest.target?.dpi !== 300
   ) {
     throw new Error(
-      'The 16x20 manifest has unexpected product specifications.',
+      `The ${size.key} manifest has unexpected product specifications.`,
     );
   }
   if (manifest.files?.length !== catalog.length) {
@@ -219,12 +230,12 @@ function validateAssets() {
   for (const item of catalog) {
     const record = byHandle.get(item.handle);
     if (!record) throw new Error(`${item.handle}: manifest record is missing.`);
-    if (record.shopifySku !== expectedSku(item)) {
+    if (record.shopifySku !== expectedSku(item, size)) {
       throw new Error(`${item.handle}: manifest Shopify SKU is incorrect.`);
     }
     if (
-      record.output?.width !== 4800 ||
-      record.output?.height !== 6000 ||
+      record.output?.width !== size.assetWidth ||
+      record.output?.height !== size.assetHeight ||
       record.output?.dpi?.[0] !== 300 ||
       record.output?.dpi?.[1] !== 300
     ) {
@@ -234,6 +245,9 @@ function validateAssets() {
     }
 
     const outputPath = path.resolve(repoRoot, record.output.path);
+    if (path.basename(outputPath) !== assetFileName(item, size)) {
+      throw new Error(`${item.handle}: manifest file name is incorrect.`);
+    }
     if (!existsSync(outputPath)) {
       throw new Error(
         `${item.handle}: generated file is missing: ${outputPath}`,
@@ -245,7 +259,7 @@ function validateAssets() {
   }
 
   console.log(
-    `Assets: ${manifest.files.length}/15 files match the 4800x6000 manifest.`,
+    `Assets: ${manifest.files.length}/15 files match the ${size.assetWidth}x${size.assetHeight} manifest.`,
   );
 }
 
@@ -342,7 +356,7 @@ async function fetchCatalog(adminGraphql) {
 
 function validateCatalog(
   productsByHandle,
-  {allowLegacyBasePrice = false} = {},
+  {allowLegacyBasePrice = false, targetSize = LARGE_SIZE} = {},
 ) {
   let issueCount = 0;
   const rows = [];
@@ -352,7 +366,7 @@ function validateCatalog(
     const inspection = inspectOriginalArtProduct(product, item, {
       allowLegacyBasePrice,
     });
-    const knownLabels = new Set([BASE_SIZE.label, LARGE_SIZE.label]);
+    const knownLabels = new Set(ALL_SIZES.map((size) => size.label));
     const unexpectedVariants = (product.variants?.nodes ?? []).filter(
       (variant) =>
         !(variant.selectedOptions ?? []).some(
@@ -370,14 +384,26 @@ function validateCatalog(
       );
     }
 
-    const state = releaseState(inspection.largeVariant);
+    // The target size is judged below via its release state, so only the
+    // non-target expansion sizes need this existence-gated safety check.
+    for (const size of EXPANSION_SIZES) {
+      if (size.key === targetSize.key) continue;
+      const variant = variantForSize(product, size.label);
+      if (variant && releaseState(variant) === 'INVALID') {
+        inspection.issues.push(
+          `${size.label} is neither safely STAGED nor sellable ACTIVE`,
+        );
+      }
+    }
+    const targetVariant = variantForSize(product, targetSize.label);
+    const state = releaseState(targetVariant);
     if (state === 'INVALID') {
       inspection.issues.push(
-        `${LARGE_SIZE.label} is neither safely STAGED nor sellable ACTIVE`,
+        `${targetSize.label} is neither safely STAGED nor sellable ACTIVE`,
       );
     }
     issueCount += inspection.issues.length;
-    rows.push({inspection, item, product, state});
+    rows.push({inspection, item, product, state, targetVariant});
     console.log(
       `${inspection.issues.length ? 'ISSUE' : state.padEnd(7)} ${item.handle}${
         inspection.issues.length ? `: ${inspection.issues.join('; ')}` : ''
@@ -398,7 +424,7 @@ function mutationErrors(payload, handle) {
   }
 }
 
-async function stageVariants(adminGraphql, rows) {
+async function stageVariants(adminGraphql, rows, targetSize) {
   for (const {inspection, item, product, state} of rows) {
     if (!['MISSING', 'STAGED'].includes(state)) {
       throw new Error(
@@ -413,12 +439,12 @@ async function stageVariants(adminGraphql, rows) {
           {
             inventoryItem: {
               requiresShipping: true,
-              sku: expectedSku(item),
+              sku: expectedSku(item, targetSize),
               tracked: true,
             },
             inventoryPolicy: 'DENY',
-            optionValues: [{name: LARGE_SIZE.label, optionName: 'Size'}],
-            price: LARGE_SIZE.price,
+            optionValues: [{name: targetSize.label, optionName: 'Size'}],
+            price: targetSize.price,
             taxable: true,
           },
         ],
@@ -428,7 +454,7 @@ async function stageVariants(adminGraphql, rows) {
       if (payload?.productVariants?.length !== 1) {
         throw new Error(`${item.handle}: Shopify did not create one variant.`);
       }
-      console.log(`  STAGED ${item.handle} (${expectedSku(item)})`);
+      console.log(`  STAGED ${item.handle} (${expectedSku(item, targetSize)})`);
     } else {
       console.log(`  NOOP   ${item.handle} larger size is already staged.`);
     }
@@ -461,14 +487,14 @@ async function updateDescription(adminGraphql, product, item) {
   console.log(`  COPY   ${item.handle}`);
 }
 
-async function setVariantTracking(adminGraphql, rows, {tracked}) {
-  for (const {inspection, item, product} of rows) {
-    if (!inspection.largeVariant) {
+async function setVariantTracking(adminGraphql, rows, targetSize, {tracked}) {
+  for (const {item, product, targetVariant} of rows) {
+    if (!targetVariant) {
       throw new Error(
-        `${item.handle}: ${LARGE_SIZE.label} variant is missing.`,
+        `${item.handle}: ${targetSize.label} variant is missing.`,
       );
     }
-    if (inspection.largeVariant.inventoryItem?.tracked === tracked) {
+    if (targetVariant.inventoryItem?.tracked === tracked) {
       console.log(
         `  NOOP   ${item.handle} is already ${tracked ? 'staged' : 'active'}.`,
       );
@@ -477,40 +503,42 @@ async function setVariantTracking(adminGraphql, rows, {tracked}) {
         productId: product.id,
         variants: [
           {
-            id: inspection.largeVariant.id,
+            id: targetVariant.id,
             inventoryItem: {
               requiresShipping: true,
-              sku: expectedSku(item),
+              sku: expectedSku(item, targetSize),
               tracked,
             },
             inventoryPolicy: 'DENY',
-            price: LARGE_SIZE.price,
+            price: targetSize.price,
             taxable: true,
           },
         ],
       });
       mutationErrors(body.data?.productVariantsBulkUpdate, item.handle);
       console.log(
-        `  ${tracked ? 'PAUSED' : 'ACTIVE'} ${item.handle} (${expectedSku(item)})`,
+        `  ${tracked ? 'PAUSED' : 'ACTIVE'} ${item.handle} (${expectedSku(item, targetSize)})`,
       );
     }
 
-    if (!tracked) {
+    if (!tracked && targetSize.key === BIGGER_SIZE.key) {
       await updateDescription(adminGraphql, product, item);
     }
   }
 }
 
-async function verifyFinalState(adminGraphql, expectedState) {
+async function verifyFinalState(adminGraphql, targetSize, expectedState) {
   console.log('\nRead-back verification:');
-  const rows = validateCatalog(await fetchCatalog(adminGraphql));
+  const rows = validateCatalog(await fetchCatalog(adminGraphql), {targetSize});
   const wrong = rows.filter(({state}) => state !== expectedState);
   if (wrong.length) {
     throw new Error(
       `Expected all variants to be ${expectedState}; ${wrong.length} did not match.`,
     );
   }
-  console.log(`Verified ${rows.length}/15 variants in ${expectedState} state.`);
+  console.log(
+    `Verified ${rows.length}/15 ${targetSize.label} variants in ${expectedState} state.`,
+  );
 }
 
 async function main() {
@@ -520,29 +548,37 @@ async function main() {
   }
 
   const action = actionFromArguments();
+  const sizeKey = argumentValue('--size') || LARGE_SIZE.key;
+  const targetSize = expansionSizeForKey(sizeKey);
+  if (!targetSize) {
+    throw new Error(
+      `--size must be one of: ${EXPANSION_SIZES.map((size) => size.key).join(', ')}.`,
+    );
+  }
   if (argumentValue('--price')) {
     throw new Error(
-      `--price is no longer accepted; approved prices are ${BASE_SIZE.price} and ${LARGE_SIZE.price}.`,
+      `--price is no longer accepted; approved prices are ${ALL_SIZES.map((size) => `${size.label} ${size.price}`).join('; ')}.`,
     );
   }
   if (
     action === 'activate' &&
-    argumentValue('--prodigi-confirmed') !== LARGE_SIZE.prodigiSku
+    argumentValue('--prodigi-confirmed') !== targetSize.prodigiSku
   ) {
     throw new Error(
-      `--activate requires --prodigi-confirmed=${LARGE_SIZE.prodigiSku}.`,
+      `--activate requires --prodigi-confirmed=${targetSize.prodigiSku}.`,
     );
   }
 
-  validateAssets();
+  validateAssets(targetSize);
   const {adminGraphql, storeDomain} = await adminConnection();
   console.log(
     `${action.toUpperCase()} ${catalog.length} original-art products on ${storeDomain}.
-Approved prices: ${BASE_SIZE.label} ${BASE_SIZE.price}; ${LARGE_SIZE.label} ${LARGE_SIZE.price}.
-Prodigi product: ${LARGE_SIZE.prodigiSku} (${LARGE_SIZE.label}).`,
+Approved prices: ${ALL_SIZES.map((size) => `${size.label} ${size.price}`).join('; ')}.
+Prodigi product: ${targetSize.prodigiSku} (${targetSize.label}).`,
   );
   const rows = validateCatalog(await fetchCatalog(adminGraphql), {
     allowLegacyBasePrice: ['audit', 'stage'].includes(action),
+    targetSize,
   });
 
   if (action === 'audit') {
@@ -554,16 +590,16 @@ Prodigi product: ${LARGE_SIZE.prodigiSku} (${LARGE_SIZE.label}).`,
     return;
   }
   if (action === 'stage') {
-    await stageVariants(adminGraphql, rows);
-    await verifyFinalState(adminGraphql, 'STAGED');
+    await stageVariants(adminGraphql, rows, targetSize);
+    await verifyFinalState(adminGraphql, targetSize, 'STAGED');
     console.log(
-      `All ${LARGE_SIZE.label} variants are unavailable. Configure and verify every SKU in Prodigi before --activate.`,
+      `All ${targetSize.label} variants are unavailable. Configure and verify every SKU in Prodigi before --activate.`,
     );
     return;
   }
   if (action === 'pause') {
-    await setVariantTracking(adminGraphql, rows, {tracked: true});
-    await verifyFinalState(adminGraphql, 'STAGED');
+    await setVariantTracking(adminGraphql, rows, targetSize, {tracked: true});
+    await verifyFinalState(adminGraphql, targetSize, 'STAGED');
     return;
   }
 
@@ -574,10 +610,10 @@ Prodigi product: ${LARGE_SIZE.prodigiSku} (${LARGE_SIZE.label}).`,
       );
     }
   }
-  await setVariantTracking(adminGraphql, rows, {tracked: false});
-  await verifyFinalState(adminGraphql, 'ACTIVE');
+  await setVariantTracking(adminGraphql, rows, targetSize, {tracked: false});
+  await verifyFinalState(adminGraphql, targetSize, 'ACTIVE');
   console.log(
-    `All 15 products now offer ${BASE_SIZE.label} and ${LARGE_SIZE.label}.`,
+    `All 15 products now offer ${ALL_SIZES.map((size) => size.label).join(', ')}.`,
   );
 }
 

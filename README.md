@@ -6,7 +6,8 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 
 ## Catalog state
 
-- **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Unframed 8 × 10 in giclée prints on 200gsm Enhanced Matte Art paper, printed to order. Source of truth: `data/original-art-catalog.json`.
+- **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Each offers unframed 8 × 10 in at EUR 29.99 and 16 × 20 in at EUR 39.99 on 200gsm Enhanced Matte Art paper, printed to order. Source of truth: `data/original-art-catalog.json`.
+- **Prepared behind the fulfilment gate:** 20 × 24 in at EUR 49.99. Its production files use a centred full-bleed 5:6 crop and Prodigi's recommended 6000 × 7200 pixels. The size remains unavailable until all 15 `GLOBAL-FAP-20X24` mappings are verified and explicitly activated.
 - **Draft / unpublished:** all 12 extension families (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). A family stays Draft and off every sales channel until every release gate passes and its storefront flag flips. The Art Premium Fleece Blanket candidate remains Draft because its live EUR 49 variant prices do not match the approved EUR 79 manifest price; its 2026-07-31 storefront flag was rolled back on 2026-08-10. The allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, direct product routes, navigation, and the sitemap even if they are published by mistake. Notebook, tote, cushion, and phone case additionally wait on Prodigi template assets held outside this repo.
 - **Staged for release:** the Art Snap Phone Case's storefront experience (PDP copy, print-page cross-sell) is built and dormant behind its flag. Releasing any family is a one-line flip plus Shopify publication — both required — per `docs/phone-case-release.md` (phone-case specifics; the flag mechanics generalise).
 
@@ -66,7 +67,7 @@ Read-only (safe anytime):
   extension families against Shopify.
 - `npm run catalog:extensions:audit` — verify Draft extension products.
 - `npm run catalog:art:dry-run` / `catalog:extensions:dry-run` / `catalog:legacy:dry-run` — print planned changes without applying.
-- `npm run catalog:art:mockups` — regenerate all 8 × 10 and 16 × 20 room mockups from the flat art and owned backdrop; `catalog:art:mockups:large` generates only the 30 large-size scenes, and `catalog:art:mockups:dry-run` previews the media append.
+- `npm run catalog:art:mockups` — regenerate all 8 × 10, 16 × 20, and 20 × 24 room mockups from the flat art and owned backdrop; `catalog:art:mockups:large` and `catalog:art:mockups:bigger` generate one expansion size only, and `catalog:art:mockups:dry-run` previews the media append.
 
 **Mutating — writes to the live Shopify store. Run only with explicit sign-off:**
 

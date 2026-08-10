@@ -217,7 +217,7 @@ async function main() {
     }.`,
   );
   console.log(
-    'Shopify processes new media asynchronously; run npm run catalog:art:audit shortly to confirm 5 READY images per product.',
+    'Shopify processes new media asynchronously; run npm run catalog:art:audit shortly to confirm 7 READY images per product.',
   );
   if (mismatched) {
     process.exitCode = 1;

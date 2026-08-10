@@ -12,6 +12,7 @@
  *   node ./scripts/generate-room-mockups.mjs            # all 15 prints
  *   node ./scripts/generate-room-mockups.mjs --only=quiet-form-01
  *   node ./scripts/generate-room-mockups.mjs --size=16x20
+ *   node ./scripts/generate-room-mockups.mjs --size=20x24
  */
 
 import {mkdirSync, readFileSync} from 'node:fs';
@@ -114,7 +115,10 @@ async function main() {
         item.image.replace(/^\//, '').replaceAll('/', path.sep),
       );
       const art = await sharp(artPath)
-        .resize(placement.width, placement.height)
+        .resize(placement.width, placement.height, {
+          fit: 'cover',
+          position: 'centre',
+        })
         .toBuffer();
 
       const relative = mockupRelativePath(item.image, scene);

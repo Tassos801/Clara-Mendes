@@ -1,16 +1,17 @@
 # Original Art Size Expansion
 
-Status: **prepared locally; no larger Shopify variant is live or staged yet**.
+Status: **8 × 10 and 16 × 20 live; 20 × 24 prepared behind the fulfilment gate**.
 
-The fifteen active original-art products currently offer one unframed 8 × 10
-inch print at the legacy €29.00 price. The approved transition moves that size
-to €29.99 and adds an unframed 16 × 20 inch print at €39.99 on Prodigi enhanced
-matte art paper (`ART-FAP-EMA-16X20`). Both sizes use the same 4:5 aspect ratio,
-so the artwork composition does not require a crop change.
+The fifteen active original-art products currently offer an unframed 8 × 10
+inch print at €29.99 and a 16 × 20 inch print at €39.99 on Prodigi enhanced
+matte art paper (`ART-FAP-EMA-16X20`). The approved next transition adds an
+unframed 20 × 24 inch print at €49.99 (`GLOBAL-FAP-20X24`). The first two sizes
+are 4:5. The 20 × 24 size is 5:6 and uses a centred full-bleed crop that removes
+about 2% from the top and bottom instead of adding white side margins.
 
 The Hydrogen product route renders Shopify's `Size` values. Its flat artwork is
 always visible, while room mockups and the true-scale sofa diagram follow the
-selected 8 × 10 or 16 × 20 variant.
+selected 8 × 10, 16 × 20, or 20 × 24 variant.
 
 ## Production Files
 
@@ -20,11 +21,21 @@ Run:
 python .\scripts\prepare-original-art-size-assets.py
 ```
 
-The command produces one ignored 4800 × 6000 pixel, 300-DPI JPEG per artwork
+The default command produces one ignored 4800 × 6000 pixel, 300-DPI JPEG per artwork
 under `output/product-art/print-16x20-300dpi/` and writes a hash manifest beside
 them. The manifest records the approximately 1120 × 1400 source dimensions.
 The larger files are high-quality resizes; the larger pixel dimensions do not
 create additional native artwork detail.
+
+For 20 × 24 run:
+
+```powershell
+python .\scripts\prepare-original-art-size-assets.py --size=20x24
+```
+
+This produces 6000 × 7200 pixel, 300-DPI JPEGs under
+`output/product-art/print-20x24-300dpi/`. Its manifest records the exact centred
+crop box, output hashes, and deterministic `CM-...-20X24` Shopify SKUs.
 
 Prodigi's dashboard currently lists 4800 × 6000 as the recommended dimensions
 for `ART-FAP-EMA-16X20`. Prodigi's authenticated product selector confirms
@@ -39,6 +50,19 @@ First run the read-only live audit:
 ```powershell
 node .\scripts\sync-original-art-size-variants.mjs
 ```
+
+Audit or mutate the 20 × 24 transition only with `--size=20x24`:
+
+```powershell
+node .\scripts\sync-original-art-size-variants.mjs --size=20x24
+node .\scripts\sync-original-art-size-variants.mjs --size=20x24 --stage
+node .\scripts\sync-original-art-size-variants.mjs --size=20x24 --activate --prodigi-confirmed=GLOBAL-FAP-20X24
+node .\scripts\sync-original-art-size-variants.mjs --size=20x24 --pause
+```
+
+Staging creates the €49.99 variants with tracked zero inventory and `DENY`, so
+they cannot be bought while Prodigi mapping is incomplete. Activation is
+rejected unless the exact connected-account SKU is explicitly confirmed.
 
 Stage all fifteen variants using the fixed approved prices:
 
@@ -99,6 +123,7 @@ Generate only the 30 new larger mockups:
 npm run catalog:art:mockups:large
 ```
 
-Running `npm run catalog:art:mockups` still generates all 60 mockups. Future
-media append runs plan four mockups per product, for five images including the
-flat artwork.
+`npm run catalog:art:mockups:bigger` generates only the 30 new 20 × 24 scenes.
+Running `npm run catalog:art:mockups` generates all 90 mockups. Future media
+append runs plan six mockups per product, for seven images including the flat
+artwork.
