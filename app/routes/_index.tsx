@@ -1473,6 +1473,90 @@ html:has(.home-root) main {
 
 }
 
+@media (max-width: 768px) and (max-height: 680px) {
+  .hm-ui-layer {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding: 1rem 1.25rem 2.2rem;
+    row-gap: 8px;
+  }
+
+  .hm-header-top {
+    border-radius: 20px;
+    gap: 0.65rem;
+    padding: 10px 12px;
+  }
+
+  .hm-brand,
+  .hm-brand.hm-nav-text {
+    font-size: 1.25rem;
+  }
+
+  .hm-nav-group {
+    gap: 0.4rem;
+  }
+
+  .hm-nav-text {
+    font-size: 0.56rem;
+    letter-spacing: 0.13em;
+  }
+
+  .hm-hero-text {
+    align-self: center;
+    grid-row: 2;
+    justify-self: center;
+    left: auto;
+    max-width: 300px;
+    position: static;
+    top: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  .hm-prompt-main {
+    font-size: clamp(2.3rem, 14vw, 2.65rem);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+
+  .hm-prompt-sub {
+    font-size: 0.58rem;
+    letter-spacing: 0.18em;
+    line-height: 1.55;
+  }
+
+  .hm-hero-actions {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .hm-hero-action {
+    min-height: 38px;
+    padding-inline: 16px;
+  }
+
+  .hm-interaction-anchor {
+    align-self: end;
+    bottom: auto;
+    gap: 0.85rem;
+    grid-row: 3;
+    justify-self: center;
+    left: auto;
+    position: static;
+    transform: none;
+  }
+
+  .hm-label-enter {
+    font-size: 0.62rem;
+  }
+
+  .hm-coords {
+    bottom: 0.75rem;
+    font-size: 0.62rem;
+    left: 1.25rem;
+  }
+}
+
 @media (max-width: 480px) {
   .featured-collections-track .featured-collection-card {
     flex-basis: min(calc(100vw - 36px), 340px);

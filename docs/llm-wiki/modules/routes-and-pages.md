@@ -60,6 +60,12 @@ section complete. Shopify product media, title, alt text, and product URL replac
 each fallback slot automatically, so changing the collection contents is the
 normal content-management workflow.
 
+The mobile hero keeps its expansive composition on standard phone screens. On
+viewports no wider than 768 pixels and no taller than 680 pixels, the UI layer
+switches to a compact three-row grid so the glass navigation, hero copy and
+actions, and enter-shop control cannot overlap. Focused source regression tests
+lock that short-viewport composition.
+
 Important dependencies:
 
 - `filterDemoProducts`
@@ -71,7 +77,7 @@ Important dependencies:
 - `HOME_EDITORIAL_COLLECTION_HANDLE`
 
 Sources: `app/routes/_index.tsx`, `app/components/HomepageEditorial.tsx`,
-`app/content/homeEditorial.ts`.
+`app/content/homeEditorial.ts`, `scripts/mobileLanding.node-test.mjs`.
 
 ## Product Page
 

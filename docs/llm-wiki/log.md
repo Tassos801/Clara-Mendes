@@ -209,3 +209,11 @@ images after the flat featured artwork and associates each one only with its
 matching Size variant. The production audit verifies that mapping. The PDP then
 leads with the selected variant image while collection cards retain the flat
 artwork.
+
+## [2026-08-11] storefront | Fixed the landing hero on short mobile screens
+
+Changed only the home hero below 768 x 680 pixels to use a compact three-row
+grid. The glass navigation, headline and CTAs, enter-shop control, and capsule
+note now remain separated on short devices such as 320 x 480 and 320 x 568,
+while the established 390 x 844 composition is unchanged. Added focused
+regression coverage; no catalog or Shopify data changed.
