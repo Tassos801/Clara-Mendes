@@ -144,5 +144,19 @@ test('rejects failed or wrong-source media even when the alt matches', () => {
     ),
     true,
   );
+  assert.equal(
+    mediaMatchesPlannedSource(
+      {
+        image: {
+          url: exact[0].image.url.replace(
+            '.jpg',
+            '_179c2a11-7d1d-4196-b0a7-5f2b7086816f.jpg',
+          ),
+        },
+      },
+      planned[0],
+    ),
+    true,
+  );
   assert.equal(mediaMatchesPlannedSource(wrongSource, planned[0]), false);
 });
