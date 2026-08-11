@@ -93,7 +93,11 @@ This filtering is used by home, collection, product, and search routes.
 ## Storefront Product Behavior
 
 Product cards use `ClaraProductCard` and product-card fragments to display
-storefront product data consistently. Product pages add:
+storefront product data consistently. On collection and capsule shopping pages,
+the 15 originals also show one concise editorial story per artwork. Those
+stories live beside the artwork metadata in `data/original-art-catalog.json`
+and are resolved by `getProductStory`; cards outside shopping pages keep the
+compact title-and-price treatment. Product pages add:
 
 - Variant option selection.
 - Add-to-cart analytics.
@@ -104,7 +108,9 @@ storefront product data consistently. Product pages add:
 - Shop Pay button when available.
 
 Sources: `app/components/ClaraProductCard.tsx`,
-`app/lib/productCardFragment.ts`, `app/routes/products.$handle.tsx`.
+`app/lib/productCardFragment.ts`, `app/lib/productCopy.ts`,
+`app/routes/collections.all.tsx`, `app/routes/collections.$handle.tsx`,
+`app/routes/products.$handle.tsx`.
 
 ## Admin Cleanup Relationship
 

@@ -234,6 +234,7 @@ function CapsuleLandingView({data}: {data: CapsuleLoaderData}) {
               key={product.id}
               product={product}
               loading={index === 0 ? 'eager' : 'lazy'}
+              showStory
             />
           ))}
         </div>

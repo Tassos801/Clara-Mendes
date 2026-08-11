@@ -1,9 +1,20 @@
+import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
+
 type ProductCopyInput = {
   description?: string | null;
   handle?: string | null;
   productType?: string | null;
   title?: string | null;
 };
+
+const ORIGINAL_ART_STORIES = new Map(
+  artCatalog.map((product) => [product.handle, product.story]),
+);
+
+export function getProductStory(product: Pick<ProductCopyInput, 'handle'>) {
+  const handle = product.handle?.trim().toLowerCase();
+  return handle ? (ORIGINAL_ART_STORIES.get(handle) ?? null) : null;
+}
 
 const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
   // Device list must stay in sync with data/art-product-extensions.json

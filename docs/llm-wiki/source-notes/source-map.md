@@ -34,6 +34,8 @@ these files; it does not replace reading them.
   product/collection filtering.
 - `app/components/ClaraProductCard.tsx` - product card component.
 - `app/lib/productCardFragment.ts` - shared product card GraphQL fragment.
+- `app/lib/productCopy.ts` and `data/original-art-catalog.json` - curated
+  storefront copy and per-artwork shopping-page stories.
 
 ## Cart, Checkout, Analytics
 
