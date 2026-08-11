@@ -79,7 +79,11 @@ export function variantForSize(product, label) {
 export function inspectOriginalArtProduct(
   product,
   item,
-  {allowLegacyBasePrice = false} = {},
+  {
+    allowLegacyBasePrice = false,
+    requiredActiveExpansionSizes = [],
+    requiredExpansionSizes = [],
+  } = {},
 ) {
   const issues = [];
   const baseVariant = variantForSize(product, BASE_SIZE.label);
@@ -131,7 +135,16 @@ export function inspectOriginalArtProduct(
     [LARGE_SIZE, largeVariant],
     [BIGGER_SIZE, biggerVariant],
   ]) {
-    if (!variant) continue;
+    const isRequired = [
+      ...requiredExpansionSizes,
+      ...requiredActiveExpansionSizes,
+    ].some((required) => required.key === size.key);
+    if (!variant) {
+      if (isRequired) {
+        issues.push(`${size.label} variant is missing`);
+      }
+      continue;
+    }
     if (variant.sku !== expectedSku(item, size)) {
       issues.push(
         `${size.label} SKU is ${variant.sku || 'missing'}, expected ${expectedSku(item, size)}`,
@@ -148,9 +161,29 @@ export function inspectOriginalArtProduct(
     if (variant.inventoryItem?.requiresShipping !== true) {
       issues.push(`${size.label} does not require shipping`);
     }
+    if (
+      requiredActiveExpansionSizes.some(
+        (required) => required.key === size.key,
+      ) &&
+      releaseState(variant) !== 'ACTIVE'
+    ) {
+      issues.push(`${size.label} must be ACTIVE`);
+    }
   }
 
   return {baseVariant, biggerVariant, issues, largeVariant};
+}
+
+export function expectedOriginalArtMediaCount(sizes = ALL_SIZES) {
+  return 1 + sizes.length * 2;
+}
+
+export function sizesThrough(targetSize) {
+  const targetIndex = ALL_SIZES.findIndex((size) => size.key === targetSize.key);
+  if (targetIndex < 0) {
+    throw new Error(`Unknown target size: ${targetSize.key}`);
+  }
+  return ALL_SIZES.slice(0, targetIndex + 1);
 }
 
 export function releaseState(largeVariant) {
@@ -171,14 +204,29 @@ export function releaseState(largeVariant) {
   return 'INVALID';
 }
 
-export function multiSizeDescription(descriptionHtml) {
+export function multiSizeDescription(descriptionHtml, targetSize = BIGGER_SIZE) {
   const html = String(descriptionHtml ?? '');
   if (html.includes(MULTI_SIZE_COPY)) {
     return {changed: false, html};
   }
-  const existingCopy = [TWO_SIZE_COPY, CURRENT_SIZE_COPY].find((copy) =>
-    html.includes(copy),
-  );
+  const targetCopy =
+    targetSize.key === LARGE_SIZE.key
+      ? TWO_SIZE_COPY
+      : targetSize.key === BIGGER_SIZE.key
+        ? MULTI_SIZE_COPY
+        : null;
+  if (!targetCopy) {
+    throw new Error(`Unsupported description size: ${targetSize.key}`);
+  }
+  if (html.includes(targetCopy)) {
+    return {changed: false, html};
+  }
+  const existingCopy =
+    targetSize.key === BIGGER_SIZE.key && html.includes(TWO_SIZE_COPY)
+      ? TWO_SIZE_COPY
+      : html.includes(CURRENT_SIZE_COPY)
+        ? CURRENT_SIZE_COPY
+        : null;
   if (!existingCopy) {
     throw new Error(
       'Product description does not contain the expected current size copy.',
@@ -187,6 +235,6 @@ export function multiSizeDescription(descriptionHtml) {
 
   return {
     changed: true,
-    html: html.replace(existingCopy, MULTI_SIZE_COPY),
+    html: html.replace(existingCopy, targetCopy),
   };
 }

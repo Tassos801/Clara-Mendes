@@ -23,6 +23,7 @@ import {
   inspectOriginalArtProduct,
   multiSizeDescription,
   releaseState,
+  sizesThrough,
   variantForSize,
 } from './lib/original-art-size-plan.mjs';
 
@@ -360,11 +361,16 @@ function validateCatalog(
 ) {
   let issueCount = 0;
   const rows = [];
+  const targetIndex = EXPANSION_SIZES.findIndex(
+    (size) => size.key === targetSize.key,
+  );
+  const prerequisiteSizes = EXPANSION_SIZES.slice(0, targetIndex);
 
   for (const item of catalog) {
     const product = productsByHandle.get(item.handle);
     const inspection = inspectOriginalArtProduct(product, item, {
       allowLegacyBasePrice,
+      requiredActiveExpansionSizes: prerequisiteSizes,
     });
     const knownLabels = new Set(ALL_SIZES.map((size) => size.label));
     const unexpectedVariants = (product.variants?.nodes ?? []).filter(
@@ -384,8 +390,9 @@ function validateCatalog(
       );
     }
 
-    // The target size is judged below via its release state, so only the
-    // non-target expansion sizes need this existence-gated safety check.
+    // The target size is judged below. Earlier expansion sizes are required by
+    // inspectOriginalArtProduct; later sizes remain optional for backwards
+    // compatibility, but must be safe when they already exist.
     for (const size of EXPANSION_SIZES) {
       if (size.key === targetSize.key) continue;
       const variant = variantForSize(product, size.label);
@@ -476,8 +483,8 @@ async function stageVariants(adminGraphql, rows, targetSize) {
   }
 }
 
-async function updateDescription(adminGraphql, product, item) {
-  const updated = multiSizeDescription(product.descriptionHtml);
+async function updateDescription(adminGraphql, product, item, targetSize) {
+  const updated = multiSizeDescription(product.descriptionHtml, targetSize);
   if (!updated.changed) return;
 
   const body = await adminGraphql(UPDATE_DESCRIPTION, {
@@ -521,8 +528,8 @@ async function setVariantTracking(adminGraphql, rows, targetSize, {tracked}) {
       );
     }
 
-    if (!tracked && targetSize.key === BIGGER_SIZE.key) {
-      await updateDescription(adminGraphql, product, item);
+    if (!tracked) {
+      await updateDescription(adminGraphql, product, item, targetSize);
     }
   }
 }
@@ -613,7 +620,9 @@ Prodigi product: ${targetSize.prodigiSku} (${targetSize.label}).`,
   await setVariantTracking(adminGraphql, rows, targetSize, {tracked: false});
   await verifyFinalState(adminGraphql, targetSize, 'ACTIVE');
   console.log(
-    `All 15 products now offer ${ALL_SIZES.map((size) => size.label).join(', ')}.`,
+    `All 15 products now offer ${sizesThrough(targetSize)
+      .map((size) => size.label)
+      .join(', ')}.`,
   );
 }
 

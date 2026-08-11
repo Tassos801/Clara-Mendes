@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
 
+import * as roomScenes from './lib/room-mockup-scenes.mjs';
+
 import {
   ART_RATIO,
   MOCKUP_OUTPUT,
@@ -22,6 +24,10 @@ for (const scene of MOCKUP_SCENES) {
   assert.ok(alt.includes('Quiet Form I'), `${scene.key}: alt names the print`);
   assert.ok(alt.includes('unframed'), `${scene.key}: alt states unframed`);
 }
+assert.deepEqual(
+  roomScenes.expectedMockupAlts?.('Quiet Form I'),
+  MOCKUP_SCENES.map((scene) => scene.altFor('Quiet Form I')),
+);
 assert.deepEqual(
   filterMockupScenes(MOCKUP_SCENES, '16x20').map((scene) => scene.key),
   ['detail-16x20', 'context-16x20'],

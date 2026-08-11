@@ -56,6 +56,13 @@ First run the read-only live audit:
 node .\scripts\sync-original-art-size-variants.mjs
 ```
 
+The production catalog audit
+(`node .\scripts\audit-original-art-catalog.mjs`) requires exactly the three
+approved size variants and seven READY images per product. Missing 16 × 20 or
+20 × 24 variants, or a missing size-specific mockup pair, fails the audit
+instead of accepting a partial pre-release state. The 20 × 24 workflow also
+requires its prerequisite 16 × 20 variant to remain ACTIVE, not merely staged.
+
 Audit or mutate the 20 × 24 transition only with `--size=20x24`:
 
 ```powershell
