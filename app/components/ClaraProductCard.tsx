@@ -3,6 +3,7 @@ import {Link} from 'react-router';
 import {Image} from '@shopify/hydrogen';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
+import {getProductStory} from '~/lib/productCopy';
 
 const CARD_IMAGE_SIZES =
   '(min-width: 1100px) 25vw, (min-width: 781px) 33vw, 50vw';
@@ -65,9 +66,11 @@ export type ClaraCardProduct = {
 export function ClaraProductCard({
   product,
   loading = 'lazy',
+  showStory = false,
 }: {
   product: ClaraCardProduct;
   loading?: 'eager' | 'lazy';
+  showStory?: boolean;
 }) {
   const images = product.images?.nodes ?? [];
   const baseImage = product.featuredImage ?? images[0];
@@ -86,6 +89,7 @@ export function ClaraProductCard({
   const chip = product.productType || 'Curated object';
   const firstVariant =
     product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
+  const story = showStory ? getProductStory(product) : null;
 
   return (
     <article className="product-card cm-card">
@@ -136,15 +140,18 @@ export function ClaraProductCard({
         className="cm-card-copy-link"
       >
         <div className="product-card-copy cm-card-copy">
-          <h3 className="cm-card-title">
-            <i>{product.title.split(' ')[0]}</i>
-            {product.title.split(' ').slice(1).length
-              ? ' ' + product.title.split(' ').slice(1).join(' ')
-              : ''}
-          </h3>
-          {price ? (
-            <strong className="cm-card-price">{formatMoney(price)}</strong>
-          ) : null}
+          <div className="cm-card-heading">
+            <h3 className="cm-card-title">
+              <i>{product.title.split(' ')[0]}</i>
+              {product.title.split(' ').slice(1).length
+                ? ' ' + product.title.split(' ').slice(1).join(' ')
+                : ''}
+            </h3>
+            {price ? (
+              <strong className="cm-card-price">{formatMoney(price)}</strong>
+            ) : null}
+          </div>
+          {story ? <p className="cm-card-story">{story}</p> : null}
         </div>
       </Link>
 
@@ -329,11 +336,22 @@ const cardCss = `
 }
 
 .cm-card-copy {
+  padding-top: 14px;
+}
+
+.cm-card-heading {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  padding-top: 14px;
+}
+
+.cm-card-story {
+  color: var(--color-muted, #6f685e);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
 .cm-card-title {
@@ -445,7 +463,16 @@ const cardCss = `
 
   .cm-card-copy {
     padding-top: 10px;
+  }
+
+  .cm-card-heading {
     gap: 6px;
+  }
+
+  .cm-card-story {
+    font-size: 0.72rem;
+    line-height: 1.45;
+    margin-top: 6px;
   }
 
   .cm-quick-add {

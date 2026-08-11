@@ -419,6 +419,7 @@ function AutoLoadGrid({
           <ClaraProductCard
             product={product}
             loading={index < 4 ? 'eager' : 'lazy'}
+            showStory
           />
         </div>
       ))}

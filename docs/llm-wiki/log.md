@@ -175,3 +175,12 @@ transition now requires the earlier 16 x 20 variant to remain Active, and the
 production catalog audit requires exactly three approved Active variants and
 the exact seven READY images per live print. Focused regression tests cover the
 prerequisite, both description paths, and the seven-image invariant.
+
+## [2026-08-11] storefront | Added concise stories to original-art shop cards
+
+Added one distinct 10-18 word editorial story for each of the 15 live original
+prints. The text is stored with the authoritative artwork metadata and appears
+on the all-products and capsule shopping grids; homepage, related-product,
+cart, search, and recently viewed cards keep their compact treatment. Focused
+tests enforce complete coverage, uniqueness, punctuation, and the mobile copy
+length limit. No Shopify catalog state was changed.

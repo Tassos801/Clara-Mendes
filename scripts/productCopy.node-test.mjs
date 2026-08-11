@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
+import artCatalog from '../data/original-art-catalog.json' with {type: 'json'};
 import {PHONE_CASE_DEVICE_LABELS} from '../app/lib/artExtensions.ts';
 import {
   getProductDescription,
   getProductLede,
+  getProductStory,
   normalizeSentenceSpacing,
 } from '../app/lib/productCopy.ts';
 
@@ -116,3 +118,24 @@ assert.equal(
   }),
   'A woven cotton trivet. It works in multiples.',
 );
+
+// Every live original has one distinct, compact editorial story for the shop
+// grid. Keeping the text in the catalog makes the artwork metadata the single
+// source of truth and the upper bound protects the mobile two-column layout.
+const stories = new Set();
+for (const product of artCatalog) {
+  const story = getProductStory(product);
+  assert.equal(story, product.story, `story mismatch: ${product.handle}`);
+  assert.match(story, /[.!?]$/, `story needs punctuation: ${product.handle}`);
+
+  const wordCount = story.trim().split(/\s+/).length;
+  assert.ok(
+    wordCount >= 10 && wordCount <= 18,
+    `story must be 10-18 words (${wordCount}): ${product.handle}`,
+  );
+  assert.ok(!stories.has(story), `duplicate story: ${product.handle}`);
+  stories.add(story);
+}
+
+assert.equal(stories.size, artCatalog.length);
+assert.equal(getProductStory({handle: 'not-an-original'}), null);
