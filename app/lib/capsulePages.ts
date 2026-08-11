@@ -34,7 +34,7 @@ const CAPSULE_PAGE_CONTENT: Record<string, CapsulePageContent> = {
       'Warm architectural forms in ivory, oat, terracotta, and charcoal.',
     editorial: [
       'Quiet Form is built from arches, columns, and grounded curves — the shapes buildings rest on, softened into warm neutrals. Ivory and oat carry the light; terracotta and charcoal give each composition its weight. The result reads as calm rather than empty: abstract wall art that organises a room instead of decorating it.',
-      'The capsule holds three original works, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. Hang one 8 × 10 print alone above a desk or reading chair, or run all three in a row for a gallery wall that stays quiet in a living room, bedroom, or study.',
+      'The capsule holds three original works, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper, in sizes from 8 × 10 to 20 × 24 in. Hang one print alone above a desk or reading chair, or run all three in a row for a gallery wall that stays quiet in a living room, bedroom, or study.',
     ],
     pdpBlurb:
       'Part of Quiet Form — three warm architectural compositions designed to hang alone or as a set.',

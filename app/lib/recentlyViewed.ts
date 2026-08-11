@@ -1,10 +1,16 @@
-export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v2';
+// v3: `amount` is the lowest RELEASED price (the "From" floor), no longer
+// the variant the shopper happened to have selected, and `hasPriceRange`
+// records whether more than one released price exists. Bumping the key
+// orphans v2 snapshots (which may hold a 16 × 20/20 × 24 selected price)
+// exactly as the v1→v2 bump did for the 29.00→29.99 repricing.
+export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v3';
 const MAX_ENTRIES = 12;
 
 export type RecentlyViewedEntry = {
   amount?: string;
   currencyCode?: string;
   handle: string;
+  hasPriceRange?: boolean;
   id: string;
   imageAlt?: string;
   imageUrl?: string;
@@ -12,6 +18,25 @@ export type RecentlyViewedEntry = {
   title: string;
   viewedAt: number;
 };
+
+/**
+ * How long a snapshot's `hasPriceRange` flag stays trustworthy. The rail
+ * renders from localStorage without live data, so if a larger size is
+ * paused after the visit the stored flag would keep claiming a "From"
+ * range; bounding its age caps that window. The floor amount itself stays
+ * shown — it is always a genuinely released price.
+ */
+export const PRICE_RANGE_FLAG_TTL_MS = 14 * 24 * 60 * 60 * 1000;
+
+export function isPriceRangeFlagFresh(
+  entry: Pick<RecentlyViewedEntry, 'hasPriceRange' | 'viewedAt'>,
+  now: number = Date.now(),
+): boolean {
+  return (
+    entry.hasPriceRange === true &&
+    now - entry.viewedAt <= PRICE_RANGE_FLAG_TTL_MS
+  );
+}
 
 function readEntries(): RecentlyViewedEntry[] {
   if (typeof window === 'undefined') return [];

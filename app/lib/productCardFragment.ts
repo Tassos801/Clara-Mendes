@@ -32,6 +32,20 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
         currencyCode
       }
     }
+    # Released-price sample for guard-safe "From" pricing: staged size
+    # variants exist in Shopify at full price with availableForSale=false,
+    # so cards must never price off priceRange alone. Prints are audit-pinned
+    # to exactly three variants and extension families share one price, so
+    # first: 10 always covers every distinct purchasable price.
+    sizeVariants: variants(first: 10) {
+      nodes {
+        availableForSale
+        price {
+          amount
+          currencyCode
+        }
+      }
+    }
     cardVariant: variants(first: 1) {
       nodes {
         id

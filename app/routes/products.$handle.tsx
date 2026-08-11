@@ -36,6 +36,7 @@ import {
   PHONE_CASE_HANDLE,
 } from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {deriveCardPricing} from '~/lib/productCardPricing';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription, getProductLede} from '~/lib/productCopy';
 import {
@@ -329,32 +330,21 @@ export default function Product() {
   }, []);
 
   useEffect(() => {
+    // Snapshot the released "From" floor, never the selected variant —
+    // a 20 × 24 viewing must not become the card price in the rail.
+    const pricing = deriveCardPricing(product);
     recordRecentlyViewed({
-      amount:
-        selectedVariant?.price.amount ??
-        product.priceRange?.minVariantPrice?.amount,
-      currencyCode:
-        selectedVariant?.price.currencyCode ??
-        product.priceRange?.minVariantPrice?.currencyCode,
+      amount: pricing.price?.amount,
+      currencyCode: pricing.price?.currencyCode,
       handle: product.handle,
+      hasPriceRange: pricing.hasRange,
       id: product.id,
       imageAlt: primaryImage?.altText ?? undefined,
       imageUrl: primaryImage?.url,
       productType: product.productType ?? undefined,
       title: product.title,
     });
-  }, [
-    primaryImage?.altText,
-    primaryImage?.url,
-    product.handle,
-    product.id,
-    product.priceRange?.minVariantPrice?.amount,
-    product.priceRange?.minVariantPrice?.currencyCode,
-    product.productType,
-    product.title,
-    selectedVariant?.price.amount,
-    selectedVariant?.price.currencyCode,
-  ]);
+  }, [primaryImage?.altText, primaryImage?.url, product]);
 
   const openCart = useCallback(() => open('cart'), [open]);
   const productViewAnalytics = useMemo(

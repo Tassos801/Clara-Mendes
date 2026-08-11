@@ -54,7 +54,11 @@ export function OriginalArtPreview({
       <div className="original-art-preview__grid">
         {items.map((item) => {
           const liveProduct = products[item.handle];
-          const price = formatOriginalArtPrice(liveProduct?.price);
+          const formattedPrice = formatOriginalArtPrice(liveProduct?.price);
+          const price =
+            formattedPrice && liveProduct?.hasPriceRange
+              ? `From ${formattedPrice}`
+              : formattedPrice;
           const status = liveProduct
             ? liveProduct.availableForSale
               ? 'Available now'
@@ -107,8 +111,9 @@ export function OriginalArtPreview({
 
       {compact ? (
         <p className="original-art-preview__note">
-          Each capsule contains three complementary works — unframed 8 × 10 in
-          giclée prints on 200gsm Enhanced Matte Art paper, printed to order.
+          Each capsule contains three complementary works — unframed giclée
+          prints in three sizes up to 20 × 24 in, on 200gsm Enhanced Matte Art
+          paper, printed to order.
         </p>
       ) : null}
     </section>

@@ -100,5 +100,5 @@ Every family remains blocked from publication until:
 6. At least one physical sample per material family passes colour, sharpness,
    trimming, construction, packaging, and tracking review.
 
-The existing 8 × 10 art prints stay separate and unchanged. Their current
+The existing art prints (now sold in three sizes) stay separate and unchanged. Their current
 Prodigi mappings are not modified by this extension.

@@ -124,6 +124,24 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     vendor
     productType
     tags
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    # Released-price sample for guard-safe "From" pricing — mirrors the
+    # ClaraProductCard fragment: staged size variants exist in Shopify at
+    # full price with availableForSale=false and must never set the floor.
+    sizeVariants: variants(first: 10) {
+      nodes {
+        availableForSale
+        price {
+          amount
+          currencyCode
+        }
+      }
+    }
     selectedOrFirstAvailableVariant(
       selectedOptions: []
       ignoreUnknownOptions: true
