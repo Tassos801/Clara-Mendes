@@ -175,7 +175,8 @@ export function inspectOriginalArtProduct(
 }
 
 export function expectedOriginalArtMediaCount(sizes = ALL_SIZES) {
-  return 1 + sizes.length * 2;
+  // Flat artwork + one sofa-scale image + two sage-wall scenes per size.
+  return 2 + sizes.length * 2;
 }
 
 export function sizesThrough(targetSize) {
