@@ -27,10 +27,20 @@ const largeContext = {
     'Quiet Form I art print shown unframed at its true 16 by 20 inch size on a sage wall beside a reading lamp',
   url: '/quiet-form-01-room-context-16x20.webp?v=1',
 };
-const sofaContext = {
+const smallSofa = {
   altText:
-    'Quiet Form I 16 by 20 inch art print shown at scale above a sofa in a warm neutral living room',
+    'Quiet Form I unframed 8 by 10 inch art print shown at relative scale above a sofa in a warm neutral living room',
+  url: '/quiet-form-01-room-sofa-8x10.jpg?v=1',
+};
+const largeSofa = {
+  altText:
+    'Quiet Form I unframed 16 by 20 inch art print shown at relative scale above a sofa in a warm neutral living room',
   url: '/quiet-form-01-room-sofa-16x20.jpg?v=1',
+};
+const biggerSofa = {
+  altText:
+    'Quiet Form I unframed 20 by 24 inch art print shown at relative scale above a sofa in a warm neutral living room',
+  url: '/quiet-form-01-room-sofa-20x24.jpg?v=1',
 };
 const biggerDetail = {
   altText:
@@ -44,7 +54,9 @@ const biggerContext = {
 };
 const gallery = [
   flat,
-  sofaContext,
+  smallSofa,
+  largeSofa,
+  biggerSofa,
   smallDetail,
   smallContext,
   largeDetail,
@@ -68,21 +80,23 @@ test('maps the selected Size option and defaults safely to 8x10', () => {
 test('keeps flat art while showing only the selected-size room mockups', () => {
   assert.deepEqual(filterGalleryImagesForSize(gallery, '8x10', true), [
     flat,
+    smallSofa,
     smallDetail,
     smallContext,
   ]);
   assert.deepEqual(filterGalleryImagesForSize(gallery, '16x20', true), [
     flat,
-    sofaContext,
+    largeSofa,
     largeDetail,
     largeContext,
   ]);
   assert.deepEqual(filterGalleryImagesForSize(gallery, '20x24', true), [
     flat,
+    biggerSofa,
     biggerDetail,
     biggerContext,
   ]);
-  assert.equal(filterGalleryImagesForSize(gallery, '20x24', false).length, 8);
+  assert.equal(filterGalleryImagesForSize(gallery, '20x24', false).length, 10);
 });
 
 test('scales both diagrams against the same 84 inch sofa', () => {

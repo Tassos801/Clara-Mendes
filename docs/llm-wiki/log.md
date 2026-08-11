@@ -195,3 +195,17 @@ catalog or Shopify data behavior. Coarse-pointer devices avoid expensive fixed
 blur, while reduced-transparency and no-backdrop-filter fallbacks preserve
 contrast. Corrected the mobile sticky add-to-cart cascade so the existing bar
 now appears as an inset glass control on small screens.
+
+## [2026-08-11] catalog | Prepared clean sofa imagery for every live size
+
+Expanded the warm-neutral sofa pipeline from one labelled 16 x 20 image to
+three clean scenes per artwork: 8 x 10, 16 x 20, and 20 x 24. The 45
+deterministic composites preserve the exact artwork, keep only the reference
+image's simple height bracket, use relative widths of 1:2:2.5, and apply the
+production 5:6 crop to 20 x 24. The guarded Shopify migration uploads and
+verifies new media, source identity, gallery order, and exact variant
+associations before removing the old text overlay. It orders the three sofa
+images after the flat featured artwork and associates each one only with its
+matching Size variant. The production audit verifies that mapping. The PDP then
+leads with the selected variant image while collection cards retain the flat
+artwork.

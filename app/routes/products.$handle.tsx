@@ -296,7 +296,7 @@ export default function Product() {
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
   const shopUrl = new URL('/collections/all', seoUrl).toString();
   const galleryLeadImage = isArtPrint
-    ? (product.featuredImage ?? primaryImage)
+    ? (selectedVariant?.image ?? product.featuredImage ?? primaryImage)
     : primaryImage;
   const galleryImages = useMemo(() => {
     const images = [
@@ -1367,7 +1367,7 @@ const PRODUCT_QUERY = `#graphql
       ...ClaraProductCard
       description
       descriptionHtml
-      galleryImages: images(first: 8) {
+      galleryImages: images(first: 10) {
         nodes {
           altText
           height
