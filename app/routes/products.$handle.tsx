@@ -1,8 +1,16 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {
+  type KeyboardEvent as ReactKeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {Link, redirect, useLoaderData, useLocation} from 'react-router';
 import {
   Analytics,
   getSelectedProductOptions,
+  Image,
   ShopPayButton,
 } from '@shopify/hydrogen';
 import type {Route} from './+types/products.$handle';
@@ -31,6 +39,10 @@ import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription, getProductLede} from '~/lib/productCopy';
 import {
+  clampCarouselIndex,
+  nearestCarouselIndex,
+} from '~/lib/productGalleryCarousel';
+import {
   filterGalleryImagesForSize,
   printScaleGeometry,
   selectedPrintSize,
@@ -57,7 +69,9 @@ type MoneyAmount = {
 
 type ProductImage = {
   altText?: string | null;
+  height?: number | null;
   url: string;
+  width?: number | null;
 };
 
 type ProductOptionValue = {
@@ -252,8 +266,6 @@ export default function Product() {
   } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
-  const [zoomOpen, setZoomOpen] = useState(false);
-  const zoomCloseRef = useRef<HTMLButtonElement>(null);
   const atcRef = useRef<HTMLDivElement>(null);
   const [showStickyATC, setShowStickyATC] = useState(false);
   const selectedVariant =
@@ -283,9 +295,12 @@ export default function Product() {
   );
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
   const shopUrl = new URL('/collections/all', seoUrl).toString();
+  const galleryLeadImage = isArtPrint
+    ? (product.featuredImage ?? primaryImage)
+    : primaryImage;
   const galleryImages = useMemo(() => {
     const images = [
-      ...(primaryImage ? [primaryImage] : []),
+      ...(galleryLeadImage ? [galleryLeadImage] : []),
       ...(product.galleryImages?.nodes ?? product.images?.nodes ?? []),
     ];
 
@@ -296,15 +311,12 @@ export default function Product() {
     );
     return filterGalleryImagesForSize(uniqueImages, printSize.key, isArtPrint);
   }, [
+    galleryLeadImage,
     isArtPrint,
-    primaryImage,
     printSize.key,
     product.galleryImages?.nodes,
     product.images?.nodes,
   ]);
-  const leadGalleryImage = galleryImages[0];
-  const supportingGalleryImages = galleryImages.slice(1);
-
   useEffect(() => {
     const target = atcRef.current;
     if (!target) return;
@@ -315,16 +327,6 @@ export default function Product() {
     observer.observe(target);
     return () => observer.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (!zoomOpen) return;
-    zoomCloseRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setZoomOpen(false);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [zoomOpen]);
 
   useEffect(() => {
     recordRecentlyViewed({
@@ -480,25 +482,13 @@ export default function Product() {
       </nav>
 
       <section className="product-detail-layout">
-        <div className="product-gallery product-gallery--lead">
-          {leadGalleryImage ? (
-            <button
-              className="product-zoom-trigger"
-              type="button"
-              aria-haspopup="dialog"
-              onClick={() => setZoomOpen(true)}
-            >
-              <img
-                src={leadGalleryImage.url}
-                alt={leadGalleryImage.altText || product.title}
-                loading="eager"
-              />
-              <span className="product-zoom-hint">Tap to zoom</span>
-            </button>
-          ) : (
-            <div className="product-image-placeholder" aria-hidden />
-          )}
-        </div>
+        <ProductGalleryCarousel
+          key={`${product.id}:${printSize.key}`}
+          images={galleryImages}
+          isArtPrint={isArtPrint}
+          printSize={printSize}
+          productTitle={product.title}
+        />
 
         <div className="product-purchase-panel">
           <p className="eyebrow">
@@ -746,49 +736,7 @@ export default function Product() {
             </aside>
           ) : null}
         </div>
-
-        {supportingGalleryImages.length > 0 || isArtPrint ? (
-          <div className="product-gallery product-gallery--supporting">
-            {supportingGalleryImages.map((image, index) => (
-              <img
-                key={image.url}
-                src={image.url}
-                alt={image.altText || `${product.title} ${index + 2}`}
-                loading="lazy"
-              />
-            ))}
-            {isArtPrint ? <PrintScaleDiagram size={printSize.key} /> : null}
-          </div>
-        ) : null}
       </section>
-
-      {zoomOpen && leadGalleryImage ? (
-        <div
-          className="product-zoom-overlay"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${product.title} enlarged view`}
-        >
-          <button
-            className="product-zoom-backdrop"
-            type="button"
-            aria-label="Close enlarged view"
-            onClick={() => setZoomOpen(false)}
-          />
-          <img
-            src={leadGalleryImage.url}
-            alt={leadGalleryImage.altText || product.title}
-          />
-          <button
-            className="product-zoom-close"
-            type="button"
-            ref={zoomCloseRef}
-            onClick={() => setZoomOpen(false)}
-          >
-            Close
-          </button>
-        </div>
-      ) : null}
 
       <ReviewsSection
         productGid={product.id}
@@ -876,6 +824,291 @@ export default function Product() {
         </AddToCartButton>
       </div>
     </div>
+  );
+}
+
+function ProductGalleryCarousel({
+  images,
+  isArtPrint,
+  printSize,
+  productTitle,
+}: {
+  images: ProductImage[];
+  isArtPrint: boolean;
+  printSize: {key: PrintSizeKey; label: string};
+  productTitle: string;
+}) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [zoomImage, setZoomImage] = useState<ProductImage | null>(null);
+  const galleryTrackRef = useRef<HTMLDivElement>(null);
+  const galleryScrollFrameRef = useRef<number | null>(null);
+  const zoomCloseRef = useRef<HTMLButtonElement>(null);
+  const zoomTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const slideCount = images.length + (isArtPrint ? 1 : 0);
+  const galleryIdentity = `${printSize.key}:${images
+    .map((image) => image.url)
+    .join('|')}`;
+
+  const closeZoom = useCallback(() => {
+    setZoomImage(null);
+    window.requestAnimationFrame(() => zoomTriggerRef.current?.focus());
+  }, []);
+
+  const scrollToSlide = useCallback(
+    (index: number) => {
+      const track = galleryTrackRef.current;
+      if (!track) return;
+
+      const slides = Array.from(
+        track.querySelectorAll<HTMLElement>('[data-product-gallery-slide]'),
+      );
+      const nextIndex = clampCarouselIndex(index, slideCount);
+      const slide = slides[nextIndex];
+      if (!slide) return;
+
+      const prefersReducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      setActiveIndex(nextIndex);
+      track.scrollTo({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        left: slide.offsetLeft,
+      });
+    },
+    [slideCount],
+  );
+
+  const handleGalleryScroll = useCallback(() => {
+    const track = galleryTrackRef.current;
+    if (!track) return;
+
+    if (galleryScrollFrameRef.current !== null) {
+      window.cancelAnimationFrame(galleryScrollFrameRef.current);
+    }
+    galleryScrollFrameRef.current = window.requestAnimationFrame(() => {
+      const slides = Array.from(
+        track.querySelectorAll<HTMLElement>('[data-product-gallery-slide]'),
+      );
+      setActiveIndex(
+        nearestCarouselIndex(
+          slides.map((slide) => slide.offsetLeft),
+          track.scrollLeft,
+        ),
+      );
+      galleryScrollFrameRef.current = null;
+    });
+  }, []);
+
+  const handleGalleryKeyDown = (
+    event: ReactKeyboardEvent<HTMLButtonElement>,
+  ) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault();
+      scrollToSlide(activeIndex - 1);
+    }
+    if (event.key === 'ArrowRight') {
+      event.preventDefault();
+      scrollToSlide(activeIndex + 1);
+    }
+  };
+
+  useEffect(() => {
+    setActiveIndex(0);
+    setZoomImage(null);
+    galleryTrackRef.current?.scrollTo({behavior: 'auto', left: 0});
+  }, [galleryIdentity]);
+
+  useEffect(
+    () => () => {
+      if (galleryScrollFrameRef.current !== null) {
+        window.cancelAnimationFrame(galleryScrollFrameRef.current);
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    if (!zoomImage) return;
+
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    zoomCloseRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeZoom();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [closeZoom, zoomImage]);
+
+  if (slideCount === 0) {
+    return (
+      <div className="product-gallery product-gallery--carousel">
+        <div className="product-image-placeholder" aria-hidden />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div
+        className="product-gallery product-gallery--carousel"
+        role="region"
+        aria-roledescription="carousel"
+        aria-label={`${productTitle} product gallery${
+          isArtPrint ? `, ${printSize.label} selected` : ''
+        }`}
+      >
+        <div className="product-gallery-frame">
+          <div
+            className="product-gallery-track"
+            ref={galleryTrackRef}
+            onScroll={handleGalleryScroll}
+          >
+            {images.map((image, index) => (
+              <div
+                className="product-gallery-slide"
+                data-product-gallery-slide
+                key={image.url}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${index + 1} of ${slideCount}`}
+              >
+                <button
+                  className="product-zoom-trigger"
+                  type="button"
+                  tabIndex={index === activeIndex ? 0 : -1}
+                  aria-haspopup="dialog"
+                  aria-label={`Open image ${index + 1} of ${slideCount} in an enlarged view`}
+                  onKeyDown={handleGalleryKeyDown}
+                  onClick={(event) => {
+                    zoomTriggerRef.current = event.currentTarget;
+                    setZoomImage(image);
+                  }}
+                >
+                  <Image
+                    aspectRatio="4/5"
+                    data={image}
+                    alt={image.altText || `${productTitle} view ${index + 1}`}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    sizes="(min-width: 981px) min(51vw, 760px), calc(100vw - 32px)"
+                  />
+                  <span className="product-zoom-hint">View detail</span>
+                </button>
+              </div>
+            ))}
+            {isArtPrint ? (
+              <div
+                className="product-gallery-slide product-gallery-slide--scale"
+                data-product-gallery-slide
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${slideCount} of ${slideCount}, print scale diagram`}
+              >
+                <PrintScaleDiagram size={printSize.key} />
+              </div>
+            ) : null}
+          </div>
+
+          {slideCount > 1 ? (
+            <>
+              <button
+                className="product-gallery-arrow product-gallery-arrow--previous"
+                type="button"
+                disabled={activeIndex === 0}
+                aria-label="Previous gallery slide"
+                onKeyDown={handleGalleryKeyDown}
+                onClick={() => scrollToSlide(activeIndex - 1)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.5 5.5 8 12l6.5 6.5M8.5 12H20" />
+                </svg>
+              </button>
+              <button
+                className="product-gallery-arrow product-gallery-arrow--next"
+                type="button"
+                disabled={activeIndex === slideCount - 1}
+                aria-label="Next gallery slide"
+                onKeyDown={handleGalleryKeyDown}
+                onClick={() => scrollToSlide(activeIndex + 1)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9.5 5.5 6.5 6.5-6.5 6.5M15.5 12H4" />
+                </svg>
+              </button>
+            </>
+          ) : null}
+        </div>
+
+        {slideCount > 1 ? (
+          <div className="product-gallery-navigation">
+            <p
+              className="product-gallery-counter"
+              aria-live="polite"
+              aria-atomic="true"
+              aria-label={`Slide ${activeIndex + 1} of ${slideCount}`}
+            >
+              <span aria-hidden="true">
+                {String(activeIndex + 1).padStart(2, '0')}
+                <i>/</i>
+                {String(slideCount).padStart(2, '0')}
+              </span>
+            </p>
+            <div className="product-gallery-dots" aria-label="Gallery slides">
+              {Array.from({length: slideCount}, (_, index) => (
+                <button
+                  className={`product-gallery-dot ${
+                    index === activeIndex ? 'is-active' : ''
+                  }`}
+                  type="button"
+                  key={index}
+                  aria-current={index === activeIndex ? 'true' : undefined}
+                  aria-label={
+                    isArtPrint && index === slideCount - 1
+                      ? 'View print scale diagram'
+                      : `View image ${index + 1}`
+                  }
+                  onKeyDown={handleGalleryKeyDown}
+                  onClick={() => scrollToSlide(index)}
+                />
+              ))}
+            </div>
+            {isArtPrint ? (
+              <p className="product-gallery-size">
+                Selected size <span>{printSize.label}</span>
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
+
+      {zoomImage ? (
+        <div
+          className="product-zoom-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${productTitle} enlarged view`}
+        >
+          <button
+            className="product-zoom-backdrop"
+            type="button"
+            aria-label="Close enlarged view"
+            onClick={closeZoom}
+          />
+          <img src={zoomImage.url} alt={zoomImage.altText || productTitle} />
+          <button
+            className="product-zoom-close"
+            type="button"
+            ref={zoomCloseRef}
+            onClick={closeZoom}
+          >
+            Close
+          </button>
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -1137,7 +1370,9 @@ const PRODUCT_QUERY = `#graphql
       galleryImages: images(first: 8) {
         nodes {
           altText
+          height
           url
+          width
         }
       }
       options {
