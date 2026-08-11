@@ -31,7 +31,7 @@ confirmed. Source metadata is in
 `scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
 not be run as a way to preserve the current Active state.
 
-Each live print's intended media is the flat artwork plus three generated room
+Each live print has the flat artwork plus three generated room
 views for each of the three live sizes: one clean warm-neutral sofa scene and
 two sage-wall scenes, for ten READY images per product. Sofa images use the
 same artwork at relative widths of 1:2:2.5 for 8 × 10, 16 × 20, and 20 × 24.
@@ -52,6 +52,12 @@ the replacement state before removing a legacy overlay. Product cards keep the
 flat featured image, while the PDP leads with the selected variant's sofa scene
 and filters the rest of the gallery to that size. The production catalog audit
 also validates each exact size-to-sofa media association.
+
+The 2026-08-11 production migration verified all 15 Active products with ten
+READY media each and one exact sofa association for every live Size variant.
+All 15 legacy text-overlay sofa media records were removed only after each
+replacement state passed readback. The 45 clean sofa assets and the selected
+variant gallery behavior are live on Oxygen.
 The 20 × 24 production and mockup assets use the same centred 5:6 full-bleed
 crop and a context width ratio of `0.48`, exactly 2.5 times the 8 × 10 width.
 
