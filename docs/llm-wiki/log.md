@@ -196,7 +196,7 @@ blur, while reduced-transparency and no-backdrop-filter fallbacks preserve
 contrast. Corrected the mobile sticky add-to-cart cascade so the existing bar
 now appears as an inset glass control on small screens.
 
-## [2026-08-11] catalog | Prepared clean sofa imagery for every live size
+## [2026-08-11] catalog | Published clean sofa imagery for every live size
 
 Expanded the warm-neutral sofa pipeline from one labelled 16 x 20 image to
 three clean scenes per artwork: 8 x 10, 16 x 20, and 20 x 24. The 45
@@ -208,7 +208,12 @@ associations before removing the old text overlay. It orders the three sofa
 images after the flat featured artwork and associates each one only with its
 matching Size variant. The production audit verifies that mapping. The PDP then
 leads with the selected variant image while collection cards retain the flat
-artwork.
+artwork. PR #35 deployed the 45 assets and storefront behavior; PR #37 adapted
+the guarded source check to Shopify's UUID filename suffix. The live migration
+then verified all 15 Active products with ten READY images and three exact
+variant associations before removing the 15 legacy text-overlay media records.
+The independent original-art audit passed 15/15, and the live Sunlit Mosaic I
+PDP was checked at all three sizes.
 
 ## [2026-08-11] storefront | Fixed the landing hero on short mobile screens
 
