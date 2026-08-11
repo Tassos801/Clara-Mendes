@@ -184,3 +184,14 @@ on the all-products and capsule shopping grids; homepage, related-product,
 cart, search, and recently viewed cards keep their compact treatment. Focused
 tests enforce complete coverage, uniqueness, punctuation, and the mobile copy
 length limit. No Shopify catalog state was changed.
+
+## [2026-08-11] storefront | Added the warm liquid-glass interface layer
+
+Introduced shared paper- and mineral-tinted glass tokens across navigation,
+buttons, product purchase controls, gallery controls, collection filters, cart
+and mobile drawers, account/search surfaces, product cards, and reviews. Home,
+collection, and story routes extend the same visual language without changing
+catalog or Shopify data behavior. Coarse-pointer devices avoid expensive fixed
+blur, while reduced-transparency and no-backdrop-filter fallbacks preserve
+contrast. Corrected the mobile sticky add-to-cart cascade so the existing bar
+now appears as an inset glass control on small screens.

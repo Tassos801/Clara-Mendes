@@ -320,10 +320,16 @@ const cardCss = `
   text-transform: uppercase;
   color: #fff;
   padding: 6px 10px;
-  border: 1px solid rgba(255,255,255,0.35);
+  border: 1px solid rgba(255,255,255,0.42);
   border-radius: 999px;
-  backdrop-filter: blur(6px);
-  background: rgba(30,28,24,0.18);
+  backdrop-filter: blur(12px) saturate(1.25);
+  -webkit-backdrop-filter: blur(12px) saturate(1.25);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 58%),
+    rgba(30,28,24,0.28);
+  box-shadow:
+    0 8px 20px rgba(10,9,7,0.14),
+    inset 0 1px 0 rgba(255,255,255,0.28);
   opacity: 0;
   transform: translateY(-4px);
   transition: opacity 500ms var(--cm-ease), transform 500ms var(--cm-ease);
@@ -392,8 +398,12 @@ const cardCss = `
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  border: none;
-  background: var(--color-ink, #26231f);
+  backdrop-filter: blur(14px) saturate(1.28);
+  -webkit-backdrop-filter: blur(14px) saturate(1.28);
+  border: 1px solid rgba(255,255,255,0.36);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.14), transparent 52%),
+    rgba(30,28,24,0.58);
   color: #fff;
   font-size: 1.25rem;
   font-weight: 300;
@@ -405,7 +415,9 @@ const cardCss = `
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 400ms var(--cm-ease), transform 400ms var(--cm-ease), background 220ms var(--cm-ease), box-shadow 220ms var(--cm-ease);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+  box-shadow:
+    0 10px 24px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.24);
   will-change: opacity, transform;
 }
 
@@ -415,7 +427,11 @@ const cardCss = `
   transform: translateY(0);
 }
 
-.cm-quick-add:hover:not(:disabled) { background: #3d3832; }
+.cm-quick-add:hover:not(:disabled) {
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.2), transparent 52%),
+    rgba(30,28,24,0.76);
+}
 .cm-quick-add[aria-busy="true"] {
   background: var(--color-clay, #9c6f5d);
   color: transparent;

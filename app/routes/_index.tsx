@@ -107,8 +107,13 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function Homepage() {
-  const {collections, editorialProducts, originalArtProducts, products, seoUrl} =
-    useLoaderData<typeof loader>();
+  const {
+    collections,
+    editorialProducts,
+    originalArtProducts,
+    products,
+    seoUrl,
+  } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
   const quickShopProducts = products.slice(0, 3);
@@ -325,7 +330,9 @@ export default function Homepage() {
             </div>
           </div>
 
-          <div className="hm-coords">Five capsules · fifteen original works</div>
+          <div className="hm-coords">
+            Five capsules · fifteen original works
+          </div>
 
           <div className="hm-interaction-anchor">
             <button
@@ -739,12 +746,22 @@ html:has(.home-root) main {
 .hm-nav-text:hover { opacity: 0.6; }
 
 .hm-header-top {
+  backdrop-filter: blur(24px) saturate(1.25);
+  -webkit-backdrop-filter: blur(24px) saturate(1.25);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 48%),
+    rgba(24, 22, 18, 0.24);
+  border: 1px solid rgba(255,255,255,0.24);
+  border-radius: 24px;
+  box-shadow:
+    0 18px 46px rgba(10, 9, 7, 0.2),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.12);
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
-  padding-bottom: 1.5rem;
+  padding: 14px 18px;
 }
 
 .hm-nav-group {
@@ -814,8 +831,16 @@ html:has(.home-root) main {
 
 .hm-hero-action {
   align-items: center;
-  background: rgba(20, 18, 15, 0.18);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 52%),
+    rgba(20, 18, 15, 0.26);
   border: 1px solid rgba(255,255,255,0.42);
+  border-radius: 999px;
+  box-shadow:
+    0 12px 30px rgba(10, 9, 7, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.28);
   color: var(--hm-text-main);
   display: inline-flex;
   font-size: 0.72rem;
@@ -836,8 +861,10 @@ html:has(.home-root) main {
 }
 
 .hm-hero-action--primary {
-  background: rgba(255,255,255,0.94);
-  border-color: rgba(255,255,255,0.94);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.82), transparent 58%),
+    rgba(251,250,246,0.84);
+  border-color: rgba(255,255,255,0.76);
   color: #26231f;
 }
 
@@ -1293,7 +1320,7 @@ html:has(.home-root) main {
     align-items: flex-start;
     flex-direction: column;
     gap: 1rem;
-    padding-bottom: 1rem;
+    padding: 14px;
   }
 
   .hm-brand {

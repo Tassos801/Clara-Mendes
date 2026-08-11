@@ -207,7 +207,8 @@ export function ReviewsSection({
                 aria-pressed={filter === 'photos'}
                 onClick={() => setFilter('photos')}
               >
-                With photos ({allPhotos.length > 0 ? countWithPhotos(reviews) : 0})
+                With photos (
+                {allPhotos.length > 0 ? countWithPhotos(reviews) : 0})
               </button>
             </div>
             <div className="rv-sort">
@@ -366,7 +367,9 @@ function ReviewCard({
           <span className="rv-card-author">{review.authorName}</span>
           <div className="rv-card-subline">
             <Stars value={review.rating} size={14} />
-            <span className="rv-card-date">{formatDate(review.submittedAt)}</span>
+            <span className="rv-card-date">
+              {formatDate(review.submittedAt)}
+            </span>
           </div>
         </div>
       </div>
@@ -459,7 +462,7 @@ const reviewsCss = `
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  border-radius: 6px;
+  border-radius: 999px;
   padding: 10px 20px;
   cursor: pointer;
   transition: background 400ms var(--rv-ease), color 400ms var(--rv-ease),
@@ -469,9 +472,14 @@ const reviewsCss = `
 
 .rv-btn--outline,
 .rv-btn--ghost {
-  background: transparent;
+  backdrop-filter: blur(12px) saturate(1.16);
+  -webkit-backdrop-filter: blur(12px) saturate(1.16);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.46), transparent 58%),
+    rgba(251,250,246,0.62);
   color: var(--rv-ink);
-  border: 1px solid var(--rv-line-strong);
+  border: 1px solid rgba(255,255,255,0.72);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
 }
 
 .rv-btn--outline:hover,
@@ -480,7 +488,9 @@ const reviewsCss = `
 }
 
 .rv-btn--primary {
-  background: var(--rv-ink);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12), transparent 46%),
+    rgba(38,35,31,0.95);
   color: var(--rv-paper);
   border: 1px solid var(--rv-ink);
 }
@@ -693,9 +703,12 @@ const reviewsCss = `
   font-family: var(--sans);
   font-size: 0.74rem;
   color: var(--rv-muted);
-  background: transparent;
-  border: 1px solid var(--rv-line-strong);
+  backdrop-filter: blur(10px) saturate(1.14);
+  -webkit-backdrop-filter: blur(10px) saturate(1.14);
+  background: rgba(255,255,255,0.42);
+  border: 1px solid rgba(255,255,255,0.72);
   border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
   padding: 6px 15px;
   cursor: pointer;
   white-space: nowrap;
@@ -733,9 +746,10 @@ const reviewsCss = `
   font-family: var(--sans);
   font-size: 0.78rem;
   color: var(--rv-ink);
-  background: transparent;
-  border: 1px solid var(--rv-line-strong);
-  border-radius: 6px;
+  background-color: rgba(251,250,246,0.62);
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
   padding: 6px 28px 6px 10px;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2326231f' stroke-width='1.2'/%3E%3C/svg%3E");
@@ -883,11 +897,18 @@ const reviewsCss = `
 
 /* ── Form ── */
 .rv-form-panel {
+  backdrop-filter: blur(18px) saturate(1.16);
+  -webkit-backdrop-filter: blur(18px) saturate(1.16);
   margin-bottom: clamp(28px, 3vw, 40px);
   padding: clamp(24px, 3vw, 36px);
-  border: 1px solid var(--rv-line);
-  border-radius: 8px;
-  background: rgba(38, 35, 31, 0.015);
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 22px;
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.48), transparent 54%),
+    rgba(251,250,246,0.68);
+  box-shadow:
+    0 16px 38px rgba(55,48,39,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.82);
 }
 
 .rv-form-panel--empty {
@@ -944,9 +965,10 @@ const reviewsCss = `
   font-family: var(--sans);
   font-size: 0.92rem;
   color: var(--rv-ink);
-  background: var(--rv-paper);
-  border: 1px solid var(--rv-line-strong);
-  border-radius: 6px;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(38,35,31,0.14);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
   padding: 12px 14px;
   width: 100%;
   transition: border-color 300ms var(--rv-ease);
@@ -1123,10 +1145,13 @@ const reviewsCss = `
 
 .rv-lightbox::backdrop {
   background: rgba(20, 18, 14, 0.82);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .rv-lightbox-inner {
+  backdrop-filter: blur(24px) saturate(1.18);
+  -webkit-backdrop-filter: blur(24px) saturate(1.18);
   position: relative;
   display: grid;
   grid-template-rows: 1fr auto;
@@ -1134,8 +1159,12 @@ const reviewsCss = `
   max-height: 92vh;
   margin: auto;
   margin-top: 4vh;
-  background: var(--rv-paper);
-  border-radius: 8px;
+  background: rgba(251,250,246,0.88);
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 22px;
+  box-shadow:
+    0 30px 80px rgba(0,0,0,0.28),
+    inset 0 1px 0 rgba(255,255,255,0.82);
   overflow: hidden;
 }
 
