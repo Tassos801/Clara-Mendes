@@ -110,11 +110,9 @@ const REORDER_MEDIA = `#graphql
 
 const JOB_STATUS = `#graphql
   query SofaMockupOrderJob($id: ID!) {
-    node(id: $id) {
-      ... on Job {
-        done
-        id
-      }
+    job(id: $id) {
+      done
+      id
     }
   }
 `;
@@ -191,7 +189,7 @@ async function waitForJob(adminGraphql, job) {
   for (let attempt = 0; attempt < 30; attempt += 1) {
     await delay(1000);
     const body = await adminGraphql(JOB_STATUS, {id: job.id});
-    if (body.data?.node?.done) return;
+    if (body.data?.job?.done) return;
   }
   throw new Error(`Timed out waiting for Shopify media-order job ${job.id}`);
 }
