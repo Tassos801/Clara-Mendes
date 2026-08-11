@@ -9,7 +9,6 @@ import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
-import {HOME_EDITORIAL_COLLECTION_HANDLE} from '~/content/homeEditorial';
 import {
   filterDemoCollections,
   filterDemoProducts,
@@ -77,7 +76,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
         artQuery: buildOriginalArtQuery(),
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
-        editorialCollectionHandle: HOME_EDITORIAL_COLLECTION_HANDLE,
         first: 12,
       },
     });
@@ -85,9 +83,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
     return {
       collections: filterDemoCollections(
         data.collections.nodes as HomeCollection[],
-      ),
-      editorialProducts: filterDemoProducts(
-        (data.editorialCollection?.products.nodes ?? []) as ClaraCardProduct[],
       ),
       originalArtProducts: buildOriginalArtProductMap(
         (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
@@ -98,7 +93,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
   } catch {
     return {
       collections: [] as HomeCollection[],
-      editorialProducts: [] as ClaraCardProduct[],
       originalArtProducts: {} as OriginalArtProductMap,
       products: [] as ClaraCardProduct[],
       seoUrl: getCanonicalUrl(request, '/'),
@@ -107,13 +101,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function Homepage() {
-  const {
-    collections,
-    editorialProducts,
-    originalArtProducts,
-    products,
-    seoUrl,
-  } = useLoaderData<typeof loader>();
+  const {collections, originalArtProducts, products, seoUrl} =
+    useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
   const quickShopProducts = products.slice(0, 3);
@@ -516,9 +505,7 @@ export default function Homepage() {
         </div>
       </section>
 
-      <HomepageEditorial
-        products={editorialProducts.length > 0 ? editorialProducts : products}
-      />
+      <HomepageEditorial />
 
       <OriginalArtPreview products={originalArtProducts} compact />
 
@@ -589,7 +576,6 @@ const HOMEPAGE_QUERY = `#graphql
     $artFirst: Int!
     $artQuery: String!
     $country: CountryCode
-    $editorialCollectionHandle: String!
     $first: Int!
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
@@ -601,13 +587,6 @@ const HOMEPAGE_QUERY = `#graphql
     originalArtProducts: products(first: $artFirst, query: $artQuery) {
       nodes {
         ...ClaraProductCard
-      }
-    }
-    editorialCollection: collection(handle: $editorialCollectionHandle) {
-      products(first: 3) {
-        nodes {
-          ...ClaraProductCard
-        }
       }
     }
     collections(first: 12) {

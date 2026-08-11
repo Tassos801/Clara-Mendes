@@ -51,14 +51,16 @@ Mendes. The original-art preview accepts the handles that are actually
 available through the Storefront API; matching cards link to their product
 pages, while unavailable Draft works remain non-interactive previews.
 
-The homepage editorial is product-aware. It first reads up to three published
-products from the manually ordered Shopify collection with handle
-`homepage-editorial`. If that collection is missing or empty, it uses the
-approved products already returned by the homepage query. If no approved
-products are published, three local Clara Mendes art-in-room images keep the
-section complete. Shopify product media, title, alt text, and product URL replace
-each fallback slot automatically, so changing the collection contents is the
-normal content-management workflow.
+The homepage editorial ("the living edit") is static curated content, not
+product-aware. It always renders the three styled art-in-room photographs in
+`public/images/home-editorial/` (Quiet Form above a linen sofa, Patina Blue
+with stoneware, Sunlit Mosaic over a timber table), each linking to its
+capsule landing page. The previous `homepage-editorial` Shopify-collection
+override and best-selling substitution were removed 2026-08-11: whenever any
+products loaded they replaced the styled scenes with raw print files — three
+same-capsule images that repeated the adjacent grids and collided in the
+layout. Changing this section is a code change to
+`app/content/homeEditorial.ts` (items) and the images directory.
 
 The mobile hero keeps its expansive composition on standard phone screens. On
 viewports no wider than 768 pixels and no taller than 680 pixels, the UI layer
@@ -74,7 +76,7 @@ Important dependencies:
 - SEO helpers and structured data helpers
 - `ClaraProductCard`
 - `HomepageEditorial`
-- `HOME_EDITORIAL_COLLECTION_HANDLE`
+- `HOME_EDITORIAL_ITEMS`
 
 Sources: `app/routes/_index.tsx`, `app/components/HomepageEditorial.tsx`,
 `app/content/homeEditorial.ts`, `scripts/mobileLanding.node-test.mjs`.
