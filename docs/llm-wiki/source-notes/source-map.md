@@ -17,6 +17,8 @@ these files; it does not replace reading them.
 
 ## Customer-Facing Storefront
 
+- `app/styles/app.css` - shared warm liquid-glass tokens and responsive,
+  reduced-transparency, and no-backdrop-filter fallbacks.
 - `app/routes/_index.tsx` - home page, collections/products query, hero and
   merchandising sections.
 - `app/routes/collections.all.tsx` - shop-all grid, sorting, pagination,
@@ -27,6 +29,10 @@ these files; it does not replace reading them.
   Shop Pay, product schema, related products.
 - `app/routes/search.tsx` - regular and predictive search.
 - `app/components/ClaraShell.tsx` - header, footer, mobile nav, cart drawer.
+- `app/components/ClaraProductCard.tsx` - product cards, quick-add controls,
+  and optional editorial stories.
+- `app/components/reviews/ReviewsSection.tsx` - reviews, filters, form, and
+  media lightbox.
 
 ## Catalog And Merchandising
 

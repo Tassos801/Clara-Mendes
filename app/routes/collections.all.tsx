@@ -8,15 +8,8 @@ import {
 } from '~/components/ClaraProductCard';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
-import {
-  buildCapsuleTagQuery,
-  CAPSULES,
-  getCapsuleBySlug,
-} from '~/lib/capsules';
-import {
-  filterDemoCollections,
-  filterDemoProducts,
-} from '~/lib/catalogFilters';
+import {buildCapsuleTagQuery, CAPSULES, getCapsuleBySlug} from '~/lib/capsules';
+import {filterDemoCollections, filterDemoProducts} from '~/lib/catalogFilters';
 import {
   buildProductsSearchQuery,
   countActiveFacets,
@@ -129,7 +122,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       : 'Shop 15 original Clara Mendes art prints across five coordinated capsules. Giclée-printed to order on archival matte paper with secure Shopify checkout.',
     facets: {
       productTypes: productTypes.map((label) => ({label})),
-      vendors: [],
+      vendors: [] as Array<{label: string}>,
     },
     heading: capsule ? capsule.title : 'Shop All',
     products: filterProductConnection(
@@ -628,9 +621,15 @@ const collectionCss = `
   position: sticky;
   top: var(--header-height);
   z-index: 20;
-  background: rgba(251, 250, 246, 0.88);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  backdrop-filter: blur(22px) saturate(1.22);
+  -webkit-backdrop-filter: blur(22px) saturate(1.22);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.48), transparent 48%),
+    rgba(251, 250, 246, 0.82);
+  border-bottom: 1px solid rgba(255,255,255,0.7);
+  box-shadow:
+    0 12px 32px rgba(55,48,39,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.82);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -710,9 +709,14 @@ const collectionCss = `
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--cv-muted);
-  background: transparent;
-  border: 1px solid rgba(38,35,31,0.18);
-  border-radius: 6px;
+  backdrop-filter: blur(12px) saturate(1.16);
+  -webkit-backdrop-filter: blur(12px) saturate(1.16);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.46), transparent 58%),
+    rgba(251,250,246,0.58);
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
   padding: 6px 12px;
   cursor: pointer;
   white-space: nowrap;
@@ -727,13 +731,20 @@ const collectionCss = `
 
 /* Facet panel */
 .cv-facets {
+  backdrop-filter: blur(22px) saturate(1.18);
+  -webkit-backdrop-filter: blur(22px) saturate(1.18);
   display: flex;
   flex-wrap: wrap;
   gap: clamp(20px, 3vw, 48px);
   align-items: flex-start;
   padding: clamp(18px, 2.4vw, 30px) clamp(18px, 4vw, 70px);
-  background: var(--cv-paper);
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.48), transparent 46%),
+    rgba(251,250,246,0.84);
+  border-bottom: 1px solid rgba(255,255,255,0.72);
+  box-shadow:
+    0 18px 38px rgba(55,48,39,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.82);
 }
 
 .cv-facet-group {
@@ -782,9 +793,10 @@ const collectionCss = `
   font-family: var(--sans);
   font-size: 0.8rem;
   color: var(--cv-ink);
-  background: transparent;
-  border: 1px solid rgba(38,35,31,0.18);
-  border-radius: 6px;
+  background: rgba(255,255,255,0.48);
+  border: 1px solid rgba(38,35,31,0.13);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
   padding: 6px 10px;
   width: 84px;
   appearance: textfield;
@@ -808,9 +820,10 @@ const collectionCss = `
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--cv-ink);
-  background: transparent;
+  background: rgba(255,255,255,0.42);
   border: 1px solid rgba(38,35,31,0.3);
-  border-radius: 6px;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
   padding: 6px 12px;
   cursor: pointer;
   transition: background 400ms var(--cv-ease), color 400ms var(--cv-ease);
@@ -832,9 +845,12 @@ const collectionCss = `
   font-family: var(--sans);
   font-size: 0.74rem;
   color: var(--cv-muted);
-  background: transparent;
-  border: 1px solid rgba(38,35,31,0.18);
+  backdrop-filter: blur(10px) saturate(1.14);
+  -webkit-backdrop-filter: blur(10px) saturate(1.14);
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,255,255,0.72);
   border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
   padding: 5px 14px;
   cursor: pointer;
   white-space: nowrap;
@@ -897,9 +913,12 @@ const collectionCss = `
   font-family: var(--sans);
   font-size: 0.78rem;
   color: var(--cv-ink);
-  background: transparent;
-  border: 1px solid rgba(38,35,31,0.18);
-  border-radius: 6px;
+  backdrop-filter: blur(12px) saturate(1.16);
+  -webkit-backdrop-filter: blur(12px) saturate(1.16);
+  background-color: rgba(251,250,246,0.62);
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
   padding: 6px 28px 6px 10px;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2326231f' stroke-width='1.2'/%3E%3C/svg%3E");
@@ -1093,6 +1112,15 @@ const collectionCss = `
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .cv-toolbar,
+  .cv-facets {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(251,250,246,0.97);
   }
 }
 `;

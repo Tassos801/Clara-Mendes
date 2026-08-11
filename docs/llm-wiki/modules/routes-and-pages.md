@@ -7,6 +7,25 @@ Customer-facing pages live under `app/routes`.
 
 Source: `app/routes.ts`, `app/routes/*`.
 
+## Visual Material System
+
+The storefront uses a warm liquid-glass layer built from shared tokens in
+`app/styles/app.css`. Navigation, commerce controls, product purchase surfaces,
+drawers, filters, and mobile actions use translucent paper- and mineral-tinted
+surfaces with fine highlights and restrained shadows while product artwork stays
+opaque and color-accurate. Route-scoped styles extend the same treatment across
+the home hero, collection tools, story page, product cards, and reviews.
+
+Coarse-pointer devices avoid the most expensive fixed-surface blur, and
+`prefers-reduced-transparency` plus no-`backdrop-filter` fallbacks retain clear,
+near-opaque surfaces. These styles do not change catalog, pricing, or Shopify
+data behavior.
+
+Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
+`app/routes/collections.all.tsx`, `app/routes/our-story.tsx`,
+`app/components/ClaraProductCard.tsx`,
+`app/components/reviews/ReviewsSection.tsx`.
+
 ## Main Storefront Routes
 
 | Route                                           | File                                 | Purpose                                                                         |

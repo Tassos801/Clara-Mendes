@@ -188,22 +188,25 @@ export default function OurStory() {
         </ul>
       </section>
 
-      <section className="os-section os-section--facts" aria-labelledby="os-made-title">
+      <section
+        className="os-section os-section--facts"
+        aria-labelledby="os-made-title"
+      >
         <p className="os-eyebrow">How each print is made</p>
         <h2 id="os-made-title">Printed to order, made to keep.</h2>
         <dl className="os-facts">
           <div>
             <dt>Format</dt>
             <dd>
-              Unframed 8 × 10 in portrait prints — a size that works alone,
-              in pairs, or as a full capsule of three.
+              Unframed 8 × 10 in portrait prints — a size that works alone, in
+              pairs, or as a full capsule of three.
             </dd>
           </div>
           <div>
             <dt>Paper &amp; inks</dt>
             <dd>
-              Giclée printed on 200gsm Enhanced Matte Art paper, chosen for
-              its flat, painterly surface and faithful colour.
+              Giclée printed on 200gsm Enhanced Matte Art paper, chosen for its
+              flat, painterly surface and faithful colour.
             </dd>
           </div>
           <div>
@@ -347,12 +350,22 @@ html:has(.our-story-root) main {
 }
 
 .os-header-top {
+  backdrop-filter: blur(24px) saturate(1.25);
+  -webkit-backdrop-filter: blur(24px) saturate(1.25);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 48%),
+    rgba(24, 22, 18, 0.24);
+  border: 1px solid rgba(255,255,255,0.24);
+  border-radius: 24px;
+  box-shadow:
+    0 18px 46px rgba(10, 9, 7, 0.2),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.12);
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: 1.5rem;
+  padding: 14px 18px;
 }
 
 .os-nav-group {
@@ -587,7 +600,16 @@ html:has(.our-story-root) main {
 
 .os-cta {
   align-items: center;
+  backdrop-filter: blur(16px) saturate(1.16);
+  -webkit-backdrop-filter: blur(16px) saturate(1.16);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.46), transparent 56%),
+    rgba(251,250,246,0.68);
   border: 1px solid rgba(38, 35, 31, 0.32);
+  border-radius: 999px;
+  box-shadow:
+    0 10px 24px rgba(55,48,39,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.78);
   color: var(--os-ink);
   display: inline-flex;
   font-size: 0.72rem;
@@ -607,7 +629,9 @@ html:has(.our-story-root) main {
 }
 
 .os-cta--primary {
-  background: var(--os-ink);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.12), transparent 46%),
+    rgba(38,35,31,0.95);
   border-color: var(--os-ink);
   color: var(--os-paper);
 }
@@ -628,7 +652,7 @@ html:has(.our-story-root) main {
     align-items: flex-start;
     flex-direction: column;
     gap: 1rem;
-    padding-bottom: 1rem;
+    padding: 14px;
   }
 
   .os-nav-group {
