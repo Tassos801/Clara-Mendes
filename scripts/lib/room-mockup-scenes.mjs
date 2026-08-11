@@ -113,6 +113,13 @@ export const MOCKUP_SCENES = [
   },
 ];
 
+export function expectedMockupAlts(
+  shortTitle,
+  scenes = MOCKUP_SCENES,
+) {
+  return scenes.map((scene) => scene.altFor(shortTitle));
+}
+
 export function filterMockupScenes(scenes, sizeKey) {
   if (!sizeKey) return scenes;
   if (!['8x10', '16x20', '20x24'].includes(sizeKey)) {

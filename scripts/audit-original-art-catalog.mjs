@@ -11,12 +11,15 @@ import {
   normalizeShopDomain,
 } from './lib/env.mjs';
 import {
+  ALL_SIZES,
   BASE_SIZE,
   EXPANSION_SIZES,
+  expectedOriginalArtMediaCount,
   expectedSku,
-  releaseState,
+  inspectOriginalArtProduct,
   variantForSize,
 } from './lib/original-art-size-plan.mjs';
+import {expectedMockupAlts} from './lib/room-mockup-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -40,6 +43,7 @@ const PRODUCTS_QUERY = `#graphql
         handle
         media(first: 10) {
           nodes {
+            alt
             mediaContentType
             status
           }
@@ -128,9 +132,18 @@ function validateProduct(product, expected) {
   if (product?.status !== 'ACTIVE') {
     issues.push(`status is ${product?.status || 'missing'}, expected ACTIVE`);
   }
-  if (![1, 2, 3].includes(variants.length)) {
-    issues.push(`${variants.length} variants, expected 1, 2, or 3`);
+  if (variants.length !== ALL_SIZES.length) {
+    issues.push(`${variants.length} variants, expected ${ALL_SIZES.length}`);
   }
+  issues.push(
+    ...inspectOriginalArtProduct(product, expected, {
+      allowLegacyBasePrice: true,
+      requiredActiveExpansionSizes: EXPANSION_SIZES,
+    }).issues.filter(
+      (issue) =>
+        issue.endsWith('variant is missing') || issue.endsWith('must be ACTIVE'),
+    ),
+  );
   if (baseVariant?.sku !== expectedSku(expected, BASE_SIZE)) {
     issues.push(
       `${BASE_SIZE.label} SKU is ${baseVariant?.sku || 'missing'}, expected ${expectedSku(expected, BASE_SIZE)}`,
@@ -166,18 +179,26 @@ function validateProduct(product, expected) {
     if (variant.inventoryItem?.requiresShipping !== true) {
       issues.push(`${size.label} variant does not require shipping`);
     }
-    if (!['STAGED', 'ACTIVE'].includes(releaseState(variant))) {
-      issues.push(`${size.label} release state is unsafe`);
-    }
   }
-  // 1 = flat only; each configured size adds two room scenes.
+  const expectedMediaCount = expectedOriginalArtMediaCount();
+  const expectedMediaAlts = [
+    expected.alt,
+    ...expectedMockupAlts(expected.shortTitle),
+  ];
+  const actualMediaAlts = new Set(media.map((node) => node?.alt));
+  const missingMediaAlts = expectedMediaAlts.filter(
+    (alt) => !actualMediaAlts.has(alt),
+  );
   const badMedia = media.filter(
     (node) => node?.mediaContentType !== 'IMAGE' || node?.status !== 'READY',
   );
-  if (![1, 3, 5, 7].includes(media.length) || badMedia.length) {
+  if (media.length !== expectedMediaCount || badMedia.length) {
     issues.push(
-      `${media.length} media (expected 1, 3, 5, or 7), ${badMedia.length} not READY images`,
+      `${media.length} media (expected ${expectedMediaCount}), ${badMedia.length} not READY images`,
     );
+  }
+  if (missingMediaAlts.length) {
+    issues.push(`${missingMediaAlts.length} expected media alt(s) missing`);
   }
 
   return issues;

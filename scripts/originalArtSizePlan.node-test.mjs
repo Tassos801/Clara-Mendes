@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+import * as sizePlan from './lib/original-art-size-plan.mjs';
+
 import {
   BASE_SIZE,
   BIGGER_SIZE,
@@ -139,6 +141,61 @@ test('validates the 20x24 variant independently from the active 16x20 size', () 
   assert.equal(releaseState(inspection.biggerVariant), 'STAGED');
 });
 
+test('requires the 16x20 prerequisite before a 20x24 transition', () => {
+  const base = variant({
+    availableForSale: true,
+    label: BASE_SIZE.label,
+    price: BASE_SIZE.price,
+    sku: 'CM-QF-01-8X10',
+    tracked: false,
+  });
+  const bigger = variant({
+    availableForSale: false,
+    label: BIGGER_SIZE.label,
+    price: BIGGER_SIZE.price,
+    sku: 'CM-QF-01-20X24',
+    tracked: true,
+  });
+
+  const inspection = inspectOriginalArtProduct(product([base, bigger]), item, {
+    requiredExpansionSizes: [LARGE_SIZE],
+  });
+
+  assert.match(inspection.issues.join('\n'), /16 × 20 in variant is missing/);
+});
+
+test('requires the 16x20 prerequisite to be active before 20x24 release', () => {
+  const base = variant({
+    availableForSale: true,
+    label: BASE_SIZE.label,
+    price: BASE_SIZE.price,
+    sku: 'CM-QF-01-8X10',
+    tracked: false,
+  });
+  const large = variant({
+    availableForSale: false,
+    label: LARGE_SIZE.label,
+    price: LARGE_SIZE.price,
+    sku: 'CM-QF-01-16X20',
+    tracked: true,
+  });
+  const bigger = variant({
+    availableForSale: false,
+    label: BIGGER_SIZE.label,
+    price: BIGGER_SIZE.price,
+    sku: 'CM-QF-01-20X24',
+    tracked: true,
+  });
+
+  const inspection = inspectOriginalArtProduct(
+    product([base, large, bigger]),
+    item,
+    {requiredActiveExpansionSizes: [LARGE_SIZE]},
+  );
+
+  assert.match(inspection.issues.join('\n'), /16 × 20 in must be ACTIVE/);
+});
+
 test('rejects a tracked large variant unless it is unavailable at zero stock', () => {
   const availableWhileTracked = variant({
     availableForSale: true,
@@ -157,12 +214,39 @@ test('rejects a tracked large variant unless it is unavailable at zero stock', (
   assert.equal(releaseState(stockedWhileTracked), 'INVALID');
 });
 
-test('updates the fixed-size description once', () => {
+test('16x20 activation updates fixed-size copy to truthful two-size copy', () => {
   const current = '<ul><li>Unframed 8 × 10 inch portrait print</li></ul>';
-  const first = multiSizeDescription(current);
-  const second = multiSizeDescription(first.html);
+  const first = multiSizeDescription(current, LARGE_SIZE);
+  const second = multiSizeDescription(first.html, LARGE_SIZE);
+
+  assert.equal(first.changed, true);
+  assert.match(first.html, /8 × 10 and 16 × 20 inch sizes/);
+  assert.doesNotMatch(first.html, /20 × 24/);
+  assert.equal(second.changed, false);
+});
+
+test('20x24 activation upgrades two-size copy to truthful three-size copy', () => {
+  const current =
+    '<ul><li>Unframed portrait print in 8 × 10 and 16 × 20 inch sizes</li></ul>';
+  const first = multiSizeDescription(current, BIGGER_SIZE);
+  const second = multiSizeDescription(first.html, BIGGER_SIZE);
 
   assert.equal(first.changed, true);
   assert.match(first.html, /8 × 10, 16 × 20, and 20 × 24 inch sizes/);
   assert.equal(second.changed, false);
+});
+
+test('production catalog expects flat art plus two mockups for every size', () => {
+  assert.equal(sizePlan.expectedOriginalArtMediaCount?.(), 7);
+});
+
+test('activation summaries include only sizes through the target', () => {
+  assert.deepEqual(
+    sizePlan.sizesThrough?.(LARGE_SIZE).map((size) => size.key),
+    ['8x10', '16x20'],
+  );
+  assert.deepEqual(
+    sizePlan.sizesThrough?.(BIGGER_SIZE).map((size) => size.key),
+    ['8x10', '16x20', '20x24'],
+  );
 });

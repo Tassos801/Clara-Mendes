@@ -166,3 +166,12 @@ the three-size description copy applied. Live PDP checks on Quiet Form I and
 Sunlit Mosaic I confirmed the EUR 49.99 price, enabled add to cart,
 selected-size gallery filtering, and the 50.8 x 61 cm true-scale diagram. The
 12 extension families remain Draft; no order was placed.
+
+## [2026-08-11] catalog | Strengthened size-release safeguards
+
+Restored the default 16 x 20 activation path's truthful two-size description
+update while keeping 20 x 24 activation on the three-size copy. A 20 x 24
+transition now requires the earlier 16 x 20 variant to remain Active, and the
+production catalog audit requires exactly three approved Active variants and
+the exact seven READY images per live print. Focused regression tests cover the
+prerequisite, both description paths, and the seven-image invariant.
