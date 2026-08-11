@@ -27,6 +27,11 @@ const largeContext = {
     'Quiet Form I art print shown unframed at its true 16 by 20 inch size on a sage wall beside a reading lamp',
   url: '/quiet-form-01-room-context-16x20.webp?v=1',
 };
+const sofaContext = {
+  altText:
+    'Quiet Form I 16 by 20 inch art print shown at scale above a sofa in a warm neutral living room',
+  url: '/quiet-form-01-room-sofa-16x20.jpg?v=1',
+};
 const biggerDetail = {
   altText:
     'Quiet Form I 20 by 24 inch art print shown unframed on a sage green wall',
@@ -39,6 +44,7 @@ const biggerContext = {
 };
 const gallery = [
   flat,
+  sofaContext,
   smallDetail,
   smallContext,
   largeDetail,
@@ -67,6 +73,7 @@ test('keeps flat art while showing only the selected-size room mockups', () => {
   ]);
   assert.deepEqual(filterGalleryImagesForSize(gallery, '16x20', true), [
     flat,
+    sofaContext,
     largeDetail,
     largeContext,
   ]);
@@ -75,7 +82,7 @@ test('keeps flat art while showing only the selected-size room mockups', () => {
     biggerDetail,
     biggerContext,
   ]);
-  assert.equal(filterGalleryImagesForSize(gallery, '20x24', false).length, 7);
+  assert.equal(filterGalleryImagesForSize(gallery, '20x24', false).length, 8);
 });
 
 test('scales both diagrams against the same 84 inch sofa', () => {

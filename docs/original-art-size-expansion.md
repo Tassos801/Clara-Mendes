@@ -15,8 +15,8 @@ markets `GLOBAL-FAP-20X24` as 50x60cm / 20x24"; its dashboard recommends
 6000 × 7200 files exceed at the same 5:6 ratio.
 
 The Hydrogen product route renders Shopify's `Size` values. Its flat artwork is
-always visible, while room mockups and the true-scale sofa diagram follow the
-selected 8 × 10, 16 × 20, or 20 × 24 variant.
+always visible, while room mockups, the 16 × 20 sofa scene, and the true-scale
+sofa diagram follow the selected 8 × 10, 16 × 20, or 20 × 24 variant.
 
 ## Production Files
 
@@ -58,8 +58,9 @@ node .\scripts\sync-original-art-size-variants.mjs
 
 The production catalog audit
 (`node .\scripts\audit-original-art-catalog.mjs`) requires exactly the three
-approved size variants and seven READY images per product. Missing 16 × 20 or
-20 × 24 variants, or a missing size-specific mockup pair, fails the audit
+approved size variants and eight READY images per product: the flat artwork,
+the 16 × 20 sofa scene, and two room scenes for each size. Missing 16 × 20 or
+20 × 24 variants, a sofa scene, or a size-specific mockup pair fails the audit
 instead of accepting a partial pre-release state. The 20 × 24 workflow also
 requires its prerequisite 16 × 20 variant to remain ACTIVE, not merely staged.
 
@@ -138,4 +139,27 @@ npm run catalog:art:mockups:large
 `npm run catalog:art:mockups:bigger` generates only the 30 new 20 × 24 scenes.
 Running `npm run catalog:art:mockups` generates all 90 mockups. Future media
 append runs plan six mockups per product, for seven images including the flat
-artwork.
+artwork. The sofa workflow below adds the eighth image.
+
+## Sofa Scale Product Images
+
+Generate the fifteen 16 × 20 sofa scenes from the exact catalog artwork and the
+five approved capsule backgrounds:
+
+```powershell
+npm run catalog:art:sofa-mockups
+```
+
+The generated `*-room-sofa-16x20.jpg` filename and `16 by 20` alt text make the
+scene visible only when that size is selected. After the assets are deployed,
+preview and apply the guarded media update:
+
+```powershell
+npm run catalog:art:sofa-mockups:dry-run
+npm run catalog:art:sofa-mockups:sync
+```
+
+The sync accepts only the exact seven-image baseline, adds one image through
+Shopify's current product update mutation, and moves only that image to
+zero-based position `1`. The flat artwork remains featured at position `0`.
+Every product is read back with eight READY images before the run succeeds.

@@ -20,6 +20,7 @@ import {
   variantForSize,
 } from './lib/original-art-size-plan.mjs';
 import {expectedMockupAlts} from './lib/room-mockup-scenes.mjs';
+import {expectedSofaMockupAlt} from './lib/sofa-mockup-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -183,6 +184,7 @@ function validateProduct(product, expected) {
   const expectedMediaCount = expectedOriginalArtMediaCount();
   const expectedMediaAlts = [
     expected.alt,
+    expectedSofaMockupAlt(expected.shortTitle),
     ...expectedMockupAlts(expected.shortTitle),
   ];
   const actualMediaAlts = new Set(media.map((node) => node?.alt));
