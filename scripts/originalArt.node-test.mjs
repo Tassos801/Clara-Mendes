@@ -17,7 +17,7 @@ const fakeProduct = (handle, overrides = {}) => ({
   featuredImage: {url: `https://cdn.shopify.com/${handle}.webp`},
   priceRange: {
     minVariantPrice: {amount: '34.0', currencyCode: 'USD'},
-    maxVariantPrice: {amount: '34.0', currencyCode: 'USD'},
+    maxVariantPrice: {amount: '58.0', currencyCode: 'USD'},
   },
   cardVariant: {
     nodes: [
@@ -29,6 +29,15 @@ const fakeProduct = (handle, overrides = {}) => ({
         selectedOptions: [],
         title: 'Default',
       },
+    ],
+  },
+  // The production three-size shape: the released-price sample the card
+  // fragment fetches alongside priceRange.
+  sizeVariants: {
+    nodes: [
+      {availableForSale: true, price: {amount: '34.0', currencyCode: 'USD'}},
+      {availableForSale: true, price: {amount: '46.0', currencyCode: 'USD'}},
+      {availableForSale: true, price: {amount: '58.0', currencyCode: 'USD'}},
     ],
   },
   ...overrides,
@@ -60,7 +69,10 @@ const fifteenth = allLive[ORIGINAL_ART_HANDLES[14]];
 assert.ok(fifteenth, 'fifteenth product must not be marked unavailable');
 assert.equal(fifteenth.availableForSale, true);
 assert.equal(fifteenth.url, `/products/${ORIGINAL_ART_HANDLES[14]}`);
+// The map price is the lowest RELEASED price and the range flag reflects
+// the three live sizes, so the preview can render "From $34.00".
 assert.deepEqual(fifteenth.price, {amount: '34.0', currencyCode: 'USD'});
+assert.equal(fifteenth.hasPriceRange, true);
 
 // Quiet Form I specifically — the print that regressed in production.
 const quietFormI = allLive['quiet-form-i-art-print'];
@@ -100,6 +112,31 @@ const soldOut = buildOriginalArtProductMap([
   }),
 ]);
 assert.equal(soldOut['quiet-form-ii-art-print'].availableForSale, false);
+
+// GUARD REGRESSION: a staged-but-unreleased size (availableForSale=false at
+// full price — how the size sync stages variants in Shopify) must neither
+// set the card floor nor create a "From" range, even though it inflates
+// priceRange.maxVariantPrice.
+const stagedSize = buildOriginalArtProductMap([
+  fakeProduct('quiet-form-iii-art-print', {
+    sizeVariants: {
+      nodes: [
+        {availableForSale: true, price: {amount: '34.0', currencyCode: 'USD'}},
+        {availableForSale: false, price: {amount: '58.0', currencyCode: 'USD'}},
+      ],
+    },
+  }),
+])['quiet-form-iii-art-print'];
+assert.deepEqual(stagedSize.price, {amount: '34.0', currencyCode: 'USD'});
+assert.equal(stagedSize.hasPriceRange, false);
+
+// Products with no variant sample fall back to priceRange.minVariantPrice
+// without inventing a range.
+const noSample = buildOriginalArtProductMap([
+  fakeProduct('quiet-form-i-art-print', {sizeVariants: undefined}),
+])['quiet-form-i-art-print'];
+assert.deepEqual(noSample.price, {amount: '34.0', currencyCode: 'USD'});
+assert.equal(noSample.hasPriceRange, false);
 
 // Price formatting matches the product page (Intl currency, 2 decimals).
 assert.equal(

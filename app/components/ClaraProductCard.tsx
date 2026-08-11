@@ -4,6 +4,11 @@ import {Image} from '@shopify/hydrogen';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
 import {getProductStory} from '~/lib/productCopy';
+import {
+  deriveCardPricing,
+  formatCardPriceLabel,
+  type CardPricing,
+} from '~/lib/productCardPricing';
 
 const CARD_IMAGE_SIZES =
   '(min-width: 1100px) 25vw, (min-width: 781px) 33vw, 50vw';
@@ -58,6 +63,12 @@ export type ClaraCardProduct = {
   cardVariant?: {
     nodes: ProductVariant[];
   };
+  sizeVariants?: {
+    nodes: Array<{
+      availableForSale?: boolean;
+      price?: MoneyAmount | null;
+    }>;
+  };
   variants?: {
     nodes: ProductVariant[];
   };
@@ -67,10 +78,13 @@ export function ClaraProductCard({
   product,
   loading = 'lazy',
   showStory = false,
+  pricing,
 }: {
   product: ClaraCardProduct;
   loading?: 'eager' | 'lazy';
   showStory?: boolean;
+  /** Precomputed pricing for cards fed from snapshots (recently viewed). */
+  pricing?: CardPricing;
 }) {
   const images = product.images?.nodes ?? [];
   const baseImage = product.featuredImage ?? images[0];
@@ -85,7 +99,7 @@ export function ClaraProductCard({
       window.matchMedia('(hover: hover) and (pointer: fine)').matches,
     );
   }, []);
-  const price = product.priceRange?.minVariantPrice;
+  const priceLabel = formatCardPriceLabel(pricing ?? deriveCardPricing(product));
   const chip = product.productType || 'Curated object';
   const firstVariant =
     product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
@@ -147,8 +161,8 @@ export function ClaraProductCard({
                 ? ' ' + product.title.split(' ').slice(1).join(' ')
                 : ''}
             </h3>
-            {price ? (
-              <strong className="cm-card-price">{formatMoney(price)}</strong>
+            {priceLabel ? (
+              <strong className="cm-card-price">{priceLabel}</strong>
             ) : null}
           </div>
           {story ? <p className="cm-card-story">{story}</p> : null}
@@ -231,13 +245,6 @@ function QuickAddButton({
       +
     </AddToCartButton>
   );
-}
-
-function formatMoney(price: MoneyAmount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: price.currencyCode,
-  }).format(Number(price.amount));
 }
 
 const cardCss = `

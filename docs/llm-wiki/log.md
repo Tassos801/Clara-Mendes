@@ -222,3 +222,27 @@ grid. The glass navigation, headline and CTAs, enter-shop control, and capsule
 note now remain separated on short devices such as 320 x 480 and 320 x 568,
 while the established 390 x 844 composition is unchanged. Added focused
 regression coverage; no catalog or Shopify data changed.
+
+## [2026-08-11] storefront | Guard-safe "From" pricing and three-size copy
+
+Product cards across the storefront (grid cards, homepage art preview, search
+results, cart cross-sell, recently viewed) now show "From €29.99" when a print
+sells at more than one released price, instead of a flat minimum that hid the
+16 × 20 / 20 × 24 sizes. The shared `app/lib/productCardPricing.ts` derives
+the floor from `availableForSale` variants, falling back to raw
+`priceRange.minVariantPrice` only when the sample holds no purchasable
+variant (fully sold out, or no variant data — this fallback is why the
+search fragment fetches `priceRange`). Because staged-but-unreleased size
+variants sit in `priceRange` min/max at full price, a staged size can never
+set the floor or create a "From" range while any released variant exists;
+the same released-only rule now drives the JSON-LD offers in `app/lib/seo.ts`
+(product AggregateOffer bounds and collection ItemList prices). Recently-viewed
+snapshots switched from the selected variant's price to the released floor
+(storage key bumped v2→v3, mirroring the PR #26 invalidation; the stored
+range flag ages out after 14 days so a later size pause cannot keep a stale
+"From" prefix alive). Sitewide copy
+that still described the catalog as 8 × 10-only was updated (our-story meta +
+format fact, homepage capsule note, Quiet Form editorial), the first-order
+runbook now covers all three SKUs and prices, and the dead flat-price
+`ProductItem` component was removed. PDP, cart line, order history, and
+analytics prices remain exact-variant. No catalog or Shopify data changed.

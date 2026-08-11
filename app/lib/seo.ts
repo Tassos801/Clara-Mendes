@@ -1,4 +1,5 @@
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
+import {deriveCardPricing} from '~/lib/productCardPricing';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 type MoneyAmount = {
@@ -162,12 +163,17 @@ export function collectionSchema({
             '@type': 'Product',
             name: product.title,
             image: product.featuredImage?.url,
-            offers: product.priceRange?.minVariantPrice
-              ? offerFromPrice({
-                  price: product.priceRange.minVariantPrice,
-                  url: new URL(`/products/${product.handle}`, url).toString(),
-                })
-              : undefined,
+            // Same released-floor rule as the visible cards: a staged size
+            // must never set the advertised price.
+            offers: (() => {
+              const price = deriveCardPricing(product).price;
+              return price
+                ? offerFromPrice({
+                    price,
+                    url: new URL(`/products/${product.handle}`, url).toString(),
+                  })
+                : undefined;
+            })(),
           },
         })),
       },
@@ -190,8 +196,20 @@ export function productSchema({
   vendor,
   variants,
 }: ProductSchemaInput) {
-  const minPrice = priceRange?.minVariantPrice;
-  const maxPrice = priceRange?.maxVariantPrice;
+  // Offer bounds come from RELEASED (availableForSale) variants only —
+  // staged-but-unreleased size variants exist in Shopify at full price with
+  // availableForSale=false and would otherwise leak an unpurchasable price
+  // into rich results. Raw priceRange remains the fallback only when no
+  // purchasable variant exists (fully sold out, or no variant data).
+  const releasedPrices = (variants ?? [])
+    .filter((variant) => variant.availableForSale)
+    .map((variant) => variant.price)
+    .filter((price) => Number.isFinite(Number(price.amount)))
+    .sort((a, b) => Number(a.amount) - Number(b.amount));
+  const minPrice = releasedPrices[0] ?? priceRange?.minVariantPrice;
+  const maxPrice = releasedPrices.length
+    ? releasedPrices[releasedPrices.length - 1]
+    : priceRange?.maxVariantPrice;
   const hasPriceRange =
     minPrice && maxPrice && Number(minPrice.amount) !== Number(maxPrice.amount);
   const hasRating =

@@ -1,5 +1,9 @@
 import {Link} from 'react-router';
-import {Image, Money, Pagination} from '@shopify/hydrogen';
+import {Image, Pagination} from '@shopify/hydrogen';
+import {
+  deriveCardPricing,
+  formatCardPriceLabel,
+} from '~/lib/productCardPricing';
 import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
 
 type SearchItems = RegularSearchReturn['result']['items'];
@@ -143,7 +147,9 @@ function SearchResultsProducts({
                   term,
                 });
 
-                const price = product?.selectedOrFirstAvailableVariant?.price;
+                const priceLabel = formatCardPriceLabel(
+                  deriveCardPricing(product),
+                );
                 const image = product?.selectedOrFirstAvailableVariant?.image;
 
                 return (
@@ -166,10 +172,8 @@ function SearchResultsProducts({
                     <span className="search-product-title">
                       {product.title}
                     </span>
-                    {price ? (
-                      <span className="search-product-price">
-                        <Money as="span" data={price} />
-                      </span>
+                    {priceLabel ? (
+                      <span className="search-product-price">{priceLabel}</span>
                     ) : null}
                   </Link>
                 );

@@ -3,6 +3,7 @@
 import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
 import type {ClaraCardProduct} from '../components/ClaraProductCard';
 import {isStoreThemeProduct} from './catalogFilters.ts';
+import {deriveCardPricing, formatCardPrice} from './productCardPricing.ts';
 
 type MoneyAmount = {
   amount: string;
@@ -12,7 +13,10 @@ type MoneyAmount = {
 export type OriginalArtLiveProduct = {
   availableForSale: boolean;
   handle: string;
+  /** True when the print sells at more than one released price. */
+  hasPriceRange: boolean;
   image?: {altText?: string | null; url: string} | null;
+  /** Lowest released price — the "From" floor, never a staged variant's. */
   price?: MoneyAmount | null;
   url: string;
 };
@@ -71,12 +75,14 @@ export function buildOriginalArtProductMap(
 
     const variant =
       product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
+    const pricing = deriveCardPricing(product);
 
     map[handle] = {
       availableForSale: variant?.availableForSale ?? true,
       handle,
+      hasPriceRange: pricing.hasRange,
       image: product.featuredImage ?? null,
-      price: variant?.price ?? product.priceRange?.minVariantPrice ?? null,
+      price: pricing.price ?? variant?.price ?? null,
       url: `/products/${handle}`,
     };
   }
@@ -86,12 +92,5 @@ export function buildOriginalArtProductMap(
 
 /** Formats a Storefront price exactly like the product page does. */
 export function formatOriginalArtPrice(price?: MoneyAmount | null) {
-  if (!price) return null;
-  const amount = Number(price.amount);
-  if (!Number.isFinite(amount)) return null;
-
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: price.currencyCode,
-  }).format(amount);
+  return formatCardPrice(price);
 }

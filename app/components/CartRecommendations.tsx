@@ -6,6 +6,10 @@ import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import type {CartLayout} from '~/components/CartMain';
+import {
+  deriveCardPricing,
+  formatCardPriceLabel,
+} from '~/lib/productCardPricing';
 
 const VISIBLE_RECOMMENDATIONS = 3;
 
@@ -84,7 +88,9 @@ function CartRecommendationRow({
 }) {
   const variant = product.cardVariant?.nodes?.[0];
   const image = product.featuredImage ?? product.images?.nodes?.[0];
-  const price = variant?.price ?? product.priceRange?.minVariantPrice;
+  // "From <min released price>" — the Add button adds the first variant,
+  // which is that min-price 8 × 10, so the label stays truthful.
+  const priceLabel = formatCardPriceLabel(deriveCardPricing(product));
 
   if (!variant) return null;
 
@@ -113,8 +119,8 @@ function CartRecommendationRow({
         >
           {product.title}
         </Link>
-        {price ? (
-          <span className="cart-recs-price">{formatMoney(price)}</span>
+        {priceLabel ? (
+          <span className="cart-recs-price">{priceLabel}</span>
         ) : null}
       </div>
       <AddToCartButton
@@ -149,13 +155,6 @@ function CartRecommendationRow({
       </AddToCartButton>
     </li>
   );
-}
-
-function formatMoney(price: {amount: string; currencyCode: string}) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: price.currencyCode,
-  }).format(Number(price.amount));
 }
 
 const recsCss = `

@@ -19,7 +19,8 @@ Sources: [README](../../README.md), [package.json](../../package.json).
 
 ## Current Catalog Snapshot
 
-The store has fifteen original 8 × 10 art prints across five capsules. All
+The store has fifteen original art prints across five capsules, each sold in
+three sizes (8 × 10 at €29.99, 16 × 20 at €39.99, 20 × 24 at €49.99). All
 fifteen are Active, available for sale, and visible through the configured
 production Storefront API. They were activated even though the selected
 Standard shipping method fails the documented landed-cost gate, Prodigi
