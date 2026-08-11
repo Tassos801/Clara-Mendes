@@ -77,8 +77,12 @@ export function mediaMatchesPlannedSource(media, planned) {
   const extensionIndex = expected.lastIndexOf('.');
   const stem = expected.slice(0, extensionIndex);
   const extension = expected.slice(extensionIndex);
+  const escapedStem = stem.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+  const escapedExtension = extension.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+  const shopifySuffix = '(?:\\d+|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})';
   return new RegExp(
-    `^${stem.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}_\\d+${extension.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}$`,
+    `^${escapedStem}_${shopifySuffix}${escapedExtension}$`,
+    'i',
   ).test(actual);
 }
 
