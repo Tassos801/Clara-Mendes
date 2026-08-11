@@ -1,18 +1,12 @@
-import {Image} from '@shopify/hydrogen';
 import {Link} from 'react-router';
-import type {ClaraCardProduct} from './ClaraProductCard';
 import {
-  buildHomeEditorialItems,
   HOME_EDITORIAL_COPY,
+  HOME_EDITORIAL_ITEMS,
+  type HomeEditorialItem,
 } from '~/content/homeEditorial';
 
-type HomepageEditorialProps = {
-  products: ClaraCardProduct[];
-};
-
-export function HomepageEditorial({products}: HomepageEditorialProps) {
-  const items = buildHomeEditorialItems(products);
-  const [leadItem, ...supportingItems] = items;
+export function HomepageEditorial() {
+  const [leadItem, ...supportingItems] = HOME_EDITORIAL_ITEMS;
 
   return (
     <section
@@ -24,40 +18,7 @@ export function HomepageEditorial({products}: HomepageEditorialProps) {
       <div aria-hidden className="home-editorial__rule" />
 
       <div className="home-editorial__layout">
-        <figure
-          className="home-editorial__figure home-editorial__figure--lead"
-          data-reveal
-        >
-          <Link
-            className="home-editorial__figure-link"
-            prefetch="intent"
-            to={leadItem.href}
-          >
-            <span className="home-editorial__media">
-              {leadItem.kind === 'product' ? (
-                <Image
-                  alt={leadItem.alt}
-                  data={leadItem.image}
-                  loading="lazy"
-                  sizes="(min-width: 981px) 56vw, 100vw"
-                />
-              ) : (
-                <img
-                  alt={leadItem.alt}
-                  decoding="async"
-                  height={leadItem.image.height}
-                  loading="lazy"
-                  src={leadItem.image.url}
-                  width={leadItem.image.width}
-                />
-              )}
-            </span>
-            <figcaption>
-              {leadItem.caption}
-              <span aria-hidden>View</span>
-            </figcaption>
-          </Link>
-        </figure>
+        <EditorialFigure item={leadItem} lead />
 
         <div className="home-editorial__copy" data-reveal>
           <p className="eyebrow">{HOME_EDITORIAL_COPY.eyebrow}</p>
@@ -72,42 +33,12 @@ export function HomepageEditorial({products}: HomepageEditorialProps) {
         </div>
 
         <div
-          aria-label="Clara Mendes editorial products"
+          aria-label="Clara Mendes capsules in real rooms"
           className="home-editorial__supporting"
           data-reveal
         >
           {supportingItems.map((item) => (
-            <figure className="home-editorial__figure" key={item.id}>
-              <Link
-                className="home-editorial__figure-link"
-                prefetch="intent"
-                to={item.href}
-              >
-                <span className="home-editorial__media">
-                  {item.kind === 'product' ? (
-                    <Image
-                      alt={item.alt}
-                      data={item.image}
-                      loading="lazy"
-                      sizes="(min-width: 981px) 25vw, 50vw"
-                    />
-                  ) : (
-                    <img
-                      alt={item.alt}
-                      decoding="async"
-                      height={item.image.height}
-                      loading="lazy"
-                      src={item.image.url}
-                      width={item.image.width}
-                    />
-                  )}
-                </span>
-                <figcaption>
-                  {item.caption}
-                  <span aria-hidden>View</span>
-                </figcaption>
-              </Link>
-            </figure>
+            <EditorialFigure item={item} key={item.id} />
           ))}
         </div>
       </div>
@@ -118,6 +49,44 @@ export function HomepageEditorial({products}: HomepageEditorialProps) {
         ))}
       </div>
     </section>
+  );
+}
+
+function EditorialFigure({
+  item,
+  lead = false,
+}: {
+  item: HomeEditorialItem;
+  lead?: boolean;
+}) {
+  return (
+    <figure
+      className={`home-editorial__figure${
+        lead ? ' home-editorial__figure--lead' : ''
+      }`}
+      data-reveal
+    >
+      <Link
+        className="home-editorial__figure-link"
+        prefetch="intent"
+        to={item.href}
+      >
+        <span className="home-editorial__media">
+          <img
+            alt={item.alt}
+            decoding="async"
+            height={item.image.height}
+            loading="lazy"
+            src={item.image.url}
+            width={item.image.width}
+          />
+        </span>
+        <figcaption>
+          {item.caption}
+          <span aria-hidden>View</span>
+        </figcaption>
+      </Link>
+    </figure>
   );
 }
 
@@ -139,7 +108,7 @@ const editorialCss = `
 .home-editorial__layout {
   align-items: start;
   display: grid;
-  gap: clamp(18px, 2vw, 30px);
+  gap: clamp(20px, 2.4vw, 38px);
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 
@@ -157,13 +126,14 @@ const editorialCss = `
 
 .home-editorial__media {
   background: var(--color-soft);
+  border: 1px solid rgba(38, 35, 31, 0.08);
   display: block;
   overflow: hidden;
 }
 
 .home-editorial__media img {
   display: block;
-  filter: saturate(0.9) contrast(0.98);
+  filter: saturate(0.94);
   height: 100%;
   object-fit: cover;
   transition: filter 500ms ease, transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -171,7 +141,7 @@ const editorialCss = `
 }
 
 .home-editorial__figure-link:hover .home-editorial__media img {
-  filter: saturate(1) contrast(1);
+  filter: saturate(1);
   transform: scale(1.015);
 }
 
@@ -203,13 +173,16 @@ const editorialCss = `
   opacity: 0.72;
 }
 
+/* Lead scene: columns 1-6, so the supporting pair (7 to end) can never
+   run underneath it — the previous span-7 lead shared a column with the
+   supporting grid and the images collided. */
 .home-editorial__figure--lead {
-  grid-column: 1 / span 7;
+  grid-column: 1 / span 6;
   grid-row: 1 / span 2;
 }
 
 .home-editorial__figure--lead .home-editorial__media {
-  aspect-ratio: 5 / 6;
+  aspect-ratio: 4 / 5;
 }
 
 .home-editorial__copy {
@@ -224,10 +197,10 @@ const editorialCss = `
 .home-editorial__copy h2 {
   color: var(--color-ink);
   font-family: var(--serif);
-  font-size: clamp(3.2rem, 6.4vw, 7rem);
+  font-size: clamp(3rem, 5.6vw, 6rem);
   font-weight: 400;
   letter-spacing: -0.055em;
-  line-height: 0.9;
+  line-height: 0.92;
   margin: 0;
   max-width: 11ch;
   text-wrap: balance;
@@ -249,15 +222,16 @@ const editorialCss = `
 .home-editorial__supporting {
   align-items: end;
   display: grid;
-  gap: clamp(14px, 1.7vw, 24px);
+  gap: clamp(16px, 2vw, 30px);
   grid-column: 7 / -1;
   grid-row: 2;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   padding-top: clamp(20px, 3.5vw, 54px);
 }
 
+/* Gentle stagger keeps the editorial rhythm without overlapping. */
 .home-editorial__supporting .home-editorial__figure:first-child {
-  margin-top: clamp(34px, 7vw, 112px);
+  margin-bottom: clamp(24px, 4vw, 72px);
 }
 
 .home-editorial__supporting .home-editorial__figure:first-child
@@ -265,6 +239,8 @@ const editorialCss = `
   aspect-ratio: 4 / 5;
 }
 
+/* The closing scene is a native-landscape photograph — shown at 5:4
+   instead of cropped into a portrait slot. */
 .home-editorial__supporting .home-editorial__figure:last-child
   .home-editorial__media {
   aspect-ratio: 5 / 4;
@@ -308,15 +284,20 @@ const editorialCss = `
   }
 
   .home-editorial__supporting {
-    gap: 14px;
-    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    grid-template-columns: 1fr;
     order: 3;
   }
 
+  .home-editorial__supporting .home-editorial__figure:first-child {
+    margin-bottom: 0;
+    width: min(100%, 420px);
+  }
+
   .home-editorial__copy h2 {
-    font-size: clamp(2.8rem, 13vw, 4.2rem);
+    font-size: clamp(2.6rem, 12vw, 4rem);
     letter-spacing: -0.05em;
-    line-height: 0.88;
+    line-height: 0.9;
   }
 
   .home-editorial__copy > p:not(.eyebrow) {
@@ -325,15 +306,6 @@ const editorialCss = `
   }
 
   .home-editorial__figure--lead .home-editorial__media {
-    aspect-ratio: 4 / 5;
-  }
-
-  .home-editorial__supporting .home-editorial__figure:first-child {
-    margin-top: 0;
-  }
-
-  .home-editorial__supporting .home-editorial__figure:last-child
-    .home-editorial__media {
     aspect-ratio: 4 / 5;
   }
 

@@ -246,3 +246,18 @@ format fact, homepage capsule note, Quiet Form editorial), the first-order
 runbook now covers all three SKUs and prices, and the dead flat-price
 `ProductItem` component was removed. PDP, cart line, order history, and
 analytics prices remain exact-variant. No catalog or Shopify data changed.
+
+## [2026-08-11] storefront | Redesigned the living edit as curated in-situ scenes
+
+The homepage editorial no longer substitutes Shopify product images into its
+slots. The homepage-editorial collection override and best-selling fallback
+meant the section showed three raw same-capsule print files (latterly the
+three Sunlit Mosaics) cropped to 5:6/5:4 and colliding where the lead figure
+(span 7) shared column 7 with the supporting grid. It now always renders the
+three styled art-in-room photographs shot for the section (Quiet Form sofa,
+Patina Blue stoneware, Sunlit Mosaic table), each linking to its capsule
+landing page; the lead spans six columns so nothing overlaps, the closing
+landscape photo keeps its native 5:4, media get a hairline border, and the
+mobile stack shows one scene per row with the landscape image full-width.
+The editorialCollection query, its loader plumbing, and the products prop
+were removed; the homepage query is one collection lookup lighter.
