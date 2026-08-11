@@ -14,9 +14,10 @@ markets `GLOBAL-FAP-20X24` as 50x60cm / 20x24"; its dashboard recommends
 5906 × 7087 px (300 DPI for the metric 50 × 60 cm print area), which the
 6000 × 7200 files exceed at the same 5:6 ratio.
 
-The Hydrogen product route renders Shopify's `Size` values. Its flat artwork is
-always visible, while room mockups, the 16 × 20 sofa scene, and the true-scale
-sofa diagram follow the selected 8 × 10, 16 × 20, or 20 × 24 variant.
+The Hydrogen product route renders Shopify's `Size` values. Each variant is
+associated with a clean, text-free sofa scene at the matching relative scale.
+That scene leads the gallery when the size is selected, followed by the flat
+artwork, matching sage-wall scenes, and the true-scale sofa diagram.
 
 ## Production Files
 
@@ -58,10 +59,10 @@ node .\scripts\sync-original-art-size-variants.mjs
 
 The production catalog audit
 (`node .\scripts\audit-original-art-catalog.mjs`) requires exactly the three
-approved size variants and eight READY images per product: the flat artwork,
-the 16 × 20 sofa scene, and two room scenes for each size. Missing 16 × 20 or
-20 × 24 variants, a sofa scene, or a size-specific mockup pair fails the audit
-instead of accepting a partial pre-release state. The 20 × 24 workflow also
+approved size variants and ten READY images per product: the flat artwork plus
+one text-free sofa scene and two sage-wall scenes for each size. Missing 16 ×
+20 or 20 × 24 variants, a size-specific sofa scene, or a size-specific mockup
+pair fails the audit instead of accepting a partial state. The 20 × 24 workflow also
 requires its prerequisite 16 × 20 variant to remain ACTIVE, not merely staged.
 
 Audit or mutate the 20 × 24 transition only with `--size=20x24`:
@@ -137,29 +138,38 @@ npm run catalog:art:mockups:large
 ```
 
 `npm run catalog:art:mockups:bigger` generates only the 30 new 20 × 24 scenes.
-Running `npm run catalog:art:mockups` generates all 90 mockups. Future media
-append runs plan six mockups per product, for seven images including the flat
-artwork. The sofa workflow below adds the eighth image.
+Running `npm run catalog:art:mockups` generates all 90 sage-wall mockups. The
+sofa workflow below adds three more per product, for ten images including the
+flat artwork.
 
 ## Sofa Scale Product Images
 
-Generate the fifteen 16 × 20 sofa scenes from the exact catalog artwork and the
-five approved capsule backgrounds:
+Generate 45 clean sofa scenes — all 15 artworks in all three offered sizes —
+from the exact catalog artwork and five approved text-free capsule backgrounds:
 
 ```powershell
 npm run catalog:art:sofa-mockups
 ```
 
-The generated `*-room-sofa-16x20.jpg` filename and `16 by 20` alt text make the
-scene visible only when that size is selected. After the assets are deployed,
-preview and apply the guarded media update:
+The generated `*-room-sofa-8x10.jpg`, `*-room-sofa-16x20.jpg`, and
+`*-room-sofa-20x24.jpg` identities make each scene visible only when its size
+is selected. Widths stay at the honest 1:2:2.5 relationship and the 20 × 24
+art uses the same centred 5:6 crop as production. The image keeps only a simple
+height bracket: no label, price, measurement text, logo, or branding. After the
+assets are deployed, preview and apply the guarded media update:
 
 ```powershell
 npm run catalog:art:sofa-mockups:dry-run
+npm run catalog:art:sofa-mockups:preflight
 npm run catalog:art:sofa-mockups:sync
 ```
 
-The sync accepts only the exact seven-image baseline, adds one image through
-Shopify's current product update mutation, and moves only that image to
-zero-based position `1`. The flat artwork remains featured at position `0`.
-Every product is read back with eight READY images before the run succeeds.
+The read-only preflight checks all products, exact Size variant sets, current
+variant-media associations, and all 45 public image URLs before any write. The
+sync uploads all missing clean images and waits until they are READY. It places
+the three sofa scenes at zero-based positions `1` through `3`, associates each
+image only with its matching Shopify Size variant, detaches the old flat-art
+variant association when required, and leaves the flat artwork featured at
+position `0` for collection cards. The full replacement gallery and exact
+variant associations are read back before the legacy text-overlay image is
+removed, then every product is read back again with ten READY images.

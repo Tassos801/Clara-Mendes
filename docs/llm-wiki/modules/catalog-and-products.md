@@ -31,18 +31,27 @@ confirmed. Source metadata is in
 `scripts/sync-original-art-catalog.mjs` remains a Draft staging command and must
 not be run as a way to preserve the current Active state.
 
-Each live print's media is the flat artwork shot plus two generated mockups for
-each of the three live sizes — seven READY images per product since 2026-08-10.
-All scenes are composited by
-`scripts/generate-room-mockups.mjs` from owned backdrops into
+Each live print's intended media is the flat artwork plus three generated room
+views for each of the three live sizes: one clean warm-neutral sofa scene and
+two sage-wall scenes, for ten READY images per product. Sofa images use the
+same artwork at relative widths of 1:2:2.5 for 8 × 10, 16 × 20, and 20 × 24.
+All scenes are composited by `scripts/generate-room-mockups.mjs` and
+`scripts/generate-sofa-mockups.mjs` from owned backdrops into
 `public/images/product-art-mockups/` (scene geometry in
 `scripts/lib/room-mockup-scenes.mjs`, layout-tested by
-`scripts/roomMockups.node-test.mjs`). `scripts/sync-room-mockups.mjs`
+`scripts/roomMockups.node-test.mjs` and `scripts/sofaMockups.node-test.mjs`).
+`scripts/sync-room-mockups.mjs`
 (`catalog:art:mockups:sync`) appends them to the ACTIVE products via
 `productCreateMedia` only — it is the safe apply path for live products,
-idempotent by alt text; future media syncs plan all six mockups. Product cards
-retain their bounded image query, while the PDP fetches the larger gallery and
-shows only the selected size's room scenes plus the always-visible flat art.
+idempotent by alt text; future media syncs plan all six sage-wall mockups.
+`scripts/sync-sofa-mockups.mjs` has a read-only live preflight, verifies source
+identity and READY state, requires the exact three-size variant set, and rejects
+crossed or extra variant associations. It uploads and verifies new sofa media,
+associates exactly one matching sofa image to each Size variant, and verifies
+the replacement state before removing a legacy overlay. Product cards keep the
+flat featured image, while the PDP leads with the selected variant's sofa scene
+and filters the rest of the gallery to that size. The production catalog audit
+also validates each exact size-to-sofa media association.
 The 20 × 24 production and mockup assets use the same centred 5:6 full-bleed
 crop and a context width ratio of `0.48`, exactly 2.5 times the 8 × 10 width.
 
@@ -100,6 +109,7 @@ and are resolved by `getProductStory`; cards outside shopping pages keep the
 compact title-and-price treatment. Product pages add:
 
 - Variant option selection.
+- Size-specific living-room imagery led by the selected variant.
 - Add-to-cart analytics.
 - Shopify ProductView analytics.
 - Ad platform product view event.

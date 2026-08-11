@@ -236,8 +236,8 @@ test('20x24 activation upgrades two-size copy to truthful three-size copy', () =
   assert.equal(second.changed, false);
 });
 
-test('production catalog expects flat art, sofa scale, and two mockups per size', () => {
-  assert.equal(sizePlan.expectedOriginalArtMediaCount?.(), 8);
+test('production catalog expects flat art and three room views per size', () => {
+  assert.equal(sizePlan.expectedOriginalArtMediaCount?.(), 10);
 });
 
 test('activation summaries include only sizes through the target', () => {

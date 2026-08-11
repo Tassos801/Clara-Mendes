@@ -33,6 +33,7 @@
     "catalog:art:mockups:sync": "node ./scripts/sync-room-mockups.mjs --apply",
     "catalog:art:sofa-mockups": "node ./scripts/generate-sofa-mockups.mjs",
     "catalog:art:sofa-mockups:dry-run": "node ./scripts/sync-sofa-mockups.mjs",
+    "catalog:art:sofa-mockups:preflight": "node ./scripts/sync-sofa-mockups.mjs --preflight",
     "catalog:art:sofa-mockups:sync": "node ./scripts/sync-sofa-mockups.mjs --apply",
     "catalog:extensions:prepare": "python ./scripts/prepare-art-product-extensions.py",
     "catalog:extensions:validate": "python ./scripts/validate-art-product-files.py",

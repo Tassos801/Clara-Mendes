@@ -175,12 +175,14 @@ export function inspectOriginalArtProduct(
 }
 
 export function expectedOriginalArtMediaCount(sizes = ALL_SIZES) {
-  // Flat artwork + one sofa-scale image + two sage-wall scenes per size.
-  return 2 + sizes.length * 2;
+  // Flat artwork + one clean sofa scene and two sage-wall scenes per size.
+  return 1 + sizes.length * 3;
 }
 
 export function sizesThrough(targetSize) {
-  const targetIndex = ALL_SIZES.findIndex((size) => size.key === targetSize.key);
+  const targetIndex = ALL_SIZES.findIndex(
+    (size) => size.key === targetSize.key,
+  );
   if (targetIndex < 0) {
     throw new Error(`Unknown target size: ${targetSize.key}`);
   }
@@ -205,7 +207,10 @@ export function releaseState(largeVariant) {
   return 'INVALID';
 }
 
-export function multiSizeDescription(descriptionHtml, targetSize = BIGGER_SIZE) {
+export function multiSizeDescription(
+  descriptionHtml,
+  targetSize = BIGGER_SIZE,
+) {
   const html = String(descriptionHtml ?? '');
   if (html.includes(MULTI_SIZE_COPY)) {
     return {changed: false, html};

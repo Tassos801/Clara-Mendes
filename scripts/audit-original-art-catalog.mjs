@@ -20,7 +20,10 @@ import {
   variantForSize,
 } from './lib/original-art-size-plan.mjs';
 import {expectedMockupAlts} from './lib/room-mockup-scenes.mjs';
-import {expectedSofaMockupAlt} from './lib/sofa-mockup-scenes.mjs';
+import {
+  SOFA_SCENES,
+  expectedSofaMockupAlts,
+} from './lib/sofa-mockup-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -45,6 +48,7 @@ const PRODUCTS_QUERY = `#graphql
         media(first: 10) {
           nodes {
             alt
+            id
             mediaContentType
             status
           }
@@ -54,12 +58,21 @@ const PRODUCTS_QUERY = `#graphql
         variants(first: 20) {
           nodes {
             availableForSale
+            id
             inventoryItem {
               requiresShipping
               tracked
             }
             inventoryPolicy
             inventoryQuantity
+            media(first: 5) {
+              nodes {
+                alt
+                id
+                mediaContentType
+                status
+              }
+            }
             price
             selectedOptions {
               name
@@ -142,7 +155,8 @@ function validateProduct(product, expected) {
       requiredActiveExpansionSizes: EXPANSION_SIZES,
     }).issues.filter(
       (issue) =>
-        issue.endsWith('variant is missing') || issue.endsWith('must be ACTIVE'),
+        issue.endsWith('variant is missing') ||
+        issue.endsWith('must be ACTIVE'),
     ),
   );
   if (baseVariant?.sku !== expectedSku(expected, BASE_SIZE)) {
@@ -184,7 +198,7 @@ function validateProduct(product, expected) {
   const expectedMediaCount = expectedOriginalArtMediaCount();
   const expectedMediaAlts = [
     expected.alt,
-    expectedSofaMockupAlt(expected.shortTitle),
+    ...expectedSofaMockupAlts(expected.shortTitle),
     ...expectedMockupAlts(expected.shortTitle),
   ];
   const actualMediaAlts = new Set(media.map((node) => node?.alt));
@@ -201,6 +215,24 @@ function validateProduct(product, expected) {
   }
   if (missingMediaAlts.length) {
     issues.push(`${missingMediaAlts.length} expected media alt(s) missing`);
+  }
+  for (const scene of SOFA_SCENES) {
+    const size = ALL_SIZES.find((entry) => entry.key === scene.sizeKey);
+    const variant = size ? variantForSize(product, size.label) : null;
+    const expectedAlt = scene.altFor(expected.shortTitle);
+    const expectedMedia = media.find((entry) => entry.alt === expectedAlt);
+    const variantMedia = variant?.media?.nodes ?? [];
+    if (
+      !expectedMedia?.id ||
+      variantMedia.length !== 1 ||
+      variantMedia[0]?.id !== expectedMedia.id ||
+      variantMedia[0]?.mediaContentType !== 'IMAGE' ||
+      variantMedia[0]?.status !== 'READY'
+    ) {
+      issues.push(
+        `${size?.label || scene.sizeKey} variant is not associated only with its matching clean sofa image`,
+      );
+    }
   }
 
   return issues;
