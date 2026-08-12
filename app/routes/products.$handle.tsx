@@ -657,8 +657,9 @@ export default function Product() {
             <div>
               <dt>Shipping</dt>
               <dd>
-                Printed to order within 1–3 business days. Standard US delivery
-                is estimated at 7–15 business days after dispatch. Delivery
+                Printed to order and dispatched within 1–3 business days.
+                Estimated delivery: 3–5 business days in Cyprus, 5–10 business
+                days across Europe, 7–15 business days elsewhere. Delivery
                 updates are emailed when available.
               </dd>
             </div>
