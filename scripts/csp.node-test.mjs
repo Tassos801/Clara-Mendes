@@ -10,6 +10,7 @@ const APP_DIR = path.join(
   '..',
   'app',
 );
+const rootSource = readFileSync(path.join(APP_DIR, 'root.tsx'), 'utf8');
 
 const sourceFiles = readdirSync(APP_DIR, {recursive: true, withFileTypes: true})
   .filter((entry) => entry.isFile() && /\.(ts|tsx|css)$/.test(entry.name))
@@ -18,6 +19,12 @@ const sourceFiles = readdirSync(APP_DIR, {recursive: true, withFileTypes: true})
 assert.ok(
   sourceFiles.length > 20,
   `app/ scan looks wrong: only ${sourceFiles.length} source files found`,
+);
+
+assert.match(
+  rootSource,
+  /<Links\s+nonce=""\s*\/>/,
+  'Links must explicitly opt out of the server-only router nonce to hydrate safely',
 );
 
 // Every entry is a quoted CSP keyword, a bare scheme, or an https origin —

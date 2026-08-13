@@ -14,6 +14,7 @@ declare global {
    * type-checks and runs before the token is provisioned.
    */
   interface Env {
+    PUBLIC_GTM_CONTAINER_ID?: string;
     SHOPIFY_ADMIN_ACCESS_TOKEN?: string;
   }
 }

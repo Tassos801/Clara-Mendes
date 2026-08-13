@@ -1,9 +1,15 @@
 import {useLoaderData, Link} from 'react-router';
 import type {Route} from './+types/policies._index';
 import type {PoliciesQuery, PolicyItemFragment} from 'storefrontapi.generated';
+import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
 
-export const meta: Route.MetaFunction = () => {
-  return [{title: 'Clara Mendes | Policies'}];
+export const meta: Route.MetaFunction = ({data}) => {
+  return buildSeoMeta({
+    title: 'Policies',
+    description:
+      'Read the Clara Mendes shipping, returns, privacy, and terms of service policies.',
+    url: data?.canonicalUrl ?? 'https://shopclaramendes.com/policies',
+  });
 };
 
 const POLICY_DESCRIPTIONS: Record<string, string> = {
@@ -17,7 +23,7 @@ const POLICY_DESCRIPTIONS: Record<string, string> = {
     'Returns, exchanges, and how we resolve the rare piece that falls short.',
 };
 
-export async function loader({context}: Route.LoaderArgs) {
+export async function loader({context, request}: Route.LoaderArgs) {
   const data: PoliciesQuery = await context.storefront.query(POLICIES_QUERY);
 
   const shopPolicies = data.shop;
@@ -32,7 +38,10 @@ export async function loader({context}: Route.LoaderArgs) {
     throw new Response('No policies found', {status: 404});
   }
 
-  return {policies};
+  return {
+    policies,
+    canonicalUrl: getCanonicalUrl(request, '/policies'),
+  };
 }
 
 export default function Policies() {
