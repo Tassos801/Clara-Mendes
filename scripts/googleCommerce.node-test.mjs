@@ -79,6 +79,56 @@ assert.equal(selected.ok, true);
 assert.deepEqual(calls, [{countryCode: 'GB'}]);
 assert.equal(sessionValues.get('marketCountry'), 'GB');
 
+// Hydrogen cart mutations use a minimal fragment by default. Verify the
+// persisted buyer identity with the full cart query before saving the market.
+let readbackCalls = 0;
+const minimalMutationSessionValues = new Map();
+const minimalMutationSelection = await applyMarketSelection({
+  cart: {
+    async get() {
+      readbackCalls += 1;
+      return {
+        buyerIdentity: {countryCode: 'DE'},
+        id: 'gid://shopify/Cart/minimal',
+      };
+    },
+    async updateBuyerIdentity() {
+      return {cart: {id: 'gid://shopify/Cart/minimal'}};
+    },
+  },
+  country: 'DE',
+  session: {
+    set: (key, value) => minimalMutationSessionValues.set(key, value),
+  },
+});
+assert.equal(minimalMutationSelection.ok, true);
+assert.equal(readbackCalls, 1);
+assert.equal(minimalMutationSessionValues.get('marketCountry'), 'DE');
+assert.equal(
+  minimalMutationSelection.result.cart?.buyerIdentity?.countryCode,
+  'DE',
+);
+
+const mismatchedReadbackSelection = await applyMarketSelection({
+  cart: {
+    async get() {
+      return {
+        buyerIdentity: {countryCode: 'CY'},
+        id: 'gid://shopify/Cart/mismatched-readback',
+      };
+    },
+    async updateBuyerIdentity() {
+      return {cart: {id: 'gid://shopify/Cart/mismatched-readback'}};
+    },
+  },
+  country: 'DE',
+  session: {
+    set: () => assert.fail('mismatched readback must not persist a market'),
+  },
+});
+assert.equal(mismatchedReadbackSelection.ok, false);
+assert.equal(mismatchedReadbackSelection.status, 422);
+
 let invalidCartCalled = false;
 const invalidSelection = await applyMarketSelection({
   cart: {
