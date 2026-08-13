@@ -13,6 +13,7 @@ type MarketCartResult = {
 };
 
 type MarketCart = {
+  get: () => Promise<MarketCartResult['cart']>;
   updateBuyerIdentity: (input: {
     countryCode: MarketCountryCode;
   }) => Promise<MarketCartResult>;
@@ -61,12 +62,20 @@ export async function applyMarketSelection({
     };
   }
 
-  if (result.cart?.buyerIdentity?.countryCode !== normalizedCountry) {
+  // Hydrogen mutations use a minimal cart fragment unless one is configured,
+  // so buyerIdentity may be absent even when the update succeeded. Read the
+  // cart back with the full query fragment before persisting the market.
+  const verifiedCart = result.cart?.buyerIdentity?.countryCode
+    ? result.cart
+    : await cart.get();
+  const verifiedResult = {...result, cart: verifiedCart};
+
+  if (verifiedCart?.buyerIdentity?.countryCode !== normalizedCountry) {
     return {
       ok: false as const,
       status: 422,
       error: 'The delivery country was not applied to the cart.',
-      result,
+      result: verifiedResult,
     };
   }
 
@@ -75,7 +84,7 @@ export async function applyMarketSelection({
   return {
     ok: true as const,
     country: normalizedCountry,
-    result,
+    result: verifiedResult,
   };
 }
 
