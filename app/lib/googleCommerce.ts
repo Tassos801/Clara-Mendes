@@ -23,6 +23,35 @@ export type GoogleCommerceItem = {
   sku?: string;
 };
 
+type GoogleCommerceCustomerPrivacy = {
+  analyticsProcessingAllowed?: () => boolean;
+  marketingAllowed?: () => boolean;
+};
+
+export function createGoogleCommercePrivacyReader() {
+  let customerPrivacy: GoogleCommerceCustomerPrivacy | null = null;
+  let canTrack = () => false;
+
+  return {
+    current() {
+      const trackingAllowed = Boolean(canTrack());
+      return {
+        analyticsAllowed:
+          customerPrivacy?.analyticsProcessingAllowed?.() ?? trackingAllowed,
+        canTrack: trackingAllowed,
+        marketingAllowed: customerPrivacy?.marketingAllowed?.() ?? false,
+      };
+    },
+    update(
+      nextCustomerPrivacy: GoogleCommerceCustomerPrivacy | null | undefined,
+      nextCanTrack: () => boolean,
+    ) {
+      customerPrivacy = nextCustomerPrivacy ?? null;
+      canTrack = nextCanTrack;
+    },
+  };
+}
+
 export const DENIED_CONSENT_MODE: ConsentModeSignals & {
   wait_for_update: number;
 } = {

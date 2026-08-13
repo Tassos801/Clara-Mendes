@@ -5,7 +5,7 @@ import {
   type ProductViewPayload,
   type VisitorConsentCollected,
 } from '@shopify/hydrogen';
-import {useEffect, useLayoutEffect} from 'react';
+import {useEffect, useLayoutEffect, useRef} from 'react';
 import {
   emitGoogleCommerceEvent,
   initializeGoogleTagManager,
@@ -15,6 +15,7 @@ import {
 } from '~/lib/googleCommerce.client';
 import {
   consentModeFromShopify,
+  createGoogleCommercePrivacyReader,
   ecommerceValue,
   normalizeGoogleCommerceItem,
   shouldEmitGoogleCommerceEvent,
@@ -55,6 +56,14 @@ export function GoogleCommerceAnalytics({
 }): null {
   const {canTrack, customerPrivacy, register, subscribe} = useAnalytics();
   const {ready} = register('GoogleCommerceAnalytics');
+  const privacyReaderRef = useRef<ReturnType<
+    typeof createGoogleCommercePrivacyReader
+  > | null>(null);
+  if (!privacyReaderRef.current) {
+    privacyReaderRef.current = createGoogleCommercePrivacyReader();
+  }
+  const privacyReader = privacyReaderRef.current;
+  privacyReader.update(customerPrivacy, canTrack);
 
   useEffect(() => {
     if (!containerId) return;
@@ -95,21 +104,20 @@ export function GoogleCommerceAnalytics({
     }
     dataLayerWindow[SUBSCRIPTION_FLAG] = true;
 
-    const trackingAllowed = () =>
-      shouldEmitGoogleCommerceEvent({
-        analyticsAllowed:
-          customerPrivacy?.analyticsProcessingAllowed() ?? canTrack(),
-        canTrack: canTrack(),
-      });
-    const emitEvent = (input: StorefrontEventInput) =>
-      emitGoogleCommerceEvent({
+    const trackingAllowed = () => {
+      const privacy = privacyReader.current();
+      return shouldEmitGoogleCommerceEvent(privacy);
+    };
+    const emitEvent = (input: StorefrontEventInput) => {
+      const privacy = privacyReader.current();
+      return emitGoogleCommerceEvent({
         ...input,
-        analyticsAllowed:
-          customerPrivacy?.analyticsProcessingAllowed() ?? canTrack(),
-        canTrack: canTrack(),
+        analyticsAllowed: privacy.analyticsAllowed,
+        canTrack: privacy.canTrack,
         captureAttribution: () => captureMarketingAttribution(true),
-        marketingAllowed: customerPrivacy?.marketingAllowed() ?? false,
+        marketingAllowed: privacy.marketingAllowed,
       });
+    };
 
     subscribe(AnalyticsEvent.PAGE_VIEWED, (payload) => {
       if (!trackingAllowed()) return;
@@ -198,7 +206,7 @@ export function GoogleCommerceAnalytics({
     });
 
     ready();
-  }, [canTrack, containerId, customerPrivacy, ready, subscribe]);
+  }, [containerId, privacyReader, ready, subscribe]);
 
   return null;
 }

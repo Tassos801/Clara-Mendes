@@ -1,12 +1,10 @@
-import {
-  CartForm,
-  type OptimisticCartLineInput,
-} from '@shopify/hydrogen';
+import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import {useCallback, useEffect, useRef} from 'react';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
 import {getCartFormErrorMessages} from '~/lib/cartFormErrors';
 import {
   getSerializedMarketingAttribution,
+  marketingAttributionValueForConsent,
   MARKETING_ATTRIBUTION_INPUT_NAME,
 } from '~/lib/marketingAttribution';
 
@@ -79,16 +77,17 @@ function AddToCartButtonContent({
 }) {
   const wasSubmitting = useRef(false);
   const attributionInputRef = useRef<HTMLInputElement>(null);
-  const marketingAllowed = useMarketingConsent();
+  const marketingConsent = useMarketingConsent();
   const errors = getCartFormErrorMessages(fetcher.data);
   const isBusy = fetcher.state !== 'idle';
   const refreshMarketingAttribution = useCallback(() => {
     if (attributionInputRef.current) {
-      attributionInputRef.current.value = getSerializedMarketingAttribution(
-        marketingAllowed,
+      attributionInputRef.current.value = marketingAttributionValueForConsent(
+        marketingConsent,
+        () => getSerializedMarketingAttribution(true),
       );
     }
-  }, [marketingAllowed]);
+  }, [marketingConsent]);
 
   useEffect(() => {
     refreshMarketingAttribution();

@@ -346,6 +346,10 @@ const cartSummarySource = await readFile(
   new URL('../app/components/CartSummary.tsx', import.meta.url),
   'utf8',
 );
+const marketingCheckoutUrlSource = await readFile(
+  new URL('../app/hooks/useMarketingCheckoutUrl.ts', import.meta.url),
+  'utf8',
+);
 const attributionSource = await readFile(
   new URL('../app/components/MarketingAttribution.tsx', import.meta.url),
   'utf8',
@@ -369,7 +373,8 @@ const handleCollectionSource = await readFile(
 assert.ok(!addToCartSource.includes('sendAdPlatformCommerceEvent'));
 assert.ok(!productRouteSource.includes('AdPlatformProductView'));
 assert.match(addToCartSource, /useMarketingConsent/);
-assert.match(cartSummarySource, /marketingAllowed/);
+assert.match(cartSummarySource, /useMarketingCheckoutUrl/);
+assert.match(marketingCheckoutUrlSource, /consent !== 'granted'/);
 assert.match(attributionSource, /clearMarketingAttribution/);
 assert.match(marketSelectorSource, /useFetcher/);
 assert.match(marketSelectorSource, /location\.hash/);

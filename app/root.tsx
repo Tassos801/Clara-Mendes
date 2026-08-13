@@ -30,9 +30,7 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 
 export function links() {
-  return [
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
-  ];
+  return [{rel: 'icon', type: 'image/svg+xml', href: favicon}];
 }
 
 export function Layout({children}: {children?: React.ReactNode}) {
@@ -46,7 +44,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
-        <Links />
+        <Links nonce="" />
       </head>
       <body>
         {children}

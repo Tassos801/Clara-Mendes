@@ -1,14 +1,10 @@
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
-import {
-  CartForm,
-  Money,
-  type OptimisticCart,
-} from '@shopify/hydrogen';
+import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
+import {useMarketingCheckoutUrl} from '~/hooks/useMarketingCheckoutUrl';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
-import {buildCheckoutUrlWithAttribution} from '~/lib/marketingAttribution';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -53,17 +49,11 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
 }
 
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
-  const [attributedCheckoutUrl, setAttributedCheckoutUrl] =
-    useState(checkoutUrl);
-  const marketingAllowed = useMarketingConsent();
-
-  useEffect(() => {
-    setAttributedCheckoutUrl(
-      checkoutUrl && marketingAllowed
-        ? buildCheckoutUrlWithAttribution(checkoutUrl, true)
-        : checkoutUrl,
-    );
-  }, [checkoutUrl, marketingAllowed]);
+  const marketingConsent = useMarketingConsent();
+  const attributedCheckoutUrl = useMarketingCheckoutUrl({
+    checkoutUrl,
+    consent: marketingConsent,
+  });
 
   if (!checkoutUrl) return null;
 

@@ -1,16 +1,26 @@
 import {useAnalytics, type VisitorConsentCollected} from '@shopify/hydrogen';
 import {useEffect, useState} from 'react';
+import {
+  marketingConsentStateFromCustomerPrivacy,
+  type MarketingConsentState,
+} from '~/lib/marketingConsent';
 
 export function useMarketingConsent() {
   const {customerPrivacy} = useAnalytics();
-  const [marketingAllowed, setMarketingAllowed] = useState(false);
+  const [marketingConsent, setMarketingConsent] =
+    useState<MarketingConsentState>(() =>
+      marketingConsentStateFromCustomerPrivacy(customerPrivacy),
+    );
 
   useEffect(() => {
-    setMarketingAllowed(customerPrivacy?.marketingAllowed() ?? false);
+    setMarketingConsent(
+      marketingConsentStateFromCustomerPrivacy(customerPrivacy),
+    );
 
     const onConsent = (event: Event) => {
       const detail = (event as CustomEvent<VisitorConsentCollected>).detail;
-      setMarketingAllowed(Boolean(detail?.marketingAllowed));
+      if (!detail) return;
+      setMarketingConsent(detail.marketingAllowed ? 'granted' : 'denied');
     };
 
     document.addEventListener('visitorConsentCollected', onConsent);
@@ -19,5 +29,5 @@ export function useMarketingConsent() {
     };
   }, [customerPrivacy]);
 
-  return marketingAllowed;
+  return marketingConsent;
 }

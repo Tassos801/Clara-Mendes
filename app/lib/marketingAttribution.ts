@@ -1,4 +1,5 @@
 import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
+import type {MarketingConsentState} from './marketingConsent.ts';
 
 export const MARKETING_ATTRIBUTION_INPUT_NAME = 'marketingAttribution';
 
@@ -70,7 +71,7 @@ export function captureMarketingAttribution(marketingAllowed: boolean) {
     return null;
   }
 
-  const stored = readStoredAttribution();
+  const stored = getStoredMarketingAttribution();
   const currentTouch = createTouchFromWindow();
   const hasPaidSignal = hasAttributionSignal(currentTouch);
   const firstTouch = stored?.first_touch ?? currentTouch;
@@ -94,6 +95,13 @@ export function getSerializedMarketingAttribution(marketingAllowed: boolean) {
   if (!snapshot) return '';
 
   return serializeMarketingAttribution(snapshot);
+}
+
+export function marketingAttributionValueForConsent(
+  consent: MarketingConsentState,
+  serialize: () => string,
+) {
+  return consent === 'granted' ? serialize() : '';
 }
 
 export function getSerializedMarketingAttributionFromUrl(
@@ -132,6 +140,13 @@ export function buildCheckoutUrlWithAttribution(
   const snapshot = captureMarketingAttribution(marketingAllowed);
   if (!snapshot) return checkoutUrl;
 
+  return buildCheckoutUrlWithAttributionSnapshot(checkoutUrl, snapshot);
+}
+
+export function buildCheckoutUrlWithAttributionSnapshot(
+  checkoutUrl: string,
+  snapshot: MarketingAttributionSnapshot,
+) {
   try {
     const url = new URL(checkoutUrl);
     const touch = snapshot.last_touch;
@@ -220,11 +235,46 @@ export function removeMarketingCartAttributes(
   const marketingKeys = new Set<string>(MARKETING_CART_ATTRIBUTE_KEYS);
 
   return attributes
-    .map(({key, value}) => ({
-      key: sanitizeAttributeKey(key),
-      value: sanitizeAttributeValue(value),
-    }))
-    .filter(({key, value}) => key && value && !marketingKeys.has(key));
+    .filter(
+      (attribute): attribute is {key: string; value: string} =>
+        typeof attribute.key === 'string' &&
+        typeof attribute.value === 'string' &&
+        !marketingKeys.has(attribute.key),
+    )
+    .map(({key, value}) => ({key, value}));
+}
+
+export function hasMarketingCartAttributes(
+  attributes: Array<{key?: string | null; value?: string | null}> = [],
+) {
+  const marketingKeys = new Set<string>(MARKETING_CART_ATTRIBUTE_KEYS);
+  return attributes.some(
+    ({key}) => typeof key === 'string' && marketingKeys.has(key),
+  );
+}
+
+export function cartAttributesSignature(
+  attributes: Array<{key?: string | null; value?: string | null}> = [],
+) {
+  return JSON.stringify(attributes.map(({key, value}) => [key, value]));
+}
+
+export function isMarketingCartCleanupResponseSuccessful(
+  responseOk: boolean,
+  payload: unknown,
+) {
+  if (!responseOk || !payload || typeof payload !== 'object') return false;
+
+  const result = payload as {
+    cart?: {attributes?: Array<{key?: string | null; value?: string | null}>};
+    errors?: unknown[];
+    userErrors?: unknown[];
+  };
+
+  if (result.errors?.length || result.userErrors?.length) return false;
+  if (!Array.isArray(result.cart?.attributes)) return false;
+
+  return !hasMarketingCartAttributes(result.cart.attributes);
 }
 
 function parseMarketingAttribution(value: FormDataEntryValue | null) {
@@ -270,7 +320,7 @@ function createTouchFromUrl(
   return touch;
 }
 
-function readStoredAttribution() {
+export function getStoredMarketingAttribution() {
   try {
     const value = window.localStorage.getItem(ATTRIBUTION_STORAGE_KEY);
     if (!value) return null;

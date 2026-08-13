@@ -95,6 +95,7 @@ export async function action({request, context}: Route.ActionArgs) {
     {
       cart: cartResult,
       errors: result?.errors,
+      userErrors: result?.userErrors,
       warnings: result?.warnings,
     },
     {status, headers},
@@ -129,11 +130,11 @@ async function updateCartAttribution({
       cartId: cartResult.id,
     });
 
-    if (updatedResult?.errors?.length) {
-      console.warn(
-        'Unable to persist marketing attribution cart attributes.',
-        updatedResult.errors,
-      );
+    if (updatedResult?.errors?.length || updatedResult?.userErrors?.length) {
+      console.warn('Unable to persist marketing attribution cart attributes.', {
+        errors: updatedResult.errors,
+        userErrors: updatedResult.userErrors,
+      });
       return result;
     }
 
