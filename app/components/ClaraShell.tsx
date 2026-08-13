@@ -25,10 +25,12 @@ const NAV_LINKS = [
 ] as const;
 
 export function ClaraShell({
+  availableCountries,
   cart,
   children,
   country,
 }: {
+  availableCountries: MarketCountryCode[];
   cart: Promise<CartApiQueryFragment | null>;
   children: React.ReactNode;
   country: MarketCountryCode;
@@ -36,7 +38,11 @@ export function ClaraShell({
   return (
     <Aside.Provider>
       <CinematicProvider>
-        <ClaraHeader cart={cart} country={country} />
+        <ClaraHeader
+          availableCountries={availableCountries}
+          cart={cart}
+          country={country}
+        />
         <main>{children}</main>
         <ClaraFooter />
         <ClaraCartDrawer cart={cart} />
@@ -47,9 +53,11 @@ export function ClaraShell({
 }
 
 function ClaraHeader({
+  availableCountries,
   cart,
   country,
 }: {
+  availableCountries: MarketCountryCode[];
   cart: Promise<CartApiQueryFragment | null>;
   country: MarketCountryCode;
 }) {
@@ -84,7 +92,10 @@ function ClaraHeader({
         ))}
       </nav>
       <div className="header-right">
-        <MarketCountrySelector country={country} />
+        <MarketCountrySelector
+          availableCountries={availableCountries}
+          country={country}
+        />
         <Link className="mobile-search-button" to="/search" aria-label="Search">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.4"/>

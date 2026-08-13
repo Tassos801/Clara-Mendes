@@ -3,11 +3,11 @@ import type {CartLayout} from '~/components/CartMain';
 import {
   CartForm,
   Money,
-  useAnalytics,
   type OptimisticCart,
 } from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
+import {useMarketingConsent} from '~/hooks/useMarketingConsent';
 import {buildCheckoutUrlWithAttribution} from '~/lib/marketingAttribution';
 
 type CartSummaryProps = {
@@ -55,15 +55,15 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
   const [attributedCheckoutUrl, setAttributedCheckoutUrl] =
     useState(checkoutUrl);
-  const {canTrack} = useAnalytics();
+  const marketingAllowed = useMarketingConsent();
 
   useEffect(() => {
     setAttributedCheckoutUrl(
-      checkoutUrl && canTrack()
-        ? buildCheckoutUrlWithAttribution(checkoutUrl)
+      checkoutUrl && marketingAllowed
+        ? buildCheckoutUrlWithAttribution(checkoutUrl, true)
         : checkoutUrl,
     );
-  }, [canTrack, checkoutUrl]);
+  }, [checkoutUrl, marketingAllowed]);
 
   if (!checkoutUrl) return null;
 

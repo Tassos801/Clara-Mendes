@@ -7,7 +7,10 @@ import {
   normalizeMarketCountry,
   resolveMarketCountry,
 } from '../app/lib/markets.ts';
-import {applyMarketSelection} from '../app/lib/markets.server.ts';
+import {
+  applyMarketSelection,
+  processMarketSelectionRequest,
+} from '../app/lib/markets.server.ts';
 import {
   consentModeFromShopify,
   DENIED_CONSENT_MODE,
@@ -107,6 +110,128 @@ const unappliedSelection = await applyMarketSelection({
 });
 assert.equal(unappliedSelection.ok, false);
 assert.equal(unappliedSelection.status, 422);
+
+const userErrorSelection = await applyMarketSelection({
+  cart: {
+    async updateBuyerIdentity() {
+      return {
+        cart: {
+          buyerIdentity: {countryCode: 'GB'},
+          id: 'gid://shopify/Cart/3',
+        },
+        userErrors: [{field: ['buyerIdentity'], message: 'Market unavailable'}],
+      };
+    },
+  },
+  country: 'GB',
+  session: {set: () => assert.fail('mutation user errors must not persist')},
+});
+assert.equal(userErrorSelection.ok, false);
+assert.equal(userErrorSelection.status, 422);
+
+const actionSessionValues = new Map();
+let sessionCommitted = false;
+const marketActionResult = await processMarketSelectionRequest({
+  availableCountries: ['CY', 'US'],
+  cart: {
+    async updateBuyerIdentity(input) {
+      return {
+        cart: {
+          buyerIdentity: {countryCode: input.countryCode},
+          id: 'gid://shopify/Cart/action',
+        },
+      };
+    },
+    setCartId(cartId) {
+      assert.equal(cartId, 'gid://shopify/Cart/action');
+      return new Headers({'Set-Cookie': 'cart=action; Path=/; HttpOnly'});
+    },
+  },
+  request: new Request('https://shopclaramendes.com/locale', {
+    body: new URLSearchParams({
+      country: 'US',
+      redirectTo: '/products/quiet-form-i?size=large#details',
+    }),
+    method: 'POST',
+  }),
+  session: {
+    async commit() {
+      sessionCommitted = true;
+      return 'market=US; Path=/; HttpOnly';
+    },
+    set(key, value) {
+      actionSessionValues.set(key, value);
+    },
+  },
+});
+assert.equal(marketActionResult.ok, true);
+assert.equal(
+  marketActionResult.destination,
+  '/products/quiet-form-i?size=large#details',
+);
+assert.equal(marketActionResult.status, 303);
+assert.equal(actionSessionValues.get('marketCountry'), 'US');
+assert.equal(sessionCommitted, true);
+assert.match(marketActionResult.headers.get('set-cookie') ?? '', /cart=action/);
+assert.match(marketActionResult.headers.get('set-cookie') ?? '', /market=US/);
+
+let failedActionCommitted = false;
+const failedMarketAction = await processMarketSelectionRequest({
+  availableCountries: ['CY', 'US'],
+  cart: {
+    async updateBuyerIdentity() {
+      assert.fail('invalid country must not update buyer identity');
+    },
+    setCartId() {
+      assert.fail('failed market action must not write a cart cookie');
+    },
+  },
+  request: new Request('https://shopclaramendes.com/locale', {
+    body: new URLSearchParams({country: 'CA', redirectTo: '//evil.example'}),
+    method: 'POST',
+  }),
+  session: {
+    async commit() {
+      failedActionCommitted = true;
+      return '';
+    },
+    set() {
+      assert.fail('invalid country must not persist a market');
+    },
+  },
+});
+assert.equal(failedMarketAction.ok, false);
+assert.equal(failedMarketAction.status, 400);
+assert.equal(failedActionCommitted, false);
+
+let unavailableMarketUpdated = false;
+const unavailableMarketAction = await processMarketSelectionRequest({
+  availableCountries: ['CY', 'US'],
+  cart: {
+    async updateBuyerIdentity() {
+      unavailableMarketUpdated = true;
+      return {cart: null};
+    },
+    setCartId() {
+      assert.fail('unavailable market must not write a cart cookie');
+    },
+  },
+  request: new Request('https://shopclaramendes.com/locale', {
+    body: new URLSearchParams({country: 'GB', redirectTo: '/'}),
+    method: 'POST',
+  }),
+  session: {
+    async commit() {
+      assert.fail('unavailable market must not write a session cookie');
+    },
+    set() {
+      assert.fail('unavailable market must not persist a session');
+    },
+  },
+});
+assert.equal(unavailableMarketAction.ok, false);
+assert.equal(unavailableMarketAction.status, 422);
+assert.equal(unavailableMarketUpdated, false);
 
 // Consent Mode remains denied until Shopify Customer Privacy grants each
 // category. Commerce data is emitted only when both privacy checks agree.
@@ -229,11 +354,27 @@ const rootSource = await readFile(
   new URL('../app/root.tsx', import.meta.url),
   'utf8',
 );
+const marketSelectorSource = await readFile(
+  new URL('../app/components/MarketCountrySelector.tsx', import.meta.url),
+  'utf8',
+);
+const allCollectionSource = await readFile(
+  new URL('../app/routes/collections.all.tsx', import.meta.url),
+  'utf8',
+);
+const handleCollectionSource = await readFile(
+  new URL('../app/routes/collections.$handle.tsx', import.meta.url),
+  'utf8',
+);
 assert.ok(!addToCartSource.includes('sendAdPlatformCommerceEvent'));
 assert.ok(!productRouteSource.includes('AdPlatformProductView'));
-assert.match(addToCartSource, /canTrack\(\)/);
-assert.match(cartSummarySource, /checkoutUrl && canTrack\(\)/);
-assert.match(attributionSource, /if \(canTrack\(\)\)/);
+assert.match(addToCartSource, /useMarketingConsent/);
+assert.match(cartSummarySource, /marketingAllowed/);
+assert.match(attributionSource, /clearMarketingAttribution/);
+assert.match(marketSelectorSource, /useFetcher/);
+assert.match(marketSelectorSource, /location\.hash/);
+assert.match(allCollectionSource, /<Analytics\.CollectionView/);
+assert.match(handleCollectionSource, /<Analytics\.CollectionView/);
 assert.ok(
   !rootSource.includes('cookieDomain='),
   'Hydrogen Analytics.Provider must not receive a cookieDomain prop; Google cross-domain linking belongs in the optional GTM bridge',

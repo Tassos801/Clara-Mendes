@@ -2,6 +2,18 @@ import type {I18nBase} from '@shopify/hydrogen';
 
 export const DEFAULT_MARKET_COUNTRY = 'CY' as const;
 export const MARKET_SESSION_KEY = 'marketCountry';
+export const AVAILABLE_MARKET_COUNTRIES_QUERY = `#graphql
+  query AvailableMarketCountries(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    localization {
+      availableCountries {
+        isoCode
+      }
+    }
+  }
+` as const;
 
 export const MARKET_COUNTRIES = [
   {code: 'AT', currency: 'EUR', name: 'Austria'},

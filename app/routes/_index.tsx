@@ -114,6 +114,7 @@ export default function Homepage() {
   const {open} = useAside();
   const rootData = useRouteLoaderData<typeof rootLoader>('root');
   const country = rootData?.country ?? DEFAULT_MARKET_COUNTRY;
+  const availableCountries = rootData?.availableMarketCountries ?? [country];
   const navigate = useNavigate();
   const quickShopProducts = products.slice(0, 3);
   const featuredProducts =
@@ -299,7 +300,10 @@ export default function Homepage() {
               <Link to="/search" className="hm-nav-text">
                 Search
               </Link>
-              <MarketCountrySelector country={country} />
+              <MarketCountrySelector
+                availableCountries={availableCountries}
+                country={country}
+              />
               <button
                 className="hm-nav-text hm-cart-link"
                 type="button"

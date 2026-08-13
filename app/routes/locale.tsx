@@ -1,17 +1,32 @@
 import {data, redirect} from 'react-router';
 import type {Route} from './+types/locale';
-import {applyMarketSelection} from '~/lib/markets.server';
-import {isLocalPath} from '~/lib/redirect';
+import {processMarketSelectionRequest} from '~/lib/markets.server';
+import {
+  AVAILABLE_MARKET_COUNTRIES_QUERY,
+  normalizeMarketCountry,
+  type MarketCountryCode,
+} from '~/lib/markets';
 
 export async function loader() {
   return redirect('/');
 }
 
 export async function action({request, context}: Route.ActionArgs) {
-  const formData = await request.formData();
-  const selection = await applyMarketSelection({
+  const availableCountries = await context.storefront
+    .query(AVAILABLE_MARKET_COUNTRIES_QUERY)
+    .then(({localization}) =>
+      localization.availableCountries
+        .map(({isoCode}: {isoCode: string}) => normalizeMarketCountry(isoCode))
+        .filter(
+          (country: MarketCountryCode | null): country is MarketCountryCode =>
+            Boolean(country),
+        ),
+    )
+    .catch(() => [context.storefront.i18n.country as MarketCountryCode]);
+  const selection = await processMarketSelectionRequest({
+    availableCountries,
     cart: context.cart,
-    country: formData.get('country'),
+    request,
     session: context.session,
   });
 
@@ -19,15 +34,8 @@ export async function action({request, context}: Route.ActionArgs) {
     return data({error: selection.error}, {status: selection.status});
   }
 
-  const cartId = selection.result.cart?.id;
-  const headers = cartId ? context.cart.setCartId(cartId) : new Headers();
-  headers.append('Set-Cookie', await context.session.commit());
-
-  const redirectTo = formData.get('redirectTo');
-  const destination =
-    typeof redirectTo === 'string' && isLocalPath(redirectTo)
-      ? redirectTo
-      : '/';
-
-  return redirect(destination, {status: 303, headers});
+  return redirect(selection.destination, {
+    status: selection.status,
+    headers: selection.headers,
+  });
 }

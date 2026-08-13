@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {Link, useLoaderData, useNavigate, useSearchParams} from 'react-router';
-import {getPaginationVariables, Pagination} from '@shopify/hydrogen';
+import {Analytics, getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.all';
 import {
   ClaraProductCard,
@@ -54,6 +54,7 @@ export type CollectionProductConnection = {
 export type CollectionViewData = {
   activeCapsule?: string | null;
   activeHandle: string;
+  activeId: string;
   collections: CollectionLink[];
   description?: string | null;
   facets: CatalogFacetOptions;
@@ -114,6 +115,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
   return {
     activeCapsule: capsule?.slug ?? null,
     activeHandle: 'all',
+    activeId: capsule ? `capsule:${capsule.slug}` : 'all',
     collections: filterDemoCollections(
       data.collections.nodes as CollectionLink[],
     ),
@@ -189,6 +191,17 @@ export function CollectionView({data}: {data: CollectionViewData}) {
 
   return (
     <div className="collection-page cv-root">
+      <Analytics.CollectionView
+        data={{
+          collection: {
+            handle: activeCapsule ?? data.activeHandle,
+            id: data.activeId,
+          },
+        }}
+        customData={{
+          products: buildCollectionAnalyticsProducts(data.products.nodes),
+        }}
+      />
       <style suppressHydrationWarning>{collectionCss}</style>
       {data.seoUrl ? (
         <StructuredData
@@ -370,6 +383,35 @@ export function CollectionView({data}: {data: CollectionViewData}) {
       </Pagination>
     </div>
   );
+}
+
+export function buildCollectionAnalyticsProducts(
+  products: ClaraCardProduct[],
+) {
+  return products
+    .map((product) => {
+      const variant =
+        product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
+      const price =
+        variant?.price?.amount ?? product.priceRange?.minVariantPrice?.amount;
+
+      if (!variant?.id || !price) return null;
+
+      return {
+        id: product.id,
+        price,
+        productType: product.productType ?? undefined,
+        quantity: 1,
+        sku: variant.sku ?? undefined,
+        title: product.title,
+        variantId: variant.id,
+        variantTitle: variant.title,
+        vendor: product.vendor ?? 'Clara Mendes',
+      };
+    })
+    .filter((product): product is NonNullable<typeof product> =>
+      Boolean(product),
+    );
 }
 
 /**

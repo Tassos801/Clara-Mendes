@@ -1,4 +1,4 @@
-import {STOREFRONT_ORIGIN} from './storefrontBasics';
+import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 
 export const MARKETING_ATTRIBUTION_INPUT_NAME = 'marketingAttribution';
 
@@ -25,6 +25,20 @@ const CLICK_ID_PARAMS = [
 ] as const;
 
 const ATTRIBUTION_PARAMS = [...UTM_PARAMS, ...CLICK_ID_PARAMS] as const;
+export const MARKETING_CART_ATTRIBUTE_KEYS = [
+  ...UTM_PARAMS,
+  ...CLICK_ID_PARAMS,
+  ...CLICK_ID_PARAMS.map((param) => `clara_${param}`),
+  'clara_session_id',
+  'clara_first_landing_page',
+  'clara_first_referrer',
+  'clara_first_touch_source',
+  'clara_first_touch_at',
+  'clara_last_landing_page',
+  'clara_last_referrer',
+  'clara_last_touch_source',
+  'clara_last_touch_at',
+] as const;
 
 type AttributionParam = (typeof ATTRIBUTION_PARAMS)[number];
 
@@ -48,8 +62,13 @@ export type CartAttributeInput = {
   value: string;
 };
 
-export function captureMarketingAttribution() {
+export function captureMarketingAttribution(marketingAllowed: boolean) {
   if (typeof window === 'undefined') return null;
+
+  if (!marketingAllowed) {
+    clearMarketingAttribution();
+    return null;
+  }
 
   const stored = readStoredAttribution();
   const currentTouch = createTouchFromWindow();
@@ -70,8 +89,8 @@ export function captureMarketingAttribution() {
   return snapshot;
 }
 
-export function getSerializedMarketingAttribution() {
-  const snapshot = captureMarketingAttribution();
+export function getSerializedMarketingAttribution(marketingAllowed: boolean) {
+  const snapshot = captureMarketingAttribution(marketingAllowed);
   if (!snapshot) return '';
 
   return serializeMarketingAttribution(snapshot);
@@ -106,8 +125,11 @@ function serializeMarketingAttribution(snapshot: MarketingAttributionSnapshot) {
   });
 }
 
-export function buildCheckoutUrlWithAttribution(checkoutUrl: string) {
-  const snapshot = captureMarketingAttribution();
+export function buildCheckoutUrlWithAttribution(
+  checkoutUrl: string,
+  marketingAllowed: boolean,
+) {
+  const snapshot = captureMarketingAttribution(marketingAllowed);
   if (!snapshot) return checkoutUrl;
 
   try {
@@ -124,6 +146,16 @@ export function buildCheckoutUrlWithAttribution(checkoutUrl: string) {
     return url.toString();
   } catch {
     return checkoutUrl;
+  }
+}
+
+export function clearMarketingAttribution() {
+  if (typeof window === 'undefined') return;
+
+  try {
+    window.localStorage.removeItem(ATTRIBUTION_STORAGE_KEY);
+  } catch {
+    // Storage may be unavailable in private browsing or strict privacy modes.
   }
 }
 
@@ -180,6 +212,19 @@ export function mergeCartAttributes(
   });
 
   return Array.from(merged, ([key, value]) => ({key, value}));
+}
+
+export function removeMarketingCartAttributes(
+  attributes: Array<{key?: string | null; value?: string | null}> = [],
+) {
+  const marketingKeys = new Set<string>(MARKETING_CART_ATTRIBUTE_KEYS);
+
+  return attributes
+    .map(({key, value}) => ({
+      key: sanitizeAttributeKey(key),
+      value: sanitizeAttributeValue(value),
+    }))
+    .filter(({key, value}) => key && value && !marketingKeys.has(key));
 }
 
 function parseMarketingAttribution(value: FormDataEntryValue | null) {

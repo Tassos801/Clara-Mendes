@@ -33,6 +33,9 @@ export async function action({request, context}: Route.ActionArgs) {
   let result;
 
   switch (action) {
+    case CartForm.ACTIONS.AttributesUpdateInput:
+      result = await cart.updateAttributes(inputs.attributes);
+      break;
     case CartForm.ACTIONS.LinesAdd:
       result = await cart.addLines(inputs.lines);
       result = await updateCartAttribution({
