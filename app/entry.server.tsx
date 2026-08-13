@@ -6,7 +6,12 @@ import {
   type HydrogenRouterContextProvider,
 } from '@shopify/hydrogen';
 import type {EntryContext} from 'react-router';
-import {CSP_IMG_SRC} from '~/lib/csp';
+import {
+  CSP_GOOGLE_CONNECT_SRC,
+  CSP_GOOGLE_SCRIPT_SRC,
+  CSP_IMG_SRC,
+} from '~/lib/csp';
+import {getMarketVaryHeader} from '~/lib/markets';
 
 export default async function handleRequest(
   request: Request,
@@ -21,7 +26,9 @@ export default async function handleRequest(
         context.env.PUBLIC_CHECKOUT_DOMAIN ?? context.env.PUBLIC_STORE_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    connectSrc: [...CSP_GOOGLE_CONNECT_SRC],
     imgSrc: [...CSP_IMG_SRC],
+    scriptSrc: [...CSP_GOOGLE_SCRIPT_SRC],
   });
 
   const body = await renderToReadableStream(
@@ -50,6 +57,7 @@ export default async function handleRequest(
   responseHeaders.set('Content-Security-Policy', header);
   responseHeaders.set('X-Content-Type-Options', 'nosniff');
   responseHeaders.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  responseHeaders.set('Vary', getMarketVaryHeader(responseHeaders.get('Vary')));
 
   return new Response(body, {
     headers: responseHeaders,

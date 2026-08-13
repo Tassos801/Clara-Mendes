@@ -26,6 +26,10 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/our-story',
   '/contact',
   '/policies',
+  '/policies/refund-policy',
+  '/policies/privacy-policy',
+  '/policies/shipping-policy',
+  '/policies/terms-of-service',
 ];
 
 /**
@@ -72,8 +76,7 @@ ${urls}
 
 /**
  * Appends the custom-routes child sitemap to Shopify's generated sitemap
- * index so /, /collections/all, /our-story, /contact, and /policies are
- * discoverable by crawlers.
+ * index so bespoke storefront and policy routes are discoverable by crawlers.
  */
 export function injectCustomSitemapEntry(indexXml: string, origin: string) {
   const entry = `<sitemap><loc>${origin}/sitemap/custom/1.xml</loc></sitemap>`;

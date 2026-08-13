@@ -1,11 +1,18 @@
 import {useEffect, useRef} from 'react';
-import {Link, useLoaderData, useNavigate} from 'react-router';
+import {
+  Link,
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from 'react-router';
 import type {Route} from './+types/_index';
+import type {loader as rootLoader} from '~/root';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
+import {MarketCountrySelector} from '~/components/MarketCountrySelector';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
@@ -28,6 +35,7 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {DEFAULT_MARKET_COUNTRY} from '~/lib/markets';
 
 type HomeCollection = {
   id: string;
@@ -104,6 +112,8 @@ export default function Homepage() {
   const {collections, originalArtProducts, products, seoUrl} =
     useLoaderData<typeof loader>();
   const {open} = useAside();
+  const rootData = useRouteLoaderData<typeof rootLoader>('root');
+  const country = rootData?.country ?? DEFAULT_MARKET_COUNTRY;
   const navigate = useNavigate();
   const quickShopProducts = products.slice(0, 3);
   const featuredProducts =
@@ -289,6 +299,7 @@ export default function Homepage() {
               <Link to="/search" className="hm-nav-text">
                 Search
               </Link>
+              <MarketCountrySelector country={country} />
               <button
                 className="hm-nav-text hm-cart-link"
                 type="button"
@@ -747,6 +758,22 @@ html:has(.home-root) main {
   align-items: center;
   display: flex;
   gap: clamp(1.2rem, 3vw, 3rem);
+}
+
+.hm-header-top .market-selector select {
+  background:
+    linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top 50% / 4px 4px no-repeat,
+    linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top 50% / 4px 4px no-repeat,
+    rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.28);
+  color: var(--hm-text-main);
+  max-width: 104px;
+  min-height: 32px;
+}
+
+.hm-header-top .market-selector option {
+  background: #fbfaf6;
+  color: #26231f;
 }
 
 .hm-cart-link {
@@ -1312,6 +1339,11 @@ html:has(.home-root) main {
     justify-content: space-between;
     gap: 0.7rem;
     width: 100%;
+  }
+
+  .hm-header-top .market-selector select {
+    max-width: 74px;
+    min-height: 30px;
   }
 
   .hm-nav-text {

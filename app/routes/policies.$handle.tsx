@@ -1,10 +1,12 @@
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/policies.$handle';
 import {type Shop} from '@shopify/hydrogen/storefront-api-types';
+import {cleanStorefrontPolicy, type PolicyName} from '~/lib/policyContent';
 import {
-  cleanStorefrontPolicy,
-  type PolicyName,
-} from '~/lib/policyContent';
+  POLICY_META_DESCRIPTIONS,
+  policyCanonicalPath,
+} from '~/lib/policyMetadata';
+import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -12,10 +14,16 @@ type SelectedPolicies = keyof Pick<
 >;
 
 export const meta: Route.MetaFunction = ({data}) => {
-  return [{title: `Clara Mendes | ${data?.policy.title ?? 'Policy'}`}];
+  if (!data?.policy) return [{title: 'Policy | Clara Mendes'}];
+
+  return buildSeoMeta({
+    title: data.policy.title,
+    description: data.description,
+    url: data.canonicalUrl,
+  });
 };
 
-export async function loader({params, context}: Route.LoaderArgs) {
+export async function loader({params, context, request}: Route.LoaderArgs) {
   if (!params.handle) {
     throw new Response('No handle was passed in', {status: 404});
   }
@@ -24,6 +32,10 @@ export async function loader({params, context}: Route.LoaderArgs) {
     /-([a-z])/g,
     (_: unknown, m1: string) => m1.toUpperCase(),
   ) as SelectedPolicies & PolicyName;
+  const canonicalPath = policyCanonicalPath(params.handle);
+  if (!canonicalPath) {
+    throw new Response('Could not find the policy', {status: 404});
+  }
 
   const data = await context.storefront.query(POLICY_CONTENT_QUERY, {
     variables: {
@@ -42,7 +54,11 @@ export async function loader({params, context}: Route.LoaderArgs) {
     throw new Response('Could not find the policy', {status: 404});
   }
 
-  return {policy};
+  return {
+    policy,
+    description: POLICY_META_DESCRIPTIONS[policyName],
+    canonicalUrl: getCanonicalUrl(request, canonicalPath),
+  };
 }
 
 export default function Policy() {

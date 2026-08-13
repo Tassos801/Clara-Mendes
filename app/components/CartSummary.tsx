@@ -1,6 +1,11 @@
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import type {CartLayout} from '~/components/CartMain';
-import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
+import {
+  CartForm,
+  Money,
+  useAnalytics,
+  type OptimisticCart,
+} from '@shopify/hydrogen';
 import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {buildCheckoutUrlWithAttribution} from '~/lib/marketingAttribution';
@@ -50,12 +55,15 @@ export function CartSummary({cart, layout}: CartSummaryProps) {
 function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
   const [attributedCheckoutUrl, setAttributedCheckoutUrl] =
     useState(checkoutUrl);
+  const {canTrack} = useAnalytics();
 
   useEffect(() => {
     setAttributedCheckoutUrl(
-      checkoutUrl ? buildCheckoutUrlWithAttribution(checkoutUrl) : checkoutUrl,
+      checkoutUrl && canTrack()
+        ? buildCheckoutUrlWithAttribution(checkoutUrl)
+        : checkoutUrl,
     );
-  }, [checkoutUrl]);
+  }, [canTrack, checkoutUrl]);
 
   if (!checkoutUrl) return null;
 

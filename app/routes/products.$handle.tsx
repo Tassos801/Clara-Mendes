@@ -19,7 +19,6 @@ import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
-import {AdPlatformProductView} from '~/components/AdPlatformAnalytics';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {RecentlyViewed} from '~/components/RecentlyViewed';
@@ -456,7 +455,6 @@ export default function Product() {
       {selectedVariant ? (
         <Analytics.ProductView data={productViewAnalytics} />
       ) : null}
-      <AdPlatformProductView analytics={productViewAnalytics} />
       <nav className="breadcrumb" aria-label="Breadcrumb">
         <Link to="/collections/all">Shop</Link>
         <span aria-hidden="true">›</span>

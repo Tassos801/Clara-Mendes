@@ -16,10 +16,12 @@ import {
 } from '@shopify/hydrogen';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
-import {AdPlatformAnalytics} from '~/components/AdPlatformAnalytics';
 import {ClaraShell} from '~/components/ClaraShell';
+import {GoogleCommerceAnalytics} from '~/components/GoogleCommerceAnalytics';
 import {MarketingAttributionCapture} from '~/components/MarketingAttribution';
 import {getCartOrNull} from '~/lib/cart';
+import {normalizeGtmContainerId} from '~/lib/googleCommerce';
+import type {MarketCountryCode} from '~/lib/markets';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 
@@ -73,6 +75,8 @@ export async function loader({context}: Route.LoaderArgs) {
       country: storefront.i18n.country,
       language: storefront.i18n.language,
     },
+    country: storefront.i18n.country as MarketCountryCode,
+    gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
   };
 }
 
@@ -89,8 +93,8 @@ export default function App() {
       shop={data.shop}
     >
       <MarketingAttributionCapture />
-      <AdPlatformAnalytics />
-      <ClaraShell cart={data.cart}>
+      <GoogleCommerceAnalytics containerId={data.gtmContainerId} />
+      <ClaraShell cart={data.cart} country={data.country}>
         <Outlet />
       </ClaraShell>
     </Analytics.Provider>
