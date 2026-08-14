@@ -55,7 +55,14 @@ import {
   getCanonicalUrl,
   productSchema,
 } from '~/lib/seo';
-import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {
+  DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_US_BUSINESS_DAYS,
+  DISPATCH_WINDOW_BUSINESS_DAYS,
+  PRODUCTION_WINDOW_BUSINESS_DAYS,
+  RETURN_WINDOW_DAYS,
+  STOREFRONT_ORIGIN,
+} from '~/lib/storefrontBasics';
 import {ReviewsSection} from '~/components/reviews/ReviewsSection';
 import {
   parseReviewsMetafield,
@@ -510,7 +517,9 @@ export default function Product() {
                 ? 'Made to order'
                 : 'Unavailable'}
             </span>
-            <span>Processes in 1–3 business days</span>
+            <span>
+              Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days
+            </span>
             <span>{RETURN_WINDOW_DAYS}-day returns</span>
           </div>
 
@@ -657,10 +666,12 @@ export default function Product() {
             <div>
               <dt>Shipping</dt>
               <dd>
-                Printed to order and dispatched within 1–3 business days.
-                Estimated delivery: 3–5 business days in Cyprus, 5–10 business
-                days across Europe, 7–15 business days elsewhere. Delivery
-                updates are emailed when available.
+                Printed to order and dispatched within{' '}
+                {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
+                delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
+                days across the EU and {DELIVERY_US_BUSINESS_DAYS} business
+                days in the United States. Delivery updates are emailed when
+                available.
               </dd>
             </div>
             <div>

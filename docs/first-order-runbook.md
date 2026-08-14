@@ -64,6 +64,8 @@ Prodigi dashboard → Orders (https://dashboard.prodigi.com/orders).
   customer shipping-confirmation email automatically (Timeline shows it).
 - Tracking carrier/service must be consistent with Standard (estimates:
   EU 5–10, US 7–15 business days after the 1–3 day production window).
+  These are the same windows the PDP Shipping copy and the shipping policy
+  promise (constants in `app/lib/storefrontBasics.ts`).
 - If tracking does not appear in Shopify within 1 business day of Prodigi
   showing "Shipped", treat it as an integration failure: fulfil manually with
   the tracking number from the Prodigi order page and contact Prodigi support.
