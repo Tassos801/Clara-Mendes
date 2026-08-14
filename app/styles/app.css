@@ -998,6 +998,9 @@ button {
   max-width: 100%;
   object-fit: contain;
   position: relative;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  -webkit-user-select: none;
   width: auto;
 }
 
@@ -1018,6 +1021,81 @@ button {
   right: clamp(14px, 3vw, 28px);
   text-transform: uppercase;
   top: clamp(14px, 3vw, 28px);
+}
+
+.product-zoom-nav {
+  align-items: center;
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  background: var(--glass-surface-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  box-shadow: var(--glass-shadow);
+  color: var(--color-ink);
+  cursor: pointer;
+  display: flex;
+  height: 48px;
+  justify-content: center;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+}
+
+.product-zoom-nav svg {
+  fill: none;
+  height: 20px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  width: 20px;
+}
+
+.product-zoom-nav--previous {
+  left: clamp(10px, 2.5vw, 28px);
+}
+
+.product-zoom-nav--next {
+  right: clamp(10px, 2.5vw, 28px);
+}
+
+.product-zoom-nav:hover {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), transparent 55%),
+    rgba(251, 250, 246, 0.94);
+}
+
+.product-zoom-nav:focus-visible,
+.product-zoom-close:focus-visible {
+  outline: 1.5px solid var(--color-paper);
+  outline-offset: 3px;
+}
+
+.product-zoom-counter {
+  backdrop-filter: blur(16px) saturate(1.25);
+  -webkit-backdrop-filter: blur(16px) saturate(1.25);
+  background: var(--glass-surface-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  bottom: clamp(14px, 3vw, 28px);
+  color: var(--color-ink);
+  font-size: 0.68rem;
+  font-weight: 600;
+  left: 50%;
+  letter-spacing: 0.18em;
+  margin: 0;
+  padding: 9px 16px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.product-zoom-counter i {
+  font-style: normal;
+  opacity: 0.45;
+  padding: 0 5px;
 }
 
 /* True-to-size diagram (art prints) */
