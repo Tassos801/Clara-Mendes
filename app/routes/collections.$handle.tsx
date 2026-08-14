@@ -1,7 +1,10 @@
 import {Link, redirect, useLoaderData} from 'react-router';
-import {getPaginationVariables} from '@shopify/hydrogen';
+import {Analytics, getPaginationVariables} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.$handle';
-import {CollectionView} from './collections.all';
+import {
+  buildCollectionAnalyticsProducts,
+  CollectionView,
+} from './collections.all';
 import type {
   CollectionLink,
   CollectionProductConnection,
@@ -147,6 +150,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 
   return {
     activeHandle: data.collection.handle,
+    activeId: data.collection.id,
     collections: filterDemoCollections(
       data.collections.nodes as CollectionLink[],
     ),
@@ -189,6 +193,15 @@ function CapsuleLandingView({data}: {data: CapsuleLoaderData}) {
       className="collection-page capsule-page"
       data-chapter={CAPSULE_CHAPTER[page.slug] ?? 'linen'}
     >
+      <Analytics.CollectionView
+        data={{
+          collection: {
+            handle: page.slug,
+            id: `capsule:${page.slug}`,
+          },
+        }}
+        customData={{products: buildCollectionAnalyticsProducts(products)}}
+      />
       <StructuredData
         data={[
           collectionSchema({

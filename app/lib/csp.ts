@@ -11,4 +11,21 @@ export const CSP_IMG_SRC = [
   // blob: object-URL previews (URL.createObjectURL).
   'blob:',
   'https://cdn.shopify.com',
+  'https://www.google-analytics.com',
+  'https://region1.google-analytics.com',
+  'https://www.googletagmanager.com',
+  'https://www.google.com',
+  'https://www.googleadservices.com',
+  'https://googleads.g.doubleclick.net',
+];
+
+export const CSP_GOOGLE_SCRIPT_SRC = ['https://www.googletagmanager.com'];
+
+export const CSP_GOOGLE_CONNECT_SRC = [
+  'https://www.googletagmanager.com',
+  'https://www.google-analytics.com',
+  'https://region1.google-analytics.com',
+  'https://www.google.com',
+  'https://www.googleadservices.com',
+  'https://googleads.g.doubleclick.net',
 ];

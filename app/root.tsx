@@ -16,17 +16,21 @@ import {
 } from '@shopify/hydrogen';
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
-import {AdPlatformAnalytics} from '~/components/AdPlatformAnalytics';
 import {ClaraShell} from '~/components/ClaraShell';
+import {GoogleCommerceAnalytics} from '~/components/GoogleCommerceAnalytics';
 import {MarketingAttributionCapture} from '~/components/MarketingAttribution';
 import {getCartOrNull} from '~/lib/cart';
+import {normalizeGtmContainerId} from '~/lib/googleCommerce';
+import {
+  AVAILABLE_MARKET_COUNTRIES_QUERY,
+  normalizeMarketCountry,
+  type MarketCountryCode,
+} from '~/lib/markets';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 
 export function links() {
-  return [
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
-  ];
+  return [{rel: 'icon', type: 'image/svg+xml', href: favicon}];
 }
 
 export function Layout({children}: {children?: React.ReactNode}) {
@@ -40,7 +44,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
-        <Links />
+        <Links nonce="" />
       </head>
       <body>
         {children}
@@ -53,8 +57,29 @@ export function Layout({children}: {children?: React.ReactNode}) {
 
 export async function loader({context}: Route.LoaderArgs) {
   const {env, storefront} = context;
+  const availableMarketCountries = await storefront
+    .query(AVAILABLE_MARKET_COUNTRIES_QUERY)
+    .then(({localization}) => {
+      const countries = localization.availableCountries
+        .map(({isoCode}: {isoCode: string}) => normalizeMarketCountry(isoCode))
+        .filter(
+          (country: MarketCountryCode | null): country is MarketCountryCode =>
+            Boolean(country),
+        );
+      const currentCountry = storefront.i18n.country as MarketCountryCode;
+
+      return Array.from(new Set([...countries, currentCountry]));
+    })
+    .catch((error) => {
+      console.warn(
+        'Unable to load active Shopify Markets; limiting the selector to the current country.',
+        error,
+      );
+      return [storefront.i18n.country as MarketCountryCode];
+    });
 
   return {
+    availableMarketCountries,
     cart: getCartOrNull(context.cart),
     shop: getShopAnalytics({
       storefront,
@@ -73,6 +98,8 @@ export async function loader({context}: Route.LoaderArgs) {
       country: storefront.i18n.country,
       language: storefront.i18n.language,
     },
+    country: storefront.i18n.country as MarketCountryCode,
+    gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
   };
 }
 
@@ -89,8 +116,12 @@ export default function App() {
       shop={data.shop}
     >
       <MarketingAttributionCapture />
-      <AdPlatformAnalytics />
-      <ClaraShell cart={data.cart}>
+      <GoogleCommerceAnalytics containerId={data.gtmContainerId} />
+      <ClaraShell
+        availableCountries={data.availableMarketCountries}
+        cart={data.cart}
+        country={data.country}
+      >
         <Outlet />
       </ClaraShell>
     </Analytics.Provider>

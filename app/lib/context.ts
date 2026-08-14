@@ -1,35 +1,7 @@
-import {createHydrogenContext, type I18nBase} from '@shopify/hydrogen';
+import {createHydrogenContext} from '@shopify/hydrogen';
 import {AppSession} from '~/lib/session';
 import {CART_QUERY_FRAGMENT} from '~/lib/fragments';
-
-/**
- * Countries the store ships to (Shopify checkout country list: EU + US).
- * Buyers elsewhere fall back to the US market so prices always render.
- */
-const SUPPORTED_COUNTRIES = new Set([
-  'AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR',
-  'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL',
-  'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'US',
-]);
-
-/**
- * Resolve the buyer's market from Oxygen's geolocation header so shoppers
- * see the same currency the checkout will charge them in. Falls back to the
- * US market when the header is missing (local dev) or unsupported.
- */
-function getLocaleFromRequest(request: Request): I18nBase {
-  const buyerCountry = request.headers
-    .get('oxygen-buyer-country')
-    ?.toUpperCase();
-
-  return {
-    language: 'EN',
-    country:
-      buyerCountry && SUPPORTED_COUNTRIES.has(buyerCountry)
-        ? (buyerCountry as I18nBase['country'])
-        : 'US',
-  };
-}
+import {getLocaleFromRequest, MARKET_SESSION_KEY} from '~/lib/markets';
 
 // Define the additional context object
 const additionalContext = {
@@ -76,7 +48,7 @@ export async function createHydrogenRouterContext(
       cache,
       waitUntil,
       session,
-      i18n: getLocaleFromRequest(request),
+      i18n: getLocaleFromRequest(request, session.get(MARKET_SESSION_KEY)),
       cart: {
         queryFragment: CART_QUERY_FRAGMENT,
       },

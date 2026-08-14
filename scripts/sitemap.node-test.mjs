@@ -48,6 +48,10 @@ assert.deepEqual(
     '/our-story',
     '/contact',
     '/policies',
+    '/policies/refund-policy',
+    '/policies/privacy-policy',
+    '/policies/shipping-policy',
+    '/policies/terms-of-service',
   ],
 );
 const customXml = buildCustomRoutesSitemapXml();
@@ -69,6 +73,26 @@ assert.ok(
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com/our-story</loc>'));
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com/contact</loc>'));
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com/policies</loc>'));
+assert.ok(
+  customXml.includes(
+    '<loc>https://shopclaramendes.com/policies/refund-policy</loc>',
+  ),
+);
+assert.ok(
+  customXml.includes(
+    '<loc>https://shopclaramendes.com/policies/privacy-policy</loc>',
+  ),
+);
+assert.ok(
+  customXml.includes(
+    '<loc>https://shopclaramendes.com/policies/shipping-policy</loc>',
+  ),
+);
+assert.ok(
+  customXml.includes(
+    '<loc>https://shopclaramendes.com/policies/terms-of-service</loc>',
+  ),
+);
 assert.ok(!customXml.includes('/cart'));
 assert.ok(!customXml.includes('/account'));
 assert.ok(!customXml.includes('/search'));

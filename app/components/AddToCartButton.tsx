@@ -1,11 +1,10 @@
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
-import {useCallback, useEffect, useMemo, useRef} from 'react';
-import {useLocation} from 'react-router';
-import {sendAdPlatformCommerceEvent} from '~/components/AdPlatformAnalytics';
+import {useCallback, useEffect, useRef} from 'react';
+import {useMarketingConsent} from '~/hooks/useMarketingConsent';
 import {getCartFormErrorMessages} from '~/lib/cartFormErrors';
 import {
-  getSerializedMarketingAttributionFromUrl,
   getSerializedMarketingAttribution,
+  marketingAttributionValueForConsent,
   MARKETING_ATTRIBUTION_INPUT_NAME,
 } from '~/lib/marketingAttribution';
 
@@ -78,21 +77,17 @@ function AddToCartButtonContent({
 }) {
   const wasSubmitting = useRef(false);
   const attributionInputRef = useRef<HTMLInputElement>(null);
-  const location = useLocation();
+  const marketingConsent = useMarketingConsent();
   const errors = getCartFormErrorMessages(fetcher.data);
   const isBusy = fetcher.state !== 'idle';
-  const initialMarketingAttribution = useMemo(
-    () =>
-      getSerializedMarketingAttributionFromUrl(
-        `${location.pathname}${location.search}`,
-      ),
-    [location.pathname, location.search],
-  );
   const refreshMarketingAttribution = useCallback(() => {
     if (attributionInputRef.current) {
-      attributionInputRef.current.value = getSerializedMarketingAttribution();
+      attributionInputRef.current.value = marketingAttributionValueForConsent(
+        marketingConsent,
+        () => getSerializedMarketingAttribution(true),
+      );
     }
-  }, []);
+  }, [marketingConsent]);
 
   useEffect(() => {
     refreshMarketingAttribution();
@@ -109,9 +104,6 @@ function AddToCartButtonContent({
     wasSubmitting.current = false;
 
     if (getCartFormErrorMessages(fetcher.data).length === 0) {
-      sendAdPlatformCommerceEvent('AddToCart', analytics, {
-        sourceEvent: 'cart_form_success',
-      });
       onSuccess?.();
     }
   }, [analytics, fetcher.data, fetcher.state, onSuccess]);
@@ -122,7 +114,7 @@ function AddToCartButtonContent({
       <input
         name={MARKETING_ATTRIBUTION_INPUT_NAME}
         type="hidden"
-        defaultValue={initialMarketingAttribution}
+        defaultValue=""
         ref={attributionInputRef}
       />
       <button
