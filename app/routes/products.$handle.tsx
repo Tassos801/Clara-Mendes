@@ -1,5 +1,6 @@
 import {
   type KeyboardEvent as ReactKeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
   useCallback,
   useEffect,
   useMemo,
@@ -40,7 +41,9 @@ import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription, getProductLede} from '~/lib/productCopy';
 import {
   clampCarouselIndex,
+  cycleCarouselIndex,
   nearestCarouselIndex,
+  resolveZoomSwipe,
 } from '~/lib/productGalleryCarousel';
 import {
   filterGalleryImagesForSize,
@@ -821,20 +824,52 @@ function ProductGalleryCarousel({
   productTitle: string;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [zoomImage, setZoomImage] = useState<ProductImage | null>(null);
+  const [zoomIndex, setZoomIndex] = useState<number | null>(null);
   const galleryTrackRef = useRef<HTMLDivElement>(null);
   const galleryScrollFrameRef = useRef<number | null>(null);
   const zoomCloseRef = useRef<HTMLButtonElement>(null);
   const zoomTriggerRef = useRef<HTMLButtonElement | null>(null);
+  const zoomPointerRef = useRef<{id: number; x: number; y: number} | null>(
+    null,
+  );
   const slideCount = images.length + (isArtPrint ? 1 : 0);
+  const zoomCount = images.length;
+  const zoomImage = zoomIndex != null ? (images[zoomIndex] ?? null) : null;
+  const zoomOpen = zoomIndex != null;
   const galleryIdentity = `${printSize.key}:${images
     .map((image) => image.url)
     .join('|')}`;
 
   const closeZoom = useCallback(() => {
-    setZoomImage(null);
-    window.requestAnimationFrame(() => zoomTriggerRef.current?.focus());
-  }, []);
+    if (zoomIndex != null) {
+      const track = galleryTrackRef.current;
+      const slide = track?.querySelectorAll<HTMLElement>(
+        '[data-product-gallery-slide]',
+      )[zoomIndex];
+      if (track && slide) {
+        setActiveIndex(zoomIndex);
+        track.scrollTo({behavior: 'auto', left: slide.offsetLeft});
+      }
+      const trigger = slide?.querySelector<HTMLElement>(
+        '.product-zoom-trigger',
+      );
+      window.requestAnimationFrame(() =>
+        (trigger ?? zoomTriggerRef.current)?.focus(),
+      );
+    }
+    setZoomIndex(null);
+  }, [zoomIndex]);
+
+  const navigateZoom = useCallback(
+    (delta: number) => {
+      setZoomIndex((current) =>
+        current == null
+          ? current
+          : cycleCarouselIndex(current, delta, zoomCount),
+      );
+    },
+    [zoomCount],
+  );
 
   const scrollToSlide = useCallback(
     (index: number) => {
@@ -896,7 +931,7 @@ function ProductGalleryCarousel({
 
   useEffect(() => {
     setActiveIndex(0);
-    setZoomImage(null);
+    setZoomIndex(null);
     galleryTrackRef.current?.scrollTo({behavior: 'auto', left: 0});
   }, [galleryIdentity]);
 
@@ -910,20 +945,59 @@ function ProductGalleryCarousel({
   );
 
   useEffect(() => {
-    if (!zoomImage) return;
+    if (!zoomOpen) return;
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     zoomCloseRef.current?.focus();
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') closeZoom();
-    };
-    window.addEventListener('keydown', onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', onKeyDown);
     };
-  }, [closeZoom, zoomImage]);
+  }, [zoomOpen]);
+
+  useEffect(() => {
+    if (!zoomOpen) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeZoom();
+      if (event.key === 'ArrowLeft') {
+        event.preventDefault();
+        navigateZoom(-1);
+      }
+      if (event.key === 'ArrowRight') {
+        event.preventDefault();
+        navigateZoom(1);
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [closeZoom, navigateZoom, zoomOpen]);
+
+  const handleZoomPointerDown = (
+    event: ReactPointerEvent<HTMLImageElement>,
+  ) => {
+    zoomPointerRef.current = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    };
+  };
+
+  const handleZoomPointerUp = (event: ReactPointerEvent<HTMLImageElement>) => {
+    const start = zoomPointerRef.current;
+    zoomPointerRef.current = null;
+    if (!start || start.id !== event.pointerId) return;
+
+    const step = resolveZoomSwipe({
+      deltaX: event.clientX - start.x,
+      deltaY: event.clientY - start.y,
+    });
+    if (step !== 0) navigateZoom(step);
+  };
+
+  const handleZoomPointerCancel = () => {
+    zoomPointerRef.current = null;
+  };
 
   if (slideCount === 0) {
     return (
@@ -967,7 +1041,7 @@ function ProductGalleryCarousel({
                   onKeyDown={handleGalleryKeyDown}
                   onClick={(event) => {
                     zoomTriggerRef.current = event.currentTarget;
-                    setZoomImage(image);
+                    setZoomIndex(index);
                   }}
                 >
                   <Image
@@ -1079,7 +1153,50 @@ function ProductGalleryCarousel({
             aria-label="Close enlarged view"
             onClick={closeZoom}
           />
-          <img src={zoomImage.url} alt={zoomImage.altText || productTitle} />
+          <img
+            src={zoomImage.url}
+            alt={zoomImage.altText || productTitle}
+            draggable={false}
+            onPointerDown={handleZoomPointerDown}
+            onPointerUp={handleZoomPointerUp}
+            onPointerCancel={handleZoomPointerCancel}
+          />
+          {zoomCount > 1 ? (
+            <>
+              <button
+                className="product-zoom-nav product-zoom-nav--previous"
+                type="button"
+                aria-label="Previous photo"
+                onClick={() => navigateZoom(-1)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M14.5 5.5 8 12l6.5 6.5M8.5 12H20" />
+                </svg>
+              </button>
+              <button
+                className="product-zoom-nav product-zoom-nav--next"
+                type="button"
+                aria-label="Next photo"
+                onClick={() => navigateZoom(1)}
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9.5 5.5 6.5 6.5-6.5 6.5M15.5 12H4" />
+                </svg>
+              </button>
+              <p
+                className="product-zoom-counter"
+                aria-live="polite"
+                aria-atomic="true"
+                aria-label={`Photo ${(zoomIndex ?? 0) + 1} of ${zoomCount}`}
+              >
+                <span aria-hidden="true">
+                  {String((zoomIndex ?? 0) + 1).padStart(2, '0')}
+                  <i>/</i>
+                  {String(zoomCount).padStart(2, '0')}
+                </span>
+              </p>
+            </>
+          ) : null}
           <button
             className="product-zoom-close"
             type="button"
