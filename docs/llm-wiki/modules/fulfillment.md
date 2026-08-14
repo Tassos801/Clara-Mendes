@@ -11,8 +11,13 @@ Snapshot: 2026-08-14
   production starts; production runs 1–3 business days, so dispatch lands
   2–4 business days from order (`docs/first-order-runbook.md`).
 - Prodigi Standard delivery estimates, counted from dispatch: EU 5–10 and
-  US 7–15 business days. Checkout ships to EU-27 + US only
-  (`app/lib/context.ts` SUPPORTED_COUNTRIES).
+  US 7–15 business days. Only the EU window is promised on the storefront.
+- Live Shopify Markets (checked 2026-08-14 via the Storefront API
+  `localization.availableCountries` query) enable 15 EU countries:
+  AT BE CY CZ DE DK ES FI FR IE IT NL PL PT SE — no US, no GB, and 12 EU
+  members absent. Code-side allowlist is `MARKET_COUNTRIES`
+  (`app/lib/markets.ts`, EU-27 + GB + US); the live intersection governs
+  checkout, so re-run the query before widening any copy claims.
 
 ## Where The Promises Render
 

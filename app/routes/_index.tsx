@@ -1,18 +1,11 @@
 import {useEffect, useRef} from 'react';
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useRouteLoaderData,
-} from 'react-router';
+import {Link, useLoaderData, useNavigate} from 'react-router';
 import type {Route} from './+types/_index';
-import type {loader as rootLoader} from '~/root';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
-import {MarketCountrySelector} from '~/components/MarketCountrySelector';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
@@ -35,7 +28,6 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {DEFAULT_MARKET_COUNTRY} from '~/lib/markets';
 
 type HomeCollection = {
   id: string;
@@ -112,9 +104,6 @@ export default function Homepage() {
   const {collections, originalArtProducts, products, seoUrl} =
     useLoaderData<typeof loader>();
   const {open} = useAside();
-  const rootData = useRouteLoaderData<typeof rootLoader>('root');
-  const country = rootData?.country ?? DEFAULT_MARKET_COUNTRY;
-  const availableCountries = rootData?.availableMarketCountries ?? [country];
   const navigate = useNavigate();
   const quickShopProducts = products.slice(0, 3);
   const featuredProducts =
@@ -300,10 +289,6 @@ export default function Homepage() {
               <Link to="/search" className="hm-nav-text">
                 Search
               </Link>
-              <MarketCountrySelector
-                availableCountries={availableCountries}
-                country={country}
-              />
               <button
                 className="hm-nav-text hm-cart-link"
                 type="button"

@@ -271,10 +271,17 @@ dispatch in 1–3 business days ignoring the 24-hour auto-release hold, and
 estimates with no after-dispatch basis while the footer-linked shipping
 policy still said US-only 7–15. Shipping windows now live as constants in
 app/lib/storefrontBasics.ts and render on the PDP chip and Shipping row as
-dispatch 2–4 business days plus EU 5–10 / US 7–15 after dispatch. The
-shipping-policy draft was rewritten to match (EU + US destinations, tiered
-windows, 15/20-business-day investigation threshold) and must be re-pasted
-into Shopify Admin; runbook step 5 now cross-references the same windows,
-and the new fulfillment wiki page maps every surface that states a promise.
-The PDP also dropped the taxes/Shopify trust copy (buy-box note, Shopify
-assurance bullet, Checkout details row) at the owner's request.
+dispatch 2–4 business days plus EU 5–10 after dispatch. Live Shopify
+Markets (Storefront API availableCountries, 2026-08-14) enable 15 EU
+countries only — no US, no GB — so US delivery claims were dropped
+everywhere and the shipping-policy draft was rewritten to match (EU-only
+destinations, 15-business-day investigation threshold); it must be
+re-pasted into Shopify Admin. Runbook step 5 cross-references the same
+windows, and the new fulfillment wiki page maps every surface that states
+a promise, including the live-Markets check. The PDP also dropped the
+taxes/Shopify trust copy (buy-box note, Shopify assurance bullet, Checkout
+details row) at the owner's request, and the market/currency selector from
+PR #43 was removed from the site header and the homepage cinematic header
+(component, root-loader availableCountries query, and CSS deleted; the
+/locale action and markets.server verification logic stay for any future
+re-introduction).

@@ -7,6 +7,9 @@ export const RETURN_WINDOW_DAYS = 30;
 // dispatch lands 2–4 business days from order; delivery estimates count
 // from dispatch. Changing these means re-pasting the shipping policy
 // (docs/shopify-policies-drafts.md) and re-checking runbook step 5.
+// Only the EU window renders today — live Shopify Markets enable 15 EU
+// countries, no US — but the US figure stays as Prodigi's documented
+// estimate for whenever that market is switched on.
 export const PRODUCTION_WINDOW_BUSINESS_DAYS = '1–3';
 export const DISPATCH_WINDOW_BUSINESS_DAYS = '2–4';
 export const DELIVERY_EU_BUSINESS_DAYS = '5–10';

@@ -56,7 +56,6 @@ import {
 } from '~/lib/seo';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
-  DELIVERY_US_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
   PRODUCTION_WINDOW_BUSINESS_DAYS,
   RETURN_WINDOW_DAYS,
@@ -658,8 +657,7 @@ export default function Product() {
                 Printed to order and dispatched within{' '}
                 {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
                 delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
-                days across the EU and {DELIVERY_US_BUSINESS_DAYS} business
-                days in the United States. Delivery updates are emailed when
+                days across the EU. Delivery updates are emailed when
                 available.
               </dd>
             </div>
