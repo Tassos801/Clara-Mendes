@@ -18,7 +18,7 @@ Spec: `docs/superpowers/specs/2026-08-14-zoom-gallery-navigation-design.md`
 - Modify: `app/lib/productGalleryCarousel.ts`
 - Test: `scripts/productGalleryCarousel.node-test.mjs`
 
-- [ ] **Step 1: Write the failing tests** — append to `scripts/productGalleryCarousel.node-test.mjs` (extend the import to include the two new names):
+- [x] **Step 1: Write the failing tests** — append to `scripts/productGalleryCarousel.node-test.mjs` (extend the import to include the two new names):
 
 ```js
 import {
@@ -48,12 +48,12 @@ test('resolves a zoom swipe into a photo step', () => {
 });
 ```
 
-- [ ] **Step 2: Run tests to verify they fail**
+- [x] **Step 2: Run tests to verify they fail**
 
 Run: `npm test`
 Expected: the two new tests FAIL (`cycleCarouselIndex is not a function` / export missing).
 
-- [ ] **Step 3: Implement helpers** — append to `app/lib/productGalleryCarousel.ts`:
+- [x] **Step 3: Implement helpers** — append to `app/lib/productGalleryCarousel.ts`:
 
 ```ts
 const ZOOM_SWIPE_THRESHOLD = 56;
@@ -81,12 +81,12 @@ export function resolveZoomSwipe({
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [x] **Step 4: Run tests to verify they pass**
 
 Run: `npm test`
 Expected: all tests PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add app/lib/productGalleryCarousel.ts scripts/productGalleryCarousel.node-test.mjs
@@ -98,7 +98,7 @@ git commit -m "Add wrap-around and swipe helpers for the zoom gallery"
 **Files:**
 - Modify: `app/routes/products.$handle.tsx` (`ProductGalleryCarousel`, ~line 812)
 
-- [ ] **Step 1: Update imports**
+- [x] **Step 1: Update imports**
 
 `type PointerEvent as ReactPointerEvent` joins the react import; the carousel lib import gains the new helpers:
 
@@ -123,7 +123,7 @@ import {
 } from '~/lib/productGalleryCarousel';
 ```
 
-- [ ] **Step 2: Replace zoom state with an index + derived image**
+- [x] **Step 2: Replace zoom state with an index + derived image**
 
 Replace `const [zoomImage, setZoomImage] = useState<ProductImage | null>(null);` with:
 
@@ -137,7 +137,7 @@ const zoomOpen = zoomIndex != null;
 
 (`galleryTrackRef`, `zoomCloseRef`, `zoomTriggerRef` stay as they are.)
 
-- [ ] **Step 3: Close syncs the gallery; navigation cycles**
+- [x] **Step 3: Close syncs the gallery; navigation cycles**
 
 Replace the existing `closeZoom` callback with:
 
@@ -170,7 +170,7 @@ const navigateZoom = useCallback(
 );
 ```
 
-- [ ] **Step 4: Reset + effects**
+- [x] **Step 4: Reset + effects**
 
 In the `galleryIdentity` effect, `setZoomImage(null)` becomes `setZoomIndex(null)`.
 
@@ -207,7 +207,7 @@ useEffect(() => {
 }, [closeZoom, navigateZoom, zoomOpen]);
 ```
 
-- [ ] **Step 5: Swipe handlers** (plain functions above the `if (slideCount === 0)` return):
+- [x] **Step 5: Swipe handlers** (plain functions above the `if (slideCount === 0)` return):
 
 ```ts
 const handleZoomPointerDown = (event: ReactPointerEvent<HTMLImageElement>) => {
@@ -235,7 +235,7 @@ const handleZoomPointerCancel = () => {
 };
 ```
 
-- [ ] **Step 6: Trigger stores the index; overlay gains arrows + counter**
+- [x] **Step 6: Trigger stores the index; overlay gains arrows + counter**
 
 In the gallery slide `onClick`: `setZoomImage(image)` becomes `setZoomIndex(index)`.
 
@@ -288,12 +288,12 @@ Replace the overlay `<img …/>` line and add nav controls before the Close butt
 ) : null}
 ```
 
-- [ ] **Step 7: Typecheck + lint**
+- [x] **Step 7: Typecheck + lint**
 
 Run: `npm run typecheck && npm run lint`
 Expected: clean.
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```bash
 git add app/routes/products.\$handle.tsx
@@ -305,7 +305,7 @@ git commit -m "Navigate product photos inside the zoom overlay"
 **Files:**
 - Modify: `app/styles/app.css` (after the `.product-zoom-close` block, ~line 1004)
 
-- [ ] **Step 1: Add styles**
+- [x] **Step 1: Add styles**
 
 Append after `.product-zoom-close`; also add `touch-action: pan-y pinch-zoom; user-select: none; -webkit-user-select: none;` to the existing `.product-zoom-overlay img` block:
 
@@ -386,7 +386,7 @@ Append after `.product-zoom-close`; also add `touch-action: pan-y pinch-zoom; us
 }
 ```
 
-- [ ] **Step 2: Commit**
+- [x] **Step 2: Commit**
 
 ```bash
 git add app/styles/app.css
@@ -395,6 +395,6 @@ git commit -m "Style zoom overlay navigation controls"
 
 ### Task 4: Verify in the browser, full check, PR
 
-- [ ] **Step 1: Dev preview pass** — start the `clara-mendes` dev server (launch.json), open an art-print PDP. Verify: click photo → zoom; arrows cycle with wrap; ArrowLeft/ArrowRight work; counter updates; scale-diagram slide never appears in zoom; close lands the gallery on the viewed photo; Esc/backdrop still close; single-photo product (if any) shows no arrows. Mobile viewport: controls fit, nothing overlaps. Screenshot proof.
-- [ ] **Step 2: Full gate** — `npm test && npm run lint && npm run typecheck && npm run build` all clean.
-- [ ] **Step 3: Push branch + open PR** titled "Navigate product photos inside the enlarged view".
+- [x] **Step 1: Dev preview pass** — start the `clara-mendes` dev server (launch.json), open an art-print PDP. Verify: click photo → zoom; arrows cycle with wrap; ArrowLeft/ArrowRight work; counter updates; scale-diagram slide never appears in zoom; close lands the gallery on the viewed photo; Esc/backdrop still close; single-photo product (if any) shows no arrows. Mobile viewport: controls fit, nothing overlaps. Screenshot proof.
+- [x] **Step 2: Full gate** — `npm test && npm run lint && npm run typecheck && npm run build` all clean.
+- [x] **Step 3: Push branch + open PR** titled "Navigate product photos inside the enlarged view".
