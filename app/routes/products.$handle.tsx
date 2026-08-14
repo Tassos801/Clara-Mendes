@@ -584,18 +584,9 @@ export default function Product() {
                 />
               </div>
             ) : null}
-
-            <p className="product-buy-note">
-              Taxes and shipping are confirmed before payment. Cart opens after
-              adding so you can review the order before checkout.
-            </p>
           </div>
 
           <ul className="product-assurance-list" aria-label="Order reassurance">
-            <li>
-              <span aria-hidden />
-              Secure checkout powered by Shopify.
-            </li>
             <li>
               <span aria-hidden />
               Tracking details are emailed after dispatch.
@@ -692,13 +683,6 @@ export default function Product() {
                 <Link to="/contact" className="text-link">
                   Get in touch
                 </Link>
-              </dd>
-            </div>
-            <div>
-              <dt>Checkout</dt>
-              <dd>
-                Secure checkout powered by Shopify with taxes and shipping
-                confirmed before payment.
               </dd>
             </div>
           </dl>
