@@ -245,15 +245,71 @@ const GALLERY_PAGE_CONTENT: Record<string, GalleryPageContent> = {
   },
 };
 
-export type GalleryPage = GalleryPageContent;
+/**
+ * Hero scene per page, drawn from the owned in-situ mockup library
+ * (public/images) so every edit opens on a real room rather than a text
+ * block. Kept beside the content registry so a new page cannot ship
+ * without choosing its scene.
+ */
+const GALLERY_HERO: Record<string, {src: string; alt: string}> = {
+  'terracotta-wall-art': {
+    src: '/images/product-art-mockups/sunlit-mosaic/sunlit-mosaic-01-room-detail-20x24.webp',
+    alt: 'Sunlit Mosaic I terracotta art print hung in a warm neutral room',
+  },
+  'blue-abstract-wall-art': {
+    src: '/images/product-art-mockups/patina-blue/patina-blue-01-room-detail-20x24.webp',
+    alt: 'Patina Blue I indigo abstract print on a pale wall in soft daylight',
+  },
+  'geometric-wall-art': {
+    src: '/images/product-art-mockups/neo-deco/neo-deco-01-room-detail-20x24.webp',
+    alt: 'Neo Deco I graphic geometric print anchoring a modern room',
+  },
+  'art-deco-prints': {
+    src: '/images/product-art-mockups/neo-deco/neo-deco-02-room-detail-20x24.webp',
+    alt: 'Neo Deco II black and gold Deco print above a console',
+  },
+  'dark-botanical-wall-art': {
+    src: '/images/product-art-mockups/midnight-garden/midnight-garden-01-room-detail-20x24.webp',
+    alt: 'Midnight Garden I dark botanical print in a low-lit room',
+  },
+  'abstract-wall-art': {
+    src: '/images/product-art-mockups/quiet-form/quiet-form-01-room-detail-20x24.webp',
+    alt: 'Quiet Form I warm abstract print hung in a calm interior',
+  },
+  'living-room-wall-art': {
+    src: '/images/home-editorial/quiet-form-living.jpg',
+    alt: 'Quiet Form print above a sofa in a warm, lived-in living room',
+  },
+  'bedroom-wall-art': {
+    src: '/images/product-art-mockups/patina-blue/patina-blue-03-room-detail-20x24.webp',
+    alt: 'Patina Blue III indigo print bringing calm to a bedroom wall',
+  },
+  'wall-art-sets-of-3': {
+    src: '/images/home-editorial/sunlit-mosaic-table.jpg',
+    alt: 'Sunlit Mosaic print styled on a table with ceramics and warm light',
+  },
+  'warm-minimalist-wall-art': {
+    src: '/images/product-art-mockups/quiet-form/quiet-form-03-room-detail-20x24.webp',
+    alt: 'Quiet Form III terracotta crescent print in a spare, warm room',
+  },
+};
+
+export type GalleryPage = GalleryPageContent & {
+  hero: {src: string; alt: string};
+};
 
 export function getGalleryPage(slug?: string | null): GalleryPage | null {
   if (!slug) return null;
-  return GALLERY_PAGE_CONTENT[slug.trim().toLowerCase()] ?? null;
+  const content = GALLERY_PAGE_CONTENT[slug.trim().toLowerCase()];
+  if (!content) return null;
+  return {...content, hero: GALLERY_HERO[content.slug]};
 }
 
 export function listGalleryPages(): GalleryPage[] {
-  return Object.values(GALLERY_PAGE_CONTENT);
+  return Object.values(GALLERY_PAGE_CONTENT).map((content) => ({
+    ...content,
+    hero: GALLERY_HERO[content.slug],
+  }));
 }
 
 export function galleryPagePath(slug: string) {
