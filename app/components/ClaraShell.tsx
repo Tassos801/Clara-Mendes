@@ -119,6 +119,16 @@ function ClaraFooter() {
           delivery.
         </p>
       </div>
+      <nav className="footer-style-nav" aria-label="Shop by style">
+        <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
+        <Link to="/collections/terracotta-wall-art">Terracotta Wall Art</Link>
+        <Link to="/collections/blue-abstract-wall-art">Blue Abstract Art</Link>
+        <Link to="/collections/geometric-wall-art">Geometric Wall Art</Link>
+        <Link to="/collections/dark-botanical-wall-art">Dark Botanicals</Link>
+        <Link to="/collections/living-room-wall-art">Living Room Art</Link>
+        <Link to="/collections/bedroom-wall-art">Bedroom Art</Link>
+        <Link to="/collections/wall-art-sets-of-3">Sets of 3</Link>
+      </nav>
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
         <Link to="/our-story">Our Story</Link>

@@ -14,3 +14,12 @@ export const PRODUCTION_WINDOW_BUSINESS_DAYS = '1–3';
 export const DISPATCH_WINDOW_BUSINESS_DAYS = '2–4';
 export const DELIVERY_EU_BUSINESS_DAYS = '5–10';
 export const DELIVERY_US_BUSINESS_DAYS = '7–15';
+
+// The 15 countries live Shopify Markets enable at checkout (verified via the
+// Storefront API localization.availableCountries, 2026-08-14 — see
+// docs/llm-wiki/modules/fulfillment.md). Used by structured data; re-check
+// the live query before widening.
+export const SHIPPING_COUNTRY_CODES = [
+  'AT', 'BE', 'CY', 'CZ', 'DE', 'DK', 'ES', 'FI',
+  'FR', 'IE', 'IT', 'NL', 'PL', 'PT', 'SE',
+] as const;

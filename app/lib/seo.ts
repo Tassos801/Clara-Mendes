@@ -1,6 +1,10 @@
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {deriveCardPricing} from '~/lib/productCardPricing';
-import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {
+  RETURN_WINDOW_DAYS,
+  SHIPPING_COUNTRY_CODES,
+  STOREFRONT_ORIGIN,
+} from '~/lib/storefrontBasics';
 
 type MoneyAmount = {
   amount: string;
@@ -169,6 +173,7 @@ export function collectionSchema({
               const price = deriveCardPricing(product).price;
               return price
                 ? offerFromPrice({
+                    includeCommerceDetails: false,
                     price,
                     url: new URL(`/products/${product.handle}`, url).toString(),
                   })
@@ -280,12 +285,60 @@ export function breadcrumbSchema({items}: BreadcrumbInput) {
   };
 }
 
+/**
+ * Shipping and return enrichments for Offer nodes, mirroring the published
+ * promises: dispatch 2–4 business days, EU delivery 5–10 after dispatch
+ * (storefrontBasics constants), 30-day returns with buyer-paid return
+ * shipping (docs/shopify-policies-drafts.md). Google reads these for
+ * shipping/returns annotations on product results.
+ */
+function offerShippingDetails() {
+  return {
+    '@type': 'OfferShippingDetails',
+    shippingDestination: SHIPPING_COUNTRY_CODES.map((country) => ({
+      '@type': 'DefinedRegion',
+      addressCountry: country,
+    })),
+    deliveryTime: {
+      '@type': 'ShippingDeliveryTime',
+      handlingTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 2,
+        maxValue: 4,
+        unitCode: 'DAY',
+      },
+      transitTime: {
+        '@type': 'QuantitativeValue',
+        minValue: 5,
+        maxValue: 10,
+        unitCode: 'DAY',
+      },
+    },
+  };
+}
+
+function merchantReturnPolicy() {
+  return {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: [...SHIPPING_COUNTRY_CODES],
+    returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+    merchantReturnDays: RETURN_WINDOW_DAYS,
+    returnMethod: 'https://schema.org/ReturnByMail',
+    returnFees: 'https://schema.org/ReturnShippingFees',
+  };
+}
+
 function offerFromPrice({
   availableForSale = true,
+  // Collection ItemLists skip the shipping/returns blocks — repeating them
+  // per list item would triple the page's JSON-LD for data Google reads
+  // from the product page anyway.
+  includeCommerceDetails = true,
   price,
   url,
 }: {
   availableForSale?: boolean;
+  includeCommerceDetails?: boolean;
   price: MoneyAmount;
   url: string;
 }) {
@@ -295,6 +348,12 @@ function offerFromPrice({
     priceCurrency: price.currencyCode,
     availability: schemaAvailability(availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
+    shippingDetails: includeCommerceDetails
+      ? offerShippingDetails()
+      : undefined,
+    hasMerchantReturnPolicy: includeCommerceDetails
+      ? merchantReturnPolicy()
+      : undefined,
     url,
   };
 }
