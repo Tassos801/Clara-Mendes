@@ -4,13 +4,11 @@ import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
-import {MarketCountrySelector} from './MarketCountrySelector';
 import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
   EXTENSION_COLLECTION_HANDLE,
   hasReleasedExtensions,
 } from '~/lib/catalogFilters';
-import type {MarketCountryCode} from '~/lib/markets';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
@@ -25,24 +23,16 @@ const NAV_LINKS = [
 ] as const;
 
 export function ClaraShell({
-  availableCountries,
   cart,
   children,
-  country,
 }: {
-  availableCountries: MarketCountryCode[];
   cart: Promise<CartApiQueryFragment | null>;
   children: React.ReactNode;
-  country: MarketCountryCode;
 }) {
   return (
     <Aside.Provider>
       <CinematicProvider>
-        <ClaraHeader
-          availableCountries={availableCountries}
-          cart={cart}
-          country={country}
-        />
+        <ClaraHeader cart={cart} />
         <main>{children}</main>
         <ClaraFooter />
         <ClaraCartDrawer cart={cart} />
@@ -52,15 +42,7 @@ export function ClaraShell({
   );
 }
 
-function ClaraHeader({
-  availableCountries,
-  cart,
-  country,
-}: {
-  availableCountries: MarketCountryCode[];
-  cart: Promise<CartApiQueryFragment | null>;
-  country: MarketCountryCode;
-}) {
+function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
   const {open, type} = useAside();
 
   return (
@@ -92,10 +74,6 @@ function ClaraHeader({
         ))}
       </nav>
       <div className="header-right">
-        <MarketCountrySelector
-          availableCountries={availableCountries}
-          country={country}
-        />
         <Link className="mobile-search-button" to="/search" aria-label="Search">
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
             <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.4"/>

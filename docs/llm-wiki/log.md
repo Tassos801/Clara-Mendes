@@ -261,3 +261,27 @@ landscape photo keeps its native 5:4, media get a hairline border, and the
 mobile stack shows one scene per row with the landscape image full-width.
 The editorialCollection query, its loader plumbing, and the products prop
 were removed; the homepage query is one collection lookup lighter.
+
+## [2026-08-14] storefront | Aligned delivery promises with documented Prodigi estimates
+
+The EU-first shipping rewrite (2b7a7c2) promised windows the fulfilment docs
+contradict: a Cyprus 3–5 tier with no source (Prodigi Standard is EU 5–10),
+"across Europe/elsewhere" coverage checkout refuses (ship-to is EU-27 + US),
+dispatch in 1–3 business days ignoring the 24-hour auto-release hold, and
+estimates with no after-dispatch basis while the footer-linked shipping
+policy still said US-only 7–15. Shipping windows now live as constants in
+app/lib/storefrontBasics.ts and render on the PDP chip and Shipping row as
+dispatch 2–4 business days plus EU 5–10 after dispatch. Live Shopify
+Markets (Storefront API availableCountries, 2026-08-14) enable 15 EU
+countries only — no US, no GB — so US delivery claims were dropped
+everywhere and the shipping-policy draft was rewritten to match (EU-only
+destinations, 15-business-day investigation threshold); it must be
+re-pasted into Shopify Admin. Runbook step 5 cross-references the same
+windows, and the new fulfillment wiki page maps every surface that states
+a promise, including the live-Markets check. The PDP also dropped the
+taxes/Shopify trust copy (buy-box note, Shopify assurance bullet, Checkout
+details row) at the owner's request, and the market/currency selector from
+PR #43 was removed from the site header and the homepage cinematic header
+(component, root-loader availableCountries query, and CSS deleted; the
+/locale action and markets.server verification logic stay for any future
+re-introduction).

@@ -167,38 +167,6 @@ button {
   justify-self: end;
 }
 
-.market-selector {
-  align-items: center;
-  display: flex;
-}
-
-.market-selector select {
-  appearance: none;
-  background:
-    linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top
-      50% / 4px 4px no-repeat,
-    linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top
-      50% / 4px 4px no-repeat,
-    rgba(255, 255, 255, 0.34);
-  border: 1px solid rgba(38, 35, 31, 0.12);
-  border-radius: 999px;
-  color: inherit;
-  cursor: pointer;
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  max-width: 112px;
-  min-height: 36px;
-  padding: 0 24px 0 11px;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-}
-
-.market-selector select:focus-visible {
-  outline: 2px solid var(--color-clay);
-  outline-offset: 2px;
-}
-
 .mobile-search-button {
   display: none;
   align-items: center;
@@ -1289,13 +1257,6 @@ button {
   display: grid;
   gap: 16px;
   padding: clamp(16px, 2.2vw, 22px);
-}
-
-.product-buy-note {
-  color: var(--color-muted);
-  font-size: 0.86rem;
-  line-height: 1.55;
-  margin: 0;
 }
 
 .product-assurance-list {
@@ -2570,12 +2531,6 @@ button {
 
   .header-right {
     gap: 6px;
-  }
-
-  .market-selector select {
-    max-width: 78px;
-    min-height: 34px;
-    padding-left: 9px;
   }
 
   .brand-mark {

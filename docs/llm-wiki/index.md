@@ -18,6 +18,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Routes And Pages](modules/routes-and-pages.md) - Customer-facing route map and page responsibilities.
 - [Catalog And Products](modules/catalog-and-products.md) - Product filtering, live catalog status, collections, and product page behavior.
 - [Cart And Checkout](modules/cart-and-checkout.md) - Add-to-cart, cart actions, drawer/page cart, checkout handoff, and attribution persistence.
+- [Fulfillment And Delivery Promises](modules/fulfillment.md) - Prodigi windows, delivery estimates, and every surface that states them.
 - [Analytics And Attribution](modules/analytics-and-attribution.md) - Shopify analytics, ad platform events, UTM/click ID capture, and cart attributes.
 
 ## Operations

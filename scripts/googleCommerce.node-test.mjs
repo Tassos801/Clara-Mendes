@@ -408,10 +408,6 @@ const rootSource = await readFile(
   new URL('../app/root.tsx', import.meta.url),
   'utf8',
 );
-const marketSelectorSource = await readFile(
-  new URL('../app/components/MarketCountrySelector.tsx', import.meta.url),
-  'utf8',
-);
 const allCollectionSource = await readFile(
   new URL('../app/routes/collections.all.tsx', import.meta.url),
   'utf8',
@@ -426,8 +422,6 @@ assert.match(addToCartSource, /useMarketingConsent/);
 assert.match(cartSummarySource, /useMarketingCheckoutUrl/);
 assert.match(marketingCheckoutUrlSource, /consent !== 'granted'/);
 assert.match(attributionSource, /clearMarketingAttribution/);
-assert.match(marketSelectorSource, /useFetcher/);
-assert.match(marketSelectorSource, /location\.hash/);
 assert.match(allCollectionSource, /<Analytics\.CollectionView/);
 assert.match(handleCollectionSource, /<Analytics\.CollectionView/);
 assert.ok(
