@@ -51,7 +51,12 @@ import {
   collectionSchema,
   getCanonicalUrl,
 } from '~/lib/seo';
-import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {
+  DELIVERY_EU_BUSINESS_DAYS,
+  DISPATCH_WINDOW_BUSINESS_DAYS,
+  RETURN_WINDOW_DAYS,
+  STOREFRONT_ORIGIN,
+} from '~/lib/storefrontBasics';
 
 type CapsuleLoaderData = {
   kind: 'capsule';
@@ -400,16 +405,58 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
         <span>{page.title}</span>
       </nav>
 
-      <header className="capsule-hero">
-        <p className="eyebrow">{page.eyebrow}</p>
-        <h1>{page.title}</h1>
-        <p className="capsule-subtitle">{page.subtitle}</p>
+      <header className="gallery-hero">
+        <div className="gallery-hero-copy">
+          <p className="eyebrow">{page.eyebrow}</p>
+          <h1>{page.title}</h1>
+          <p className="capsule-subtitle">{page.subtitle}</p>
+          <p className="gallery-lead">{page.editorial[0]}</p>
+        </div>
+        <figure className="gallery-hero-media">
+          <img
+            alt={page.hero.alt}
+            fetchPriority="high"
+            height="1200"
+            src={page.hero.src}
+            width="1600"
+          />
+        </figure>
       </header>
 
-      <div className="capsule-editorial">
-        {page.editorial.map((paragraph) => (
-          <p key={paragraph.slice(0, 24)}>{paragraph}</p>
-        ))}
+      <div className="gallery-editorial">
+        <div className="gallery-editorial-copy">
+          <p>{page.editorial[1]}</p>
+          <p>{page.editorial[2]}</p>
+        </div>
+        <aside className="gallery-facts" aria-label="Print essentials">
+          <p className="eyebrow">Every print</p>
+          <dl>
+            <div>
+              <dt>Paper</dt>
+              <dd>200gsm archival matte</dd>
+            </div>
+            <div>
+              <dt>Inks</dt>
+              <dd>Giclée pigment</dd>
+            </div>
+            <div>
+              <dt>Sizes</dt>
+              <dd>8 × 10 · 16 × 20 · 20 × 24 in</dd>
+            </div>
+            <div>
+              <dt>Dispatch</dt>
+              <dd>{DISPATCH_WINDOW_BUSINESS_DAYS} business days</dd>
+            </div>
+            <div>
+              <dt>EU delivery</dt>
+              <dd>{DELIVERY_EU_BUSINESS_DAYS} days after dispatch</dd>
+            </div>
+            <div>
+              <dt>Returns</dt>
+              <dd>{RETURN_WINDOW_DAYS} days</dd>
+            </div>
+          </dl>
+        </aside>
       </div>
 
       <section className="capsule-products" aria-label={`${page.title} prints`}>
@@ -486,7 +533,7 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
         </section>
       ) : null}
 
-      <style suppressHydrationWarning>{capsulePageCss}</style>
+      <style suppressHydrationWarning>{capsulePageCss + galleryPageCss}</style>
     </div>
   );
 }
@@ -573,6 +620,119 @@ const capsulePageCss = `
   font-size: 0.9rem;
   line-height: 1.55;
   margin: 0;
+}
+`;
+
+const galleryPageCss = `
+.gallery-hero {
+  align-items: center;
+  display: grid;
+  gap: clamp(28px, 4.5vw, 64px);
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  padding: clamp(26px, 4vw, 52px) 0 clamp(10px, 2vw, 22px);
+}
+
+.gallery-hero-copy h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.6rem, 5.4vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin: 10px 0 0;
+}
+
+.gallery-hero-copy .capsule-subtitle {
+  color: var(--color-muted);
+  font-size: 1.02rem;
+  margin: 14px 0 0;
+}
+
+.gallery-lead {
+  border-top: 1px solid rgba(38, 35, 31, 0.14);
+  font-size: 0.98rem;
+  line-height: 1.7;
+  margin: 22px 0 0;
+  padding-top: 22px;
+}
+
+.gallery-hero-media {
+  margin: 0;
+}
+
+.gallery-hero-media img {
+  aspect-ratio: 4 / 3;
+  border: 1px solid rgba(38, 35, 31, 0.14);
+  border-radius: 10px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.gallery-editorial {
+  border-top: 1px solid rgba(38, 35, 31, 0.12);
+  display: grid;
+  gap: clamp(26px, 4vw, 58px);
+  grid-template-columns: minmax(0, 7fr) minmax(0, 4fr);
+  margin-top: clamp(22px, 3vw, 40px);
+  padding-top: clamp(22px, 3vw, 40px);
+}
+
+.gallery-editorial-copy {
+  max-width: 640px;
+}
+
+.gallery-editorial-copy p {
+  line-height: 1.75;
+  margin: 0 0 1.1em;
+}
+
+.gallery-editorial-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.gallery-facts {
+  align-self: start;
+  border: 1px solid rgba(38, 35, 31, 0.14);
+  padding: 22px 24px;
+}
+
+.gallery-facts dl {
+  display: grid;
+  gap: 12px;
+  margin: 14px 0 0;
+}
+
+.gallery-facts dl div {
+  display: grid;
+  gap: 2px;
+}
+
+.gallery-facts dt {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.gallery-facts dd {
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+@media (max-width: 880px) {
+  .gallery-hero,
+  .gallery-editorial {
+    grid-template-columns: 1fr;
+  }
+
+  .gallery-hero {
+    gap: 24px;
+  }
+
+  .gallery-hero-media {
+    order: -1;
+  }
 }
 `;
 
