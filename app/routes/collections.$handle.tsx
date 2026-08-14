@@ -23,6 +23,13 @@ import {
   type CapsulePage,
 } from '~/lib/capsulePages';
 import {
+  buildGalleryTagQuery,
+  galleryPagePath,
+  getGalleryPage,
+  listGalleryPages,
+  type GalleryPage,
+} from '~/lib/galleryPages';
+import {
   filterDemoCollections,
   filterDemoProducts,
   isDemoCollection,
@@ -54,12 +61,25 @@ type CapsuleLoaderData = {
   seoUrl: string;
 };
 
+type GalleryLoaderData = {
+  kind: 'gallery';
+  page: GalleryPage;
+  products: ClaraCardProduct[];
+  relatedEdits: Array<{slug: string; title: string; subtitle: string}>;
+  capsuleCards: Array<{slug: string; title: string; subtitle: string}>;
+  seoUrl: string;
+};
+
 type ShopifyCollectionLoaderData = CollectionViewData & {
   kind?: undefined;
 };
 
 export const meta: Route.MetaFunction = ({data}) => {
-  if (data && 'kind' in data && data.kind === 'capsule') {
+  if (
+    data &&
+    'kind' in data &&
+    (data.kind === 'capsule' || data.kind === 'gallery')
+  ) {
     return buildSeoMeta({
       description: data.page.metaDescription,
       image: data.products[0]?.featuredImage?.url,
@@ -81,7 +101,13 @@ export const meta: Route.MetaFunction = ({data}) => {
 export async function loader({context, params, request}: Route.LoaderArgs) {
   const handle = params.handle;
 
-  if (!handle || handle === 'all' || isDemoCollection({handle})) {
+  // Gallery slugs are storefront-only routes, so the stale-Shopify-collection
+  // guard must not swallow them; they never reach the Shopify query below.
+  if (
+    !handle ||
+    handle === 'all' ||
+    (isDemoCollection({handle}) && !getGalleryPage(handle))
+  ) {
     throw redirect('/collections/all');
   }
 
@@ -116,6 +142,47 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       products,
       seoUrl: getCanonicalUrl(request, capsulePagePath(page.slug)),
     } satisfies CapsuleLoaderData;
+  }
+
+  // The curated gallery edits render from the same capsule tags, filtered to
+  // each page's hand-picked handle list — indexable "shop by" pages that need
+  // no Shopify collection.
+  const galleryPage = getGalleryPage(handle);
+  if (galleryPage) {
+    const data = await context.storefront.query(CAPSULE_PAGE_QUERY, {
+      variables: {
+        first: 15,
+        query: buildGalleryTagQuery(galleryPage),
+      },
+    });
+
+    const curated = galleryPage.handles;
+    const products = filterDemoProducts(
+      (data.products?.nodes ?? []) as ClaraCardProduct[],
+    )
+      .filter((product) => curated.includes(product.handle))
+      .sort((a, b) => curated.indexOf(a.handle) - curated.indexOf(b.handle));
+
+    return {
+      kind: 'gallery',
+      capsuleCards: listCapsulePages()
+        .filter((capsule) => galleryPage.capsules.includes(capsule.slug))
+        .map((capsule) => ({
+          slug: capsule.slug,
+          subtitle: capsule.subtitle,
+          title: capsule.capsule.title,
+        })),
+      page: galleryPage,
+      products,
+      relatedEdits: listGalleryPages()
+        .filter((other) => galleryPage.related.includes(other.slug))
+        .map((other) => ({
+          slug: other.slug,
+          subtitle: other.subtitle,
+          title: other.title,
+        })),
+      seoUrl: getCanonicalUrl(request, galleryPagePath(galleryPage.slug)),
+    } satisfies GalleryLoaderData;
   }
 
   const paginationVariables = getPaginationVariables(request, {
@@ -171,6 +238,9 @@ export default function Collection() {
   const data = useLoaderData<typeof loader>();
   if ('kind' in data && data.kind === 'capsule') {
     return <CapsuleLandingView data={data} />;
+  }
+  if ('kind' in data && data.kind === 'gallery') {
+    return <GalleryLandingView data={data} />;
   }
   return <CollectionView data={data as ShopifyCollectionLoaderData} />;
 }
@@ -286,6 +356,135 @@ function CapsuleLandingView({data}: {data: CapsuleLoaderData}) {
           ))}
         </div>
       </section>
+
+      <style suppressHydrationWarning>{capsulePageCss}</style>
+    </div>
+  );
+}
+
+function GalleryLandingView({data}: {data: GalleryLoaderData}) {
+  const {page, products, relatedEdits, capsuleCards, seoUrl} = data;
+  const shopUrl = new URL('/collections/all', seoUrl).toString();
+
+  return (
+    <div className="collection-page capsule-page" data-chapter={page.chapter}>
+      <Analytics.CollectionView
+        data={{
+          collection: {
+            handle: page.slug,
+            id: `gallery:${page.slug}`,
+          },
+        }}
+        customData={{products: buildCollectionAnalyticsProducts(products)}}
+      />
+      <StructuredData
+        data={[
+          collectionSchema({
+            description: page.metaDescription,
+            products,
+            title: page.title,
+            url: seoUrl,
+          }),
+          breadcrumbSchema({
+            items: [
+              {name: 'Shop', url: shopUrl},
+              {name: page.title, url: seoUrl},
+            ],
+          }),
+        ]}
+      />
+
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link to="/collections/all">Shop</Link>
+        <span aria-hidden="true">›</span>
+        <span>{page.title}</span>
+      </nav>
+
+      <header className="capsule-hero">
+        <p className="eyebrow">{page.eyebrow}</p>
+        <h1>{page.title}</h1>
+        <p className="capsule-subtitle">{page.subtitle}</p>
+      </header>
+
+      <div className="capsule-editorial">
+        {page.editorial.map((paragraph) => (
+          <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+        ))}
+      </div>
+
+      <section className="capsule-products" aria-label={`${page.title} prints`}>
+        <div className="product-grid compact-grid">
+          {products.map((product, index) => (
+            <ClaraProductCard
+              key={product.id}
+              product={product}
+              loading={index === 0 ? 'eager' : 'lazy'}
+              showStory
+            />
+          ))}
+        </div>
+        {products.length === 0 ? (
+          <p className="capsule-empty">
+            These prints are briefly unavailable.{' '}
+            <Link className="text-link" to="/collections/all">
+              Browse all available prints
+            </Link>
+          </p>
+        ) : null}
+      </section>
+
+      {capsuleCards.length > 0 ? (
+        <section className="capsule-others" aria-label="Capsules in this edit">
+          <div className="section-heading-row">
+            <div>
+              <p className="eyebrow">The capsules behind this edit</p>
+              <h2>Explore the full trios</h2>
+            </div>
+            <Link className="text-link" to="/collections/all">
+              Browse all prints
+            </Link>
+          </div>
+          <div className="capsule-others-grid">
+            {capsuleCards.map((capsule) => (
+              <Link
+                className="capsule-other-card"
+                key={capsule.slug}
+                to={capsulePagePath(capsule.slug)}
+                prefetch="intent"
+              >
+                <p className="eyebrow">Art capsule</p>
+                <h3>{capsule.title}</h3>
+                <p>{capsule.subtitle}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {relatedEdits.length > 0 ? (
+        <section className="capsule-others" aria-label="Related edits">
+          <div className="section-heading-row">
+            <div>
+              <p className="eyebrow">Keep browsing</p>
+              <h2>Related edits</h2>
+            </div>
+          </div>
+          <div className="capsule-others-grid">
+            {relatedEdits.map((edit) => (
+              <Link
+                className="capsule-other-card"
+                key={edit.slug}
+                to={galleryPagePath(edit.slug)}
+                prefetch="intent"
+              >
+                <p className="eyebrow">Curated edit</p>
+                <h3>{edit.title}</h3>
+                <p>{edit.subtitle}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
 
       <style suppressHydrationWarning>{capsulePageCss}</style>
     </div>

@@ -8,6 +8,7 @@ import {
   isUnreleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
 } from './catalogFilters.ts';
+import {listGalleryPages} from './galleryPages.ts';
 import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 
 /**
@@ -23,6 +24,8 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   ...ORIGINAL_ART_COLLECTIONS.map(
     (collection) => `/collections/${collection.handle}`,
   ),
+  // Curated gallery edits — storefront-rendered like the capsule pages.
+  ...listGalleryPages().map((page) => `/collections/${page.slug}`),
   '/our-story',
   '/contact',
   '/policies',

@@ -2124,6 +2124,22 @@ button {
   justify-content: flex-end;
 }
 
+.site-footer .footer-style-nav {
+  display: grid;
+  gap: 9px 22px;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  justify-content: flex-start;
+}
+
+.site-footer .footer-style-nav a {
+  color: rgba(251, 250, 246, 0.64);
+  font-size: 0.8rem;
+}
+
+.site-footer .footer-style-nav a:hover {
+  color: var(--color-paper);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
