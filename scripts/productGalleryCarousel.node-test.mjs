@@ -3,7 +3,9 @@ import test from 'node:test';
 
 import {
   clampCarouselIndex,
+  cycleCarouselIndex,
   nearestCarouselIndex,
+  resolveZoomSwipe,
 } from '../app/lib/productGalleryCarousel.ts';
 
 test('clamps product gallery navigation to a valid slide', () => {
@@ -23,4 +25,23 @@ test('finds the nearest slide after touch, wheel, or keyboard scrolling', () => 
   assert.equal(nearestCarouselIndex(offsets, 1190), 2);
   assert.equal(nearestCarouselIndex(offsets, 1900), 3);
   assert.equal(nearestCarouselIndex([], 640), 0);
+});
+
+test('cycles the zoom view through photos with wrap-around', () => {
+  assert.equal(cycleCarouselIndex(0, 1, 5), 1);
+  assert.equal(cycleCarouselIndex(4, 1, 5), 0);
+  assert.equal(cycleCarouselIndex(0, -1, 5), 4);
+  assert.equal(cycleCarouselIndex(2, -1, 5), 1);
+  assert.equal(cycleCarouselIndex(3, 0, 5), 3);
+  assert.equal(cycleCarouselIndex(9, 1, 5), 0);
+  assert.equal(cycleCarouselIndex(0, 1, 0), 0);
+  assert.equal(cycleCarouselIndex(Number.NaN, 1, 5), 1);
+});
+
+test('resolves a zoom swipe into a photo step', () => {
+  assert.equal(resolveZoomSwipe({deltaX: -120, deltaY: 8}), 1);
+  assert.equal(resolveZoomSwipe({deltaX: 120, deltaY: -10}), -1);
+  assert.equal(resolveZoomSwipe({deltaX: -30, deltaY: 0}), 0);
+  assert.equal(resolveZoomSwipe({deltaX: -80, deltaY: -90}), 0);
+  assert.equal(resolveZoomSwipe({deltaX: Number.NaN, deltaY: 0}), 0);
 });
