@@ -182,6 +182,7 @@ function KarinaJournal({
   return (
     <div className="kot-root">
       <style suppressHydrationWarning>{kotCss}</style>
+      <KarinaAura />
       <StructuredData
         data={[
           {
@@ -294,6 +295,61 @@ function KarinaJournal({
           </p>
         </div>
       </section>
+    </div>
+  );
+}
+
+/**
+ * The journal's breathing aura: large grainy gradient blobs that drift and
+ * breathe behind the whole page, crossfading between chapter-derived tints
+ * (ink → linen → clay) as the reader scrolls. Pure CSS motion on
+ * compositor-only transforms; an IntersectionObserver just flips the
+ * active palette attribute as `[data-chapter]` sections cross the viewport
+ * midline. Reduced-motion visitors keep the static tint without the
+ * breathing. Tints are luminosity-tuned relatives of the cinematic paint
+ * palettes (paintedShader.ts) — the raw ink hexes would read as mud over
+ * paper.
+ */
+function KarinaAura() {
+  const auraRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const aura = auraRef.current;
+    const root = aura?.parentElement;
+    if (!aura || !root) return;
+
+    const sections = Array.from(
+      root.querySelectorAll<HTMLElement>('[data-chapter]'),
+    );
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const palette = (entry.target as HTMLElement).dataset.chapter;
+          if (palette) aura.dataset.palette = palette;
+        }
+      },
+      // A section owns the aura while it straddles the viewport midline
+      {rootMargin: '-42% 0px -42% 0px'},
+    );
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={auraRef} className="kot-aura" data-palette="ink" aria-hidden>
+      {(['ink', 'linen', 'clay'] as const).map((palette) => (
+        <div
+          key={palette}
+          className={`kot-aura-layer kot-aura-layer--${palette}`}
+        >
+          <div className="kot-aura-blob kot-aura-blob--a" />
+          <div className="kot-aura-blob kot-aura-blob--b" />
+        </div>
+      ))}
     </div>
   );
 }
@@ -510,11 +566,127 @@ const kotCss = `
   --kot-serif: Georgia, 'Times New Roman', serif;
   --kot-mono: 'Courier Prime', 'Courier New', ui-monospace, monospace;
   color: var(--kot-ink);
+  isolation: isolate;
+  position: relative;
+}
+
+/* ── Breathing aura ── */
+.kot-aura {
+  inset: 0;
+  pointer-events: none;
+  position: fixed;
+  z-index: -1;
+}
+
+/* Grain that makes the gradients read as pigment, not screen glow */
+.kot-aura::after {
+  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
+  content: '';
+  inset: 0;
+  mix-blend-mode: overlay;
+  opacity: 0.14;
+  position: absolute;
+}
+
+.kot-aura-layer {
+  inset: 0;
+  opacity: 0;
+  position: absolute;
+  transition: opacity 2200ms ease;
+}
+
+.kot-aura[data-palette='ink'] .kot-aura-layer--ink,
+.kot-aura[data-palette='umber'] .kot-aura-layer--ink,
+.kot-aura[data-palette='linen'] .kot-aura-layer--linen,
+.kot-aura[data-palette='clay'] .kot-aura-layer--clay {
+  opacity: 1;
+}
+
+.kot-aura-blob {
+  border-radius: 50%;
+  height: 78vmin;
+  position: absolute;
+  width: 78vmin;
+  will-change: transform;
+}
+
+.kot-aura-blob--a {
+  animation: kotBreatheA 11s ease-in-out infinite alternate;
+  left: -10vmin;
+  top: -14vmin;
+}
+
+.kot-aura-blob--b {
+  animation: kotBreatheB 15s ease-in-out -7s infinite alternate;
+  height: 92vmin;
+  right: -16vmin;
+  top: 30%;
+  width: 92vmin;
+}
+
+/* Ink: the sea under the masthead — indigo drawn from Patina Blue */
+.kot-aura-layer--ink .kot-aura-blob--a {
+  background: radial-gradient(circle at 42% 40%,
+    rgba(70, 83, 110, 0.5),
+    rgba(70, 83, 110, 0.2) 44%,
+    transparent 68%);
+}
+
+.kot-aura-layer--ink .kot-aura-blob--b {
+  background: radial-gradient(circle at 55% 50%,
+    rgba(129, 149, 173, 0.44),
+    rgba(46, 58, 82, 0.15) 48%,
+    transparent 70%);
+}
+
+/* Linen: warm parchment behind the ring and ledger */
+.kot-aura-layer--linen .kot-aura-blob--a {
+  background: radial-gradient(circle at 45% 42%,
+    rgba(201, 169, 124, 0.42),
+    rgba(211, 199, 175, 0.2) 46%,
+    transparent 68%);
+}
+
+.kot-aura-layer--linen .kot-aura-blob--b {
+  background: radial-gradient(circle at 52% 50%,
+    rgba(211, 199, 175, 0.5),
+    rgba(227, 220, 203, 0.22) 48%,
+    transparent 70%);
+}
+
+/* Clay: terracotta warmth at the request foot */
+.kot-aura-layer--clay .kot-aura-blob--a {
+  background: radial-gradient(circle at 44% 42%,
+    rgba(185, 138, 116, 0.46),
+    rgba(168, 121, 102, 0.18) 46%,
+    transparent 68%);
+}
+
+.kot-aura-layer--clay .kot-aura-blob--b {
+  background: radial-gradient(circle at 52% 48%,
+    rgba(226, 201, 182, 0.52),
+    rgba(185, 138, 116, 0.18) 48%,
+    transparent 70%);
+}
+
+@keyframes kotBreatheA {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(4vmin, 2.5vmin, 0) scale(1.12); }
+}
+
+@keyframes kotBreatheB {
+  from { transform: translate3d(0, 0, 0) scale(1.08); }
+  to { transform: translate3d(-4vmin, -3vmin, 0) scale(0.96); }
 }
 
 /* ── Masthead ── */
+/* Tall enough to straddle the viewport midline at rest, so the ink aura
+   owns the opening moment before linen takes the ring. */
 .kot-hero {
-  padding: clamp(72px, 12vh, 140px) clamp(20px, 5vw, 70px) clamp(28px, 4vh, 48px);
+  align-content: center;
+  display: grid;
+  min-height: 62svh;
+  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 70px) clamp(28px, 4vh, 48px);
   text-align: center;
 }
 
@@ -820,6 +992,14 @@ a.kot-ledger-row:hover .kot-ledger-title {
   .kot-ledger-row,
   .kot-request-cta,
   .kot-ledger-title {
+    transition: none;
+  }
+
+  .kot-aura-blob {
+    animation: none;
+  }
+
+  .kot-aura-layer {
     transition: none;
   }
 }

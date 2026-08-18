@@ -303,3 +303,15 @@ articles exist. Article pages got the matching editorial treatment plus
 buildSeoMeta/Article/Breadcrumb JSON-LD. Header nav gained "Journal",
 footer nav "Karina of Time", llms.txt a journal entry. Other blog handles
 fall back to the plain skeleton rendering.
+
+Same day, the index gained a breathing aura background: large grainy
+radial-gradient blobs (CSS keyframe transforms only) fixed behind the
+whole page, crossfading between chapter-derived tints (ink indigo at the
+masthead, linen parchment behind ring/ledger, clay at the foot) via an
+IntersectionObserver that flips `data-palette` as `[data-chapter]`
+sections straddle the viewport midline. Tints are luminosity-tuned
+relatives of the paintedShader palettes (raw ink hexes read as mud over
+paper). The hero got min-height 62svh so ink owns the opening at rest.
+Reduced motion keeps the static tint without breathing. Verification
+note: Lenis reverts programmatic window.scrollTo jumps — verify scroll
+behavior with real wheel events, not scrollTo.
