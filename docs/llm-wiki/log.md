@@ -346,3 +346,21 @@ the ring peeks above the fold; a typewriter "Descend" cue anchors to
 the homepage gained a journal teaser card (pocket dusk sky, drifting
 billow tile) above the footer in _index.tsx. Owner kept ring
 interaction auto-drift-only and the sky journal-only otherwise.
+
+Issue 01 shipped: blog article "Why This Journal Is Called Karina of
+Time" (handle why-karina-of-time) created and published Visible in
+Admin under the karina-of-time blog - founding-issue content (the name,
+what the journal is, the five capsules with links, what comes next),
+excerpt, 145-char meta description, and a generated typographic
+dusk-cover featured image (scripts/make-issue-cover.mjs, sharp SVG
+render; edit labels per issue). The admin author picker only offers
+staff accounts, so the article route now shows a date-only byline and
+always credits the Organization in Article JSON-LD (no staff names in
+public bylines). Verified via direct Storefront API query plus the dev
+server: the ring seats "Issue 01" first (plates keep linking to
+capsules), the ledger lists it, and the index robots meta flips to
+index,follow now that content exists. Admin gotchas: typing thousands
+of characters into the article HTML code editor freezes the tab - set
+content via the CodeMirror 6 view API (cm-content element .cmView.view
+.dispatch) instead; the author/blog pickers are s-internal custom
+elements that form_input cannot set.

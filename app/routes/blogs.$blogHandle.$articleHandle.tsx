@@ -77,7 +77,7 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Article() {
   const {article, blogHandle, blogTitle} = useLoaderData<typeof loader>();
-  const {title, image, contentHtml, author} = article;
+  const {title, image, contentHtml} = article;
 
   const publishedDate = new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
@@ -98,9 +98,10 @@ export default function Article() {
             headline: title,
             datePublished: article.publishedAt,
             image: image?.url ? [image.url] : undefined,
-            author: author?.name
-              ? {'@type': 'Person', name: author.name}
-              : {'@type': 'Organization', name: SITE_NAME},
+            // Issues are studio dispatches: the organization is the author.
+            // (The admin's author picker only offers staff accounts, whose
+            // real names must not become public bylines.)
+            author: {'@type': 'Organization', name: SITE_NAME},
             publisher: {'@type': 'Organization', name: SITE_NAME},
             url: articleUrl,
           },
@@ -123,7 +124,6 @@ export default function Article() {
           <h1>{title}</h1>
           <p className="kot-article-byline">
             <time dateTime={article.publishedAt}>{publishedDate}</time>
-            {author?.name ? <span> · {author.name}</span> : null}
           </p>
           <div className="kot-article-keel" aria-hidden />
         </header>
