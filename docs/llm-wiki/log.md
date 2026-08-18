@@ -374,3 +374,16 @@ scroll row. Verified at a true 390px viewport via playwright-core
 driving the cached ms-playwright Chromium (the claude-in-chrome window
 resize cannot shrink a maximized Chrome, and the hidden Browser pane
 cannot screenshot): isRing true on mobile, false under reduced motion.
+
+Mobile polish after owner feedback ("out of proportion, stops when your
+hand passes over it, design stops at the edges"): (1) the journal is
+now full-bleed - html:has(.kot-root) main gets margin/padding 0 so the
+sky reaches the viewport edges (verified skyLeft 0 / skyRight 390);
+(2) hover-pause listeners bind only on (hover:hover) and (pointer:fine)
+- on touch, pointerenter from a passing finger used to freeze the ring
+because pointerleave never fires; drift now continues after touch
+(-5.8deg/1.6s before and after, desktop hover still pauses); (3) phone
+cards shrink to clamp(132px, 37vw, 165px) with a 330px stage under
+720px, leaving air around the front cover. Verified with a playwright
+suite (verify-polish pattern: sample rotateY over time, synthetic
+pointerenter, bounding-rect edge check).

@@ -380,10 +380,18 @@ function CoverRing({covers}: {covers: Cover[]}) {
       paused = false;
     };
 
-    stage.addEventListener('pointerenter', pause);
-    stage.addEventListener('pointerleave', resume);
-    stage.addEventListener('focusin', pause);
-    stage.addEventListener('focusout', resume);
+    // Hover-pause is a fine-pointer affordance. On touch, pointerenter
+    // fires as the finger passes over and pointerleave never follows,
+    // which would leave the ring stopped dead — so touch keeps turning.
+    const finePointer = window.matchMedia(
+      '(hover: hover) and (pointer: fine)',
+    ).matches;
+    if (finePointer) {
+      stage.addEventListener('pointerenter', pause);
+      stage.addEventListener('pointerleave', resume);
+      stage.addEventListener('focusin', pause);
+      stage.addEventListener('focusout', resume);
+    }
     raf = requestAnimationFrame(tick);
 
     return () => {
@@ -503,6 +511,13 @@ function ArticleItem({
 /* ────────────────────────────── Styles ──────────────────────────────── */
 
 const kotCss = `
+/* The journal is full-bleed: the sky must reach the viewport edges,
+   not stop at the shell's content padding. */
+html:has(.kot-root) main {
+  margin: 0;
+  padding: 0;
+}
+
 .kot-root {
   --kot-ink: #f2ece1;
   --kot-muted: rgba(242, 236, 225, 0.76);
@@ -821,11 +836,12 @@ const kotCss = `
   width: clamp(150px, 17vw, 230px);
 }
 
-/* Phones: cards sized to the viewport; the ring's far side clips past
-   the band edges, reading as the ring passing through frame. */
+/* Phones: cards sized to leave air around the front cover; the ring's
+   far side clips past the band edges, reading as the ring passing
+   through frame. */
 @media (max-width: 820px) {
   .kot-ring-stage.is-ring .kot-cover {
-    width: clamp(150px, 44vw, 190px);
+    width: clamp(132px, 37vw, 165px);
   }
 }
 
@@ -974,7 +990,7 @@ a.kot-ledger-row:hover .kot-ledger-title {
   /* Flat-row fallback only; the ring keeps its fixed stage height */
   .kot-ring-stage:not(.is-ring) { height: auto; }
 
-  .kot-ring-stage.is-ring { height: 380px; }
+  .kot-ring-stage.is-ring { height: 330px; }
 
   .kot-ledger-row {
     grid-template-columns: 1fr auto;
