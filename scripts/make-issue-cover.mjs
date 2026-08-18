@@ -68,3 +68,4 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
 
 await sharp(Buffer.from(svg)).png().toFile(process.argv[2] ?? 'issue-01-cover.png');
 console.log('cover written');
+/* eslint-enable no-console */
