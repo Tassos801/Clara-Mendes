@@ -7,7 +7,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {StructuredData} from '~/components/StructuredData';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {buildSeoMeta, SITE_NAME} from '~/lib/seo';
-import {STOREFRONT_ORIGIN, SUPPORT_EMAIL} from '~/lib/storefrontBasics';
+import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 /**
  * The store's single journal. "Karina of Time" reads as wordplay on the
@@ -175,10 +175,6 @@ function KarinaJournal({
   // remaining seats and route into the capsules they show.
   const covers = [...issueCovers, ...plateCovers()].slice(0, 10);
 
-  const requestSubject = encodeURIComponent(
-    hasArticles ? 'Karina of Time — next issue' : 'Karina of Time — Issue 01',
-  );
-
   return (
     <div className="kot-root">
       <style suppressHydrationWarning>{kotCss}</style>
@@ -202,18 +198,22 @@ function KarinaJournal({
       />
 
       <section className="kot-hero" data-chapter="ink" aria-labelledby="kot-title">
-        <p className="kot-eyebrow" data-reveal>
-          The Clara Mendes journal
-        </p>
-        <h1 id="kot-title" className="kot-masthead" data-reveal>
-          Karina <i>of</i> Time
-        </h1>
-        <p className="kot-lexicon" data-reveal>
-          <span lang="el">καρίνα</span> <span aria-hidden>·</span> Greek,{' '}
-          <em>the keel</em> — the line beneath a vessel that holds it steady
-          through time.
-        </p>
-        <div className="kot-keel" aria-hidden />
+        <div className="kot-clouds kot-clouds--far" aria-hidden />
+        <div className="kot-clouds kot-clouds--near" aria-hidden />
+        <div className="kot-hero-inner">
+          <p className="kot-eyebrow" data-reveal>
+            The Clara Mendes journal
+          </p>
+          <h1 id="kot-title" className="kot-masthead" data-reveal>
+            Karina <i>of</i> Time
+          </h1>
+          <p className="kot-lexicon" data-reveal>
+            <span lang="el">καρίνα</span> <span aria-hidden>·</span> Greek,{' '}
+            <em>the keel</em> — the line beneath a vessel that holds it steady
+            through time.
+          </p>
+          <div className="kot-keel" aria-hidden />
+        </div>
       </section>
 
       <section
@@ -270,7 +270,7 @@ function KarinaJournal({
               <span className="kot-ledger-excerpt">
                 The first dispatch is being written — notes on the five
                 capsules, how the prints are made, and the rooms they live in.
-                Request it below and it arrives the day it publishes.
+                It publishes right here.
               </span>
             </span>
             <span className="kot-ledger-date">Soon</span>
@@ -278,21 +278,15 @@ function KarinaJournal({
         )}
       </section>
 
-      <section className="kot-request" data-chapter="clay" aria-label="Request the next issue">
+      <section className="kot-request" data-chapter="clay" aria-label="Browse the collection">
         <p className="kot-request-eyebrow" data-reveal>
-          Request access
+          While the press runs
         </p>
-        <h2 data-reveal>Be aboard when the next issue leaves the press.</h2>
+        <h2 data-reveal>The plates hang in the shop.</h2>
         <div className="kot-request-actions" data-reveal>
-          <a
-            className="kot-request-cta"
-            href={`mailto:${SUPPORT_EMAIL}?subject=${requestSubject}`}
-          >
-            Request the next issue
-          </a>
-          <p className="kot-request-note">
-            One email per issue, from the studio. Nothing else.
-          </p>
+          <Link className="kot-request-cta" to="/collections/all" prefetch="intent">
+            Browse the collection
+          </Link>
         </div>
       </section>
     </div>
@@ -679,15 +673,109 @@ const kotCss = `
   to { transform: translate3d(-4vmin, -3vmin, 0) scale(0.96); }
 }
 
-/* ── Masthead ── */
-/* Tall enough to straddle the viewport midline at rest, so the ink aura
-   owns the opening moment before linen takes the ring. */
+/* ── Masthead: dusk cloudscape ── */
+/* A full-bleed dusk sky in the catalog's umber/clay register — near-black
+   above, amber underlight at the horizon — with two procedurally
+   generated cloud layers (seamless feTurbulence tiles) drifting at
+   different speeds. Tall enough to straddle the viewport midline at
+   rest, so the ink chapter owns the opening. */
 .kot-hero {
   align-content: center;
+  background: linear-gradient(180deg,
+    #14100c 0%,
+    #241c15 30%,
+    #3f2f22 55%,
+    #6b4a35 78%,
+    #9a6b52 92%,
+    #b98a6e 100%);
+  color: #f6f1e8;
   display: grid;
-  min-height: 62svh;
-  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 70px) clamp(28px, 4vh, 48px);
+  isolation: isolate;
+  min-height: 78svh;
+  overflow: hidden;
+  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 70px) clamp(36px, 6vh, 64px);
+  position: relative;
   text-align: center;
+}
+
+.kot-clouds {
+  animation: kotCloudDrift linear infinite;
+  background-repeat: repeat;
+  background-size: 1600px 100%;
+  inset: 0 -1600px 0 0;
+  position: absolute;
+  will-change: transform;
+  z-index: 0;
+}
+
+/* Fine high haze, drifting slowly */
+.kot-clouds--far {
+  animation-duration: 300s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0038%200.0095'%20numOctaves='5'%20seed='11'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.95%200%200%200%200%200.91%200%200%200%200%200.85%200.55%200.55%200.55%200%20-0.62'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23f)'/%3E%3C/svg%3E");
+  opacity: 0.8;
+}
+
+/* Chunkier amber-lit masses, lower and quicker */
+.kot-clouds--near {
+  animation-duration: 160s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0019%200.0052'%20numOctaves='4'%20seed='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.83%200%200%200%200%200.6%200%200%200%200%200.42%200.7%200.7%200.7%200%20-0.68'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(180deg, transparent 8%, black 52%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 8%, black 52%);
+  opacity: 0.9;
+}
+
+@keyframes kotCloudDrift {
+  to { transform: translate3d(-1600px, 0, 0); }
+}
+
+/* Film grain over the sky, under the type */
+.kot-hero::after {
+  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
+  content: '';
+  inset: 0;
+  mix-blend-mode: overlay;
+  opacity: 0.12;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
+/* Soft landing from amber horizon onto the paper below */
+.kot-hero::before {
+  background: linear-gradient(180deg, transparent, rgba(251, 250, 246, 0.55) 78%, #fbfaf6);
+  bottom: 0;
+  content: '';
+  height: 72px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+.kot-hero-inner {
+  position: relative;
+  z-index: 2;
+}
+
+.kot-hero .kot-eyebrow {
+  color: rgba(244, 238, 228, 0.66);
+}
+
+.kot-hero .kot-masthead {
+  text-shadow: 0 2px 28px rgba(10, 8, 6, 0.45);
+}
+
+.kot-hero .kot-lexicon {
+  color: rgba(244, 238, 228, 0.76);
+}
+
+.kot-hero .kot-lexicon [lang='el'] {
+  color: #f6f1e8;
+}
+
+.kot-hero .kot-keel {
+  background: rgba(244, 238, 228, 0.38);
 }
 
 .kot-eyebrow {
