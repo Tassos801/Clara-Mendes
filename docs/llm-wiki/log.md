@@ -387,3 +387,20 @@ cards shrink to clamp(132px, 37vw, 165px) with a 330px stage under
 720px, leaving air around the front cover. Verified with a playwright
 suite (verify-polish pattern: sample rotateY over time, synthetic
 pointerenter, bounding-rect edge check).
+
+CSP regression fix, found by an adversarial verification pass: the
+custom scriptSrc passed to createContentSecurityPolicy had been reduced
+to googletagmanager only, and Hydrogen has no default scriptSrc to merge
+custom values into (unlike connectSrc/styleSrc/defaultSrc) - so
+production served script-src with neither self nor cdn.shopify.com.
+That CSP-blocked the consent privacy banner on every page (EU visitors
+could never grant consent; analytics silent) and intermittently blocked
+Oxygen-served lazy chunks. CSP_GOOGLE_SCRIPT_SRC became CSP_SCRIPT_SRC
+with self + cdn.shopify.com + googletagmanager; csp.node-test.mjs now
+asserts all three. Verified against the dev server with an
+oxygen-buyer-country DE header: served header carries the three sources
+plus nonce, zero CSP violations on /, /collections/all, and the
+journal, the banner script loads 200 from cdn.shopify.com, and the
+cookie-consent banner renders with Accept/Decline controls
+(screenshot). Live before-evidence: production script-src header
+contained only googletagmanager plus nonce.

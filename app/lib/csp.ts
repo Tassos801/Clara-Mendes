@@ -19,7 +19,22 @@ export const CSP_IMG_SRC = [
   'https://googleads.g.doubleclick.net',
 ];
 
-export const CSP_GOOGLE_SCRIPT_SRC = ['https://www.googletagmanager.com'];
+/**
+ * script-src. Unlike connectSrc/styleSrc/defaultSrc, Hydrogen's
+ * createContentSecurityPolicy has NO default scriptSrc to merge a custom
+ * value into — whatever is listed here is the entire allowlist (plus the
+ * per-request nonce Hydrogen appends). 'self' and the Shopify CDN must
+ * therefore stay listed explicitly: Oxygen serves the app's own lazy
+ * route/vendor chunks from cdn.shopify.com, and the consent
+ * privacy-banner scripts (withPrivacyBanner in root.tsx) load from there
+ * too. Dropping them silently kills the cookie banner — and with it every
+ * analytics consent — plus intermittently blocks lazy route modules.
+ */
+export const CSP_SCRIPT_SRC = [
+  "'self'",
+  'https://cdn.shopify.com',
+  'https://www.googletagmanager.com',
+];
 
 export const CSP_GOOGLE_CONNECT_SRC = [
   'https://www.googletagmanager.com',
