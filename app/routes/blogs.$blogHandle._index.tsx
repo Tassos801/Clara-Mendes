@@ -308,11 +308,13 @@ function formatIssueDate(publishedAt?: string | null) {
 }
 
 /**
- * The revolving ring of covers. Server-rendered (and kept, on small
- * screens, for reduced motion, and without JS) as a scroll-snap row;
- * wide motion-friendly viewports are upgraded to a slow 3D carousel that
- * pauses while hovered or focused. The cinematic WebGL background runs
- * its own ticker, so one more transform-only rAF stays cheap.
+ * The revolving ring of covers. Server-rendered (and kept for reduced
+ * motion and without JS) as a scroll-snap row; motion-friendly visitors
+ * on every viewport get the slow 3D carousel — on phones the side
+ * covers clip past the band's edges, which reads as the ring passing
+ * through frame. Rotation pauses while hovered or focused. The
+ * cinematic WebGL background runs its own ticker, so one more
+ * transform-only rAF stays cheap.
  */
 function CoverRing({covers}: {covers: Cover[]}) {
   const stageRef = useRef<HTMLDivElement | null>(null);
@@ -326,8 +328,7 @@ function CoverRing({covers}: {covers: Cover[]}) {
     const motionOk = window.matchMedia(
       '(prefers-reduced-motion: no-preference)',
     ).matches;
-    const wide = window.matchMedia('(min-width: 821px)').matches;
-    if (!motionOk || !wide) return;
+    if (!motionOk) return;
 
     const items = Array.from(ring.children) as HTMLElement[];
     const count = items.length;
@@ -817,7 +818,15 @@ const kotCss = `
   inset: 0;
   margin: auto;
   position: absolute;
-  width: clamp(190px, 17vw, 230px);
+  width: clamp(150px, 17vw, 230px);
+}
+
+/* Phones: cards sized to the viewport; the ring's far side clips past
+   the band edges, reading as the ring passing through frame. */
+@media (max-width: 820px) {
+  .kot-ring-stage.is-ring .kot-cover {
+    width: clamp(150px, 44vw, 190px);
+  }
 }
 
 .kot-ring-caption {
@@ -962,7 +971,10 @@ a.kot-ledger-row:hover .kot-ledger-title {
 }
 
 @media (max-width: 720px) {
-  .kot-ring-stage { height: auto; }
+  /* Flat-row fallback only; the ring keeps its fixed stage height */
+  .kot-ring-stage:not(.is-ring) { height: auto; }
+
+  .kot-ring-stage.is-ring { height: 380px; }
 
   .kot-ledger-row {
     grid-template-columns: 1fr auto;

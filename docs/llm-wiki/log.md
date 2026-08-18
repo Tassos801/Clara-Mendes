@@ -364,3 +364,13 @@ of characters into the article HTML code editor freezes the tab - set
 content via the CodeMirror 6 view API (cm-content element .cmView.view
 .dispatch) instead; the author/blog pickers are s-internal custom
 elements that form_input cannot set.
+
+Mobile ring: the owner asked for the same journal view on phones, so
+the min-width gate came off the CoverRing upgrade - every
+motion-friendly viewport now gets the 3D ring (cards clamp(150px, 44vw,
+190px) under 820px, stage 380px under 720px; the far side clips past
+the band edges by design). Reduced-motion and no-JS keep the flat
+scroll row. Verified at a true 390px viewport via playwright-core
+driving the cached ms-playwright Chromium (the claude-in-chrome window
+resize cannot shrink a maximized Chrome, and the hidden Browser pane
+cannot screenshot): isRing true on mobile, false under reduced motion.
