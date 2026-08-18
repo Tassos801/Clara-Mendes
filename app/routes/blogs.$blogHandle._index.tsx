@@ -178,7 +178,11 @@ function KarinaJournal({
   return (
     <div className="kot-root">
       <style suppressHydrationWarning>{kotCss}</style>
-      <KarinaAura />
+      <div className="kot-sky" aria-hidden>
+        <div className="kot-cloud kot-cloud--far" />
+        <div className="kot-cloud kot-cloud--mid" />
+        <div className="kot-cloud kot-cloud--near" />
+      </div>
       <StructuredData
         data={[
           {
@@ -198,8 +202,6 @@ function KarinaJournal({
       />
 
       <section className="kot-hero" data-chapter="ink" aria-labelledby="kot-title">
-        <div className="kot-clouds kot-clouds--far" aria-hidden />
-        <div className="kot-clouds kot-clouds--near" aria-hidden />
         <div className="kot-hero-inner">
           <p className="kot-eyebrow" data-reveal>
             The Clara Mendes journal
@@ -289,61 +291,6 @@ function KarinaJournal({
           </Link>
         </div>
       </section>
-    </div>
-  );
-}
-
-/**
- * The journal's breathing aura: large grainy gradient blobs that drift and
- * breathe behind the whole page, crossfading between chapter-derived tints
- * (ink → linen → clay) as the reader scrolls. Pure CSS motion on
- * compositor-only transforms; an IntersectionObserver just flips the
- * active palette attribute as `[data-chapter]` sections cross the viewport
- * midline. Reduced-motion visitors keep the static tint without the
- * breathing. Tints are luminosity-tuned relatives of the cinematic paint
- * palettes (paintedShader.ts) — the raw ink hexes would read as mud over
- * paper.
- */
-function KarinaAura() {
-  const auraRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const aura = auraRef.current;
-    const root = aura?.parentElement;
-    if (!aura || !root) return;
-
-    const sections = Array.from(
-      root.querySelectorAll<HTMLElement>('[data-chapter]'),
-    );
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          const palette = (entry.target as HTMLElement).dataset.chapter;
-          if (palette) aura.dataset.palette = palette;
-        }
-      },
-      // A section owns the aura while it straddles the viewport midline
-      {rootMargin: '-42% 0px -42% 0px'},
-    );
-    sections.forEach((section) => observer.observe(section));
-
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div ref={auraRef} className="kot-aura" data-palette="ink" aria-hidden>
-      {(['ink', 'linen', 'clay'] as const).map((palette) => (
-        <div
-          key={palette}
-          className={`kot-aura-layer kot-aura-layer--${palette}`}
-        >
-          <div className="kot-aura-blob kot-aura-blob--a" />
-          <div className="kot-aura-blob kot-aura-blob--b" />
-        </div>
-      ))}
     </div>
   );
 }
@@ -553,10 +500,11 @@ function ArticleItem({
 
 const kotCss = `
 .kot-root {
-  --kot-ink: #26231f;
-  --kot-muted: #6f685e;
+  --kot-ink: #f2ece1;
+  --kot-muted: rgba(242, 236, 225, 0.76);
   --kot-paper: #fbfaf6;
-  --kot-hairline: rgba(38, 35, 31, 0.16);
+  --kot-deep: #26231f;
+  --kot-hairline: rgba(242, 236, 225, 0.22);
   --kot-serif: Georgia, 'Times New Roman', serif;
   --kot-mono: 'Courier Prime', 'Courier New', ui-monospace, monospace;
   color: var(--kot-ink);
@@ -564,218 +512,101 @@ const kotCss = `
   position: relative;
 }
 
-/* ── Breathing aura ── */
-.kot-aura {
+/* ── The dusk sky ──
+   One atmosphere for the whole journal: the page descends from
+   near-black through umber to the amber horizon at the foot. Three
+   procedurally generated cloud layers (seamless feTurbulence tiles)
+   drift at different speeds — the high haze runs the opposite way for
+   parallax. Everything is translate-only animation on repeating tiles,
+   and the sky is owned imagery: no stock photograph. */
+.kot-sky {
+  background: linear-gradient(180deg,
+    #14100c 0%,
+    #241c15 26%,
+    #3f2f22 52%,
+    #6b4a35 74%,
+    #9a6b52 88%,
+    #b98a6e 100%);
   inset: 0;
+  overflow: hidden;
   pointer-events: none;
-  position: fixed;
+  position: absolute;
   z-index: -1;
 }
 
-/* Grain that makes the gradients read as pigment, not screen glow */
-.kot-aura::after {
-  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
-  content: '';
-  inset: 0;
-  mix-blend-mode: overlay;
-  opacity: 0.14;
-  position: absolute;
-}
-
-.kot-aura-layer {
-  inset: 0;
-  opacity: 0;
-  position: absolute;
-  transition: opacity 2200ms ease;
-}
-
-.kot-aura[data-palette='ink'] .kot-aura-layer--ink,
-.kot-aura[data-palette='umber'] .kot-aura-layer--ink,
-.kot-aura[data-palette='linen'] .kot-aura-layer--linen,
-.kot-aura[data-palette='clay'] .kot-aura-layer--clay {
-  opacity: 1;
-}
-
-.kot-aura-blob {
-  border-radius: 50%;
-  height: 78vmin;
-  position: absolute;
-  width: 78vmin;
-  will-change: transform;
-}
-
-.kot-aura-blob--a {
-  animation: kotBreatheA 11s ease-in-out infinite alternate;
-  left: -10vmin;
-  top: -14vmin;
-}
-
-.kot-aura-blob--b {
-  animation: kotBreatheB 15s ease-in-out -7s infinite alternate;
-  height: 92vmin;
-  right: -16vmin;
-  top: 30%;
-  width: 92vmin;
-}
-
-/* Ink: the sea under the masthead — indigo drawn from Patina Blue */
-.kot-aura-layer--ink .kot-aura-blob--a {
-  background: radial-gradient(circle at 42% 40%,
-    rgba(70, 83, 110, 0.5),
-    rgba(70, 83, 110, 0.2) 44%,
-    transparent 68%);
-}
-
-.kot-aura-layer--ink .kot-aura-blob--b {
-  background: radial-gradient(circle at 55% 50%,
-    rgba(129, 149, 173, 0.44),
-    rgba(46, 58, 82, 0.15) 48%,
-    transparent 70%);
-}
-
-/* Linen: warm parchment behind the ring and ledger */
-.kot-aura-layer--linen .kot-aura-blob--a {
-  background: radial-gradient(circle at 45% 42%,
-    rgba(201, 169, 124, 0.42),
-    rgba(211, 199, 175, 0.2) 46%,
-    transparent 68%);
-}
-
-.kot-aura-layer--linen .kot-aura-blob--b {
-  background: radial-gradient(circle at 52% 50%,
-    rgba(211, 199, 175, 0.5),
-    rgba(227, 220, 203, 0.22) 48%,
-    transparent 70%);
-}
-
-/* Clay: terracotta warmth at the request foot */
-.kot-aura-layer--clay .kot-aura-blob--a {
-  background: radial-gradient(circle at 44% 42%,
-    rgba(185, 138, 116, 0.46),
-    rgba(168, 121, 102, 0.18) 46%,
-    transparent 68%);
-}
-
-.kot-aura-layer--clay .kot-aura-blob--b {
-  background: radial-gradient(circle at 52% 48%,
-    rgba(226, 201, 182, 0.52),
-    rgba(185, 138, 116, 0.18) 48%,
-    transparent 70%);
-}
-
-@keyframes kotBreatheA {
-  from { transform: translate3d(0, 0, 0) scale(1); }
-  to { transform: translate3d(4vmin, 2.5vmin, 0) scale(1.12); }
-}
-
-@keyframes kotBreatheB {
-  from { transform: translate3d(0, 0, 0) scale(1.08); }
-  to { transform: translate3d(-4vmin, -3vmin, 0) scale(0.96); }
-}
-
-/* ── Masthead: dusk cloudscape ── */
-/* A full-bleed dusk sky in the catalog's umber/clay register — near-black
-   above, amber underlight at the horizon — with two procedurally
-   generated cloud layers (seamless feTurbulence tiles) drifting at
-   different speeds. Tall enough to straddle the viewport midline at
-   rest, so the ink chapter owns the opening. */
-.kot-hero {
-  align-content: center;
-  background: linear-gradient(180deg,
-    #14100c 0%,
-    #241c15 30%,
-    #3f2f22 55%,
-    #6b4a35 78%,
-    #9a6b52 92%,
-    #b98a6e 100%);
-  color: #f6f1e8;
-  display: grid;
-  isolation: isolate;
-  min-height: 78svh;
-  overflow: hidden;
-  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 70px) clamp(36px, 6vh, 64px);
-  position: relative;
-  text-align: center;
-}
-
-.kot-clouds {
+.kot-cloud {
   animation: kotCloudDrift linear infinite;
   background-repeat: repeat;
-  background-size: 1600px 100%;
+  background-size: 1600px 900px;
   inset: 0 -1600px 0 0;
   position: absolute;
   will-change: transform;
-  z-index: 0;
 }
 
-/* Fine high haze, drifting slowly */
-.kot-clouds--far {
-  animation-duration: 300s;
+/* High fine haze, slow and drifting the other way */
+.kot-cloud--far {
+  animation-direction: reverse;
+  animation-duration: 340s;
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0038%200.0095'%20numOctaves='5'%20seed='11'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.95%200%200%200%200%200.91%200%200%200%200%200.85%200.55%200.55%200.55%200%20-0.62'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23f)'/%3E%3C/svg%3E");
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
-/* Chunkier amber-lit masses, lower and quicker */
-.kot-clouds--near {
-  animation-duration: 160s;
+/* Amber mid bank */
+.kot-cloud--mid {
+  animation-duration: 180s;
   background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0019%200.0052'%20numOctaves='4'%20seed='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.83%200%200%200%200%200.6%200%200%200%200%200.42%200.7%200.7%200.7%200%20-0.68'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
-  mask-image: linear-gradient(180deg, transparent 8%, black 52%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 8%, black 52%);
-  opacity: 0.9;
+  mask-image: linear-gradient(180deg, transparent 4%, black 30%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 4%, black 30%);
+  opacity: 0.75;
+}
+
+/* Sculpted foreground billows, warm cream, quickest */
+.kot-cloud--near {
+  animation-duration: 110s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='b'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0011%200.0032'%20numOctaves='5'%20seed='9'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.92%200%200%200%200%200.74%200%200%200%200%200.58%200.95%200.95%200.95%200%20-0.88'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23b)'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(180deg, transparent 28%, black 58%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 28%, black 58%);
+  opacity: 0.68;
 }
 
 @keyframes kotCloudDrift {
   to { transform: translate3d(-1600px, 0, 0); }
 }
 
-/* Film grain over the sky, under the type */
-.kot-hero::after {
+/* Film grain over the whole sky */
+.kot-sky::after {
   background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
   content: '';
   inset: 0;
   mix-blend-mode: overlay;
-  opacity: 0.12;
-  pointer-events: none;
+  opacity: 0.13;
   position: absolute;
-  z-index: 1;
 }
 
-/* Soft landing from amber horizon onto the paper below */
-.kot-hero::before {
-  background: linear-gradient(180deg, transparent, rgba(251, 250, 246, 0.55) 78%, #fbfaf6);
+/* Soft landing onto the paper site footer below the journal */
+.kot-sky::before {
+  background: linear-gradient(180deg, transparent, rgba(251, 250, 246, 0.6) 78%, #fbfaf6);
   bottom: 0;
   content: '';
-  height: 72px;
+  height: 120px;
   left: 0;
-  pointer-events: none;
   position: absolute;
   right: 0;
   z-index: 1;
 }
 
+/* ── Masthead ── */
+/* Tall so the opening is pure sky and type. */
+.kot-hero {
+  align-content: center;
+  display: grid;
+  min-height: 78svh;
+  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 70px) clamp(36px, 6vh, 64px);
+  text-align: center;
+}
+
 .kot-hero-inner {
   position: relative;
-  z-index: 2;
-}
-
-.kot-hero .kot-eyebrow {
-  color: rgba(244, 238, 228, 0.66);
-}
-
-.kot-hero .kot-masthead {
-  text-shadow: 0 2px 28px rgba(10, 8, 6, 0.45);
-}
-
-.kot-hero .kot-lexicon {
-  color: rgba(244, 238, 228, 0.76);
-}
-
-.kot-hero .kot-lexicon [lang='el'] {
-  color: #f6f1e8;
-}
-
-.kot-hero .kot-keel {
-  background: rgba(244, 238, 228, 0.38);
 }
 
 .kot-eyebrow {
@@ -794,6 +625,7 @@ const kotCss = `
   letter-spacing: -0.015em;
   line-height: 1.02;
   margin: 0 0 26px;
+  text-shadow: 0 2px 28px rgba(10, 8, 6, 0.45);
   text-wrap: balance;
 }
 
@@ -862,7 +694,7 @@ const kotCss = `
 
 .kot-cover-frame {
   background: #fff;
-  box-shadow: 0 16px 38px rgba(38, 35, 31, 0.16);
+  box-shadow: 0 22px 48px rgba(8, 6, 4, 0.45);
   display: block;
   padding: 7px;
 }
@@ -960,7 +792,7 @@ const kotCss = `
 }
 
 a.kot-ledger-row:hover {
-  background: rgba(38, 35, 31, 0.035);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 a.kot-ledger-row:focus-visible {
@@ -991,6 +823,7 @@ a.kot-ledger-row:focus-visible {
   font-family: var(--kot-serif);
   font-size: clamp(1.3rem, 2.4vw, 1.75rem);
   line-height: 1.18;
+  text-shadow: 0 1px 18px rgba(10, 8, 6, 0.35);
   transition: font-style 200ms ease;
 }
 
@@ -1035,12 +868,11 @@ a.kot-ledger-row:hover .kot-ledger-title {
 
 .kot-request-cta {
   align-items: center;
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.12), transparent 46%),
-    rgba(38, 35, 31, 0.95);
-  border: 1px solid var(--kot-ink);
+  background: rgba(251, 250, 246, 0.94);
+  border: 1px solid rgba(251, 250, 246, 0.94);
   border-radius: 999px;
-  color: var(--kot-paper);
+  box-shadow: 0 14px 34px rgba(8, 6, 4, 0.35);
+  color: var(--kot-deep);
   display: inline-flex;
   font-size: 0.72rem;
   font-weight: 600;
@@ -1055,7 +887,7 @@ a.kot-ledger-row:hover .kot-ledger-title {
 }
 
 .kot-request-cta:hover {
-  background: #3a352f;
+  background: #ffffff;
 }
 
 .kot-request-note {
@@ -1083,12 +915,8 @@ a.kot-ledger-row:hover .kot-ledger-title {
     transition: none;
   }
 
-  .kot-aura-blob {
+  .kot-cloud {
     animation: none;
-  }
-
-  .kot-aura-layer {
-    transition: none;
   }
 }
 `;
