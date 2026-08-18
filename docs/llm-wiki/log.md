@@ -315,3 +315,14 @@ paper). The hero got min-height 62svh so ink owns the opening at rest.
 Reduced motion keeps the static tint without breathing. Verification
 note: Lenis reverts programmatic window.scrollTo jumps — verify scroll
 behavior with real wheel events, not scrollTo.
+
+Later the same day, two owner-directed changes: (1) the masthead became a
+full-bleed drifting dusk cloudscape - two procedurally generated cloud
+layers (seamless feTurbulence SVG data-URI tiles, translate-only
+animation at different speeds) over a near-black-to-amber gradient in
+the umber/clay register, paper-white type, film grain, soft landing
+onto the page; no stock imagery, reduced-motion gets the static sky.
+(2) The mailto "request the next issue" foot was removed - the owner's
+rule is that issues publish on the page, there is no email edition -
+replaced by a link into /collections/all, and the empty-ledger copy now
+ends "It publishes right here."
