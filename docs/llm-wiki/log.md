@@ -336,3 +336,13 @@ its IntersectionObserver palette machinery were removed - the vertical
 gradient carries the chapter arc spatially. The page runs light type via
 the shared kot tokens; the sky fades to paper just above the site
 footer. All states screenshot-verified in a real browser.
+
+Improvement round from an owner interview: sky gained a dark storm-base
+layer under sharpened lit billows (more weather, less smoke); the
+masthead entrance is staged in pure CSS (eyebrow/title/lexicon/keel/cue
+drift in once, reduced-motion skips); the hero shortened to ~54svh so
+the ring peeks above the fold; a typewriter "Descend" cue anchors to
+#kot-issues (anchor jumps survive Lenis, unlike window.scrollTo); and
+the homepage gained a journal teaser card (pocket dusk sky, drifting
+billow tile) above the footer in _index.tsx. Owner kept ring
+interaction auto-drift-only and the sky journal-only otherwise.
