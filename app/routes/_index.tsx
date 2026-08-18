@@ -286,6 +286,9 @@ export default function Homepage() {
               <Link to="/our-story" className="hm-nav-text">
                 Our Story
               </Link>
+              <Link to="/blogs/karina-of-time" className="hm-nav-text">
+                Journal
+              </Link>
               <Link to="/search" className="hm-nav-text">
                 Search
               </Link>
