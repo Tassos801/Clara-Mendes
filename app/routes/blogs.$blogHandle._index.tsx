@@ -181,6 +181,7 @@ function KarinaJournal({
       <div className="kot-sky" aria-hidden>
         <div className="kot-cloud kot-cloud--far" />
         <div className="kot-cloud kot-cloud--mid" />
+        <div className="kot-cloud kot-cloud--shadow" />
         <div className="kot-cloud kot-cloud--near" />
       </div>
       <StructuredData
@@ -203,22 +204,24 @@ function KarinaJournal({
 
       <section className="kot-hero" data-chapter="ink" aria-labelledby="kot-title">
         <div className="kot-hero-inner">
-          <p className="kot-eyebrow" data-reveal>
-            The Clara Mendes journal
-          </p>
-          <h1 id="kot-title" className="kot-masthead" data-reveal>
+          <p className="kot-eyebrow">The Clara Mendes journal</p>
+          <h1 id="kot-title" className="kot-masthead">
             Karina <i>of</i> Time
           </h1>
-          <p className="kot-lexicon" data-reveal>
+          <p className="kot-lexicon">
             <span lang="el">καρίνα</span> <span aria-hidden>·</span> Greek,{' '}
             <em>the keel</em> — the line beneath a vessel that holds it steady
             through time.
           </p>
           <div className="kot-keel" aria-hidden />
+          <a className="kot-descend" href="#kot-issues">
+            Descend<span aria-hidden> ↓</span>
+          </a>
         </div>
       </section>
 
       <section
+        id="kot-issues"
         className="kot-ring-band"
         data-chapter="linen"
         aria-label="Issue covers"
@@ -521,9 +524,9 @@ const kotCss = `
    and the sky is owned imagery: no stock photograph. */
 .kot-sky {
   background: linear-gradient(180deg,
-    #14100c 0%,
-    #241c15 26%,
-    #3f2f22 52%,
+    #100d0a 0%,
+    #1f1812 24%,
+    #3a2b1e 50%,
     #6b4a35 74%,
     #9a6b52 88%,
     #b98a6e 100%);
@@ -554,19 +557,28 @@ const kotCss = `
 /* Amber mid bank */
 .kot-cloud--mid {
   animation-duration: 180s;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0019%200.0052'%20numOctaves='4'%20seed='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.83%200%200%200%200%200.6%200%200%200%200%200.42%200.7%200.7%200.7%200%20-0.68'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0019%200.0052'%20numOctaves='4'%20seed='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.83%200%200%200%200%200.6%200%200%200%200%200.42%200.85%200.85%200.85%200%20-0.8'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
   mask-image: linear-gradient(180deg, transparent 4%, black 30%);
   -webkit-mask-image: linear-gradient(180deg, transparent 4%, black 30%);
+  opacity: 0.7;
+}
+
+/* Dark storm bases sliding under the lit billows */
+.kot-cloud--shadow {
+  animation-duration: 140s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='s'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0012%200.0034'%20numOctaves='5'%20seed='17'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.1%200%200%200%200%200.075%200%200%200%200%200.06%201.05%201.05%201.05%200%20-1.05'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23s)'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(180deg, transparent 16%, black 46%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 16%, black 46%);
   opacity: 0.75;
 }
 
-/* Sculpted foreground billows, warm cream, quickest */
+/* Sculpted lit billows riding over the shadow bases */
 .kot-cloud--near {
   animation-duration: 110s;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='b'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0011%200.0032'%20numOctaves='5'%20seed='9'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.92%200%200%200%200%200.74%200%200%200%200%200.58%200.95%200.95%200.95%200%20-0.88'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23b)'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='b'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0011%200.0032'%20numOctaves='5'%20seed='9'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.94%200%200%200%200%200.78%200%200%200%200%200.62%201.15%201.15%201.15%200%20-1.02'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23b)'/%3E%3C/svg%3E");
   mask-image: linear-gradient(180deg, transparent 28%, black 58%);
   -webkit-mask-image: linear-gradient(180deg, transparent 28%, black 58%);
-  opacity: 0.68;
+  opacity: 0.8;
 }
 
 @keyframes kotCloudDrift {
@@ -596,17 +608,70 @@ const kotCss = `
 }
 
 /* ── Masthead ── */
-/* Tall so the opening is pure sky and type. */
+/* Short enough that the ring peeks above the fold on load. */
 .kot-hero {
   align-content: center;
   display: grid;
-  min-height: 78svh;
-  padding: clamp(56px, 9vh, 120px) clamp(20px, 5vw, 70px) clamp(36px, 6vh, 64px);
+  min-height: 54svh;
+  padding: clamp(48px, 7vh, 96px) clamp(20px, 5vw, 70px) clamp(28px, 4vh, 48px);
   text-align: center;
 }
 
 .kot-hero-inner {
   position: relative;
+}
+
+/* One-time entrance: the masthead drifts in like the clouds behind it.
+   Pure CSS so it works without the GSAP bundle; reduced motion skips it. */
+.kot-hero .kot-eyebrow,
+.kot-hero .kot-masthead,
+.kot-hero .kot-lexicon,
+.kot-hero .kot-keel,
+.kot-hero .kot-descend {
+  animation: kotArrive 2.2s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.kot-hero .kot-eyebrow { animation-delay: 0.25s; }
+.kot-hero .kot-masthead { animation-delay: 0.5s; animation-duration: 2.6s; }
+.kot-hero .kot-lexicon { animation-delay: 0.95s; }
+.kot-hero .kot-keel { animation-delay: 1.35s; }
+.kot-hero .kot-descend { animation-delay: 1.7s; }
+
+@keyframes kotArrive {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.kot-descend {
+  color: var(--kot-muted);
+  display: inline-block;
+  font-family: var(--kot-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  margin-top: 26px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.kot-descend:hover,
+.kot-descend:focus-visible {
+  color: var(--kot-ink);
+}
+
+.kot-descend span {
+  animation: kotBob 2.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes kotBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
 }
 
 .kot-eyebrow {
@@ -915,7 +980,16 @@ a.kot-ledger-row:hover .kot-ledger-title {
     transition: none;
   }
 
-  .kot-cloud {
+  .kot-cloud,
+  .kot-descend span {
+    animation: none;
+  }
+
+  .kot-hero .kot-eyebrow,
+  .kot-hero .kot-masthead,
+  .kot-hero .kot-lexicon,
+  .kot-hero .kot-keel,
+  .kot-hero .kot-descend {
     animation: none;
   }
 }
