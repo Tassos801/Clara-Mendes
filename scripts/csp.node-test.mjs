@@ -3,7 +3,7 @@ import {readdirSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-import {CSP_IMG_SRC} from '../app/lib/csp.ts';
+import {CSP_IMG_SRC, CSP_SCRIPT_SRC} from '../app/lib/csp.ts';
 
 const APP_DIR = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -43,6 +43,29 @@ assert.ok(CSP_IMG_SRC.includes("'self'"), `img-src must keep 'self'`);
 assert.ok(
   CSP_IMG_SRC.includes('https://cdn.shopify.com'),
   'img-src must keep the Shopify CDN (all product imagery)',
+);
+
+// script-src entries must be well-formed too.
+for (const source of CSP_SCRIPT_SRC) {
+  assert.match(
+    source,
+    /^'(?:self|none|unsafe-inline|unsafe-eval)'$|^[a-z][a-z0-9+.-]*:$|^https:\/\/[a-z0-9.-]+$/,
+    `malformed script-src entry: ${source}`,
+  );
+}
+
+// Hydrogen's createContentSecurityPolicy has no default scriptSrc to merge
+// into a custom value, so this list is the whole allowlist. Dropping these
+// two entries CSP-blocked the consent privacy banner (killing analytics
+// consent site-wide) and Oxygen-served lazy chunks — caught 2026-08-18.
+assert.ok(CSP_SCRIPT_SRC.includes("'self'"), `script-src must keep 'self'`);
+assert.ok(
+  CSP_SCRIPT_SRC.includes('https://cdn.shopify.com'),
+  'script-src must keep the Shopify CDN (privacy banner + Oxygen asset chunks)',
+);
+assert.ok(
+  CSP_SCRIPT_SRC.includes('https://www.googletagmanager.com'),
+  'script-src must keep googletagmanager (ad platform tags)',
 );
 
 // Scheme-usage scan: a component using a scheme the allowlist lacks ships a

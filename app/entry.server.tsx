@@ -8,8 +8,8 @@ import {
 import type {EntryContext} from 'react-router';
 import {
   CSP_GOOGLE_CONNECT_SRC,
-  CSP_GOOGLE_SCRIPT_SRC,
   CSP_IMG_SRC,
+  CSP_SCRIPT_SRC,
 } from '~/lib/csp';
 import {getMarketVaryHeader} from '~/lib/markets';
 
@@ -28,7 +28,7 @@ export default async function handleRequest(
     },
     connectSrc: [...CSP_GOOGLE_CONNECT_SRC],
     imgSrc: [...CSP_IMG_SRC],
-    scriptSrc: [...CSP_GOOGLE_SCRIPT_SRC],
+    scriptSrc: [...CSP_SCRIPT_SRC],
   });
 
   const body = await renderToReadableStream(

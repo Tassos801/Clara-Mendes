@@ -32,6 +32,20 @@ default, so the image policy is fully defined by `CSP_IMG_SRC` in
 scheme usage and fails `npm test` when a scheme in use is missing from the
 list.
 
+`script-src` has the same shape of trap, discovered the hard way
+(2026-08-18): Hydrogen merges custom values into its defaults for
+`connectSrc`/`styleSrc`/`defaultSrc`, but it has NO default `scriptSrc` —
+whatever `CSP_SCRIPT_SRC` lists is the entire script allowlist (Hydrogen
+only appends the per-request nonce). A past tightening reduced it to just
+googletagmanager, which CSP-blocked the Shopify consent privacy banner
+(`withPrivacyBanner` in `root.tsx` loads
+`cdn.shopify.com/shopifycloud/privacy-banner/storefront-banner.js`) on
+every production page — so EU visitors could never grant consent and
+analytics stayed silent — and intermittently blocked Oxygen-served lazy
+route/vendor chunks (recovered by a jarring full reload). `'self'`,
+`https://cdn.shopify.com`, and googletagmanager are now asserted by
+`scripts/csp.node-test.mjs` so the regression cannot ship silently again.
+
 Consequences worth knowing:
 
 - Admin-authored HTML (blog articles, pages, policies) renders unsanitized,
