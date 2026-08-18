@@ -40,7 +40,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/contact`                                      | `app/routes/contact.tsx`             | Contact/support page.                                                           |
 | `/policies` and `/policies/:handle`             | `app/routes/policies.*.tsx`          | Policy listing and policy detail from Shopify.                                  |
 | `/pages/:handle`                                | `app/routes/pages.$handle.tsx`       | Shopify pages.                                                                  |
-| `/blogs` and blog/article routes                | `app/routes/blogs.*.tsx`             | Blog lists and article pages.                                                   |
+| `/blogs` and blog/article routes                | `app/routes/blogs.*.tsx`             | Journal. `/blogs/karina-of-time` ("Karina of Time"; καρίνα = keel) renders the designed index: revolving cover ring (flat scroll row on mobile/reduced-motion/no-JS), issue ledger, mailto issue-request foot. Empty state shows capsule plates; noindex until articles exist. Other handles get a plain fallback. |
 | `/robots.txt`, `/sitemap.xml`, sitemap children | bracketed route files                | SEO crawler routes.                                                             |
 
 ## Home Page

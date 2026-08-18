@@ -18,6 +18,7 @@ const NAV_LINKS = [
     ? [{to: `/collections/${EXTENSION_COLLECTION_HANDLE}`, label: 'Everyday'}]
     : []),
   {to: '/our-story', label: 'Our Story'},
+  {to: '/blogs/karina-of-time', label: 'Journal'},
   {to: '/contact', label: 'Contact'},
   {to: '/search', label: 'Search'},
 ] as const;
@@ -132,6 +133,7 @@ function ClaraFooter() {
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
         <Link to="/our-story">Our Story</Link>
+        <Link to="/blogs/karina-of-time">Karina of Time</Link>
         <Link to="/contact">Contact</Link>
         <Link to="/policies/shipping-policy">Shipping</Link>
         <Link to="/policies/refund-policy">Returns</Link>

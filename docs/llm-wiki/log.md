@@ -285,3 +285,21 @@ PR #43 was removed from the site header and the homepage cinematic header
 (component, root-loader availableCountries query, and CSS deleted; the
 /locale action and markets.server verification logic stay for any future
 re-introduction).
+
+## 2026-08-18 - Karina of Time journal
+
+The blog index gained its designed identity: "Karina of Time" (Greek
+καρίνα = the keel; wordplay is intentional). A Shopify blog with
+handle `karina-of-time` was created in Admin (comments disabled, meta
+description set). `/blogs/karina-of-time` renders a masthead with the
+Greek lexicon line, a slowly revolving 3D ring of covers (progressive
+enhancement: flat scroll-snap row on <=820px, reduced motion, and no-JS;
+pauses on hover/focus), an issue ledger (articles numbered newest-highest),
+and a mailto "request the next issue" foot (no marketing-consent backend
+exists in the storefront env - a proper email-capture integration remains
+a roadmap item). Empty state seats ten capsule plates in the ring linking
+to `/collections/all?capsule=<slug>`; the index stays noindex until
+articles exist. Article pages got the matching editorial treatment plus
+buildSeoMeta/Article/Breadcrumb JSON-LD. Header nav gained "Journal",
+footer nav "Karina of Time", llms.txt a journal entry. Other blog handles
+fall back to the plain skeleton rendering.
