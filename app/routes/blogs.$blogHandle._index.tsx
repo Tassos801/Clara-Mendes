@@ -1,18 +1,84 @@
+import {useEffect, useRef} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/blogs.$blogHandle._index';
 import {Image, getPaginationVariables} from '@shopify/hydrogen';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {StructuredData} from '~/components/StructuredData';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {buildSeoMeta} from '~/lib/seo';
+import {buildSeoMeta, SITE_NAME} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
+/**
+ * The store's single journal. "Karina of Time" reads as wordplay on the
+ * surface, but the name is literal: καρίνα is Greek for a ship's keel —
+ * the line that holds a vessel steady through time. The index frames each
+ * post as a numbered "issue" and presents covers on a slowly revolving
+ * ring (a progressive enhancement — the ring is a flat scroll row on
+ * mobile, reduced motion, and no-JS).
+ */
+export const KARINA_HANDLE = 'karina-of-time';
+
+const KARINA_DESCRIPTION =
+  'Karina of Time — καρίνα, Greek for keel — is the Clara Mendes journal: notes on original art, colour, and the rooms prints live in. New issues by email.';
+
+/**
+ * Covers that keep the ring full (and the page alive) before enough
+ * articles exist: two plates from each of the five capsules, ordered so
+ * neighbouring covers never share a palette.
+ */
+const PLATE_CAPSULES = [
+  ['quiet-form', 'Quiet Form'],
+  ['patina-blue', 'Patina Blue'],
+  ['sunlit-mosaic', 'Sunlit Mosaic'],
+  ['neo-deco', 'Neo Deco'],
+  ['midnight-garden', 'Midnight Garden'],
+] as const;
+
+const ROMAN = ['I', 'II', 'III'] as const;
+
+type Cover = {
+  key: string;
+  href: string;
+  label: string;
+  title: string;
+  /** Shopify-hosted article image, when the cover is an issue. */
+  imageData?: NonNullable<ArticleItemFragment['image']>;
+  /** Local plate artwork, when the cover is a print. */
+  src?: string;
+};
+
+function plateCovers(): Cover[] {
+  const covers: Cover[] = [];
+  for (let plate = 0; plate < 2; plate++) {
+    for (const [slug, name] of PLATE_CAPSULES) {
+      covers.push({
+        key: `${slug}-${plate + 1}`,
+        href: `/collections/all?capsule=${slug}`,
+        label: `Plate ${String(covers.length + 1).padStart(2, '0')}`,
+        title: `${name} ${ROMAN[plate]}`,
+        src: `/images/product-art/${slug}/${slug}-0${plate + 1}.webp`,
+      });
+    }
+  }
+  return covers;
+}
+
 export const meta: Route.MetaFunction = ({data}) => {
+  if (data?.blog.handle === KARINA_HANDLE) {
+    return buildSeoMeta({
+      description: KARINA_DESCRIPTION,
+      // An issue-less journal must not be indexed as a thin page
+      noIndex: !data?.hasArticles,
+      title: 'Karina of Time — Journal',
+      url: `${STOREFRONT_ORIGIN}/blogs/${KARINA_HANDLE}`,
+    });
+  }
+
   return buildSeoMeta({
     description:
       data?.blog.seo?.description ||
       'Notes and updates from the Clara Mendes studio.',
-    // An empty journal must not be indexed as a thin page
     noIndex: !data?.hasArticles,
     title: data?.blog.seo?.title || data?.blog.title || 'Journal',
     url: `${STOREFRONT_ORIGIN}/blogs/${data?.blog.handle ?? ''}`,
@@ -35,7 +101,7 @@ export async function loader(args: Route.LoaderArgs) {
  */
 async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 4,
+    pageBy: 12,
   });
 
   if (!params.blogHandle) {
@@ -72,6 +138,314 @@ function loadDeferredData({context}: Route.LoaderArgs) {
 
 export default function Blog() {
   const {blog} = useLoaderData<typeof loader>();
+
+  if (blog.handle === KARINA_HANDLE) {
+    return <KarinaJournal blog={blog} />;
+  }
+
+  return <GenericBlog blog={blog} />;
+}
+
+/* ─────────────────────────── Karina of Time ─────────────────────────── */
+
+function KarinaJournal({
+  blog,
+}: {
+  blog: Awaited<ReturnType<typeof loadCriticalData>>['blog'];
+}) {
+  const articles = blog.articles.nodes;
+  const hasArticles = articles.length > 0;
+
+  // Newest issue carries the highest number: the ledger renders newest
+  // first, so number down from the count on the current page.
+  const issueNumber = (index: number) =>
+    String(articles.length - index).padStart(2, '0');
+
+  const issueCovers: Cover[] = articles
+    .filter((article) => article.image)
+    .map((article, index) => ({
+      key: article.id,
+      href: `/blogs/${blog.handle}/${article.handle}`,
+      label: `Issue ${issueNumber(index)}`,
+      title: article.title,
+      imageData: article.image!,
+    }));
+
+  // Keep the ring full while the journal is young; plates take over the
+  // remaining seats and route into the capsules they show.
+  const covers = [...issueCovers, ...plateCovers()].slice(0, 10);
+
+  return (
+    <div className="kot-root">
+      <style suppressHydrationWarning>{kotCss}</style>
+      <div className="kot-sky" aria-hidden>
+        <div className="kot-cloud kot-cloud--far" />
+        <div className="kot-cloud kot-cloud--mid" />
+        <div className="kot-cloud kot-cloud--shadow" />
+        <div className="kot-cloud kot-cloud--near" />
+      </div>
+      <StructuredData
+        data={[
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Blog',
+            name: 'Karina of Time',
+            alternateName: 'καρίνα',
+            description: KARINA_DESCRIPTION,
+            url: `${STOREFRONT_ORIGIN}/blogs/${KARINA_HANDLE}`,
+            publisher: {
+              '@type': 'Organization',
+              name: SITE_NAME,
+              url: STOREFRONT_ORIGIN,
+            },
+          },
+        ]}
+      />
+
+      <section className="kot-hero" data-chapter="ink" aria-labelledby="kot-title">
+        <div className="kot-hero-inner">
+          <p className="kot-eyebrow">The Clara Mendes journal</p>
+          <h1 id="kot-title" className="kot-masthead">
+            Karina <i>of</i> Time
+          </h1>
+          <p className="kot-lexicon">
+            <span lang="el">καρίνα</span> <span aria-hidden>·</span> Greek,{' '}
+            <em>the keel</em> — the line beneath a vessel that holds it steady
+            through time.
+          </p>
+          <div className="kot-keel" aria-hidden />
+          <a className="kot-descend" href="#kot-issues">
+            Descend<span aria-hidden> ↓</span>
+          </a>
+        </div>
+      </section>
+
+      <section
+        id="kot-issues"
+        className="kot-ring-band"
+        data-chapter="linen"
+        aria-label="Issue covers"
+      >
+        <CoverRing covers={covers} />
+        <p className="kot-ring-caption">
+          {hasArticles
+            ? `Curated dispatches — ${articles.length} issue${
+                articles.length === 1 ? '' : 's'
+              } to date`
+            : 'Issue 01 is at the press — the plates keep the ring turning'}
+        </p>
+      </section>
+
+      <section className="kot-ledger" data-chapter="linen" aria-label="Issues">
+        {hasArticles ? (
+          <ol className="kot-ledger-list">
+            {articles.map((article, index) => (
+              <li key={article.id} data-reveal>
+                <Link
+                  className="kot-ledger-row"
+                  to={`/blogs/${blog.handle}/${article.handle}`}
+                  prefetch="intent"
+                >
+                  <span className="kot-ledger-issue">
+                    Issue {issueNumber(index)}
+                  </span>
+                  <span className="kot-ledger-main">
+                    <span className="kot-ledger-title">{article.title}</span>
+                    {article.excerpt ? (
+                      <span className="kot-ledger-excerpt">
+                        {article.excerpt}
+                      </span>
+                    ) : null}
+                  </span>
+                  <time
+                    className="kot-ledger-date"
+                    dateTime={article.publishedAt ?? undefined}
+                  >
+                    {formatIssueDate(article.publishedAt)}
+                  </time>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <div className="kot-ledger-row kot-ledger-row--press" data-reveal>
+            <span className="kot-ledger-issue">Issue 01</span>
+            <span className="kot-ledger-main">
+              <span className="kot-ledger-title">At the press</span>
+              <span className="kot-ledger-excerpt">
+                The first dispatch is being written — notes on the five
+                capsules, how the prints are made, and the rooms they live in.
+                It publishes right here.
+              </span>
+            </span>
+            <span className="kot-ledger-date">Soon</span>
+          </div>
+        )}
+      </section>
+
+      <section className="kot-request" data-chapter="clay" aria-label="Browse the collection">
+        <p className="kot-request-eyebrow" data-reveal>
+          While the press runs
+        </p>
+        <h2 data-reveal>The plates hang in the shop.</h2>
+        <div className="kot-request-actions" data-reveal>
+          <Link className="kot-request-cta" to="/collections/all" prefetch="intent">
+            Browse the collection
+          </Link>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function formatIssueDate(publishedAt?: string | null) {
+  if (!publishedAt) return '';
+  return new Intl.DateTimeFormat('en-GB', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  }).format(new Date(publishedAt));
+}
+
+/**
+ * The revolving ring of covers. Server-rendered (and kept, on small
+ * screens, for reduced motion, and without JS) as a scroll-snap row;
+ * wide motion-friendly viewports are upgraded to a slow 3D carousel that
+ * pauses while hovered or focused. The cinematic WebGL background runs
+ * its own ticker, so one more transform-only rAF stays cheap.
+ */
+function CoverRing({covers}: {covers: Cover[]}) {
+  const stageRef = useRef<HTMLDivElement | null>(null);
+  const ringRef = useRef<HTMLUListElement | null>(null);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const ring = ringRef.current;
+    if (!stage || !ring) return;
+
+    const motionOk = window.matchMedia(
+      '(prefers-reduced-motion: no-preference)',
+    ).matches;
+    const wide = window.matchMedia('(min-width: 821px)').matches;
+    if (!motionOk || !wide) return;
+
+    const items = Array.from(ring.children) as HTMLElement[];
+    const count = items.length;
+    if (count < 4) return;
+
+    const step = 360 / count;
+    const cardWidth = items[0].offsetWidth || 230;
+    // Ring radius that seats every card with breathing room between edges
+    const radius =
+      Math.round(cardWidth / 2 / Math.tan(Math.PI / count)) + 46;
+
+    stage.classList.add('is-ring');
+    items.forEach((item, index) => {
+      item.style.transform = `rotateY(${index * step}deg) translateZ(${radius}px)`;
+    });
+
+    const BASE_SPEED = -3.6; // degrees per second; negative drifts covers rightward
+    let angle = 0;
+    let speed = 0;
+    let paused = false;
+    let last = performance.now();
+    let raf = 0;
+
+    const tick = (now: number) => {
+      const dt = Math.min((now - last) / 1000, 0.1);
+      last = now;
+
+      // Ease toward the target speed so pause/resume feels like drag on
+      // water rather than a switch.
+      const target = paused ? 0 : BASE_SPEED;
+      speed += (target - speed) * 0.055;
+      angle = (angle + speed * dt) % 360;
+
+      ring.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
+
+      for (let i = 0; i < count; i++) {
+        const theta = ((i * step + angle) * Math.PI) / 180;
+        const facing = Math.cos(theta); // 1 when the cover faces the viewer
+        items[i].style.opacity = String(0.34 + 0.66 * Math.max(0, facing));
+      }
+
+      raf = requestAnimationFrame(tick);
+    };
+
+    const pause = () => {
+      paused = true;
+    };
+    const resume = () => {
+      paused = false;
+    };
+
+    stage.addEventListener('pointerenter', pause);
+    stage.addEventListener('pointerleave', resume);
+    stage.addEventListener('focusin', pause);
+    stage.addEventListener('focusout', resume);
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      stage.removeEventListener('pointerenter', pause);
+      stage.removeEventListener('pointerleave', resume);
+      stage.removeEventListener('focusin', pause);
+      stage.removeEventListener('focusout', resume);
+      stage.classList.remove('is-ring');
+      ring.style.transform = '';
+      items.forEach((item) => {
+        item.style.transform = '';
+        item.style.opacity = '';
+      });
+    };
+  }, [covers.length]);
+
+  return (
+    <div ref={stageRef} className="kot-ring-stage">
+      <ul ref={ringRef} className="kot-ring">
+        {covers.map((cover) => (
+          <li key={cover.key} className="kot-cover">
+            <Link
+              to={cover.href}
+              prefetch="intent"
+              aria-label={`${cover.label} — ${cover.title}`}
+            >
+              <span className="kot-cover-frame">
+                {cover.imageData ? (
+                  <Image
+                    alt={cover.imageData.altText || cover.title}
+                    data={cover.imageData}
+                    loading="lazy"
+                    sizes="230px"
+                  />
+                ) : (
+                  <img
+                    src={cover.src}
+                    alt={cover.title}
+                    loading="lazy"
+                    width={460}
+                    height={575}
+                  />
+                )}
+              </span>
+              <span className="kot-cover-label">
+                {cover.label} — {cover.title}
+              </span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/* ───────────────────────── Generic blog fallback ─────────────────────── */
+
+function GenericBlog({
+  blog,
+}: {
+  blog: Awaited<ReturnType<typeof loadCriticalData>>['blog'];
+}) {
   const {articles} = blog;
 
   return (
@@ -125,6 +499,502 @@ function ArticleItem({
   );
 }
 
+/* ────────────────────────────── Styles ──────────────────────────────── */
+
+const kotCss = `
+.kot-root {
+  --kot-ink: #f2ece1;
+  --kot-muted: rgba(242, 236, 225, 0.76);
+  --kot-paper: #fbfaf6;
+  --kot-deep: #26231f;
+  --kot-hairline: rgba(242, 236, 225, 0.22);
+  --kot-serif: Georgia, 'Times New Roman', serif;
+  --kot-mono: 'Courier Prime', 'Courier New', ui-monospace, monospace;
+  color: var(--kot-ink);
+  isolation: isolate;
+  position: relative;
+}
+
+/* ── The dusk sky ──
+   One atmosphere for the whole journal: the page descends from
+   near-black through umber to the amber horizon at the foot. Three
+   procedurally generated cloud layers (seamless feTurbulence tiles)
+   drift at different speeds — the high haze runs the opposite way for
+   parallax. Everything is translate-only animation on repeating tiles,
+   and the sky is owned imagery: no stock photograph. */
+.kot-sky {
+  background: linear-gradient(180deg,
+    #100d0a 0%,
+    #1f1812 24%,
+    #3a2b1e 50%,
+    #6b4a35 74%,
+    #9a6b52 88%,
+    #b98a6e 100%);
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+.kot-cloud {
+  animation: kotCloudDrift linear infinite;
+  background-repeat: repeat;
+  background-size: 1600px 900px;
+  inset: 0 -1600px 0 0;
+  position: absolute;
+  will-change: transform;
+}
+
+/* High fine haze, slow and drifting the other way */
+.kot-cloud--far {
+  animation-direction: reverse;
+  animation-duration: 340s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='f'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0038%200.0095'%20numOctaves='5'%20seed='11'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.95%200%200%200%200%200.91%200%200%200%200%200.85%200.55%200.55%200.55%200%20-0.62'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23f)'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+/* Amber mid bank */
+.kot-cloud--mid {
+  animation-duration: 180s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0019%200.0052'%20numOctaves='4'%20seed='4'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.83%200%200%200%200%200.6%200%200%200%200%200.42%200.85%200.85%200.85%200%20-0.8'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23n)'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(180deg, transparent 4%, black 30%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 4%, black 30%);
+  opacity: 0.7;
+}
+
+/* Dark storm bases sliding under the lit billows */
+.kot-cloud--shadow {
+  animation-duration: 140s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='s'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0012%200.0034'%20numOctaves='5'%20seed='17'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.1%200%200%200%200%200.075%200%200%200%200%200.06%201.05%201.05%201.05%200%20-1.05'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23s)'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(180deg, transparent 16%, black 46%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 16%, black 46%);
+  opacity: 0.75;
+}
+
+/* Sculpted lit billows riding over the shadow bases */
+.kot-cloud--near {
+  animation-duration: 110s;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='b'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0011%200.0032'%20numOctaves='5'%20seed='9'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.94%200%200%200%200%200.78%200%200%200%200%200.62%201.15%201.15%201.15%200%20-1.02'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23b)'/%3E%3C/svg%3E");
+  mask-image: linear-gradient(180deg, transparent 28%, black 58%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 28%, black 58%);
+  opacity: 0.8;
+}
+
+@keyframes kotCloudDrift {
+  to { transform: translate3d(-1600px, 0, 0); }
+}
+
+/* Film grain over the whole sky */
+.kot-sky::after {
+  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.85%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
+  content: '';
+  inset: 0;
+  mix-blend-mode: overlay;
+  opacity: 0.13;
+  position: absolute;
+}
+
+/* Soft landing onto the paper site footer below the journal */
+.kot-sky::before {
+  background: linear-gradient(180deg, transparent, rgba(251, 250, 246, 0.6) 78%, #fbfaf6);
+  bottom: 0;
+  content: '';
+  height: 120px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  z-index: 1;
+}
+
+/* ── Masthead ── */
+/* Short enough that the ring peeks above the fold on load. */
+.kot-hero {
+  align-content: center;
+  display: grid;
+  min-height: 54svh;
+  padding: clamp(48px, 7vh, 96px) clamp(20px, 5vw, 70px) clamp(28px, 4vh, 48px);
+  text-align: center;
+}
+
+.kot-hero-inner {
+  position: relative;
+}
+
+/* One-time entrance: the masthead drifts in like the clouds behind it.
+   Pure CSS so it works without the GSAP bundle; reduced motion skips it. */
+.kot-hero .kot-eyebrow,
+.kot-hero .kot-masthead,
+.kot-hero .kot-lexicon,
+.kot-hero .kot-keel,
+.kot-hero .kot-descend {
+  animation: kotArrive 2.2s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.kot-hero .kot-eyebrow { animation-delay: 0.25s; }
+.kot-hero .kot-masthead { animation-delay: 0.5s; animation-duration: 2.6s; }
+.kot-hero .kot-lexicon { animation-delay: 0.95s; }
+.kot-hero .kot-keel { animation-delay: 1.35s; }
+.kot-hero .kot-descend { animation-delay: 1.7s; }
+
+@keyframes kotArrive {
+  from {
+    opacity: 0;
+    transform: translateY(26px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.kot-descend {
+  color: var(--kot-muted);
+  display: inline-block;
+  font-family: var(--kot-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  margin-top: 26px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.kot-descend:hover,
+.kot-descend:focus-visible {
+  color: var(--kot-ink);
+}
+
+.kot-descend span {
+  animation: kotBob 2.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes kotBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(5px); }
+}
+
+.kot-eyebrow {
+  font-family: var(--kot-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.34em;
+  margin: 0 0 22px;
+  text-transform: uppercase;
+  color: var(--kot-muted);
+}
+
+.kot-masthead {
+  font-family: var(--kot-serif);
+  font-size: clamp(2.9rem, 8.5vw, 6.2rem);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 1.02;
+  margin: 0 0 26px;
+  text-shadow: 0 2px 28px rgba(10, 8, 6, 0.45);
+  text-wrap: balance;
+}
+
+.kot-masthead i {
+  font-style: italic;
+  margin: 0 0.06em;
+}
+
+.kot-lexicon {
+  color: var(--kot-muted);
+  font-size: clamp(0.98rem, 1.6vw, 1.12rem);
+  line-height: 1.7;
+  margin: 0 auto;
+  max-width: 52ch;
+}
+
+.kot-lexicon [lang='el'] {
+  font-family: var(--kot-serif);
+  font-style: italic;
+  color: var(--kot-ink);
+}
+
+.kot-keel {
+  background: var(--kot-hairline);
+  height: 64px;
+  margin: 34px auto 0;
+  width: 1px;
+}
+
+/* ── Cover ring ── */
+.kot-ring-band {
+  padding: clamp(8px, 2vh, 24px) 0 clamp(36px, 6vh, 64px);
+  overflow: hidden;
+}
+
+.kot-ring-stage {
+  height: 440px;
+  display: grid;
+  align-items: center;
+}
+
+.kot-ring {
+  display: flex;
+  gap: 18px;
+  list-style: none;
+  margin: 0;
+  overflow-x: auto;
+  padding: 16px clamp(20px, 5vw, 70px) 24px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.kot-ring::-webkit-scrollbar { display: none; }
+
+.kot-cover {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  width: clamp(158px, 24vw, 230px);
+}
+
+.kot-cover a {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
+.kot-cover-frame {
+  background: #fff;
+  box-shadow: 0 22px 48px rgba(8, 6, 4, 0.45);
+  display: block;
+  padding: 7px;
+}
+
+.kot-cover-frame img {
+  aspect-ratio: 4 / 5;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.kot-cover-label {
+  display: block;
+  font-family: var(--kot-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  margin-top: 12px;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--kot-muted);
+}
+
+.kot-cover a:hover .kot-cover-label,
+.kot-cover a:focus-visible .kot-cover-label {
+  color: var(--kot-ink);
+}
+
+.kot-cover a:focus-visible {
+  outline: 1.5px solid var(--kot-ink);
+  outline-offset: 4px;
+}
+
+/* Wide, motion-friendly viewports get the 3D ring (class added by JS) */
+.kot-ring-stage.is-ring {
+  perspective: 1600px;
+  perspective-origin: 50% 42%;
+}
+
+.kot-ring-stage.is-ring .kot-ring {
+  display: block;
+  height: 100%;
+  overflow: visible;
+  padding: 0;
+  position: relative;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.kot-ring-stage.is-ring .kot-cover {
+  height: fit-content;
+  inset: 0;
+  margin: auto;
+  position: absolute;
+  width: clamp(190px, 17vw, 230px);
+}
+
+.kot-ring-caption {
+  font-family: var(--kot-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  margin: 6px auto 0;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--kot-muted);
+}
+
+/* ── Issue ledger ── */
+.kot-ledger {
+  margin: 0 auto;
+  max-width: 980px;
+  padding: 0 clamp(20px, 5vw, 70px) clamp(48px, 7vh, 88px);
+}
+
+.kot-ledger-list {
+  border-top: 1px solid var(--kot-hairline);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.kot-ledger-row {
+  align-items: baseline;
+  border-bottom: 1px solid var(--kot-hairline);
+  color: inherit;
+  display: grid;
+  gap: 6px 30px;
+  grid-template-columns: 110px 1fr auto;
+  padding: 24px 4px;
+  text-decoration: none;
+  transition: background 300ms ease;
+}
+
+a.kot-ledger-row:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+a.kot-ledger-row:focus-visible {
+  outline: 1.5px solid var(--kot-ink);
+  outline-offset: 3px;
+}
+
+.kot-ledger-row--press {
+  border-top: 1px solid var(--kot-hairline);
+}
+
+.kot-ledger-issue,
+.kot-ledger-date {
+  font-family: var(--kot-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--kot-muted);
+  white-space: nowrap;
+}
+
+.kot-ledger-main {
+  display: grid;
+  gap: 7px;
+}
+
+.kot-ledger-title {
+  font-family: var(--kot-serif);
+  font-size: clamp(1.3rem, 2.4vw, 1.75rem);
+  line-height: 1.18;
+  text-shadow: 0 1px 18px rgba(10, 8, 6, 0.35);
+  transition: font-style 200ms ease;
+}
+
+a.kot-ledger-row:hover .kot-ledger-title {
+  font-style: italic;
+}
+
+.kot-ledger-excerpt {
+  color: var(--kot-muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 58ch;
+}
+
+/* ── Request foot ── */
+.kot-request {
+  border-top: 1px solid var(--kot-hairline);
+  margin: 0 auto;
+  max-width: 980px;
+  padding: clamp(56px, 8vh, 96px) clamp(20px, 5vw, 70px) clamp(72px, 10vh, 120px);
+  text-align: center;
+}
+
+.kot-request-eyebrow {
+  font-family: var(--kot-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+  color: var(--kot-muted);
+}
+
+.kot-request h2 {
+  font-family: var(--kot-serif);
+  font-size: clamp(1.7rem, 3.4vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.16;
+  margin: 0 auto 30px;
+  max-width: 24ch;
+  text-wrap: balance;
+}
+
+.kot-request-cta {
+  align-items: center;
+  background: rgba(251, 250, 246, 0.94);
+  border: 1px solid rgba(251, 250, 246, 0.94);
+  border-radius: 999px;
+  box-shadow: 0 14px 34px rgba(8, 6, 4, 0.35);
+  color: var(--kot-deep);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.16em;
+  min-height: 48px;
+  min-width: 230px;
+  padding: 0 26px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 240ms ease;
+}
+
+.kot-request-cta:hover {
+  background: #ffffff;
+}
+
+.kot-request-note {
+  color: var(--kot-muted);
+  font-size: 0.82rem;
+  margin: 16px 0 0;
+}
+
+@media (max-width: 720px) {
+  .kot-ring-stage { height: auto; }
+
+  .kot-ledger-row {
+    grid-template-columns: 1fr auto;
+  }
+
+  .kot-ledger-issue { grid-column: 1; }
+  .kot-ledger-date { grid-column: 2; justify-self: end; }
+  .kot-ledger-main { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kot-ledger-row,
+  .kot-request-cta,
+  .kot-ledger-title {
+    transition: none;
+  }
+
+  .kot-cloud,
+  .kot-descend span {
+    animation: none;
+  }
+
+  .kot-hero .kot-eyebrow,
+  .kot-hero .kot-masthead,
+  .kot-hero .kot-lexicon,
+  .kot-hero .kot-keel,
+  .kot-hero .kot-descend {
+    animation: none;
+  }
+}
+`;
+
 // NOTE: https://shopify.dev/docs/api/storefront/latest/objects/blog
 const BLOGS_QUERY = `#graphql
   query Blog(
@@ -154,7 +1024,6 @@ const BLOGS_QUERY = `#graphql
         pageInfo {
           hasPreviousPage
           hasNextPage
-          hasNextPage
           endCursor
           startCursor
         }
@@ -166,7 +1035,7 @@ const BLOGS_QUERY = `#graphql
     author: authorV2 {
       name
     }
-    contentHtml
+    excerpt
     handle
     id
     image {

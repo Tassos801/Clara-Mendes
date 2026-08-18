@@ -285,3 +285,82 @@ PR #43 was removed from the site header and the homepage cinematic header
 (component, root-loader availableCountries query, and CSS deleted; the
 /locale action and markets.server verification logic stay for any future
 re-introduction).
+
+## 2026-08-18 - Karina of Time journal
+
+The blog index gained its designed identity: "Karina of Time" (Greek
+καρίνα = the keel; wordplay is intentional). A Shopify blog with
+handle `karina-of-time` was created in Admin (comments disabled, meta
+description set). `/blogs/karina-of-time` renders a masthead with the
+Greek lexicon line, a slowly revolving 3D ring of covers (progressive
+enhancement: flat scroll-snap row on <=820px, reduced motion, and no-JS;
+pauses on hover/focus), an issue ledger (articles numbered newest-highest),
+and a mailto "request the next issue" foot (no marketing-consent backend
+exists in the storefront env - a proper email-capture integration remains
+a roadmap item). Empty state seats ten capsule plates in the ring linking
+to `/collections/all?capsule=<slug>`; the index stays noindex until
+articles exist. Article pages got the matching editorial treatment plus
+buildSeoMeta/Article/Breadcrumb JSON-LD. Header nav gained "Journal",
+footer nav "Karina of Time", llms.txt a journal entry. Other blog handles
+fall back to the plain skeleton rendering.
+
+Same day, the index gained a breathing aura background: large grainy
+radial-gradient blobs (CSS keyframe transforms only) fixed behind the
+whole page, crossfading between chapter-derived tints (ink indigo at the
+masthead, linen parchment behind ring/ledger, clay at the foot) via an
+IntersectionObserver that flips `data-palette` as `[data-chapter]`
+sections straddle the viewport midline. Tints are luminosity-tuned
+relatives of the paintedShader palettes (raw ink hexes read as mud over
+paper). The hero got min-height 62svh so ink owns the opening at rest.
+Reduced motion keeps the static tint without breathing. Verification
+note: Lenis reverts programmatic window.scrollTo jumps — verify scroll
+behavior with real wheel events, not scrollTo.
+
+Later the same day, two owner-directed changes: (1) the masthead became a
+full-bleed drifting dusk cloudscape - two procedurally generated cloud
+layers (seamless feTurbulence SVG data-URI tiles, translate-only
+animation at different speeds) over a near-black-to-amber gradient in
+the umber/clay register, paper-white type, film grain, soft landing
+onto the page; no stock imagery, reduced-motion gets the static sky.
+(2) The mailto "request the next issue" foot was removed - the owner's
+rule is that issues publish on the page, there is no email edition -
+replaced by a link into /collections/all, and the empty-ledger copy now
+ends "It publishes right here."
+
+Final pass the same day: the owner liked the cloudscape and asked for it
+across the whole page. The sky is now one absolute background layer
+spanning the full journal (near-black masthead, umber middle, amber
+horizon at the shop foot), with a third sculpted-billow cloud layer and
+the high haze drifting in reverse for parallax. The breathing aura and
+its IntersectionObserver palette machinery were removed - the vertical
+gradient carries the chapter arc spatially. The page runs light type via
+the shared kot tokens; the sky fades to paper just above the site
+footer. All states screenshot-verified in a real browser.
+
+Improvement round from an owner interview: sky gained a dark storm-base
+layer under sharpened lit billows (more weather, less smoke); the
+masthead entrance is staged in pure CSS (eyebrow/title/lexicon/keel/cue
+drift in once, reduced-motion skips); the hero shortened to ~54svh so
+the ring peeks above the fold; a typewriter "Descend" cue anchors to
+#kot-issues (anchor jumps survive Lenis, unlike window.scrollTo); and
+the homepage gained a journal teaser card (pocket dusk sky, drifting
+billow tile) above the footer in _index.tsx. Owner kept ring
+interaction auto-drift-only and the sky journal-only otherwise.
+
+Issue 01 shipped: blog article "Why This Journal Is Called Karina of
+Time" (handle why-karina-of-time) created and published Visible in
+Admin under the karina-of-time blog - founding-issue content (the name,
+what the journal is, the five capsules with links, what comes next),
+excerpt, 145-char meta description, and a generated typographic
+dusk-cover featured image (scripts/make-issue-cover.mjs, sharp SVG
+render; edit labels per issue). The admin author picker only offers
+staff accounts, so the article route now shows a date-only byline and
+always credits the Organization in Article JSON-LD (no staff names in
+public bylines). Verified via direct Storefront API query plus the dev
+server: the ring seats "Issue 01" first (plates keep linking to
+capsules), the ledger lists it, and the index robots meta flips to
+index,follow now that content exists. Admin gotchas: typing thousands
+of characters into the article HTML code editor freezes the tab - set
+content via the CodeMirror 6 view API (cm-content element .cmView.view
+.dispatch) instead; the author/blog pickers are s-internal custom
+elements that form_input cannot set.

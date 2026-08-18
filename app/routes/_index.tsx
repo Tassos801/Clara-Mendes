@@ -286,6 +286,9 @@ export default function Homepage() {
               <Link to="/our-story" className="hm-nav-text">
                 Our Story
               </Link>
+              <Link to="/blogs/karina-of-time" className="hm-nav-text">
+                Journal
+              </Link>
               <Link to="/search" className="hm-nav-text">
                 Search
               </Link>
@@ -566,6 +569,34 @@ export default function Homepage() {
             Read the story
           </Link>
         </div>
+      </section>
+
+      <section
+        className="home-journal-teaser"
+        data-chapter="ink"
+        aria-label="Karina of Time — the journal"
+      >
+        <Link
+          className="journal-teaser-card"
+          to="/blogs/karina-of-time"
+          prefetch="intent"
+          data-reveal
+        >
+          <div className="journal-teaser-sky" aria-hidden>
+            <div className="journal-teaser-cloud" />
+          </div>
+          <span className="journal-teaser-copy">
+            <span className="journal-teaser-eyebrow">The journal</span>
+            <span className="journal-teaser-title">
+              Karina <i>of</i> Time
+            </span>
+            <span className="journal-teaser-line">
+              <span lang="el">καρίνα</span> — Greek, the keel. Notes on the
+              prints, the capsules, and the rooms they live in.
+            </span>
+            <span className="journal-teaser-cta">Enter the journal →</span>
+          </span>
+        </Link>
       </section>
     </div>
   );
@@ -1573,6 +1604,123 @@ html:has(.home-root) main {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+  }
+}
+
+/* ── Karina of Time teaser ──
+   A pocket dusk sky linking to the journal; the drifting cloud tile is
+   the journal's own procedural billow layer. */
+.home-journal-teaser {
+  padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 70px);
+}
+
+.journal-teaser-card {
+  background: linear-gradient(180deg, #100d0a 0%, #3a2b1e 55%, #9a6b52 100%);
+  border-radius: 28px;
+  box-shadow: 0 30px 70px rgba(20, 15, 10, 0.35);
+  color: #f2ece1;
+  display: block;
+  isolation: isolate;
+  margin: 0 auto;
+  max-width: 1060px;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.journal-teaser-card:hover {
+  box-shadow: 0 36px 84px rgba(20, 15, 10, 0.45);
+  transform: translateY(-3px);
+}
+
+.journal-teaser-card:focus-visible {
+  outline: 2px solid #f2ece1;
+  outline-offset: 4px;
+}
+
+.journal-teaser-sky {
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+}
+
+.journal-teaser-cloud {
+  animation: homeTeaserDrift 140s linear infinite;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='b'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0011%200.0032'%20numOctaves='5'%20seed='9'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.94%200%200%200%200%200.78%200%200%200%200%200.62%201.15%201.15%201.15%200%20-1.02'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23b)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 1600px 900px;
+  inset: 0 -1600px 0 0;
+  opacity: 0.55;
+  position: absolute;
+  will-change: transform;
+}
+
+@keyframes homeTeaserDrift {
+  to { transform: translate3d(-1600px, 0, 0); }
+}
+
+.journal-teaser-copy {
+  align-content: center;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  min-height: 300px;
+  padding: clamp(32px, 5vw, 56px);
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.journal-teaser-eyebrow {
+  font-family: 'Courier Prime', 'Courier New', ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.journal-teaser-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 4.4vw, 3.2rem);
+  line-height: 1.05;
+  text-shadow: 0 2px 24px rgba(10, 8, 6, 0.4);
+}
+
+.journal-teaser-line {
+  font-size: 0.98rem;
+  line-height: 1.65;
+  max-width: 52ch;
+  opacity: 0.78;
+}
+
+.journal-teaser-line [lang='el'] {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-style: italic;
+}
+
+.journal-teaser-cta {
+  font-family: 'Courier Prime', 'Courier New', ui-monospace, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.24em;
+  margin-top: 8px;
+  opacity: 0.85;
+  text-transform: uppercase;
+  transition: opacity 240ms ease;
+}
+
+.journal-teaser-card:hover .journal-teaser-cta {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journal-teaser-cloud {
+    animation: none;
+  }
+
+  .journal-teaser-card {
+    transition: none;
   }
 }
 `;
