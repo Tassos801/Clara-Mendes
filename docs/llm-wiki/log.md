@@ -326,3 +326,13 @@ onto the page; no stock imagery, reduced-motion gets the static sky.
 rule is that issues publish on the page, there is no email edition -
 replaced by a link into /collections/all, and the empty-ledger copy now
 ends "It publishes right here."
+
+Final pass the same day: the owner liked the cloudscape and asked for it
+across the whole page. The sky is now one absolute background layer
+spanning the full journal (near-black masthead, umber middle, amber
+horizon at the shop foot), with a third sculpted-billow cloud layer and
+the high haze drifting in reverse for parallax. The breathing aura and
+its IntersectionObserver palette machinery were removed - the vertical
+gradient carries the chapter arc spatially. The page runs light type via
+the shared kot tokens; the sky fades to paper just above the site
+footer. All states screenshot-verified in a real browser.
