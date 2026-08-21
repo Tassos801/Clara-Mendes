@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 // Builds app/data/sky/*.json from public catalogues. Sources are cached in
 // data/sky-sources/ (gitignored); the derived JSON is committed.
 //
