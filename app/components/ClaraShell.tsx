@@ -8,6 +8,8 @@ import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
   EXTENSION_COLLECTION_HANDLE,
   hasReleasedExtensions,
+  hasReleasedPersonalised,
+  SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
 
 const NAV_LINKS = [
@@ -16,6 +18,10 @@ const NAV_LINKS = [
   // link would dead-end in a redirect to /collections/all.
   ...(hasReleasedExtensions()
     ? [{to: `/collections/${EXTENSION_COLLECTION_HANDLE}`, label: 'Everyday'}]
+    : []),
+  // The personalised star map gets its own entry once released.
+  ...(hasReleasedPersonalised()
+    ? [{to: `/products/${SKY_PRODUCT_HANDLE}`, label: 'Your Sky'}]
     : []),
   {to: '/our-story', label: 'Our Story'},
   {to: '/blogs/karina-of-time', label: 'Journal'},
