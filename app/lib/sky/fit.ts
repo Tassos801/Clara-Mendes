@@ -17,6 +17,12 @@ export function maxTextWidth(sheetWidth: number) {
   return sheetWidth * 0.84;
 }
 
+/**
+ * Canvas and PDF metrics differ from the final rasteriser by a percent or
+ * two (kerning, hinting), so fitting aims 3 % inside the allowed width.
+ */
+export const FIT_SAFETY = 0.97;
+
 export function fitTextSize(
   text: string,
   baseSize: number,
@@ -25,9 +31,10 @@ export function fitTextSize(
   minScale = SKY_TEXT_MIN_SCALE,
 ) {
   if (!text) return baseSize;
+  const target = maxWidth * FIT_SAFETY;
   const width = measure(text, baseSize);
-  if (!Number.isFinite(width) || width <= maxWidth) return baseSize;
-  return Math.max(baseSize * minScale, (baseSize * maxWidth) / width);
+  if (!Number.isFinite(width) || width <= target) return baseSize;
+  return Math.max(baseSize * minScale, (baseSize * target) / width);
 }
 
 /** Width of tracked text: glyph advances plus tracking between glyphs. */
@@ -56,7 +63,7 @@ export function fitSubtitle(
 ): FittedSubtitle {
   const joined = `${parts.place} · ${parts.rest}`;
   const single = fitTextSize(joined, baseSize, maxWidth, measure, SKY_SUBTITLE_SPLIT_SCALE);
-  if (measure(joined, single) <= maxWidth) return {lines: [joined], size: single};
+  if (measure(joined, single) <= maxWidth * FIT_SAFETY) return {lines: [joined], size: single};
   const size = Math.min(
     fitTextSize(parts.place, baseSize, maxWidth, measure),
     fitTextSize(parts.rest, baseSize, maxWidth, measure),
@@ -97,7 +104,7 @@ export function fitTitle(
 ): FittedTitle {
   if (!text) return {lines: [], size: baseSize};
   const single = fitTextSize(text, baseSize, maxWidth, measure, SKY_TITLE_SPLIT_SCALE);
-  if (measure(text, single) <= maxWidth) return {lines: [text], size: single};
+  if (measure(text, single) <= maxWidth * FIT_SAFETY) return {lines: [text], size: single};
   const halves = splitNearMiddle(text);
   if (!halves) {
     return {lines: [text], size: fitTextSize(text, baseSize, maxWidth, measure, SKY_TITLE_FLOOR_SCALE)};

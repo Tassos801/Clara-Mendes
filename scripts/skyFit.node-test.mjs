@@ -13,15 +13,15 @@ const measure = (text, size) => text.length * size * 0.5; // fake 0.5em glyphs
 
 test('fitTextSize leaves short text alone and shrinks long text proportionally', () => {
   assert.equal(fitTextSize('short', 30, 400, measure), 30);
-  // 40 chars × 0.5em × 30 = 600 > 400 → 20
-  assert.equal(fitTextSize('x'.repeat(40), 30, 400, measure), 20);
+  // 40 chars × 0.5em × 30 = 600 > 388 (400 less the 3 % safety) → 19.4
+  assert.ok(Math.abs(fitTextSize('x'.repeat(40), 30, 400, measure) - 19.4) < 1e-9);
   // never below the minimum scale
   assert.equal(fitTextSize('x'.repeat(400), 30, 400, measure), 30 * 0.4);
   // Subtitle: fits on one line with mild shrink, otherwise splits in two.
   assert.deepEqual(fitSubtitle({place: 'PARIS, FRANCE', rest: '14 JUNE 2019'}, 10, 400, measure), {lines: ['PARIS, FRANCE · 14 JUNE 2019'], size: 10});
   const long = fitSubtitle({place: 'X'.repeat(100), rest: 'Y'.repeat(40)}, 10, 400, measure);
   assert.deepEqual(long.lines, ['X'.repeat(100), 'Y'.repeat(40)]);
-  assert.equal(long.size, 8); // 100 × 0.5em × 8 = 400
+  assert.ok(Math.abs(long.size - 7.76) < 1e-9); // 100 × 0.5em × 7.76 = 388
   // Title: mild shrink on one line, then a two-line break at the middle space.
   assert.deepEqual(fitTitle('The night we met', 30, 400, measure), {lines: ['The night we met'], size: 30});
   const broken = fitTitle('X'.repeat(30) + ' ' + 'Y'.repeat(30), 30, 400, measure); // 61 chars: 549 > 400 even at 60 %
@@ -29,7 +29,7 @@ test('fitTextSize leaves short text alone and shrinks long text proportionally',
   assert.ok(broken.lines.every((l) => measure(l, broken.size) <= 400));
   const unbreakable = fitTitle('W'.repeat(40), 30, 400, measure); // no spaces → floor scale
   assert.deepEqual(unbreakable.lines, ['W'.repeat(40)]);
-  assert.equal(unbreakable.size, 20);
+  assert.ok(Math.abs(unbreakable.size - 19.4) < 1e-9);
   assert.equal(fitTextSize('', 30, 400, measure), 30);
   assert.equal(maxTextWidth(576), 576 * 0.84);
   assert.equal(trackedWidth('abc', 10, 2, measure), 15 + 4);
