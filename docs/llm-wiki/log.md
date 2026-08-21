@@ -404,3 +404,17 @@ journal, the banner script loads 200 from cdn.shopify.com, and the
 cookie-consent banner renders with Accept/Decline controls
 (screenshot). Live before-evidence: production script-src header
 contained only googletagmanager plus nonce.
+
+## 2026-08-21 - Classic frame release
+
+Released `classic-framed-art-print-16x20` as the first Art for Everyday Living
+extension. In Prodigi, all five art variants were verified as automatically
+fulfilled by `GLOBAL-CFP-16X20` with Natural frames, EMA 200gsm paper, no mat,
+Perspex glazing, Excellent image quality, and Standard shipping. The owner
+approved EUR 99 and waived the physical sample for this family. Shopify is
+Active and published only to `Clara Mendes` and `Clara Mendes Headless`; the
+storefront flag is now true, exposing the frame and Everyday collection while
+the other eleven extension families remain gated.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md).

@@ -13,6 +13,7 @@ import {
 } from '../app/lib/catalogFilters.ts';
 
 const BLANKET_HANDLE = 'art-premium-fleece-blanket-30x40';
+const FRAME_HANDLE = 'classic-framed-art-print-16x20';
 
 const phoneCase = {
   handle: PHONE_CASE_HANDLE,
@@ -47,20 +48,21 @@ assert.equal(isReleasedExtensionHandle(PHONE_CASE_HANDLE), false);
 assert.equal(isStoreThemeProduct(phoneCase), false);
 assert.equal(isDemoProduct(phoneCase), true);
 
-// No extension is released while the first candidate remains Draft at a
-// price that does not match the approved manifest. This keeps the blanket
-// hidden alongside every other extension family.
+// The frame is the only released extension. The blanket and phone case remain
+// hidden while their own gates are incomplete.
 assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
-assert.equal(hasReleasedExtensions(), false);
+assert.equal(isReleasedExtensionHandle(FRAME_HANDLE), true);
+assert.equal(hasReleasedExtensions(), true);
 const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
-assert.equal(releasedCount, 0);
+assert.equal(releasedCount, 1);
 
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
 assert.equal(sellableToday.size, 15 + releasedCount);
+assert.ok(sellableToday.has(FRAME_HANDLE));
 assert.ok(!sellableToday.has(BLANKET_HANDLE));
 assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 
@@ -98,10 +100,9 @@ assert.equal(
   true,
 );
 EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = false;
-// The handle-only check is the collection route's pre-query guard. With no
-// released extension it must redirect the direct Everyday URL before Shopify
-// is queried, matching the hidden header and mobile navigation.
-assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), true);
+// The handle-only check is the collection route's pre-query guard. The live
+// frame admits the Everyday URL before Shopify is queried.
+assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,

@@ -1,6 +1,6 @@
 # Art for Everyday Living
 
-Updated: 2026-08-10
+Updated: 2026-08-21
 
 ## Collection Shape
 
@@ -16,7 +16,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
 | --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
 | Large Fine Art Print — 16 × 20 in       |                5 |                $49 | GLOBAL-FAP-16X20                    | Candidate; verify in dashboard |
-| Classic Framed Art Print — 16 × 20 in   |                5 |                $99 | GLOBAL-CFP-16X20                    | Candidate; verify in dashboard |
+| Classic Framed Art Print — 16 × 20 in   |                5 |               €99 | GLOBAL-CFP-16X20                    | Verified live 2026-08-21       |
 | Fine Art Greeting Card                  |                5 |                 $8 | GLOBAL-GRE-MOH-7X5-BLA              | Public catalogue               |
 | Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
 | Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
@@ -28,7 +28,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Art Premium Fleece Blanket — 30 × 40 in |                5 |                $79 | GLOBAL-BLANKET-PREMIUM-FLEECE-30X40 | Public catalogue               |
 | Art Snap Phone Case                     |               20 |                $34 | Device-specific GLOBAL-TECH SKUs    | Public catalogue               |
 
-Total: 12 Draft products and 71 variants.
+Total: 1 Active product and 11 Draft products, with 71 variants overall.
 
 On 2026-07-24, the guarded sync created all 12 products in Shopify as
 `DRAFT`. The live readback passed for 12/12 products, all 71 variants, expected
@@ -42,8 +42,15 @@ mapped inside the connected Prodigi account.
 The 2026-08-10 readback still found all 12 families Draft and unpublished. The
 blanket candidate's five Shopify variants were EUR 49 while this manifest
 requires EUR 79, so its storefront release flag was returned to `false`.
-"Everyday" remains absent from navigation and the direct collection URL
-redirects to the live print catalog until a release completes every gate below.
+
+On 2026-08-21, the Classic Framed Art Print became the first released family.
+All five art variants are mapped for automatic Prodigi fulfilment to
+`GLOBAL-CFP-16X20` with Natural frames, EMA 200gsm paper, no mat, Perspex
+glazing, Excellent image quality, and Standard shipping. The owner approved
+the EUR 99 retail price and waived a physical sample for this release. Shopify
+status is Active and publication is limited to the `Clara Mendes` and
+`Clara Mendes Headless` catalogs. The storefront release flag admits the frame
+and the `Art for Everyday Living` collection; all other families stay hidden.
 
 ## Artwork Policy
 
@@ -53,8 +60,9 @@ layout only. No artwork is repainted or replaced during format adaptation.
 
 The original source files are approximately 1120 × 1400 pixels. Larger
 wall-art files are exported to the dimensions requested by Prodigi, but this
-does not prove physical sharpness. The large print, framed print, and canvas
-must pass a physical sample review before publication.
+does not prove physical sharpness. Physical sampling remains the default for
+the large print and canvas; the owner explicitly waived it for the released
+frame after reviewing the dashboard's Excellent quality result.
 
 Generated files are stored under the ignored
 `output/prodigi-product-files/` directory. The generated manifest records each
@@ -89,7 +97,7 @@ procedure is `docs/phone-case-release.md`.
 
 ## Release Gates
 
-Every family remains blocked from publication until:
+Every unreleased family remains blocked from publication until:
 
 1. The exact Shopify variant is mapped to the correct Prodigi SKU.
 2. Prodigi crop, bleed, safe area, print side, and device template are checked.

@@ -6,12 +6,12 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 
 ## Catalog state
 
-- **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic). Each offers unframed 8 × 10 in at EUR 29.99, 16 × 20 in at EUR 39.99, and 20 × 24 in at EUR 49.99 on 200gsm Enhanced Matte Art paper, printed to order. The 20 × 24 size went live 2026-08-10 after all 15 `GLOBAL-FAP-20X24` Prodigi mappings were individually verified (6000 × 7200 files, Excellent quality, full bleed, automatic fulfilment, Standard shipping). Source of truth: `data/original-art-catalog.json`.
-- **Draft / unpublished:** all 12 extension families (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). A family stays Draft and off every sales channel until every release gate passes and its storefront flag flips. The Art Premium Fleece Blanket candidate remains Draft because its live EUR 49 variant prices do not match the approved EUR 79 manifest price; its 2026-07-31 storefront flag was rolled back on 2026-08-10. The allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, direct product routes, navigation, and the sitemap even if they are published by mistake. Notebook, tote, cushion, and phone case additionally wait on Prodigi template assets held outside this repo.
+- **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic), plus the Classic Framed Art Print — 16 × 20 in at EUR 99. The frame went live 2026-08-21 after all five `GLOBAL-CFP-16X20` Prodigi mappings were verified with Excellent artwork quality, Natural frames, no mat, Perspex glazing, automatic fulfilment, and Standard shipping. Source of truth: `data/original-art-catalog.json` and `data/art-product-extensions.json`.
+- **Draft / unpublished:** the other 11 extension families (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). A family stays Draft and off every sales channel until every release gate passes and its storefront flag flips. The Art Premium Fleece Blanket candidate remains Draft because its live EUR 49 variant prices do not match the approved EUR 79 manifest price; its 2026-07-31 storefront flag was rolled back on 2026-08-10. The allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, direct product routes, navigation, and the sitemap even if they are published by mistake. Notebook, tote, cushion, and phone case additionally wait on Prodigi template assets held outside this repo.
 - **Staged for release:** the Art Snap Phone Case's storefront experience (PDP copy, print-page cross-sell) is built and dormant behind its flag. Releasing any family is a one-line flip plus Shopify publication — both required — per `docs/phone-case-release.md` (phone-case specifics; the flag mechanics generalise).
 
-Operational warning (verified 2026-07-28): the 15 prints are available through
-the production Storefront API. Shopify can create a cart, calculates delivery
+Operational warning (updated 2026-08-21): the 15 prints and released frame are
+available through the production Storefront API. Shopify can create a cart, calculates delivery
 rates, and advertises card and wallet payment methods. The owner reports an
 accepted Prodigi billing card and has approved the current prices, Standard
 shipping, no physical samples, and a 24-hour automatic-release window. On
@@ -62,9 +62,10 @@ Dependency-audit status and accepted findings: `docs/dependency-security.md`.
 
 Read-only (safe anytime):
 
-- `npm run catalog:art:audit` — verify the 15 Active prints and 12 Draft
-  extension families against Shopify.
-- `npm run catalog:extensions:audit` — verify Draft extension products.
+- `npm run catalog:art:audit` — verify the 15 Active prints and extension
+  catalog against Shopify.
+- `npm run catalog:extensions:audit` — verify the released frame is Active and
+  the other 11 extension products are Draft.
 - `npm run catalog:art:dry-run` / `catalog:extensions:dry-run` / `catalog:legacy:dry-run` — print planned changes without applying.
 - `npm run catalog:art:mockups` — regenerate all 8 × 10, 16 × 20, and 20 × 24 room mockups from the flat art and owned backdrop; `catalog:art:mockups:large` and `catalog:art:mockups:bigger` generate one expansion size only, and `catalog:art:mockups:dry-run` previews the media append.
 
@@ -94,6 +95,6 @@ Customers submit star-rated reviews with photos; entries are stored as Shopify m
 ## Operational safeguards
 
 - Never run mutating catalog scripts against production without sign-off; use the dry-run first.
-- Draft extension products stay unpublished — publishing, price, SKU, inventory, fulfillment, and billing changes are out of scope for storefront work.
+- Unreleased extension products stay Draft and unpublished; release changes require explicit owner approval and full fulfilment verification.
 - Checkout testing stops before payment: add to cart, open checkout, verify product/currency, do not place orders.
 - No secrets in code, logs, or Git history; `.env`, `.shopify`, and build output are ignored.

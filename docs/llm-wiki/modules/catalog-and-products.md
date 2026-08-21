@@ -70,12 +70,14 @@ creates or updates the Shopify records as **DRAFT** only after an explicit
 All twelve records, totalling 71 variants, were created and passed live Shopify
 readback on 2026-07-24; none were published.
 
-As of 2026-08-10, every extension release flag is `false`. The blanket remains
-Draft at EUR 49 per variant, which conflicts with the EUR 79 manifest price, so
-the "Everyday" navigation and collection stay hidden. The collection filter
-also distinguishes the route's handle-only preflight from an explicit empty
-Storefront API result, preventing a future flag from exposing a zero-product
-page before its product is actually published.
+As of 2026-08-21, the Classic Framed Art Print — 16 × 20 in is the first live
+extension at EUR 99. Its five variants are Active, published to the `Clara
+Mendes` and `Clara Mendes Headless` catalogs, and mapped automatically to
+Prodigi `GLOBAL-CFP-16X20` with Natural frames, EMA 200gsm paper, no mat,
+Perspex glazing, Excellent artwork quality, and Standard shipping. Its release
+flag makes the "Everyday" navigation and `Art for Everyday Living` collection
+available. The other eleven extension flags remain `false`; their products
+remain Draft and filtered from every storefront surface.
 
 Sources: [Original Art Launch](../../original-art-launch.md),
 [Art for Everyday Living](../../art-product-extensions.md).
@@ -86,8 +88,8 @@ Sources: [Original Art Launch](../../original-art-launch.md),
 Old or supplier-imported products cannot appear in catalog, search,
 recommendations, or direct product routes merely because they are active in
 Shopify. Admin status is still the authoritative cross-channel control. The
-intended state is now 15 Active originals, 12 Draft extensions, and 49 Draft
-legacy products.
+intended state is now 15 Active originals, 1 Active frame extension, 11 Draft
+extensions, and 49 Draft legacy products.
 
 It defines:
 
@@ -96,7 +98,7 @@ It defines:
   left by the previous catalog.
 - Off-theme product handles.
 - Unfulfillable product handles.
-- The fifteen approved original-art product handles.
+- The fifteen approved original-art product handles plus released extensions.
 - Home-goods terms.
 - Off-theme vendor and product terms.
 - `isStoreThemeProduct`.
