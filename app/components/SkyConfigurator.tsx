@@ -69,6 +69,10 @@ export function SkyConfigurator({
   const [time, setTime] = useState(SKY_DEFAULT_TIME);
   const [title, setTitle] = useState('');
   const [touched, setTouched] = useState(false);
+  // Field-level hints only appear once the customer leaves a field, so they
+  // are never scolded mid-typing.
+  const [placeBlurred, setPlaceBlurred] = useState(false);
+  const [dateBlurred, setDateBlurred] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const listId = 'sky-place-results';
 
@@ -163,11 +167,11 @@ export function SkyConfigurator({
   }, [onChange, purchasable]);
 
   const error =
-    touched && purchasable && !purchasable.ok
+    purchasable && !purchasable.ok
       ? purchasable.error
-      : touched && !place
+      : placeBlurred && !place
         ? 'Choose a place from the list.'
-        : touched && !date
+        : dateBlurred && !date
           ? 'Choose a date.'
           : null;
 
@@ -217,7 +221,10 @@ export function SkyConfigurator({
               setTouched(true);
             }}
             onFocus={() => setPlacesOpen(true)}
-            onBlur={() => window.setTimeout(() => setPlacesOpen(false), 150)}
+            onBlur={() => {
+              window.setTimeout(() => setPlacesOpen(false), 150);
+              if (placeQuery.trim()) setPlaceBlurred(true);
+            }}
           />
           {placesOpen && placeResults.length > 0 ? (
             <ul id={listId} className="sky-place-results" role="listbox">
@@ -261,6 +268,7 @@ export function SkyConfigurator({
                 setDate(event.target.value);
                 setTouched(true);
               }}
+              onBlur={() => setDateBlurred(true)}
             />
           </label>
           <label className="sky-field">

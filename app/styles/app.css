@@ -3319,12 +3319,15 @@ html.lenis body {
 
 .sky-configurator {
   display: grid;
-  gap: 1.25rem;
+  gap: 1.5rem;
   align-content: start;
+  justify-items: center;
 }
 
 .sky-preview {
   position: relative;
+  width: 100%;
+  max-width: 560px;
   background: var(--color-soft);
   border-radius: 6px;
   box-shadow: 0 24px 60px rgba(55, 48, 39, 0.16);
@@ -3361,6 +3364,8 @@ html.lenis body {
 .sky-form {
   display: grid;
   gap: 0.9rem;
+  width: 100%;
+  max-width: 480px;
 }
 
 .sky-field {
@@ -3468,6 +3473,25 @@ html.lenis body {
   color: var(--color-muted);
   font-size: 0.8rem;
   line-height: 1.4;
+}
+
+@media (min-width: 1440px) {
+  /* Wide screens: preview and form side by side inside the gallery column. */
+  .sky-configurator {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+    justify-items: stretch;
+    align-items: start;
+  }
+
+  .sky-preview,
+  .sky-form {
+    max-width: none;
+  }
+
+  .sky-form {
+    position: sticky;
+    top: calc(var(--header-height) + 16px);
+  }
 }
 
 @media (max-width: 767px) {
