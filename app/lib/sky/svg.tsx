@@ -63,6 +63,11 @@ export function SkySvg({
     : {lines: scene.title ? [scene.title] : [], size: scene.titleSize};
   const titleOffset = (index: number) =>
     title.lines.length === 1 ? 0 : (index - 0.5) * title.size * 1.2;
+  const titleLines = title.lines.map((text, index) => ({
+    text,
+    slot: index === 0 ? 'first' : 'second',
+    y: scene.titleY + titleOffset(index),
+  }));
   const subtitleTracking = (size: number) =>
     1.6 * scale * (size / scene.subtitleSize);
   const subtitle = measure
@@ -175,19 +180,18 @@ export function SkySvg({
           </text>
         ))}
       </g>
-      {title.lines.map((line, index) => (
-        // eslint-disable-next-line react/no-array-index-key
+      {titleLines.map((line) => (
         <text
-          key={`${index}:${line}`}
+          key={line.slot}
           x={W / 2}
-          y={scene.titleY + titleOffset(index)}
+          y={line.y}
           fill={theme.title}
           fontFamily={FONT}
           fontStyle="italic"
           fontSize={title.size}
           textAnchor="middle"
         >
-          {line}
+          {line.text}
         </text>
       ))}
       {subtitle.lines.map((line, index) => (
