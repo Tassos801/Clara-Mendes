@@ -9,6 +9,7 @@ import {
   mergeCartAttributes,
 } from '~/lib/marketingAttribution';
 import {isLocalPath} from '~/lib/redirect';
+import {signSkyCartLines} from '~/lib/sky/cartLines.server';
 
 export const meta: Route.MetaFunction = () => {
   return [{title: 'Clara Mendes | Cart'}];
@@ -36,14 +37,25 @@ export async function action({request, context}: Route.ActionArgs) {
     case CartForm.ACTIONS.AttributesUpdateInput:
       result = await cart.updateAttributes(inputs.attributes);
       break;
-    case CartForm.ACTIONS.LinesAdd:
-      result = await cart.addLines(inputs.lines);
+    case CartForm.ACTIONS.LinesAdd: {
+      // Personalised star-map lines arrive unsigned from the browser; the
+      // server validates them and attaches the HMAC before they enter the
+      // cart, so the webhook can trust what it later fulfils.
+      const signed = await signSkyCartLines(
+        inputs.lines,
+        context.env.SKY_SIGNING_SECRET,
+      );
+      if (!signed.ok) {
+        return data({errors: [{message: signed.error}]}, {status: 400});
+      }
+      result = await cart.addLines(signed.lines);
       result = await updateCartAttribution({
         cart,
         formData,
         result,
       });
       break;
+    }
     case CartForm.ACTIONS.LinesUpdate:
       result = await cart.updateLines(inputs.lines);
       break;

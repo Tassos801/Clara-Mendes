@@ -58,3 +58,4 @@ writeFileSync(a.out, pdf);
 console.log(
   `${a.out} (${(pdf.byteLength / 1024).toFixed(0)} KB, ${scene.stars.length} stars, ${scene.lines.length} lines, moon ${scene.moon ? 'up' : 'down'})`,
 );
+/* eslint-enable no-console */

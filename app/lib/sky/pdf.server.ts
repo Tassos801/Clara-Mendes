@@ -76,8 +76,11 @@ export async function renderSkyPdf({
   doc.setCreationDate(createdAt);
   doc.setModificationDate(createdAt);
 
-  const regular = await doc.embedFont(fonts.regular, {subset: true});
-  const italic = await doc.embedFont(fonts.italic, {subset: true});
+  // Full embedding on purpose: fontkit's subsetter drops glyphs from these
+  // TrueType files (renders as gaps in pdf.js), and two full faces only add
+  // ~0.8 MB.
+  const regular = await doc.embedFont(fonts.regular, {subset: false});
+  const italic = await doc.embedFont(fonts.italic, {subset: false});
   const {width: W, height: H, disc, scale} = scene;
   const page = doc.addPage([W, H]);
   const Y = (y: number) => H - y; // scene y grows downward

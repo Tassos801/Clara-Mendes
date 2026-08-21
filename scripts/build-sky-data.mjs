@@ -136,3 +136,4 @@ writeFileSync(
 console.log(
   `stars ${stars.length}, lines ${lines.length}, places ${places.length}`,
 );
+/* eslint-enable no-console */

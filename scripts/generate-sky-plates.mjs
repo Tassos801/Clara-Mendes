@@ -86,3 +86,4 @@ for (const [id, t] of Object.entries(THEMES)) {
     .toFile(`public/sky/plates/${id}-preview.jpg`);
   console.log('plate', id);
 }
+/* eslint-enable no-console */
