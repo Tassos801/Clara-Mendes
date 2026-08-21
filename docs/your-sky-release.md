@@ -49,11 +49,11 @@ Variants (SKU must match `app/lib/sky/products.ts`):
 | Size | Finish | SKU | Price (EUR) |
 |---|---|---|---|
 | 8 × 10 in | Unframed | `CM-SKY-8X10-UNF` | 39.99 |
-| 8 × 10 in | Natural frame | `CM-SKY-8X10-NAT` | 89.99 |
-| 8 × 10 in | Black frame | `CM-SKY-8X10-BLK` | 89.99 |
+| 8 × 10 in | Natural frame | `CM-SKY-8X10-NAT` | 99.99 |
+| 8 × 10 in | Black frame | `CM-SKY-8X10-BLK` | 99.99 |
 | 20 × 24 in | Unframed | `CM-SKY-20X24-UNF` | 64.99 |
-| 20 × 24 in | Natural frame | `CM-SKY-20X24-NAT` | 139.99 |
-| 20 × 24 in | Black frame | `CM-SKY-20X24-BLK` | 139.99 |
+| 20 × 24 in | Natural frame | `CM-SKY-20X24-NAT` | 129.99 |
+| 20 × 24 in | Black frame | `CM-SKY-20X24-BLK` | 129.99 |
 
 Inventory: not tracked. Shipping: physical, uses the store's EU profile.
 Featured image: an export of the Paris example (`scripts/sky-render-local.mjs`).
@@ -61,6 +61,16 @@ Featured image: an export of the Paris example (`scripts/sky-render-local.mjs`).
 **Prodigi Shopify app:** toggle this product **OFF** in the Prodigi channel.
 Our webhook creates the Prodigi order; if the app also sees the product it
 would raise a duplicate "requires attention" order.
+
+### Prodigi check (sandbox first, live before go-live)
+
+```bash
+node scripts/sky-check-prodigi.mjs --country DE
+```
+
+Confirms each variant's SKU and `color` attribute against Prodigi's
+catalogue, the 300 dpi print-area pixels, EU shipping, and prints a quote
+per variant for the landed-cost table in §7. Must pass before the test order.
 
 ## 3. Webhook
 
@@ -117,5 +127,5 @@ still fulfil — the webhook does not depend on the flag.
 |---|---|---|---|---|---|
 | GLOBAL-FAP-8X10 | — | | | 39.99 | |
 | GLOBAL-FAP-20X24 | — | | | 64.99 | |
-| GLOBAL-CFP-8X10 | color natural/black | | | 89.99 | |
-| GLOBAL-CFP-20X24 | color natural/black | | | 139.99 | |
+| GLOBAL-CFP-8X10 | color natural/black | | | 99.99 | |
+| GLOBAL-CFP-20X24 | color natural/black | | | 129.99 | |

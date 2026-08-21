@@ -56,7 +56,7 @@ channels. The first paid order is the first physical QC, as with the prints.
 | Options | **Size**: `8 × 10 in`, `20 × 24 in` · **Finish**: `Unframed`, `Natural frame`, `Black frame` |
 | Variants | 6 (Size × Finish) |
 | Variant SKUs | `CM-SKY-8X10-UNF`, `CM-SKY-8X10-NAT`, `CM-SKY-8X10-BLK`, `CM-SKY-20X24-UNF`, `CM-SKY-20X24-NAT`, `CM-SKY-20X24-BLK` |
-| Prices (EUR) | Unframed 39.99 / 64.99 · Framed 89.99 / 139.99 |
+| Prices (EUR) | Unframed 39.99 / 64.99 · Framed 99.99 / 129.99 (owner's brief: a framed edition at ~€99–129) |
 | Shipping | Store's EU-only markets; Prodigi Standard |
 
 Prodigi mapping (in code, `app/lib/sky/products.ts`):
@@ -65,17 +65,20 @@ Prodigi mapping (in code, `app/lib/sky/products.ts`):
 |---|---|---|
 | `CM-SKY-8X10-UNF` | `GLOBAL-FAP-8X10` | — |
 | `CM-SKY-20X24-UNF` | `GLOBAL-FAP-20X24` | — |
-| `CM-SKY-8X10-NAT` | `GLOBAL-CFP-8X10` | `color: natural`, `mount: none`, `glaze: perspex` |
-| `CM-SKY-8X10-BLK` | `GLOBAL-CFP-8X10` | `color: black`, `mount: none`, `glaze: perspex` |
-| `CM-SKY-20X24-NAT` | `GLOBAL-CFP-20X24` | `color: natural`, `mount: none`, `glaze: perspex` |
-| `CM-SKY-20X24-BLK` | `GLOBAL-CFP-20X24` | `color: black`, `mount: none`, `glaze: perspex` |
+| `CM-SKY-8X10-NAT` | `GLOBAL-CFP-8X10` | `color: natural` |
+| `CM-SKY-8X10-BLK` | `GLOBAL-CFP-8X10` | `color: black` |
+| `CM-SKY-20X24-NAT` | `GLOBAL-CFP-20X24` | `color: natural` |
+| `CM-SKY-20X24-BLK` | `GLOBAL-CFP-20X24` | `color: black` |
 
-Exact attribute keys/values are confirmed against `GET /v4.0/products/{sku}`
-in the sandbox during implementation; the mapping table is a unit-tested
-constant. "No mount" is deliberate so the same PDF serves framed and
-unframed at each size. Prices are confirmed against `POST /v4.0/quotes`
-(item + Standard shipping to DE, FR, NL) before launch; the landed-cost
-table is recorded in `docs/your-sky-release.md`.
+Prodigi encodes "no mount" in the SKU family itself (`GLOBAL-CFP` = classic
+frame without mount, `GLOBAL-CFPM` = with mount) and ships classic frames
+with perspex glazing by default, so `color` is the only item attribute we
+send. `scripts/sky-check-prodigi.mjs` confirms every variant against
+`GET /v4.0/products/{sku}` (attribute keys/values, print-area pixels, EU
+destinations) and prices it with `POST /v4.0/quotes` — it must pass against
+the sandbox before the end-to-end test and against live before go-live;
+the landed-cost table is recorded in `docs/your-sky-release.md`. "No mount"
+is deliberate so the same PDF serves framed and unframed at each size.
 
 Copy: occasions-led ("the night you met, the morning she was born, the
 place you said yes"), the store's editorial voice, no urgency or scarcity.
@@ -91,17 +94,22 @@ The PDP branches on `productType === 'Personalised Art'` and renders
 Inputs:
 
 - **Place** — text input with typeahead. Source: bundled GeoNames
-  `cities15000` (≈25 k places) reduced to `name, asciiName, country,
-  admin1, lat, lon, tz`. Search runs in a resource route
+  `cities15000` (≈34 k places) reduced to `name, asciiName, country, lat,
+  lon, tz` plus native-language alternate names so "Lisboa", "München" and
+  "Αθήνα" find their cities. Search runs in a resource route
   (`GET /api/places?q=`) over the in-memory list: case/diacritic-insensitive
-  prefix match on name/asciiName, ranked by population, max 8 results.
+  prefix match on any name, ranked by population, max 8 results.
   Selection fills a read-only summary "Paris, France · 48.8566° N, 2.3522° E".
 - **Date** — native date input, constrained to 1900-01-01 … 2100-12-31.
 - **Time** — native time input, optional, default `22:00` (local time at the
   place). Helper text: "Leave as is for the evening sky, or set the exact
   hour."
-- **Title** — single line, max 40 characters, Unicode letters/digits/
-  punctuation; control characters stripped; rendered in EB Garamond.
+- **Title** — single line, max 40 characters; control characters stripped;
+  characters outside EB Garamond's coverage (emoji, CJK, Arabic, …) are
+  rejected inline with "“💖” can’t be printed", so the preview and the print
+  always agree. Long titles and place lines shrink to fit within 8 % sheet
+  margins, using the same rule in the preview (canvas metrics) and the PDF
+  (font metrics).
 - Fixed subtitle, generated: `PARIS, FRANCE · 14 JUNE 2019 · 48.8566° N, 2.3522° E`
   (place upper-cased, date in the store locale, coordinates to 4 dp).
 
@@ -168,8 +176,8 @@ lower band. Elements:
 Background plates: generated once by `scripts/generate-sky-plates.mjs`
 (sharp; layered gradients + noise from the capsule palettes) at exact print
 pixel size per size — 2400×3000 for 8×10 and 6000×7200 for 20×24 — as
-JPEG q85, committed under `public/sky/plates/<theme>-<size>.jpg`. A
-web-sized version (`-preview.jpg`, ≤ 1600 px) backs the SVG preview.
+JPEG q82, committed under `public/sky/plates/<theme>-<size>.jpg`. A
+web-sized version (`<theme>-preview.jpg`, 1200×1440) backs the SVG preview.
 
 ## 5. Architecture and data flow
 
@@ -349,6 +357,7 @@ Final: `/adversarial-verify`, fix, repeat until PASS.
 - **Worker memory**: raster print files don't fit; decided on vector PDF + pre-rendered plates.
 - **Double fulfilment** with the Prodigi Shopify app: product toggled OFF in that channel; verified on the first sandbox run.
 - **Webhook latency**: Prodigi call is synchronous but small; measured in preview before launch.
-- **Font coverage**: EB Garamond covers Latin/Greek/Cyrillic; titles in other scripts render as tofu — validation warns when a character is outside the font's coverage.
-- **Data size in worker**: places JSON ≈ 1.2 MB raw; loaded lazily in the places route only.
+- **Font coverage**: EB Garamond covers Latin/Greek/Cyrillic (1,967 code points, generated into `app/lib/sky/fontCoverage.ts`); anything outside is rejected at validation, in the browser and on the server alike, so preview and print never differ.
+- **Data size in worker**: places JSON ≈ 2.3 MB raw (with native-name alternates); only the places route touches it.
+- **Text overflow**: titles and place lines shrink to fit within 8 % margins (shared `fitTextSize` rule, minimum 45 % of the design size); the PDF test asserts a 40-character worst case stays inside the margin.
 - **Plan dependency**: webhooks, not Shopify Flow, so no plan upgrade is needed.

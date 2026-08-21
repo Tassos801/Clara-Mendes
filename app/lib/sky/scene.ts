@@ -32,6 +32,8 @@ export type SkyScene = SkyLayout & {
   planets: SceneBody[];
   title: string;
   subtitle: string;
+  /** The subtitle split at its first separator, for two-line fitting. */
+  subtitleParts: {place: string; rest: string};
   credit: string;
   cardinal: Array<{label: string; x: number; y: number}>;
 };
@@ -53,9 +55,17 @@ const MONTHS = [
 
 export const SKY_CREDIT = 'CLARA MENDES · YOUR SKY';
 
-export function skySubtitle(p: SkyParams) {
+export function skySubtitleParts(p: SkyParams) {
   const [y, m, d] = p.date.split('-').map(Number);
-  return `${p.place.toUpperCase()} · ${d} ${MONTHS[m - 1]} ${y} · ${formatCoordinates(p.lat, p.lon)}`;
+  return {
+    place: p.place.toUpperCase(),
+    rest: `${d} ${MONTHS[m - 1]} ${y} · ${formatCoordinates(p.lat, p.lon)}`,
+  };
+}
+
+export function skySubtitle(p: SkyParams) {
+  const parts = skySubtitleParts(p);
+  return `${parts.place} · ${parts.rest}`;
 }
 
 export function computeSky({
@@ -128,6 +138,7 @@ export function computeSky({
     cardinal,
     title: params.title,
     subtitle: skySubtitle(params),
+    subtitleParts: skySubtitleParts(params),
     credit: SKY_CREDIT,
   };
 }

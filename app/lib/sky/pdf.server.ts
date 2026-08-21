@@ -1,11 +1,12 @@
 /**
  * Print file: a vector PDF at the exact sheet size (Prodigi processes PDFs
  * at received size). Background plate as an embedded JPEG, everything else
- * as vector marks and embedded, subset EB Garamond. Small enough to render
+ * as vector marks and fully embedded EB Garamond. Small enough to render
  * inside an Oxygen worker on every fetch.
  */
 import fontkit from '@pdf-lib/fontkit';
 import {PDFDocument, rgb, type PDFFont, type PDFPage, type RGB} from 'pdf-lib';
+import {fitSubtitle, fitTitle, trackedWidth} from './fit.ts';
 import {moonLitPath} from './moon.ts';
 import type {SkyScene} from './scene.ts';
 import type {SkyTheme} from './themes.ts';
@@ -170,23 +171,51 @@ export async function renderSkyPdf({
     });
   }
 
-  const title = supported(italic, scene.title);
-  if (title) {
-    page.drawText(title, {
-      x: (W - italic.widthOfTextAtSize(title, scene.titleSize)) / 2,
-      y: Y(scene.titleY),
-      size: scene.titleSize,
+  // Long titles and place names shrink to fit the sheet margins; the SVG
+  // preview applies the same rule with browser metrics.
+  const measureItalic = (t: string, s: number) =>
+    italic.widthOfTextAtSize(t, s);
+  const measureRegular = (t: string, s: number) =>
+    regular.widthOfTextAtSize(t, s);
+  const title = fitTitle(
+    supported(italic, scene.title),
+    scene.titleSize,
+    scene.maxTextWidth,
+    measureItalic,
+  );
+  // One line sits on the design baseline; two lines straddle it so the
+  // block grows upward into the gap below the sky, not into the subtitle.
+  const titleOffset = (index: number) =>
+    title.lines.length === 1 ? 0 : (index - 0.5) * title.size * 1.2;
+  title.lines.forEach((line, index) => {
+    page.drawText(line, {
+      x: (W - italic.widthOfTextAtSize(line, title.size)) / 2,
+      y: Y(scene.titleY + titleOffset(index)),
+      size: title.size,
       font: italic,
       color: hex(theme.title),
     });
-  }
-  drawTracked(page, supported(regular, scene.subtitle), {
-    x: W / 2,
-    y: Y(scene.subtitleY),
-    size: scene.subtitleSize,
-    font: regular,
-    color: hex(theme.subtitle),
-    tracking: 1.6 * scale,
+  });
+  const subtitleTracking = (size: number) =>
+    1.6 * scale * (size / scene.subtitleSize);
+  const fitted = fitSubtitle(
+    {
+      place: supported(regular, scene.subtitleParts.place),
+      rest: supported(regular, scene.subtitleParts.rest),
+    },
+    scene.subtitleSize,
+    scene.maxTextWidth,
+    (t, s) => trackedWidth(t, s, subtitleTracking(s), measureRegular),
+  );
+  fitted.lines.forEach((line, index) => {
+    drawTracked(page, line, {
+      x: W / 2,
+      y: Y(scene.subtitleY + index * fitted.size * 1.6),
+      size: fitted.size,
+      font: regular,
+      color: hex(theme.subtitle),
+      tracking: subtitleTracking(fitted.size),
+    });
   });
   drawTracked(page, scene.credit, {
     x: W / 2,

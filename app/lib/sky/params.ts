@@ -3,6 +3,8 @@
  * travel as cart line attributes, get signed server-side, and fully
  * determine the rendered artwork — the print file is regenerated from them.
  */
+import {FONT_COVERAGE_RANGES} from './fontCoverage.ts';
+
 export type SkyThemeId = 'linen' | 'midnight-garden' | 'quiet-form';
 export const SKY_THEME_IDS: SkyThemeId[] = [
   'linen',
@@ -59,6 +61,33 @@ export function isValidTimeZone(tz: string) {
   }
 }
 
+function isPrintableCodePoint(cp: number) {
+  let lo = 0;
+  let hi = FONT_COVERAGE_RANGES.length - 1;
+  while (lo <= hi) {
+    const mid = (lo + hi) >> 1;
+    const [start, end] = FONT_COVERAGE_RANGES[mid];
+    if (cp < start) hi = mid - 1;
+    else if (cp > end) lo = mid + 1;
+    else return true;
+  }
+  return false;
+}
+
+/**
+ * Characters the print font cannot set (emoji, CJK, Arabic, …). The preview
+ * and the PDF share this rule, so nothing is silently dropped on paper.
+ */
+export function unprintableCharacters(text: string) {
+  const bad: string[] = [];
+  for (const ch of text) {
+    if (ch === ' ') continue;
+    const cp = ch.codePointAt(0) ?? 0;
+    if (!isPrintableCodePoint(cp) && !bad.includes(ch)) bad.push(ch);
+  }
+  return bad;
+}
+
 export function sanitizeText(value: unknown) {
   return String(value ?? '')
     .replace(CONTROL_RE, '')
@@ -111,7 +140,11 @@ export function validateSkyParams(input: SkyParamsInput): SkyValidation {
   }
 
   const place = sanitizeText(input.place);
-  if (!place || place.length > SKY_PLACE_MAX) {
+  if (
+    !place ||
+    place.length > SKY_PLACE_MAX ||
+    unprintableCharacters(place).length > 0
+  ) {
     return {ok: false, error: 'Choose a place from the list.'};
   }
 
@@ -120,6 +153,13 @@ export function validateSkyParams(input: SkyParamsInput): SkyValidation {
     return {
       ok: false,
       error: `Keep the title to ${SKY_TITLE_MAX} characters.`,
+    };
+  }
+  const unprintable = unprintableCharacters(title);
+  if (unprintable.length > 0) {
+    return {
+      ok: false,
+      error: `“${unprintable[0]}” can’t be printed — please use letters, numbers and punctuation.`,
     };
   }
 

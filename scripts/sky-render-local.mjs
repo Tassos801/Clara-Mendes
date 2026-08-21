@@ -50,7 +50,9 @@ const pdf = await renderSkyPdf({
   },
   plate: a['no-plate']
     ? null
-    : new Uint8Array(readFileSync(`public/sky/plates/${v.params.theme}.jpg`)),
+    : new Uint8Array(
+        readFileSync(`public/sky/plates/${v.params.theme}-${a.size}.jpg`),
+      ),
   createdAt: new Date(`${v.params.date}T00:00:00Z`),
 });
 mkdirSync(dirname(a.out), {recursive: true});

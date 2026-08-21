@@ -11,7 +11,10 @@ const fonts = {
   regular: new Uint8Array(readFileSync('public/fonts/EBGaramond-Regular.ttf')),
   italic: new Uint8Array(readFileSync('public/fonts/EBGaramond-Italic.ttf')),
 };
-const plate = new Uint8Array(readFileSync('public/sky/plates/linen.jpg'));
+const plates = {
+  '8x10': new Uint8Array(readFileSync('public/sky/plates/linen-8x10.jpg')),
+  '20x24': new Uint8Array(readFileSync('public/sky/plates/linen-20x24.jpg')),
+};
 const catalog = loadSkyCatalogSync();
 const params = validateSkyParams({
   date: '2019-06-14',
@@ -31,7 +34,7 @@ test('renders both sizes with exact page geometry and embedded font', async () =
     ['20x24', 1440, 1728],
   ]) {
     const scene = computeSky({params, size, catalog});
-    const pdf = await renderSkyPdf({scene, theme: SKY_THEMES.linen, fonts, plate, createdAt});
+    const pdf = await renderSkyPdf({scene, theme: SKY_THEMES.linen, fonts, plate: plates[size], createdAt});
     const text = Buffer.from(pdf).toString('latin1');
     assert.match(text, new RegExp(`/MediaBox \\[ ?0 0 ${w} ${h} ?\\]`), `${size} media box`);
     assert.match(text, /EBGaramond/);

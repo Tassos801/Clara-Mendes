@@ -1,4 +1,5 @@
 import type {SkyThemeId} from './params.ts';
+import type {SkySizeKey} from './products.ts';
 
 export type SkyTheme = {
   id: SkyThemeId;
@@ -88,6 +89,7 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
 
 export const DEFAULT_SKY_THEME: SkyThemeId = 'linen';
 
-export function platePath(id: SkyThemeId, variant: 'print' | 'preview') {
-  return `/sky/plates/${id}${variant === 'preview' ? '-preview' : ''}.jpg`;
+/** Background plate: per sheet size at 300 dpi, or the browser preview. */
+export function platePath(id: SkyThemeId, variant: SkySizeKey | 'preview') {
+  return `/sky/plates/${id}-${variant}.jpg`;
 }

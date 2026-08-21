@@ -1,7 +1,7 @@
 /**
  * Offline place search over the bundled GeoNames list (cities ≥ 15k people,
- * CC BY 4.0). Rows are pre-sorted by population, so a linear scan yields the
- * best-known matches first.
+ * CC BY 4.0). Matches on the primary name rank above matches on native
+ * alternate names ("Lisboa", "Wien", "Αθήνα"); ties break on population.
  */
 import placesJson from '../../data/sky/places.json' with {type: 'json'};
 
@@ -15,7 +15,16 @@ export type PlaceResult = {
   label: string;
 };
 
-type Row = [string, string, string, number, number, number, number];
+type Row = [
+  string,
+  string,
+  string,
+  number,
+  number,
+  number,
+  number,
+  string[],
+];
 const {tz: ZONES, data: ROWS} = placesJson as unknown as {
   tz: string[];
   data: Row[];
@@ -31,11 +40,43 @@ export function normalizePlaceQuery(q: string) {
     .trim();
 }
 
-// Built once per isolate: normalised name + ascii name per row.
-let index: Array<[string, string]> | null = null;
+type IndexEntry = {primary: string[]; alternates: string[]};
+
+// Built once per isolate.
+let index: IndexEntry[] | null = null;
 function getIndex() {
-  index ??= ROWS.map((r) => [normalizePlaceQuery(r[0]), normalizePlaceQuery(r[1])]);
+  index ??= ROWS.map((r) => {
+    const primary = [...new Set([r[0], r[1]].map(normalizePlaceQuery))];
+    const alternates = [
+      ...new Set((r[7] ?? []).map(normalizePlaceQuery)),
+    ].filter((n) => !primary.includes(n));
+    return {primary, alternates};
+  });
   return index;
+}
+
+/**
+ * Lower is better: 0 exact primary name, 1 exact alternate, 2 primary
+ * prefix, 3 alternate prefix, 4 later word of the primary name, 5 later word
+ * of an alternate, -1 no match. Exact native names win ("roma" → Rome, not
+ * Roman; "wien" → Vienna, not Wiener Neustadt); ties break on population.
+ */
+function matchScore(entry: IndexEntry, q: string) {
+  let best = -1;
+  const take = (score: number) => {
+    best = best < 0 ? score : Math.min(best, score);
+  };
+  const consider = (names: string[], exact: number, prefix: number, word: number) => {
+    for (const n of names) {
+      if (n === q) take(exact);
+      else if (n.startsWith(q)) take(prefix);
+      else if (n.includes(` ${q}`)) take(word);
+    }
+  };
+  consider(entry.primary, 0, 2, 4);
+  if (best === 0) return 0;
+  consider(entry.alternates, 1, 3, 5);
+  return best;
 }
 
 function countryName(code: string) {
@@ -50,22 +91,25 @@ export function searchPlaces(query: string, limit = 8): PlaceResult[] {
   const q = normalizePlaceQuery(query);
   if (q.length < 2 || q.length > 60) return [];
   const idx = getIndex();
-  const out: PlaceResult[] = [];
-  for (let i = 0; i < ROWS.length && out.length < limit; i++) {
-    const [n, a] = idx[i];
-    if (n.startsWith(q) || a.startsWith(q) || n.includes(` ${q}`) || a.includes(` ${q}`)) {
-      const r = ROWS[i];
-      const country = countryName(r[2]);
-      out.push({
-        name: r[0],
-        country,
-        countryCode: r[2],
-        lat: r[3],
-        lon: r[4],
-        tz: ZONES[r[5]],
-        label: `${r[0]}, ${country}`,
-      });
-    }
+  const hits: Array<{score: number; i: number}> = [];
+  for (let i = 0; i < ROWS.length; i++) {
+    const score = matchScore(idx[i], q);
+    if (score >= 0) hits.push({score, i});
   }
-  return out;
+  // Rows are pre-sorted by population, so ordering by (score, row index)
+  // keeps the biggest city first within each tier.
+  hits.sort((a, b) => a.score - b.score || a.i - b.i);
+  return hits.slice(0, limit).map(({i}) => {
+    const r = ROWS[i];
+    const country = countryName(r[2]);
+    return {
+      name: r[0],
+      country,
+      countryCode: r[2],
+      lat: r[3],
+      lon: r[4],
+      tz: ZONES[r[5]],
+      label: `${r[0]}, ${country}`,
+    };
+  });
 }

@@ -29,3 +29,13 @@ test('matches later words and respects the limit', () => {
   assert.ok(searchPlaces('angeles').some((r) => r.name === 'Los Angeles'));
   assert.equal(searchPlaces('san', 3).length, 3);
 });
+
+test('native-language names reach the same city', () => {
+  assert.equal(searchPlaces('lisboa')[0].label, 'Lisbon, Portugal');
+  assert.equal(searchPlaces('münchen')[0].label, 'Munich, Germany');
+  assert.equal(searchPlaces('roma')[0].label, 'Rome, Italy');
+  assert.equal(searchPlaces('wien')[0].label, 'Vienna, Austria');
+  assert.equal(searchPlaces('αθήνα')[0].label, 'Athens, Greece');
+  assert.equal(searchPlaces('athina')[0].label, 'Athens, Greece');
+  assert.equal(searchPlaces('praha')[0].label, 'Prague, Czechia');
+});

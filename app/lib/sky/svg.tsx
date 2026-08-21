@@ -1,8 +1,48 @@
+import {useEffect, useMemo, useState} from 'react';
+import {fitSubtitle, fitTitle, trackedWidth, type MeasureText} from './fit';
 import {moonLitPath} from './moon';
 import type {SkyScene} from './scene';
 import type {SkyTheme} from './themes';
 
 const FONT = "'EB Garamond', Georgia, 'Times New Roman', serif";
+
+/**
+ * Canvas text measurer in the page font, refreshed once EB Garamond has
+ * loaded so measurements match what is drawn. Null during SSR.
+ */
+function useTextMeasure() {
+  const [fontsReady, setFontsReady] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    const fonts = typeof document !== 'undefined' ? document.fonts : null;
+    if (!fonts) {
+      setFontsReady(true);
+      return;
+    }
+    Promise.all([
+      fonts.load("italic 30px 'EB Garamond'"),
+      fonts.load("30px 'EB Garamond'"),
+    ])
+      .catch(() => {})
+      .finally(() => {
+        if (alive) setFontsReady(true);
+      });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return useMemo(() => {
+    if (typeof document === 'undefined') return null;
+    const context = document.createElement('canvas').getContext('2d');
+    if (!context) return null;
+    void fontsReady;
+    return (style: 'italic' | 'normal'): MeasureText =>
+      (text, size) => {
+        context.font = `${style === 'italic' ? 'italic ' : ''}${size}px ${FONT}`;
+        return context.measureText(text).width;
+      };
+  }, [fontsReady]);
+}
 
 /** Live preview. Draws the same scene the PDF renderer prints. */
 export function SkySvg({
@@ -17,6 +57,22 @@ export function SkySvg({
   className?: string;
 }) {
   const {width: W, height: H, disc, scale} = scene;
+  const measure = useTextMeasure();
+  const title = measure
+    ? fitTitle(scene.title, scene.titleSize, scene.maxTextWidth, measure('italic'))
+    : {lines: scene.title ? [scene.title] : [], size: scene.titleSize};
+  const titleOffset = (index: number) =>
+    title.lines.length === 1 ? 0 : (index - 0.5) * title.size * 1.2;
+  const subtitleTracking = (size: number) =>
+    1.6 * scale * (size / scene.subtitleSize);
+  const subtitle = measure
+    ? fitSubtitle(
+        scene.subtitleParts,
+        scene.subtitleSize,
+        scene.maxTextWidth,
+        (t, s) => trackedWidth(t, s, subtitleTracking(s), measure('normal')),
+      )
+    : {lines: [scene.subtitle], size: scene.subtitleSize};
   return (
     <svg
       className={className}
@@ -49,26 +105,26 @@ export function SkySvg({
         strokeWidth={0.35 * scale}
         strokeLinecap="round"
       >
-        {scene.lines.map((l) => (
-          <line
-            key={`${l.x1},${l.y1},${l.x2},${l.y2}`}
-            x1={l.x1}
-            y1={l.y1}
-            x2={l.x2}
-            y2={l.y2}
-          />
+        {scene.lines.map((l, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
         ))}
       </g>
+      {/* Static, wholesale-recomputed lists: index keys are correct here, and
+          the catalogue contains a few coincident stars, so coordinates are
+          not unique. */}
       <g fill={theme.halo} opacity={0.12}>
         {scene.stars
           .filter((s) => s.mag < 1.5)
-          .map((s) => (
-            <circle key={`${s.x},${s.y}`} cx={s.x} cy={s.y} r={s.r * 2.4} />
+          .map((s, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <circle key={i} cx={s.x} cy={s.y} r={s.r * 2.4} />
           ))}
       </g>
       <g fill={theme.star}>
-        {scene.stars.map((s) => (
-          <circle key={`${s.x},${s.y}`} cx={s.x} cy={s.y} r={s.r} />
+        {scene.stars.map((s, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <circle key={i} cx={s.x} cy={s.y} r={s.r} />
         ))}
       </g>
       <g fill={theme.planet}>
@@ -119,30 +175,35 @@ export function SkySvg({
           </text>
         ))}
       </g>
-      {scene.title ? (
+      {title.lines.map((line, index) => (
+        // eslint-disable-next-line react/no-array-index-key
         <text
+          key={`${index}:${line}`}
           x={W / 2}
-          y={scene.titleY}
+          y={scene.titleY + titleOffset(index)}
           fill={theme.title}
           fontFamily={FONT}
           fontStyle="italic"
-          fontSize={scene.titleSize}
+          fontSize={title.size}
           textAnchor="middle"
         >
-          {scene.title}
+          {line}
         </text>
-      ) : null}
-      <text
-        x={W / 2}
-        y={scene.subtitleY}
-        fill={theme.subtitle}
-        fontFamily={FONT}
-        fontSize={scene.subtitleSize}
-        letterSpacing={1.6 * scale}
-        textAnchor="middle"
-      >
-        {scene.subtitle}
-      </text>
+      ))}
+      {subtitle.lines.map((line, index) => (
+        <text
+          key={line}
+          x={W / 2}
+          y={scene.subtitleY + index * subtitle.size * 1.6}
+          fill={theme.subtitle}
+          fontFamily={FONT}
+          fontSize={subtitle.size}
+          letterSpacing={subtitleTracking(subtitle.size)}
+          textAnchor="middle"
+        >
+          {line}
+        </text>
+      ))}
       <text
         x={W / 2}
         y={scene.creditY}

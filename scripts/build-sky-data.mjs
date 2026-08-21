@@ -101,7 +101,34 @@ writeFileSync(
   }),
 );
 
-// --- Places: [name, asciiName, countryCode, lat, lon, tzIndex, population] --
+// --- Places: [name, ascii, cc, lat, lon, tzIndex, population, alternates] ---
+// Alternate names (native spellings such as Lisboa, München, Αθήνα) are kept
+// for cities people search in their own language: Latin-script alternates
+// from 50k inhabitants, any script from 100k. GeoNames lists them roughly
+// alphabetically, so no small cap — "Wien" sits 40th in Vienna's list.
+const normalize = (t) =>
+  t
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+const LATIN = /^[a-z0-9 .'’-]+$/;
+function pickAlternates(raw, name, ascii, population) {
+  if (population < 50000 || !raw) return [];
+  const seen = new Set([normalize(name), normalize(ascii)]);
+  const out = [];
+  for (const candidate of raw.split(',')) {
+    const alt = candidate.trim();
+    if (alt.length < 2 || alt.length > 40 || /^https?:/.test(alt)) continue;
+    const key = normalize(alt);
+    if (!key || seen.has(key)) continue;
+    if (!LATIN.test(key) && population < 100000) continue;
+    seen.add(key);
+    out.push(alt);
+    if (out.length >= 60) break;
+  }
+  return out;
+}
 const zip = await fetchTo(SOURCES.cities, 'cities15000.zip');
 const txt = resolve(SRC_DIR, 'cities15000.txt');
 if (!existsSync(txt)) execFileSync('unzip', ['-o', '-q', zip, '-d', SRC_DIR]);
@@ -113,6 +140,7 @@ for (const row of readFileSync(txt, 'utf8').split('\n')) {
   const tz = c[17];
   if (!tz) continue;
   if (!tzIndex.has(tz)) tzIndex.set(tz, tzIndex.size);
+  const population = Number(c[14]) || 0;
   places.push([
     c[1],
     c[2],
@@ -120,7 +148,8 @@ for (const row of readFileSync(txt, 'utf8').split('\n')) {
     r4(+c[4]),
     r4(+c[5]),
     tzIndex.get(tz),
-    Number(c[14]) || 0,
+    population,
+    pickAlternates(c[3], c[1], c[2], population),
   ]);
 }
 places.sort((a, b) => b[6] - a[6]);

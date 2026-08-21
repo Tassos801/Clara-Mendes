@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 // Painterly background plates for the star map: layered radial gradients
-// plus gaussian grain. One 3000×3600 JPEG per theme (≈150 dpi on the 20×24
-// sheet — plenty for a soft ground) and a 1200×1440 preview.
+// plus gaussian grain. One JPEG per theme and sheet at Prodigi's recommended
+// 300 dpi pixel size (2400×3000 for 8×10, 6000×7200 for 20×24) plus a
+// 1200×1440 preview for the browser.
 //
 //   node scripts/generate-sky-plates.mjs
 import sharp from 'sharp';
 import {mkdirSync} from 'node:fs';
 
-const W = 3000;
-const H = 3600;
+const SIZES = {
+  '8x10': [2400, 3000],
+  '20x24': [6000, 7200],
+};
 
 // [colour, cx, cy, radius, opacity] in unit coordinates.
 const THEMES = {
@@ -48,6 +51,7 @@ const THEMES = {
 mkdirSync('public/sky/plates', {recursive: true});
 
 for (const [id, t] of Object.entries(THEMES)) {
+  for (const [sizeKey, [W, H]] of Object.entries(SIZES)) {
   const gradients = t.blobs
     .map(
       ([c, x, y, r, o], i) =>
@@ -77,13 +81,16 @@ for (const [id, t] of Object.entries(THEMES)) {
     .composite([{input: grain, blend: 'soft-light'}])
     .blur(0.6);
   const printJpeg = await plate.jpeg({quality: 82, mozjpeg: true}).toBuffer();
-  await sharp(printJpeg).toFile(`public/sky/plates/${id}.jpg`);
-  // Preview is derived from the finished print plate (resizing before the
-  // composite would make the grain layer larger than the base).
-  await sharp(printJpeg)
-    .resize(1200, 1440)
-    .jpeg({quality: 80, mozjpeg: true})
-    .toFile(`public/sky/plates/${id}-preview.jpg`);
-  console.log('plate', id);
+  await sharp(printJpeg).toFile(`public/sky/plates/${id}-${sizeKey}.jpg`);
+  if (sizeKey === '8x10') {
+    // Preview is derived from the finished print plate (resizing before the
+    // composite would make the grain layer larger than the base).
+    await sharp(printJpeg)
+      .resize(1200, 1440)
+      .jpeg({quality: 80, mozjpeg: true})
+      .toFile(`public/sky/plates/${id}-preview.jpg`);
+  }
+  console.log('plate', id, sizeKey);
+  }
 }
 /* eslint-enable no-console */

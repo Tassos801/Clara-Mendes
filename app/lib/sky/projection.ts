@@ -1,3 +1,5 @@
+import {maxTextWidth} from './fit.ts';
+
 export type Disc = {cx: number; cy: number; r: number};
 
 /**
@@ -19,6 +21,8 @@ export type SkyLayout = {
   height: number;
   /** width / 576 — everything scales with the sheet. */
   scale: number;
+  /** Widest a text line may be before it is shrunk to fit. */
+  maxTextWidth: number;
   disc: Disc;
   titleY: number;
   subtitleY: number;
@@ -36,6 +40,7 @@ export function layoutFor(width: number, height: number): SkyLayout {
     width,
     height,
     scale,
+    maxTextWidth: maxTextWidth(width),
     disc: {cx: width / 2, cy: height * 0.4, r},
     titleY: height * 0.79,
     subtitleY: height * 0.835,

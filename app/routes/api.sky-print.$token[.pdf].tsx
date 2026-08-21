@@ -62,7 +62,7 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
   const [catalog, fonts, plate] = await Promise.all([
     loadSkyCatalog(),
     loadFonts(url),
-    loadPlate(url, platePath(theme.id, 'print')),
+    loadPlate(url, platePath(theme.id, size)),
   ]);
   const scene = computeSky({params: decoded.params, size, catalog});
   const pdf = await renderSkyPdf({
