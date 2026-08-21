@@ -6,11 +6,16 @@ export type SkyCatalog = {
   lines: ArrayLike<number>;
 };
 
-/** Lazy loader used by the browser preview and the print route. */
+/**
+ * Lazy loader used by the browser preview and the print route. Vite turns
+ * these JSON files into JS modules, so no import attribute here — the
+ * browser would otherwise demand a JSON MIME type. Node tests use
+ * scripts/lib/sky-catalog.mjs instead.
+ */
 export async function loadSkyCatalog(): Promise<SkyCatalog> {
   const [stars, lines] = await Promise.all([
-    import('../../data/sky/stars.json', {with: {type: 'json'}}),
-    import('../../data/sky/constellations.json', {with: {type: 'json'}}),
+    import('../../data/sky/stars.json'),
+    import('../../data/sky/constellations.json'),
   ]);
   return {stars: stars.default.data, lines: lines.default.data};
 }
