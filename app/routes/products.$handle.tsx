@@ -33,8 +33,17 @@ import {
   filterDemoProducts,
   isDemoProduct,
   isReleasedExtensionHandle,
+  isStagedPersonalisedHandle,
   PHONE_CASE_HANDLE,
 } from '~/lib/catalogFilters';
+import {SkyConfigurator} from '~/components/SkyConfigurator';
+import {toCartAttributes, type SkyParams} from '~/lib/sky/params';
+import {
+  SKY_PRODUCT_TYPE,
+  SKY_SIZES,
+  skySizeFromOptions,
+} from '~/lib/sky/products';
+import {DEFAULT_SKY_THEME} from '~/lib/sky/themes';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {deriveCardPricing} from '~/lib/productCardPricing';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
@@ -192,7 +201,13 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw new Response('Product not found', {status: 404});
   }
 
-  if (isDemoProduct(data.product)) {
+  // A staged personalised product stays hidden everywhere, but the preview
+  // environment may unlock its PDP so the end-to-end order can be tested
+  // before the release flag flips.
+  const previewUnlocked =
+    isStagedPersonalisedHandle(handle) &&
+    context.env.SKY_PREVIEW_UNLOCK === 'true';
+  if (isDemoProduct(data.product) && !previewUnlocked) {
     throw redirect('/collections/all');
   }
 
@@ -259,6 +274,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${data.product.handle}`),
+    skyTheme: DEFAULT_SKY_THEME,
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
@@ -271,6 +287,7 @@ export default function Product() {
     relatedProducts,
     reviews,
     seoUrl,
+    skyTheme,
     storeDomain,
   } = useLoaderData<typeof loader>();
   const {open} = useAside();
@@ -282,12 +299,26 @@ export default function Product() {
   const selectedVariantPrice = selectedVariant
     ? formatMoney(selectedVariant.price)
     : null;
-  const purchaseButtonLabel =
-    selectedVariant?.availableForSale && selectedVariantPrice
+  const isSkyMap =
+    (product.productType || '').toLowerCase() ===
+    SKY_PRODUCT_TYPE.toLowerCase();
+  // Complete, validated personalisation from the configurator; null until
+  // the customer has chosen a place and a date.
+  const [skyParams, setSkyParams] = useState<SkyParams | null>(null);
+  const skySize = skySizeFromOptions(selectedVariant?.selectedOptions);
+  const skyAttributes =
+    isSkyMap && skyParams ? toCartAttributes(skyParams) : undefined;
+  const purchaseBlocked =
+    !selectedVariant?.availableForSale || (isSkyMap && !skyParams);
+  const isPersonalisedPending = isSkyMap && !skyParams;
+  const purchaseButtonLabel = isPersonalisedPending
+    ? 'Add your place and date'
+    : selectedVariant?.availableForSale && selectedVariantPrice
       ? `Add to cart - ${selectedVariantPrice}`
       : 'Sold out';
-  const stickyButtonLabel =
-    selectedVariant?.availableForSale && selectedVariantPrice
+  const stickyButtonLabel = isPersonalisedPending
+    ? 'Add your place and date'
+    : selectedVariant?.availableForSale && selectedVariantPrice
       ? `Add - ${selectedVariantPrice}`
       : 'Sold out';
   const primaryImage =
@@ -479,13 +510,21 @@ export default function Product() {
       </nav>
 
       <section className="product-detail-layout">
-        <ProductGalleryCarousel
-          key={`${product.id}:${printSize.key}`}
-          images={galleryImages}
-          isArtPrint={isArtPrint}
-          printSize={printSize}
-          productTitle={product.title}
-        />
+        {isSkyMap ? (
+          <SkyConfigurator
+            size={skySize}
+            theme={skyTheme}
+            onChange={setSkyParams}
+          />
+        ) : (
+          <ProductGalleryCarousel
+            key={`${product.id}:${printSize.key}`}
+            images={galleryImages}
+            isArtPrint={isArtPrint}
+            printSize={printSize}
+            productTitle={product.title}
+          />
+        )}
 
         <div className="product-purchase-panel">
           <p className="eyebrow">
@@ -553,7 +592,7 @@ export default function Product() {
               <AddToCartButton
                 analytics={addToCartAnalytics}
                 className="primary-button full-width"
-                disabled={!selectedVariant?.availableForSale}
+                disabled={purchaseBlocked}
                 lines={
                   selectedVariant
                     ? [
@@ -561,6 +600,9 @@ export default function Product() {
                           merchandiseId: selectedVariant.id,
                           quantity,
                           selectedVariant,
+                          ...(skyAttributes
+                            ? {attributes: skyAttributes}
+                            : {}),
                         },
                       ]
                     : []
@@ -572,7 +614,9 @@ export default function Product() {
               </AddToCartButton>
             </div>
 
-            {selectedVariant?.availableForSale && shopPayStoreUrl ? (
+            {!isSkyMap &&
+            selectedVariant?.availableForSale &&
+            shopPayStoreUrl ? (
               <div
                 className="shop-pay-accelerator"
                 aria-label="Express checkout with Shop Pay"
@@ -640,6 +684,36 @@ export default function Product() {
                     Made for {formatPhoneCaseDeviceList()} only. Cases are cut
                     per device and printed to order, so check your exact model
                     before ordering.
+                  </dd>
+                </div>
+              </>
+            ) : null}
+            {isSkyMap ? (
+              <>
+                <div>
+                  <dt>Print</dt>
+                  <dd>
+                    Giclée print in archival pigment inks on 200gsm Enhanced
+                    Matte Art paper, made to order at {SKY_SIZES[skySize].label}
+                    . Framed editions come in a solid wood classic frame with
+                    clear acrylic glazing, delivered ready to hang.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Accuracy</dt>
+                  <dd>
+                    Every star brighter than the naked-eye limit, the Moon at
+                    its true phase and place, and the visible planets —
+                    calculated for your exact place and moment. Star data:
+                    Yale Bright Star Catalogue; places: GeoNames (CC BY 4.0).
+                  </dd>
+                </div>
+                <div>
+                  <dt>Personalisation</dt>
+                  <dd>
+                    Your title, the place, the date and its coordinates are
+                    set in the lower band. We print exactly what the preview
+                    shows, so check the spelling before you add to cart.
                   </dd>
                 </div>
               </>
@@ -791,7 +865,7 @@ export default function Product() {
         <AddToCartButton
           analytics={addToCartAnalytics}
           className="primary-button sticky-atc-button"
-          disabled={!selectedVariant?.availableForSale}
+          disabled={purchaseBlocked}
           lines={
             selectedVariant
               ? [
@@ -799,6 +873,7 @@ export default function Product() {
                     merchandiseId: selectedVariant.id,
                     quantity,
                     selectedVariant,
+                    ...(skyAttributes ? {attributes: skyAttributes} : {}),
                   },
                 ]
               : []

@@ -129,3 +129,46 @@ assert.equal(
   }),
   true,
 );
+
+// The personalised star map is staged behind its own flag map and follows
+// the same dual gate as extensions: hidden from listings and the sitemap
+// until flipped, sellable once flipped.
+{
+  const {
+    hasReleasedPersonalised,
+    isStagedPersonalisedHandle,
+    isUnreleasedExtensionHandle: isUnreleasedStagedHandle,
+    PERSONALISED_RELEASE_FLAGS,
+    SKY_PRODUCT_HANDLE,
+  } = await import('../app/lib/catalogFilters.ts');
+  assert.equal(SKY_PRODUCT_HANDLE, 'your-sky-star-map');
+  assert.equal(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE], false);
+  assert.equal(isStagedPersonalisedHandle(SKY_PRODUCT_HANDLE), true);
+  assert.equal(isStagedPersonalisedHandle('quiet-form-i-art-print'), false);
+  assert.equal(isUnreleasedStagedHandle(SKY_PRODUCT_HANDLE), true);
+  assert.equal(
+    computeSellableHandles(EXTENSION_RELEASE_FLAGS, {
+      [SKY_PRODUCT_HANDLE]: false,
+    }).has(SKY_PRODUCT_HANDLE),
+    false,
+  );
+  assert.equal(
+    computeSellableHandles(EXTENSION_RELEASE_FLAGS, {
+      [SKY_PRODUCT_HANDLE]: true,
+    }).has(SKY_PRODUCT_HANDLE),
+    true,
+  );
+  assert.equal(hasReleasedPersonalised({[SKY_PRODUCT_HANDLE]: true}), true);
+  assert.equal(hasReleasedPersonalised({[SKY_PRODUCT_HANDLE]: false}), false);
+  assert.equal(
+    isDemoProduct({
+      handle: SKY_PRODUCT_HANDLE,
+      productType: 'Personalised Art',
+      tags: ['Clara Mendes Original'],
+      title: 'Your Sky',
+      vendor: 'Clara Mendes',
+    }),
+    true,
+    'staged star map is not sellable while its flag is false',
+  );
+}

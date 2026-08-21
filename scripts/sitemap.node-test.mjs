@@ -19,6 +19,7 @@ const xml = [
   entry('https://shopclaramendes.com/products/quiet-form-i-art-print'),
   entry('https://shopclaramendes.com/products/acne-cream'),
   entry('https://shopclaramendes.com/collections/snowboards'),
+  entry('https://shopclaramendes.com/products/your-sky-star-map'),
   '</urlset>',
 ].join('\n');
 
@@ -29,6 +30,10 @@ assert.ok(!filtered.includes('/products/acne-cream'), 'off-theme product kept');
 assert.ok(
   !filtered.includes('/collections/snowboards'),
   'legacy collection kept',
+);
+assert.ok(
+  !filtered.includes('/products/your-sky-star-map'),
+  'staged star map leaked into the sitemap',
 );
 assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));

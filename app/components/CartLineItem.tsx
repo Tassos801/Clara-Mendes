@@ -199,6 +199,19 @@ export function CartLineItem({
                 <strong>{product.title}</strong>
               </p>
             </Link>
+            {line.attributes?.some(
+              (attribute) => !attribute.key.startsWith('_') && attribute.value,
+            ) ? (
+              <p className="sky-cart-attributes">
+                {line.attributes
+                  .filter(
+                    (attribute) =>
+                      !attribute.key.startsWith('_') && attribute.value,
+                  )
+                  .map((attribute) => attribute.value)
+                  .join(' · ')}
+              </p>
+            ) : null}
             <ProductPrice price={line?.cost?.totalAmount} />
             <ul>
               {selectedOptions.map((option) => (

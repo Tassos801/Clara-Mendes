@@ -104,8 +104,30 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   'stretched-canvas-art-16x20': false,
 };
 
+export const SKY_PRODUCT_HANDLE = 'your-sky-star-map';
+
+/**
+ * Personalised products staged for release. Same dual gate as extensions:
+ * flag AND Shopify publication. Flip via docs/your-sky-release.md once the
+ * sandbox end-to-end order has been verified.
+ */
+export const PERSONALISED_RELEASE_FLAGS: Record<string, boolean> = {
+  [SKY_PRODUCT_HANDLE]: false,
+};
+
 export function isReleasedExtensionHandle(handle?: string | null) {
   return Boolean(handle && EXTENSION_RELEASE_FLAGS[handle.toLowerCase()]);
+}
+
+export function isStagedPersonalisedHandle(handle?: string | null) {
+  return Boolean(handle && handle.toLowerCase() in PERSONALISED_RELEASE_FLAGS);
+}
+
+/** True once any personalised product is live — gates its nav entry. */
+export function hasReleasedPersonalised(
+  flags: Record<string, boolean> = PERSONALISED_RELEASE_FLAGS,
+) {
+  return Object.values(flags).some(Boolean);
 }
 
 /** True once any extension family is live — gates the "Everyday" nav. */
@@ -117,9 +139,10 @@ export function hasReleasedExtensions() {
  * the sitemap even if a product is accidentally published. */
 export function isUnreleasedExtensionHandle(handle?: string | null) {
   const key = handle?.toLowerCase();
-  return Boolean(
-    key && key in EXTENSION_RELEASE_FLAGS && !EXTENSION_RELEASE_FLAGS[key],
-  );
+  if (!key) return false;
+  if (key in EXTENSION_RELEASE_FLAGS) return !EXTENSION_RELEASE_FLAGS[key];
+  if (key in PERSONALISED_RELEASE_FLAGS) return !PERSONALISED_RELEASE_FLAGS[key];
+  return false;
 }
 
 /**
@@ -128,10 +151,13 @@ export function isUnreleasedExtensionHandle(handle?: string | null) {
  */
 export function computeSellableHandles(
   extensionFlags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
+  personalisedFlags: Record<string, boolean> = PERSONALISED_RELEASE_FLAGS,
 ): ReadonlySet<string> {
   const handles = new Set(LAUNCH_PRODUCT_HANDLES);
-  for (const [handle, released] of Object.entries(extensionFlags)) {
-    if (released) handles.add(handle.toLowerCase());
+  for (const flags of [extensionFlags, personalisedFlags]) {
+    for (const [handle, released] of Object.entries(flags)) {
+      if (released) handles.add(handle.toLowerCase());
+    }
   }
   return handles;
 }

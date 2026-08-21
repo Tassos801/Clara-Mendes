@@ -3300,3 +3300,202 @@ html.lenis,
 html.lenis body {
   scroll-behavior: auto;
 }
+
+/* --- Your Sky: personalised star map ----------------------------------- */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/EBGaramond-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/EBGaramond-Italic.ttf') format('truetype');
+}
+
+.sky-configurator {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+  justify-items: center;
+}
+
+.sky-preview {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  background: var(--color-soft);
+  border-radius: 6px;
+  box-shadow: 0 24px 60px rgba(55, 48, 39, 0.16);
+  overflow: hidden;
+}
+
+.sky-preview-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sky-preview-loading {
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-style: italic;
+}
+
+.sky-preview-hint {
+  position: absolute;
+  inset: auto 0 0 0;
+  margin: 0;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.78rem;
+  color: var(--color-paper);
+  background: rgba(38, 35, 31, 0.72);
+}
+
+.sky-form {
+  display: grid;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+.sky-field {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.86rem;
+}
+
+.sky-field > span {
+  color: var(--color-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+}
+
+.sky-field em {
+  text-transform: none;
+  letter-spacing: 0;
+  font-style: normal;
+  opacity: 0.8;
+}
+
+.sky-field input {
+  font: inherit;
+  font-size: 1rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 4px;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  min-width: 0;
+  width: 100%;
+}
+
+.sky-field input:focus {
+  outline: 2px solid var(--color-clay);
+  outline-offset: 1px;
+}
+
+.sky-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.sky-field-note,
+.sky-form-note {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.sky-place-results {
+  position: absolute;
+  z-index: 5;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0.25rem 0 0;
+  padding: 0.25rem;
+  list-style: none;
+  background: var(--color-paper);
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 4px;
+  box-shadow: 0 12px 32px rgba(55, 48, 39, 0.14);
+  max-height: 16rem;
+  overflow: auto;
+}
+
+.sky-place-results button {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.55rem 0.7rem;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.sky-place-results button:hover,
+.sky-place-results button:focus-visible {
+  background: var(--color-soft);
+  outline: none;
+}
+
+.sky-place-results small {
+  color: var(--color-muted);
+}
+
+.sky-form-error {
+  margin: 0;
+  color: #8a3b2e;
+  font-size: 0.85rem;
+}
+
+.sky-cart-attributes {
+  margin: 0.25rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+@media (min-width: 1440px) {
+  /* Wide screens: preview and form side by side inside the gallery column. */
+  .sky-configurator {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
+    justify-items: stretch;
+    align-items: start;
+  }
+
+  .sky-preview,
+  .sky-form {
+    max-width: none;
+  }
+
+  .sky-form {
+    position: sticky;
+    top: calc(var(--header-height) + 16px);
+  }
+}
+
+@media (max-width: 767px) {
+  .sky-field-row {
+    grid-template-columns: 1fr;
+  }
+}
