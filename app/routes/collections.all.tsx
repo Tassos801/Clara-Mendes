@@ -321,7 +321,8 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           <>
             <p className="cv-count">
               {nodes.length}
-              {hasNextPage ? '+' : ''} products
+              {hasNextPage ? '+' : ''}{' '}
+              {nodes.length === 1 && !hasNextPage ? 'product' : 'products'}
             </p>
 
             {nodes.length > 0 ? (
