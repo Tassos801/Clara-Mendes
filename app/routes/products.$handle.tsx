@@ -42,6 +42,10 @@ import {
   CLASSIC_FRAME_SIZE_LABEL,
   filterAccurateClassicFrameImages,
   getClassicFrameArtworkForPrint,
+  getUnframedPresentationRedirectPath,
+  isAccurateClassicFrameImage,
+  isUnframedPresentation,
+  selectAccurateClassicFrameImage,
   selectedClassicFrameArtwork,
   UNFRAMED_PRINT_SIZE_LABELS,
 } from '~/lib/classicFrame';
@@ -165,6 +169,95 @@ type ClassicFrameCrossSell = {
   url: string;
 };
 
+function sanitizeOriginalArtProduct(product: ProductDetail): ProductDetail {
+  const variants = product.variants.nodes.filter((variant) =>
+    isUnframedPresentation(variant.selectedOptions),
+  );
+  const selectedVariant =
+    product.selectedOrFirstAvailableVariant &&
+    isUnframedPresentation(
+      product.selectedOrFirstAvailableVariant.selectedOptions,
+    )
+      ? product.selectedOrFirstAvailableVariant
+      : (variants.find((variant) => variant.availableForSale) ??
+        variants[0] ??
+        null);
+
+  return {
+    ...product,
+    cardVariant: {
+      nodes: variants.slice(0, 1),
+    },
+    options: product.options.filter(
+      (option) => option.name.trim().toLowerCase() !== 'presentation',
+    ),
+    selectedOrFirstAvailableVariant: selectedVariant,
+    variants: {
+      ...product.variants,
+      nodes: variants,
+    },
+  };
+}
+
+function sanitizeClassicFrameProduct(product: ProductDetail): ProductDetail {
+  const variants = product.variants.nodes.filter(
+    (variant) => variant.image && isAccurateClassicFrameImage(variant.image),
+  );
+  const selectedVariant =
+    product.selectedOrFirstAvailableVariant?.image &&
+    isAccurateClassicFrameImage(product.selectedOrFirstAvailableVariant.image)
+      ? product.selectedOrFirstAvailableVariant
+      : (variants.find((variant) => variant.availableForSale) ??
+        variants[0] ??
+        null);
+  const allowedArtworks = new Set(
+    variants.flatMap((variant) =>
+      variant.selectedOptions
+        .filter((option) => option.name.trim().toLowerCase() === 'artwork')
+        .map((option) => option.value),
+    ),
+  );
+  const accurateImages = filterAccurateClassicFrameImages([
+    ...(product.galleryImages?.nodes ?? []),
+    ...(product.images?.nodes ?? []),
+    ...variants.flatMap((variant) => (variant.image ? [variant.image] : [])),
+  ]).filter(
+    (image, index, list) =>
+      list.findIndex((candidate) => candidate.url === image.url) === index,
+  );
+  const featuredImage =
+    selectAccurateClassicFrameImage([
+      product.featuredImage,
+      selectedVariant?.image,
+      ...accurateImages,
+    ]) ?? null;
+
+  return {
+    ...product,
+    cardVariant: {
+      nodes: variants.slice(0, 1),
+    },
+    featuredImage,
+    galleryImages: {nodes: accurateImages},
+    images: {nodes: accurateImages},
+    options: product.options.map((option) =>
+      option.name.trim().toLowerCase() === 'artwork'
+        ? {
+            ...option,
+            optionValues: option.optionValues.filter((value) =>
+              allowedArtworks.has(value.name),
+            ),
+          }
+        : option,
+    ),
+    selectedOrFirstAvailableVariant: selectedVariant,
+    variants: {
+      ...product.variants,
+      nodes: variants,
+    },
+  };
+}
+
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
   const description = product ? getProductDescription(product) : null;
@@ -191,6 +284,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // "Pair with" prefers the two companion prints from the same capsule;
   // best sellers only fill any remaining slots.
   const capsule = CAPSULES.find((entry) => entry.handles.includes(handle));
+  const unframedRedirect = capsule
+    ? getUnframedPresentationRedirectPath(request.url)
+    : null;
+  if (unframedRedirect) {
+    throw redirect(unframedRedirect);
+  }
   // Cross-sell stays dormant until the phone case's release flag flips —
   // the sentinel handle matches no product, so the query returns null.
   const phoneCaseEligible =
@@ -224,18 +323,25 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw new Response('Product not found', {status: 404});
   }
 
+  const rawProduct = data.product as ProductDetail;
+  const product = capsule
+    ? sanitizeOriginalArtProduct(rawProduct)
+    : handle === CLASSIC_FRAME_HANDLE
+      ? sanitizeClassicFrameProduct(rawProduct)
+      : rawProduct;
+
   // A staged personalised product stays hidden everywhere, but the preview
   // environment may unlock its PDP so the end-to-end order can be tested
   // before the release flag flips.
   const previewUnlocked =
     isStagedPersonalisedHandle(handle) &&
     context.env.SKY_PREVIEW_UNLOCK === 'true';
-  if (isDemoProduct(data.product) && !previewUnlocked) {
+  if (isDemoProduct(product) && !previewUnlocked) {
     throw redirect('/collections/all');
   }
 
   const parsedReviews = parseReviewsMetafield(
-    (data.product as {reviewsMetafield?: ReviewsMetafieldResponse})
+    (product as {reviewsMetafield?: ReviewsMetafieldResponse})
       .reviewsMetafield ?? null,
   );
   const reviews: ProductReviewsData = {
@@ -299,6 +405,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       (variant) =>
         variant.availableForSale &&
         variant.image &&
+        isAccurateClassicFrameImage(variant.image) &&
         variant.price &&
         variant.selectedOptions.some(
           (option) =>
@@ -326,10 +433,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       : null,
     phoneCaseCrossSell,
     classicFrameCrossSell,
-    product: data.product as ProductDetail,
+    product,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
-    seoUrl: getCanonicalUrl(request, `/products/${data.product.handle}`),
+    seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
     skyTheme: DEFAULT_SKY_THEME,
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
@@ -660,7 +767,8 @@ export default function Product() {
                 </p>
                 <p className="product-format-choice-detail">
                   {CLASSIC_FRAME_SIZE_LABEL}, Natural classic frame, no mat,
-                  with clear Perspex glazing.
+                  with clear Perspex glazing. Digitally composited preview;
+                  natural grain and printed colour may vary slightly.
                 </p>
                 <Link
                   className="primary-button product-format-choice-cta"
@@ -807,6 +915,14 @@ export default function Product() {
                     {CLASSIC_FRAME_SIZE_LABEL} artwork opening. This framed
                     product is offered in one size; the matching unframed print
                     is available in {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Preview</dt>
+                  <dd>
+                    Digitally composited using the exact artwork and
+                    Prodigi&apos;s Natural classic frame reference. Natural
+                    grain and printed colour may vary slightly.
                   </dd>
                 </div>
               </>
@@ -1548,14 +1664,21 @@ function VariantOptions({
       option.value,
     ]) ?? [],
   );
+  const visibleOptions = product.options.filter(
+    (option) =>
+      !(
+        product.productType?.trim().toLowerCase() === 'art prints' &&
+        option.name.trim().toLowerCase() === 'presentation'
+      ),
+  );
 
-  if (!product.options.length || product.variants.nodes.length <= 1) {
+  if (!visibleOptions.length || product.variants.nodes.length <= 1) {
     return null;
   }
 
   return (
     <div className="product-options">
-      {product.options.map((option) => (
+      {visibleOptions.map((option) => (
         <fieldset className="variant-fieldset" key={option.id || option.name}>
           <legend>{option.name}</legend>
           <div className="variant-options">

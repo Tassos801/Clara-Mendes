@@ -1382,6 +1382,12 @@ html:has(.home-root) main {
     width: 100%;
   }
 
+  .hm-nav-group .hm-nav-text {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+  }
+
   .hm-header-top .market-selector select {
     max-width: 74px;
     min-height: 30px;
@@ -1523,6 +1529,19 @@ html:has(.home-root) main {
     font-size: clamp(2rem, 10vw, 2.85rem);
   }
 
+}
+
+@media (max-width: 480px) {
+  .hm-nav-group {
+    display: grid;
+    gap: 2px 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .hm-nav-group .hm-nav-text {
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 768px) and (max-height: 680px) {

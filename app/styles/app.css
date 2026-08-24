@@ -1503,6 +1503,23 @@ button {
   padding: 0 18px;
 }
 
+@media (max-width: 480px) {
+  .product-format-choice {
+    align-items: start;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .product-format-choice img {
+    width: min(100%, 116px);
+  }
+
+  .product-format-choice-cta {
+    justify-self: stretch;
+    padding-inline: 12px;
+    width: 100%;
+  }
+}
+
 .product-cross-sell {
   align-items: center;
   backdrop-filter: blur(14px) saturate(1.15);

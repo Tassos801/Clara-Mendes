@@ -12,6 +12,8 @@ import {
 import {
   CLASSIC_FRAME_HANDLE,
   isAccurateClassicFrameImage,
+  selectAccurateClassicFrameImage,
+  selectAccurateClassicFrameVariant,
 } from '~/lib/classicFrame';
 
 const CARD_IMAGE_SIZES =
@@ -25,9 +27,9 @@ type MoneyAmount = {
 type ProductImage = {
   id?: string;
   altText?: string | null;
-  height?: number;
+  height?: number | null;
   url: string;
-  width?: number;
+  width?: number | null;
 };
 
 type ProductVariant = {
@@ -91,13 +93,18 @@ export function ClaraProductCard({
   pricing?: CardPricing;
 }) {
   const images = product.images?.nodes ?? [];
-  const firstVariant =
+  const candidateVariant =
     product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
+  const firstVariant = isClassicFrame
+    ? selectAccurateClassicFrameVariant([candidateVariant])
+    : candidateVariant;
   const baseImage = isClassicFrame
-    ? (firstVariant?.image ??
-      images.find(isAccurateClassicFrameImage) ??
-      product.featuredImage)
+    ? selectAccurateClassicFrameImage([
+        firstVariant?.image,
+        ...images,
+        product.featuredImage,
+      ])
     : (product.featuredImage ?? images[0]);
   const hoverImage = isClassicFrame
     ? images.find(
@@ -115,9 +122,12 @@ export function ClaraProductCard({
       window.matchMedia('(hover: hover) and (pointer: fine)').matches,
     );
   }, []);
-  const priceLabel = formatCardPriceLabel(
-    pricing ?? deriveCardPricing(product),
-  );
+  const cardPricing = isClassicFrame
+    ? firstVariant
+      ? deriveCardPricing({variants: {nodes: [firstVariant]}})
+      : {price: null, hasRange: false}
+    : (pricing ?? deriveCardPricing(product));
+  const priceLabel = formatCardPriceLabel(cardPricing);
   const chip = product.productType || 'Curated object';
   const story = showStory ? getProductStory(product) : null;
 

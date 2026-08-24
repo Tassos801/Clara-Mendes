@@ -45,6 +45,10 @@ export function FramedArtFeature({product}: {product: ClaraCardProduct}) {
           Prodigi&apos;s Natural classic frame. The artwork is fitted without a
           mat behind clear Perspex glazing and arrives ready to hang.
         </p>
+        <p className="framed-art-feature__preview-note">
+          Digitally composited preview using the exact artwork and supplier
+          frame reference. Natural grain and printed colour may vary slightly.
+        </p>
 
         <dl className="framed-art-feature__facts">
           <div>
@@ -140,6 +144,12 @@ const framedArtFeatureCss = `
   line-height: 1.75;
   margin: 0;
   max-width: 58ch;
+}
+
+.framed-art-feature__copy > .framed-art-feature__preview-note {
+  color: rgba(255, 253, 248, 0.64);
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .framed-art-feature__facts {
