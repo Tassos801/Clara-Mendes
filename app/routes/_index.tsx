@@ -6,14 +6,18 @@ import {
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
+import {FramedArtFeature} from '~/components/FramedArtFeature';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
   filterDemoCollections,
   filterDemoProducts,
+  isDemoProduct,
+  isReleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
 } from '~/lib/catalogFilters';
+import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {
   buildOriginalArtQuery,
   buildOriginalArtProductMap,
@@ -74,6 +78,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
         // decide which prints exist.
         artFirst: ORIGINAL_ART_QUERY_FIRST,
         artQuery: buildOriginalArtQuery(),
+        frameHandle: isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
+          ? CLASSIC_FRAME_HANDLE
+          : '__frame-not-released__',
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
         first: 12,
@@ -87,12 +94,17 @@ export async function loader({context, request}: Route.LoaderArgs) {
       originalArtProducts: buildOriginalArtProductMap(
         (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
       ),
+      frameProduct:
+        data.frameProduct && !isDemoProduct(data.frameProduct)
+          ? (data.frameProduct as ClaraCardProduct)
+          : null,
       products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
       seoUrl: getCanonicalUrl(request, '/'),
     };
   } catch {
     return {
       collections: [] as HomeCollection[],
+      frameProduct: null as ClaraCardProduct | null,
       originalArtProducts: {} as OriginalArtProductMap,
       products: [] as ClaraCardProduct[],
       seoUrl: getCanonicalUrl(request, '/'),
@@ -101,7 +113,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function Homepage() {
-  const {collections, originalArtProducts, products, seoUrl} =
+  const {collections, frameProduct, originalArtProducts, products, seoUrl} =
     useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
@@ -512,6 +524,8 @@ export default function Homepage() {
 
       <OriginalArtPreview products={originalArtProducts} compact />
 
+      {frameProduct ? <FramedArtFeature product={frameProduct} /> : null}
+
       {featuredProducts.length > 0 ? (
         <section
           className="featured-grid-section"
@@ -608,6 +622,7 @@ const HOMEPAGE_QUERY = `#graphql
     $artQuery: String!
     $country: CountryCode
     $first: Int!
+    $frameHandle: String!
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
     products(first: $first, sortKey: BEST_SELLING) {
@@ -619,6 +634,9 @@ const HOMEPAGE_QUERY = `#graphql
       nodes {
         ...ClaraProductCard
       }
+    }
+    frameProduct: product(handle: $frameHandle) {
+      ...ClaraProductCard
     }
     collections(first: 12) {
       nodes {

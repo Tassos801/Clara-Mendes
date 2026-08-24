@@ -55,16 +55,39 @@
     {
       "id": "classic-frame",
       "handle": "classic-framed-art-print-16x20",
-      "title": "Classic Framed Art Print — 16 × 20 in",
-      "productType": "Framed Art",
-      "price": "99.00",
+      "title": "Natural Classic Frame",
+      "productType": "Frames",
+      "price": "32.50",
+      "frameOnly": true,
       "assetKind": "classic_frame",
-      "sourceSequence": 1,
-      "skuSuffix": "CFP-16X20",
-      "prodigiSku": "GLOBAL-CFP-16X20",
-      "prodigiSkuStatus": "candidate",
-      "material": "Giclée fine-art print with natural wood-effect classic frame",
-      "format": "Ready-to-hang 16 × 20 inch framed print"
+      "skuSuffix": "FRAME-NAT",
+      "prodigiSku": "GLOBAL-CFP exact-size family with blank removable insert",
+      "prodigiSkuStatus": "verified-dashboard",
+      "material": "Natural satin-laminated solid-wood frame with clear Perspex glazing and removable backloader",
+      "format": "Frame only; artwork, print, and decorative mat not included",
+      "sizeVariants": [
+        {
+          "label": "8 × 10 in",
+          "code": "8X10",
+          "price": "32.50",
+          "prodigiCost": "26.00",
+          "prodigiSku": "GLOBAL-CFP-8X10"
+        },
+        {
+          "label": "16 × 20 in",
+          "code": "16X20",
+          "price": "50.00",
+          "prodigiCost": "40.00",
+          "prodigiSku": "GLOBAL-CFP-16X20"
+        },
+        {
+          "label": "20 × 24 in",
+          "code": "20X24",
+          "price": "64.29",
+          "prodigiCost": "51.43",
+          "prodigiSku": "GLOBAL-CFP-20X24"
+        }
+      ]
     },
     {
       "id": "greeting-card",

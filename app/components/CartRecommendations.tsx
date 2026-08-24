@@ -10,11 +10,7 @@ import {
   deriveCardPricing,
   formatCardPriceLabel,
 } from '~/lib/productCardPricing';
-import {
-  CLASSIC_FRAME_HANDLE,
-  getMatchingUnframedHandleForCartLine,
-  selectAccurateClassicFrameVariant,
-} from '~/lib/classicFrame';
+import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 
 const VISIBLE_RECOMMENDATIONS = 3;
 
@@ -48,17 +44,6 @@ export function CartRecommendations({
   }, [cart?.lines?.nodes]);
 
   const serializedIds = cartProductIds.join(',');
-  const matchingUnframedHandles = useMemo(() => {
-    const handles = new Set<string>();
-    for (const line of cart?.lines?.nodes ?? []) {
-      const handle = getMatchingUnframedHandleForCartLine(
-        line.merchandise?.product?.handle,
-        line.merchandise?.selectedOptions ?? [],
-      );
-      if (handle) handles.add(handle);
-    }
-    return handles;
-  }, [cart?.lines?.nodes]);
 
   useEffect(() => {
     if (!serializedIds || lastLoadedIds.current === serializedIds) return;
@@ -70,10 +55,7 @@ export function CartRecommendations({
 
   const inCart = new Set(cartProductIds);
   const products = (fetcher.data?.products ?? [])
-    .filter(
-      (product) =>
-        !inCart.has(product.id) && !matchingUnframedHandles.has(product.handle),
-    )
+    .filter((product) => !inCart.has(product.id))
     .slice(0, VISIBLE_RECOMMENDATIONS);
 
   if (products.length === 0) return null;
@@ -107,11 +89,9 @@ function CartRecommendationRow({
 }) {
   const candidateVariant = product.cardVariant?.nodes?.[0];
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
-  const variant = isClassicFrame
-    ? selectAccurateClassicFrameVariant([candidateVariant])
-    : candidateVariant;
+  const variant = candidateVariant;
   const image = isClassicFrame
-    ? variant?.image
+    ? (product.images?.nodes?.[0] ?? product.featuredImage)
     : (product.featuredImage ?? product.images?.nodes?.[0]);
   // "From <min released price>" — the Add button adds the first variant,
   // which is that min-price 8 × 10, so the label stays truthful.

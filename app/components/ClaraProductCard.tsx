@@ -13,7 +13,6 @@ import {
   CLASSIC_FRAME_HANDLE,
   isAccurateClassicFrameImage,
   selectAccurateClassicFrameImage,
-  selectAccurateClassicFrameVariant,
 } from '~/lib/classicFrame';
 
 const CARD_IMAGE_SIZES =
@@ -96,9 +95,7 @@ export function ClaraProductCard({
   const candidateVariant =
     product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
-  const firstVariant = isClassicFrame
-    ? selectAccurateClassicFrameVariant([candidateVariant])
-    : candidateVariant;
+  const firstVariant = candidateVariant;
   const baseImage = isClassicFrame
     ? selectAccurateClassicFrameImage([
         firstVariant?.image,

@@ -2,60 +2,45 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   buildClassicFrameUrl,
-  CLASSIC_FRAME_ARTWORKS,
   CLASSIC_FRAME_HANDLE,
-  CLASSIC_FRAME_SIZE_LABEL,
-  getClassicFrameArtworkByTitle,
-  getClassicFrameArtworkForPrint,
-  getMatchingUnframedHandleForCartLine,
-  getUnframedPresentationRedirectPath,
+  CLASSIC_FRAME_PRODUCT_TYPE,
+  CLASSIC_FRAME_SIZE_LABELS,
   filterAccurateClassicFrameImages,
+  getUnframedPresentationRedirectPath,
   isAccurateClassicFrameImage,
+  isClassicFrameSizeLabel,
   isUnframedPresentation,
   selectAccurateClassicFrameImage,
   selectAccurateClassicFrameVariant,
-  selectedClassicFrameArtwork,
+  selectedClassicFrameSize,
   UNFRAMED_PRINT_SIZE_LABELS,
 } from '../app/lib/classicFrame.ts';
 
-test('classic frame catalog exposes five exact sequence-one artworks', () => {
-  assert.equal(CLASSIC_FRAME_ARTWORKS.length, 5);
-  assert.deepEqual(
-    CLASSIC_FRAME_ARTWORKS.map((artwork) => artwork.printHandle),
-    [
-      'quiet-form-i-art-print',
-      'patina-blue-i-art-print',
-      'neo-deco-i-art-print',
-      'midnight-garden-i-art-print',
-      'sunlit-mosaic-i-art-print',
-    ],
-  );
-  assert.equal(getClassicFrameArtworkForPrint('quiet-form-ii-art-print'), null);
-});
-
-test('classic frame links preselect the matching artwork', () => {
-  assert.equal(
-    buildClassicFrameUrl('Patina Blue'),
-    `/products/${CLASSIC_FRAME_HANDLE}?Artwork=Patina+Blue`,
-  );
-  assert.equal(
-    getClassicFrameArtworkByTitle('patina blue')?.printHandle,
-    'patina-blue-i-art-print',
-  );
-  assert.equal(
-    selectedClassicFrameArtwork([{name: 'Artwork', value: 'Neo Deco'}])
-      ?.printHandle,
-    'neo-deco-i-art-print',
-  );
-});
-
-test('framed and unframed size promises stay distinct', () => {
-  assert.equal(CLASSIC_FRAME_SIZE_LABEL, '16 × 20 in');
-  assert.deepEqual(UNFRAMED_PRINT_SIZE_LABELS, [
+test('frame-only product mirrors all three print sizes', () => {
+  assert.equal(CLASSIC_FRAME_PRODUCT_TYPE, 'Frames');
+  assert.deepEqual(CLASSIC_FRAME_SIZE_LABELS, [
     '8 × 10 in',
     '16 × 20 in',
     '20 × 24 in',
   ]);
+  assert.deepEqual(UNFRAMED_PRINT_SIZE_LABELS, CLASSIC_FRAME_SIZE_LABELS);
+});
+
+test('frame links preselect only an approved size', () => {
+  assert.equal(
+    buildClassicFrameUrl('20 × 24 in'),
+    `/products/${CLASSIC_FRAME_HANDLE}?Size=20+%C3%97+24+in`,
+  );
+  assert.equal(
+    buildClassicFrameUrl('Patina Blue'),
+    `/products/${CLASSIC_FRAME_HANDLE}`,
+  );
+  assert.equal(isClassicFrameSizeLabel('16 × 20 in'), true);
+  assert.equal(isClassicFrameSizeLabel('16 x 20 in'), false);
+  assert.equal(
+    selectedClassicFrameSize([{name: 'Size', value: '8 × 10 in'}]),
+    '8 × 10 in',
+  );
 });
 
 test('legacy presentation links canonicalize to the unframed print', () => {
@@ -81,45 +66,30 @@ test('legacy presentation links canonicalize to the unframed print', () => {
   );
 });
 
-test('framed cart lines exclude the identical unframed artwork', () => {
-  assert.equal(
-    getMatchingUnframedHandleForCartLine(CLASSIC_FRAME_HANDLE, [
-      {name: 'Artwork', value: 'Sunlit Mosaic'},
-    ]),
-    'sunlit-mosaic-i-art-print',
-  );
-  assert.equal(
-    getMatchingUnframedHandleForCartLine('quiet-form-i-art-print', [
-      {name: 'Artwork', value: 'Quiet Form'},
-    ]),
-    null,
-  );
-});
-
-test('storefront frame media guard rejects the old mat-and-brown-frame files', () => {
+test('storefront media guard accepts only the empty Natural frame', () => {
   const accurate = {
+    altText: 'Natural classic frame only; artwork not included',
+    url: 'https://cdn.shopify.com/frame-only-natural.png',
+  };
+  const retiredArtworkMockup = {
     altText:
       'Quiet Form artwork in the Prodigi Natural classic frame, no mat, 16 × 20 in',
     url: 'https://cdn.shopify.com/quiet-form.webp',
   };
-  const misleading = {
-    altText:
-      'Quiet Form artwork shown on the classic framed art print — 16 × 20 in',
-    url: 'https://cdn.shopify.com/classic-frame-quiet-form.jpg',
-  };
 
   assert.equal(isAccurateClassicFrameImage(accurate), true);
-  assert.equal(isAccurateClassicFrameImage(misleading), false);
-  assert.deepEqual(filterAccurateClassicFrameImages([misleading, accurate]), [
-    accurate,
-  ]);
+  assert.equal(isAccurateClassicFrameImage(retiredArtworkMockup), false);
+  assert.deepEqual(
+    filterAccurateClassicFrameImages([retiredArtworkMockup, accurate]),
+    [accurate],
+  );
   assert.equal(
-    selectAccurateClassicFrameImage([misleading, accurate]),
+    selectAccurateClassicFrameImage([retiredArtworkMockup, accurate]),
     accurate,
   );
   assert.deepEqual(
     selectAccurateClassicFrameVariant([
-      {id: 'legacy', image: misleading},
+      {id: 'retired', image: retiredArtworkMockup},
       {id: 'approved', image: accurate},
     ]),
     {id: 'approved', image: accurate},

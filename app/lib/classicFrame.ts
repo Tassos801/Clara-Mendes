@@ -1,21 +1,16 @@
-import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
-
 export const CLASSIC_FRAME_HANDLE = 'classic-framed-art-print-16x20';
-export const CLASSIC_FRAME_PRODUCT_TYPE = 'Framed Art';
-export const CLASSIC_FRAME_SIZE_LABEL = '16 × 20 in';
-export const UNFRAMED_PRESENTATION_LABEL = 'Unframed';
-export const UNFRAMED_PRINT_SIZE_LABELS = [
+export const CLASSIC_FRAME_PRODUCT_TYPE = 'Frames';
+export const CLASSIC_FRAME_IMAGE_PATH =
+  '/images/art-product-extensions/classic-frame/frame-only-natural.png';
+export const CLASSIC_FRAME_SIZE_LABELS = [
   '8 × 10 in',
   '16 × 20 in',
   '20 × 24 in',
 ] as const;
+export const UNFRAMED_PRESENTATION_LABEL = 'Unframed';
+export const UNFRAMED_PRINT_SIZE_LABELS = CLASSIC_FRAME_SIZE_LABELS;
 
-export type ClassicFrameArtwork = {
-  artworkTitle: string;
-  image: string;
-  printHandle: string;
-  printTitle: string;
-};
+export type ClassicFrameSizeLabel = (typeof CLASSIC_FRAME_SIZE_LABELS)[number];
 
 type ClassicFrameImage = {
   altText?: string | null;
@@ -24,57 +19,31 @@ type ClassicFrameImage = {
 
 type SelectedOption = {name: string; value: string};
 
-/**
- * Prodigi's framed family currently uses artwork number I from each capsule.
- * Keeping this mapping catalog-derived prevents a same-capsule but different
- * artwork from being presented as the framed version of a print.
- */
-export const CLASSIC_FRAME_ARTWORKS: ClassicFrameArtwork[] = artCatalog
-  .filter((item) => item.sequence === 1)
-  .map((item) => ({
-    artworkTitle: item.capsule,
-    image: item.image,
-    printHandle: item.handle,
-    printTitle: item.shortTitle,
-  }));
+export function isClassicFrameSizeLabel(
+  value?: string | null,
+): value is ClassicFrameSizeLabel {
+  const normalized = value?.trim().toLowerCase();
+  return CLASSIC_FRAME_SIZE_LABELS.some(
+    (size) => size.toLowerCase() === normalized,
+  );
+}
 
-export function buildClassicFrameUrl(artworkTitle: string) {
-  const params = new URLSearchParams({Artwork: artworkTitle});
+export function buildClassicFrameUrl(size?: string | null) {
+  if (!isClassicFrameSizeLabel(size)) {
+    return `/products/${CLASSIC_FRAME_HANDLE}`;
+  }
+
+  const params = new URLSearchParams({Size: size});
   return `/products/${CLASSIC_FRAME_HANDLE}?${params.toString()}`;
 }
 
-export function getClassicFrameArtworkForPrint(
-  handle?: string | null,
-): ClassicFrameArtwork | null {
-  const normalized = handle?.trim().toLowerCase();
-  if (!normalized) return null;
-  return (
-    CLASSIC_FRAME_ARTWORKS.find(
-      (artwork) => artwork.printHandle === normalized,
-    ) ?? null
-  );
-}
-
-export function getClassicFrameArtworkByTitle(
-  artworkTitle?: string | null,
-): ClassicFrameArtwork | null {
-  const normalized = artworkTitle?.trim().toLowerCase();
-  if (!normalized) return null;
-  return (
-    CLASSIC_FRAME_ARTWORKS.find(
-      (artwork) => artwork.artworkTitle.toLowerCase() === normalized,
-    ) ?? null
-  );
-}
-
-export function selectedClassicFrameArtwork(
+export function selectedClassicFrameSize(
   selectedOptions: SelectedOption[] = [],
-) {
-  return getClassicFrameArtworkByTitle(
-    selectedOptions.find(
-      (option) => option.name.trim().toLowerCase() === 'artwork',
-    )?.value,
-  );
+): ClassicFrameSizeLabel | null {
+  const size = selectedOptions.find(
+    (option) => option.name.trim().toLowerCase() === 'size',
+  )?.value;
+  return isClassicFrameSizeLabel(size) ? size : null;
 }
 
 export function isUnframedPresentation(selectedOptions: SelectedOption[] = []) {
@@ -108,20 +77,21 @@ export function getUnframedPresentationRedirectPath(requestUrl: string) {
   return `${url.pathname}${url.search}`;
 }
 
-export function getMatchingUnframedHandleForCartLine(
-  productHandle?: string | null,
-  selectedOptions: SelectedOption[] = [],
-) {
-  if (productHandle !== CLASSIC_FRAME_HANDLE) return null;
-  return selectedClassicFrameArtwork(selectedOptions)?.printHandle ?? null;
-}
-
+/**
+ * Frame imagery must show the empty supplier frame and state that the product
+ * is frame-only. This prevents the retired artwork-in-frame mockups from ever
+ * returning to cards, recommendations, or the product gallery.
+ */
 export function isAccurateClassicFrameImage(image?: ClassicFrameImage | null) {
   const identity = `${image?.url ?? ''} ${image?.altText ?? ''}`.toLowerCase();
-  return (
-    identity.includes('prodigi natural classic frame') &&
-    identity.includes('no mat')
-  );
+  const isNaturalClassicFrame =
+    identity.includes('natural classic frame') ||
+    identity.includes('frame-only-natural');
+  const isFrameOnly =
+    identity.includes('frame only') ||
+    identity.includes('frame-only') ||
+    identity.includes('artwork not included');
+  return isNaturalClassicFrame && isFrameOnly;
 }
 
 export function filterAccurateClassicFrameImages<T extends ClassicFrameImage>(

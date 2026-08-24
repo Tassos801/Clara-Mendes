@@ -75,6 +75,9 @@ function slugify(value) {
 }
 
 function imageUrl(family, capsuleName) {
+  if (family.frameOnly) {
+    return `${baseUrl}/${family.id}/frame-only-natural.png`;
+  }
   const filename = family.collectionVariant
     ? 'all-capsules.webp'
     : `${slugify(capsuleName)}.webp`;
@@ -83,9 +86,11 @@ function imageUrl(family, capsuleName) {
 
 function imageFile(family, capsuleName) {
   return {
-    alt: family.collectionVariant
-      ? 'Clara Mendes 2026 art calendar featuring all five original-art capsules'
-      : `${capsuleName} artwork shown on the ${family.title.toLowerCase()}`,
+    alt: family.frameOnly
+      ? 'Natural classic frame only; artwork not included'
+      : family.collectionVariant
+        ? 'Clara Mendes 2026 art calendar featuring all five original-art capsules'
+        : `${capsuleName} artwork shown on the ${family.title.toLowerCase()}`,
     contentType: 'IMAGE',
     filename: `${family.id}-${slugify(capsuleName)}.webp`,
     originalSource: imageUrl(family, capsuleName),
@@ -93,9 +98,11 @@ function imageFile(family, capsuleName) {
 }
 
 function descriptionHtml(family) {
-  const intro = family.collectionVariant
-    ? 'A year of original Clara Mendes artwork, bringing all five art capsules together in one considered calendar.'
-    : `Original Clara Mendes artwork adapted for the ${family.format.toLowerCase()}. Choose the art capsule that suits your space and everyday ritual.`;
+  const intro = family.frameOnly
+    ? 'A Natural classic picture frame sized to fit the three Clara Mendes print editions. This product is the frame only; artwork is not included.'
+    : family.collectionVariant
+      ? 'A year of original Clara Mendes artwork, bringing all five art capsules together in one considered calendar.'
+      : `Original Clara Mendes artwork adapted for the ${family.format.toLowerCase()}. Choose the art capsule that suits your space and everyday ritual.`;
 
   return [
     `<p>${intro}</p>`,
@@ -144,9 +151,11 @@ function phoneVariants(family, capsuleName, file) {
 }
 
 function productInput(family) {
-  const capsuleNames = family.collectionVariant
-    ? ['All Capsules']
-    : extensionCatalog.capsuleOrder;
+  const capsuleNames = family.frameOnly
+    ? ['Frame Only']
+    : family.collectionVariant
+      ? ['All Capsules']
+      : extensionCatalog.capsuleOrder;
   const files = capsuleNames.map((capsuleName) =>
     imageFile(family, capsuleName),
   );
@@ -157,7 +166,27 @@ function productInput(family) {
   let productOptions;
   let variants;
 
-  if (family.collectionVariant) {
+  if (family.frameOnly) {
+    productOptions = [
+      {
+        name: 'Size',
+        position: 1,
+        values: family.sizeVariants.map(({label}) => ({name: label})),
+      },
+    ];
+    variants = family.sizeVariants.map(({code, label, price}) => ({
+      file: files[0],
+      inventoryItem: {
+        requiresShipping: true,
+        tracked: false,
+      },
+      inventoryPolicy: 'DENY',
+      optionValues: [{name: label, optionName: 'Size'}],
+      price,
+      sku: `CM-${family.skuSuffix}-${code}`,
+      taxable: true,
+    }));
+  } else if (family.collectionVariant) {
     productOptions = [
       {
         name: 'Edition',
@@ -221,14 +250,21 @@ function productInput(family) {
       title: `${family.title} | Clara Mendes`,
     },
     status: 'DRAFT',
-    tags: [
-      'Clara Mendes Original',
-      'Art for Everyday Living',
-      'Prodigi Mapping Pending',
-      'Cost Gate Pending',
-      'Sample Gate Pending',
-      family.productType,
-    ],
+    tags: family.frameOnly
+      ? [
+          'Clara Mendes Frame',
+          'Frame Only',
+          'Natural Frame',
+          family.productType,
+        ]
+      : [
+          'Clara Mendes Original',
+          'Art for Everyday Living',
+          'Prodigi Mapping Pending',
+          'Cost Gate Pending',
+          'Sample Gate Pending',
+          family.productType,
+        ],
     title: family.title,
     variants,
     vendor: 'Clara Mendes',
@@ -236,6 +272,7 @@ function productInput(family) {
 }
 
 function expectedVariantCount(family) {
+  if (family.frameOnly) return family.sizeVariants.length;
   if (family.collectionVariant) return 1;
   if (family.deviceOptions) {
     return (
@@ -249,6 +286,18 @@ function expectedVariantCount(family) {
 function validateLocalPreviews() {
   const missing = [];
   for (const family of extensionCatalog.families) {
+    if (family.frameOnly) {
+      const filePath = path.join(
+        repoRoot,
+        'public',
+        'images',
+        'art-product-extensions',
+        family.id,
+        'frame-only-natural.png',
+      );
+      if (!existsSync(filePath)) missing.push(filePath);
+      continue;
+    }
     const capsuleNames = family.collectionVariant
       ? ['All Capsules']
       : extensionCatalog.capsuleOrder;
@@ -278,9 +327,11 @@ function validateLocalPreviews() {
 
 async function assertRemoteImages() {
   const urls = extensionCatalog.families.flatMap((family) => {
-    const capsuleNames = family.collectionVariant
-      ? ['All Capsules']
-      : extensionCatalog.capsuleOrder;
+    const capsuleNames = family.frameOnly
+      ? ['Frame Only']
+      : family.collectionVariant
+        ? ['All Capsules']
+        : extensionCatalog.capsuleOrder;
     return capsuleNames.map((capsuleName) => imageUrl(family, capsuleName));
   });
 

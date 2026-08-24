@@ -2,9 +2,8 @@ import {Link} from 'react-router';
 import type {ClaraCardProduct} from './ClaraProductCard';
 import {
   buildClassicFrameUrl,
-  CLASSIC_FRAME_ARTWORKS,
-  CLASSIC_FRAME_SIZE_LABEL,
-  UNFRAMED_PRINT_SIZE_LABELS,
+  CLASSIC_FRAME_IMAGE_PATH,
+  CLASSIC_FRAME_SIZE_LABELS,
 } from '~/lib/classicFrame';
 import {
   deriveCardPricing,
@@ -12,7 +11,6 @@ import {
 } from '~/lib/productCardPricing';
 
 export function FramedArtFeature({product}: {product: ClaraCardProduct}) {
-  const defaultArtwork = CLASSIC_FRAME_ARTWORKS[0];
   const price = formatCardPriceLabel(deriveCardPricing(product));
 
   return (
@@ -24,56 +22,56 @@ export function FramedArtFeature({product}: {product: ClaraCardProduct}) {
       <style suppressHydrationWarning>{framedArtFeatureCss}</style>
       <Link
         className="framed-art-feature__media"
-        to={buildClassicFrameUrl(defaultArtwork.artworkTitle)}
+        to={buildClassicFrameUrl()}
         prefetch="intent"
-        aria-label={`View ${defaultArtwork.artworkTitle} in the Natural classic frame`}
+        aria-label="View the Natural classic frame"
       >
         <img
-          alt={`${defaultArtwork.artworkTitle} artwork in the Prodigi Natural classic frame, no mat, ${CLASSIC_FRAME_SIZE_LABEL}`}
-          height="2000"
+          alt="Natural classic frame only; artwork not included"
+          height="2500"
           loading="lazy"
-          src="/images/art-product-extensions/classic-frame/quiet-form.webp"
-          width="1600"
+          src={CLASSIC_FRAME_IMAGE_PATH}
+          width="2500"
         />
       </Link>
 
       <div className="framed-art-feature__copy" data-reveal>
-        <p className="eyebrow">New ready-to-hang edition</p>
-        <h2 id="framed-art-feature-title">The artwork, framed and complete.</h2>
+        <p className="eyebrow">Frame only</p>
+        <h2 id="framed-art-feature-title">Finish the piece your way.</h2>
         <p>
-          Five selected works are available as a complete framed print in
-          Prodigi&apos;s Natural classic frame. The artwork is fitted without a
-          mat behind clear Perspex glazing and arrives ready to hang.
+          A Natural classic picture frame sized to fit each Clara Mendes print.
+          Solid satin-laminated wood, clear shatterproof Perspex, and a
+          removable backloader make it easy to frame your chosen artwork.
         </p>
         <p className="framed-art-feature__preview-note">
-          Digitally composited preview using the exact artwork and supplier
-          frame reference. Natural grain and printed colour may vary slightly.
+          Frame only. Print, artwork, and decorative mat are not included.
+          Natural wood grain may vary slightly.
         </p>
 
         <dl className="framed-art-feature__facts">
           <div>
-            <dt>Framed edition</dt>
-            <dd>{CLASSIC_FRAME_SIZE_LABEL} · Natural frame · No mat</dd>
+            <dt>Available sizes</dt>
+            <dd>{CLASSIC_FRAME_SIZE_LABELS.join(' · ')}</dd>
           </div>
           <div>
-            <dt>Unframed prints</dt>
-            <dd>{UNFRAMED_PRINT_SIZE_LABELS.join(' · ')}</dd>
+            <dt>Included</dt>
+            <dd>Frame · Perspex · Backing · Hanger</dd>
           </div>
         </dl>
 
         <div className="framed-art-feature__actions">
           <Link
             className="primary-button"
-            to={buildClassicFrameUrl(defaultArtwork.artworkTitle)}
+            to={buildClassicFrameUrl()}
             prefetch="intent"
           >
-            View framed art{price ? ` · ${price}` : ''}
+            View frame{price ? ` · ${price}` : ''}
           </Link>
           <Link
             className="framed-art-feature__text-link"
             to="/collections/all?type=Art+Prints"
           >
-            Shop unframed prints
+            Shop art prints
           </Link>
         </div>
       </div>
@@ -102,7 +100,7 @@ const framedArtFeatureCss = `
 }
 
 .framed-art-feature__media img {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   display: block;
   height: auto;
   object-fit: cover;

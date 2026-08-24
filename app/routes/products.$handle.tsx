@@ -39,14 +39,12 @@ import {
 import {
   buildClassicFrameUrl,
   CLASSIC_FRAME_HANDLE,
-  CLASSIC_FRAME_SIZE_LABEL,
+  CLASSIC_FRAME_SIZE_LABELS,
   filterAccurateClassicFrameImages,
-  getClassicFrameArtworkForPrint,
   getUnframedPresentationRedirectPath,
-  isAccurateClassicFrameImage,
   isUnframedPresentation,
   selectAccurateClassicFrameImage,
-  selectedClassicFrameArtwork,
+  selectedClassicFrameSize,
   UNFRAMED_PRINT_SIZE_LABELS,
 } from '~/lib/classicFrame';
 import {SkyConfigurator} from '~/components/SkyConfigurator';
@@ -163,9 +161,9 @@ type PhoneCaseCrossSell = {
 };
 
 type ClassicFrameCrossSell = {
-  artworkTitle: string;
   image: ProductImage;
   price: MoneyAmount;
+  sizeLabel: string;
   url: string;
 };
 
@@ -200,23 +198,12 @@ function sanitizeOriginalArtProduct(product: ProductDetail): ProductDetail {
 }
 
 function sanitizeClassicFrameProduct(product: ProductDetail): ProductDetail {
-  const variants = product.variants.nodes.filter(
-    (variant) => variant.image && isAccurateClassicFrameImage(variant.image),
-  );
-  const selectedVariant =
-    product.selectedOrFirstAvailableVariant?.image &&
-    isAccurateClassicFrameImage(product.selectedOrFirstAvailableVariant.image)
-      ? product.selectedOrFirstAvailableVariant
-      : (variants.find((variant) => variant.availableForSale) ??
-        variants[0] ??
-        null);
-  const allowedArtworks = new Set(
-    variants.flatMap((variant) =>
-      variant.selectedOptions
-        .filter((option) => option.name.trim().toLowerCase() === 'artwork')
-        .map((option) => option.value),
-    ),
-  );
+  const variants: ProductVariant[] = [...product.variants.nodes];
+  const selectedVariant: ProductVariant | null =
+    (product.selectedOrFirstAvailableVariant as ProductVariant | null) ??
+    variants.find((variant) => variant.availableForSale) ??
+    variants[0] ??
+    null;
   const accurateImages = filterAccurateClassicFrameImages([
     ...(product.galleryImages?.nodes ?? []),
     ...(product.images?.nodes ?? []),
@@ -240,16 +227,7 @@ function sanitizeClassicFrameProduct(product: ProductDetail): ProductDetail {
     featuredImage,
     galleryImages: {nodes: accurateImages},
     images: {nodes: accurateImages},
-    options: product.options.map((option) =>
-      option.name.trim().toLowerCase() === 'artwork'
-        ? {
-            ...option,
-            optionValues: option.optionValues.filter((value) =>
-              allowedArtworks.has(value.name),
-            ),
-          }
-        : option,
-    ),
+    options: product.options,
     selectedOrFirstAvailableVariant: selectedVariant,
     variants: {
       ...product.variants,
@@ -294,10 +272,8 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // the sentinel handle matches no product, so the query returns null.
   const phoneCaseEligible =
     Boolean(capsule) && isReleasedExtensionHandle(PHONE_CASE_HANDLE);
-  const classicFrameArtwork = getClassicFrameArtworkForPrint(handle);
   const classicFrameEligible =
-    Boolean(classicFrameArtwork) &&
-    isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE);
+    Boolean(capsule) && isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE);
 
   const data = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
@@ -329,6 +305,11 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     : handle === CLASSIC_FRAME_HANDLE
       ? sanitizeClassicFrameProduct(rawProduct)
       : rawProduct;
+  const matchingFrameSize = capsule
+    ? selectedClassicFrameSize(
+        product.selectedOrFirstAvailableVariant?.selectedOptions,
+      )
+    : null;
 
   // A staged personalised product stays hidden everywhere, but the preview
   // environment may unlock its PDP so the end-to-end order can be tested
@@ -395,30 +376,33 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     | null;
   let classicFrameCrossSell: ClassicFrameCrossSell | null = null;
   if (
-    classicFrameArtwork &&
+    matchingFrameSize &&
     classicFrameProduct &&
     !isDemoProduct(classicFrameProduct)
   ) {
-    const artworkVariant = (
+    const matchingVariant = (
       classicFrameProduct.frameVariants?.nodes ?? []
     ).find(
       (variant) =>
         variant.availableForSale &&
-        variant.image &&
-        isAccurateClassicFrameImage(variant.image) &&
         variant.price &&
         variant.selectedOptions.some(
           (option) =>
-            option.name === 'Artwork' &&
-            option.value === classicFrameArtwork.artworkTitle,
+            option.name.trim().toLowerCase() === 'size' &&
+            option.value === matchingFrameSize,
         ),
     );
-    if (artworkVariant?.image && artworkVariant.price) {
+    const frameImage = selectAccurateClassicFrameImage([
+      matchingVariant?.image,
+      classicFrameProduct.featuredImage,
+      ...(classicFrameProduct.images?.nodes ?? []),
+    ]);
+    if (matchingVariant?.price && frameImage) {
       classicFrameCrossSell = {
-        artworkTitle: classicFrameArtwork.artworkTitle,
-        image: artworkVariant.image,
-        price: artworkVariant.price,
-        url: buildClassicFrameUrl(classicFrameArtwork.artworkTitle),
+        image: frameImage,
+        price: matchingVariant.price,
+        sizeLabel: matchingFrameSize,
+        url: buildClassicFrameUrl(matchingFrameSize),
       };
     }
   }
@@ -495,8 +479,8 @@ export default function Product() {
     (product.productType || '').toLowerCase() === 'phone cases';
   const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
   const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
-  const selectedFramedArtwork = isClassicFrame
-    ? selectedClassicFrameArtwork(selectedVariant?.selectedOptions)
+  const selectedFrameSize = isClassicFrame
+    ? selectedClassicFrameSize(selectedVariant?.selectedOptions)
     : null;
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
@@ -746,67 +730,65 @@ export default function Product() {
           {classicFrameCrossSell ? (
             <aside
               className="product-format-choice"
-              aria-label={`Ready-to-hang ${classicFrameCrossSell.artworkTitle} option`}
+              aria-label={`${classicFrameCrossSell.sizeLabel} frame option`}
             >
               <img
                 src={classicFrameCrossSell.image.url}
                 alt={
                   classicFrameCrossSell.image.altText ||
-                  `${classicFrameCrossSell.artworkTitle} artwork in the Prodigi Natural classic frame, no mat, ${CLASSIC_FRAME_SIZE_LABEL}`
+                  `Natural classic frame only, ${classicFrameCrossSell.sizeLabel}; artwork not included`
                 }
                 loading="lazy"
               />
               <div className="product-format-choice-copy">
                 <p className="eyebrow">
-                  Ready-to-hang option ·{' '}
+                  Frame for this size ·{' '}
                   {formatMoney(classicFrameCrossSell.price)}
                 </p>
                 <p className="product-format-choice-title">
-                  This exact artwork is also available as a complete framed
-                  print.
+                  Add the matching Natural classic frame separately.
                 </p>
                 <p className="product-format-choice-detail">
-                  {CLASSIC_FRAME_SIZE_LABEL}, Natural classic frame, no mat,
-                  with clear Perspex glazing. Digitally composited preview;
-                  natural grain and printed colour may vary slightly.
+                  Sized for the {classicFrameCrossSell.sizeLabel} print, with
+                  clear Perspex glazing and a removable back. Frame only;
+                  artwork is not included.
                 </p>
                 <Link
                   className="primary-button product-format-choice-cta"
                   to={classicFrameCrossSell.url}
                   prefetch="intent"
                 >
-                  Buy it framed
+                  View frame
                 </Link>
               </div>
             </aside>
           ) : null}
 
-          {isClassicFrame && selectedFramedArtwork ? (
+          {isClassicFrame && selectedFrameSize ? (
             <aside
               className="product-format-choice product-format-choice--unframed"
-              aria-label={`Unframed ${selectedFramedArtwork.printTitle} options`}
+              aria-label={`Art prints for the ${selectedFrameSize} frame`}
             >
               <img
-                src={selectedFramedArtwork.image}
-                alt={`${selectedFramedArtwork.printTitle} unframed artwork`}
+                src="/images/product-art/quiet-form/quiet-form-01.webp"
+                alt="Quiet Form I art print shown unframed"
                 loading="lazy"
               />
               <div className="product-format-choice-copy">
-                <p className="eyebrow">Complete framed print</p>
+                <p className="eyebrow">Frame only</p>
                 <p className="product-format-choice-title">
-                  This product includes both the artwork and frame. It is not a
-                  frame-only accessory.
+                  Artwork is not included with this product.
                 </p>
                 <p className="product-format-choice-detail">
-                  Prefer the print unframed? The exact artwork is available in{' '}
-                  {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                  Choose a separate {selectedFrameSize} print for a matching
+                  fit, or use the frame with artwork you already own.
                 </p>
                 <Link
                   className="text-link"
-                  to={`/products/${selectedFramedArtwork.printHandle}`}
+                  to={`/collections/all?type=Art+Prints`}
                   prefetch="intent"
                 >
-                  View the unframed print in 3 sizes
+                  Shop art prints
                 </Link>
               </div>
             </aside>
@@ -904,25 +886,24 @@ export default function Product() {
                 <div>
                   <dt>Frame</dt>
                   <dd>
-                    Prodigi Natural classic frame with a 20 mm face, clear
-                    Perspex glazing, and no mat. The artwork and frame are
-                    supplied together, ready to hang.
+                    Natural classic picture frame in satin-laminated solid wood,
+                    with a 20 mm face, shatterproof clear Perspex glazing, and a
+                    removable flat backloader.
                   </dd>
                 </div>
                 <div>
                   <dt>Size</dt>
                   <dd>
-                    {CLASSIC_FRAME_SIZE_LABEL} artwork opening. This framed
-                    product is offered in one size; the matching unframed print
-                    is available in {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                    Choose {CLASSIC_FRAME_SIZE_LABELS.join(', ')} to match the
+                    three available print sizes. The selected size is the
+                    artwork opening.
                   </dd>
                 </div>
                 <div>
-                  <dt>Preview</dt>
+                  <dt>Included</dt>
                   <dd>
-                    Digitally composited using the exact artwork and
-                    Prodigi&apos;s Natural classic frame reference. Natural
-                    grain and printed colour may vary slightly.
+                    Frame, Perspex glazing, backing, and wall hanger only.
+                    Print, artwork, and decorative mat are not included.
                   </dd>
                 </div>
               </>

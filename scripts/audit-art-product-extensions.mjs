@@ -41,6 +41,10 @@ const PRODUCTS_QUERY = `#graphql
               tracked
             }
             price
+            selectedOptions {
+              name
+              value
+            }
             sku
             title
           }
@@ -54,6 +58,7 @@ const PRODUCTS_QUERY = `#graphql
 `;
 
 function expectedVariantCount(family) {
+  if (family.frameOnly) return family.sizeVariants.length;
   if (family.collectionVariant) return 1;
   if (family.deviceOptions) {
     return catalog.capsuleOrder.length * catalog.deviceVariants.length;
@@ -80,9 +85,16 @@ function validateProduct(product, family) {
   if (variants.length !== expectedCount) {
     issues.push(`${variants.length} variants, expected ${expectedCount}`);
   }
-  const unexpectedPrices = variants.filter(
-    (variant) => variant.price !== family.price,
+  const expectedPriceBySize = new Map(
+    (family.sizeVariants ?? []).map(({label, price}) => [label, price]),
   );
+  const unexpectedPrices = variants.filter((variant) => {
+    if (!family.frameOnly) return variant.price !== family.price;
+    const size = variant.selectedOptions?.find(
+      (option) => option.name === 'Size',
+    )?.value;
+    return !size || variant.price !== expectedPriceBySize.get(size);
+  });
   if (unexpectedPrices.length) {
     issues.push(`${unexpectedPrices.length} variants have an unexpected price`);
   }

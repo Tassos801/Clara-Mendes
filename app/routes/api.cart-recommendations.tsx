@@ -1,10 +1,6 @@
 import type {Route} from './+types/api.cart-recommendations';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {filterDemoProducts} from '~/lib/catalogFilters';
-import {
-  CLASSIC_FRAME_HANDLE,
-  selectAccurateClassicFrameVariant,
-} from '~/lib/classicFrame';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 
 const MAX_RECOMMENDATIONS = 4;
@@ -31,11 +27,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     for (const product of filterDemoProducts(candidates)) {
       if (recommendations.length >= MAX_RECOMMENDATIONS) return;
       if (excludedIds.has(product.id)) continue;
-      const candidateVariant = product.cardVariant?.nodes?.[0];
-      const variant =
-        product.handle === CLASSIC_FRAME_HANDLE
-          ? selectAccurateClassicFrameVariant([candidateVariant])
-          : candidateVariant;
+      const variant = product.cardVariant?.nodes?.[0];
       if (!variant || variant.availableForSale === false) continue;
       excludedIds.add(product.id);
       recommendations.push(product);

@@ -24,7 +24,7 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
   'art-snap-phone-case':
     'Original Clara Mendes artwork wrapped edge to edge around a slim snap phone case. Impact-resistant polycarbonate with an all-over matte print, made to order for iPhone 15, iPhone 15 Pro, iPhone 15 Plus and iPhone 15 Pro Max.',
   'classic-framed-art-print-16x20':
-    'A complete, ready-to-hang 16 × 20 inch artwork with the print fitted into Prodigi’s Natural classic frame. The 20 mm natural wood-effect frame has no mat and uses clear Perspex glazing; choose from five exact Clara Mendes artworks.',
+    'A Natural classic picture frame sold without artwork, available in 8 × 10, 16 × 20, and 20 × 24 inch sizes. Satin-laminated solid wood, a 20 mm face, shatterproof clear Perspex, removable backing, and a wall hanger are included; print and decorative mat are not included.',
   'alba-cotton-linen-cushion':
     'A thick cotton-linen cushion for everyday comfort, sofa layering, and quiet bedroom styling. Choose the cover for an existing insert or the full cushion when building a room from scratch.',
   'ayla-cotton-bath-towel':
@@ -62,6 +62,7 @@ const SPEC_SHEET_PRODUCT_TYPES = new Set([
   'art prints',
   'blankets',
   'framed art',
+  'frames',
   'phone cases',
 ]);
 
