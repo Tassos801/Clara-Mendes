@@ -444,3 +444,18 @@ gallery now filter out the superseded brown-frame/white-mat media.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-08-24 - Frame-only correction
+
+Reversed the complete framed-print release after the owner clarified that the
+separate product must sell framing only in the same three sizes as the prints:
+8 × 10, 16 × 20, and 20 × 24 in. Shopify product
+`classic-framed-art-print-16x20` was returned to Draft and unpublished from the
+`Clara Mendes` and `Clara Mendes Headless` catalogs; its Hydrogen release flag
+is false and framed-print homepage/catalog claims were removed. Prodigi's
+`GLOBAL-CFP` family includes a fine-art print, so it cannot fulfill the corrected
+frame-only offer. The replacement remains gated pending a frame-only
+fulfillment source and approved price for each size.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md).

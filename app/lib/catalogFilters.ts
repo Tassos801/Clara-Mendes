@@ -97,7 +97,7 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   'art-premium-fleece-blanket-30x40': false,
   [PHONE_CASE_HANDLE]: false,
   'clara-mendes-art-calendar-2026': false,
-  'classic-framed-art-print-16x20': true,
+  'classic-framed-art-print-16x20': false,
   'fine-art-greeting-card': false,
   'fine-art-postcard': false,
   'large-fine-art-print-16x20': false,

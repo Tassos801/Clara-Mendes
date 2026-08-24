@@ -6,7 +6,6 @@ import {
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
-import {FramedArtFeature} from '~/components/FramedArtFeature';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
@@ -29,7 +28,6 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {CLASSIC_FRAME_HANDLE, buildClassicFrameUrl} from '~/lib/classicFrame';
 
 type HomeCollection = {
   id: string;
@@ -50,8 +48,8 @@ type HomeCollection = {
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
-      'Original Clara Mendes art prints in three sizes, plus five selected works as complete ready-to-hang 16 × 20 framed editions in a Natural classic frame.',
-    title: 'Original & Framed Art Prints | Clara Mendes',
+      'Original Clara Mendes art prints in 8 × 10, 16 × 20, and 20 × 24 inch sizes.',
+    title: 'Original Art Prints | Clara Mendes',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
 };
@@ -79,7 +77,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
         first: 12,
-        framedHandle: CLASSIC_FRAME_HANDLE,
       },
     });
 
@@ -90,18 +87,12 @@ export async function loader({context, request}: Route.LoaderArgs) {
       originalArtProducts: buildOriginalArtProductMap(
         (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
       ),
-      framedProduct:
-        data.framedProduct &&
-        filterDemoProducts([data.framedProduct as ClaraCardProduct]).length > 0
-          ? (data.framedProduct as ClaraCardProduct)
-          : null,
       products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
       seoUrl: getCanonicalUrl(request, '/'),
     };
   } catch {
     return {
       collections: [] as HomeCollection[],
-      framedProduct: null as ClaraCardProduct | null,
       originalArtProducts: {} as OriginalArtProductMap,
       products: [] as ClaraCardProduct[],
       seoUrl: getCanonicalUrl(request, '/'),
@@ -110,7 +101,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function Homepage() {
-  const {collections, framedProduct, originalArtProducts, products, seoUrl} =
+  const {collections, originalArtProducts, products, seoUrl} =
     useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
@@ -422,8 +413,6 @@ export default function Homepage() {
         </section>
       ) : null}
 
-      {framedProduct ? <FramedArtFeature product={framedProduct} /> : null}
-
       <section
         className="collection-intro home-commerce-intro"
         data-chapter="clay"
@@ -619,7 +608,6 @@ const HOMEPAGE_QUERY = `#graphql
     $artQuery: String!
     $country: CountryCode
     $first: Int!
-    $framedHandle: String!
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
     products(first: $first, sortKey: BEST_SELLING) {
@@ -631,9 +619,6 @@ const HOMEPAGE_QUERY = `#graphql
       nodes {
         ...ClaraProductCard
       }
-    }
-    framedProduct: product(handle: $framedHandle) {
-      ...ClaraProductCard
     }
     collections(first: 12) {
       nodes {

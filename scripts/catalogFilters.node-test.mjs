@@ -48,21 +48,21 @@ assert.equal(isReleasedExtensionHandle(PHONE_CASE_HANDLE), false);
 assert.equal(isStoreThemeProduct(phoneCase), false);
 assert.equal(isDemoProduct(phoneCase), true);
 
-// The frame is the only released extension. The blanket and phone case remain
-// hidden while their own gates are incomplete.
+// Every extension is gated. The retired complete framed-print product must not
+// become sellable while the three-size frame-only replacement is unresolved.
 assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
-assert.equal(isReleasedExtensionHandle(FRAME_HANDLE), true);
-assert.equal(hasReleasedExtensions(), true);
+assert.equal(isReleasedExtensionHandle(FRAME_HANDLE), false);
+assert.equal(hasReleasedExtensions(), false);
 const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
-assert.equal(releasedCount, 1);
+assert.equal(releasedCount, 0);
 
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
 assert.equal(sellableToday.size, 15 + releasedCount);
-assert.ok(sellableToday.has(FRAME_HANDLE));
+assert.ok(!sellableToday.has(FRAME_HANDLE));
 assert.ok(!sellableToday.has(BLANKET_HANDLE));
 assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 
@@ -100,9 +100,9 @@ assert.equal(
   true,
 );
 EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = false;
-// The handle-only check is the collection route's pre-query guard. The live
-// frame admits the Everyday URL before Shopify is queried.
-assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
+// With every release flag off, the handle-only pre-query guard keeps the
+// Everyday collection hidden.
+assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), true);
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,

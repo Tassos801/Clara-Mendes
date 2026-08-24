@@ -16,7 +16,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
 | --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
 | Large Fine Art Print — 16 × 20 in       |                5 |                $49 | GLOBAL-FAP-16X20                    | Candidate; verify in dashboard |
-| Classic Framed Art Print — 16 × 20 in   |                5 |                €99 | GLOBAL-CFP-16X20                    | Verified live 2026-08-21       |
+| Classic Framed Art Print — 16 × 20 in   |                5 |                €99 | GLOBAL-CFP-16X20                    | Retired; includes the print    |
 | Fine Art Greeting Card                  |                5 |                 $8 | GLOBAL-GRE-MOH-7X5-BLA              | Public catalogue               |
 | Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
 | Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
@@ -28,7 +28,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Art Premium Fleece Blanket — 30 × 40 in |                5 |                $79 | GLOBAL-BLANKET-PREMIUM-FLEECE-30X40 | Public catalogue               |
 | Art Snap Phone Case                     |               20 |                $34 | Device-specific GLOBAL-TECH SKUs    | Public catalogue               |
 
-Total: 1 Active product and 11 Draft products, with 71 variants overall.
+Total: 12 Draft products, with 71 variants overall.
 
 On 2026-07-24, the guarded sync created all 12 products in Shopify as
 `DRAFT`. The live readback passed for 12/12 products, all 71 variants, expected
@@ -51,6 +51,15 @@ the EUR 99 retail price and waived a physical sample for this release. Shopify
 status is Active and publication is limited to the `Clara Mendes` and
 `Clara Mendes Headless` catalogs. The storefront release flag admits the frame
 and the `Art for Everyday Living` collection; all other families stay hidden.
+
+On 2026-08-24, the owner corrected the commercial intent: the separate offer
+must sell framing only, not a print bundled with a frame, and must use the same
+three sizes as the prints (8 × 10, 16 × 20, and 20 × 24 in). The complete
+framed-print product was immediately returned to Draft, unpublished from both
+storefront catalogs, and gated off in Hydrogen. Prodigi's `GLOBAL-CFP` family
+always includes a fine-art print, so that mapping is incompatible with the
+corrected frame-only offer and must not be reused. A frame-only product remains
+blocked until its fulfillment source and three retail prices are approved.
 
 ## Artwork Policy
 
@@ -108,13 +117,11 @@ The Hydrogen storefront hides every extension family via the allowlist in
 storefront experience pre-built behind `EXTENSION_RELEASE_FLAGS`; its flip
 procedure is `docs/phone-case-release.md`.
 
-The released frame is presented as a complete ready-to-hang product, not a
-frame-only add-on. `app/lib/classicFrame.ts` maps its five Artwork options only
-to artwork I from the matching capsules. The homepage, main navigation, shop
-toolbar, and those five exact unframed PDPs link to the corresponding framed
-variant. Artwork II and III PDPs deliberately show no framed offer. The framed
-PDP links back to the exact unframed print and states all three unframed sizes:
-8 × 10, 16 × 20, and 20 × 24 in. The framed edition remains 16 × 20 in only.
+The retired framed-print implementation remains gated and unpublished while
+the frame-only replacement is designed. It must expose one `Size` option with
+8 × 10, 16 × 20, and 20 × 24 in values, must not expose an `Artwork` option,
+and every customer-facing surface must state that the print is not included.
+Do not flip the legacy release flag or restore its cross-sells.
 
 Until superseded Admin media have been removed, the storefront also rejects
 frame imagery that is not labelled as the Prodigi Natural classic frame with

@@ -70,16 +70,18 @@ creates or updates the Shopify records as **DRAFT** only after an explicit
 All twelve records, totalling 71 variants, were created and passed live Shopify
 readback on 2026-07-24; none were published.
 
-As of 2026-08-21, the Classic Framed Art Print — 16 × 20 in is the first live
-extension at EUR 99. Its five variants are Active, published to the `Clara
-Mendes` and `Clara Mendes Headless` catalogs, and mapped automatically to
-Prodigi `GLOBAL-CFP-16X20` with Natural frames, EMA 200gsm paper, no mat,
-Perspex glazing, Excellent artwork quality, and Standard shipping. Its release
-flag makes the product and `Art for Everyday Living` collection available. The
-storefront names the product directly as "Framed Art" in navigation while it
-is the only released extension. The other eleven extension flags remain
-`false`; their products remain Draft and filtered from every storefront
-surface.
+The Classic Framed Art Print — 16 × 20 in release was reversed on 2026-08-24
+after the owner clarified that the separate offer must sell the frame only,
+not a print bundled with a frame. The product is Draft, unpublished from both
+the `Clara Mendes` and `Clara Mendes Headless` catalogs, and its release flag is
+false. Prodigi `GLOBAL-CFP-16X20` necessarily includes a fine-art print and is
+therefore not a valid fulfillment mapping for the corrected offer. All twelve
+extension flags are false and all twelve extension products are Draft.
+
+The intended replacement is a frame-only product with one `Size` option:
+8 × 10 in, 16 × 20 in, and 20 × 24 in. It must not have an `Artwork` option and
+must state that the print is not included. Release remains blocked on an
+approved frame-only fulfillment source and retail price for each size.
 
 On 2026-08-24, its five product previews were rebuilt from Prodigi's official
 Natural classic-frame blank and the exact live artwork. The deterministic
@@ -91,15 +93,10 @@ media path: it stages local files, waits for READY, orders the accurate set
 first, and assigns one exact image to each Artwork variant without changing the
 product record or fulfillment mapping.
 
-Storefront merchandising now features the exact Natural/no-mat product image
-high on the homepage and adds a direct Framed Art path to the primary, home,
-footer, and shop navigation. The five sequence-one unframed PDPs deep-link to
-their exact framed Artwork variants; the ten sequence-two/three PDPs never
-substitute a same-capsule image. The framed PDP identifies itself as the
-artwork and frame supplied together at 16 × 20 in and links back to the exact
-unframed product, whose 8 × 10, 16 × 20, and 20 × 24 in choices remain
-unchanged. A media guard keeps superseded brown-frame/white-mat assets out of
-cards and galleries even before Admin deletion.
+The retired complete-framed-print merchandising is gated off and is not part
+of the live homepage, catalog, cross-sells, sitemap, or PDP surface. The 15
+unframed products and their 8 × 10, 16 × 20, and 20 × 24 in variants remain
+unchanged.
 
 Sources: [Original Art Launch](../../original-art-launch.md),
 [Art for Everyday Living](../../art-product-extensions.md).
@@ -110,8 +107,8 @@ Sources: [Original Art Launch](../../original-art-launch.md),
 Old or supplier-imported products cannot appear in catalog, search,
 recommendations, or direct product routes merely because they are active in
 Shopify. Admin status is still the authoritative cross-channel control. The
-intended state is now 15 Active originals, 1 Active frame extension, 11 Draft
-extensions, and 49 Draft legacy products.
+intended state is now 15 Active originals, 12 Draft extensions, and 49 Draft
+legacy products.
 
 It defines:
 
@@ -146,9 +143,7 @@ compact title-and-price treatment. Product pages add:
 - JSON-LD product schema.
 - Recently viewed persistence.
 - Shop Pay button when available.
-- Exact framed/unframed format links for the five eligible artworks.
-- An explicit three-size promise for unframed prints and one-size promise for
-  the framed edition.
+- An explicit three-size promise for unframed prints.
 
 Sources: `app/components/ClaraProductCard.tsx`,
 `app/lib/productCardFragment.ts`, `app/lib/productCopy.ts`,
