@@ -1491,9 +1491,16 @@ button {
   line-height: 1.55;
 }
 
-.product-format-choice .text-link {
+.product-format-choice .text-link,
+.product-format-choice-cta {
   justify-self: start;
   margin-top: 2px;
+}
+
+.product-format-choice-cta {
+  font-size: 0.68rem;
+  min-height: 42px;
+  padding: 0 18px;
 }
 
 .product-cross-sell {

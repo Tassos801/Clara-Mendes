@@ -650,7 +650,10 @@ export default function Product() {
                 loading="lazy"
               />
               <div className="product-format-choice-copy">
-                <p className="eyebrow">Ready-to-hang option</p>
+                <p className="eyebrow">
+                  Ready-to-hang option ·{' '}
+                  {formatMoney(classicFrameCrossSell.price)}
+                </p>
                 <p className="product-format-choice-title">
                   This exact artwork is also available as a complete framed
                   print.
@@ -660,11 +663,11 @@ export default function Product() {
                   with clear Perspex glazing.
                 </p>
                 <Link
-                  className="text-link"
+                  className="primary-button product-format-choice-cta"
                   to={classicFrameCrossSell.url}
                   prefetch="intent"
                 >
-                  Choose framed · {formatMoney(classicFrameCrossSell.price)}
+                  Buy it framed
                 </Link>
               </div>
             </aside>
