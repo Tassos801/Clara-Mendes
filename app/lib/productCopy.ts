@@ -23,6 +23,8 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
     'The full capsule composition printed across a premium fleece blanket, 30 × 40 in. Soft-touch fleece with an all-over print of the original Clara Mendes artwork, made to order for sofas, reading chairs, and slow evenings.',
   'art-snap-phone-case':
     'Original Clara Mendes artwork wrapped edge to edge around a slim snap phone case. Impact-resistant polycarbonate with an all-over matte print, made to order for iPhone 15, iPhone 15 Pro, iPhone 15 Plus and iPhone 15 Pro Max.',
+  'classic-framed-art-print-16x20':
+    'A complete, ready-to-hang 16 × 20 inch artwork with the print fitted into Prodigi’s Natural classic frame. The 20 mm natural wood-effect frame has no mat and uses clear Perspex glazing; choose from five exact Clara Mendes artworks.',
   'alba-cotton-linen-cushion':
     'A thick cotton-linen cushion for everyday comfort, sofa layering, and quiet bedroom styling. Choose the cover for an existing insert or the full cushion when building a room from scratch.',
   'ayla-cotton-bath-towel':
@@ -59,6 +61,7 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
 const SPEC_SHEET_PRODUCT_TYPES = new Set([
   'art prints',
   'blankets',
+  'framed art',
   'phone cases',
 ]);
 

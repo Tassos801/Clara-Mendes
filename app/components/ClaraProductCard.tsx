@@ -9,6 +9,10 @@ import {
   formatCardPriceLabel,
   type CardPricing,
 } from '~/lib/productCardPricing';
+import {
+  CLASSIC_FRAME_HANDLE,
+  isAccurateClassicFrameImage,
+} from '~/lib/classicFrame';
 
 const CARD_IMAGE_SIZES =
   '(min-width: 1100px) 25vw, (min-width: 781px) 33vw, 50vw';
@@ -87,8 +91,20 @@ export function ClaraProductCard({
   pricing?: CardPricing;
 }) {
   const images = product.images?.nodes ?? [];
-  const baseImage = product.featuredImage ?? images[0];
-  const hoverImage = images.find((image) => image.url !== baseImage?.url);
+  const firstVariant =
+    product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
+  const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
+  const baseImage = isClassicFrame
+    ? (firstVariant?.image ??
+      images.find(isAccurateClassicFrameImage) ??
+      product.featuredImage)
+    : (product.featuredImage ?? images[0]);
+  const hoverImage = isClassicFrame
+    ? images.find(
+        (image) =>
+          image.url !== baseImage?.url && isAccurateClassicFrameImage(image),
+      )
+    : images.find((image) => image.url !== baseImage?.url);
   // The hover crossfade can only ever show on hover-capable devices, so
   // touch devices skip the second image's download and decode entirely.
   // SSR renders without it; hover-capable browsers mount it after hydration
@@ -99,10 +115,10 @@ export function ClaraProductCard({
       window.matchMedia('(hover: hover) and (pointer: fine)').matches,
     );
   }, []);
-  const priceLabel = formatCardPriceLabel(pricing ?? deriveCardPricing(product));
+  const priceLabel = formatCardPriceLabel(
+    pricing ?? deriveCardPricing(product),
+  );
   const chip = product.productType || 'Curated object';
-  const firstVariant =
-    product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
   const story = showStory ? getProductStory(product) : null;
 
   return (

@@ -75,9 +75,31 @@ extension at EUR 99. Its five variants are Active, published to the `Clara
 Mendes` and `Clara Mendes Headless` catalogs, and mapped automatically to
 Prodigi `GLOBAL-CFP-16X20` with Natural frames, EMA 200gsm paper, no mat,
 Perspex glazing, Excellent artwork quality, and Standard shipping. Its release
-flag makes the "Everyday" navigation and `Art for Everyday Living` collection
-available. The other eleven extension flags remain `false`; their products
-remain Draft and filtered from every storefront surface.
+flag makes the product and `Art for Everyday Living` collection available. The
+storefront names the product directly as "Framed Art" in navigation while it
+is the only released extension. The other eleven extension flags remain
+`false`; their products remain Draft and filtered from every storefront
+surface.
+
+On 2026-08-24, its five product previews were rebuilt from Prodigi's official
+Natural classic-frame blank and the exact live artwork. The deterministic
+generator preserves the art pixels, uses the true 16:20 opening, scales the
+frame face to the published 20 mm width, and leaves no mat between art and
+frame. `scripts/classicFrameMockups.node-test.mjs` guards those dimensions and
+pixel identity. `scripts/sync-classic-frame-mockups.mjs` is the guarded live
+media path: it stages local files, waits for READY, orders the accurate set
+first, and assigns one exact image to each Artwork variant without changing the
+product record or fulfillment mapping.
+
+Storefront merchandising now features the exact Natural/no-mat product image
+high on the homepage and adds a direct Framed Art path to the primary, home,
+footer, and shop navigation. The five sequence-one unframed PDPs deep-link to
+their exact framed Artwork variants; the ten sequence-two/three PDPs never
+substitute a same-capsule image. The framed PDP identifies itself as the
+artwork and frame supplied together at 16 × 20 in and links back to the exact
+unframed product, whose 8 × 10, 16 × 20, and 20 × 24 in choices remain
+unchanged. A media guard keeps superseded brown-frame/white-mat assets out of
+cards and galleries even before Admin deletion.
 
 Sources: [Original Art Launch](../../original-art-launch.md),
 [Art for Everyday Living](../../art-product-extensions.md).
@@ -124,6 +146,9 @@ compact title-and-price treatment. Product pages add:
 - JSON-LD product schema.
 - Recently viewed persistence.
 - Shop Pay button when available.
+- Exact framed/unframed format links for the five eligible artworks.
+- An explicit three-size promise for unframed prints and one-size promise for
+  the framed edition.
 
 Sources: `app/components/ClaraProductCard.tsx`,
 `app/lib/productCardFragment.ts`, `app/lib/productCopy.ts`,

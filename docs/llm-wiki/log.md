@@ -380,13 +380,14 @@ hand passes over it, design stops at the edges"): (1) the journal is
 now full-bleed - html:has(.kot-root) main gets margin/padding 0 so the
 sky reaches the viewport edges (verified skyLeft 0 / skyRight 390);
 (2) hover-pause listeners bind only on (hover:hover) and (pointer:fine)
+
 - on touch, pointerenter from a passing finger used to freeze the ring
-because pointerleave never fires; drift now continues after touch
-(-5.8deg/1.6s before and after, desktop hover still pauses); (3) phone
-cards shrink to clamp(132px, 37vw, 165px) with a 330px stage under
-720px, leaving air around the front cover. Verified with a playwright
-suite (verify-polish pattern: sample rotateY over time, synthetic
-pointerenter, bounding-rect edge check).
+  because pointerleave never fires; drift now continues after touch
+  (-5.8deg/1.6s before and after, desktop hover still pauses); (3) phone
+  cards shrink to clamp(132px, 37vw, 165px) with a 330px stage under
+  720px, leaving air around the front cover. Verified with a playwright
+  suite (verify-polish pattern: sample rotateY over time, synthetic
+  pointerenter, bounding-rect edge check).
 
 CSP regression fix, found by an adversarial verification pass: the
 custom scriptSrc passed to createContentSecurityPolicy had been reduced
@@ -415,6 +416,31 @@ approved EUR 99 and waived the physical sample for this family. Shopify is
 Active and published only to `Clara Mendes` and `Clara Mendes Headless`; the
 storefront flag is now true, exposing the frame and Everyday collection while
 the other eleven extension families remain gated.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-08-24 - Accurate classic frame previews
+
+Replaced the five Classic Framed Art Print previews that depicted a thick
+brown frame and white mat. The new deterministic mockups use Prodigi's official
+Natural classic-frame blank around the unchanged 1120 x 1400 Shopify artwork,
+with the real 16:20 opening, published 20 mm frame-face proportion, and no mat.
+Source digests, preview dimensions, and exact artwork pixels are now tested.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-08-24 - Framed art storefront discovery
+
+Added a direct Framed Art path to the primary, mobile, home, footer, and shop
+navigation, plus an image-led homepage feature using the supplier-accurate
+Natural/no-mat preview. The five sequence-one print PDPs now offer only their
+exact matching framed variant; the other ten prints show no substitute. The
+framed PDP states that artwork and frame arrive together, links back to the
+exact unframed print, and distinguishes its single 16 × 20 size from the
+unframed 8 × 10, 16 × 20, and 20 × 24 choices. Product cards and the framed
+gallery now filter out the superseded brown-frame/white-mat media.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).

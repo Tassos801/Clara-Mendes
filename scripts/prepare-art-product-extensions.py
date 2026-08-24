@@ -10,6 +10,7 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -26,6 +27,7 @@ BOARD_ROOT = PRODUCTION_ROOT / "capsule-scenes"
 ORIGINAL_CATALOG_PATH = REPO_ROOT / "data" / "original-art-catalog.json"
 EXTENSION_CATALOG_PATH = REPO_ROOT / "data" / "art-product-extensions.json"
 PROVENANCE_PATH = PRODUCTION_ROOT / "manifest.json"
+CLASSIC_FRAME_GENERATOR = REPO_ROOT / "scripts" / "generate-classic-frame-mockups.mjs"
 
 PREVIEW_SIZE = (1600, 2000)
 SCENE_SIZE = (1800, 1200)
@@ -292,14 +294,18 @@ def framed_object(art: Image.Image, *, frame_color=(166, 137, 100)) -> Image.Ima
 
 
 def preview_for(family: dict, capsule: Capsule) -> Image.Image:
+    kind = family["assetKind"]
+    if kind == "classic_frame":
+        preview_path = PUBLIC_ROOT / family["id"] / f"{slugify(capsule.name)}.webp"
+        with Image.open(preview_path) as preview:
+            return preview.convert("RGB")
+
     canvas = preview_base()
     art = open_art(capsule.item(max(1, family.get("sourceSequence", 1))))
-    kind = family["assetKind"]
     draw = ImageDraw.Draw(canvas)
 
-    if kind in {"large_print", "classic_frame", "canvas"}:
-        frame_color = (173, 143, 103) if kind == "classic_frame" else (248, 246, 241)
-        obj = framed_object(art, frame_color=frame_color)
+    if kind in {"large_print", "canvas"}:
+        obj = framed_object(art, frame_color=(248, 246, 241))
         shadowed_layer(canvas, obj, (325, 210))
     elif kind in {"greeting_card", "postcard"}:
         card = contain(art, (850, 1190), color=WARM_WHITE).convert("RGBA")
@@ -542,6 +548,11 @@ def export_calendar(family: dict, original: list[dict], records: list[dict]) -> 
 
 
 def main() -> None:
+    subprocess.run(
+        ["node", str(CLASSIC_FRAME_GENERATOR)],
+        cwd=REPO_ROOT,
+        check=True,
+    )
     original, extensions = load_catalogs()
     capsules = group_capsules(original, extensions["capsuleOrder"])
     records: list[dict] = []

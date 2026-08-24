@@ -25,6 +25,7 @@ import {
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {buildClassicFrameUrl} from '~/lib/classicFrame';
 
 export type CollectionLink = {
   id: string;
@@ -70,7 +71,7 @@ export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
       data?.description ??
-      'Shop original Clara Mendes wall art and considered home accents.',
+      'Shop original Clara Mendes wall art in three unframed sizes and selected ready-to-hang framed editions.',
     image: `${STOREFRONT_ORIGIN}/images/product-art/quiet-form/quiet-form-01.webp`,
     title: isCapsule
       ? `${heading} Capsule`
@@ -121,7 +122,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ),
     description: capsule
       ? `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`
-      : 'Shop 15 original Clara Mendes art prints across five coordinated capsules. Giclée-printed to order on archival matte paper with secure Shopify checkout.',
+      : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in, plus selected complete 16 × 20 framed editions.',
     facets: {
       productTypes: productTypes.map((label) => ({label})),
       vendors: [] as Array<{label: string}>,
@@ -244,6 +245,14 @@ export function CollectionView({data}: {data: CollectionViewData}) {
             to={`/collections/all${capsuleSearch(null)}`}
           >
             <span className="cv-filter-label">All</span>
+            <span className="cv-filter-underline" aria-hidden />
+          </Link>
+          <Link
+            className="cv-filter-link"
+            to={buildClassicFrameUrl('Quiet Form')}
+            prefetch="intent"
+          >
+            <span className="cv-filter-label">Framed Art</span>
             <span className="cv-filter-underline" aria-hidden />
           </Link>
           {data.collections.map((collection) => (
@@ -386,9 +395,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   );
 }
 
-export function buildCollectionAnalyticsProducts(
-  products: ClaraCardProduct[],
-) {
+export function buildCollectionAnalyticsProducts(products: ClaraCardProduct[]) {
   return products
     .map((product) => {
       const variant =

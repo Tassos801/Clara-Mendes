@@ -1444,6 +1444,58 @@ button {
   margin: 0;
 }
 
+.product-format-choice {
+  align-items: center;
+  border-bottom: 1px solid rgba(38, 35, 31, 0.14);
+  border-top: 1px solid rgba(38, 35, 31, 0.14);
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 88px minmax(0, 1fr);
+  padding: 16px 0;
+}
+
+.product-format-choice img {
+  aspect-ratio: 4 / 5;
+  background: #e9e4da;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 88px;
+}
+
+.product-format-choice-copy {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.product-format-choice-copy .eyebrow {
+  color: var(--color-moss);
+  margin: 0;
+}
+
+.product-format-choice-title,
+.product-format-choice-detail {
+  margin: 0;
+}
+
+.product-format-choice-title {
+  color: var(--color-ink);
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+
+.product-format-choice-detail {
+  color: var(--color-muted);
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.product-format-choice .text-link {
+  justify-self: start;
+  margin-top: 2px;
+}
+
 .product-cross-sell {
   align-items: center;
   backdrop-filter: blur(14px) saturate(1.15);

@@ -36,6 +36,15 @@ import {
   isStagedPersonalisedHandle,
   PHONE_CASE_HANDLE,
 } from '~/lib/catalogFilters';
+import {
+  buildClassicFrameUrl,
+  CLASSIC_FRAME_HANDLE,
+  CLASSIC_FRAME_SIZE_LABEL,
+  filterAccurateClassicFrameImages,
+  getClassicFrameArtworkForPrint,
+  selectedClassicFrameArtwork,
+  UNFRAMED_PRINT_SIZE_LABELS,
+} from '~/lib/classicFrame';
 import {SkyConfigurator} from '~/components/SkyConfigurator';
 import {toCartAttributes, type SkyParams} from '~/lib/sky/params';
 import {
@@ -149,6 +158,13 @@ type PhoneCaseCrossSell = {
   url: string;
 };
 
+type ClassicFrameCrossSell = {
+  artworkTitle: string;
+  image: ProductImage;
+  price: MoneyAmount;
+  url: string;
+};
+
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
   const description = product ? getProductDescription(product) : null;
@@ -179,6 +195,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // the sentinel handle matches no product, so the query returns null.
   const phoneCaseEligible =
     Boolean(capsule) && isReleasedExtensionHandle(PHONE_CASE_HANDLE);
+  const classicFrameArtwork = getClassicFrameArtworkForPrint(handle);
+  const classicFrameEligible =
+    Boolean(classicFrameArtwork) &&
+    isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE);
 
   const data = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
@@ -189,6 +209,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
         ? buildCapsuleTagQuery(capsule)
         : 'tag:"__no-capsule__"',
       first: 4,
+      classicFrameHandle: classicFrameEligible
+        ? CLASSIC_FRAME_HANDLE
+        : '__classic-frame-not-applicable__',
       handle,
       phoneCaseHandle: phoneCaseEligible
         ? PHONE_CASE_HANDLE
@@ -261,6 +284,38 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     }
   }
 
+  const classicFrameProduct = data.classicFrame as
+    | (ClaraCardProduct & {frameVariants?: {nodes?: PhoneCaseVariantNode[]}})
+    | null;
+  let classicFrameCrossSell: ClassicFrameCrossSell | null = null;
+  if (
+    classicFrameArtwork &&
+    classicFrameProduct &&
+    !isDemoProduct(classicFrameProduct)
+  ) {
+    const artworkVariant = (
+      classicFrameProduct.frameVariants?.nodes ?? []
+    ).find(
+      (variant) =>
+        variant.availableForSale &&
+        variant.image &&
+        variant.price &&
+        variant.selectedOptions.some(
+          (option) =>
+            option.name === 'Artwork' &&
+            option.value === classicFrameArtwork.artworkTitle,
+        ),
+    );
+    if (artworkVariant?.image && artworkVariant.price) {
+      classicFrameCrossSell = {
+        artworkTitle: classicFrameArtwork.artworkTitle,
+        image: artworkVariant.image,
+        price: artworkVariant.price,
+        url: buildClassicFrameUrl(classicFrameArtwork.artworkTitle),
+      };
+    }
+  }
+
   return {
     capsuleSummary: capsule
       ? {
@@ -270,6 +325,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
         }
       : null,
     phoneCaseCrossSell,
+    classicFrameCrossSell,
     product: data.product as ProductDetail,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
@@ -282,6 +338,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 export default function Product() {
   const {
     capsuleSummary,
+    classicFrameCrossSell,
     phoneCaseCrossSell,
     product,
     relatedProducts,
@@ -326,10 +383,14 @@ export default function Product() {
   const productDescription = getProductDescription(product);
   const productLede = getProductLede(product);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
+  const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
   const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
   const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
+  const selectedFramedArtwork = isClassicFrame
+    ? selectedClassicFrameArtwork(selectedVariant?.selectedOptions)
+    : null;
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
@@ -349,10 +410,18 @@ export default function Product() {
         image?.url &&
         list.findIndex((item) => item.url === image.url) === index,
     );
-    return filterGalleryImagesForSize(uniqueImages, printSize.key, isArtPrint);
+    const truthfulImages = isClassicFrame
+      ? filterAccurateClassicFrameImages(uniqueImages)
+      : uniqueImages;
+    return filterGalleryImagesForSize(
+      truthfulImages,
+      printSize.key,
+      isArtPrint,
+    );
   }, [
     galleryLeadImage,
     isArtPrint,
+    isClassicFrame,
     printSize.key,
     product.galleryImages?.nodes,
     product.images?.nodes,
@@ -361,7 +430,10 @@ export default function Product() {
     const target = atcRef.current;
     if (!target) return;
     const observer = new IntersectionObserver(
-      ([entry]) => setShowStickyATC(!entry.isIntersecting),
+      ([entry]) =>
+        setShowStickyATC(
+          !entry.isIntersecting && entry.boundingClientRect.top < 0,
+        ),
       {threshold: 0},
     );
     observer.observe(target);
@@ -564,6 +636,71 @@ export default function Product() {
 
           <VariantOptions product={product} selectedVariant={selectedVariant} />
 
+          {classicFrameCrossSell ? (
+            <aside
+              className="product-format-choice"
+              aria-label={`Ready-to-hang ${classicFrameCrossSell.artworkTitle} option`}
+            >
+              <img
+                src={classicFrameCrossSell.image.url}
+                alt={
+                  classicFrameCrossSell.image.altText ||
+                  `${classicFrameCrossSell.artworkTitle} artwork in the Prodigi Natural classic frame, no mat, ${CLASSIC_FRAME_SIZE_LABEL}`
+                }
+                loading="lazy"
+              />
+              <div className="product-format-choice-copy">
+                <p className="eyebrow">Ready-to-hang option</p>
+                <p className="product-format-choice-title">
+                  This exact artwork is also available as a complete framed
+                  print.
+                </p>
+                <p className="product-format-choice-detail">
+                  {CLASSIC_FRAME_SIZE_LABEL}, Natural classic frame, no mat,
+                  with clear Perspex glazing.
+                </p>
+                <Link
+                  className="text-link"
+                  to={classicFrameCrossSell.url}
+                  prefetch="intent"
+                >
+                  Choose framed · {formatMoney(classicFrameCrossSell.price)}
+                </Link>
+              </div>
+            </aside>
+          ) : null}
+
+          {isClassicFrame && selectedFramedArtwork ? (
+            <aside
+              className="product-format-choice product-format-choice--unframed"
+              aria-label={`Unframed ${selectedFramedArtwork.printTitle} options`}
+            >
+              <img
+                src={selectedFramedArtwork.image}
+                alt={`${selectedFramedArtwork.printTitle} unframed artwork`}
+                loading="lazy"
+              />
+              <div className="product-format-choice-copy">
+                <p className="eyebrow">Complete framed print</p>
+                <p className="product-format-choice-title">
+                  This product includes both the artwork and frame. It is not a
+                  frame-only accessory.
+                </p>
+                <p className="product-format-choice-detail">
+                  Prefer the print unframed? The exact artwork is available in{' '}
+                  {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                </p>
+                <Link
+                  className="text-link"
+                  to={`/products/${selectedFramedArtwork.printHandle}`}
+                  prefetch="intent"
+                >
+                  View the unframed print in 3 sizes
+                </Link>
+              </div>
+            </aside>
+          ) : null}
+
           <div className="product-buy-box">
             <div className="quantity-row">
               <span>Quantity</span>
@@ -600,9 +737,7 @@ export default function Product() {
                           merchandiseId: selectedVariant.id,
                           quantity,
                           selectedVariant,
-                          ...(skyAttributes
-                            ? {attributes: skyAttributes}
-                            : {}),
+                          ...(skyAttributes ? {attributes: skyAttributes} : {}),
                         },
                       ]
                     : []
@@ -647,11 +782,31 @@ export default function Product() {
                 <dt>Print</dt>
                 <dd>
                   Giclée print in archival pigment inks on 200gsm Enhanced Matte
-                  Art paper. Unframed {printSize.label} portrait, printed to
-                  order. Frame not included; screen and print colours can vary
-                  slightly.
+                  Art paper. Choose {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                  Ships unframed in the selected size; frame not included.
+                  Screen and print colours can vary slightly.
                 </dd>
               </div>
+            ) : null}
+            {isClassicFrame ? (
+              <>
+                <div>
+                  <dt>Frame</dt>
+                  <dd>
+                    Prodigi Natural classic frame with a 20 mm face, clear
+                    Perspex glazing, and no mat. The artwork and frame are
+                    supplied together, ready to hang.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Size</dt>
+                  <dd>
+                    {CLASSIC_FRAME_SIZE_LABEL} artwork opening. This framed
+                    product is offered in one size; the matching unframed print
+                    is available in {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                  </dd>
+                </div>
+              </>
             ) : null}
             {capsuleSummary?.blurb ? (
               <div>
@@ -704,16 +859,16 @@ export default function Product() {
                   <dd>
                     Every star brighter than the naked-eye limit, the Moon at
                     its true phase and place, and the visible planets —
-                    calculated for your exact place and moment. Star data:
-                    Yale Bright Star Catalogue; places: GeoNames (CC BY 4.0).
+                    calculated for your exact place and moment. Star data: Yale
+                    Bright Star Catalogue; places: GeoNames (CC BY 4.0).
                   </dd>
                 </div>
                 <div>
                   <dt>Personalisation</dt>
                   <dd>
-                    Your title, the place, the date and its coordinates are
-                    set in the lower band. We print exactly what the preview
-                    shows, so check the spelling before you add to cart.
+                    Your title, the place, the date and its coordinates are set
+                    in the lower band. We print exactly what the preview shows,
+                    so check the spelling before you add to cart.
                   </dd>
                 </div>
               </>
@@ -734,8 +889,7 @@ export default function Product() {
                 Printed to order and dispatched within{' '}
                 {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
                 delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
-                days across the EU. Delivery updates are emailed when
-                available.
+                days across the EU. Delivery updates are emailed when available.
               </dd>
             </div>
             <div>
@@ -1530,6 +1684,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
 const PRODUCT_QUERY = `#graphql
   query Product(
     $capsuleQuery: String!
+    $classicFrameHandle: String!
     $country: CountryCode
     $first: Int!
     $handle: String!
@@ -1603,6 +1758,29 @@ const PRODUCT_QUERY = `#graphql
     capsuleProducts: products(first: 3, query: $capsuleQuery) {
       nodes {
         ...ClaraProductCard
+      }
+    }
+    classicFrame: product(handle: $classicFrameHandle) {
+      ...ClaraProductCard
+      frameVariants: variants(first: 5) {
+        nodes {
+          availableForSale
+          image {
+            id
+            url
+            altText
+            width
+            height
+          }
+          price {
+            amount
+            currencyCode
+          }
+          selectedOptions {
+            name
+            value
+          }
+        }
       }
     }
     phoneCase: product(handle: $phoneCaseHandle) {
