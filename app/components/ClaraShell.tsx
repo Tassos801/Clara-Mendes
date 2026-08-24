@@ -6,28 +6,12 @@ import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
-  EXTENSION_COLLECTION_HANDLE,
-  hasReleasedExtensions,
   hasReleasedPersonalised,
-  isReleasedExtensionHandle,
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
-import {buildClassicFrameUrl, CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
-  // The first released extension is a natural complement to the print
-  // catalog, so name it directly instead of hiding it behind "Everyday".
-  ...(isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
-    ? [{to: buildClassicFrameUrl('Quiet Form'), label: 'Framed Art'}]
-    : hasReleasedExtensions()
-      ? [
-          {
-            to: `/collections/${EXTENSION_COLLECTION_HANDLE}`,
-            label: 'Everyday',
-          },
-        ]
-      : []),
   // The personalised star map gets its own entry once released.
   ...(hasReleasedPersonalised()
     ? [{to: `/products/${SKY_PRODUCT_HANDLE}`, label: 'Your Sky'}]
@@ -136,7 +120,6 @@ function ClaraFooter() {
         </p>
       </div>
       <nav className="footer-style-nav" aria-label="Shop by style">
-        <Link to={buildClassicFrameUrl('Quiet Form')}>Framed Art</Link>
         <Link to="/collections/all?type=Art+Prints">Unframed Art Prints</Link>
         <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
         <Link to="/collections/terracotta-wall-art">Terracotta Wall Art</Link>

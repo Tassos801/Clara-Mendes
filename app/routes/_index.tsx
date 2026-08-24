@@ -292,12 +292,6 @@ export default function Homepage() {
               <Link to="/collections/all" className="hm-nav-text">
                 Shop
               </Link>
-              <Link
-                to={buildClassicFrameUrl('Quiet Form')}
-                className="hm-nav-text"
-              >
-                Framed Art
-              </Link>
               <Link to="/our-story" className="hm-nav-text">
                 Our Story
               </Link>
@@ -1535,12 +1529,17 @@ html:has(.home-root) main {
   .hm-nav-group {
     display: grid;
     gap: 2px 8px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
 
   .hm-nav-group .hm-nav-text {
+    grid-column: span 2;
     justify-content: center;
     text-align: center;
+  }
+
+  .hm-nav-group .hm-nav-text:nth-last-child(-n + 2) {
+    grid-column: span 3;
   }
 }
 
