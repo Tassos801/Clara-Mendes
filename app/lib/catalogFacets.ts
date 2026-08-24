@@ -47,6 +47,24 @@ export function parseFacetSelection(
   };
 }
 
+export function normalizeSingleProductTypeSearch(
+  searchParams: URLSearchParams,
+  supportedProductTypes: readonly string[],
+): URLSearchParams | null {
+  const selected = searchParams.getAll('type').filter(Boolean);
+  const isSupported = selected.every((productType) =>
+    supportedProductTypes.includes(productType),
+  );
+
+  if (selected.length <= 1 && isSupported) return null;
+
+  const next = new URLSearchParams(searchParams);
+  next.delete('cursor');
+  next.delete('direction');
+  next.delete('type');
+  return next;
+}
+
 export function countActiveFacets(selection: CatalogFacetSelection): number {
   return (
     (selection.available ? 1 : 0) +

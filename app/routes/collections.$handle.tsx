@@ -4,6 +4,7 @@ import type {Route} from './+types/collections.$handle';
 import {
   buildCollectionAnalyticsProducts,
   CollectionView,
+  SHOP_PRODUCT_TYPES,
 } from './collections.all';
 import type {
   CollectionLink,
@@ -37,6 +38,7 @@ import {
 import {
   buildCollectionProductFilters,
   extractFacetOptions,
+  normalizeSingleProductTypeSearch,
   parseFacetSelection,
   type StorefrontFilterFacet,
 } from '~/lib/catalogFacets';
@@ -195,9 +197,20 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   });
   const searchParams = new URL(request.url).searchParams;
   const sort = getCollectionSortValue(searchParams);
-  const productFilters = buildCollectionProductFilters(
-    parseFacetSelection(searchParams),
+  const facetSelection = parseFacetSelection(searchParams);
+  const normalizedProductTypes = normalizeSingleProductTypeSearch(
+    searchParams,
+    SHOP_PRODUCT_TYPES,
   );
+
+  if (normalizedProductTypes) {
+    const queryString = normalizedProductTypes.toString();
+    throw redirect(
+      `/collections/${handle}${queryString ? `?${queryString}` : ''}`,
+    );
+  }
+
+  const productFilters = buildCollectionProductFilters(facetSelection);
 
   const data = await context.storefront.query(COLLECTION_QUERY, {
     variables: {
@@ -219,6 +232,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   const products = data.collection.products as CollectionProductConnection & {
     filters?: StorefrontFilterFacet[];
   };
+  const facets = extractFacetOptions(products.filters);
+  facets.productTypes = facets.productTypes.filter((option) =>
+    SHOP_PRODUCT_TYPES.some((productType) => productType === option.label),
+  );
 
   return {
     activeHandle: data.collection.handle,
@@ -229,7 +246,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     description:
       data.collection.description ||
       'A focused Clara Mendes collection of original art and considered products.',
-    facets: extractFacetOptions(products.filters),
+    facets,
     heading: data.collection.title,
     products: {
       ...products,

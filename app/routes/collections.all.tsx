@@ -1,5 +1,11 @@
 import {useEffect, useState} from 'react';
-import {Link, useLoaderData, useNavigate, useSearchParams} from 'react-router';
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useNavigate,
+  useSearchParams,
+} from 'react-router';
 import {Analytics, getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import type {Route} from './+types/collections.all';
 import {
@@ -9,14 +15,23 @@ import {
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {buildCapsuleTagQuery, CAPSULES, getCapsuleBySlug} from '~/lib/capsules';
-import {filterDemoCollections, filterDemoProducts} from '~/lib/catalogFilters';
+import {
+  filterDemoCollections,
+  filterDemoProducts,
+  isReleasedExtensionHandle,
+} from '~/lib/catalogFilters';
 import {
   buildProductsSearchQuery,
   countActiveFacets,
+  normalizeSingleProductTypeSearch,
   parseFacetSelection,
   type CatalogFacetOptions,
 } from '~/lib/catalogFacets';
 import {CatalogFilterPanel} from '~/components/CatalogFilterPanel';
+import {
+  CLASSIC_FRAME_HANDLE,
+  CLASSIC_FRAME_PRODUCT_TYPE,
+} from '~/lib/classicFrame';
 import {
   COLLECTION_SORT_OPTIONS,
   getCollectionSortValue,
@@ -40,6 +55,14 @@ export type CollectionLink = {
   };
   title: string;
 };
+
+/** Add a product type only when its allowlisted product is ready to sell. */
+export const SHOP_PRODUCT_TYPES: readonly string[] = [
+  'Art Prints',
+  ...(isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
+    ? [CLASSIC_FRAME_PRODUCT_TYPE]
+    : []),
+];
 
 export type CollectionProductConnection = {
   nodes: ClaraCardProduct[];
@@ -90,6 +113,15 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
   const capsule = getCapsuleBySlug(searchParams.get('capsule'));
+  const normalizedProductTypes = normalizeSingleProductTypeSearch(
+    searchParams,
+    SHOP_PRODUCT_TYPES,
+  );
+
+  if (normalizedProductTypes) {
+    const queryString = normalizedProductTypes.toString();
+    throw redirect(`/collections/all${queryString ? `?${queryString}` : ''}`);
+  }
 
   const searchQuery = [
     buildProductsSearchQuery(facetSelection),
@@ -106,12 +138,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
     },
   });
 
-  const productTypes = (
-    (data.productTypes?.edges ?? []) as Array<{node: string}>
-  )
-    .map((edge) => edge.node)
-    .filter(Boolean);
-
   return {
     activeCapsule: capsule?.slug ?? null,
     activeHandle: 'all',
@@ -123,7 +149,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       ? `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`
       : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
     facets: {
-      productTypes: productTypes.map((label) => ({label})),
+      productTypes: SHOP_PRODUCT_TYPES.map((label) => ({label})),
       vendors: [] as Array<{label: string}>,
     },
     heading: capsule ? capsule.title : 'Shop All',
@@ -144,8 +170,17 @@ export default function AllCollection() {
 
 export function CollectionView({data}: {data: CollectionViewData}) {
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
   const sort = getCollectionSortValue(searchParams);
-  const activeFacetCount = countActiveFacets(parseFacetSelection(searchParams));
+  const facetSelection = parseFacetSelection(searchParams);
+  const activeProductType =
+    facetSelection.productTypes.length === 1
+      ? facetSelection.productTypes[0]
+      : '';
+  const activeFacetCount = countActiveFacets({
+    ...facetSelection,
+    productTypes: [],
+  });
   const [filtersOpen, setFiltersOpen] = useState(activeFacetCount > 0);
   const {ref: loadMoreRef, inView} = useInView();
   const activeCapsule = data.activeCapsule ?? null;
@@ -170,6 +205,45 @@ export function CollectionView({data}: {data: CollectionViewData}) {
     const queryString = next.toString();
     return queryString ? `?${queryString}` : '';
   };
+
+  const categorySearch = (productType: string | null) => {
+    const next = new URLSearchParams(searchParams);
+    next.delete('cursor');
+    next.delete('direction');
+    next.delete('type');
+    if (productType) {
+      next.set('type', productType);
+      if (productType !== 'Art Prints') next.delete('capsule');
+    }
+    const queryString = next.toString();
+    return queryString ? `?${queryString}` : '';
+  };
+
+  const collectionPath = (handle: string) => {
+    const next = new URLSearchParams(searchParams);
+    next.delete('capsule');
+    next.delete('cursor');
+    next.delete('direction');
+    const queryString = next.toString();
+    return `/collections/${handle}${queryString ? `?${queryString}` : ''}`;
+  };
+
+  const activeCollectionPath =
+    data.activeHandle === 'all'
+      ? `/collections/all${capsuleSearch(activeCapsule)}`
+      : collectionPath(data.activeHandle);
+  const productCategories = [
+    {
+      active: !activeProductType,
+      label: 'All products',
+      path: `/collections/all${categorySearch(null)}`,
+    },
+    ...data.facets.productTypes.map((option) => ({
+      active: activeProductType === option.label,
+      label: option.label,
+      path: `/collections/all${categorySearch(option.label)}`,
+    })),
+  ];
 
   const onSortChange = (value: string) => {
     void setSearchParams(
@@ -233,48 +307,87 @@ export function CollectionView({data}: {data: CollectionViewData}) {
       </section>
 
       <div className="cv-toolbar" aria-label="Collection toolbar">
-        <nav className="cv-filter" aria-label="Collection categories">
-          <Link
-            aria-current={
-              data.activeHandle === 'all' && !activeCapsule ? 'page' : undefined
-            }
-            className={`cv-filter-link${
-              data.activeHandle === 'all' && !activeCapsule ? ' is-active' : ''
-            }`}
-            to={`/collections/all${capsuleSearch(null)}`}
-          >
-            <span className="cv-filter-label">All</span>
-            <span className="cv-filter-underline" aria-hidden />
-          </Link>
-          {data.collections.map((collection) => (
-            <Link
-              key={collection.id}
-              to={`/collections/${collection.handle}`}
-              aria-current={
-                collection.handle === data.activeHandle ? 'page' : undefined
+        <div className="cv-browse-controls">
+          <div className="cv-browse-group cv-browse-group--category">
+            <span className="cv-browse-label" id="cv-category-label">
+              Product
+            </span>
+            <nav aria-labelledby="cv-category-label" className="cv-type-tabs">
+              {productCategories.map((category) => (
+                <Link
+                  aria-current={category.active ? 'page' : undefined}
+                  className={`cv-type-link${
+                    category.active ? ' is-active' : ''
+                  }`}
+                  key={category.label}
+                  prefetch="intent"
+                  to={category.path}
+                >
+                  {category.label}
+                </Link>
+              ))}
+            </nav>
+            <select
+              aria-labelledby="cv-category-label"
+              className="cv-category-select"
+              value={
+                productCategories.find((category) => category.active)?.path ??
+                productCategories[0].path
               }
-              className={`cv-filter-link${
-                collection.handle === data.activeHandle ? ' is-active' : ''
-              }`}
+              onChange={(event) =>
+                void navigate(event.target.value, {preventScrollReset: true})
+              }
             >
-              <span className="cv-filter-label">{collection.title}</span>
-              <span className="cv-filter-underline" aria-hidden />
-            </Link>
-          ))}
-          {capsuleLinks.map((capsule) => (
-            <Link
-              key={capsule.slug}
-              to={`/collections/all${capsuleSearch(capsule.slug)}`}
-              aria-current={activeCapsule === capsule.slug ? 'page' : undefined}
-              className={`cv-filter-link${
-                activeCapsule === capsule.slug ? ' is-active' : ''
-              }`}
+              {productCategories.map((category) => (
+                <option key={category.label} value={category.path}>
+                  {category.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="cv-browse-group cv-browse-group--collection">
+            <label className="cv-browse-label" htmlFor="cv-collection-select">
+              Collection
+            </label>
+            <select
+              className="cv-collection-select"
+              id="cv-collection-select"
+              value={activeCollectionPath}
+              onChange={(event) =>
+                void navigate(event.target.value, {preventScrollReset: true})
+              }
             >
-              <span className="cv-filter-label">{capsule.title}</span>
-              <span className="cv-filter-underline" aria-hidden />
-            </Link>
-          ))}
-        </nav>
+              <option value={`/collections/all${capsuleSearch(null)}`}>
+                All collections
+              </option>
+              {data.collections.length > 0 ? (
+                <optgroup label="Collections">
+                  {data.collections.map((collection) => (
+                    <option
+                      key={collection.id}
+                      value={collectionPath(collection.handle)}
+                    >
+                      {collection.title}
+                    </option>
+                  ))}
+                </optgroup>
+              ) : null}
+              {capsuleLinks.length > 0 ? (
+                <optgroup label="Art capsules">
+                  {capsuleLinks.map((capsule) => (
+                    <option
+                      key={capsule.slug}
+                      value={`/collections/all${capsuleSearch(capsule.slug)}`}
+                    >
+                      {capsule.title}
+                    </option>
+                  ))}
+                </optgroup>
+              ) : null}
+            </select>
+          </div>
+        </div>
         <div className="cv-toolbar-actions">
           <button
             className={`cv-filter-toggle${
@@ -306,7 +419,11 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         </div>
       </div>
 
-      <CatalogFilterPanel facets={data.facets} open={filtersOpen} />
+      <CatalogFilterPanel
+        facets={data.facets}
+        open={filtersOpen}
+        showProductTypes={false}
+      />
 
       <Pagination connection={data.products}>
         {({
@@ -341,7 +458,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                   {isLoading ? 'Loading…' : 'Load more'}
                 </NextLink>
               </section>
-            ) : activeFacetCount > 0 ? (
+            ) : activeFacetCount > 0 || activeProductType ? (
               <section className="empty-state collection-empty">
                 <p className="eyebrow">No matches</p>
                 <h2>Nothing fits those filters yet.</h2>
@@ -528,11 +645,6 @@ const ALL_COLLECTION_QUERY = `#graphql
         endCursor
       }
     }
-    productTypes(first: 60) {
-      edges {
-        node
-      }
-    }
     collections(first: 24) {
       nodes {
         id
@@ -671,67 +783,101 @@ const collectionCss = `
   box-shadow:
     0 12px 32px rgba(55,48,39,0.08),
     inset 0 1px 0 rgba(255,255,255,0.82);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: clamp(18px, 3vw, 46px);
+  padding: 18px clamp(18px, 4vw, 70px);
 }
 
-.cv-filter {
+.cv-browse-controls {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px clamp(26px, 3.4vw, 48px);
-  padding: clamp(18px, 2.4vw, 32px) clamp(18px, 4vw, 70px);
-  flex: 1;
+  align-items: end;
+  gap: clamp(18px, 2.6vw, 38px);
   min-width: 0;
 }
 
-.cv-filter-link {
-  position: relative;
+.cv-browse-group {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.cv-browse-label {
+  font-family: var(--sans);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   color: var(--cv-muted);
+}
+
+.cv-type-tabs {
+  align-items: center;
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(38,35,31,0.1);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
+  display: inline-flex;
+  min-height: 44px;
+  padding: 3px;
+}
+
+.cv-type-link {
+  align-items: center;
+  border-radius: 6px;
+  color: var(--cv-muted);
+  display: inline-flex;
   font-family: var(--sans);
   font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  padding: 4px 0;
-  transition: color 400ms var(--cv-ease);
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 14px;
+  transition:
+    background 300ms var(--cv-ease),
+    color 300ms var(--cv-ease),
+    box-shadow 300ms var(--cv-ease);
   white-space: nowrap;
 }
 
-.cv-filter-link:hover { color: var(--cv-ink); }
-
-.cv-filter-link:focus-visible {
-  outline: 1.5px solid var(--cv-ink);
-  outline-offset: 4px;
-}
-
-.cv-filter-underline {
-  position: absolute;
-  left: 0; right: 0;
-  bottom: -2px;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 500ms var(--cv-ease);
-}
-
-.cv-filter-link:hover .cv-filter-underline { transform: scaleX(0.6); }
-
-.cv-filter-link.is-active {
+.cv-type-link:hover {
   color: var(--cv-ink);
-  font-style: italic;
-  font-family: var(--serif);
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
-  text-transform: none;
-  font-weight: 400;
 }
 
-.cv-filter-link.is-active .cv-filter-underline {
-  transform: scaleX(1);
+.cv-type-link:focus-visible,
+.cv-category-select:focus-visible,
+.cv-collection-select:focus-visible {
+  outline: 1.5px solid var(--cv-ink);
+  outline-offset: 2px;
+}
+
+.cv-type-link.is-active {
   background: var(--cv-ink);
+  box-shadow: 0 4px 12px rgba(38,35,31,0.16);
+  color: #fbfaf6;
+}
+
+.cv-category-select,
+.cv-collection-select {
+  background: rgba(255,255,255,0.46);
+  border: 1px solid rgba(38,35,31,0.12);
+  border-radius: 6px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+  color: var(--cv-ink);
+  cursor: pointer;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  min-height: 44px;
+  padding: 0 34px 0 12px;
+}
+
+.cv-category-select {
+  display: none;
+}
+
+.cv-collection-select {
+  min-width: 210px;
 }
 
 /* Toolbar actions (filter toggle + sort) */
@@ -739,7 +885,6 @@ const collectionCss = `
   display: flex;
   align-items: center;
   gap: clamp(12px, 1.6vw, 22px);
-  padding-right: clamp(18px, 4vw, 70px);
   flex-shrink: 0;
 }
 
@@ -756,9 +901,10 @@ const collectionCss = `
     linear-gradient(135deg, rgba(255,255,255,0.46), transparent 58%),
     rgba(251,250,246,0.58);
   border: 1px solid rgba(255,255,255,0.72);
-  border-radius: 999px;
+  border-radius: 6px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
-  padding: 6px 12px;
+  min-height: 44px;
+  padding: 0 14px;
   cursor: pointer;
   white-space: nowrap;
   transition: color 400ms var(--cv-ease), border-color 400ms var(--cv-ease);
@@ -958,9 +1104,10 @@ const collectionCss = `
   -webkit-backdrop-filter: blur(12px) saturate(1.16);
   background-color: rgba(251,250,246,0.62);
   border: 1px solid rgba(255,255,255,0.72);
-  border-radius: 999px;
+  border-radius: 6px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.82);
-  padding: 6px 28px 6px 10px;
+  min-height: 44px;
+  padding: 0 30px 0 12px;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2326231f' stroke-width='1.2'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -1050,12 +1197,23 @@ const collectionCss = `
   .cv-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
+@media (max-width: 980px) {
+  .cv-toolbar {
+    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cv-toolbar-actions {
+    justify-content: flex-end;
+  }
+}
+
 @media (max-width: 780px) {
   .cv-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cv-hero { min-height: 50vh; }
 }
 
-/* ── Mobile: compact hero, 2-col grid, scrollable categories ── */
+/* ── Mobile: compact hero, selectors, 2-col grid ── */
 @media (max-width: 720px) {
   .cv-hero {
     min-height: auto;
@@ -1067,48 +1225,46 @@ const collectionCss = `
 
   .cv-toolbar {
     top: var(--header-height, 68px);
-    flex-direction: column;
     align-items: stretch;
-    gap: 0;
+    gap: 12px;
+    padding: 12px 14px;
   }
 
-  /* Scrollable category row: the right-edge fade plus trailing padding
-     signal further options, and snap keeps items discoverable without a
-     visible scrollbar. */
-  .cv-filter {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    scroll-snap-type: x proximity;
-    scroll-padding-inline: 18px;
-    gap: 0 20px;
-    padding: 4px 48px 4px 18px;
-    mask-image: linear-gradient(
-      to right,
-      black 0,
-      black calc(100% - 36px),
-      transparent 100%
-    );
-    -webkit-mask-image: linear-gradient(
-      to right,
-      black 0,
-      black calc(100% - 36px),
-      transparent 100%
-    );
+  .cv-browse-controls {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   }
-  .cv-filter::-webkit-scrollbar { display: none; }
 
-  .cv-filter-link {
-    align-items: center;
-    display: inline-flex;
-    min-height: 44px;
-    scroll-snap-align: start;
+  .cv-type-tabs {
+    display: none;
+  }
+
+  .cv-category-select {
+    display: block;
+  }
+
+  .cv-category-select,
+  .cv-collection-select {
+    min-width: 0;
+    width: 100%;
   }
 
   .cv-toolbar-actions {
-    padding: 0 18px 12px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto minmax(0, 1fr);
     justify-content: space-between;
+  }
+
+  .cv-sort {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .cv-sort-select {
+    min-width: 0;
+    width: 100%;
   }
 
   .cv-facets {
@@ -1142,6 +1298,10 @@ const collectionCss = `
 }
 
 @media (max-width: 360px) {
+  .cv-browse-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .cv-grid {
     grid-template-columns: 1fr;
   }
@@ -1149,7 +1309,7 @@ const collectionCss = `
 
 @media (prefers-reduced-motion: reduce) {
   .cv-eyebrow, .cv-title, .cv-tagline, .cv-coords,
-  .cv-hero-rule, .cv-filter, .cv-card-wrap {
+  .cv-hero-rule, .cv-browse-controls, .cv-card-wrap {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

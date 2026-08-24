@@ -14,13 +14,18 @@ import {
 export function CatalogFilterPanel({
   facets,
   open,
+  showProductTypes = true,
 }: {
   facets: CatalogFacetOptions;
   open: boolean;
+  showProductTypes?: boolean;
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const selection = parseFacetSelection(searchParams);
-  const activeCount = countActiveFacets(selection);
+  const activeCount = countActiveFacets({
+    ...selection,
+    productTypes: showProductTypes ? selection.productTypes : [],
+  });
 
   const [minInput, setMinInput] = useState(
     selection.priceMin != null ? String(selection.priceMin) : '',
@@ -89,7 +94,7 @@ export function CatalogFilterPanel({
       params.delete('available');
       params.delete('min');
       params.delete('max');
-      params.delete('type');
+      if (showProductTypes) params.delete('type');
       params.delete('vendor');
     });
   };
@@ -148,12 +153,14 @@ export function CatalogFilterPanel({
         </form>
       </div>
 
-      <FacetChipGroup
-        options={facets.productTypes}
-        selected={selection.productTypes}
-        title="Type"
-        onToggle={(value) => toggleValue('type', value)}
-      />
+      {showProductTypes ? (
+        <FacetChipGroup
+          options={facets.productTypes}
+          selected={selection.productTypes}
+          title="Type"
+          onToggle={(value) => toggleValue('type', value)}
+        />
+      ) : null}
 
       <FacetChipGroup
         options={facets.vendors}
