@@ -111,6 +111,25 @@ Collection pages support:
 Sources: `app/routes/collections.all.tsx`,
 `app/routes/collections.$handle.tsx`, `app/lib/collectionSort.ts`.
 
+## Wall Sets
+
+Seven purchasable gallery walls (`app/lib/wallSets.ts`): the five capsule
+trios mount on their capsule landing pages; two cross-capsule mixes
+(`terracotta-gallery-wall`, `ink-and-cream-gallery-wall`) have their own
+curated gallery pages. On each, `WallSetPurchase` renders one size
+selector, the summed price, a single three-line `LinesAdd` submit, and a
+link to the generated hanging guide
+(`app/routes/api.hanging-guide.$file.tsx`, pdf-lib, A4, cacheable). The
+loader fetches the three member products by handle only on those seven
+slugs and suppresses the module unless all three pass the catalog
+allowlist with a released Unframed variant in at least one shared size.
+Print PDPs link back into the wall(s) containing them. No Shopify
+products, flags, or price changes are involved.
+
+Sources: `app/lib/wallSets.ts`, `app/components/WallSetPurchase.tsx`,
+`app/routes/collections.$handle.tsx`,
+`app/routes/api.hanging-guide.$file.tsx`, `scripts/wallSets.node-test.mjs`.
+
 ## Search
 
 The search route supports both regular and predictive search. Search results are
