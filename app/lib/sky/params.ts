@@ -274,7 +274,9 @@ export function fromCartAttributes(
     | undefined,
 ): CartAttributesDecode {
   const map = new Map((attrs ?? []).map((a) => [a.key, a.value ?? '']));
-  if (map.get('_v') !== '1') return {ok: false, error: 'Not a sky line.'};
+  if (map.get('_v') !== '1' || map.has('_kind')) {
+    return {ok: false, error: 'Not a sky line.'};
+  }
   const result = validateSkyParams({
     date: map.get('_date'),
     time: map.get('_time'),
@@ -292,5 +294,11 @@ export function fromCartAttributes(
 export function isSkyCartLine(
   attrs: ReadonlyArray<{key: string}> | null | undefined,
 ) {
-  return Boolean(attrs?.some((a) => a.key === '_v'));
+  // `_v` alone marks a sky line; other personalised products (the birth
+  // poster) also carry `_v` but add a `_kind` discriminator, so its
+  // absence is part of the sky contract.
+  return Boolean(
+    attrs?.some((a) => a.key === '_v') &&
+      !attrs?.some((a) => a.key === '_kind'),
+  );
 }

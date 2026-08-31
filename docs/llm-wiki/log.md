@@ -477,3 +477,25 @@ disabled at embed time.
 
 Sources: [Routes and pages](modules/routes-and-pages.md),
 [Catalog and products](modules/catalog-and-products.md).
+
+## 2026-08-31 - First Light: the second personalised product
+
+Built the First Light birth poster on the Your Sky engine, staged dark
+behind `PERSONALISED_RELEASE_FLAGS['first-light-birth-poster']`. A
+parallel `app/lib/natal/` module (params/products/scene/svg/pdf) renders a
+star-chart medallion of the birth sky over the child's name, birth
+details and an optional free-text line; a blank time draws the chart for
+local noon and prints no time. Shared plumbing now dispatches by a
+`_kind` cart-attribute discriminator: sky lines are `_v` without `_kind`
+(the sky codec refuses natal lines outright), the cart signer and the
+orders/paid fulfilment builder route each kind to its own codec, variant
+table and print route (`/api/natal-print/<token>.pdf`), and mixed
+sky+natal orders build one Prodigi order. Prodigi SKUs and prices mirror
+the sky's exactly. The PDP mounts configurators per handle, nav entries
+are now per released handle, and `docs/your-sky-release.md` §8 carries
+the go-live steps — First Light follows only after Your Sky's first live
+order. Local QA: `scripts/natal-render-local.mjs`.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Fulfillment](modules/fulfillment.md),
+[Routes and pages](modules/routes-and-pages.md).

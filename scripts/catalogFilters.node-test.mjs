@@ -172,4 +172,39 @@ assert.equal(
     true,
     'staged star map is not sellable while its flag is false',
   );
+
+  // The First Light birth poster stages beside the sky, independently
+  // flagged and independently releasable.
+  const {NATAL_PRODUCT_HANDLE} = await import('../app/lib/catalogFilters.ts');
+  const {NATAL_PRODUCT_HANDLE: codecHandle} = await import(
+    '../app/lib/natal/products.ts'
+  );
+  assert.equal(NATAL_PRODUCT_HANDLE, 'first-light-birth-poster');
+  assert.equal(
+    NATAL_PRODUCT_HANDLE,
+    codecHandle,
+    'flag map and natal codec must agree on the handle',
+  );
+  assert.equal(PERSONALISED_RELEASE_FLAGS[NATAL_PRODUCT_HANDLE], false);
+  assert.equal(isStagedPersonalisedHandle(NATAL_PRODUCT_HANDLE), true);
+  assert.equal(isUnreleasedStagedHandle(NATAL_PRODUCT_HANDLE), true);
+  assert.equal(
+    computeSellableHandles(EXTENSION_RELEASE_FLAGS, {
+      [SKY_PRODUCT_HANDLE]: false,
+      [NATAL_PRODUCT_HANDLE]: true,
+    }).has(NATAL_PRODUCT_HANDLE),
+    true,
+    'the natal flag releases independently of the sky flag',
+  );
+  assert.equal(
+    isDemoProduct({
+      handle: NATAL_PRODUCT_HANDLE,
+      productType: 'Personalised Art',
+      tags: ['Clara Mendes Original'],
+      title: 'First Light',
+      vendor: 'Clara Mendes',
+    }),
+    true,
+    'staged birth poster is not sellable while its flag is false',
+  );
 }

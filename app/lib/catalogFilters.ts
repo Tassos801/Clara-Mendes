@@ -105,14 +105,17 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
 };
 
 export const SKY_PRODUCT_HANDLE = 'your-sky-star-map';
+export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';
 
 /**
  * Personalised products staged for release. Same dual gate as extensions:
  * flag AND Shopify publication. Flip via docs/your-sky-release.md once the
- * sandbox end-to-end order has been verified.
+ * sandbox end-to-end order has been verified; First Light follows only
+ * after Your Sky's first live order proves the fulfilment chain.
  */
 export const PERSONALISED_RELEASE_FLAGS: Record<string, boolean> = {
   [SKY_PRODUCT_HANDLE]: false,
+  [NATAL_PRODUCT_HANDLE]: false,
 };
 
 export function isReleasedExtensionHandle(handle?: string | null) {
