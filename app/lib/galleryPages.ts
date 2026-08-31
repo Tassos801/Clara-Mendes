@@ -221,7 +221,12 @@ const GALLERY_PAGE_CONTENT: Record<string, GalleryPageContent> = {
       'midnight-garden-i-art-print',
       'sunlit-mosaic-i-art-print',
     ],
-    related: ['living-room-wall-art', 'abstract-wall-art'],
+    related: [
+      'terracotta-gallery-wall',
+      'ink-and-cream-gallery-wall',
+      'living-room-wall-art',
+      'abstract-wall-art',
+    ],
     capsules: ['quiet-form', 'patina-blue', 'neo-deco', 'midnight-garden', 'sunlit-mosaic'],
     chapter: 'linen',
   },
@@ -242,6 +247,50 @@ const GALLERY_PAGE_CONTENT: Record<string, GalleryPageContent> = {
     related: ['terracotta-wall-art', 'bedroom-wall-art'],
     capsules: ['quiet-form', 'sunlit-mosaic'],
     chapter: 'linen',
+  },
+  'terracotta-gallery-wall': {
+    slug: 'terracotta-gallery-wall',
+    seoTitle: 'Terracotta Gallery Wall — A Curated Three-Print Set',
+    metaDescription:
+      'A terracotta gallery wall composed from three original prints: clay warmth, courtyard rhythm and one cool cobalt anchor, hung as a single row.',
+    eyebrow: 'Curated gallery walls',
+    title: 'The Terracotta Thread',
+    subtitle: 'Sienna and clay warmth stitched together by small flashes of cobalt.',
+    editorial: [
+      'A terracotta gallery wall fails when every frame shouts the same shade of orange. This trio threads the colour through three different temperaments instead: Quiet Form III leads with a grounded terracotta crescent on bone, Sunlit Mosaic II breaks the warmth into courtyard rhythm, and Patina Blue II answers both with slate and sienna under a cool cobalt sky. The thread is the terracotta; the interest is everything it passes through.',
+      'Hang the three as one row in the printed order — the crescent opens, the mosaic carries, the blue closes. Keep the gaps at a consistent hand’s width and centre the row on the furniture below it rather than the wall. The set flatters exactly the rooms terracotta loves: natural wood, linen, rattan, unglazed ceramics, and any wall that catches afternoon light.',
+      'All three are original compositions, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper, in 8 × 10, 16 × 20, and 20 × 24 in. Buy the wall in one size below — a gallery wall reads calmest when the frames match — and the free hanging guide marks the measurements for you.',
+    ],
+    handles: [
+      'quiet-form-iii-art-print',
+      'sunlit-mosaic-ii-art-print',
+      'patina-blue-ii-art-print',
+    ],
+    related: ['wall-art-sets-of-3', 'terracotta-wall-art', 'ink-and-cream-gallery-wall'],
+    capsules: ['quiet-form', 'sunlit-mosaic', 'patina-blue'],
+    chapter: 'clay',
+  },
+  'ink-and-cream-gallery-wall': {
+    slug: 'ink-and-cream-gallery-wall',
+    seoTitle: 'Ink & Cream Gallery Wall — Black and Cream Print Set',
+    metaDescription:
+      'A black and cream gallery wall of three originals: warm charcoal minimalism, graphic Deco ink and oxblood, and a moonlit botanical to close.',
+    eyebrow: 'Curated gallery walls',
+    title: 'Ink & Cream',
+    subtitle: 'Charcoal, ink and oxblood carried on ivory — contrast that stays calm.',
+    editorial: [
+      'Black-and-cream walls usually choose between severity and blandness. Ink & Cream keeps the contrast and loses the chill by letting three capsules share the ink: Quiet Form I opens softly in ivory and charcoal, Neo Deco II sharpens the middle with graphic black and a drop of oxblood, and Midnight Garden II closes in ink and plum with copper surfacing where the light lands. Same darkness, three different tempers.',
+      'This is the set for entryways, studies, and dining walls that want gravity without gloom. Hang the row in the printed order so the eye moves soft → sharp → deep, and give it stronger side light than you would a colour wall — the compositions live in their edges. Thin black frames hold the three together; oak softens them if the room already carries dark furniture.',
+      'Each print is an original, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper, in 8 × 10, 16 × 20, and 20 × 24 in. Buy the complete wall in one size below and download the free hanging guide — the 145 cm centre-line rule does the maths for you.',
+    ],
+    handles: [
+      'quiet-form-i-art-print',
+      'neo-deco-ii-art-print',
+      'midnight-garden-ii-art-print',
+    ],
+    related: ['wall-art-sets-of-3', 'geometric-wall-art', 'terracotta-gallery-wall'],
+    capsules: ['quiet-form', 'neo-deco', 'midnight-garden'],
+    chapter: 'ink',
   },
 };
 
@@ -291,6 +340,14 @@ const GALLERY_HERO: Record<string, {src: string; alt: string}> = {
   'warm-minimalist-wall-art': {
     src: '/images/product-art-mockups/quiet-form/quiet-form-03-room-detail-20x24.webp',
     alt: 'Quiet Form III terracotta crescent print in a spare, warm room',
+  },
+  'terracotta-gallery-wall': {
+    src: '/images/product-art-mockups/sunlit-mosaic/sunlit-mosaic-02-room-detail-20x24.webp',
+    alt: 'Sunlit Mosaic II terracotta collage print hung in a warm room',
+  },
+  'ink-and-cream-gallery-wall': {
+    src: '/images/product-art-mockups/midnight-garden/midnight-garden-02-room-detail-20x24.webp',
+    alt: 'Midnight Garden II ink and cream botanical print in low light',
   },
 };
 

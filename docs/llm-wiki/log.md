@@ -459,3 +459,21 @@ fulfillment source and approved price for each size.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-08-31 - Wall Sets: buy the complete gallery wall
+
+Made the curated three-print walls purchasable in one action. The five
+capsule landing pages and two new mix gallery pages (The Terracotta
+Thread, Ink & Cream) mount a WallSetPurchase module: one size for the
+whole wall, summed price, three cart lines in a single submit, and a free
+generated hanging-guide PDF (`/api/hanging-guide/<slug>-<size>.pdf`).
+Print PDPs link into the wall(s) they hang in; the `wall-art-sets-of-3`
+page relates to both mixes; both mix pages joined the custom sitemap. No
+new Shopify products, no flags, no price changes — the module withholds
+itself unless every member print passes the catalog allowlist with a
+released Unframed variant. pdf-lib gotcha recorded in the guide route:
+fontkit ligature substitution mis-advances fl/fi pairs, so ligatures are
+disabled at embed time.
+
+Sources: [Routes and pages](modules/routes-and-pages.md),
+[Catalog and products](modules/catalog-and-products.md).
