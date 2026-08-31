@@ -129,3 +129,57 @@ still fulfil — the webhook does not depend on the flag.
 | GLOBAL-FAP-20X24 | — | | | 64.99 | |
 | GLOBAL-CFP-8X10 | color natural/black | | | 99.99 | |
 | GLOBAL-CFP-20X24 | color natural/black | | | 129.99 | |
+
+## 8. First Light — the second personalised product
+
+The birth poster (`first-light-birth-poster`) shares this entire pipeline:
+same env vars, same webhook, same print-route mechanics
+(`/api/natal-print/<token>.pdf`), same Prodigi SKUs. It stays behind
+`PERSONALISED_RELEASE_FLAGS['first-light-birth-poster']` and releases only
+after Your Sky's first live order proves the chain.
+
+Shopify product (admin UI):
+
+| Field | Value |
+|---|---|
+| Title | First Light — a personalised birth poster |
+| Handle | `first-light-birth-poster` (must match `NATAL_PRODUCT_HANDLE`) |
+| Product type | `Personalised Art` |
+| Vendor | Clara Mendes |
+| Tags | `Clara Mendes Original`, `personalised`, `gift` |
+| Option 1 | Size: `8 × 10 in`, `20 × 24 in` |
+| Option 2 | Finish: `Unframed`, `Natural frame`, `Black frame` |
+| Status | Active; no sales channels until go-live |
+
+Variants (SKU must match `app/lib/natal/products.ts`; prices mirror the
+sky's because the Prodigi SKUs are identical):
+
+| Size | Finish | SKU | Price (EUR) |
+|---|---|---|---|
+| 8 × 10 in | Unframed | `CM-NATAL-8X10-UNF` | 39.99 |
+| 8 × 10 in | Natural frame | `CM-NATAL-8X10-NAT` | 99.99 |
+| 8 × 10 in | Black frame | `CM-NATAL-8X10-BLK` | 99.99 |
+| 20 × 24 in | Unframed | `CM-NATAL-20X24-UNF` | 64.99 |
+| 20 × 24 in | Natural frame | `CM-NATAL-20X24-NAT` | 129.99 |
+| 20 × 24 in | Black frame | `CM-NATAL-20X24-BLK` | 129.99 |
+
+Toggle the product OFF in the Prodigi Shopify app, exactly like the sky's.
+The Prodigi catalogue check needs no separate run: `NATAL_VARIANTS` maps to
+the same Prodigi SKUs and attributes as `SKY_VARIANTS`
+(asserted by `scripts/natalParams.node-test.mjs`), so §2's
+`sky-check-prodigi.mjs` result covers both products.
+
+Sandbox E2E: repeat §4 on `/products/first-light-birth-poster` with a
+name, birthplace and date; expect the Prodigi sandbox order's asset URL
+under `/api/natal-print/`. Local QA render without any store setup:
+
+```bash
+node scripts/natal-render-local.mjs --name "Amélie" --date 2026-05-14 \
+  --time 07:32 --lat 52.52 --lon 13.405 --tz Europe/Berlin \
+  --place "Berlin, Germany" --details "3.4 kg · 51 cm" --theme linen \
+  --size 8x10 --out output/natal/test.pdf
+```
+
+Go-live: PR flipping the natal flag (adds the "First Light" nav entry),
+publish to both channels, add the six variants to the Merchant Center
+feed. Rollback identical to §6 — orders already placed still fulfil.
