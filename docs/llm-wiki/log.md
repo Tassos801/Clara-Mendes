@@ -499,3 +499,29 @@ order. Local QA: `scripts/natal-render-local.mjs`.
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Fulfillment](modules/fulfillment.md),
 [Routes and pages](modules/routes-and-pages.md).
+
+## 2026-08-31 - Frame-only mapping claim corrected
+
+Audited the undocumented 2026-08-24 "Build frame-only product in three
+sizes" commit, which rebuilt the classic-frame manifest record as the
+three-size Natural Classic Frame and staged its storefront behind the
+false release flag, but claimed a Prodigi mapping of "GLOBAL-CFP
+exact-size family with blank removable insert" at `verified-dashboard`
+status. The claim fails on every check: no wiki entry or dashboard
+evidence exists, Prodigi's public catalogue shows plain
+`GLOBAL-CFP-<size>` SKUs always include a fine-art print (the "classic
+frame blanks" download is mockup imagery, not a physical insert), and the
+live Shopify record is still the retired five-variant framed print
+(Draft, `Prodigi Mapping Pending` / `Cost Gate Pending` tags,
+admin-verified today). The genuine frame-only source is Prodigi's
+Backloader frames range - `GLOBAL-CFP-<SIZE>-BACKLOADER`, the same
+classic frame sold without a print, Natural available, UK/EU/US. The
+manifest now records that family as a `candidate` mapping with the
+unverified per-size costs removed; docs, wiki and README were reconciled.
+Release stays blocked on dashboard confirmation of the three exact
+backloader sizes and EUR costs plus owner approval of the source and
+retail prices (current 32.50/50.00/64.29 EUR are cost-plus placeholders,
+not owner-approved). No flags were flipped.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md).

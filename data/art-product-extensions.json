@@ -61,8 +61,8 @@
       "frameOnly": true,
       "assetKind": "classic_frame",
       "skuSuffix": "FRAME-NAT",
-      "prodigiSku": "GLOBAL-CFP exact-size family with blank removable insert",
-      "prodigiSkuStatus": "verified-dashboard",
+      "prodigiSku": "GLOBAL-CFP-<SIZE>-BACKLOADER (Backloader frame, sold without a print)",
+      "prodigiSkuStatus": "candidate",
       "material": "Natural satin-laminated solid-wood frame with clear Perspex glazing and removable backloader",
       "format": "Frame only; artwork, print, and decorative mat not included",
       "sizeVariants": [
@@ -70,22 +70,19 @@
           "label": "8 × 10 in",
           "code": "8X10",
           "price": "32.50",
-          "prodigiCost": "26.00",
-          "prodigiSku": "GLOBAL-CFP-8X10"
+          "prodigiSku": "GLOBAL-CFP-8X10-BACKLOADER"
         },
         {
           "label": "16 × 20 in",
           "code": "16X20",
           "price": "50.00",
-          "prodigiCost": "40.00",
-          "prodigiSku": "GLOBAL-CFP-16X20"
+          "prodigiSku": "GLOBAL-CFP-16X20-BACKLOADER"
         },
         {
           "label": "20 × 24 in",
           "code": "20X24",
           "price": "64.29",
-          "prodigiCost": "51.43",
-          "prodigiSku": "GLOBAL-CFP-20X24"
+          "prodigiSku": "GLOBAL-CFP-20X24-BACKLOADER"
         }
       ]
     },

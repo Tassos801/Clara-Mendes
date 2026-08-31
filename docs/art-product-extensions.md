@@ -1,6 +1,6 @@
 # Art for Everyday Living
 
-Updated: 2026-08-24
+Updated: 2026-08-31
 
 ## Collection Shape
 
@@ -16,7 +16,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
 | --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
 | Large Fine Art Print — 16 × 20 in       |                5 |                $49 | GLOBAL-FAP-16X20                    | Candidate; verify in dashboard |
-| Classic Framed Art Print — 16 × 20 in   |                5 |                €99 | GLOBAL-CFP-16X20                    | Retired; includes the print    |
+| Natural Classic Frame (frame only)      |                3 |      €32.50–€64.29 | GLOBAL-CFP-\<SIZE\>-BACKLOADER      | Candidate; verify in dashboard |
 | Fine Art Greeting Card                  |                5 |                 $8 | GLOBAL-GRE-MOH-7X5-BLA              | Public catalogue               |
 | Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
 | Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
@@ -28,7 +28,9 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Art Premium Fleece Blanket — 30 × 40 in |                5 |                $79 | GLOBAL-BLANKET-PREMIUM-FLEECE-30X40 | Public catalogue               |
 | Art Snap Phone Case                     |               20 |                $34 | Device-specific GLOBAL-TECH SKUs    | Public catalogue               |
 
-Total: 12 Draft products, with 71 variants overall.
+Total: 12 Draft products, with 69 variants in the current manifest. (The
+2026-07-24 sync predates the frame-only correction and created 71; the live
+classic-frame record still holds the retired five-variant shape.)
 
 On 2026-07-24, the guarded sync created all 12 products in Shopify as
 `DRAFT`. The live readback passed for 12/12 products, all 71 variants, expected
@@ -60,6 +62,30 @@ storefront catalogs, and gated off in Hydrogen. Prodigi's `GLOBAL-CFP` family
 always includes a fine-art print, so that mapping is incompatible with the
 corrected frame-only offer and must not be reused. A frame-only product remains
 blocked until its fulfillment source and three retail prices are approved.
+
+Later that evening, the frame-only replacement was built in code: this
+manifest's `classic-frame` record became the three-size Natural Classic Frame,
+the guarded sync and audit learned the `frameOnly` shape, and the storefront
+experience was staged behind the still-false release flag. That commit
+recorded the mapping as a "GLOBAL-CFP exact-size family with blank removable
+insert" with `verified-dashboard` status — a claim with no supporting
+evidence. No dashboard verification was logged, no sync `--apply` ran, and
+the live Shopify record still carries its `Prodigi Mapping Pending` and
+`Cost Gate Pending` tags.
+
+On 2026-08-31, that claim was audited and corrected. Prodigi's public
+catalogue confirms the plain `GLOBAL-CFP-<size>` SKUs are always framed
+fine-art prints; the "classic frame blanks" download is mockup imagery, not a
+physical insert. Prodigi does, however, sell the same classic frame without a
+print: the Backloader frames range (`GLOBAL-CFP-<SIZE>-BACKLOADER`, "picture
+frame only", Natural finish available, made in the UK, EU, and US, wholesale
+from £18). That family is now recorded as the candidate mapping. Release stays
+blocked until the dashboard confirms exact 8 × 10, 16 × 20, and 20 × 24 in
+backloader SKUs with EUR costs and Shopify-channel availability, and the owner
+approves the fulfillment source and the three retail prices. The manifest
+prices (€32.50 / €50.00 / €64.29) are provisional cost-plus placeholders, not
+owner-approved retail. The Shopify record has not been re-synced to the
+frame-only shape; it remains the Draft, unpublished five-variant framed print.
 
 ## Artwork Policy
 
@@ -117,11 +143,12 @@ The Hydrogen storefront hides every extension family via the allowlist in
 storefront experience pre-built behind `EXTENSION_RELEASE_FLAGS`; its flip
 procedure is `docs/phone-case-release.md`.
 
-The retired framed-print implementation remains gated and unpublished while
-the frame-only replacement is designed. It must expose one `Size` option with
-8 × 10, 16 × 20, and 20 × 24 in values, must not expose an `Artwork` option,
-and every customer-facing surface must state that the print is not included.
-Do not flip the legacy release flag or restore its cross-sells.
+The frame-only replacement's storefront experience is built and staged dark
+behind the same false release flag. It exposes one `Size` option with 8 × 10,
+16 × 20, and 20 × 24 in values, no `Artwork` option, and every customer-facing
+surface states that the print is not included. Do not flip the release flag or
+restore the retired framed-print cross-sells: the Shopify record is still the
+old framed print and the backloader mapping is unverified and unapproved.
 
 Until superseded Admin media have been removed, the storefront also rejects
 frame imagery that is not labelled as the Prodigi Natural classic frame with

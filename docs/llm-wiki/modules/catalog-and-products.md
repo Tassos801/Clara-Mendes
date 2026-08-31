@@ -78,10 +78,21 @@ false. Prodigi `GLOBAL-CFP-16X20` necessarily includes a fine-art print and is
 therefore not a valid fulfillment mapping for the corrected offer. All twelve
 extension flags are false and all twelve extension products are Draft.
 
-The intended replacement is a frame-only product with one `Size` option:
-8 × 10 in, 16 × 20 in, and 20 × 24 in. It must not have an `Artwork` option and
-must state that the print is not included. Release remains blocked on an
-approved frame-only fulfillment source and retail price for each size.
+The replacement is a frame-only product with one `Size` option: 8 × 10 in,
+16 × 20 in, and 20 × 24 in, no `Artwork` option, and copy stating that the
+print is not included. Its manifest record (Natural Classic Frame), sync/audit
+support, and storefront experience were built on 2026-08-24 and staged behind
+the false release flag — but the build overstated its fulfilment mapping as a
+dashboard-verified "GLOBAL-CFP family with blank removable insert". A
+2026-08-31 audit corrected this: no such Prodigi product exists, no dashboard
+verification was recorded, and the live Shopify record is still the retired
+five-variant framed print with its `Prodigi Mapping Pending` tag. The real
+frame-only candidate is Prodigi's Backloader frames range
+(`GLOBAL-CFP-<SIZE>-BACKLOADER` — the classic frame sold without a print,
+public catalogue). Release remains blocked on dashboard verification of the
+three exact backloader sizes and costs, plus owner approval of the fulfillment
+source and a retail price for each size; the manifest's €32.50/€50.00/€64.29
+are provisional placeholders.
 
 On 2026-08-24, its five product previews were rebuilt from Prodigi's official
 Natural classic-frame blank and the exact live artwork. The deterministic
