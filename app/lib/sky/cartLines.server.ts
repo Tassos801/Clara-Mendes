@@ -1,10 +1,22 @@
 /**
- * Runs inside the cart action on LinesAdd: validates any star-map line the
- * browser submitted, re-encodes its attributes canonically and attaches the
- * HMAC signature. Non-sky lines pass through untouched.
+ * Runs inside the cart action on LinesAdd: validates any personalised line
+ * the browser submitted (star map or birth poster, told apart by their
+ * `_kind` discriminator), re-encodes its attributes canonically and
+ * attaches the HMAC signature. Plain lines pass through untouched.
  */
-import {fromCartAttributes, isSkyCartLine, toCartAttributes} from './params.ts';
-import {signSkyParams} from './sign.server.ts';
+import {
+  canonicalNatalParams,
+  fromNatalCartAttributes,
+  isNatalCartLine,
+  toNatalCartAttributes,
+} from '../natal/params.ts';
+import {
+  canonicalSkyParams,
+  fromCartAttributes,
+  isSkyCartLine,
+  toCartAttributes,
+} from './params.ts';
+import {signCanonical} from './sign.server.ts';
 
 type LineLike = {
   attributes?: Array<{key: string; value?: string | null}> | null;
@@ -20,6 +32,17 @@ export async function signSkyCartLines<T extends LineLike>(
 ): Promise<{ok: true; lines: T[]} | {ok: false; error: string}> {
   const out: T[] = [];
   for (const line of lines) {
+    if (isNatalCartLine(line.attributes)) {
+      if (!secret) return {ok: false, error: SKY_UNAVAILABLE_MESSAGE};
+      const decoded = fromNatalCartAttributes(line.attributes);
+      if (!decoded.ok) return {ok: false, error: decoded.error};
+      const sig = await signCanonical(
+        canonicalNatalParams(decoded.params),
+        secret,
+      );
+      out.push({...line, attributes: toNatalCartAttributes(decoded.params, sig)});
+      continue;
+    }
     if (!isSkyCartLine(line.attributes)) {
       out.push(line);
       continue;
@@ -27,7 +50,7 @@ export async function signSkyCartLines<T extends LineLike>(
     if (!secret) return {ok: false, error: SKY_UNAVAILABLE_MESSAGE};
     const decoded = fromCartAttributes(line.attributes);
     if (!decoded.ok) return {ok: false, error: decoded.error};
-    const sig = await signSkyParams(decoded.params, secret);
+    const sig = await signCanonical(canonicalSkyParams(decoded.params), secret);
     out.push({...line, attributes: toCartAttributes(decoded.params, sig)});
   }
   return {ok: true, lines: out};

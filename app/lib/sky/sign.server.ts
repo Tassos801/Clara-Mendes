@@ -68,16 +68,20 @@ export async function signSkyParams(params: SkyParams, secret: string) {
 }
 
 /** `<base64url(canonical)>.<base64url(hmac)>` — safe in a URL path segment. */
-export async function encodeSkyToken(params: SkyParams, secret: string) {
-  const canonical = canonicalSkyParams(params);
+export async function encodeCanonicalToken(canonical: string, secret: string) {
   const sig = await signCanonical(canonical, secret);
   return `${base64UrlEncode(encoder.encode(canonical))}.${sig}`;
 }
 
-export async function decodeSkyToken(
+export type CanonicalTokenDecode =
+  | {ok: true; canonical: string}
+  | {ok: false; error: string};
+
+/** Verify a token's HMAC and return its canonical string, kind-agnostic. */
+export async function decodeCanonicalToken(
   token: string,
   secret: string,
-): Promise<SkyValidation> {
+): Promise<CanonicalTokenDecode> {
   const [body, sig, extra] = token.split('.');
   if (!body || !sig || extra !== undefined) {
     return {ok: false, error: 'Malformed token.'};
@@ -88,11 +92,24 @@ export async function decodeSkyToken(
   if (!(await verifyCanonical(canonical, sig, secret))) {
     return {ok: false, error: 'Bad signature.'};
   }
-  const parsed = parseCanonicalSkyParams(canonical);
+  return {ok: true, canonical};
+}
+
+export async function encodeSkyToken(params: SkyParams, secret: string) {
+  return encodeCanonicalToken(canonicalSkyParams(params), secret);
+}
+
+export async function decodeSkyToken(
+  token: string,
+  secret: string,
+): Promise<SkyValidation> {
+  const decoded = await decodeCanonicalToken(token, secret);
+  if (!decoded.ok) return decoded;
+  const parsed = parseCanonicalSkyParams(decoded.canonical);
   if (!parsed.ok) return parsed;
   // The canonical form must survive a re-encode, or the signature covers
   // something other than what we render.
-  if (canonicalSkyParams(parsed.params) !== canonical) {
+  if (canonicalSkyParams(parsed.params) !== decoded.canonical) {
     return {ok: false, error: 'Non-canonical token.'};
   }
   return parsed;
