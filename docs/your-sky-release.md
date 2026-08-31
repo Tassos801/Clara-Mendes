@@ -1,5 +1,19 @@
 # Your Sky — release runbook
 
+**Progress 2026-08-31:** §2 is done for BOTH products — `your-sky-star-map`
+and `first-light-birth-poster` were created by CSV import exactly per the
+tables below (verified in admin: exact handles, options, 12 SKUs, prices,
+Active, inventory untracked, **published nowhere**). A production signing
+secret has been generated and waits in the local ignored env file named in
+§1. Still owner-side, in order: (1) the §1 env-var entries in Oxygen —
+values come from the local env file, the custom app's credentials page in
+the Dev Dashboard, and the Prodigi dashboard; (2) log back into the
+Prodigi dashboard (session expired) and confirm both products are
+**toggled OFF** in the Prodigi Shopify channel; (3) §3 webhook
+registration after creating the local admin env file the scripts read;
+(4) §2 Prodigi check + §4 sandbox E2E; (5) the flag-flip PR. Featured
+images are still to be added before publishing to channels.
+
 Personalised star map (`your-sky-star-map`). Design:
 `docs/superpowers/specs/2026-08-21-your-sky-star-map-design.md`.
 Plan: `docs/superpowers/plans/2026-08-21-your-sky-star-map.md`.
