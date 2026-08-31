@@ -77,6 +77,7 @@ import {
   getCanonicalUrl,
   productSchema,
 } from '~/lib/seo';
+import {wallSetsContainingHandle} from '~/lib/wallSets';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
@@ -474,6 +475,9 @@ export default function Product() {
   const productDescription = getProductDescription(product);
   const productLede = getProductLede(product);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
+  const memberWallSets = isArtPrint
+    ? wallSetsContainingHandle(product.handle)
+    : [];
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
@@ -920,6 +924,27 @@ export default function Product() {
                   >
                     Explore {capsuleSummary.title}
                   </Link>
+                </dd>
+              </div>
+            ) : null}
+            {memberWallSets.length > 0 ? (
+              <div>
+                <dt>Gallery wall</dt>
+                <dd>
+                  This print hangs in{' '}
+                  {memberWallSets.map((wallSet, index) => (
+                    <span key={wallSet.slug}>
+                      {index > 0 ? ' and ' : ''}
+                      <Link
+                        className="text-link"
+                        to={`/collections/${wallSet.slug}`}
+                        prefetch="intent"
+                      >
+                        {wallSet.name}
+                      </Link>
+                    </span>
+                  ))}
+                  {' — buy the complete three-print wall in one size.'}
                 </dd>
               </div>
             ) : null}
