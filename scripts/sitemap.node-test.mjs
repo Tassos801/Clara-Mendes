@@ -39,7 +39,7 @@ assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));
 
 // Custom child sitemap covers the important storefront routes, including
-// the five tag-backed capsule landing pages and the ten curated gallery
+// the five tag-backed capsule landing pages and the twelve curated gallery
 // edits Shopify cannot know about
 assert.deepEqual(
   [...CUSTOM_SITEMAP_PATHS],
@@ -61,6 +61,8 @@ assert.deepEqual(
     '/collections/bedroom-wall-art',
     '/collections/wall-art-sets-of-3',
     '/collections/warm-minimalist-wall-art',
+    '/collections/terracotta-gallery-wall',
+    '/collections/ink-and-cream-gallery-wall',
     '/our-story',
     '/contact',
     '/policies',
