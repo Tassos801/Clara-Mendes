@@ -6,15 +6,19 @@ import {Aside, useAside} from './Aside';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
-  hasReleasedPersonalised,
+  NATAL_PRODUCT_HANDLE,
+  PERSONALISED_RELEASE_FLAGS,
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
-  // The personalised star map gets its own entry once released.
-  ...(hasReleasedPersonalised()
+  // Each personalised product gets its own entry once its flag flips.
+  ...(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]
     ? [{to: `/products/${SKY_PRODUCT_HANDLE}`, label: 'Your Sky'}]
+    : []),
+  ...(PERSONALISED_RELEASE_FLAGS[NATAL_PRODUCT_HANDLE]
+    ? [{to: `/products/${NATAL_PRODUCT_HANDLE}`, label: 'First Light'}]
     : []),
   {to: '/our-story', label: 'Our Story'},
   {to: '/blogs/karina-of-time', label: 'Journal'},

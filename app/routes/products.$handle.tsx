@@ -47,7 +47,13 @@ import {
   selectedClassicFrameSize,
   UNFRAMED_PRINT_SIZE_LABELS,
 } from '~/lib/classicFrame';
+import {NatalConfigurator} from '~/components/NatalConfigurator';
 import {SkyConfigurator} from '~/components/SkyConfigurator';
+import {
+  toNatalCartAttributes,
+  type NatalParams,
+} from '~/lib/natal/params';
+import {NATAL_PRODUCT_HANDLE} from '~/lib/natal/products';
 import {toCartAttributes, type SkyParams} from '~/lib/sky/params';
 import {
   SKY_PRODUCT_TYPE,
@@ -448,25 +454,42 @@ export default function Product() {
   const selectedVariantPrice = selectedVariant
     ? formatMoney(selectedVariant.price)
     : null;
-  const isSkyMap =
+  // Personalised Art products stage behind the personalised flags; the
+  // handle picks which configurator mounts (the sky is the default so its
+  // behavior is unchanged from before the second product existed).
+  const isPersonalisedType =
     (product.productType || '').toLowerCase() ===
     SKY_PRODUCT_TYPE.toLowerCase();
+  const isNatal =
+    isPersonalisedType && product.handle === NATAL_PRODUCT_HANDLE;
+  const isSkyMap = isPersonalisedType && !isNatal;
   // Complete, validated personalisation from the configurator; null until
-  // the customer has chosen a place and a date.
+  // the customer has filled the required fields.
   const [skyParams, setSkyParams] = useState<SkyParams | null>(null);
+  const [natalParams, setNatalParams] = useState<NatalParams | null>(null);
   const skySize = skySizeFromOptions(selectedVariant?.selectedOptions);
   const skyAttributes =
-    isSkyMap && skyParams ? toCartAttributes(skyParams) : undefined;
+    isSkyMap && skyParams
+      ? toCartAttributes(skyParams)
+      : isNatal && natalParams
+        ? toNatalCartAttributes(natalParams)
+        : undefined;
   const purchaseBlocked =
-    !selectedVariant?.availableForSale || (isSkyMap && !skyParams);
-  const isPersonalisedPending = isSkyMap && !skyParams;
+    !selectedVariant?.availableForSale ||
+    (isSkyMap && !skyParams) ||
+    (isNatal && !natalParams);
+  const isPersonalisedPending =
+    (isSkyMap && !skyParams) || (isNatal && !natalParams);
+  const personalisedPendingLabel = isNatal
+    ? 'Add the name and birthplace'
+    : 'Add your place and date';
   const purchaseButtonLabel = isPersonalisedPending
-    ? 'Add your place and date'
+    ? personalisedPendingLabel
     : selectedVariant?.availableForSale && selectedVariantPrice
       ? `Add to cart - ${selectedVariantPrice}`
       : 'Sold out';
   const stickyButtonLabel = isPersonalisedPending
-    ? 'Add your place and date'
+    ? personalisedPendingLabel
     : selectedVariant?.availableForSale && selectedVariantPrice
       ? `Add - ${selectedVariantPrice}`
       : 'Sold out';
@@ -677,7 +700,13 @@ export default function Product() {
       </nav>
 
       <section className="product-detail-layout">
-        {isSkyMap ? (
+        {isNatal ? (
+          <NatalConfigurator
+            size={skySize}
+            theme={skyTheme}
+            onChange={setNatalParams}
+          />
+        ) : isSkyMap ? (
           <SkyConfigurator
             size={skySize}
             theme={skyTheme}
@@ -847,6 +876,7 @@ export default function Product() {
             </div>
 
             {!isSkyMap &&
+            !isNatal &&
             selectedVariant?.availableForSale &&
             shopPayStoreUrl ? (
               <div
@@ -994,6 +1024,38 @@ export default function Product() {
                     Your title, the place, the date and its coordinates are set
                     in the lower band. We print exactly what the preview shows,
                     so check the spelling before you add to cart.
+                  </dd>
+                </div>
+              </>
+            ) : null}
+            {isNatal ? (
+              <>
+                <div>
+                  <dt>Print</dt>
+                  <dd>
+                    Giclée print in archival pigment inks on 200gsm Enhanced
+                    Matte Art paper, made to order at {SKY_SIZES[skySize].label}
+                    . Framed editions come in a solid wood classic frame with
+                    clear acrylic glazing, delivered ready to hang.
+                  </dd>
+                </div>
+                <div>
+                  <dt>The medallion</dt>
+                  <dd>
+                    A star chart of the sky over the birthplace at the moment
+                    of birth — every naked-eye star, the Moon at its true phase
+                    and the visible planets. Leave the time blank and the chart
+                    is drawn for midday, with no time printed. Star data: Yale
+                    Bright Star Catalogue; places: GeoNames (CC BY 4.0).
+                  </dd>
+                </div>
+                <div>
+                  <dt>Personalisation</dt>
+                  <dd>
+                    The name, the birth date, the place with its coordinates,
+                    and an optional line in your words — weight, length, a
+                    welcome. We print exactly what the preview shows, so check
+                    the spelling before you add to cart.
                   </dd>
                 </div>
               </>
