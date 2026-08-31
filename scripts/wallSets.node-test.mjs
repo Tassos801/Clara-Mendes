@@ -205,4 +205,3 @@ assert.equal(wallSetLinesForSize([quietForm, oddSize, midnight], '8x10'), null);
 // Missing a member entirely → null.
 assert.equal(wallSetLinesForSize([quietForm, neoDeco], '16x20'), null);
 
-console.log('wallSets.node-test: all assertions passed');

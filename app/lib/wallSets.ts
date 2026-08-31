@@ -165,14 +165,14 @@ export function wallGuideGeometry(size: PrintSizeKey) {
   };
 }
 
-type WallSetVariant = {
+export type WallSetVariant = {
   id: string;
   availableForSale: boolean;
   price: {amount: string; currencyCode: string};
   selectedOptions: Array<{name: string; value: string}>;
 };
 
-type WallSetProductLike = {
+export type WallSetProductLike = {
   handle: string;
   variants: WallSetVariant[];
 };
@@ -186,7 +186,10 @@ const SIZE_VALUE_RES: Record<PrintSizeKey, RegExp> = {
   '20x24': /^\s*20\s*[×x]\s*24\b/i,
 };
 
-function sizeVariantFor(product: WallSetProductLike, size: PrintSizeKey) {
+export function wallSetVariantForSize(
+  product: WallSetProductLike,
+  size: PrintSizeKey,
+) {
   return (
     product.variants.find((candidate) => {
       if (!candidate.availableForSale) return false;
@@ -219,7 +222,7 @@ export function wallSetLinesForSize(
   if (products.length !== 3) return null;
   const variants: WallSetVariant[] = [];
   for (const product of products) {
-    const found = sizeVariantFor(product, size);
+    const found = wallSetVariantForSize(product, size);
     if (!found) return null;
     variants.push(found);
   }

@@ -16,6 +16,10 @@ import {
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {StructuredData} from '~/components/StructuredData';
+import {
+  WallSetPurchase,
+  type WallSetPurchaseProduct,
+} from '~/components/WallSetPurchase';
 import {buildCapsuleTagQuery} from '~/lib/capsules';
 import {
   capsulePagePath,
@@ -47,6 +51,7 @@ import {
   getCollectionSortValue,
 } from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {getWallSet, type WallSet} from '~/lib/wallSets';
 import {
   breadcrumbSchema,
   buildSeoMeta,
@@ -60,12 +65,18 @@ import {
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
 
+type WallSetData = {
+  set: WallSet;
+  products: WallSetPurchaseProduct[];
+} | null;
+
 type CapsuleLoaderData = {
   kind: 'capsule';
   page: CapsulePage;
   products: ClaraCardProduct[];
   otherCapsules: Array<{slug: string; title: string; subtitle: string}>;
   seoUrl: string;
+  wallSet: WallSetData;
 };
 
 type GalleryLoaderData = {
@@ -75,6 +86,7 @@ type GalleryLoaderData = {
   relatedEdits: Array<{slug: string; title: string; subtitle: string}>;
   capsuleCards: Array<{slug: string; title: string; subtitle: string}>;
   seoUrl: string;
+  wallSet: WallSetData;
 };
 
 type ShopifyCollectionLoaderData = CollectionViewData & {
@@ -122,12 +134,15 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // they exist (and stay indexable) independently of any Shopify collection.
   const page = getCapsulePage(handle);
   if (page) {
-    const data = await context.storefront.query(CAPSULE_PAGE_QUERY, {
-      variables: {
-        first: 6,
-        query: buildCapsuleTagQuery(page.capsule),
-      },
-    });
+    const [data, wallSet] = await Promise.all([
+      context.storefront.query(CAPSULE_PAGE_QUERY, {
+        variables: {
+          first: 6,
+          query: buildCapsuleTagQuery(page.capsule),
+        },
+      }),
+      loadWallSet(context, getWallSet(handle)),
+    ]);
 
     const catalogOrder = page.capsule.handles;
     const products = filterDemoProducts(
@@ -148,6 +163,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       page,
       products,
       seoUrl: getCanonicalUrl(request, capsulePagePath(page.slug)),
+      wallSet,
     } satisfies CapsuleLoaderData;
   }
 
@@ -156,12 +172,15 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // no Shopify collection.
   const galleryPage = getGalleryPage(handle);
   if (galleryPage) {
-    const data = await context.storefront.query(CAPSULE_PAGE_QUERY, {
-      variables: {
-        first: 15,
-        query: buildGalleryTagQuery(galleryPage),
-      },
-    });
+    const [data, wallSet] = await Promise.all([
+      context.storefront.query(CAPSULE_PAGE_QUERY, {
+        variables: {
+          first: 15,
+          query: buildGalleryTagQuery(galleryPage),
+        },
+      }),
+      loadWallSet(context, getWallSet(handle)),
+    ]);
 
     const curated = galleryPage.handles;
     const products = filterDemoProducts(
@@ -189,6 +208,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           title: other.title,
         })),
       seoUrl: getCanonicalUrl(request, galleryPagePath(galleryPage.slug)),
+      wallSet,
     } satisfies GalleryLoaderData;
   }
 
@@ -254,6 +274,41 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     },
     seoUrl: getCanonicalUrl(request, `/collections/${data.collection.handle}`),
   } satisfies CollectionViewData;
+}
+
+/**
+ * The three wall-set member products with their released size variants —
+ * fetched only on the seven pages a set mounts on. Returns null unless all
+ * three members exist and pass the catalog allowlist, so the page renders
+ * exactly as before whenever the set cannot be sold complete.
+ */
+async function loadWallSet(
+  context: Route.LoaderArgs['context'],
+  set: WallSet | null,
+): Promise<WallSetData> {
+  if (!set) return null;
+  const data = await context.storefront.query(WALL_SET_QUERY, {
+    variables: {h1: set.handles[0], h2: set.handles[1], h3: set.handles[2]},
+  });
+  type WallSetQueryProduct = Omit<WallSetPurchaseProduct, 'variants'> & {
+    tags: string[];
+    variants: {nodes: WallSetPurchaseProduct['variants']};
+  };
+  const nodes = [data.p1, data.p2, data.p3].filter(
+    Boolean,
+  ) as WallSetQueryProduct[];
+  const products = filterDemoProducts(nodes);
+  if (products.length !== 3) return null;
+  const ordered = [...products].sort(
+    (a, b) => set.handles.indexOf(a.handle) - set.handles.indexOf(b.handle),
+  );
+  return {
+    set,
+    products: ordered.map((product) => ({
+      ...product,
+      variants: product.variants.nodes,
+    })),
+  };
 }
 
 export default function Collection() {
@@ -352,6 +407,13 @@ function CapsuleLandingView({data}: {data: CapsuleLoaderData}) {
           </p>
         ) : null}
       </section>
+
+      {data.wallSet ? (
+        <WallSetPurchase
+          set={data.wallSet.set}
+          products={data.wallSet.products}
+        />
+      ) : null}
 
       <section className="capsule-others" aria-label="More capsules">
         <div className="section-heading-row">
@@ -496,6 +558,13 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
           </p>
         ) : null}
       </section>
+
+      {data.wallSet ? (
+        <WallSetPurchase
+          set={data.wallSet.set}
+          products={data.wallSet.products}
+        />
+      ) : null}
 
       {capsuleCards.length > 0 ? (
         <section className="capsule-others" aria-label="Capsules in this edit">
@@ -767,6 +836,52 @@ const CAPSULE_PAGE_QUERY = `#graphql
     }
   }
   ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+const WALL_SET_QUERY = `#graphql
+  query WallSetProducts(
+    $country: CountryCode
+    $h1: String!
+    $h2: String!
+    $h3: String!
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    p1: product(handle: $h1) {
+      ...WallSetProduct
+    }
+    p2: product(handle: $h2) {
+      ...WallSetProduct
+    }
+    p3: product(handle: $h3) {
+      ...WallSetProduct
+    }
+  }
+  fragment WallSetProduct on Product {
+    id
+    handle
+    title
+    vendor
+    productType
+    tags
+    featuredImage {
+      url
+      altText
+    }
+    variants(first: 20) {
+      nodes {
+        id
+        availableForSale
+        price {
+          amount
+          currencyCode
+        }
+        selectedOptions {
+          name
+          value
+        }
+      }
+    }
+  }
 ` as const;
 
 const COLLECTION_QUERY = `#graphql
