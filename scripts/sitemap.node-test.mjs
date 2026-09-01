@@ -32,8 +32,12 @@ assert.ok(
   'legacy collection kept',
 );
 assert.ok(
-  !filtered.includes('/products/your-sky-star-map'),
-  'staged star map leaked into the sitemap',
+  filtered.includes('/products/your-sky-star-map'),
+  'the released star map belongs in the sitemap',
+);
+assert.ok(
+  !filtered.includes('/products/first-light-birth-poster'),
+  'staged birth poster leaked into the sitemap',
 );
 assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));

@@ -61,7 +61,8 @@ assert.equal(releasedCount, 0);
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
-assert.equal(sellableToday.size, 15 + releasedCount);
+// 15 prints + released extensions + the released Your Sky star map.
+assert.equal(sellableToday.size, 15 + releasedCount + 1);
 assert.ok(!sellableToday.has(FRAME_HANDLE));
 assert.ok(!sellableToday.has(BLANKET_HANDLE));
 assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
@@ -69,7 +70,7 @@ assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 // Flipping a flag adds exactly that handle and keeps all 15 prints — the
 // one-line storefront release described in docs/phone-case-release.md.
 const sellableReleased = computeSellableHandles({[PHONE_CASE_HANDLE]: true});
-assert.equal(sellableReleased.size, 16);
+assert.equal(sellableReleased.size, 17);
 assert.ok(sellableReleased.has(PHONE_CASE_HANDLE));
 assert.ok(sellableReleased.has('quiet-form-i-art-print'));
 assert.ok(!sellableReleased.has(BLANKET_HANDLE));
@@ -143,10 +144,11 @@ assert.equal(
     SKY_PRODUCT_HANDLE,
   } = await import('../app/lib/catalogFilters.ts');
   assert.equal(SKY_PRODUCT_HANDLE, 'your-sky-star-map');
-  assert.equal(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE], false);
+  // Released 2026-09-01 after the sandbox E2E passed (runbook §5).
+  assert.equal(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE], true);
   assert.equal(isStagedPersonalisedHandle(SKY_PRODUCT_HANDLE), true);
   assert.equal(isStagedPersonalisedHandle('quiet-form-i-art-print'), false);
-  assert.equal(isUnreleasedStagedHandle(SKY_PRODUCT_HANDLE), true);
+  assert.equal(isUnreleasedStagedHandle(SKY_PRODUCT_HANDLE), false);
   assert.equal(
     computeSellableHandles(EXTENSION_RELEASE_FLAGS, {
       [SKY_PRODUCT_HANDLE]: false,
@@ -169,8 +171,8 @@ assert.equal(
       title: 'Your Sky',
       vendor: 'Clara Mendes',
     }),
-    true,
-    'staged star map is not sellable while its flag is false',
+    false,
+    'the released star map is sellable',
   );
 
   // The First Light birth poster stages beside the sky, independently
