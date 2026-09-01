@@ -11,6 +11,11 @@ export const SKY_THEME_IDS: SkyThemeId[] = [
   'midnight-garden',
   'quiet-form',
 ];
+export const SKY_THEME_LABELS: Record<SkyThemeId, string> = {
+  linen: 'Linen',
+  'midnight-garden': 'Midnight Garden',
+  'quiet-form': 'Quiet Form',
+};
 
 export type SkyParams = {
   v: 1;
@@ -243,12 +248,13 @@ export function formatCoordinates(lat: number, lon: number) {
 
 /**
  * Cart line attributes. Keys starting with `_` are hidden by Shopify in the
- * cart, checkout and notifications; the three visible ones are what the
- * customer sees confirmed.
+ * cart, checkout and notifications; visible attributes are what the customer
+ * sees confirmed.
  */
 export function toCartAttributes(p: SkyParams, sig?: string): CartAttribute[] {
   const attrs: CartAttribute[] = [
     ...(p.title ? [{key: 'Title', value: p.title}] : []),
+    {key: 'Style', value: SKY_THEME_LABELS[p.theme]},
     {key: 'Place', value: p.place},
     {key: 'Date', value: formatSkyDate(p)},
     {key: '_v', value: String(p.v)},
