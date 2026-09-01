@@ -88,11 +88,15 @@ dashboard-verified "GLOBAL-CFP family with blank removable insert". A
 verification was recorded, and the live Shopify record is still the retired
 five-variant framed print with its `Prodigi Mapping Pending` tag. The real
 frame-only candidate is Prodigi's Backloader frames range
-(`GLOBAL-CFP-<SIZE>-BACKLOADER` — the classic frame sold without a print,
-public catalogue). Release remains blocked on dashboard verification of the
-three exact backloader sizes and costs, plus owner approval of the fulfillment
-source and a retail price for each size; the manifest's €32.50/€50.00/€64.29
-are provisional placeholders.
+(`GLOBAL-CFP-<SIZE>-BACKLOADER` — the classic frame sold without a print).
+The 2026-09-01 dashboard readback verified `GLOBAL-CFP-16X20-BACKLOADER`
+(€18.00 wholesale, Natural among eight order-level colours, present in the
+Shopify channel SKU picker, blank face-plate image required at order time) but
+found **no 8 × 10 and no 20 × 24 backloader** — the family's nearest sizes are
+6 × 8/11 × 14 and 18 × 24/20 × 28. Release remains blocked on an owner
+decision about the size range (change it, substitute nearest sizes, or source
+those frames elsewhere) plus retail price approval; the manifest's
+€32.50/€50.00/€64.29 are provisional placeholders.
 
 On 2026-08-24, its five product previews were rebuilt from Prodigi's official
 Natural classic-frame blank and the exact live artwork. The deterministic
