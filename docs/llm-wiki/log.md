@@ -547,3 +547,17 @@ test basket item was added and removed during verification.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-09-01 - Your Sky guided-refinement design approved
+
+Recorded the owner-approved Your Sky refinement before implementation. The
+selected single-page design uses the existing three sky themes, six Shopify
+variants, preview engine, signed cart attributes, PDF route, and Prodigi
+pipeline. It adds a mobile-first product hierarchy, style and finish preview,
+accessible place search with recovery states, validated same-tab draft
+persistence, preview-readiness purchase gating, and a final order summary.
+Prices, SKUs, fulfillment mappings, checkout, and First Light's release state
+remain outside scope.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+`docs/superpowers/specs/2026-09-01-your-sky-refinement-design.md`.

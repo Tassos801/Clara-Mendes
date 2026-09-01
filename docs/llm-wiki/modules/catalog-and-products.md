@@ -165,6 +165,22 @@ Sources: `app/components/ClaraProductCard.tsx`,
 `app/routes/collections.all.tsx`, `app/routes/collections.$handle.tsx`,
 `app/routes/products.$handle.tsx`.
 
+## Approved Your Sky Refinement
+
+On 2026-09-01 the owner approved a guided single-page refinement of the live
+Your Sky configurator. The approved target exposes the three already-renderable
+styles, makes the selected frame visible around the preview, moves product and
+price context ahead of configuration on mobile, completes the place combobox
+keyboard/error behavior, persists a validated same-tab draft, and adds a final
+review state. Purchase must remain unavailable until the current validated
+inputs have a matching rendered preview.
+
+This note records an approved implementation target, not a production claim.
+The signed cart, six Shopify SKUs, Prodigi mappings, PDF geometry, checkout,
+prices, and First Light release state are explicitly unchanged. The complete
+acceptance contract is in
+`docs/superpowers/specs/2026-09-01-your-sky-refinement-design.md`.
+
 ## Admin Cleanup Relationship
 
 The code filters off-theme products defensively, but the Admin cleanup document
