@@ -16,8 +16,21 @@ Prodigi toggles confirmed **OFF** for both products (the channel had
 auto-enabled them — caught and switched off; a stale listing for a deleted
 duplicate product was toggled off too). §2's Prodigi check passes 6/6
 against the sandbox (§7 has the quotes) after fixing the variant attribute
-maps. Remaining: §4 sandbox E2E, then §5 go-live (live key swap, flag PR,
-publish, MC feed items, featured images before publishing).
+maps.
+
+**RELEASED 2026-09-01:** §4 sandbox E2E passed — test order #1001
+(SKY-TEST-100 + SHIP-TEST-FREE, both single-use codes now exhausted)
+reached the Prodigi sandbox as ord_1169904 and moved Created →
+InProgress. The first delivery surfaced a real bug (Prodigi rejects
+empty address `line2`, fixed in PR #59; attribute maps fixed in PR #58);
+Shopify's webhook auto-retry then succeeded without manual replay. §5
+done: featured images uploaded to both products (rendered from the real
+engines), live `PRODIGI_API_KEY` + `PRODIGI_API_BASE` set in Oxygen and
+redeployed, live catalogue check 6/6 ✔ (20×24 CFP landed 91.07 EUR), and
+the flag flipped in PR #60. Your Sky is LIVE. Still owner-side: add the
+six variants to the Merchant Center TSV feed (CLARA-PRINTS-EUR). First
+Light stays dark per §8 until the first real Your Sky order proves the
+live chain.
 
 Personalised star map (`your-sky-star-map`). Design:
 `docs/superpowers/specs/2026-08-21-your-sky-star-map-design.md`.

@@ -114,7 +114,9 @@ export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';
  * after Your Sky's first live order proves the fulfilment chain.
  */
 export const PERSONALISED_RELEASE_FLAGS: Record<string, boolean> = {
-  [SKY_PRODUCT_HANDLE]: false,
+  // Released 2026-09-01 after the sandbox E2E (order #1001) passed and the
+  // live key/base went into Oxygen; see docs/your-sky-release.md §5.
+  [SKY_PRODUCT_HANDLE]: true,
   [NATAL_PRODUCT_HANDLE]: false,
 };
 
