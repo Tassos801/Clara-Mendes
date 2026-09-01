@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {createHmac} from 'node:crypto';
 import {buildProdigiOrderFromShopify} from '../app/lib/sky/fulfilment.ts';
+import {prodigiCfpAttributes} from '../app/lib/sky/products.ts';
 import {toCartAttributes, validateSkyParams} from '../app/lib/sky/params.ts';
 import {decodeSkyToken, signSkyParams} from '../app/lib/sky/sign.server.ts';
 import {verifyShopifyWebhook} from '../app/lib/shopifyWebhook.server.ts';
@@ -67,7 +68,7 @@ test('builds a Prodigi order for signed sky lines only', async () => {
   });
   assert.equal(p.items.length, 1, 'the print line is left to the Prodigi app');
   assert.equal(p.items[0].sku, 'GLOBAL-CFP-20X24');
-  assert.deepEqual(p.items[0].attributes, {color: 'black'});
+  assert.deepEqual(p.items[0].attributes, prodigiCfpAttributes('black'));
   assert.equal(p.items[0].copies, 2);
   assert.equal(p.items[0].merchantReference, 'line:2');
   const url = p.items[0].assets[0].url;

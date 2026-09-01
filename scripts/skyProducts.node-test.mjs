@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  PRODIGI_FAP_ATTRIBUTES,
+  prodigiCfpAttributes,
   SKY_PRODUCT_HANDLE,
   SKY_SIZES,
   SKY_VARIANTS,
@@ -8,20 +10,27 @@ import {
   skyVariantForSku,
 } from '../app/lib/sky/products.ts';
 
-test('six variants map to Prodigi SKUs with frame colour attributes', () => {
+test('six variants map to Prodigi SKUs with full catalogue attributes', () => {
   assert.equal(SKY_PRODUCT_HANDLE, 'your-sky-star-map');
   assert.equal(Object.keys(SKY_VARIANTS).length, 6);
   assert.deepEqual(skyVariantForSku('CM-SKY-20X24-BLK'), {
     size: '20x24',
     finish: 'black',
     prodigiSku: 'GLOBAL-CFP-20X24',
-    attributes: {color: 'black'},
+    attributes: {
+      color: 'black',
+      frame: 'Classic',
+      glaze: 'Acrylic / Perspex',
+      mount: 'No mount / Mat',
+      paperType: 'EMA',
+      substrateWeight: '200gsm',
+    },
   });
   assert.deepEqual(skyVariantForSku('cm-sky-8x10-unf '), {
     size: '8x10',
     finish: 'unframed',
     prodigiSku: 'GLOBAL-FAP-8X10',
-    attributes: {},
+    attributes: {paperType: 'EMA', substrateWeight: '200gsm'},
   });
   assert.equal(skyVariantForSku('CM-PRINT-8X10'), null);
   assert.equal(skyVariantForSku(null), null);
@@ -32,6 +41,13 @@ test('six variants map to Prodigi SKUs with frame colour attributes', () => {
       variant.finish !== 'unframed',
       `${sku} frame ↔ CFP`,
     );
+    // Every variant carries the paper attributes Prodigi requires; framed
+    // ones add the frame/glaze/mount set with their colour.
+    const expected =
+      variant.finish === 'unframed'
+        ? PRODIGI_FAP_ATTRIBUTES
+        : prodigiCfpAttributes(variant.finish);
+    assert.deepEqual(variant.attributes, expected, `${sku} attributes`);
   }
 });
 

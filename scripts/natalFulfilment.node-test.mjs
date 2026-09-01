@@ -11,6 +11,7 @@ import {
   validateNatalParams,
 } from '../app/lib/natal/params.ts';
 import {toCartAttributes, validateSkyParams} from '../app/lib/sky/params.ts';
+import {prodigiCfpAttributes} from '../app/lib/sky/products.ts';
 import {
   decodeCanonicalToken,
   signCanonical,
@@ -94,12 +95,12 @@ test('a mixed order builds one Prodigi payload with both personalised kinds', as
 
   const skyItem = items.find((i) => i.merchantReference === 'line:2');
   assert.equal(skyItem.sku, 'GLOBAL-CFP-20X24');
-  assert.deepEqual(skyItem.attributes, {color: 'black'});
+  assert.deepEqual(skyItem.attributes, prodigiCfpAttributes('black'));
   assert.match(skyItem.assets[0].url, /\/api\/sky-print\/.+\.pdf\?size=20x24$/);
 
   const natalItem = items.find((i) => i.merchantReference === 'line:3');
   assert.equal(natalItem.sku, 'GLOBAL-CFP-8X10');
-  assert.deepEqual(natalItem.attributes, {color: 'natural'});
+  assert.deepEqual(natalItem.attributes, prodigiCfpAttributes('natural'));
   assert.equal(natalItem.copies, 2);
   assert.match(
     natalItem.assets[0].url,

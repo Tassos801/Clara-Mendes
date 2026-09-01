@@ -1,18 +1,23 @@
 # Your Sky — release runbook
 
-**Progress 2026-08-31:** §2 is done for BOTH products — `your-sky-star-map`
-and `first-light-birth-poster` were created by CSV import exactly per the
+**Progress 2026-08-31:** §2 done for BOTH products — `your-sky-star-map`
+and `first-light-birth-poster` created by CSV import exactly per the
 tables below (verified in admin: exact handles, options, 12 SKUs, prices,
-Active, inventory untracked, **published nowhere**). A production signing
-secret has been generated and waits in the local ignored env file named in
-§1. Still owner-side, in order: (1) the §1 env-var entries in Oxygen —
-values come from the local env file, the custom app's credentials page in
-the Dev Dashboard, and the Prodigi dashboard; (2) log back into the
-Prodigi dashboard (session expired) and confirm both products are
-**toggled OFF** in the Prodigi Shopify channel; (3) §3 webhook
-registration after creating the local admin env file the scripts read;
-(4) §2 Prodigi check + §4 sandbox E2E; (5) the flag-flip PR. Featured
-images are still to be added before publishing to channels.
+Active, inventory untracked, **published nowhere**).
+
+**Progress 2026-09-01 (with the owner):** §1 done — all five env vars are
+set in Oxygen and the environments redeployed. §3 done — the `orders/paid`
+webhook was created in **admin → Settings → Notifications → Webhooks**
+(Order payment → `https://shopclaramendes.com/webhooks/orders-paid`, JSON,
+2026-07), so deliveries are signed with the store's notification signing
+key, which is what `SHOPIFY_WEBHOOK_SECRET` now holds (the app-secret
+route in §3's script was not needed; the stale CJ-era value was replaced).
+Prodigi toggles confirmed **OFF** for both products (the channel had
+auto-enabled them — caught and switched off; a stale listing for a deleted
+duplicate product was toggled off too). §2's Prodigi check passes 6/6
+against the sandbox (§7 has the quotes) after fixing the variant attribute
+maps. Remaining: §4 sandbox E2E, then §5 go-live (live key swap, flag PR,
+publish, MC feed items, featured images before publishing).
 
 Personalised star map (`your-sky-star-map`). Design:
 `docs/superpowers/specs/2026-08-21-your-sky-star-map-design.md`.
@@ -135,14 +140,22 @@ If the Prodigi order is missing: `node scripts/sky-replay-order.mjs --order
 Flag back to `false` (PR) and unpublish the product. Orders already placed
 still fulfil — the webhook does not depend on the flag.
 
-## 7. Landed costs (fill from quotes before go-live)
+## 7. Landed costs (sandbox quotes, DE, Standard — 2026-09-01)
 
-| Prodigi SKU | Attributes | Item | Standard shipping DE | Price | Margin |
-|---|---|---|---|---|---|
-| GLOBAL-FAP-8X10 | — | | | 39.99 | |
-| GLOBAL-FAP-20X24 | — | | | 64.99 | |
-| GLOBAL-CFP-8X10 | color natural/black | | | 99.99 | |
-| GLOBAL-CFP-20X24 | color natural/black | | | 129.99 | |
+`sky-check-prodigi.mjs --country DE`: all six variants ✔. The check also
+surfaced that Prodigi requires the full attribute set per SKU (paperType
+EMA, substrateWeight 200gsm; framed add frame Classic, glaze
+"Acrylic / Perspex", mount "No mount / Mat") — the variant tables now set
+them all. Totals below include Prodigi's taxes/fees; margin = price − total.
+
+| Prodigi SKU | Attributes | Item | Ship DE | Landed | Price | Margin |
+|---|---|---|---|---|---|---|
+| GLOBAL-FAP-8X10 | paper set | 5.00 | 6.50 | 13.69 | 39.99 | 26.30 |
+| GLOBAL-FAP-20X24 | paper set | 10.00 | 6.75 | 19.93 | 64.99 | 45.06 |
+| GLOBAL-CFP-8X10 | full framed set, natural/black | 26.00 | 9.70 | 42.48 | 99.99 | 57.51 |
+| GLOBAL-CFP-20X24 | full framed set, natural/black | 51.34 | 25.14 | 91.00 | 129.99 | 38.99 |
+
+Re-run with the live key at go-live to confirm live pricing matches.
 
 ## 8. First Light — the second personalised product
 

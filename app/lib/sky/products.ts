@@ -44,43 +44,66 @@ export type SkyVariant = {
   attributes: Record<string, string>;
 };
 
+/**
+ * Prodigi rejects an order item unless every catalogue attribute is set,
+ * even where only one option exists. Exact strings from
+ * `GET /v4.0/products/<sku>` (sandbox readback 2026-09-01; asserted by
+ * `scripts/sky-check-prodigi.mjs` before any go-live).
+ */
+export const PRODIGI_FAP_ATTRIBUTES: Record<string, string> = {
+  paperType: 'EMA',
+  substrateWeight: '200gsm',
+};
+
+export function prodigiCfpAttributes(
+  color: 'natural' | 'black',
+): Record<string, string> {
+  return {
+    color,
+    frame: 'Classic',
+    glaze: 'Acrylic / Perspex',
+    mount: 'No mount / Mat',
+    ...PRODIGI_FAP_ATTRIBUTES,
+  };
+}
+
 /** Variant SKU (set on the Shopify variant) → Prodigi SKU + attributes. */
 export const SKY_VARIANTS: Record<string, SkyVariant> = {
   'CM-SKY-8X10-UNF': {
     size: '8x10',
     finish: 'unframed',
     prodigiSku: 'GLOBAL-FAP-8X10',
-    attributes: {},
+    attributes: PRODIGI_FAP_ATTRIBUTES,
   },
   'CM-SKY-8X10-NAT': {
     size: '8x10',
     finish: 'natural',
     prodigiSku: 'GLOBAL-CFP-8X10',
-    attributes: {color: 'natural'},
+    attributes: prodigiCfpAttributes('natural'),
   },
   'CM-SKY-8X10-BLK': {
     size: '8x10',
     finish: 'black',
     prodigiSku: 'GLOBAL-CFP-8X10',
-    attributes: {color: 'black'},
+    attributes: prodigiCfpAttributes('black'),
   },
   'CM-SKY-20X24-UNF': {
     size: '20x24',
     finish: 'unframed',
     prodigiSku: 'GLOBAL-FAP-20X24',
-    attributes: {},
+    attributes: PRODIGI_FAP_ATTRIBUTES,
   },
   'CM-SKY-20X24-NAT': {
     size: '20x24',
     finish: 'natural',
     prodigiSku: 'GLOBAL-CFP-20X24',
-    attributes: {color: 'natural'},
+    attributes: prodigiCfpAttributes('natural'),
   },
   'CM-SKY-20X24-BLK': {
     size: '20x24',
     finish: 'black',
     prodigiSku: 'GLOBAL-CFP-20X24',
-    attributes: {color: 'black'},
+    attributes: prodigiCfpAttributes('black'),
   },
 };
 
