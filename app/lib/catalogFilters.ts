@@ -98,8 +98,13 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   [PHONE_CASE_HANDLE]: false,
   'clara-mendes-art-calendar-2026': false,
   'classic-framed-art-print-16x20': false,
-  'fine-art-greeting-card': false,
-  'fine-art-postcard': false,
+  // Released 2026-09-01: mapping re-verified in the Prodigi dashboard (5/5
+  // auto, Excellent), Budget letter shipping selected, delivered costs quoted
+  // (DE/CY), owner approved €8/€6 retail and waived the physical sample,
+  // billing + 24h order-edit window re-verified, dedicated letter-post
+  // shipping profile created in Admin.
+  'fine-art-greeting-card': true,
+  'fine-art-postcard': true,
   'large-fine-art-print-16x20': false,
   'stretched-canvas-art-16x20': false,
 };
