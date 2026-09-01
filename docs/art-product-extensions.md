@@ -11,7 +11,7 @@ while still offering Quiet Form, Patina Blue, Neo Deco, Midnight Garden, and
 Sunlit Mosaic.
 
 The phone-case product adds a second device option for four verified iPhone 15
-models. The 2026 calendar combines all five capsules into one edition.
+models. The 2027 calendar combines all five capsules into one edition.
 
 | Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
 | --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
@@ -21,7 +21,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
 | Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
 | Art-Cover Gratitude Journal             |                5 |                $32 | GJ-A5-SB-S-C-P                      | Public catalogue               |
-| Clara Mendes Art Calendar 2026          |                1 |                $29 | CALENDAR-A4-L-DATED                 | Public catalogue               |
+| Clara Mendes Art Calendar 2027          |                1 |                $29 | CALENDAR-A4-L-DATED                 | Public catalogue               |
 | Stretched Canvas Art — 16 × 20 in       |                5 |                $89 | GLOBAL-CAN-16X20                    | Public catalogue               |
 | Art Canvas Tote                         |                5 |                $45 | H-BAG-CTB                           | Public catalogue               |
 | Art Linen Cushion — 24 × 24 in          |                5 |                $69 | GLOBAL-CUSH-24X24-LIN               | Public catalogue               |
@@ -125,6 +125,25 @@ Clara Mendes Headless catalogs plus Facebook & Instagram (mirroring the live
 prints), their three Pending gate tags are removed, and the storefront flags
 are true. The first real card order is the first physical QC
 (`docs/first-order-runbook.md`).
+
+On 2026-09-01, the calendar family was re-pointed at the 2027 edition. Prodigi's
+public product page states the dated calendar SKUs now include 2027 date grids
+(`CALENDAR-A4-L-DATED` is season-rolled by Prodigi; our 14 uploaded sides are
+artwork-only and year-agnostic, so the existing dashboard attachment remains
+valid). The manifest handle/title/SKU moved to
+`clara-mendes-art-calendar-2027` / "Clara Mendes Art Calendar 2027" /
+`CM-CAL-A4-2027`, the Edition option value became 2027, and the storefront
+preview was regenerated with the 2027 title. **Ordering constraint:** the live
+Shopify record must be renamed in place (same product id — title, handle,
+Edition value, SKU) BEFORE any `sync-art-product-extensions.mjs --apply` run;
+the sync upserts by handle, so syncing first would create a duplicate product
+and orphan the mapped one. The in-place rename is prepared as a by-id script
+(productUpdate + productOptionUpdate + productVariantsBulkUpdate, preserving
+the variant id and therefore the Prodigi channel mapping); it could not be run
+this session because the Admin API client-credentials exchange failed —
+resolve credentials or rename via Admin UI, then re-verify the channel mapping
+still shows 1/1 with all 14 sides. The family stays Draft and its release flag
+stays false.
 
 ## Artwork Policy
 

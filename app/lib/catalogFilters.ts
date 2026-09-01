@@ -96,7 +96,7 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   'art-linen-cushion-24x24': false,
   'art-premium-fleece-blanket-30x40': false,
   [PHONE_CASE_HANDLE]: false,
-  'clara-mendes-art-calendar-2026': false,
+  'clara-mendes-art-calendar-2027': false,
   'classic-framed-art-print-16x20': false,
   // Released 2026-09-01: mapping re-verified in the Prodigi dashboard (5/5
   // auto, Excellent), Budget letter shipping selected, delivered costs quoted

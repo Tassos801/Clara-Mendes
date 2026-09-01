@@ -89,7 +89,7 @@ function imageFile(family, capsuleName) {
     alt: family.frameOnly
       ? 'Natural classic frame only; artwork not included'
       : family.collectionVariant
-        ? 'Clara Mendes 2026 art calendar featuring all five original-art capsules'
+        ? 'Clara Mendes 2027 art calendar featuring all five original-art capsules'
         : `${capsuleName} artwork shown on the ${family.title.toLowerCase()}`,
     contentType: 'IMAGE',
     filename: `${family.id}-${slugify(capsuleName)}.webp`,
@@ -191,7 +191,7 @@ function productInput(family) {
       {
         name: 'Edition',
         position: 1,
-        values: [{name: '2026'}],
+        values: [{name: '2027'}],
       },
     ];
     variants = [
@@ -202,7 +202,7 @@ function productInput(family) {
           tracked: false,
         },
         inventoryPolicy: 'DENY',
-        optionValues: [{name: '2026', optionName: 'Edition'}],
+        optionValues: [{name: '2027', optionName: 'Edition'}],
         price: family.price,
         sku: `CM-${family.skuSuffix}`,
         taxable: true,
