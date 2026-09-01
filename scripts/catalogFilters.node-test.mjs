@@ -52,11 +52,14 @@ assert.equal(isDemoProduct(phoneCase), true);
 // become sellable while the three-size frame-only replacement is unresolved.
 assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
 assert.equal(isReleasedExtensionHandle(FRAME_HANDLE), false);
-assert.equal(hasReleasedExtensions(), false);
+// Cards and postcards released 2026-09-01; every other family stays dark.
+assert.equal(hasReleasedExtensions(), true);
+assert.equal(isReleasedExtensionHandle('fine-art-greeting-card'), true);
+assert.equal(isReleasedExtensionHandle('fine-art-postcard'), true);
 const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
-assert.equal(releasedCount, 0);
+assert.equal(releasedCount, 2);
 
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
@@ -101,9 +104,15 @@ assert.equal(
   true,
 );
 EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = false;
+// The released card families keep the handle-only pre-query guard open.
+assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
 // With every release flag off, the handle-only pre-query guard keeps the
 // Everyday collection hidden.
+EXTENSION_RELEASE_FLAGS['fine-art-greeting-card'] = false;
+EXTENSION_RELEASE_FLAGS['fine-art-postcard'] = false;
 assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), true);
+EXTENSION_RELEASE_FLAGS['fine-art-greeting-card'] = true;
+EXTENSION_RELEASE_FLAGS['fine-art-postcard'] = true;
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,

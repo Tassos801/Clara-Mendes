@@ -87,6 +87,28 @@ prices (€32.50 / €50.00 / €64.29) are provisional cost-plus placeholders, 
 owner-approved retail. The Shopify record has not been re-synced to the
 frame-only shape; it remains the Draft, unpublished five-variant framed print.
 
+On 2026-09-01, the Fine Art Greeting Card and Fine Art Postcard became the
+first released extension families. All gates passed that day against the live
+dashboard: both families re-verified 5/5 "Fulfilled by Prodigi automatically"
+(`GLOBAL-GRE-MOH-7X5-BLA`, `GLOBAL-POST-MOH-7X5`, every asset Excellent),
+billing card on file with per-order EUR invoicing, and the 24-hour order-edit
+window confirmed. Delivered costs were quoted in-dashboard (card €1.90 item
+incl tax; Budget shipping €5.12 DE / €6.37 CY incl tax; postcard ~€0.25 less)
+and the channel shipping method for both families was switched from Standard
+to Budget — letter items ship in an envelope/OPP bag, and Standard's €8.60
+Cyprus rate would sink the price point. The owner approved €8.00 / €6.00
+retail and waived the physical sample after reviewing the Excellent dashboard
+results (same precedent as the framed release). Because the store's general
+shipping rates are built for tubes (€16 international), a dedicated
+"Letter post - cards & postcards" Shopify shipping profile now carries both
+products: one zone covering the 15 market countries, flat €2.90, 5–8 business
+days. Unit margin at Budget on a solo order: card ≈ €3.9 (DE) / €2.6 (CY);
+postcard ≈ €2.2 (DE) / €0.9 (CY). Both products are Active, published to the Clara Mendes and
+Clara Mendes Headless catalogs plus Facebook & Instagram (mirroring the live
+prints), their three Pending gate tags are removed, and the storefront flags
+are true. The first real card order is the first physical QC
+(`docs/first-order-runbook.md`).
+
 ## Artwork Policy
 
 The production files preserve the original Clara Mendes artwork. Product
