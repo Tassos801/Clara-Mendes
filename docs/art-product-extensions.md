@@ -11,7 +11,7 @@ while still offering Quiet Form, Patina Blue, Neo Deco, Midnight Garden, and
 Sunlit Mosaic.
 
 The phone-case product adds a second device option for four verified iPhone 15
-models. The 2026 calendar combines all five capsules into one edition.
+models. The 2027 calendar combines all five capsules into one edition.
 
 | Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
 | --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
@@ -21,7 +21,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
 | Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
 | Art-Cover Gratitude Journal             |                5 |                $32 | GJ-A5-SB-S-C-P                      | Public catalogue               |
-| Clara Mendes Art Calendar 2026          |                1 |                $29 | CALENDAR-A4-L-DATED                 | Public catalogue               |
+| Clara Mendes Art Calendar 2027          |                1 |                $29 | CALENDAR-A4-L-DATED                 | Public catalogue               |
 | Stretched Canvas Art — 16 × 20 in       |                5 |                $89 | GLOBAL-CAN-16X20                    | Public catalogue               |
 | Art Canvas Tote                         |                5 |                $45 | H-BAG-CTB                           | Public catalogue               |
 | Art Linen Cushion — 24 × 24 in          |                5 |                $69 | GLOBAL-CUSH-24X24-LIN               | Public catalogue               |
