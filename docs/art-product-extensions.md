@@ -1,6 +1,6 @@
 # Art for Everyday Living
 
-Updated: 2026-08-31
+Updated: 2026-09-01
 
 ## Collection Shape
 
@@ -16,7 +16,7 @@ models. The 2026 calendar combines all five capsules into one edition.
 | Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
 | --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
 | Large Fine Art Print — 16 × 20 in       |                5 |                $49 | GLOBAL-FAP-16X20                    | Candidate; verify in dashboard |
-| Natural Classic Frame (frame only)      |                3 |      €32.50–€64.29 | GLOBAL-CFP-\<SIZE\>-BACKLOADER      | Candidate; verify in dashboard |
+| Natural Classic Frame (frame only)      |                3 |      €32.50–€64.29 | GLOBAL-CFP-16X20-BACKLOADER only    | Dashboard: no 8 × 10 or 20 × 24 |
 | Fine Art Greeting Card                  |                5 |                 $8 | GLOBAL-GRE-MOH-7X5-BLA              | Public catalogue               |
 | Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
 | Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
@@ -87,7 +87,24 @@ prices (€32.50 / €50.00 / €64.29) are provisional cost-plus placeholders, 
 owner-approved retail. The Shopify record has not been re-synced to the
 frame-only shape; it remains the Draft, unpublished five-variant framed print.
 
-On 2026-09-01, the Fine Art Greeting Card and Fine Art Postcard became the
+On 2026-09-01, the Prodigi dashboard readback ran with a fresh login. The
+backloader family lists 23 variants; its inch sizes are 6 × 8, 11 × 14,
+12 × 12, 12 × 16, 16 × 20, 18 × 24, 20 × 20, 20 × 28, 24 × 32, 24 × 36,
+28 × 28, 28 × 40, and 30 × 40 (plus A0–A4 and legacy/conservation SKUs).
+`GLOBAL-CFP-16X20-BACKLOADER` is fully verified: €18.00 wholesale, 72-hour
+lead, UK/EU/US labs, Natural among its eight order-level frame colours, and it
+appears in the Shopify channel's SKU picker ("Ready Made Frame with Face
+Plate — No Print"; the order flow requires uploading a logo or blank face-plate
+image at 300 dpi, which the committed blank JPGs match). **No 8 × 10 and no
+20 × 24 backloader exists** — those two sizes cannot be fulfilled by this
+family (nearest: 6 × 8/11 × 14 and 18 × 24/20 × 28). The earlier recorded
+"costs" (€26/€40/€51.43) match the print-inclusive classic-frame SKUs, not
+backloaders. Release is therefore blocked on an owner decision: change the
+frame-only size range, accept nearest-size substitutes, or source 8 × 10 and
+20 × 24 frames elsewhere — plus retail price approval for whatever range is
+chosen.
+
+Later on 2026-09-01, the Fine Art Greeting Card and Fine Art Postcard became the
 first released extension families. All gates passed that day against the live
 dashboard: both families re-verified 5/5 "Fulfilled by Prodigi automatically"
 (`GLOBAL-GRE-MOH-7X5-BLA`, `GLOBAL-POST-MOH-7X5`, every asset Excellent),
@@ -170,7 +187,8 @@ behind the same false release flag. It exposes one `Size` option with 8 × 10,
 16 × 20, and 20 × 24 in values, no `Artwork` option, and every customer-facing
 surface states that the print is not included. Do not flip the release flag or
 restore the retired framed-print cross-sells: the Shopify record is still the
-old framed print and the backloader mapping is unverified and unapproved.
+old framed print, only the 16 × 20 size has a verified backloader mapping, and
+the owner has not approved the size range or retail prices.
 
 Until superseded Admin media have been removed, the storefront also rejects
 frame imagery that is not labelled as the Prodigi Natural classic frame with

@@ -525,3 +525,25 @@ not owner-approved). No flags were flipped.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-09-01 - Backloader dashboard readback
+
+Ran the frame-only mapping readback with a fresh Prodigi dashboard login.
+The Backloader family (frame only, no print) lists 23 variants; inch sizes
+run 6x8 through 30x40 but include neither 8x10 nor 20x24.
+`GLOBAL-CFP-16X20-BACKLOADER` is verified end to end: EUR 18.00 wholesale,
+72h lead, UK/EU/US labs, eight order-level frame colours including
+Natural, and it is selectable in the Shopify channel SKU picker next to
+the print-inclusive `GLOBAL-CFP-16X20` (From EUR 40.00 - the source of
+the bogus "40.00" cost recorded on 2026-08-24). The order flow demands an
+uploaded logo or blank face-plate image at 300dpi, which the committed
+blank JPG assets match - the "blank removable insert" concept was real,
+only its SKUs and sizes were wrong. Manifest and docs now record the
+16x20-only verification and per-size unavailability. Release stays
+blocked on an owner decision for the 8x10 and 20x24 sizes (change range,
+substitute 6x8/11x14 and 18x24/20x28, or another supplier) plus retail
+price approval. No mappings were changed and no flags were flipped; a
+test basket item was added and removed during verification.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md).
