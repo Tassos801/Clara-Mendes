@@ -3393,87 +3393,269 @@ html.lenis body {
   src: url('/fonts/EBGaramond-Italic.ttf') format('truetype');
 }
 
+.product-purchase-intro {
+  display: grid;
+  gap: 20px;
+}
+
+.product-detail-layout--sky .sky-configurator,
+.product-detail-layout--sky .product-purchase-panel {
+  display: contents;
+}
+
+.product-detail-layout--sky {
+  align-items: start;
+  gap: clamp(20px, 3vw, 44px);
+  grid-template-areas:
+    'preview form intro'
+    'preview themes options'
+    'preview themes review'
+    'preview . buy'
+    'preview . assurance'
+    'preview . details';
+  grid-template-columns:
+    minmax(250px, 0.8fr) minmax(320px, 1fr) minmax(340px, 0.9fr);
+}
+
+.product-detail-layout--sky .sky-preview {
+  grid-area: preview;
+  position: sticky;
+  top: calc(var(--header-height) + 20px);
+}
+
+.product-detail-layout--sky .sky-form {
+  grid-area: form;
+}
+
+.product-detail-layout--sky .sky-theme-picker {
+  grid-area: themes;
+}
+
+.product-detail-layout--sky .product-purchase-intro {
+  grid-area: intro;
+}
+
+.product-detail-layout--sky .sky-product-options-stage {
+  grid-area: options;
+}
+
+.product-detail-layout--sky .sky-review {
+  grid-area: review;
+}
+
+.product-detail-layout--sky .product-buy-box {
+  grid-area: buy;
+}
+
+.product-detail-layout--sky .product-assurance-list {
+  grid-area: assurance;
+}
+
+.product-detail-layout--sky .product-details-list {
+  grid-area: details;
+}
+
+.product-detail-layout--sky .sky-form,
+.product-detail-layout--sky .sky-theme-picker,
+.product-detail-layout--sky .product-purchase-intro,
+.product-detail-layout--sky .sky-product-options-stage,
+.product-detail-layout--sky .sky-review,
+.product-detail-layout--sky .product-buy-box {
+  backdrop-filter: blur(18px) saturate(1.14);
+  -webkit-backdrop-filter: blur(18px) saturate(1.14);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.5), transparent 56%),
+    rgba(244, 240, 232, 0.66);
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 16px 34px rgba(55, 48, 39, 0.08);
+  padding: clamp(18px, 2.2vw, 26px);
+}
+
 .sky-configurator {
+  align-content: start;
   display: grid;
   gap: 1.5rem;
-  align-content: start;
-  justify-items: center;
+}
+
+.sky-stage-heading {
+  align-items: center;
+  color: var(--color-muted);
+  display: flex;
+  font-size: 0.72rem;
+  font-weight: 700;
+  gap: 0.55rem;
+  letter-spacing: 0.12em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.sky-stage-heading span,
+.sky-theme-picker legend span {
+  align-items: center;
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 50%;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 1.65rem;
+  justify-content: center;
+  width: 1.65rem;
 }
 
 .sky-preview {
-  position: relative;
-  width: 100%;
-  max-width: 560px;
-  background: var(--color-soft);
-  border-radius: 6px;
-  box-shadow: 0 24px 60px rgba(55, 48, 39, 0.16);
+  background: #e9e3d8;
+  border: 1px solid rgba(38, 35, 31, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 30px 70px rgba(55, 48, 39, 0.18);
+  min-width: 0;
   overflow: hidden;
+  width: 100%;
+}
+
+.sky-preview:focus {
+  outline: none;
+}
+
+.sky-preview:focus-visible {
+  outline: 2px solid var(--color-clay);
+  outline-offset: 4px;
+}
+
+.sky-preview-toolbar {
+  align-items: center;
+  background: rgba(251, 250, 246, 0.92);
+  border-bottom: 1px solid rgba(38, 35, 31, 0.1);
+  display: flex;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 5px 12px;
+}
+
+.sky-preview-status,
+.sky-place-status {
+  align-items: center;
+  color: var(--color-muted);
+  display: flex;
+  font-size: 0.76rem;
+  gap: 0.55rem;
+  justify-content: space-between;
+  min-height: 1.5rem;
+}
+
+.sky-preview-status::before {
+  background: currentColor;
+  border-radius: 50%;
+  content: '';
+  height: 0.42rem;
+  width: 0.42rem;
+}
+
+.sky-preview-status.is-ready {
+  color: var(--color-moss);
+}
+
+.sky-preview-status.is-error,
+.sky-field-error {
+  color: #8f3127;
+}
+
+.sky-preview-frame {
+  background: #f6f2ea;
+  padding: 0;
+  transition:
+    background 180ms ease,
+    padding 180ms ease;
+}
+
+.sky-preview-frame--natural {
+  background:
+    linear-gradient(115deg, rgba(255, 255, 255, 0.22), transparent 32%),
+    linear-gradient(90deg, #a67a55, #c9a47c 48%, #9a6f50);
+  padding: clamp(10px, 2.2vw, 22px);
+}
+
+.sky-preview-frame--black {
+  background:
+    linear-gradient(125deg, rgba(255, 255, 255, 0.1), transparent 35%),
+    #25231f;
+  padding: clamp(10px, 2.2vw, 22px);
+}
+
+.sky-preview-frame--natural .sky-preview-svg,
+.sky-preview-frame--black .sky-preview-svg {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.28),
+    0 10px 24px rgba(24, 21, 18, 0.22);
 }
 
 .sky-preview-svg {
   display: block;
-  width: 100%;
   height: auto;
+  width: 100%;
 }
 
 .sky-preview-loading {
   aspect-ratio: 4 / 5;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  text-align: center;
   color: var(--color-muted);
+  display: grid;
   font-family: var(--serif);
   font-style: italic;
+  padding: 1rem;
+  place-items: center;
+  text-align: center;
 }
 
 .sky-preview-hint {
-  position: absolute;
-  inset: auto 0 0 0;
-  margin: 0;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.78rem;
+  background: rgba(38, 35, 31, 0.88);
   color: var(--color-paper);
-  background: rgba(38, 35, 31, 0.72);
+  font-size: 0.76rem;
+  line-height: 1.45;
+  margin: 0;
+  padding: 0.62rem 0.8rem;
 }
 
 .sky-form {
   display: grid;
-  gap: 0.9rem;
+  gap: 1rem;
+  min-width: 0;
   width: 100%;
-  max-width: 480px;
 }
 
 .sky-field {
-  position: relative;
   display: grid;
-  gap: 0.35rem;
   font-size: 0.86rem;
+  gap: 0.38rem;
+  min-width: 0;
+  position: relative;
 }
 
-.sky-field > span {
+.sky-field label,
+.sky-field-meta > label {
   color: var(--color-muted);
+  font-size: 0.72rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  font-size: 0.72rem;
 }
 
 .sky-field em {
-  text-transform: none;
-  letter-spacing: 0;
   font-style: normal;
+  letter-spacing: 0;
   opacity: 0.8;
+  text-transform: none;
 }
 
 .sky-field input {
+  background: rgba(251, 250, 246, 0.9);
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 5px;
+  color: var(--color-ink);
   font: inherit;
   font-size: 1rem;
-  padding: 0.7rem 0.85rem;
-  border: 1px solid var(--glass-border-ink);
-  border-radius: 4px;
-  background: var(--color-paper);
-  color: var(--color-ink);
+  min-height: 48px;
   min-width: 0;
+  padding: 0.72rem 0.85rem;
   width: 100%;
 }
 
@@ -3482,96 +3664,302 @@ html.lenis body {
   outline-offset: 1px;
 }
 
-.sky-field-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+.sky-field input[aria-invalid='true'] {
+  border-color: #8f3127;
 }
 
-.sky-field-note,
+.sky-field-row {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.sky-field-meta {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  min-height: 1.25rem;
+}
+
+.sky-form-footer {
+  align-items: end;
+  border-top: 1px solid rgba(38, 35, 31, 0.1);
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr auto;
+  padding-top: 0.9rem;
+}
+
 .sky-form-note {
-  margin: 0;
   color: var(--color-muted);
-  font-size: 0.78rem;
-  line-height: 1.45;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sky-inline-action,
+.sky-reset-button {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  min-height: 44px;
+  padding: 0.35rem 0;
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+.sky-field-meta .sky-inline-action {
+  font-size: 0.72rem;
+  min-height: auto;
+  padding: 0;
+}
+
+.sky-inline-action:focus-visible,
+.sky-reset-button:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
 }
 
 .sky-place-results {
-  position: absolute;
-  z-index: 5;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin: 0.25rem 0 0;
-  padding: 0.25rem;
-  list-style: none;
   background: var(--color-paper);
   border: 1px solid var(--glass-border-ink);
-  border-radius: 4px;
-  box-shadow: 0 12px 32px rgba(55, 48, 39, 0.14);
+  border-radius: 5px;
+  box-shadow: 0 16px 36px rgba(55, 48, 39, 0.18);
+  left: 0;
+  list-style: none;
+  margin: 0;
   max-height: 16rem;
   overflow: auto;
+  padding: 0.25rem;
+  position: absolute;
+  right: 0;
+  top: calc(1.25rem + 0.38rem + 48px);
+  z-index: 20;
 }
 
-.sky-place-results button {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.55rem 0.7rem;
-  border: 0;
-  background: none;
-  font: inherit;
-  color: inherit;
-  text-align: left;
-  cursor: pointer;
+.sky-place-results li {
+  align-items: center;
   border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 0.55rem 0.7rem;
 }
 
-.sky-place-results button:hover,
-.sky-place-results button:focus-visible {
+.sky-place-results li:hover,
+.sky-place-results li.is-active {
   background: var(--color-soft);
-  outline: none;
 }
 
 .sky-place-results small {
   color: var(--color-muted);
+  text-align: right;
 }
 
-.sky-form-error {
+.sky-place-status {
+  min-height: 2rem;
+}
+
+.sky-field-error {
+  font-size: 0.76rem;
+  line-height: 1.4;
   margin: 0;
-  color: #8a3b2e;
-  font-size: 0.85rem;
+}
+
+.sky-character-count {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+}
+
+.sky-theme-picker {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+.sky-theme-picker legend {
+  align-items: center;
+  color: var(--color-muted);
+  display: flex;
+  font-size: 0.72rem;
+  font-weight: 700;
+  gap: 0.55rem;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+}
+
+.sky-theme-options {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sky-theme-options button {
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 5px;
+  color: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0.35rem;
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.sky-theme-options button:hover {
+  transform: translateY(-2px);
+}
+
+.sky-theme-options button:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 3px;
+}
+
+.sky-theme-options button[aria-pressed='true'] {
+  border-color: var(--color-ink);
+  box-shadow: inset 0 0 0 1px var(--color-ink);
+}
+
+.sky-theme-options img {
+  aspect-ratio: 4 / 5;
+  display: block;
+  object-fit: cover;
+  width: 100%;
+}
+
+.sky-theme-options span {
+  display: block;
+  font-size: 0.72rem;
+  line-height: 1.25;
+  margin-top: 0.4rem;
+}
+
+.sky-product-options-stage {
+  display: grid;
+  gap: 1rem;
+}
+
+.sky-review {
+  display: grid;
+  gap: 1rem;
+}
+
+.sky-review dl {
+  display: grid;
+  gap: 0;
+  margin: 0;
+}
+
+.sky-review dl div {
+  border-bottom: 1px solid rgba(38, 35, 31, 0.1);
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(74px, 0.35fr) minmax(0, 1fr);
+  padding: 0.62rem 0;
+}
+
+.sky-review dt {
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sky-review dd {
+  font-size: 0.86rem;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.sky-review > p:last-child {
+  color: var(--color-muted);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .sky-cart-attributes {
-  margin: 0.25rem 0 0;
   color: var(--color-muted);
   font-size: 0.8rem;
   line-height: 1.4;
+  margin: 0.25rem 0 0;
 }
 
-@media (min-width: 1440px) {
-  /* Wide screens: preview and form side by side inside the gallery column. */
-  .sky-configurator {
-    grid-template-columns: minmax(0, 1fr) minmax(320px, 400px);
-    justify-items: stretch;
-    align-items: start;
-  }
-
-  .sky-preview,
-  .sky-form {
-    max-width: none;
-  }
-
-  .sky-form {
-    position: sticky;
-    top: calc(var(--header-height) + 16px);
+@media (min-width: 768px) and (max-width: 1279px) {
+  .product-detail-layout--sky {
+    grid-template-areas:
+      'preview intro'
+      'preview options'
+      'form review'
+      'themes buy'
+      'assurance assurance'
+      'details details';
+    grid-template-columns: minmax(300px, 1fr) minmax(320px, 0.9fr);
   }
 }
 
 @media (max-width: 767px) {
-  .sky-field-row {
-    grid-template-columns: 1fr;
+  .product-detail-layout--sky {
+    grid-template-areas:
+      "intro"
+      "preview"
+      "form"
+      "themes"
+      "options"
+      "review"
+      "buy"
+      "assurance"
+      "details";
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .product-detail-layout--sky .sky-preview {
+    position: relative;
+    top: auto;
+  }
+
+  .product-detail-layout--sky .product-purchase-intro,
+  .product-detail-layout--sky .sky-form,
+  .product-detail-layout--sky .sky-theme-picker,
+  .product-detail-layout--sky .sky-product-options-stage,
+  .product-detail-layout--sky .sky-review,
+  .product-detail-layout--sky .product-buy-box {
+    border-radius: 18px;
+    padding: 18px;
+  }
+
+  .product-detail-layout--sky .product-purchase-intro h1 {
+    font-size: clamp(2.15rem, 12vw, 3rem);
+  }
+
+  .product-detail-layout--sky .product-buy-box {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .sky-field-row,
+  .sky-form-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sky-theme-options {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .sky-theme-options button {
+    padding: 0.28rem;
+  }
+
+  .sky-theme-options span {
+    font-size: 0.66rem;
   }
 }

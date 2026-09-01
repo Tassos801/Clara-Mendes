@@ -22,6 +22,7 @@ const productSource = readFileSync(
   path.join(ROOT, 'app/routes/products.$handle.tsx'),
   'utf8',
 );
+const appCss = readFileSync(path.join(ROOT, 'app/styles/app.css'), 'utf8');
 
 const place = {
   name: 'Paris',
@@ -148,5 +149,24 @@ test('Your Sky PDP has one guided review and exact completion actions', () => {
     (productSource.match(/<SkyConfigurator\s/g) ?? []).length,
     1,
     'the route should render one Your Sky configurator',
+  );
+});
+
+test('Your Sky uses one responsive grid with theme and frame treatments', () => {
+  for (const token of [
+    '.product-detail-layout--sky',
+    'grid-template-areas:',
+    '.sky-theme-options',
+    '.sky-preview-frame--natural',
+    '.sky-preview-frame--black',
+    '.sky-review',
+    '.sky-preview-status',
+    '.sky-place-status',
+  ]) {
+    assert.ok(appCss.includes(token), `missing ${token}`);
+  }
+  assert.match(
+    appCss,
+    /@media \(max-width: 767px\)[\s\S]*?"intro"[\s\S]*?"preview"[\s\S]*?"form"[\s\S]*?"themes"[\s\S]*?"options"[\s\S]*?"review"[\s\S]*?"buy"/,
   );
 });
