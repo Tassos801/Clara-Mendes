@@ -109,6 +109,25 @@ prints), their three Pending gate tags are removed, and the storefront flags
 are true. The first real card order is the first physical QC
 (`docs/first-order-runbook.md`).
 
+On 2026-09-01, the calendar family was re-pointed at the 2027 edition. Prodigi's
+public product page states the dated calendar SKUs now include 2027 date grids
+(`CALENDAR-A4-L-DATED` is season-rolled by Prodigi; our 14 uploaded sides are
+artwork-only and year-agnostic, so the existing dashboard attachment remains
+valid). The manifest handle/title/SKU moved to
+`clara-mendes-art-calendar-2027` / "Clara Mendes Art Calendar 2027" /
+`CM-CAL-A4-2027`, the Edition option value became 2027, and the storefront
+preview was regenerated with the 2027 title. **Ordering constraint:** the live
+Shopify record must be renamed in place (same product id — title, handle,
+Edition value, SKU) BEFORE any `sync-art-product-extensions.mjs --apply` run;
+the sync upserts by handle, so syncing first would create a duplicate product
+and orphan the mapped one. The in-place rename is prepared as a by-id script
+(productUpdate + productOptionUpdate + productVariantsBulkUpdate, preserving
+the variant id and therefore the Prodigi channel mapping); it could not be run
+this session because the Admin API client-credentials exchange failed —
+resolve credentials or rename via Admin UI, then re-verify the channel mapping
+still shows 1/1 with all 14 sides. The family stays Draft and its release flag
+stays false.
+
 ## Artwork Policy
 
 The production files preserve the original Clara Mendes artwork. Product

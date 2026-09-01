@@ -369,7 +369,7 @@ def calendar_preview(original: list[dict], family: dict) -> Image.Image:
             y = 1240 + row * 92
             draw.rectangle((x, y, x + 62, y + 40), outline=(164, 154, 141), width=3)
     draw.text((90, 80), "CLARA MENDES", fill=MUTED, font=font(34))
-    draw.text((90, 130), "Art Calendar 2026", fill=INK, font=font(62, serif=True))
+    draw.text((90, 130), "Art Calendar 2027", fill=INK, font=font(62, serif=True))
     draw.text((90, 1880), family["title"], fill=INK, font=font(34))
     return canvas.convert("RGB")
 
