@@ -137,6 +137,11 @@ export async function buildProdigiOrderFromShopify(
   const name =
     a.name || [a.first_name, a.last_name].filter(Boolean).join(' ') || 'Customer';
 
+  // Prodigi rejects empty-string address parts (MustNotBeEmptyOrWhitespace),
+  // so optional lines are omitted entirely when blank — caught by the first
+  // sandbox order, whose recipient had no second address line.
+  const line2 = a.address2?.trim();
+
   return {
     kind: 'order',
     payload: {
@@ -149,7 +154,7 @@ export async function buildProdigiOrderFromShopify(
         phoneNumber: a.phone ?? order.phone ?? undefined,
         address: {
           line1: a.address1,
-          line2: a.address2 ?? '',
+          ...(line2 ? {line2} : {}),
           townOrCity: a.city,
           stateOrCounty: a.province ?? null,
           postalOrZipCode: a.zip,

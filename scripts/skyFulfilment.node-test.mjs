@@ -58,14 +58,31 @@ test('builds a Prodigi order for signed sky lines only', async () => {
   assert.equal(p.recipient.name, 'Anna Beispiel');
   assert.equal(p.recipient.email, 'anna@example.com');
   assert.equal(p.recipient.phoneNumber, '+49 30 1234567');
+  // No line2 key at all when address2 is blank — Prodigi rejects
+  // empty-string address parts (MustNotBeEmptyOrWhitespace).
   assert.deepEqual(p.recipient.address, {
     line1: 'Musterstraße 1',
-    line2: '',
     townOrCity: 'Berlin',
     stateOrCounty: null,
     postalOrZipCode: '10115',
     countryCode: 'DE',
   });
+  const withSuite = await buildProdigiOrderFromShopify(
+    await order({
+      shipping_address: {
+        name: 'Anna Beispiel',
+        address1: 'Musterstraße 1',
+        address2: 'Apt 4',
+        city: 'Berlin',
+        province: null,
+        zip: '10115',
+        country_code: 'DE',
+        phone: null,
+      },
+    }),
+    {secret: SECRET, origin: 'https://shopclaramendes.com'},
+  );
+  assert.equal(withSuite.payload.recipient.address.line2, 'Apt 4');
   assert.equal(p.items.length, 1, 'the print line is left to the Prodigi app');
   assert.equal(p.items[0].sku, 'GLOBAL-CFP-20X24');
   assert.deepEqual(p.items[0].attributes, prodigiCfpAttributes('black'));

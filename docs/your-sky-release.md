@@ -93,22 +93,29 @@ per variant for the landed-cost table in §7. Must pass before the test order.
 
 ## 3. Webhook
 
+Done 2026-09-01 via **admin → Settings → Notifications → Webhooks** (Order
+payment → `https://shopclaramendes.com/webhooks/orders-paid`, JSON,
+2026-07). Admin-created webhooks are signed with the store's notification
+signing key shown on that page — that value is what `SHOPIFY_WEBHOOK_SECRET`
+holds. The script route below still works as an alternative (it signs with
+the custom app's secret instead):
+
 ```bash
 node scripts/sky-register-webhook.mjs --list
 node scripts/sky-register-webhook.mjs
 ```
 
-Requires the custom app to have `read_orders`. The subscription points at
-`https://shopclaramendes.com/webhooks/orders-paid`; Shopify retries
-non-2xx responses 8× over 4 h and deletes the subscription after 8
-consecutive failures — re-run the script if `--list` ever shows it missing.
+Shopify retries non-2xx responses 8× over 4 h.
 
 ## 4. End-to-end test (sandbox, no physical item)
 
 1. Production has the code deployed with `PERSONALISED_RELEASE_FLAGS` false.
 2. Preview environment: `SKY_PREVIEW_UNLOCK=true`, `SKY_SIGNING_SECRET` set
    to the production value.
-3. Publish the product to the **Clara Mendes Headless** channel only.
+3. Publish the product to the **Clara Mendes** channel (the Hydrogen
+   storefront's own channel — the storefront API token belongs to it, so
+   "Clara Mendes Headless" alone is NOT enough; verified 2026-09-01).
+   Production stays safe: the release flag still gates the PDP there.
 4. Discount code `SKY-TEST-100`: 100 %, one use, this product only.
 5. On the preview URL open `/products/your-sky-star-map`, enter a place,
    date and title, add to cart, check out with the code and a real address.
@@ -117,7 +124,12 @@ consecutive failures — re-run the script if `--list` ever shows it missing.
    https://sandbox-beta-dashboard.pwinty.com with the right SKU, frame
    colour, recipient and the asset downloaded.
 7. Open the asset URL from the sandbox order: a PDF of the customer's sky.
-8. Unpublish the product from Headless; remove `SKY_PREVIEW_UNLOCK`.
+8. Unpublish the product from the channels; remove `SKY_PREVIEW_UNLOCK`.
+
+First run (2026-09-01, order #1001) caught a real fulfilment bug: Prodigi
+rejects empty-string address parts (`recipient.address.line2`
+MustNotBeEmptyOrWhitespace), so any recipient without an apartment line
+failed. Fixed by omitting blank optional address lines entirely.
 
 If the Prodigi order is missing: `node scripts/sky-replay-order.mjs --order
 "#1234" --dry-run` shows exactly what the webhook computed.
