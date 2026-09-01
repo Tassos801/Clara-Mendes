@@ -20,6 +20,7 @@ const xml = [
   entry('https://shopclaramendes.com/products/acne-cream'),
   entry('https://shopclaramendes.com/collections/snowboards'),
   entry('https://shopclaramendes.com/products/your-sky-star-map'),
+  entry('https://shopclaramendes.com/products/first-light-birth-poster'),
   '</urlset>',
 ].join('\n');
 
