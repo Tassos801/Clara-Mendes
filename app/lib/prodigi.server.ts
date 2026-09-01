@@ -5,12 +5,15 @@
 export class ProdigiNotConfiguredError extends Error {}
 
 export class ProdigiRequestError extends Error {
-  constructor(
-    message: string,
-    public status: number,
-    public body: unknown,
-  ) {
+  // Plain field assignments (not TS parameter properties) so the plain-Node
+  // operator scripts can import this module under strip-only type stripping.
+  status: number;
+  body: unknown;
+
+  constructor(message: string, status: number, body: unknown) {
     super(message);
+    this.status = status;
+    this.body = body;
   }
 }
 

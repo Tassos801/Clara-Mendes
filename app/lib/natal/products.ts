@@ -3,7 +3,13 @@
  * (Size × Finish), each mapped to the same Prodigi SKUs as Your Sky — the
  * sheet and frame are identical; only the artwork differs per order.
  */
-import {SKY_SIZES, type SkySizeKey, type SkyVariant} from '../sky/products.ts';
+import {
+  PRODIGI_FAP_ATTRIBUTES,
+  prodigiCfpAttributes,
+  SKY_SIZES,
+  type SkySizeKey,
+  type SkyVariant,
+} from '../sky/products.ts';
 
 export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';
 export const NATAL_PRODUCT_TYPE = 'Personalised Art';
@@ -18,37 +24,37 @@ export const NATAL_VARIANTS: Record<string, SkyVariant> = {
     size: '8x10',
     finish: 'unframed',
     prodigiSku: 'GLOBAL-FAP-8X10',
-    attributes: {},
+    attributes: PRODIGI_FAP_ATTRIBUTES,
   },
   'CM-NATAL-8X10-NAT': {
     size: '8x10',
     finish: 'natural',
     prodigiSku: 'GLOBAL-CFP-8X10',
-    attributes: {color: 'natural'},
+    attributes: prodigiCfpAttributes('natural'),
   },
   'CM-NATAL-8X10-BLK': {
     size: '8x10',
     finish: 'black',
     prodigiSku: 'GLOBAL-CFP-8X10',
-    attributes: {color: 'black'},
+    attributes: prodigiCfpAttributes('black'),
   },
   'CM-NATAL-20X24-UNF': {
     size: '20x24',
     finish: 'unframed',
     prodigiSku: 'GLOBAL-FAP-20X24',
-    attributes: {},
+    attributes: PRODIGI_FAP_ATTRIBUTES,
   },
   'CM-NATAL-20X24-NAT': {
     size: '20x24',
     finish: 'natural',
     prodigiSku: 'GLOBAL-CFP-20X24',
-    attributes: {color: 'natural'},
+    attributes: prodigiCfpAttributes('natural'),
   },
   'CM-NATAL-20X24-BLK': {
     size: '20x24',
     finish: 'black',
     prodigiSku: 'GLOBAL-CFP-20X24',
-    attributes: {color: 'black'},
+    attributes: prodigiCfpAttributes('black'),
   },
 };
 
