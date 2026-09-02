@@ -585,3 +585,23 @@ CI, merge, and live URL verification.
 Sources: [Catalog and products](modules/catalog-and-products.md),
 `app/components/SkyConfigurator.tsx`, `app/routes/products.$handle.tsx`,
 `scripts/skyConfigurator.node-test.mjs`.
+
+## 2026-09-02 - Your Sky guided refinement released
+
+Squash-merged PR #64 as `300c87d`. The exact main workflow `33600009023`
+passed validation and deployed to Oxygen. Fresh production checks at
+`https://shopclaramendes.com/products/your-sky-star-map` used desktop Chrome
+152 at 390 x 844 and 1440 x 1000 and confirmed the mobile product-first
+hierarchy, desktop three-column composition, keyboard place selection, draft
+restore/reset, style switching, size/finish retention, Ready to print review,
+signed add-to-cart, and standard Shopify checkout handoff.
+
+Checkout displayed Title, Style, Place, Date, `20 x 24 in / Natural frame`, and
+the EUR 129.99 total. Verification stopped before payment; the test cart line
+and saved draft were removed. The release made no Shopify Admin, Prodigi,
+pricing, SKU, mapping, fulfillment-toggle, PDF-geometry, checkout, or First
+Light release-state changes.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[PR #64](https://github.com/Tassos801/Clara-Mendes/pull/64),
+[main workflow 33600009023](https://github.com/Tassos801/Clara-Mendes/actions/runs/33600009023).
