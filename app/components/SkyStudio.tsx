@@ -11,6 +11,7 @@ import {
   type VariantOptionsProduct,
 } from '~/components/VariantOptions';
 import {formatMoney, type MoneyAmount} from '~/lib/money';
+import {GIFT_NOTE_KEY, GIFT_NOTE_MAX, normaliseGiftNote} from '~/lib/sky/gift';
 import {
   formatSkyDate,
   SKY_THEME_LABELS,
@@ -88,13 +89,19 @@ export function SkyStudio({
   const skyParams = skyStatus.params;
   const introRef = useRef<HTMLDivElement>(null);
   const [showSticky, setShowSticky] = useState(false);
+  const [giftNote, setGiftNote] = useState('');
 
   const skySize = skySizeFromOptions(selectedVariant?.selectedOptions);
   const skyFinish = skyFinishFromOptions(selectedVariant?.selectedOptions);
-  const attributes = useMemo(
-    () => (skyParams ? toCartAttributes(skyParams) : undefined),
-    [skyParams],
-  );
+  // The gift note rides beside the artwork attributes; the cart action
+  // normalises and signs it separately, so it never touches `_sig`.
+  const attributes = useMemo(() => {
+    if (!skyParams) return undefined;
+    const note = normaliseGiftNote(giftNote);
+    return note
+      ? [...toCartAttributes(skyParams), {key: GIFT_NOTE_KEY, value: note}]
+      : toCartAttributes(skyParams);
+  }, [giftNote, skyParams]);
   const purchaseBlocked = !selectedVariant?.availableForSale || !skyParams;
   const price = selectedVariant ? formatMoney(selectedVariant.price) : null;
   const available = Boolean(selectedVariant?.availableForSale && price);
@@ -267,6 +274,28 @@ export function SkyStudio({
                   </div>
                 ) : null}
               </dl>
+              <div className="sky-gift-note">
+                <label htmlFor="sky-gift-note">
+                  Gift note <em>(optional)</em>
+                </label>
+                <textarea
+                  id="sky-gift-note"
+                  maxLength={GIFT_NOTE_MAX}
+                  onChange={(event) => setGiftNote(event.target.value)}
+                  placeholder="For Anna — the sky the night we met."
+                  rows={3}
+                  value={giftNote}
+                />
+                <p>
+                  <span>
+                    Printed on a card inside the parcel, never on the
+                    artwork. No prices inside.
+                  </span>
+                  <span aria-live="polite">
+                    {[...giftNote].length}/{GIFT_NOTE_MAX}
+                  </span>
+                </p>
+              </div>
               <p>
                 We print exactly this artwork. Screen colour and natural wood
                 grain can vary slightly.

@@ -43,7 +43,7 @@ function drawTracked(
 }
 
 /** Drop characters the font cannot shape rather than failing the order. */
-function supported(font: PDFFont, text: string) {
+export function supported(font: PDFFont, text: string) {
   const chars = [...text];
   const kept = chars.filter((c) => {
     try {

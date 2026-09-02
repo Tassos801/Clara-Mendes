@@ -776,3 +776,29 @@ plus a Prodigi packing-slip PDF; scoped as a separate change.
 Sources: `app/components/SkyConfigurator.tsx`,
 `app/lib/sky/configuratorState.ts`, `app/lib/sky/describe.ts`,
 `app/styles/app.css`.
+
+## 2026-09-02 - Your Sky: gift note on the packing slip
+
+Third round from the Your Sky review. The review step gains an optional
+gift note (200 characters, four lines). It travels as a visible `Gift
+note` line attribute — so it shows in the cart drawer, checkout, order
+emails and admin — with its own HMAC in `_gift_sig`; `signSkyCartLines`
+normalises and signs it beside the artwork attributes for both the star
+map and the birth poster, and never folds it into `_sig`. The paid-order
+webhook verifies every note, deduplicates across lines and sets Prodigi's
+order-level `packingSlip.url` to `/api/sky-slip/<token>.pdf`, a signed
+token that carries the order name and the note; the route renders an A4
+sheet (EB Garamond italic, note centred, order name and shop address at
+the foot, no prices) on demand, so nothing is stored. A missing or bad
+gift signature is a `problem` like a bad artwork signature. The font
+loader moved to `app/lib/sky/fonts.server.ts`, shared by the print and
+slip routes. Tests: `scripts/skyGift.node-test.mjs` (normalisation,
+cart signing incl. natal lines and forged signatures, webhook slip token
+round-trip, dedupe, tamper, A4 render, word wrap). FAQ "Can it be a
+gift?" now mentions the note. Not yet exercised against Prodigi's
+sandbox — the first real gift order is the first check that the lab
+fetches and prints the slip.
+
+Sources: `app/lib/sky/gift.ts`, `app/lib/sky/slip.server.ts`,
+`app/lib/sky/cartLines.server.ts`, `app/lib/sky/fulfilment.ts`,
+`app/routes/api.sky-slip.$token[.pdf].tsx`, `app/components/SkyStudio.tsx`.

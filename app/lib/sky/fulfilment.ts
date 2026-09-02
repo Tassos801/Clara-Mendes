@@ -11,6 +11,12 @@ import {
 } from '../natal/params.ts';
 import {natalVariantForSku} from '../natal/products.ts';
 import type {ProdigiOrderPayload} from '../prodigi.server.ts';
+import {
+  giftNoteCanonical,
+  giftNoteFromAttributes,
+  giftSlipUrl,
+  slipCanonical,
+} from './gift.ts';
 import {canonicalSkyParams, fromCartAttributes} from './params.ts';
 import {skyVariantForSku} from './products.ts';
 import {
@@ -69,6 +75,7 @@ export async function buildProdigiOrderFromShopify(
     return {kind: 'skip', reason: 'No personalised lines.'};
 
   const items: ProdigiOrderPayload['items'] = [];
+  const giftNotes: string[] = [];
   for (const line of personalisedLines) {
     const attrs = (line.properties ?? []).map((p) => ({
       key: p.name,
@@ -77,6 +84,17 @@ export async function buildProdigiOrderFromShopify(
     const isNatal = attrs.some(
       (a) => a.key === '_kind' && (a.value ?? '') === NATAL_KIND,
     );
+
+    const gift = giftNoteFromAttributes(attrs);
+    if (gift.note) {
+      if (
+        !gift.sig ||
+        !(await verifyCanonical(giftNoteCanonical(gift.note), gift.sig, secret))
+      ) {
+        return {kind: 'problem', reason: `Line ${line.id}: bad gift note signature.`};
+      }
+      if (!giftNotes.includes(gift.note)) giftNotes.push(gift.note);
+    }
 
     if (isNatal) {
       const decoded = fromNatalCartAttributes(attrs);
@@ -142,12 +160,28 @@ export async function buildProdigiOrderFromShopify(
   // sandbox order, whose recipient had no second address line.
   const line2 = a.address2?.trim();
 
+  // A gift note becomes Prodigi's packing slip: a signed token URL the lab
+  // fetches at print time, so the note is never stored on our side.
+  const packingSlip =
+    giftNotes.length > 0
+      ? {
+          url: giftSlipUrl(
+            origin,
+            await encodeCanonicalToken(
+              slipCanonical({orderName: order.name, note: giftNotes.join('\n')}),
+              secret,
+            ),
+          ),
+        }
+      : null;
+
   return {
     kind: 'order',
     payload: {
       idempotencyKey: `shopify:${order.id}`,
       merchantReference: order.name,
       shippingMethod: 'Standard',
+      ...(packingSlip ? {packingSlip} : {}),
       recipient: {
         name,
         email: order.email ?? undefined,

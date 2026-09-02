@@ -10,6 +10,12 @@ Snapshot: 2026-08-14
 - Orders import to Prodigi and sit in a 24-hour auto-release hold before
   production starts; production runs 1–3 business days, so dispatch lands
   2–4 business days from order (`docs/first-order-runbook.md`).
+- A gift note typed in the Your Sky review step travels as a separately
+  signed `Gift note` line attribute; the paid-order webhook turns it into
+  Prodigi's `packingSlip.url`, an A4 PDF served on demand by
+  `/api/sky-slip/<token>.pdf` (`app/lib/sky/gift.ts`,
+  `app/lib/sky/slip.server.ts`). Prodigi prints it in place of its default
+  slip, so a gift parcel carries the note and no price.
 - Prodigi Standard delivery estimates, counted from dispatch: EU 5–10 and
   US 7–15 business days. Only the EU window is promised on the storefront.
 - Live Shopify Markets (checked 2026-08-14 via the Storefront API

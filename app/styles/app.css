@@ -3999,11 +3999,82 @@ html.lenis body {
   margin: 0;
 }
 
+.sky-gift-note {
+  display: grid;
+  gap: 0.38rem;
+  min-width: 0;
+}
+
+.sky-gift-note label {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sky-gift-note em {
+  font-style: normal;
+  letter-spacing: 0;
+  opacity: 0.8;
+  text-transform: none;
+}
+
+.sky-gift-note textarea {
+  background: rgba(251, 250, 246, 0.9);
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 5px;
+  color: var(--color-ink);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.5;
+  min-height: 96px;
+  min-width: 0;
+  padding: 0.72rem 0.85rem;
+  resize: vertical;
+  width: 100%;
+}
+
+.sky-gift-note textarea:focus {
+  outline: 2px solid var(--color-clay);
+  outline-offset: 1px;
+}
+
+.sky-gift-note p {
+  color: var(--color-muted);
+  display: flex;
+  font-size: 0.76rem;
+  gap: 1rem;
+  justify-content: space-between;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.sky-gift-note p span:last-child {
+  flex: 0 0 auto;
+  font-variant-numeric: tabular-nums;
+}
+
 .sky-cart-attributes {
   color: var(--color-muted);
   font-size: 0.8rem;
   line-height: 1.4;
   margin: 0.25rem 0 0;
+}
+
+.sky-cart-gift {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  line-height: 1.4;
+  margin: 0.25rem 0 0;
+  white-space: pre-line;
+}
+
+.sky-cart-gift span {
+  font-size: 0.66rem;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @media (min-width: 768px) and (max-width: 1279px) {
