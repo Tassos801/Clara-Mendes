@@ -116,8 +116,9 @@ export default function YourSkyPage() {
             alt={page.hero.image.alt}
             width={page.hero.image.width}
             height={page.hero.image.height}
-            fetchPriority="high"
             decoding="async"
+            // React 18 only knows the lowercase DOM attribute.
+            {...{fetchpriority: 'high'}}
           />
         </figure>
       </section>
