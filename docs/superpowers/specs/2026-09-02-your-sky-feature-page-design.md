@@ -223,3 +223,19 @@ in the studio switch; no new route file.
 - Rollback = revert the PR: the product page's sky branch is intact and the
   redirect is gated by the same feature list, so reverting restores the old
   behaviour instantly. No admin steps in either direction.
+
+## Amendment — 2026-09-02, after the guided refinement (PR #64)
+
+Main shipped a guided, mobile-first configurator (preview → personalise →
+style, with exact-preview readiness, draft restore and an order review) while
+this page was in review. The studio section now hosts that configurator
+unchanged, in the product page's own `product-detail-layout--sky`
+composition (preview | personalise + style | intro, size and finish, review,
+buy), on a linen stage lifted off the night wall. The earlier plan to re-skin
+the configurator for the night palette is dropped: the refined configurator
+carries ~550 lines of its own light design system, and restyling it would be
+exactly the "breaking all the time" risk the owner asked to avoid. Sections 1
+(hero) and 7 (closing) keep the night treatment; the buying flow is identical
+to the product page's — the primary action walks the customer to the next
+required field until the preview is ready, then adds to cart with the same
+signed attributes.

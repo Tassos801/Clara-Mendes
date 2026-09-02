@@ -252,3 +252,8 @@ sitemap through the feature-page rule in `app/lib/catalogFilters.ts`
 (`FEATURE_PAGE_PATHS`); `/your-sky` is listed in the custom sitemap and the
 header link points at it. Rollback is one PR revert: the product page's sky
 branch is intact and the redirect is gated by the same list.
+
+**2026-09-02 update.** The `/your-sky` studio hosts the guided configurator
+from PR #64 inside the product page's sky composition, on a linen stage within
+the night section (see the spec amendment in
+`docs/superpowers/specs/2026-09-02-your-sky-feature-page-design.md`).

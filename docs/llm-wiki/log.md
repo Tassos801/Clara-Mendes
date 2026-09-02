@@ -634,3 +634,18 @@ Sources: [Catalog and products](modules/catalog-and-products.md),
 [PR #64](https://github.com/Tassos801/Clara-Mendes/pull/64),
 [main workflow 33600009023](https://github.com/Tassos801/Clara-Mendes/actions/runs/33600009023).
 >>>>>>> origin/main
+
+## 2026-09-02 - Your Sky feature page merged with the guided refinement
+
+`fable/your-sky-feature-page` (PR #67, stacked on #66) merged `origin/main`
+after PRs #64/#65 landed. `SkyStudio` now drives the refined `SkyConfigurator`
+(`finish` / `initialTheme` / `onStatus`) and mirrors the product page's sky
+composition — preview, personalise, style, size and finish, review, buy — on a
+linen stage inside the page's night studio section. The product route keeps
+main's refined buy panel plus this branch's shared `ProductPrice` /
+`VariantOptions`, the feature-page 301 and the letter-post copy. Verified on
+the dev server: place → date → "Ready to print" → review → add to cart carries
+the signed attributes; 135 tests, lint, typecheck and build green.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[PR #67](https://github.com/Tassos801/Clara-Mendes/pull/67).
