@@ -3413,10 +3413,8 @@ html.lenis body {
     'preview . buy'
     'preview . assurance'
     'preview . details';
-  grid-template-columns: minmax(250px, 0.8fr) minmax(320px, 1fr) minmax(
-      340px,
-      0.9fr
-    );
+  grid-template-columns:
+    minmax(250px, 0.8fr) minmax(320px, 1fr) minmax(340px, 0.9fr);
 }
 
 .product-detail-layout--sky .sky-preview {
@@ -3580,7 +3578,8 @@ html.lenis body {
 
 .sky-preview-frame--black {
   background:
-    linear-gradient(125deg, rgba(255, 255, 255, 0.1), transparent 35%), #25231f;
+    linear-gradient(125deg, rgba(255, 255, 255, 0.1), transparent 35%),
+    #25231f;
   padding: clamp(10px, 2.2vw, 22px);
 }
 
@@ -3966,7 +3965,30 @@ html.lenis body {
   }
 }
 
-/* ---------- Your Sky feature page ---------- */
+/* Brand film (Introducing Clara Mendes) — shared by the homepage and Our Story */
+.brand-film-video {
+  aspect-ratio: 16 / 9;
+  background: var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 0 30px 60px -30px rgba(38, 35, 31, 0.45);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.brand-film-caption {
+  color: var(--color-muted);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  margin: 14px 0 0;
+  text-transform: uppercase;
+}
+
+.home-film {
+  padding: 0 clamp(18px, 4vw, 70px) clamp(52px, 7vw, 100px);
+}
+
 .your-sky-page {
   --night: #141b2b;
   --night-deep: #0c111c;
