@@ -165,21 +165,34 @@ Sources: `app/components/ClaraProductCard.tsx`,
 `app/routes/collections.all.tsx`, `app/routes/collections.$handle.tsx`,
 `app/routes/products.$handle.tsx`.
 
-## Approved Your Sky Refinement
+## Your Sky Guided Configurator
 
-On 2026-09-01 the owner approved a guided single-page refinement of the live
-Your Sky configurator. The approved target exposes the three already-renderable
-styles, makes the selected frame visible around the preview, moves product and
-price context ahead of configuration on mobile, completes the place combobox
-keyboard/error behavior, persists a validated same-tab draft, and adds a final
-review state. Purchase must remain unavailable until the current validated
-inputs have a matching rendered preview.
+The 2026-09-01 approved single-page refinement is implemented and locally
+verified. Your Sky now exposes Linen, Midnight Garden, and Quiet Form; shows the
+selected unframed, natural-frame, or black-frame presentation around the live
+artwork; and presents the product story and price before configuration on
+mobile. The place field is an accessible combobox with complete keyboard,
+empty, failure, retry, and clear states. A validated versioned draft survives
+same-tab navigation, and an explicit reset clears it.
 
-This note records an approved implementation target, not a production claim.
-The signed cart, six Shopify SKUs, Prodigi mappings, PDF geometry, checkout,
-prices, and First Light release state are explicitly unchanged. The complete
-acceptance contract is in
+The purchase flow follows Personalise, Size and finish, then Review and buy.
+The review repeats style, title, place, date/time, size, finish, and price.
+Add-to-cart remains unavailable until the current validated inputs match the
+latest successful render, so a stale or failed preview cannot be purchased.
+The signed cart normalizes the customer-visible Style label from the trusted
+theme identifier; its canonical signed fields and order pipeline are unchanged.
+
+Primary sources: `app/components/SkyConfigurator.tsx`,
+`app/lib/sky/configuratorState.ts`, `app/lib/sky/params.ts`,
+`app/lib/sky/products.ts`, `app/routes/products.$handle.tsx`, and
+`app/styles/app.css`. Behavioral contracts live in
+`scripts/skyConfigurator.node-test.mjs`, `scripts/skyParams.node-test.mjs`,
+`scripts/skyProducts.node-test.mjs`, and
 `docs/superpowers/specs/2026-09-01-your-sky-refinement-design.md`.
+
+This is an implementation claim, not yet a production-deployment claim. The
+six Shopify SKUs, prices, Prodigi mappings, PDF geometry, checkout integration,
+and First Light release state remain explicitly unchanged.
 
 ## Admin Cleanup Relationship
 
