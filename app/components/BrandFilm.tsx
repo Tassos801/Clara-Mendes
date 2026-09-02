@@ -6,6 +6,8 @@ type BrandFilmProps = {
   className?: string;
   /** Cinematic-scroll chapter the section belongs to, when the route uses chapters. */
   chapter?: string;
+  /** Small uppercase line above the video. */
+  eyebrow?: string;
 };
 
 /**
@@ -13,7 +15,7 @@ type BrandFilmProps = {
  * who prefer reduced motion see the poster only. Renders nothing until
  * both CDN URLs are set.
  */
-export function BrandFilm({className, chapter}: BrandFilmProps) {
+export function BrandFilm({className, chapter, eyebrow}: BrandFilmProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
@@ -44,6 +46,7 @@ export function BrandFilm({className, chapter}: BrandFilmProps) {
       aria-label={label}
       data-chapter={chapter}
     >
+      {eyebrow ? <p className="eyebrow brand-film-eyebrow">{eyebrow}</p> : null}
       <video
         ref={videoRef}
         className="brand-film-video"

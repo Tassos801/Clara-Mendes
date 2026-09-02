@@ -3985,6 +3985,28 @@ html.lenis body {
   text-transform: uppercase;
 }
 
+.brand-film-eyebrow {
+  color: var(--color-muted);
+}
+
 .home-film {
-  padding: 0 clamp(18px, 4vw, 70px) clamp(52px, 7vw, 100px);
+  margin: 0 auto;
+  max-width: 1240px;
+  padding: clamp(48px, 7vw, 96px) clamp(18px, 4vw, 70px);
+}
+
+@media (max-width: 720px) {
+  .home-film {
+    padding-bottom: 40px;
+    padding-top: 40px;
+  }
+
+  .brand-film-caption {
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+  }
+
+  .collection-intro .eyebrow {
+    margin-bottom: 14px;
+  }
 }

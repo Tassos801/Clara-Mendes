@@ -95,6 +95,11 @@ export async function loader({context, request}: Route.LoaderArgs) {
       originalArtProducts: buildOriginalArtProductMap(
         (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
       ),
+      featuredPrints: pickFeaturedPrints(
+        filterDemoProducts(
+          (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
+        ),
+      ),
       frameProduct:
         data.frameProduct && !isDemoProduct(data.frameProduct)
           ? (data.frameProduct as ClaraCardProduct)
@@ -107,18 +112,46 @@ export async function loader({context, request}: Route.LoaderArgs) {
       collections: [] as HomeCollection[],
       frameProduct: null as ClaraCardProduct | null,
       originalArtProducts: {} as OriginalArtProductMap,
+      featuredPrints: [] as ClaraCardProduct[],
       products: [] as ClaraCardProduct[],
       seoUrl: getCanonicalUrl(request, '/'),
     };
   }
 }
 
+/** One work per temperament — calm, cool, night — for the "Ready now" block. */
+const FEATURED_PRINT_HANDLES = [
+  'quiet-form-i-art-print',
+  'patina-blue-i-art-print',
+  'midnight-garden-i-art-print',
+];
+
+function pickFeaturedPrints(products: ClaraCardProduct[]): ClaraCardProduct[] {
+  const byHandle = new Map(
+    products.map(
+      (product) => [product.handle?.toLowerCase(), product] as const,
+    ),
+  );
+  return FEATURED_PRINT_HANDLES.map((handle) => byHandle.get(handle)).filter(
+    (product): product is ClaraCardProduct => Boolean(product),
+  );
+}
+
 export default function Homepage() {
-  const {collections, frameProduct, originalArtProducts, products, seoUrl} =
-    useLoaderData<typeof loader>();
+  const {
+    collections,
+    featuredPrints,
+    frameProduct,
+    originalArtProducts,
+    products,
+    seoUrl,
+  } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
-  const quickShopProducts = products.slice(0, 3);
+  const quickShopProducts =
+    featuredPrints.length === FEATURED_PRINT_HANDLES.length
+      ? featuredPrints
+      : products.slice(0, 3);
   const featuredProducts =
     products.length > 3 ? products.slice(3, 7) : products.slice(0, 4);
   const blurRef = useRef<HTMLDivElement | null>(null);
@@ -362,10 +395,12 @@ export default function Homepage() {
         aria-label="Store service"
         data-chapter="linen"
       >
-        <p>Secure Shopify checkout</p>
-        <p>Tracked delivery updates</p>
+        <p>Secure checkout</p>
+        <p>Tracked delivery</p>
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
+
+      <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
 
       {quickShopProducts.length > 0 ? (
         <section
@@ -379,8 +414,8 @@ export default function Homepage() {
               Start with an original piece.
             </h2>
             <p>
-              Browse available Clara Mendes products, then check out through
-              Shopify with delivery tracking and clear return terms.
+              One work from each temperament — calm, cool, and night. Giclée on
+              200 gsm matte paper, printed to order and shipped across the EU.
             </p>
             <div className="home-shop-accelerator-actions">
               <Link className="primary-button" to="/collections/all">
@@ -405,24 +440,6 @@ export default function Homepage() {
               />
             ))}
           </div>
-
-          <div
-            className="home-shop-accelerator-proof"
-            aria-label="Buying support"
-          >
-            <p>
-              <strong>Checkout</strong>
-              <span>Shopify protected payment</span>
-            </p>
-            <p>
-              <strong>Delivery</strong>
-              <span>Tracking sent after dispatch</span>
-            </p>
-            <p>
-              <strong>Returns</strong>
-              <span>{RETURN_WINDOW_DAYS} days from delivery</span>
-            </p>
-          </div>
         </section>
       ) : null}
 
@@ -431,7 +448,7 @@ export default function Homepage() {
         data-chapter="clay"
       >
         <div data-reveal>
-          <p className="eyebrow">The Clara Mendes collection</p>
+          <p className="eyebrow">The collection</p>
           <h2>
             {products.length > 0
               ? 'Original work, ready to live with.'
@@ -444,8 +461,6 @@ export default function Homepage() {
             : 'Fifteen original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.'}
         </p>
       </section>
-
-      <BrandFilm className="home-film" chapter="clay" />
 
       <section
         className={`featured-collections featured-collections--carousel${
@@ -1117,39 +1132,6 @@ html:has(.home-root) main {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.home-shop-accelerator-proof {
-  border-top: 1px solid rgba(38, 35, 31, 0.14);
-  display: grid;
-  gap: 0;
-  grid-column: 1 / -1;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.home-shop-accelerator-proof p {
-  border-right: 1px solid rgba(38, 35, 31, 0.12);
-  display: grid;
-  gap: 7px;
-  margin: 0;
-  padding: clamp(16px, 2.4vw, 28px) clamp(0px, 2vw, 28px);
-}
-
-.home-shop-accelerator-proof p:last-child {
-  border-right: 0;
-}
-
-.home-shop-accelerator-proof strong {
-  color: var(--color-ink);
-  font-size: 0.72rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.home-shop-accelerator-proof span {
-  color: var(--color-muted);
-  font-size: 0.95rem;
-  line-height: 1.45;
-}
-
 .featured-collections {
   background: var(--color-deep);
   color: var(--color-paper);
@@ -1463,18 +1445,10 @@ html:has(.home-root) main {
     scroll-padding-inline: 18px;
   }
 
-  .home-trust-band {
-    grid-template-columns: 1fr;
-  }
-
   .home-trust-band p {
-    border-bottom: 1px solid rgba(255,255,255,0.12);
-    border-right: 0;
-    padding: 16px 18px;
-  }
-
-  .home-trust-band p:last-child {
-    border-bottom: 0;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    padding: 14px 6px;
   }
 
   .home-shop-accelerator {
@@ -1492,23 +1466,27 @@ html:has(.home-root) main {
   }
 
   .home-shop-accelerator-products {
-    grid-template-columns: 1fr;
+    display: flex;
+    gap: 14px;
+    margin: 0 -18px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 0 18px 6px;
+    scroll-padding-inline: 18px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .home-shop-accelerator-proof {
-    grid-template-columns: 1fr;
+  .home-shop-accelerator-products::-webkit-scrollbar {
+    display: none;
   }
 
-  .home-shop-accelerator-proof p {
-    border-bottom: 1px solid rgba(38, 35, 31, 0.12);
-    border-right: 0;
-    padding-left: 0;
-    padding-right: 0;
+  .home-shop-accelerator-products > * {
+    flex: 0 0 min(74vw, 300px);
+    scroll-snap-align: start;
   }
 
-  .home-shop-accelerator-proof p:last-child {
-    border-bottom: 0;
-  }
 
   .featured-collection-card {
     padding: 42px 24px;
