@@ -1,4 +1,4 @@
-import type {SkyThemeId} from './params.ts';
+import {SKY_THEME_LABELS, type SkyThemeId} from './params.ts';
 import type {SkySizeKey} from './products.ts';
 
 export type SkyTheme = {
@@ -27,7 +27,7 @@ export type SkyTheme = {
 export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
   linen: {
     id: 'linen',
-    label: 'Linen',
+    label: SKY_THEME_LABELS.linen,
     background: '#efe8dc',
     disc: '#e7dfd1',
     discOpacity: 0.55,
@@ -47,7 +47,7 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
   },
   'midnight-garden': {
     id: 'midnight-garden',
-    label: 'Midnight Garden',
+    label: SKY_THEME_LABELS['midnight-garden'],
     background: '#141b2b',
     disc: '#0e1422',
     discOpacity: 0.6,
@@ -67,7 +67,7 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
   },
   'quiet-form': {
     id: 'quiet-form',
-    label: 'Quiet Form',
+    label: SKY_THEME_LABELS['quiet-form'],
     background: '#f6f2ea',
     disc: '#dfd3c3',
     discOpacity: 1,
