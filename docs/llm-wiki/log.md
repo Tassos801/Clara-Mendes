@@ -748,3 +748,31 @@ personalised-goods clause, so this is an owner policy decision.
 Sources: `app/components/SkyConfigurator.tsx`, `app/components/SkyStudio.tsx`,
 `app/lib/sky/configuratorState.ts`, `app/lib/featurePages.ts`,
 `app/routes/your-sky.tsx`, `app/styles/app.css`.
+
+## 2026-09-02 - Your Sky: wall mockup, share link, sky facts
+
+Second round from the Your Sky review. (1) **On the wall** — the preview
+gains a Print / On the wall toggle; the wall view places the live map on
+the empty sage wall from `backdrops/our-story-light.jpg` at approximate
+scale for the chosen size (19% / 40% of the wall) and finish (natural or
+black frame padding), with a note line. (2) **Copy link** — when the
+design is ready the toolbar offers "Copy link"; `buildSkyShareUrl` merges
+the canonical sky query into the current search (size and finish travel
+with it) and `parseSkySearch` restores a shared link on mount ahead of
+the session draft, so a customer can send a draft sky and the recipient
+lands on the same design. Variant option links already preserve the
+search, so switching size keeps the sky. (3) **Sky facts** —
+`app/lib/sky/describe.ts` names the Moon's phase (hemisphere-aware) and
+lists planets above the horizon under the preview, e.g. "Waxing gibbous
+moon · Mercury, Mars and Jupiter above the horizon". Tests:
+`scripts/skyShare.node-test.mjs`, `scripts/skyDescribe.node-test.mjs`
+(145 total). Dev-verified at 375px and 1440px with a share URL: fields
+restored, status "Ready to print", copy label flips to "Link copied",
+wall view renders with the size/finish classes and the footer wraps on
+mobile. Not built: a gift note — `signSkyCartLines` re-encodes sky lines
+to the canonical attributes, so a note needs its own signed attribute
+plus a Prodigi packing-slip PDF; scoped as a separate change.
+
+Sources: `app/components/SkyConfigurator.tsx`,
+`app/lib/sky/configuratorState.ts`, `app/lib/sky/describe.ts`,
+`app/styles/app.css`.

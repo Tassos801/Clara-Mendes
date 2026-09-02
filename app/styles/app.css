@@ -3607,6 +3607,117 @@ html.lenis body {
   text-align: center;
 }
 
+.sky-preview-footer {
+  align-items: center;
+  background: rgba(251, 250, 246, 0.92);
+  border-top: 1px solid rgba(38, 35, 31, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  justify-content: space-between;
+  padding: 8px 12px;
+}
+
+.sky-preview-facts {
+  color: var(--color-muted);
+  font-size: 0.74rem;
+  line-height: 1.4;
+  flex: 1 1 200px;
+  margin: 0;
+  min-width: 0;
+}
+
+.sky-view-toggle {
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 999px;
+  display: inline-flex;
+  flex: none;
+  margin-left: auto;
+  overflow: hidden;
+}
+
+.sky-view-toggle button {
+  background: transparent;
+  border: 0;
+  color: var(--color-muted);
+  cursor: pointer;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 11px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sky-view-toggle button[aria-pressed='true'] {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.sky-view-toggle button:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: -2px;
+}
+
+.sky-wall {
+  aspect-ratio: 3 / 2;
+  background: #aab4a8;
+  overflow: hidden;
+  position: relative;
+}
+
+.sky-wall-room {
+  display: block;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  object-position: 40% 50%;
+  position: absolute;
+  width: 100%;
+}
+
+.sky-wall-print {
+  background: #f6f2ea;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.25),
+    0 14px 28px rgba(20, 24, 18, 0.35);
+  left: 33%;
+  position: absolute;
+  top: 46%;
+  transform: translate(-50%, -50%);
+  width: 19%;
+}
+
+.sky-wall--20x24 .sky-wall-print {
+  width: 40%;
+}
+
+.sky-wall--natural .sky-wall-print {
+  background: linear-gradient(90deg, #a67a55, #c9a47c 48%, #9a6f50);
+  padding: 2.4%;
+}
+
+.sky-wall--black .sky-wall-print {
+  background: #25231f;
+  padding: 2.4%;
+}
+
+.sky-wall-svg {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.sky-wall-note {
+  bottom: 8px;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.66rem;
+  left: 12px;
+  letter-spacing: 0.04em;
+  margin: 0;
+  position: absolute;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
 .sky-preview-hint {
   background: rgba(38, 35, 31, 0.88);
   color: var(--color-paper);

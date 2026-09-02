@@ -13,7 +13,9 @@ import {
   nextSkyRequiredField,
   parseSkyDraft,
   serializeSkyDraft,
+  buildSkyShareUrl,
   normaliseSkyPreset,
+  parseSkySearch,
   SKY_DRAFT_STORAGE_KEY,
   SKY_PRESET_EVENT,
   type SkyPreviewStatus,
@@ -32,7 +34,8 @@ import {
   type SkyThemeId,
 } from '~/lib/sky/params';
 import type {PlaceResult} from '~/lib/sky/places.server';
-import type {SkyFinish, SkySizeKey} from '~/lib/sky/products';
+import {describeSkyScene} from '~/lib/sky/describe';
+import {SKY_SIZES, type SkyFinish, type SkySizeKey} from '~/lib/sky/products';
 import {computeSky} from '~/lib/sky/scene';
 import {SkySvg} from '~/lib/sky/svg';
 import {platePath, SKY_THEMES} from '~/lib/sky/themes';
@@ -52,6 +55,9 @@ const EXAMPLE_PLACE: PlaceResult = {
   tz: 'Europe/Paris',
   label: 'Paris, France',
 };
+
+/** An empty sage wall from the story page; the print is placed on it to scale. */
+const WALL_ROOM_SRC = '/images/backdrops/our-story-light.jpg';
 
 const PREVIEW_LABELS: Record<SkyPreviewStatus, string> = {
   example: 'Example',
@@ -119,6 +125,8 @@ export function SkyConfigurator({
   const [renderAttempt, setRenderAttempt] = useState(0);
   const [restored, setRestored] = useState(false);
   const [compactPreview, setCompactPreview] = useState(false);
+  const [view, setView] = useState<'print' | 'wall'>('print');
+  const [copied, setCopied] = useState(false);
   const previewRef = useRef<HTMLElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const placesRequestRef = useRef(0);
@@ -143,6 +151,27 @@ export function SkyConfigurator({
   }, [catalogAttempt]);
 
   useEffect(() => {
+    const shared = parseSkySearch(window.location.search);
+    if (shared) {
+      const [name, ...rest] = shared.place.split(',');
+      setPlace({
+        name: name.trim(),
+        country: rest.join(',').trim(),
+        countryCode: '',
+        lat: shared.lat,
+        lon: shared.lon,
+        tz: shared.tz,
+        label: shared.place,
+      });
+      setPlaceQuery(shared.place);
+      setDate(shared.date);
+      setTime(shared.time);
+      setTitle(shared.title);
+      setTheme(shared.theme);
+      setTouched(true);
+      setRestored(true);
+      return;
+    }
     const restoredDraft = parseSkyDraft(
       window.sessionStorage.getItem(SKY_DRAFT_STORAGE_KEY),
       initialTheme,
@@ -415,6 +444,26 @@ export function SkyConfigurator({
     : null;
   const readyParams =
     preview === 'ready' && !titleError ? purchasableParams : null;
+  function copyShareLink() {
+    if (!readyParams) return;
+    const url = buildSkyShareUrl(
+      window.location.origin,
+      window.location.pathname,
+      readyParams,
+      window.location.search,
+    );
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    };
+    const fallback = () => window.prompt('Copy this link to your sky', url);
+    if (navigator.clipboard?.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
   const status = useMemo<SkyConfiguratorStatus>(
     () => ({nextRequired, params: readyParams, preview}),
     [nextRequired, preview, readyParams],
@@ -440,6 +489,15 @@ export function SkyConfigurator({
           >
             {PREVIEW_LABELS[preview]}
           </span>
+          {readyParams && !compactPreview ? (
+            <button
+              className="sky-inline-action"
+              onClick={copyShareLink}
+              type="button"
+            >
+              {copied ? 'Link copied' : 'Copy link'}
+            </button>
+          ) : null}
           {catalogFailed || rendered.kind === 'error' ? (
             <button
               className="sky-inline-action"
@@ -456,19 +514,66 @@ export function SkyConfigurator({
           ) : null}
         </div>
         {rendered.kind === 'ready' ? (
-          <div className={`sky-preview-frame sky-preview-frame--${finish}`}>
-            <SkySvg
-              className="sky-preview-svg"
-              plateUrl={platePath(theme, 'preview')}
-              scene={rendered.scene}
-              theme={SKY_THEMES[theme]}
-            />
-          </div>
+          view === 'wall' && !compactPreview ? (
+            <div className={`sky-wall sky-wall--${size} sky-wall--${finish}`}>
+              <img
+                alt=""
+                className="sky-wall-room"
+                decoding="async"
+                height={1714}
+                src={WALL_ROOM_SRC}
+                width={2560}
+              />
+              <div className="sky-wall-print">
+                <SkySvg
+                  className="sky-wall-svg"
+                  plateUrl={platePath(theme, 'preview')}
+                  scene={rendered.scene}
+                  theme={SKY_THEMES[theme]}
+                />
+              </div>
+              <p className="sky-wall-note">
+                {SKY_SIZES[size].label} · approximate scale
+              </p>
+            </div>
+          ) : (
+            <div className={`sky-preview-frame sky-preview-frame--${finish}`}>
+              <SkySvg
+                className="sky-preview-svg"
+                plateUrl={platePath(theme, 'preview')}
+                scene={rendered.scene}
+                theme={SKY_THEMES[theme]}
+              />
+            </div>
+          )
         ) : (
           <div className="sky-preview-loading">
             {preview === 'error' ? 'Preview unavailable' : 'Charting your sky…'}
           </div>
         )}
+        {rendered.kind === 'ready' && !compactPreview ? (
+          <div className="sky-preview-footer">
+            <p className="sky-preview-facts">
+              {describeSkyScene(rendered.scene, previewInput.lat)}
+            </p>
+            <div aria-label="Preview view" className="sky-view-toggle" role="group">
+              <button
+                aria-pressed={view === 'print'}
+                onClick={() => setView('print')}
+                type="button"
+              >
+                Print
+              </button>
+              <button
+                aria-pressed={view === 'wall'}
+                onClick={() => setView('wall')}
+                type="button"
+              >
+                On the wall
+              </button>
+            </div>
+          </div>
+        ) : null}
         {preview === 'example' ? (
           <p className="sky-preview-hint">
             Showing an example — add your place and date to see your sky.

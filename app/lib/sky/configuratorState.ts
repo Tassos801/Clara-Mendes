@@ -7,10 +7,37 @@ import {
   type SkyParams,
   type SkyThemeId,
   unprintableCharacters,
+  parseCanonicalSkyParams,
 } from './params.ts';
 import type {PlaceResult} from './places.server.ts';
 import type {SkySizeKey} from './products.ts';
 
+/**
+ * A shareable link for a designed sky: the canonical sky query merged
+ * into the current search so the chosen size and finish travel with it.
+ */
+export function buildSkyShareUrl(
+  origin: string,
+  path: string,
+  params: SkyParams,
+  currentSearch: string,
+): string {
+  const query = new URLSearchParams(currentSearch);
+  for (const [key, value] of new URLSearchParams(canonicalSkyParams(params))) {
+    query.set(key, value);
+  }
+  return `${origin}${path}?${query.toString()}`;
+}
+
+/** The sky carried by a share link, or null when the search has none. */
+export function parseSkySearch(search: string): SkyParams | null {
+  const query = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+  if (!query.has('date') || !query.has('lat') || !query.has('lon') || !query.has('tz')) {
+    return null;
+  }
+  const result = parseCanonicalSkyParams(query.toString());
+  return result.ok ? result.params : null;
+}
 /** Window event an occasion card dispatches to prefill the configurator. */
 export const SKY_PRESET_EVENT = 'cm:sky-preset';
 
