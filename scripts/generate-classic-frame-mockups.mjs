@@ -125,7 +125,7 @@ async function frameSection(extract, width, height) {
     .toBuffer();
 }
 
-async function buildFrameSections() {
+export async function buildFrameSections() {
   const leftWidth = SOURCE.innerLeft - SOURCE.outerLeft;
   const topHeight = SOURCE.innerTop - SOURCE.outerTop;
   const openingWidth = SOURCE.innerRight - SOURCE.innerLeft;

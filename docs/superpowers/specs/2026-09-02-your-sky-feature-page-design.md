@@ -150,7 +150,7 @@ scarcity language (same rule as the original Your Sky spec).
   `VariantOptions`, `ProductPrice`, `formatMoney` into
   `app/components/VariantOptions.tsx` / `app/components/ProductPrice.tsx` /
   `app/lib/money.ts`; extract the product query + fragments into
-  `app/lib/productQuery.ts`. The PDP keeps its sky/natal branches (First
+  `app/lib/productVariantFragment.ts` (the shared variant fragment; the page keeps its own `FEATURE_PRODUCT_QUERY` in the route). The PDP keeps its sky/natal branches (First
   Light still renders there until it moves).
 - `app/components/ClaraShell.tsx` — nav entry for Your Sky → `/your-sky`
   (from the feature config).

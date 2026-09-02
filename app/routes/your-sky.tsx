@@ -7,18 +7,12 @@ import {
   type StudioVariant,
 } from '~/components/SkyStudio';
 import {StructuredData} from '~/components/StructuredData';
-import {PERSONALISED_RELEASE_FLAGS} from '~/lib/catalogFilters';
+import {loadFeaturePage} from '~/lib/featurePageLoader';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import type {MoneyAmount} from '~/lib/money';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
-import {
-  breadcrumbSchema,
-  buildSeoMeta,
-  getCanonicalUrl,
-  productSchema,
-} from '~/lib/seo';
-import {DEFAULT_SKY_THEME} from '~/lib/sky/themes';
+import {breadcrumbSchema, buildSeoMeta, productSchema} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 const page = YOUR_SKY_PAGE;
@@ -42,27 +36,19 @@ export const meta: Route.MetaFunction = ({data}) =>
   });
 
 export async function loader({context, request}: Route.LoaderArgs) {
-  // The page follows the product's release flag; the preview environment
-  // may unlock it for end-to-end testing exactly as the product page does.
-  const released = PERSONALISED_RELEASE_FLAGS[page.handle];
-  const previewUnlocked = context.env.SKY_PREVIEW_UNLOCK === 'true';
-  if (!released && !previewUnlocked) {
-    throw new Response('Not found', {status: 404});
-  }
-  const data = await context.storefront.query(FEATURE_PRODUCT_QUERY, {
-    variables: {
-      handle: page.handle,
-      selectedOptions: getSelectedProductOptions(request),
+  // Release gate, storefront lookup and 404s live in loadFeaturePage so the
+  // plain-Node tests can drive them with a product fixture.
+  return loadFeaturePage<FeatureProduct>({
+    page,
+    env: context.env,
+    selectedOptions: getSelectedProductOptions(request),
+    fetchProduct: async (variables) => {
+      const data = await context.storefront.query(FEATURE_PRODUCT_QUERY, {
+        variables,
+      });
+      return {product: data.product as FeatureProduct | null};
     },
   });
-  if (!data.product) {
-    throw new Response('Not found', {status: 404});
-  }
-  return {
-    product: data.product as FeatureProduct,
-    seoUrl: getCanonicalUrl(request, page.path),
-    skyTheme: DEFAULT_SKY_THEME,
-  };
 }
 
 export default function YourSkyPage() {

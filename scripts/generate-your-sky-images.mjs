@@ -13,6 +13,12 @@ import path from 'node:path';
 import {fileURLToPath, pathToFileURL} from 'node:url';
 import esbuild from 'esbuild';
 import sharp from 'sharp';
+import {
+  ART_HEIGHT,
+  ART_WIDTH,
+  buildFrameSections,
+  FRAME_FACE_PX,
+} from './generate-classic-frame-mockups.mjs';
 import {loadSkyCatalogSync} from './lib/sky-catalog.mjs';
 
 const repoRoot = path.resolve(
@@ -117,22 +123,47 @@ for (const key of ['occasion-met', 'occasion-born', 'occasion-yes']) {
   console.log('wrote', path.relative(repoRoot, out));
 }
 
-// Hero: night gradient, faint constellation lines, framed print with shadow.
+// Hero: the print inside Prodigi's Natural classic frame — the same frame
+// sections and 20 mm face the classic-frame mockups use — on a night wall
+// with faint constellation lines and a soft shadow.
 {
   const W = 2400;
   const H = 1500;
-  const {png, scene} = await printPng('hero', 960);
+  const {png, scene} = await printPng('hero', ART_WIDTH);
   const meta = await sharp(png).metadata();
-  const frame = 44;
-  const framed = await sharp(png)
-    .extend({
-      top: frame,
-      bottom: frame,
-      left: frame,
-      right: frame,
-      background: '#c9a97c',
-    })
-    .extend({top: 3, bottom: 3, left: 3, right: 3, background: '#8d7150'})
+  const art = await sharp(png)
+    .resize(ART_WIDTH, ART_HEIGHT, {fit: 'cover'})
+    .removeAlpha()
+    .png()
+    .toBuffer();
+  const sections = await buildFrameSections();
+  const f = FRAME_FACE_PX;
+  const outerRight = f + ART_WIDTH;
+  const outerBottom = f + ART_HEIGHT;
+  const framedFull = await sharp({
+    create: {
+      width: ART_WIDTH + f * 2,
+      height: ART_HEIGHT + f * 2,
+      channels: 4,
+      background: {r: 0, g: 0, b: 0, alpha: 0},
+    },
+  })
+    .composite([
+      {input: art, left: f, top: f},
+      {input: sections.topLeft, left: 0, top: 0},
+      {input: sections.top, left: f, top: 0},
+      {input: sections.topRight, left: outerRight, top: 0},
+      {input: sections.left, left: 0, top: f},
+      {input: sections.right, left: outerRight, top: f},
+      {input: sections.bottomLeft, left: 0, top: outerBottom},
+      {input: sections.bottom, left: f, top: outerBottom},
+      {input: sections.bottomRight, left: outerRight, top: outerBottom},
+    ])
+    .png()
+    .toBuffer();
+  // Scale the framed print to sit inside the 1500px-tall hero canvas.
+  const framed = await sharp(framedFull)
+    .resize({height: 1180})
     .png()
     .toBuffer();
   const framedMeta = await sharp(framed).metadata();
