@@ -7,6 +7,7 @@ import {getSwipeIntent} from '~/lib/cartSwipe';
 import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
+import {GIFT_NOTE_KEY} from '~/lib/sky/gift';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 
 export type CartLine = OptimisticCartLine<CartApiQueryFragment>;
@@ -31,6 +32,9 @@ export function CartLineItem({
 }) {
   const {id, merchandise} = line;
   const {product, title, image, selectedOptions} = merchandise;
+  const giftNote = line.attributes?.find(
+    (attribute) => attribute.key === GIFT_NOTE_KEY,
+  )?.value;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const {close} = useAside();
   const lineItemChildren = childrenMap[id];
@@ -200,16 +204,26 @@ export function CartLineItem({
               </p>
             </Link>
             {line.attributes?.some(
-              (attribute) => !attribute.key.startsWith('_') && attribute.value,
+              (attribute) =>
+                !attribute.key.startsWith('_') &&
+                attribute.key !== GIFT_NOTE_KEY &&
+                attribute.value,
             ) ? (
               <p className="sky-cart-attributes">
                 {line.attributes
                   .filter(
                     (attribute) =>
-                      !attribute.key.startsWith('_') && attribute.value,
+                      !attribute.key.startsWith('_') &&
+                      attribute.key !== GIFT_NOTE_KEY &&
+                      attribute.value,
                   )
                   .map((attribute) => attribute.value)
                   .join(' · ')}
+              </p>
+            ) : null}
+            {giftNote ? (
+              <p className="sky-cart-gift">
+                <span>Gift note</span> {giftNote}
               </p>
             ) : null}
             <ProductPrice price={line?.cost?.totalAmount} />

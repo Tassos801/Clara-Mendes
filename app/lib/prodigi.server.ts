@@ -28,6 +28,8 @@ export type ProdigiOrderPayload = {
   idempotencyKey: string;
   merchantReference: string;
   shippingMethod: ProdigiShippingMethod;
+  /** Custom PDF the lab prints and encloses in place of its default slip. */
+  packingSlip?: {url: string};
   recipient: {
     name: string;
     email?: string;

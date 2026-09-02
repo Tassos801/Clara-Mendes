@@ -102,7 +102,7 @@ export const YOUR_SKY_PAGE: FeaturePage = {
     },
     {
       q: 'Can it be a gift?',
-      a: 'It usually is. Add the recipient’s address at checkout; the print ships in plain, white-label packaging with no price inside.',
+      a: 'It usually is. Add the recipient’s address at checkout and, if you like, a short note in the review step; we print it on a card inside the parcel. The print ships in plain, white-label packaging with no price inside.',
     },
   ],
   closing: 'Begin with a place and a date.',

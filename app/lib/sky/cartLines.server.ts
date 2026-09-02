@@ -11,6 +11,12 @@ import {
   toNatalCartAttributes,
 } from '../natal/params.ts';
 import {
+  giftAttributes,
+  giftNoteCanonical,
+  GIFT_NOTE_KEY,
+  normaliseGiftNote,
+} from './gift.ts';
+import {
   canonicalSkyParams,
   fromCartAttributes,
   isSkyCartLine,
@@ -22,6 +28,25 @@ type LineLike = {
   attributes?: Array<{key: string; value?: string | null}> | null;
   [key: string]: unknown;
 };
+
+/**
+ * A gift note rides beside the artwork attributes with its own signature;
+ * the artwork's canonical form (and its `_sig`) never includes it. Blank
+ * notes are dropped so nothing unsigned reaches the order.
+ */
+async function signedGiftAttributes(
+  attrs: LineLike['attributes'],
+  secret: string,
+) {
+  const note = normaliseGiftNote(
+    attrs?.find((a) => a.key === GIFT_NOTE_KEY)?.value,
+  );
+  if (!note) return [];
+  return giftAttributes(
+    note,
+    await signCanonical(giftNoteCanonical(note), secret),
+  );
+}
 
 export const SKY_UNAVAILABLE_MESSAGE =
   'Personalisation is not available right now. Please try again later.';
@@ -40,7 +65,13 @@ export async function signSkyCartLines<T extends LineLike>(
         canonicalNatalParams(decoded.params),
         secret,
       );
-      out.push({...line, attributes: toNatalCartAttributes(decoded.params, sig)});
+      out.push({
+        ...line,
+        attributes: [
+          ...toNatalCartAttributes(decoded.params, sig),
+          ...(await signedGiftAttributes(line.attributes, secret)),
+        ],
+      });
       continue;
     }
     if (!isSkyCartLine(line.attributes)) {
@@ -51,7 +82,13 @@ export async function signSkyCartLines<T extends LineLike>(
     const decoded = fromCartAttributes(line.attributes);
     if (!decoded.ok) return {ok: false, error: decoded.error};
     const sig = await signCanonical(canonicalSkyParams(decoded.params), secret);
-    out.push({...line, attributes: toCartAttributes(decoded.params, sig)});
+    out.push({
+      ...line,
+      attributes: [
+        ...toCartAttributes(decoded.params, sig),
+        ...(await signedGiftAttributes(line.attributes, secret)),
+      ],
+    });
   }
   return {ok: true, lines: out};
 }

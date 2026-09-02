@@ -42,7 +42,10 @@ which the cart action signs (`_sig`); a Shopify `orders/paid` webhook hits
 `/webhooks/orders-paid`, which creates one Prodigi order per Shopify order
 whose asset URL points at `/api/sky-print/<token>.pdf?size=…`; Prodigi
 fetches that URL and the worker renders the vector PDF on demand. Nothing is
-stored; everything is reproducible from the order.
+stored; everything is reproducible from the order. A gift note, when
+given, rides as a separately signed `Gift note` attribute and becomes the
+order's `packingSlip` URL (`/api/sky-slip/<token>.pdf`), rendered the same
+way.
 
 ## 1. Environment variables (Oxygen → Storefront settings → Environments)
 
