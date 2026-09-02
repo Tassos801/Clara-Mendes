@@ -190,9 +190,10 @@ Primary sources: `app/components/SkyConfigurator.tsx`,
 `scripts/skyProducts.node-test.mjs`, and
 `docs/superpowers/specs/2026-09-01-your-sky-refinement-design.md`.
 
-This is an implementation claim, not yet a production-deployment claim. The
-six Shopify SKUs, prices, Prodigi mappings, PDF geometry, checkout integration,
-and First Light release state remain explicitly unchanged.
+The refinement is deployed in production at `/products/your-sky-star-map` from
+merge commit `300c87d` (PR #64). The six Shopify SKUs, prices, Prodigi mappings,
+PDF geometry, checkout integration, and First Light release state remain
+explicitly unchanged.
 
 ## Admin Cleanup Relationship
 
