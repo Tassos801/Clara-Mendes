@@ -488,7 +488,7 @@ html:has(.our-story-root) main {
 }
 
 .os-film-caption {
-  color: var(--os-text-muted);
+  color: var(--os-muted);
   font-family: var(--os-font-sans);
   font-size: 0.78rem;
   letter-spacing: 0.08em;
