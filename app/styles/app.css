@@ -3924,8 +3924,47 @@ html.lenis body {
   }
 
   .product-detail-layout--sky .sky-preview {
-    position: relative;
-    top: auto;
+    position: sticky;
+    top: calc(var(--header-height) + 10px);
+    transition: box-shadow 200ms ease;
+    z-index: 4;
+  }
+
+  .product-detail-layout--sky .sky-preview--compact {
+    align-items: center;
+    box-shadow: 0 12px 30px rgba(55, 48, 39, 0.22);
+    column-gap: 12px;
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    padding: 6px 12px 6px 6px;
+  }
+
+  .product-detail-layout--sky .sky-preview--compact .sky-preview-toolbar {
+    background: none;
+    border: 0;
+    min-height: 0;
+    order: 2;
+    padding: 0;
+  }
+
+  .product-detail-layout--sky .sky-preview--compact .sky-preview-frame,
+  .product-detail-layout--sky .sky-preview--compact .sky-preview-loading {
+    aspect-ratio: 4 / 5;
+    background: #f6f2ea;
+    border-radius: 4px;
+    font-size: 0;
+    order: 1;
+    overflow: hidden;
+    padding: 0;
+    width: 64px;
+  }
+
+  .product-detail-layout--sky .sky-preview--compact .sky-preview-svg {
+    box-shadow: none;
+  }
+
+  .product-detail-layout--sky .sky-preview--compact .sky-preview-hint {
+    display: none;
   }
 
   .product-detail-layout--sky .product-purchase-intro,
@@ -4170,6 +4209,11 @@ html.lenis body {
   font-family: var(--serif);
   font-weight: 400;
   font-size: 1.35rem;
+}
+
+.your-sky-occasion-cta {
+  display: inline-block;
+  margin-top: 0.85rem;
 }
 
 .your-sky-occasions p {

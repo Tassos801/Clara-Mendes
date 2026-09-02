@@ -6,10 +6,34 @@ import {
   validateSkyParams,
   type SkyParams,
   type SkyThemeId,
+  unprintableCharacters,
 } from './params.ts';
 import type {PlaceResult} from './places.server.ts';
 import type {SkySizeKey} from './products.ts';
 
+/** Window event an occasion card dispatches to prefill the configurator. */
+export const SKY_PRESET_EVENT = 'cm:sky-preset';
+
+export type SkyPreset = {title: string; time: string};
+
+/**
+ * Validates an occasion preset before it touches the form: a printable
+ * title within the title limit and a 24-hour local time, defaulting to
+ * the evening sky when the preset carries no time.
+ */
+export function normaliseSkyPreset(input: unknown): SkyPreset | null {
+  if (!input || typeof input !== 'object') return null;
+  const candidate = input as {title?: unknown; time?: unknown};
+  if (typeof candidate.title !== 'string') return null;
+  const title = candidate.title.trim();
+  if (!title || title.length > SKY_TITLE_MAX) return null;
+  if (unprintableCharacters(title).length > 0) return null;
+  const time = candidate.time === undefined ? SKY_DEFAULT_TIME : candidate.time;
+  if (typeof time !== 'string' || !/^([01]\d|2[0-3]):[0-5]\d$/.test(time)) {
+    return null;
+  }
+  return {title, time};
+}
 export const SKY_DRAFT_STORAGE_KEY = 'cm:your-sky:draft:v1';
 
 export type SkyDraft = {

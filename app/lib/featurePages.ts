@@ -20,7 +20,13 @@ export type FeaturePage = {
     image: {src: string; alt: string; width: number; height: number};
   };
   studio: {eyebrow: string; heading: string; note: string};
-  occasions: Array<{title: string; line: string; image: string}>;
+  occasions: Array<{
+    title: string;
+    line: string;
+    image: string;
+    /** Prefills the configurator title and local time. */
+    preset: {title: string; time: string};
+  }>;
   how: Array<{title: string; body: string}>;
   faq: Array<{q: string; a: string}>;
   closing: string;
@@ -56,16 +62,19 @@ export const YOUR_SKY_PAGE: FeaturePage = {
       title: 'The night you met',
       line: 'The city, the date, the hour you still argue about.',
       image: '/images/your-sky/occasion-met.webp',
+      preset: {title: 'The night we met', time: '22:00'},
     },
     {
       title: 'The morning she was born',
       line: 'Her first sky, exactly as it stood over the hospital.',
       image: '/images/your-sky/occasion-born.webp',
+      preset: {title: 'The morning she was born', time: '06:40'},
     },
     {
       title: 'Where you said yes',
       line: 'The place, the evening, the stars that were watching.',
       image: '/images/your-sky/occasion-yes.webp',
+      preset: {title: 'Where you said yes', time: '20:30'},
     },
   ],
   how: [

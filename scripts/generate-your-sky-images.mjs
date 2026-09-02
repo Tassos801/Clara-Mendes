@@ -51,6 +51,13 @@ const plate = readFileSync(
 );
 const plateDataUrl = `data:image/jpeg;base64,${plate.toString('base64')}`;
 
+function plateDataUrlFor(theme) {
+  const file = readFileSync(
+    path.join(repoRoot, 'public', 'sky', 'plates', `${theme}-preview.jpg`),
+  );
+  return `data:image/jpeg;base64,${file.toString('base64')}`;
+}
+
 const PARIS = {
   lat: 48.8566,
   lon: 2.3522,
@@ -101,12 +108,13 @@ const SKIES = {
   },
 };
 
-async function printPng(key, width) {
+async function printPng(key, width, theme = SKIES[key].theme) {
   const {scene, svg} = renderSkySvg({
     catalog,
-    params: SKIES[key],
-    plateDataUrl,
+    params: {...SKIES[key], theme},
+    plateDataUrl: theme === 'linen' ? plateDataUrl : plateDataUrlFor(theme),
     size: '8x10',
+    theme,
   });
   const png = await sharp(Buffer.from(svg), {density: 300})
     .resize({width})
@@ -116,6 +124,14 @@ async function printPng(key, width) {
 }
 
 // Occasion cards: the print itself, 800px wide.
+// Style swatches: the example sky on each plate, 320px wide.
+for (const theme of ['linen', 'midnight-garden', 'quiet-form']) {
+  const {png} = await printPng('hero', 320, theme);
+  const out = path.join(outDir, `style-${theme}.webp`);
+  await sharp(png).webp({quality: 84}).toFile(out);
+  console.log('wrote', path.relative(repoRoot, out));
+}
+
 for (const key of ['occasion-met', 'occasion-born', 'occasion-yes']) {
   const {png} = await printPng(key, 800);
   const out = path.join(outDir, `${key}.webp`);

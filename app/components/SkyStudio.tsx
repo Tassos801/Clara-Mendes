@@ -216,7 +216,7 @@ export function SkyStudio({
             className="sky-product-options-stage"
           >
             <p className="sky-stage-heading" id="your-sky-options-heading">
-              <span>2</span> Size and finish
+              <span>3</span> Size and finish
             </p>
             <VariantOptions
               basePath={basePath}
@@ -231,7 +231,7 @@ export function SkyStudio({
               aria-labelledby="your-sky-review-heading"
             >
               <p className="sky-stage-heading" id="your-sky-review-heading">
-                <span>3</span> Review and buy
+                <span>4</span> Review and buy
               </p>
               <dl>
                 <div>
