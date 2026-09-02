@@ -704,3 +704,19 @@ carousel on mobile is the Living Edit reveal animation, not layout.
 
 Sources: [Brand Film](modules/brand-film.md), `app/routes/_index.tsx`,
 `app/styles/app.css`.
+
+## 2026-09-02 - Your Sky teaser on the homepage
+
+Added `app/components/YourSkyTeaser.tsx`, mounted after the capsule
+carousel and before the Living Edit (`data-chapter="ink"`). It reuses
+`YOUR_SKY_PAGE` from `featurePages.ts` (headline, sub, price line, CTA
+"Design yours" to `/your-sky`, and the framed hero print) so the copy
+has one source of truth. Styles live in `app/styles/app.css`
+(`.sky-teaser*`): the feature page's night palette and radial gradient,
+a star-coloured CTA, the print masked into the band on desktop, and on
+mobile the print first (4:3 crop on the frame) above the copy. Verified
+on the dev server: section order carousel → teaser → editorial, CTA and
+figure link to `/your-sky`, hero image served 200, no console errors
+beyond the dev websocket noise; mobile screenshot reviewed.
+
+Sources: [Brand Film](modules/brand-film.md), `app/lib/featurePages.ts`.

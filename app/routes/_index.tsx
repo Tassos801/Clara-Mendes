@@ -10,6 +10,7 @@ import {FramedArtFeature} from '~/components/FramedArtFeature';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {BrandFilm} from '~/components/BrandFilm';
+import {YourSkyTeaser} from '~/components/YourSkyTeaser';
 import {useAside} from '~/components/Aside';
 import {
   filterDemoCollections,
@@ -537,6 +538,8 @@ export default function Homepage() {
           )}
         </div>
       </section>
+
+      <YourSkyTeaser />
 
       <HomepageEditorial />
 

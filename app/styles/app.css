@@ -4241,3 +4241,120 @@ html.lenis body {
     grid-template-columns: 1fr;
   }
 }
+
+/* Your Sky homepage teaser — the feature page's night band, condensed */
+.sky-teaser {
+  --night: #141b2b;
+  --night-deep: #0c111c;
+  --star: #f1e3b8;
+  --bronze: #b08d57;
+  --night-muted: #b7ad93;
+  --night-title: #f4ecd8;
+  align-items: center;
+  background: radial-gradient(
+    ellipse at 68% 50%,
+    #22304a 0,
+    var(--night) 46%,
+    var(--night-deep) 100%
+  );
+  color: var(--night-title);
+  display: grid;
+  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  overflow: hidden;
+  padding: clamp(56px, 8vw, 120px) clamp(18px, 4vw, 70px);
+}
+
+.sky-teaser .eyebrow {
+  color: var(--bronze);
+}
+
+.sky-teaser h2 {
+  color: var(--night-title);
+  font-family: var(--serif);
+  font-size: clamp(2.3rem, 4.6vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0 0 1rem;
+  max-width: 13ch;
+  text-wrap: balance;
+}
+
+.sky-teaser__sub {
+  color: var(--night-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0 0 1.1rem;
+  max-width: 34rem;
+}
+
+.sky-teaser__price {
+  color: var(--star);
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.6rem;
+  text-transform: uppercase;
+}
+
+.sky-teaser__cta {
+  background: var(--star);
+  border-color: var(--star);
+  color: var(--night-deep);
+}
+
+.sky-teaser__cta:hover,
+.sky-teaser__cta:focus-visible {
+  background: #fff6dc;
+  border-color: #fff6dc;
+  color: var(--night-deep);
+}
+
+.sky-teaser__figure {
+  display: block;
+  justify-self: end;
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 22%);
+  mask-image: linear-gradient(to right, transparent, #000 22%);
+  width: min(100%, 760px);
+}
+
+.sky-teaser__figure img {
+  display: block;
+  height: auto;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
+}
+
+.sky-teaser__figure:hover img {
+  transform: scale(1.02);
+}
+
+@media (max-width: 720px) {
+  .sky-teaser {
+    gap: 26px;
+    grid-template-columns: 1fr;
+    padding: 0 0 52px;
+  }
+
+  .sky-teaser__copy {
+    padding: 0 18px;
+  }
+
+  .sky-teaser h2 {
+    font-size: clamp(2rem, 9.4vw, 2.9rem);
+    max-width: none;
+  }
+
+  .sky-teaser__figure {
+    -webkit-mask-image: none;
+    mask-image: none;
+    order: -1;
+    width: 100%;
+  }
+
+  .sky-teaser__figure img {
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: 72% 50%;
+  }
+}
