@@ -9,6 +9,7 @@ import {
 import {StructuredData} from '~/components/StructuredData';
 import {loadFeaturePage} from '~/lib/featurePageLoader';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
+import {SKY_PRESET_EVENT} from '~/lib/sky/configuratorState';
 import type {MoneyAmount} from '~/lib/money';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
@@ -124,7 +125,14 @@ export default function YourSkyPage() {
         <ul>
           {page.occasions.map((occasion) => (
             <li key={occasion.title}>
-              <a href="#design">
+              <a
+                href="#sky-place"
+                onClick={() => {
+                  window.dispatchEvent(
+                    new CustomEvent(SKY_PRESET_EVENT, {detail: occasion.preset}),
+                  );
+                }}
+              >
                 <img
                   src={occasion.image}
                   alt=""
@@ -135,6 +143,9 @@ export default function YourSkyPage() {
                 />
                 <h3>{occasion.title}</h3>
                 <p>{occasion.line}</p>
+                <span className="text-link your-sky-occasion-cta">
+                  Start with this sky
+                </span>
               </a>
             </li>
           ))}

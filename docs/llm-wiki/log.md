@@ -720,3 +720,31 @@ figure link to `/your-sky`, hero image served 200, no console errors
 beyond the dev websocket noise; mobile screenshot reviewed.
 
 Sources: [Brand Film](modules/brand-film.md), `app/lib/featurePages.ts`.
+
+## 2026-09-02 - Your Sky: three conversion fixes
+
+From the owner's "how can we improve Your Sky" review, the three
+highest-leverage fixes were built: (1) **occasion presets** — each card
+under "For the nights worth keeping" now carries a `preset` in
+`featurePages.ts` (title + local time), dispatches `SKY_PRESET_EVENT`
+(`configuratorState.ts`, validated by `normaliseSkyPreset`) and jumps to
+`#sky-place`; the configurator listens, fills title and time, marks the
+draft touched and focuses the place field. (2) **Compact sticky preview on
+mobile** — the preview is sticky below the header at ≤767px and collapses
+to a 64px strip (`.sky-preview--compact`) once pinned, measured on scroll
+with a 60ms throttle, so the inputs stay visible while the map keeps
+updating. (3) **Style swatches show the real map** — `scripts/generate-your-sky-images.mjs`
+now also renders `style-{linen,midnight-garden,quiet-form}.webp` (the
+example sky on each plate, 320px) and the picker uses them instead of
+bare plates; step numbers run 1–4 (Personalise, Style, Size and finish,
+Review and buy). Tests: `scripts/skyPreset.node-test.mjs` (139 total
+passing); lint and typecheck green. Dev-verified at 375px: clicking "The
+morning she was born" sets title/time 06:40 and focuses the place field;
+the preview compacts at the form and expands back at the top; swatches
+load; desktop untouched (sticky column, never compact). Not changed: the
+"30-day returns" chip on a personalised product — the refund policy has no
+personalised-goods clause, so this is an owner policy decision.
+
+Sources: `app/components/SkyConfigurator.tsx`, `app/components/SkyStudio.tsx`,
+`app/lib/sky/configuratorState.ts`, `app/lib/featurePages.ts`,
+`app/routes/your-sky.tsx`, `app/styles/app.css`.

@@ -13,7 +13,9 @@ import {
   nextSkyRequiredField,
   parseSkyDraft,
   serializeSkyDraft,
+  normaliseSkyPreset,
   SKY_DRAFT_STORAGE_KEY,
+  SKY_PRESET_EVENT,
   type SkyPreviewStatus,
   type SkyRequiredField,
 } from '~/lib/sky/configuratorState';
@@ -116,6 +118,8 @@ export function SkyConfigurator({
   const [placesAttempt, setPlacesAttempt] = useState(0);
   const [renderAttempt, setRenderAttempt] = useState(0);
   const [restored, setRestored] = useState(false);
+  const [compactPreview, setCompactPreview] = useState(false);
+  const previewRef = useRef<HTMLElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const placesRequestRef = useRef(0);
   const listId = 'sky-place-results';
@@ -176,6 +180,55 @@ export function SkyConfigurator({
       );
     }
   }, [date, initialTheme, place, restored, theme, time, title]);
+
+  useEffect(() => {
+    function applyPreset(event: Event) {
+      const preset = normaliseSkyPreset((event as CustomEvent).detail);
+      if (!preset) return;
+      setTitle(preset.title);
+      setTime(preset.time);
+      setTouched(true);
+      window.setTimeout(() => {
+        document.getElementById('sky-place')?.focus({preventScroll: true});
+      }, 350);
+    }
+    window.addEventListener(SKY_PRESET_EVENT, applyPreset);
+    return () => window.removeEventListener(SKY_PRESET_EVENT, applyPreset);
+  }, []);
+
+  // On narrow screens the preview sticks below the header while the form
+  // is filled in. Once it is actually pinned (its top edge sits at the
+  // sticky offset) it collapses to a strip so the inputs stay visible.
+  useEffect(() => {
+    const preview = previewRef.current;
+    if (!preview) return;
+    const narrow = window.matchMedia('(max-width: 767px)');
+    let timer = 0;
+    const measure = () => {
+      timer = 0;
+      if (!narrow.matches) {
+        setCompactPreview(false);
+        return;
+      }
+      const stickyTop = parseFloat(getComputedStyle(preview).top) || 0;
+      const pinned = preview.getBoundingClientRect().top <= stickyTop + 1;
+      setCompactPreview(pinned && window.scrollY > 0);
+    };
+    const schedule = () => {
+      if (timer) window.clearTimeout(timer);
+      timer = window.setTimeout(measure, 60);
+    };
+    measure();
+    window.addEventListener('scroll', schedule, {passive: true});
+    window.addEventListener('resize', schedule);
+    narrow.addEventListener('change', schedule);
+    return () => {
+      if (timer) window.clearTimeout(timer);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      narrow.removeEventListener('change', schedule);
+    };
+  }, []);
 
   const debouncedQuery = useDebounced(placeQuery, 200);
   useEffect(() => {
@@ -375,7 +428,8 @@ export function SkyConfigurator({
     <div className="sky-configurator">
       <section
         aria-label="Your Sky artwork preview"
-        className="sky-preview"
+        className={compactPreview ? 'sky-preview sky-preview--compact' : 'sky-preview'}
+        ref={previewRef}
         id="sky-preview"
         tabIndex={-1}
       >
@@ -636,7 +690,10 @@ export function SkyConfigurator({
               <img
                 alt=""
                 aria-hidden="true"
-                src={platePath(id, 'preview')}
+                height={400}
+                loading="lazy"
+                src={`/images/your-sky/style-${id}.webp`}
+                width={320}
               />
               <span>{SKY_THEME_LABELS[id]}</span>
             </button>
