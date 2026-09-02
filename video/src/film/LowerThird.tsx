@@ -5,7 +5,7 @@ import {fadeInOut} from './timing';
 
 type LowerThirdProps = {name: string; line: string; durationInFrames: number};
 
-/** Capsule name and palette line, bottom-left, rising 12 px as it fades in. */
+/** Capsule name and palette line, bottom-right over the wall, rising 12 px as it fades in. */
 export const LowerThird: React.FC<LowerThirdProps> = ({name, line, durationInFrames}) => {
   const frame = useCurrentFrame();
   const enter = eased(frame, 0, 10, 0, 1);
@@ -16,7 +16,8 @@ export const LowerThird: React.FC<LowerThirdProps> = ({name, line, durationInFra
     <div
       style={{
         position: 'absolute',
-        left: 96,
+        right: 96,
+        textAlign: 'right',
         bottom: 140,
         transform: `translateY(${rise}px)`,
         opacity,

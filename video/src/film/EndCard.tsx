@@ -11,7 +11,7 @@ type EndCardProps = {
   durationInFrames: number;
 };
 
-/** Backdrop under a 20 % ink wash; italic wordmark and URL fade up. */
+/** Backdrop under a 30 % ink wash; italic wordmark and URL fade up on the left, clear of the lamp. */
 export const EndCard: React.FC<EndCardProps> = ({background, wordmark, url, durationInFrames}) => {
   const frame = useCurrentFrame();
   const wordmarkOpacity = eased(frame, 6, 24, 0, 1);
@@ -20,13 +20,21 @@ export const EndCard: React.FC<EndCardProps> = ({background, wordmark, url, dura
   return (
     <AbsoluteFill style={{backgroundColor: INK}}>
       <PictureLayer picture={background} frame={frame} duration={durationInFrames} />
-      <AbsoluteFill style={{backgroundColor: 'rgba(38, 35, 31, 0.2)'}} />
-      <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', color: '#ffffff'}}>
+      <AbsoluteFill style={{backgroundColor: 'rgba(38, 35, 31, 0.3)'}} />
+      <AbsoluteFill
+        style={{
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          paddingLeft: 176,
+          paddingTop: 170,
+          color: '#ffffff',
+        }}
+      >
         <div
           style={{
             fontFamily: SERIF,
             fontStyle: 'italic',
-            fontSize: 120,
+            fontSize: 132,
             letterSpacing: '0.02em',
             lineHeight: 1,
             opacity: wordmarkOpacity,
@@ -37,9 +45,9 @@ export const EndCard: React.FC<EndCardProps> = ({background, wordmark, url, dura
         <div
           style={{
             fontFamily: SANS,
-            fontSize: 28,
-            letterSpacing: '0.12em',
-            color: 'rgba(255, 255, 255, 0.7)',
+            fontSize: 30,
+            letterSpacing: '0.14em',
+            color: 'rgba(255, 255, 255, 0.88)',
             marginTop: 28,
             opacity: urlOpacity,
           }}
