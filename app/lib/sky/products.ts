@@ -9,6 +9,12 @@ export const SKY_PRODUCT_TYPE = 'Personalised Art';
 export type SkySizeKey = '8x10' | '20x24';
 export type SkyFinish = 'unframed' | 'natural' | 'black';
 
+export const SKY_FINISH_LABELS: Record<SkyFinish, string> = {
+  unframed: 'Unframed',
+  natural: 'Natural frame',
+  black: 'Black frame',
+};
+
 export type SkySize = {
   label: string;
   /** Exact Shopify option value for `Size`. */
@@ -125,4 +131,17 @@ export function skySizeFromOptions(
   return value.startsWith('20×24') || value.startsWith('20x24')
     ? '20x24'
     : '8x10';
+}
+
+export function skyFinishFromOptions(
+  options: ReadonlyArray<{name: string; value: string}> | null | undefined,
+): SkyFinish {
+  const value =
+    options
+      ?.find((option) => option.name.trim().toLowerCase() === 'finish')
+      ?.value.trim()
+      .toLowerCase() ?? '';
+  if (value === 'natural frame') return 'natural';
+  if (value === 'black frame') return 'black';
+  return 'unframed';
 }

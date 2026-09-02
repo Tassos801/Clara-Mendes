@@ -547,3 +547,41 @@ test basket item was added and removed during verification.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-09-01 - Your Sky guided-refinement design approved
+
+Recorded the owner-approved Your Sky refinement before implementation. The
+selected single-page design uses the existing three sky themes, six Shopify
+variants, preview engine, signed cart attributes, PDF route, and Prodigi
+pipeline. It adds a mobile-first product hierarchy, style and finish preview,
+accessible place search with recovery states, validated same-tab draft
+persistence, preview-readiness purchase gating, and a final order summary.
+Prices, SKUs, fulfillment mappings, checkout, and First Light's release state
+remain outside scope.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+`docs/superpowers/specs/2026-09-01-your-sky-refinement-design.md`.
+
+## 2026-09-02 - Your Sky guided refinement implemented and locally verified
+
+Implemented the approved Your Sky configurator refinement and verified the
+complete customer path locally at 390 x 844 and 1440 x 1000. The 132-test Node
+suite passes, along with React Router type generation, TypeScript, ESLint with
+zero errors, the Hydrogen production build, and the standard-route check.
+Browser coverage confirmed all three styles, all three finish presentations,
+both sizes and prices, keyboard place selection, empty/error/retry search,
+same-tab draft restore and reset, exact preview readiness, responsive hierarchy,
+and fixed-header-safe completion links.
+
+A personalised 20 x 24 in Natural frame line added to cart at EUR 129.99. The
+cart showed the customer-visible Title, Style, Place, and Date summary together
+with Size and Finish, and Shopify Checkout loaded the correct one-item total;
+verification stopped before payment and the test cart line was removed. The six
+Shopify SKUs, product prices, signed canonical payload, PDF geometry, Prodigi
+mappings, fulfillment toggles, checkout integration, and First Light release
+state were not changed. Production deployment still requires the controlled PR,
+CI, merge, and live URL verification.
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+`app/components/SkyConfigurator.tsx`, `app/routes/products.$handle.tsx`,
+`scripts/skyConfigurator.node-test.mjs`.

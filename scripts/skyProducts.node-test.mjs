@@ -4,8 +4,10 @@ import {
   PRODIGI_FAP_ATTRIBUTES,
   prodigiCfpAttributes,
   SKY_PRODUCT_HANDLE,
+  SKY_FINISH_LABELS,
   SKY_SIZES,
   SKY_VARIANTS,
+  skyFinishFromOptions,
   skySizeFromOptions,
   skyVariantForSku,
 } from '../app/lib/sky/products.ts';
@@ -59,4 +61,25 @@ test('sizes carry points and pixels at 300 dpi', () => {
   assert.equal(skySizeFromOptions([{name: 'Size', value: '8 × 10 in'}]), '8x10');
   assert.equal(skySizeFromOptions([{name: 'Size', value: 'nonsense'}]), '8x10');
   assert.equal(skySizeFromOptions(undefined), '8x10');
+});
+
+test('finish options normalize to the three supported presentations', () => {
+  assert.deepEqual(SKY_FINISH_LABELS, {
+    unframed: 'Unframed',
+    natural: 'Natural frame',
+    black: 'Black frame',
+  });
+  assert.equal(
+    skyFinishFromOptions([{name: 'Finish', value: 'Natural frame'}]),
+    'natural',
+  );
+  assert.equal(
+    skyFinishFromOptions([{name: 'finish', value: 'BLACK FRAME'}]),
+    'black',
+  );
+  assert.equal(
+    skyFinishFromOptions([{name: 'Finish', value: 'Unframed'}]),
+    'unframed',
+  );
+  assert.equal(skyFinishFromOptions(undefined), 'unframed');
 });
