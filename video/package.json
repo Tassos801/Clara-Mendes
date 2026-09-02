@@ -9,7 +9,7 @@
     "still": "remotion still IntroducingClaraMendes",
     "stills": "node scripts/stills.mjs",
     "poster": "remotion still IntroducingClaraMendes out/introducing-clara-mendes-poster.jpg --frame=48",
-    "render": "remotion render IntroducingClaraMendes out/introducing-clara-mendes.mp4 --codec=h264 --crf=20",
+    "render": "remotion render IntroducingClaraMendes out/introducing-clara-mendes.mp4 --codec=h264 --crf=23 --muted",
     "check": "node scripts/check-render.mjs out/introducing-clara-mendes.mp4",
     "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test src/film/*.test.mts",
     "typecheck": "tsc --noEmit"

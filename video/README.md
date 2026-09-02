@@ -15,7 +15,7 @@ npm test             # beat-sheet invariants (duration, assets, captions)
 npm run typecheck
 npm run studio       # Remotion Studio at http://localhost:3000
 npm run still -- out/frame.jpg --frame=48 --scale=0.5
-npm run render       # out/introducing-clara-mendes.mp4 (H.264, CRF 20)
+npm run render       # out/introducing-clara-mendes.mp4 (H.264, CRF 23, muted)
 npm run poster       # out/introducing-clara-mendes-poster.jpg (frame 48)
 npm run check        # reads the MP4 back: 45 s, 1920x1080, 24 fps, silent
 ```
