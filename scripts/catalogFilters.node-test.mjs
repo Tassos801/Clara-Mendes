@@ -4,15 +4,20 @@ import {
   computeSellableHandles,
   EXTENSION_COLLECTION_HANDLE,
   EXTENSION_RELEASE_FLAGS,
+  featurePagePath,
+  filterDemoProducts,
   hasReleasedExtensions,
   isDemoCollection,
   isDemoProduct,
+  isFeaturePageHandle,
+  isListedProduct,
   isReleasedExtensionHandle,
   isRetiredExtensionHandle,
   isStoreThemeProduct,
   isUnreleasedExtensionHandle,
   PHONE_CASE_HANDLE,
   releasedExtensionProductTypes,
+  SKY_PRODUCT_HANDLE,
 } from '../app/lib/catalogFilters.ts';
 
 /**
@@ -273,5 +278,30 @@ assert.equal(
     }),
     true,
     'staged birth poster is not sellable while its flag is false',
+  );
+}
+
+// A feature-page product is purchasable (PDP loader, cart) but never listed:
+// grid, search, recommendations, recently viewed, products sitemap.
+{
+  const sky = {
+    handle: SKY_PRODUCT_HANDLE,
+    productType: 'Personalised Art',
+    tags: ['Clara Mendes Original', 'personalised', 'gift'],
+    title: 'Your Sky — a personalised star map',
+    vendor: 'Clara Mendes',
+  };
+  assert.equal(isFeaturePageHandle(SKY_PRODUCT_HANDLE), true);
+  assert.equal(isFeaturePageHandle('Your-Sky-Star-Map'), true);
+  assert.equal(isFeaturePageHandle('quiet-form-i-art-print'), false);
+  assert.equal(featurePagePath(SKY_PRODUCT_HANDLE), '/your-sky');
+  assert.equal(featurePagePath('quiet-form-i-art-print'), null);
+  assert.equal(isStoreThemeProduct(sky), true);
+  assert.equal(isDemoProduct(sky), false);
+  assert.equal(isListedProduct(sky), false);
+  assert.equal(isListedProduct(print), true);
+  assert.deepEqual(
+    filterDemoProducts([print, sky, phoneCase]).map((p) => p.handle),
+    [print.handle],
   );
 }

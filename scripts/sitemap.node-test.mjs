@@ -41,8 +41,8 @@ assert.ok(
   'legacy collection kept',
 );
 assert.ok(
-  filtered.includes('/products/your-sky-star-map'),
-  'the released star map belongs in the sitemap',
+  !filtered.includes('/products/your-sky-star-map'),
+  'the star map is sold on its feature page, not as a product URL',
 );
 assert.ok(
   !filtered.includes('/products/first-light-birth-poster'),
@@ -99,6 +99,7 @@ assert.deepEqual(
     '/collections/warm-minimalist-wall-art',
     '/collections/terracotta-gallery-wall',
     '/collections/ink-and-cream-gallery-wall',
+    '/your-sky',
     '/our-story',
     '/contact',
     '/policies',

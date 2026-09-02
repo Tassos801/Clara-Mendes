@@ -1,3 +1,4 @@
+import {isFeaturePageHandle} from './catalogFilters.ts';
 // v3: `amount` is the lowest RELEASED price (the "From" floor), no longer
 // the variant the shopper happened to have selected, and `hasPriceRange`
 // records whether more than one released price exists. Bumping the key
@@ -85,6 +86,9 @@ export function getRecentlyViewed({
 } = {}) {
   const excluded = new Set(excludeHandles);
   return readEntries()
-    .filter((entry) => !excluded.has(entry.handle))
+    .filter(
+      (entry) =>
+        !excluded.has(entry.handle) && !isFeaturePageHandle(entry.handle),
+    )
     .slice(0, limit);
 }

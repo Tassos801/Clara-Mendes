@@ -160,6 +160,26 @@ export const SKY_PRODUCT_HANDLE = 'your-sky-star-map';
 export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';
 
 /**
+ * Products sold only through a dedicated feature page. They stay
+ * purchasable (the PDP loader admits them so the old URL can redirect, and
+ * the cart never cares) but are excluded from every listing surface: shop
+ * grid, search, recommendations, recently viewed, and the products sitemap.
+ * The page itself is listed in the custom sitemap instead.
+ */
+export const FEATURE_PAGE_PATHS: Readonly<Record<string, string>> = {
+  [SKY_PRODUCT_HANDLE]: '/your-sky',
+};
+
+export function featurePagePath(handle?: string | null) {
+  const key = handle?.toLowerCase();
+  return key ? (FEATURE_PAGE_PATHS[key] ?? null) : null;
+}
+
+export function isFeaturePageHandle(handle?: string | null) {
+  return featurePagePath(handle) !== null;
+}
+
+/**
  * Personalised products staged for release. Same dual gate as extensions:
  * flag AND Shopify publication. Flip via docs/your-sky-release.md once the
  * sandbox end-to-end order has been verified; First Light follows only
@@ -344,10 +364,17 @@ export function isOffThemeCollectionHandle(handle?: string | null) {
   return Boolean(handle && LEGACY_COLLECTION_HANDLES.has(handle.toLowerCase()));
 }
 
+/** Sellable AND allowed on listing surfaces (grid, search, rails, sitemap). */
+export function isListedProduct(product: CatalogProductLike) {
+  return isStoreThemeProduct(product) && !isFeaturePageHandle(product.handle);
+}
+
+/** Listing filter: every listing surface goes through this, so a feature-page
+ * product never shows up next to the prints. */
 export function filterDemoProducts<T extends CatalogProductLike>(
   products: T[],
 ) {
-  return products.filter(isStoreThemeProduct);
+  return products.filter(isListedProduct);
 }
 
 export function isDemoCollection(collection: CatalogCollectionLike) {

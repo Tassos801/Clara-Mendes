@@ -235,3 +235,20 @@ node scripts/natal-render-local.mjs --name "Amélie" --date 2026-05-14 \
 Go-live: PR flipping the natal flag (adds the "First Light" nav entry),
 publish to both channels, add the six variants to the Merchant Center
 feed. Rollback identical to §6 — orders already placed still fulfil.
+
+## 9. Front door moved to `/your-sky` (2026-09-02)
+
+Your Sky is sold from its own feature page, not a product page. The page
+(`app/routes/your-sky.tsx`, config and copy in `app/lib/featurePages.ts`)
+renders a night-editorial hero (static images generated from the real engine
+by `npm run sky:feature:images`), the same `SkyConfigurator`, and the buy
+panel lifted from the product page (`SkyStudio`); the cart line carries the
+same signed attributes, so the cart action, `orders/paid` webhook, PDF route
+and Prodigi order are untouched. `/products/your-sky-star-map` answers a
+permanent redirect to `/your-sky` (query string preserved, so the Merchant
+Center links and old cart links keep working). The product is excluded from
+the shop grid, search, recommendations, recently viewed and the products
+sitemap through the feature-page rule in `app/lib/catalogFilters.ts`
+(`FEATURE_PAGE_PATHS`); `/your-sky` is listed in the custom sitemap and the
+header link points at it. Rollback is one PR revert: the product page's sky
+branch is intact and the redirect is gated by the same list.
