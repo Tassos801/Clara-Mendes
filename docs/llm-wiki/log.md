@@ -547,3 +547,29 @@ test basket item was added and removed during verification.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-09-02 - Brand film: Introducing Clara Mendes
+
+Added a silent 45-second launch film built with Remotion in `video/`
+from the storefront's own mockups and EB Garamond, modelled on the
+register of Anthropic's Fable 5.1 announcement (captions stand in for the
+presenter, prints for the props). The 6.6 MB web encode and the poster are
+hosted on Shopify Files; `app/lib/brandFilm.ts` holds the CDN URLs and
+`app/components/BrandFilm.tsx` embeds the film on `/our-story` between the
+hero and "The collection" (muted, looping, poster only under
+prefers-reduced-motion). Verified: eighteen stills reviewed and the room
+crops re-tuned so every print stays whole; `check-render` passed on both
+encodes (45.000 s, 1920 x 1080, 24 fps, no audio); CDN HEAD 200 for the
+MP4 (6,612,751 bytes, video/mp4) and the poster (image/jpeg); dev server
+on desktop and mobile shows the section with the CDN sources, playback
+advancing while the tab is visible, and the reduced-motion branch
+removing autoplay. Gotchas: the Admin client-credentials exchange now
+returns "OAuth error invalid_request" so `scripts/upload-brand-film.mjs`
+could not run (owner: refresh SHOPIFY_CLIENT_ID/SECRET); the admin's
+"Upload from URL" rejects MP4s; an injected-file upload from the browser
+extension wedges for video, so the MP4 was uploaded by hand through
+Admin > Content > Files. Chrome pauses muted video in hidden tabs, which
+is not a site bug. YouTube upload deferred by the owner.
+
+Sources: [Brand Film](modules/brand-film.md), `docs/brand-film.md`,
+`docs/superpowers/specs/2026-09-02-brand-film-design.md`.
