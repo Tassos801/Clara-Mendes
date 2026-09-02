@@ -21,6 +21,14 @@ const xml = [
   entry('https://shopclaramendes.com/collections/snowboards'),
   entry('https://shopclaramendes.com/products/your-sky-star-map'),
   entry('https://shopclaramendes.com/products/first-light-birth-poster'),
+  entry('https://shopclaramendes.com/products/fine-art-greeting-card'),
+  entry('https://shopclaramendes.com/products/fine-art-postcard'),
+  entry(
+    'https://shopclaramendes.com/products/art-premium-fleece-blanket-30x40',
+  ),
+  entry('https://shopclaramendes.com/products/clara-mendes-art-calendar-2027'),
+  entry('https://shopclaramendes.com/products/clara-mendes-art-calendar-2026'),
+  entry('https://shopclaramendes.com/collections/clara-mendes-art-living'),
   '</urlset>',
 ].join('\n');
 
@@ -39,6 +47,29 @@ assert.ok(
 assert.ok(
   !filtered.includes('/products/first-light-birth-poster'),
   'staged birth poster leaked into the sitemap',
+);
+// Released extension families are kept; every dark family is stripped —
+// including the calendar's retired previous handle, which may still be the
+// live Shopify handle until the in-place rename runs.
+assert.ok(filtered.includes('/products/fine-art-greeting-card'));
+assert.ok(filtered.includes('/products/fine-art-postcard'));
+assert.ok(
+  !filtered.includes('/products/art-premium-fleece-blanket-30x40'),
+  'dark blanket leaked into the sitemap',
+);
+assert.ok(
+  !filtered.includes('/products/clara-mendes-art-calendar-2027'),
+  'dark calendar leaked into the sitemap',
+);
+assert.ok(
+  !filtered.includes('/products/clara-mendes-art-calendar-2026'),
+  'retired calendar handle leaked into the sitemap',
+);
+// The Everyday collection is a manual collection that is still empty (its
+// route redirects), so its URL stays out until it is populated in Admin.
+assert.ok(
+  !filtered.includes('/collections/clara-mendes-art-living'),
+  'empty Everyday collection leaked into the sitemap',
 );
 assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));
@@ -93,9 +124,13 @@ assert.ok(
     '<loc>https://shopclaramendes.com/collections/midnight-garden</loc>',
   ),
 );
-assert.ok(customXml.includes('<loc>https://shopclaramendes.com/our-story</loc>'));
+assert.ok(
+  customXml.includes('<loc>https://shopclaramendes.com/our-story</loc>'),
+);
 assert.ok(customXml.includes('<loc>https://shopclaramendes.com/contact</loc>'));
-assert.ok(customXml.includes('<loc>https://shopclaramendes.com/policies</loc>'));
+assert.ok(
+  customXml.includes('<loc>https://shopclaramendes.com/policies</loc>'),
+);
 assert.ok(
   customXml.includes(
     '<loc>https://shopclaramendes.com/policies/refund-policy</loc>',

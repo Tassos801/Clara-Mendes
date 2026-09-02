@@ -1,3 +1,5 @@
+import extensionCatalog from '../../data/art-product-extensions.json' with {type: 'json'};
+
 export type CatalogProductLike = {
   handle?: string | null;
   productType?: string | null;
@@ -109,6 +111,51 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   'stretched-canvas-art-16x20': false,
 };
 
+/**
+ * Handles retired by an in-place rename (a calendar edition roll). The live
+ * Shopify record may still carry the old handle until the rename script
+ * runs, so the old handle stays unlisted and stripped from the sitemap
+ * exactly like an unreleased family.
+ */
+const RETIRED_EXTENSION_HANDLES = new Set(
+  extensionCatalog.families
+    .flatMap(
+      (family) =>
+        (family as {previousHandles?: string[]}).previousHandles ?? [],
+    )
+    .map((handle) => handle.toLowerCase()),
+);
+
+export function isRetiredExtensionHandle(handle?: string | null) {
+  return Boolean(handle && RETIRED_EXTENSION_HANDLES.has(handle.toLowerCase()));
+}
+
+/**
+ * Product types of the released extension families, in manifest order —
+ * the shop's type filter offers exactly these alongside the prints, so a
+ * released family is filterable the day its flag flips.
+ */
+export function releasedExtensionProductTypes(
+  flags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
+): string[] {
+  const types: string[] = [];
+  for (const family of extensionCatalog.families) {
+    if (flags[family.handle] && !types.includes(family.productType)) {
+      types.push(family.productType);
+    }
+  }
+  return types;
+}
+
+/**
+ * The Everyday collection is a manual Shopify collection: the extension sync
+ * tags products but does not assign them to it. Until the released products
+ * are added to the collection in Admin, it is empty, its route redirects,
+ * and its URL must stay out of the sitemap. Flip to true after the Admin
+ * assignment has been verified.
+ */
+export const EXTENSION_COLLECTION_POPULATED = false;
+
 export const SKY_PRODUCT_HANDLE = 'your-sky-star-map';
 export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';
 
@@ -140,18 +187,26 @@ export function hasReleasedPersonalised(
   return Object.values(flags).some(Boolean);
 }
 
-/** True once any extension family is live — gates the "Everyday" nav. */
-export function hasReleasedExtensions() {
-  return Object.values(EXTENSION_RELEASE_FLAGS).some(Boolean);
+/**
+ * True once any extension family is live. Consumed by the sitemap (whether
+ * the Everyday collection URL may appear) and the collection pre-query
+ * guard; nothing in the header reads it.
+ */
+export function hasReleasedExtensions(
+  flags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
+) {
+  return Object.values(flags).some(Boolean);
 }
 
-/** Staged (flagged but not yet released) extension handles — stripped from
- * the sitemap even if a product is accidentally published. */
+/** Staged (flagged but not yet released) or retired extension handles —
+ * stripped from the sitemap even if a product is accidentally published. */
 export function isUnreleasedExtensionHandle(handle?: string | null) {
   const key = handle?.toLowerCase();
   if (!key) return false;
+  if (RETIRED_EXTENSION_HANDLES.has(key)) return true;
   if (key in EXTENSION_RELEASE_FLAGS) return !EXTENSION_RELEASE_FLAGS[key];
-  if (key in PERSONALISED_RELEASE_FLAGS) return !PERSONALISED_RELEASE_FLAGS[key];
+  if (key in PERSONALISED_RELEASE_FLAGS)
+    return !PERSONALISED_RELEASE_FLAGS[key];
   return false;
 }
 

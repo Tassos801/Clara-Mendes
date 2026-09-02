@@ -4,6 +4,11 @@ function uniqueStrings(values = []) {
   ];
 }
 
+/**
+ * `expectedExtensionHandles` are the still-Draft families that must never
+ * reach Google; `releasedExtensionHandles` are live families that may be
+ * published and approved (neither required nor flagged).
+ */
 export function validateGooglePublicationReadiness({
   approvedHandles,
   expectedExtensionHandles,
@@ -11,6 +16,7 @@ export function validateGooglePublicationReadiness({
   googlePublicationIds,
   publicationAuditAvailable,
   publicationProducts,
+  releasedExtensionHandles = [],
 }) {
   const issues = [];
   const publicationIds = uniqueStrings(googlePublicationIds);
@@ -60,6 +66,7 @@ export function validateGooglePublicationReadiness({
   const approved = new Set(uniqueStrings(approvedHandles));
   const expectedOriginals = new Set(expectedOriginalHandles);
   const expectedExtensions = new Set(expectedExtensionHandles);
+  const releasedExtensions = new Set(releasedExtensionHandles);
   for (const handle of expectedOriginals) {
     if (!approved.has(handle)) {
       issues.push(`${handle}: original is not Google-approved`);
@@ -68,7 +75,10 @@ export function validateGooglePublicationReadiness({
   for (const handle of approved) {
     if (expectedExtensions.has(handle)) {
       issues.push(`${handle}: Draft extension is Google-approved`);
-    } else if (!expectedOriginals.has(handle)) {
+    } else if (
+      !expectedOriginals.has(handle) &&
+      !releasedExtensions.has(handle)
+    ) {
       issues.push(`${handle}: unexpected product is Google-approved`);
     }
   }
@@ -80,6 +90,7 @@ export function validateGoogleAttributeReadback({
   expectedExtensionHandles,
   originals,
   readback,
+  releasedExtensionHandles = [],
 }) {
   if (!readback || typeof readback !== 'object') {
     return ['Google product-attribute readback is required in strict mode'];
@@ -170,7 +181,10 @@ export function validateGoogleAttributeReadback({
     }
   }
   for (const handle of excluded) {
-    if (!expectedExtensionHandles.includes(handle)) {
+    if (
+      !expectedExtensionHandles.includes(handle) &&
+      !releasedExtensionHandles.includes(handle)
+    ) {
       issues.push(`${handle}: unexpected excluded handle in readback`);
     }
   }

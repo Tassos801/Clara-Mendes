@@ -547,3 +547,30 @@ test basket item was added and removed during verification.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
+
+## 2026-09-02 - Cards release review fixes and calendar roll hardening
+
+A post-merge code review of PRs #62 (greeting card + postcard release) and
+#63 (calendar re-pointed at 2027) found and fixed: the released cards
+rendered a garbled lede/meta description (curated copy added, card types
+added to the spec-sheet lede rule, sync description HTML now newline-joined);
+the shop type filter never offered Cards/Postcards (tabs now derive from the
+released families); the Google audit still asserted every extension Draft
+(flag-aware); the extension sync guarded only by the storefront flag (it now
+reads live status first, refuses to run while a manifest previousHandles
+entry is still live, and skips any non-Draft product); the extension audit
+never checked SKUs/option values (it does); the calendar rename script sent
+an invalid top-level sku and reported success on a partial run (rewritten:
+by-id, idempotent, self-verifying, SEO + alt included); the retired
+clara-mendes-art-calendar-2026 handle had lost its sitemap stripping
+(previousHandles are now retired handles); the empty Everyday collection
+was kept in the sitemap (gated on EXTENSION_COLLECTION_POPULATED until the
+owner assigns the cards in Admin); and Budget shipping is untracked, which
+the PDP and footer now say for cards/postcards. The edition year now lives
+in one manifest field (edition) shared by sync, audit, rename and the
+Python preview via scripts/lib/extension-product.mjs. Rename still pending
+on the failed Admin API credential exchange (open question).
+
+Sources: [Catalog and products](modules/catalog-and-products.md),
+[Art for Everyday Living](../art-product-extensions.md),
+[Open questions](open-questions.md).

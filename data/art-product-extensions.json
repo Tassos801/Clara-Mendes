@@ -149,7 +149,9 @@
     {
       "id": "calendar",
       "handle": "clara-mendes-art-calendar-2027",
+      "previousHandles": ["clara-mendes-art-calendar-2026"],
       "title": "Clara Mendes Art Calendar 2027",
+      "edition": "2027",
       "productType": "Calendars",
       "price": "29.00",
       "assetKind": "calendar",

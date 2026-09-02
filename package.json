@@ -14,6 +14,8 @@
     "codegen": "shopify hydrogen codegen && react-router typegen",
     "storefront:purchase-path:audit": "node ./scripts/audit-customer-purchase-path.mjs",
     "catalog:art:audit": "node ./scripts/audit-original-art-catalog.mjs && node ./scripts/audit-art-product-extensions.mjs",
+    "catalog:extensions:rename:calendar": "node ./scripts/rename-calendar-2027.mjs",
+    "catalog:extensions:rename:calendar:apply": "node ./scripts/rename-calendar-2027.mjs --apply",
     "catalog:google:audit": "node ./scripts/audit-google-commerce-catalog.mjs",
     "catalog:google:audit:shopify": "node ./scripts/audit-google-commerce-catalog.mjs --shopify-only",
     "catalog:google:taxonomy:dry-run": "node ./scripts/sync-google-commerce-catalog.mjs",

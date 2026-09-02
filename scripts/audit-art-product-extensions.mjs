@@ -11,6 +11,10 @@ import {
   normalizeShopDomain,
 } from './lib/env.mjs';
 import {EXTENSION_RELEASE_FLAGS} from '../app/lib/catalogFilters.ts';
+import {
+  expectedVariantCount as manifestVariantCount,
+  variantIssues,
+} from './lib/extension-product.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -58,12 +62,7 @@ const PRODUCTS_QUERY = `#graphql
 `;
 
 function expectedVariantCount(family) {
-  if (family.frameOnly) return family.sizeVariants.length;
-  if (family.collectionVariant) return 1;
-  if (family.deviceOptions) {
-    return catalog.capsuleOrder.length * catalog.deviceVariants.length;
-  }
-  return catalog.capsuleOrder.length;
+  return manifestVariantCount(family, catalog);
 }
 
 function validateProduct(product, family) {
@@ -108,6 +107,10 @@ function validateProduct(product, family) {
       `${badInventory.length} variants have incorrect inventory flags`,
     );
   }
+  // SKUs and option values are what the Prodigi channel mapping and the
+  // next sync key on; a renamed product with a stale Edition value or SKU
+  // must not audit as OK.
+  if (product) issues.push(...variantIssues(family, catalog, variants));
   const invalidMedia = media.filter(
     (item) => item.mediaContentType !== 'IMAGE' || item.status !== 'READY',
   );

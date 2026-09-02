@@ -7,7 +7,8 @@ Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopcla
 ## Catalog state
 
 - **Live:** 15 original art prints across 5 capsules (Quiet Form, Patina Blue, Neo Deco, Midnight Garden, Sunlit Mosaic), each available in 8 × 10, 16 × 20, and 20 × 24 in. The mistaken complete framed-print product was returned to Draft and unpublished on 2026-08-24; its replacement — a frame-only offer in those same three sizes — is built and staged dark behind its false release flag. The 2026-09-01 Prodigi dashboard readback verified the frame-only `GLOBAL-CFP-16X20-BACKLOADER` (€18 wholesale, Natural available, in the Shopify channel picker) but found no 8 × 10 or 20 × 24 backloader, so the three-size plan is blocked on an owner decision about the size range plus retail prices. Source of truth: `data/original-art-catalog.json` and `data/art-product-extensions.json`.
-- **Draft / unpublished:** all 12 extension records (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). The retired complete framed-print record remains Draft in Shopify and has not been re-synced to the frame-only shape; its admin tags (`Prodigi Mapping Pending`, `Cost Gate Pending`, `Sample Gate Pending`) reflect the open gates. The other 11 families stay off every sales channel until their release gates pass and storefront flags flip. The Art Premium Fleece Blanket candidate remains Draft because its live EUR 49 variant prices do not match the approved EUR 79 manifest price; its 2026-07-31 storefront flag was rolled back on 2026-08-10. The allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, direct product routes, navigation, and the sitemap even if they are published by mistake. Notebook, tote, cushion, and phone case additionally wait on Prodigi template assets held outside this repo.
+- **Live extensions (2026-09-01):** the Fine Art Greeting Card (€8) and Fine Art Postcard (€6) — Active, mapped for automatic Prodigi fulfilment, shipped by untracked letter post on a dedicated €2.90 shipping profile.
+- **Draft / unpublished:** the other 10 extension records (`data/art-product-extensions.json`, `docs/art-product-extensions.md`). The retired complete framed-print record remains Draft in Shopify and has not been re-synced to the frame-only shape; its admin tags (`Prodigi Mapping Pending`, `Cost Gate Pending`, `Sample Gate Pending`) reflect the open gates. The other 11 families stay off every sales channel until their release gates pass and storefront flags flip. The Art Premium Fleece Blanket candidate remains Draft because its live EUR 49 variant prices do not match the approved EUR 79 manifest price; its 2026-07-31 storefront flag was rolled back on 2026-08-10. The allowlist in `app/lib/catalogFilters.ts` keeps unreleased products out of search, collections, recommendations, direct product routes, navigation, and the sitemap even if they are published by mistake. Notebook, tote, cushion, and phone case additionally wait on Prodigi template assets held outside this repo.
 - **Staged for release:** the Art Snap Phone Case's storefront experience (PDP copy, print-page cross-sell) is built and dormant behind its flag. Two personalised products are likewise built and dormant behind `PERSONALISED_RELEASE_FLAGS`: the Your Sky star map and the First Light birth poster (both configurator, cart signing, webhook fulfilment and on-demand print routes; `docs/your-sky-release.md` is the go-live runbook for both). Releasing any family is a one-line flip plus Shopify publication — both required — per `docs/phone-case-release.md` (phone-case specifics; the flag mechanics generalise).
 
 Operational warning (updated 2026-08-21): the 15 prints and released frame are
@@ -64,8 +65,12 @@ Read-only (safe anytime):
 
 - `npm run catalog:art:audit` — verify the 15 Active prints and extension
   catalog against Shopify.
-- `npm run catalog:extensions:audit` — verify the released frame is Active and
-  the other 11 extension products are Draft.
+- `npm run catalog:extensions:audit` — verify the released greeting card and
+  postcard are Active, the other 10 extension products are Draft, and every
+  variant's SKU and option values match the manifest.
+- `npm run catalog:extensions:rename:calendar` — dry-run the in-place calendar
+  edition roll (`:apply` to run it); must precede any extension sync after a
+  manifest handle change.
 - `npm run catalog:art:dry-run` / `catalog:extensions:dry-run` / `catalog:legacy:dry-run` — print planned changes without applying.
 - `npm run catalog:art:mockups` — regenerate all 8 × 10, 16 × 20, and 20 × 24 room mockups from the flat art and owned backdrop; `catalog:art:mockups:large` and `catalog:art:mockups:bigger` generate one expansion size only, and `catalog:art:mockups:dry-run` previews the media append.
 

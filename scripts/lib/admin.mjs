@@ -47,6 +47,23 @@ export async function getAdminAccessToken({
   return body.access_token;
 }
 
+/**
+ * Throws when a mutation payload carries userErrors, naming the mutation
+ * and the field paths so a failed step in a multi-step script is
+ * diagnosable from the message alone.
+ */
+export function mutationErrors(payload, label) {
+  const errors = payload?.userErrors ?? [];
+  if (!errors.length) return;
+  const detail = errors
+    .map(
+      (error) =>
+        `${(error.field ?? []).join('.') || '(root)'}: ${error.message}`,
+    )
+    .join('; ');
+  throw new Error(`${label}: ${detail}`);
+}
+
 export function createAdminClient({accessToken, endpoint}) {
   return async (query, variables) => {
     const response = await fetch(endpoint, {

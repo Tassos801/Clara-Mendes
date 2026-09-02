@@ -11,6 +11,7 @@ import {
   validateGoogleAttributeReadback,
   validateGooglePublicationReadiness,
 } from './lib/google-commerce-audit.mjs';
+import {EXTENSION_RELEASE_FLAGS} from '../app/lib/catalogFilters.ts';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -328,17 +329,32 @@ async function main() {
     issueCount += 1;
   }
 
+  // Released extension families are ACTIVE by design and may reach Google;
+  // every other family must still be DRAFT and excluded.
   for (const extension of extensions) {
     const issues = [];
-    if (extension.status !== 'DRAFT')
-      issues.push(`status is ${extension.status}`);
+    const released = Boolean(EXTENSION_RELEASE_FLAGS[extension.handle]);
+    const expectedStatus = released ? 'ACTIVE' : 'DRAFT';
+    if (extension.status !== expectedStatus) {
+      issues.push(`status is ${extension.status}, expected ${expectedStatus}`);
+    }
     issueCount += issues.length;
     console.log(
       `${issues.length ? 'ISSUE' : 'OK'}  ${extension.handle}${
-        issues.length ? `: ${issues.join('; ')}` : ' (Draft and excluded)'
+        issues.length
+          ? `: ${issues.join('; ')}`
+          : released
+            ? ' (released)'
+            : ' (Draft and excluded)'
       }`,
     );
   }
+  const unreleasedExtensionHandles = [...extensionHandles].filter(
+    (handle) => !EXTENSION_RELEASE_FLAGS[handle],
+  );
+  const releasedExtensionHandles = [...extensionHandles].filter(
+    (handle) => EXTENSION_RELEASE_FLAGS[handle],
+  );
 
   console.log(
     `Assigned original categories: ${
@@ -414,7 +430,8 @@ async function main() {
 
     const publicationIssues = validateGooglePublicationReadiness({
       approvedHandles,
-      expectedExtensionHandles: [...extensionHandles],
+      expectedExtensionHandles: unreleasedExtensionHandles,
+      releasedExtensionHandles,
       expectedOriginalHandles: [...expectedHandles],
       googlePublicationIds: googlePublications.map(
         (publication) => publication.id,
@@ -450,7 +467,8 @@ async function main() {
     }
 
     const attributeIssues = validateGoogleAttributeReadback({
-      expectedExtensionHandles: [...extensionHandles],
+      expectedExtensionHandles: unreleasedExtensionHandles,
+      releasedExtensionHandles,
       originals: originalCatalog
         .map((item) => productsByHandle.get(item.handle))
         .filter(Boolean),
