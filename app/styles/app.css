@@ -3989,6 +3989,8 @@ html.lenis body {
   padding: 0 clamp(18px, 4vw, 70px) clamp(52px, 7vw, 100px);
 }
 
+
+
 .your-sky-page {
   --night: #141b2b;
   --night-deep: #0c111c;

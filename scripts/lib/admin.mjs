@@ -25,11 +25,19 @@ export async function getAdminAccessToken({
       method: 'POST',
     },
   );
-  const body = await response.json().catch(() => null);
+  const raw = await response.text();
+  let body = null;
+  try {
+    body = JSON.parse(raw);
+  } catch {
+    body = null;
+  }
 
   if (!response.ok || !body?.access_token) {
     throw new Error(
-      `Admin token exchange failed: ${JSON.stringify(body?.errors || body)}`,
+      body
+        ? `Admin token exchange failed: ${JSON.stringify(body.errors || body)}`
+        : `Admin token exchange failed: HTTP ${response.status}, non-JSON body: ${raw.replace(/\s+/g, ' ').slice(0, 160)}`,
     );
   }
 
@@ -74,7 +82,13 @@ export function createAdminClient({accessToken, endpoint}) {
       },
       method: 'POST',
     });
-    const body = await response.json().catch(() => null);
+    const raw = await response.text();
+  let body = null;
+  try {
+    body = JSON.parse(raw);
+  } catch {
+    body = null;
+  }
 
     if (!response.ok || body?.errors) {
       throw new Error(

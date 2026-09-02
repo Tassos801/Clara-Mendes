@@ -548,7 +548,6 @@ test basket item was added and removed during verification.
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md).
 
-<<<<<<< HEAD
 ## 2026-09-02 - Cards release review fixes and calendar roll hardening
 
 A post-merge code review of PRs #62 (greeting card + postcard release) and
@@ -575,7 +574,6 @@ on the failed Admin API credential exchange (open question).
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md),
 [Open questions](open-questions.md).
-=======
 ## 2026-09-01 - Your Sky guided-refinement design approved
 
 Recorded the owner-approved Your Sky refinement before implementation. The
@@ -633,7 +631,6 @@ Light release-state changes.
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [PR #64](https://github.com/Tassos801/Clara-Mendes/pull/64),
 [main workflow 33600009023](https://github.com/Tassos801/Clara-Mendes/actions/runs/33600009023).
->>>>>>> origin/main
 
 ## 2026-09-02 - Your Sky feature page merged with the guided refinement
 
@@ -649,3 +646,40 @@ the signed attributes; 135 tests, lint, typecheck and build green.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [PR #67](https://github.com/Tassos801/Clara-Mendes/pull/67).
+## 2026-09-02 - Brand film: Introducing Clara Mendes
+
+Added a silent 45-second launch film built with Remotion in `video/`
+from the storefront's own mockups and EB Garamond, modelled on the
+register of Anthropic's Fable 5.1 announcement (captions stand in for the
+presenter, prints for the props). The 6.6 MB web encode and the poster are
+hosted on Shopify Files; `app/lib/brandFilm.ts` holds the CDN URLs and
+`app/components/BrandFilm.tsx` embeds the film on `/our-story` between the
+hero and "The collection" (muted, looping, poster only under
+prefers-reduced-motion). Verified: eighteen stills reviewed and the room
+crops re-tuned so every print stays whole; `check-render` passed on both
+encodes (45.000 s, 1920 x 1080, 24 fps, no audio); CDN HEAD 200 for the
+MP4 (6,612,751 bytes, video/mp4) and the poster (image/jpeg); dev server
+on desktop and mobile shows the section with the CDN sources, playback
+advancing while the tab is visible, and the reduced-motion branch
+removing autoplay. Gotchas: the Admin client-credentials exchange now
+returns "OAuth error invalid_request" so `scripts/upload-brand-film.mjs`
+could not run (owner: refresh SHOPIFY_CLIENT_ID/SECRET); the admin's
+"Upload from URL" rejects MP4s; an injected-file upload from the browser
+extension wedges for video, so the MP4 was uploaded by hand through
+Admin > Content > Files. Chrome pauses muted video in hidden tabs, which
+is not a site bug. YouTube upload deferred by the owner.
+
+Sources: [Brand Film](modules/brand-film.md), `docs/brand-film.md`,
+`docs/superpowers/specs/2026-09-02-brand-film-design.md`.
+
+## 2026-09-02 - Brand film moved to the homepage
+
+At the owner's request the film now sits only on the homepage, between
+"Original work, ready to live with." and the capsule carousel
+(`<BrandFilm className="home-film" chapter="clay" />`); the Our Story
+embed and its route-scoped CSS were removed. `BrandFilm` takes a spacing
+class and chapter, and its video/caption styles are global in
+`app/styles/app.css`. The caption uses the ink muted token (the white
+hero token made it unreadable on paper, fixed in #69).
+
+Sources: [Brand Film](modules/brand-film.md).

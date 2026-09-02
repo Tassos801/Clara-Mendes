@@ -9,6 +9,7 @@ import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {FramedArtFeature} from '~/components/FramedArtFeature';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
+import {BrandFilm} from '~/components/BrandFilm';
 import {useAside} from '~/components/Aside';
 import {
   filterDemoCollections,
@@ -443,6 +444,8 @@ export default function Homepage() {
             : 'Fifteen original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.'}
         </p>
       </section>
+
+      <BrandFilm className="home-film" chapter="clay" />
 
       <section
         className={`featured-collections featured-collections--carousel${
