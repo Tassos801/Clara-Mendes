@@ -355,9 +355,8 @@ def preview_for(family: dict, capsule: Capsule) -> Image.Image:
     return canvas.convert("RGB")
 
 
-def calendar_preview(original: list[dict], family: dict) -> Image.Image:
+def calendar_preview(cover_grid: Image.Image, family: dict) -> Image.Image:
     canvas = preview_base()
-    cover_grid = calendar_files(original)[0][1]
     page = contain(cover_grid, (1030, 760), color=WARM_WHITE).convert("RGBA")
     shadowed_layer(canvas, page, (285, 420))
     draw = ImageDraw.Draw(canvas)
@@ -369,7 +368,10 @@ def calendar_preview(original: list[dict], family: dict) -> Image.Image:
             y = 1240 + row * 92
             draw.rectangle((x, y, x + 62, y + 40), outline=(164, 154, 141), width=3)
     draw.text((90, 80), "CLARA MENDES", fill=MUTED, font=font(34))
-    draw.text((90, 130), "Art Calendar 2027", fill=INK, font=font(62, serif=True))
+    # The headline is the manifest title minus the brand, so an edition roll
+    # cannot leave the preview and the product title on different years.
+    headline = family["title"].removeprefix("Clara Mendes ")
+    draw.text((90, 130), headline, fill=INK, font=font(62, serif=True))
     draw.text((90, 1880), family["title"], fill=INK, font=font(34))
     return canvas.convert("RGB")
 
@@ -530,7 +532,10 @@ def export_family(family: dict, capsule: Capsule, records: list[dict]) -> None:
 
 def export_calendar(family: dict, original: list[dict], records: list[dict]) -> None:
     family_dir = PRODUCTION_ROOT / family["id"]
-    for filename, image in calendar_files(original):
+    # Rendered once: the production pages and the preview's cover grid come
+    # from the same pass instead of regenerating all fourteen sides twice.
+    files = calendar_files(original)
+    for filename, image in files:
         output = family_dir / filename
         save_jpeg(image, output, dpi=300)
         records.append(
@@ -541,7 +546,7 @@ def export_calendar(family: dict, original: list[dict], records: list[dict]) -> 
                 purpose="production",
             )
         )
-    preview = calendar_preview(original, family)
+    preview = calendar_preview(files[0][1], family)
     preview_path = PUBLIC_ROOT / family["id"] / "all-capsules.webp"
     preview_path.parent.mkdir(parents=True, exist_ok=True)
     preview.save(preview_path, "WEBP", quality=90, method=6)

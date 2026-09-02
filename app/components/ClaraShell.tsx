@@ -10,12 +10,14 @@ import {
   PERSONALISED_RELEASE_FLAGS,
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
+import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
   // Each personalised product gets its own entry once its flag flips.
+  // Your Sky is a feature page, not a product URL.
   ...(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]
-    ? [{to: `/products/${SKY_PRODUCT_HANDLE}`, label: 'Your Sky'}]
+    ? [{to: YOUR_SKY_PAGE.path, label: YOUR_SKY_PAGE.navLabel}]
     : []),
   ...(PERSONALISED_RELEASE_FLAGS[NATAL_PRODUCT_HANDLE]
     ? [{to: `/products/${NATAL_PRODUCT_HANDLE}`, label: 'First Light'}]
@@ -60,10 +62,37 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
           aria-expanded={type === 'mobile'}
           aria-haspopup="dialog"
         >
-          <svg width="22" height="14" viewBox="0 0 22 14" fill="none" aria-hidden="true">
-            <line x1="0" y1="1" x2="22" y2="1" stroke="currentColor" strokeWidth="1.4" />
-            <line x1="0" y1="7" x2="22" y2="7" stroke="currentColor" strokeWidth="1.4" />
-            <line x1="0" y1="13" x2="22" y2="13" stroke="currentColor" strokeWidth="1.4" />
+          <svg
+            width="22"
+            height="14"
+            viewBox="0 0 22 14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <line
+              x1="0"
+              y1="1"
+              x2="22"
+              y2="1"
+              stroke="currentColor"
+              strokeWidth="1.4"
+            />
+            <line
+              x1="0"
+              y1="7"
+              x2="22"
+              y2="7"
+              stroke="currentColor"
+              strokeWidth="1.4"
+            />
+            <line
+              x1="0"
+              y1="13"
+              x2="22"
+              y2="13"
+              stroke="currentColor"
+              strokeWidth="1.4"
+            />
           </svg>
         </button>
         <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
@@ -79,9 +108,28 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
       </nav>
       <div className="header-right">
         <Link className="mobile-search-button" to="/search" aria-label="Search">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-            <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.4"/>
-            <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" strokeWidth="1.4"/>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <circle
+              cx="9"
+              cy="9"
+              r="6.5"
+              stroke="currentColor"
+              strokeWidth="1.4"
+            />
+            <line
+              x1="13.5"
+              y1="13.5"
+              x2="18"
+              y2="18"
+              stroke="currentColor"
+              strokeWidth="1.4"
+            />
           </svg>
         </Link>
         <button
@@ -119,8 +167,8 @@ function ClaraFooter() {
           Clara Mendes
         </Link>
         <p>
-          Original art and considered products with secure checkout and tracked
-          delivery.
+          Original art and considered products with secure checkout. Wall art
+          ships tracked; cards and postcards travel by letter post.
         </p>
       </div>
       <nav className="footer-style-nav" aria-label="Shop by style">
@@ -198,9 +246,29 @@ function ClaraMobileNav() {
             Clara Mendes
           </Link>
           <button type="button" onClick={close} aria-label="Close menu">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-              <line x1="1" y1="1" x2="17" y2="17" stroke="currentColor" strokeWidth="1.4" />
-              <line x1="17" y1="1" x2="1" y2="17" stroke="currentColor" strokeWidth="1.4" />
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 18 18"
+              fill="none"
+              aria-hidden="true"
+            >
+              <line
+                x1="1"
+                y1="1"
+                x2="17"
+                y2="17"
+                stroke="currentColor"
+                strokeWidth="1.4"
+              />
+              <line
+                x1="17"
+                y1="1"
+                x2="1"
+                y2="17"
+                stroke="currentColor"
+                strokeWidth="1.4"
+              />
             </svg>
           </button>
         </header>

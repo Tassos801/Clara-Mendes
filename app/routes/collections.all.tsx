@@ -18,7 +18,7 @@ import {buildCapsuleTagQuery, CAPSULES, getCapsuleBySlug} from '~/lib/capsules';
 import {
   filterDemoCollections,
   filterDemoProducts,
-  isReleasedExtensionHandle,
+  releasedExtensionProductTypes,
 } from '~/lib/catalogFilters';
 import {
   buildProductsSearchQuery,
@@ -28,10 +28,6 @@ import {
   type CatalogFacetOptions,
 } from '~/lib/catalogFacets';
 import {CatalogFilterPanel} from '~/components/CatalogFilterPanel';
-import {
-  CLASSIC_FRAME_HANDLE,
-  CLASSIC_FRAME_PRODUCT_TYPE,
-} from '~/lib/classicFrame';
 import {
   COLLECTION_SORT_OPTIONS,
   getCollectionSortValue,
@@ -56,12 +52,14 @@ export type CollectionLink = {
   title: string;
 };
 
-/** Add a product type only when its allowlisted product is ready to sell. */
+/**
+ * The prints plus the product type of every released extension family, so
+ * a family becomes filterable (and its `?type=` deep links valid) the day
+ * its flag flips.
+ */
 export const SHOP_PRODUCT_TYPES: readonly string[] = [
   'Art Prints',
-  ...(isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
-    ? [CLASSIC_FRAME_PRODUCT_TYPE]
-    : []),
+  ...releasedExtensionProductTypes(),
 ];
 
 export type CollectionProductConnection = {

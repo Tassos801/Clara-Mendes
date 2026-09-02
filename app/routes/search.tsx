@@ -12,10 +12,7 @@ import type {
   RegularSearchQuery,
   PredictiveSearchQuery,
 } from 'storefrontapi.generated';
-import {
-  filterDemoCollections,
-  isDemoProduct,
-} from '~/lib/catalogFilters';
+import {filterDemoCollections, isListedProduct} from '~/lib/catalogFilters';
 import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
@@ -297,7 +294,7 @@ async function regularSearch({
     ...items,
     products: {
       ...items.products,
-      nodes: items.products.nodes.filter((product) => !isDemoProduct(product)),
+      nodes: items.products.nodes.filter((product) => isListedProduct(product)),
     },
   };
 
@@ -454,7 +451,10 @@ async function predictiveSearch({
   const {storefront} = context;
   const url = new URL(request.url);
   const term = String(url.searchParams.get('q') || '').trim();
-  const limit = Math.min(Math.max(Number(url.searchParams.get('limit')) || 10, 1), 20);
+  const limit = Math.min(
+    Math.max(Number(url.searchParams.get('limit')) || 10, 1),
+    20,
+  );
   const type = 'predictive';
 
   if (!term) return {type, term, result: getEmptyPredictiveSearchResult()};
@@ -486,7 +486,7 @@ async function predictiveSearch({
   const filteredItems = {
     ...items,
     collections: filterDemoCollections(items.collections),
-    products: items.products.filter((product) => !isDemoProduct(product)),
+    products: items.products.filter((product) => isListedProduct(product)),
   };
 
   const total = Object.values(filteredItems).reduce(

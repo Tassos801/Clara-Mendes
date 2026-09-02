@@ -13,24 +13,29 @@ Sunlit Mosaic.
 The phone-case product adds a second device option for four verified iPhone 15
 models. The 2027 calendar combines all five capsules into one edition.
 
-| Product                                 | Shopify variants | Provisional retail | Prodigi mapping target              | Mapping evidence               |
-| --------------------------------------- | ---------------: | -----------------: | ----------------------------------- | ------------------------------ |
-| Large Fine Art Print — 16 × 20 in       |                5 |                $49 | GLOBAL-FAP-16X20                    | Candidate; verify in dashboard |
-| Natural Classic Frame (frame only)      |                3 |      €32.50–€64.29 | GLOBAL-CFP-16X20-BACKLOADER only    | Dashboard: no 8 × 10 or 20 × 24 |
-| Fine Art Greeting Card                  |                5 |                 $8 | GLOBAL-GRE-MOH-7X5-BLA              | Public catalogue               |
-| Fine Art Postcard                       |                5 |                 $6 | GLOBAL-POST-MOH-7X5                 | Public catalogue               |
-| Art-Cover Spiral Notebook               |                5 |                $24 | US-NB-LINED-6X8                     | Public catalogue               |
-| Art-Cover Gratitude Journal             |                5 |                $32 | GJ-A5-SB-S-C-P                      | Public catalogue               |
-| Clara Mendes Art Calendar 2027          |                1 |                $29 | CALENDAR-A4-L-DATED                 | Public catalogue               |
-| Stretched Canvas Art — 16 × 20 in       |                5 |                $89 | GLOBAL-CAN-16X20                    | Public catalogue               |
-| Art Canvas Tote                         |                5 |                $45 | H-BAG-CTB                           | Public catalogue               |
-| Art Linen Cushion — 24 × 24 in          |                5 |                $69 | GLOBAL-CUSH-24X24-LIN               | Public catalogue               |
-| Art Premium Fleece Blanket — 30 × 40 in |                5 |                $79 | GLOBAL-BLANKET-PREMIUM-FLEECE-30X40 | Public catalogue               |
-| Art Snap Phone Case                     |               20 |                $34 | Device-specific GLOBAL-TECH SKUs    | Public catalogue               |
+| Product                                 | Shopify variants | Retail (EUR; provisional unless noted) | Prodigi mapping target              | Mapping evidence               |
+| --------------------------------------- | ---------------: | -------------------------------------: | ----------------------------------- | ------------------------------ |
+| Large Fine Art Print — 16 × 20 in       |                5 |                                     49 | GLOBAL-FAP-16X20                    | Candidate; verify in dashboard |
+| Natural Classic Frame (frame only)      |                3 |                            32.50–64.29 | GLOBAL-CFP-16X20-BACKLOADER only    | Dashboard: no 8 × 10 or 20 × 24 |
+| Fine Art Greeting Card                  |                5 |             **8.00 — approved, ACTIVE** | GLOBAL-GRE-MOH-7X5-BLA              | Dashboard 2026-09-01: 5/5 auto |
+| Fine Art Postcard                       |                5 |             **6.00 — approved, ACTIVE** | GLOBAL-POST-MOH-7X5                 | Dashboard 2026-09-01: 5/5 auto |
+| Art-Cover Spiral Notebook               |                5 |                                     24 | US-NB-LINED-6X8                     | Public catalogue               |
+| Art-Cover Gratitude Journal             |                5 |                                     32 | GJ-A5-SB-S-C-P                      | Public catalogue               |
+| Clara Mendes Art Calendar 2027          |                1 |                                     29 | CALENDAR-A4-L-DATED                 | Public catalogue               |
+| Stretched Canvas Art — 16 × 20 in       |                5 |                                     89 | GLOBAL-CAN-16X20                    | Public catalogue               |
+| Art Canvas Tote                         |                5 |                                     45 | H-BAG-CTB                           | Public catalogue               |
+| Art Linen Cushion — 24 × 24 in          |                5 |                                     69 | GLOBAL-CUSH-24X24-LIN               | Public catalogue               |
+| Art Premium Fleece Blanket — 30 × 40 in |                5 |                                     79 | GLOBAL-BLANKET-PREMIUM-FLEECE-30X40 | Public catalogue               |
+| Art Snap Phone Case                     |               20 |                                     34 | Device-specific GLOBAL-TECH SKUs    | Public catalogue               |
 
-Total: 12 Draft products, with 69 variants in the current manifest. (The
+Total: 12 families — 2 ACTIVE (the greeting card and postcard, released
+2026-09-01) and 10 Draft — with 69 variants in the current manifest. (The
 2026-07-24 sync predates the frame-only correction and created 71; the live
-classic-frame record still holds the retired five-variant shape.)
+classic-frame record still holds the retired five-variant shape.) The
+Prodigi dashboard shows every family with a full variant→SKU mapping count
+as of 2026-09-01, including the blanket (5/5), phone case (20/20) and journal
+(5/5); a count is not a verified mapping, so each family is re-checked
+variant by variant at release time.
 
 On 2026-07-24, the guarded sync created all 12 products in Shopify as
 `DRAFT`. The live readback passed for 12/12 products, all 71 variants, expected
@@ -45,7 +50,8 @@ The 2026-08-10 readback still found all 12 families Draft and unpublished. The
 blanket candidate's five Shopify variants were EUR 49 while this manifest
 requires EUR 79, so its storefront release flag was returned to `false`.
 
-On 2026-08-21, the Classic Framed Art Print became the first released family.
+On 2026-08-21, the Classic Framed Art Print became the first family to be
+released (a release withdrawn three days later — see 2026-08-24 below).
 All five art variants are mapped for automatic Prodigi fulfilment to
 `GLOBAL-CFP-16X20` with Natural frames, EMA 200gsm paper, no mat, Perspex
 glazing, Excellent image quality, and Standard shipping. The owner approved
@@ -110,21 +116,39 @@ dashboard: both families re-verified 5/5 "Fulfilled by Prodigi automatically"
 (`GLOBAL-GRE-MOH-7X5-BLA`, `GLOBAL-POST-MOH-7X5`, every asset Excellent),
 billing card on file with per-order EUR invoicing, and the 24-hour order-edit
 window confirmed. Delivered costs were quoted in-dashboard (card €1.90 item
-incl tax; Budget shipping €5.12 DE / €6.37 CY incl tax; postcard ~€0.25 less)
-and the channel shipping method for both families was switched from Standard
-to Budget — letter items ship in an envelope/OPP bag, and Standard's €8.60
-Cyprus rate would sink the price point. The owner approved €8.00 / €6.00
+incl tax, postcard €1.61 item incl tax; Budget shipping €5.12 DE / €6.37 CY
+incl tax) and the channel shipping method for both families was switched
+from Standard to Budget — letter items ship in an envelope/OPP bag, and
+Standard's €8.60 Cyprus rate would sink the price point. **Budget is
+Prodigi's untracked letter-post service**, so the storefront copy for these
+two product types says so (PDP reassurance line and footer); the general
+"tracked delivery" promise applies to wall art only, and the Shopify shipping
+policy text (Admin) still needs the same qualification — an owner item, as
+is the alternative of switching the two families back to Standard (tracked,
+≈€3.25 more per order) if tracking matters more than margin. The owner approved €8.00 / €6.00
 retail and waived the physical sample after reviewing the Excellent dashboard
 results (same precedent as the framed release). Because the store's general
 shipping rates are built for tubes (€16 international), a dedicated
 "Letter post - cards & postcards" Shopify shipping profile now carries both
 products: one zone covering the 15 market countries, flat €2.90, 5–8 business
-days. Unit margin at Budget on a solo order: card ≈ €3.9 (DE) / €2.6 (CY);
-postcard ≈ €2.2 (DE) / €0.9 (CY). Both products are Active, published to the Clara Mendes and
+days. Gross unit margin at Budget on a solo order (retail + €2.90 shipping
+minus item and shipping cost incl tax, before VAT and payment fees): card
+≈ €3.9 (DE) / €2.6 (CY); postcard ≈ €2.2 (DE) / €0.9 (CY). Shopify sums
+rates across shipping profiles, so a print + card cart pays the tube rate
+plus €2.90; that stacking is accepted for now and undocumented on the
+storefront. Both products are Active, published to the Clara Mendes and
 Clara Mendes Headless catalogs plus Facebook & Instagram (mirroring the live
 prints), their three Pending gate tags are removed, and the storefront flags
 are true. The first real card order is the first physical QC
-(`docs/first-order-runbook.md`).
+(`docs/first-order-runbook.md`; its tracking step does not apply to letter
+post). Two follow-ups found by the post-release review: the products belong
+to no Shopify collection — the extension sync tags but never assigns, so the
+"Art for Everyday Living" collection is empty and its route redirects until
+the owner adds the two products in Admin and flips
+`EXTENSION_COLLECTION_POPULATED` in `app/lib/catalogFilters.ts`; and the
+shop's type filter now derives its tabs from the released families
+(`releasedExtensionProductTypes()`), so `?type=Cards` and `?type=Postcards`
+resolve.
 
 On 2026-09-01, the calendar family was re-pointed at the 2027 edition. Prodigi's
 public product page states the dated calendar SKUs now include 2027 date grids
@@ -133,17 +157,26 @@ artwork-only and year-agnostic, so the existing dashboard attachment remains
 valid). The manifest handle/title/SKU moved to
 `clara-mendes-art-calendar-2027` / "Clara Mendes Art Calendar 2027" /
 `CM-CAL-A4-2027`, the Edition option value became 2027, and the storefront
-preview was regenerated with the 2027 title. **Ordering constraint:** the live
-Shopify record must be renamed in place (same product id — title, handle,
-Edition value, SKU) BEFORE any `sync-art-product-extensions.mjs --apply` run;
-the sync upserts by handle, so syncing first would create a duplicate product
-and orphan the mapped one. The in-place rename is prepared as a by-id script
-(productUpdate + productOptionUpdate + productVariantsBulkUpdate, preserving
-the variant id and therefore the Prodigi channel mapping); it could not be run
-this session because the Admin API client-credentials exchange failed —
-resolve credentials or rename via Admin UI, then re-verify the channel mapping
-still shows 1/1 with all 14 sides. The family stays Draft and its release flag
-stays false.
+preview was regenerated with the 2027 title. The year now lives in one
+manifest field, `edition`, and `previousHandles` records the retired handle;
+`scripts/lib/extension-product.mjs` derives the option value, SKU, alt text
+and SEO from the manifest for the sync, the audit and the rename script
+alike, and the Python preview headline is the manifest title. **Ordering
+constraint, now enforced:** the live Shopify record must be renamed in place
+(same product id — title, handle, Edition value, SKU, SEO, alt) BEFORE any
+`sync-art-product-extensions.mjs --apply`; the sync upserts by handle, so it
+now refuses to run while a previous handle is still live, and it also skips
+any product whose live status is not DRAFT whatever its flag says. The rename
+is `npm run catalog:extensions:rename:calendar` (dry run) /
+`...:apply` — `scripts/rename-calendar-2027.mjs`, by-id, idempotent (it diffs
+the live record and completes only the missing steps) and self-verifying
+(same product id and variant id after the run). It has not been applied yet:
+the Admin API client-credentials exchange failed on 2026-09-01 (tracked in
+`docs/llm-wiki/open-questions.md`); after it runs, re-verify the channel
+mapping still shows 1/1 with all 14 sides — the claim that the attachment
+survives rests on the variant id being preserved, which the script asserts
+but the dashboard has not yet confirmed. The family stays Draft and its
+release flag stays false.
 
 ## Artwork Policy
 
@@ -154,8 +187,9 @@ layout only. No artwork is repainted or replaced during format adaptation.
 The original source files are approximately 1120 × 1400 pixels. Larger
 wall-art files are exported to the dimensions requested by Prodigi, but this
 does not prove physical sharpness. Physical sampling remains the default for
-the large print and canvas; the owner explicitly waived it for the released
-frame after reviewing the dashboard's Excellent quality result.
+the large print and canvas; the owner explicitly waived it for the withdrawn
+frame release and again for the greeting card and postcard, each time after
+reviewing the dashboard's Excellent quality result.
 
 Generated files are stored under the ignored
 `output/prodigi-product-files/` directory. The generated manifest records each
@@ -182,12 +216,17 @@ The sync command is a dry run by default. After the preview images are
 deployed and publicly reachable:
 
 ```powershell
+node .\scripts\rename-calendar-2027.mjs --apply   # only when a family's handle changed; must precede the sync
 node .\scripts\sync-art-product-extensions.mjs --apply
 node .\scripts\audit-art-product-extensions.mjs
 ```
 
-Both scripts require the existing Shopify Admin credential file. The sync
-script creates or updates products as `DRAFT`; it does not publish them.
+All three require the existing Shopify Admin credential file. The sync
+script creates or updates products as `DRAFT` and skips every family whose
+live record is ACTIVE or whose release flag is true (Admin-managed); it
+refuses to run while a manifest `previousHandles` entry is still live. The
+audit checks status, variant count, prices, inventory flags, media, and now
+every variant's SKU and option values against the manifest.
 
 The frame-media sync is a separate, released-product-safe path. It stages the
 five local files directly to Shopify, waits for READY status, orders them first,
@@ -196,8 +235,10 @@ Shopify media requires the separate `--delete-old` mode after explicit approval.
 
 ## Storefront Staging
 
-The Hydrogen storefront hides every extension family via the allowlist in
-`app/lib/catalogFilters.ts`. The phone case additionally has its full
+The Hydrogen storefront hides every extension family except the released
+greeting card and postcard via the allowlist in `app/lib/catalogFilters.ts`;
+handles retired by a rename (`previousHandles`) stay hidden and
+sitemap-stripped as well. The phone case additionally has its full
 storefront experience pre-built behind `EXTENSION_RELEASE_FLAGS`; its flip
 procedure is `docs/phone-case-release.md`.
 
@@ -220,7 +261,8 @@ Every unreleased family remains blocked from publication until:
 
 1. The exact Shopify variant is mapped to the correct Prodigi SKU.
 2. Prodigi crop, bleed, safe area, print side, and device template are checked.
-3. Delivered cost is quoted for the priority US and Cyprus destinations.
+3. Delivered cost is quoted for the priority destinations — Cyprus and a
+   core EU market (Germany); the store has no US market.
 4. Retail price and shipping method meet an approved margin.
 5. Prodigi billing is configured and the indefinite order pause is
    re-verified.

@@ -75,8 +75,13 @@ after the owner clarified that the separate offer must sell the frame only,
 not a print bundled with a frame. The product is Draft, unpublished from both
 the `Clara Mendes` and `Clara Mendes Headless` catalogs, and its release flag is
 false. Prodigi `GLOBAL-CFP-16X20` necessarily includes a fine-art print and is
-therefore not a valid fulfillment mapping for the corrected offer. All twelve
-extension flags are false and all twelve extension products are Draft.
+therefore not a valid fulfillment mapping for the corrected offer. On
+2026-09-01 the Fine Art Greeting Card and Fine Art Postcard became the first
+extension families to go live (flags true, products Active, Budget letter
+post, a dedicated €2.90 "Letter post" shipping profile); the other ten
+extension flags are false and their products are Draft. The calendar family
+was re-pointed at the 2027 edition the same day (manifest `edition` +
+`previousHandles`; the live record still awaits the in-place rename script).
 
 The replacement is a frame-only product with one `Size` option: 8 × 10 in,
 16 × 20 in, and 20 × 24 in, no `Artwork` option, and copy stating that the
@@ -122,8 +127,11 @@ Sources: [Original Art Launch](../../original-art-launch.md),
 Old or supplier-imported products cannot appear in catalog, search,
 recommendations, or direct product routes merely because they are active in
 Shopify. Admin status is still the authoritative cross-channel control. The
-intended state is now 15 Active originals, 12 Draft extensions, and 49 Draft
-legacy products.
+intended state is now 15 Active originals, 2 Active extensions (greeting
+card, postcard), 10 Draft extensions, and 49 Draft legacy products. The
+filters also know retired extension handles (`isRetiredExtensionHandle`)
+and derive the shop's type-filter tabs from the released families
+(`releasedExtensionProductTypes`).
 
 It defines:
 

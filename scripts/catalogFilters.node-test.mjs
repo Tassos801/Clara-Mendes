@@ -4,13 +4,49 @@ import {
   computeSellableHandles,
   EXTENSION_COLLECTION_HANDLE,
   EXTENSION_RELEASE_FLAGS,
+  featurePagePath,
+  filterDemoProducts,
   hasReleasedExtensions,
   isDemoCollection,
   isDemoProduct,
+  isFeaturePageHandle,
+  isListedProduct,
   isReleasedExtensionHandle,
+  isRetiredExtensionHandle,
   isStoreThemeProduct,
+  isUnreleasedExtensionHandle,
   PHONE_CASE_HANDLE,
+  releasedExtensionProductTypes,
+  SKY_PRODUCT_HANDLE,
 } from '../app/lib/catalogFilters.ts';
+
+/**
+ * Runs `fn` with the module's release flags temporarily replaced by
+ * `overrides` (every key not in `overrides` is set to false), then restores
+ * the exact prior state — so no assertion can leak flag state into another.
+ * Note: SELLABLE_PRODUCT_HANDLES is memoised at module load and is NOT
+ * affected; only the live-read helpers (hasReleasedExtensions,
+ * isDemoCollection, isReleasedExtensionHandle) see the override.
+ */
+function withFlags(overrides, fn) {
+  const saved = {...EXTENSION_RELEASE_FLAGS};
+  for (const key of Object.keys(EXTENSION_RELEASE_FLAGS)) {
+    EXTENSION_RELEASE_FLAGS[key] = Boolean(overrides[key]);
+  }
+  try {
+    return fn();
+  } finally {
+    Object.assign(EXTENSION_RELEASE_FLAGS, saved);
+  }
+}
+
+const greetingCard = {
+  handle: 'fine-art-greeting-card',
+  productType: 'Cards',
+  tags: ['Clara Mendes Original', 'Art for Everyday Living'],
+  title: 'Fine Art Greeting Card',
+  vendor: 'Clara Mendes',
+};
 
 const BLANKET_HANDLE = 'art-premium-fleece-blanket-30x40';
 const FRAME_HANDLE = 'classic-framed-art-print-16x20';
@@ -56,6 +92,30 @@ assert.equal(isReleasedExtensionHandle(FRAME_HANDLE), false);
 assert.equal(hasReleasedExtensions(), true);
 assert.equal(isReleasedExtensionHandle('fine-art-greeting-card'), true);
 assert.equal(isReleasedExtensionHandle('fine-art-postcard'), true);
+// A released family is sellable on the storefront (PDP, search, grid)…
+assert.equal(isStoreThemeProduct(greetingCard), true);
+assert.equal(isDemoProduct(greetingCard), false);
+assert.equal(isUnreleasedExtensionHandle('fine-art-greeting-card'), false);
+// …and its product type is offered by the shop's type filter.
+assert.deepEqual(releasedExtensionProductTypes(), ['Cards', 'Postcards']);
+assert.deepEqual(releasedExtensionProductTypes({}), []);
+assert.equal(hasReleasedExtensions({}), false);
+
+// A handle retired by an in-place rename (the calendar's previous edition)
+// stays unlisted and stripped from the sitemap until the live record moves.
+assert.equal(isRetiredExtensionHandle('clara-mendes-art-calendar-2026'), true);
+assert.equal(
+  isUnreleasedExtensionHandle('clara-mendes-art-calendar-2026'),
+  true,
+);
+assert.equal(
+  isStoreThemeProduct({
+    ...greetingCard,
+    handle: 'clara-mendes-art-calendar-2026',
+  }),
+  false,
+);
+assert.equal(isRetiredExtensionHandle('clara-mendes-art-calendar-2027'), false);
 const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
@@ -91,10 +151,9 @@ assert.equal(
   true,
 );
 
-// Defense in depth: a future flag may admit the handle-only pre-query guard,
-// but an explicit empty Storefront API result must still redirect instead of
-// exposing another indexable zero-product collection.
-EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = true;
+// The released card families keep the handle-only pre-query guard open, but
+// an explicit empty Storefront API result must still redirect instead of
+// exposing an indexable zero-product collection.
 assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
 assert.equal(
   isDemoCollection({
@@ -103,16 +162,19 @@ assert.equal(
   }),
   true,
 );
-EXTENSION_RELEASE_FLAGS[BLANKET_HANDLE] = false;
-// The released card families keep the handle-only pre-query guard open.
-assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
-// With every release flag off, the handle-only pre-query guard keeps the
-// Everyday collection hidden.
-EXTENSION_RELEASE_FLAGS['fine-art-greeting-card'] = false;
-EXTENSION_RELEASE_FLAGS['fine-art-postcard'] = false;
-assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), true);
-EXTENSION_RELEASE_FLAGS['fine-art-greeting-card'] = true;
-EXTENSION_RELEASE_FLAGS['fine-art-postcard'] = true;
+// With every release flag off the guard hides the Everyday collection, and
+// any single future flag (the blanket here) is enough to open it again.
+withFlags({}, () => {
+  assert.equal(hasReleasedExtensions(), false);
+  assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), true);
+});
+withFlags({[BLANKET_HANDLE]: true}, () => {
+  assert.equal(hasReleasedExtensions(), true);
+  assert.equal(isDemoCollection({handle: EXTENSION_COLLECTION_HANDLE}), false);
+});
+// The helper restored the real state.
+assert.equal(isReleasedExtensionHandle('fine-art-greeting-card'), true);
+assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,
@@ -187,9 +249,8 @@ assert.equal(
   // The First Light birth poster stages beside the sky, independently
   // flagged and independently releasable.
   const {NATAL_PRODUCT_HANDLE} = await import('../app/lib/catalogFilters.ts');
-  const {NATAL_PRODUCT_HANDLE: codecHandle} = await import(
-    '../app/lib/natal/products.ts'
-  );
+  const {NATAL_PRODUCT_HANDLE: codecHandle} =
+    await import('../app/lib/natal/products.ts');
   assert.equal(NATAL_PRODUCT_HANDLE, 'first-light-birth-poster');
   assert.equal(
     NATAL_PRODUCT_HANDLE,
@@ -217,5 +278,30 @@ assert.equal(
     }),
     true,
     'staged birth poster is not sellable while its flag is false',
+  );
+}
+
+// A feature-page product is purchasable (PDP loader, cart) but never listed:
+// grid, search, recommendations, recently viewed, products sitemap.
+{
+  const sky = {
+    handle: SKY_PRODUCT_HANDLE,
+    productType: 'Personalised Art',
+    tags: ['Clara Mendes Original', 'personalised', 'gift'],
+    title: 'Your Sky — a personalised star map',
+    vendor: 'Clara Mendes',
+  };
+  assert.equal(isFeaturePageHandle(SKY_PRODUCT_HANDLE), true);
+  assert.equal(isFeaturePageHandle('Your-Sky-Star-Map'), true);
+  assert.equal(isFeaturePageHandle('quiet-form-i-art-print'), false);
+  assert.equal(featurePagePath(SKY_PRODUCT_HANDLE), '/your-sky');
+  assert.equal(featurePagePath('quiet-form-i-art-print'), null);
+  assert.equal(isStoreThemeProduct(sky), true);
+  assert.equal(isDemoProduct(sky), false);
+  assert.equal(isListedProduct(sky), false);
+  assert.equal(isListedProduct(print), true);
+  assert.deepEqual(
+    filterDemoProducts([print, sky, phoneCase]).map((p) => p.handle),
+    [print.handle],
   );
 }

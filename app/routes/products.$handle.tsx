@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import {Link, redirect, useLoaderData, useLocation} from 'react-router';
+import {Link, redirect, useLoaderData} from 'react-router';
 import {
   Analytics,
   getSelectedProductOptions,
@@ -70,6 +70,11 @@ import {
   skySizeFromOptions,
 } from '~/lib/sky/products';
 import {DEFAULT_SKY_THEME} from '~/lib/sky/themes';
+import {featurePageRedirect} from '~/lib/featurePages';
+import {formatMoney, type MoneyAmount} from '~/lib/money';
+import {ProductPrice} from '~/components/ProductPrice';
+import {VariantOptions} from '~/components/VariantOptions';
+import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {deriveCardPricing} from '~/lib/productCardPricing';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
@@ -106,11 +111,6 @@ import {
   type ReviewsMetafieldResponse,
 } from '~/lib/reviews';
 import {summarizeReviews, type ProductReviewsData} from '~/lib/reviewTypes';
-
-type MoneyAmount = {
-  amount: string;
-  currencyCode: string;
-};
 
 type ProductImage = {
   altText?: string | null;
@@ -279,6 +279,17 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 
   if (!handle) {
     throw new Response('Product handle is required', {status: 400});
+  }
+
+  // Feature-page products (Your Sky) are sold on their own page; the old
+  // product URL keeps working through a permanent redirect that preserves
+  // the variant selection in the query string.
+  const featureRedirect = featurePageRedirect(
+    handle,
+    new URL(request.url).search,
+  );
+  if (featureRedirect) {
+    throw redirect(featureRedirect, 301);
   }
 
   // "Pair with" prefers the two companion prints from the same capsule;
@@ -523,6 +534,11 @@ export default function Product() {
   const productDescription = getProductDescription(product);
   const productLede = getProductLede(product);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
+  // Cards and postcards ship on Prodigi's Budget (untracked letter-post)
+  // service, so their reassurance copy must not promise a tracking email.
+  const isLetterPost = ['cards', 'postcards'].includes(
+    (product.productType || '').toLowerCase(),
+  );
   const memberWallSets = isArtPrint
     ? wallSetsContainingHandle(product.handle)
     : [];
@@ -1002,7 +1018,9 @@ export default function Product() {
           <ul className="product-assurance-list" aria-label="Order reassurance">
             <li>
               <span aria-hidden />
-              Tracking details are emailed after dispatch.
+              {isLetterPost
+                ? 'Sent by letter post — untracked, typically 5–8 business days.'
+                : 'Tracking details are emailed after dispatch.'}
             </li>
             <li>
               <span aria-hidden />
@@ -1814,138 +1832,6 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
   );
 }
 
-function ProductPrice({
-  compareAtPrice,
-  price,
-}: {
-  compareAtPrice?: MoneyAmount | null;
-  price: MoneyAmount;
-}) {
-  return (
-    <div className="product-price">
-      {compareAtPrice ? (
-        <span className="product-price-on-sale">
-          {formatMoney(price)} <s>{formatMoney(compareAtPrice)}</s>
-        </span>
-      ) : (
-        formatMoney(price)
-      )}
-    </div>
-  );
-}
-
-function VariantOptions({
-  product,
-  selectedVariant,
-}: {
-  product: ProductDetail;
-  selectedVariant?: ProductVariant | null;
-}) {
-  const location = useLocation();
-  const selectedMap = new Map(
-    selectedVariant?.selectedOptions.map((option) => [
-      option.name,
-      option.value,
-    ]) ?? [],
-  );
-  const visibleOptions = product.options.filter(
-    (option) =>
-      !(
-        product.productType?.trim().toLowerCase() === 'art prints' &&
-        option.name.trim().toLowerCase() === 'presentation'
-      ),
-  );
-
-  if (!visibleOptions.length || product.variants.nodes.length <= 1) {
-    return null;
-  }
-
-  return (
-    <div className="product-options">
-      {visibleOptions.map((option) => (
-        <fieldset className="variant-fieldset" key={option.id || option.name}>
-          <legend>{option.name}</legend>
-          <div className="variant-options">
-            {option.optionValues.map((value) => {
-              const variant = findVariantForOption({
-                optionName: option.name,
-                optionValue: value.name,
-                selectedMap,
-                variants: product.variants.nodes,
-              });
-              const params = new URLSearchParams(location.search);
-              const selected = selectedMap.get(option.name) === value.name;
-
-              if (variant) {
-                variant.selectedOptions.forEach((selectedOption) => {
-                  params.set(selectedOption.name, selectedOption.value);
-                });
-              } else {
-                params.set(option.name, value.name);
-              }
-
-              return (
-                <Link
-                  aria-current={selected ? 'true' : undefined}
-                  aria-disabled={
-                    variant?.availableForSale === false ? 'true' : undefined
-                  }
-                  className={[
-                    selected ? 'is-selected' : '',
-                    variant?.availableForSale === false ? 'is-unavailable' : '',
-                  ]
-                    .filter(Boolean)
-                    .join(' ')}
-                  key={value.id || value.name}
-                  preventScrollReset
-                  replace
-                  to={`/products/${product.handle}?${params.toString()}`}
-                >
-                  {value.name}
-                </Link>
-              );
-            })}
-          </div>
-        </fieldset>
-      ))}
-    </div>
-  );
-}
-
-function findVariantForOption({
-  optionName,
-  optionValue,
-  selectedMap,
-  variants,
-}: {
-  optionName: string;
-  optionValue: string;
-  selectedMap: Map<string, string>;
-  variants: ProductVariant[];
-}) {
-  return (
-    variants.find((variant) =>
-      variant.selectedOptions.every((option) => {
-        if (option.name === optionName) return option.value === optionValue;
-        const selected = selectedMap.get(option.name);
-        return selected ? option.value === selected : true;
-      }),
-    ) ??
-    variants.find((variant) =>
-      variant.selectedOptions.some(
-        (option) => option.name === optionName && option.value === optionValue,
-      ),
-    )
-  );
-}
-
-function formatMoney(price: MoneyAmount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: price.currencyCode,
-  }).format(Number(price.amount));
-}
-
 function getVendorLabel(vendor?: string | null) {
   if (!vendor) return null;
   if (vendor.toLowerCase().includes('mock')) return null;
@@ -1957,39 +1843,6 @@ function getStoreUrl(storeDomain: string) {
     ? storeDomain
     : `https://${storeDomain}`;
 }
-
-const PRODUCT_VARIANT_FRAGMENT = `#graphql
-  fragment ClaraProductVariant on ProductVariant {
-    id
-    title
-    availableForSale
-    barcode
-    price {
-      amount
-      currencyCode
-    }
-    compareAtPrice {
-      amount
-      currencyCode
-    }
-    selectedOptions {
-      name
-      value
-    }
-    image {
-      id
-      url
-      altText
-      width
-      height
-    }
-    product {
-      handle
-      title
-    }
-    sku
-  }
-` as const;
 
 const PRODUCT_QUERY = `#graphql
   query Product(

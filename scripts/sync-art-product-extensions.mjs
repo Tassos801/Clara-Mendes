@@ -11,6 +11,14 @@ import {
   normalizeShopDomain,
 } from './lib/env.mjs';
 import {EXTENSION_RELEASE_FLAGS} from '../app/lib/catalogFilters.ts';
+import {
+  CAPSULE_CODE_BY_NAME,
+  descriptionHtml,
+  editionOf,
+  expectedVariantCount as manifestVariantCount,
+  imageAlt,
+  seoFor,
+} from './lib/extension-product.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -26,13 +34,18 @@ const baseUrl = (
   'https://shopclaramendes.com/images/art-product-extensions'
 ).replace(/\/+$/, '');
 
-const capsuleCodeByName = {
-  'Quiet Form': 'QF',
-  'Patina Blue': 'PB',
-  'Neo Deco': 'ND',
-  'Midnight Garden': 'MG',
-  'Sunlit Mosaic': 'SM',
-};
+const capsuleCodeByName = CAPSULE_CODE_BY_NAME;
+
+const LIVE_PRODUCTS_QUERY = `#graphql
+  query LiveArtProductExtensions($first: Int!, $query: String!) {
+    products(first: $first, query: $query) {
+      nodes {
+        handle
+        status
+      }
+    }
+  }
+`;
 
 const PRODUCT_SET = `#graphql
   mutation UpsertArtProductExtension(
@@ -86,33 +99,11 @@ function imageUrl(family, capsuleName) {
 
 function imageFile(family, capsuleName) {
   return {
-    alt: family.frameOnly
-      ? 'Natural classic frame only; artwork not included'
-      : family.collectionVariant
-        ? 'Clara Mendes 2027 art calendar featuring all five original-art capsules'
-        : `${capsuleName} artwork shown on the ${family.title.toLowerCase()}`,
+    alt: imageAlt(family, capsuleName),
     contentType: 'IMAGE',
     filename: `${family.id}-${slugify(capsuleName)}.webp`,
     originalSource: imageUrl(family, capsuleName),
   };
-}
-
-function descriptionHtml(family) {
-  const intro = family.frameOnly
-    ? 'A Natural classic picture frame sized to fit the three Clara Mendes print editions. This product is the frame only; artwork is not included.'
-    : family.collectionVariant
-      ? 'A year of original Clara Mendes artwork, bringing all five art capsules together in one considered calendar.'
-      : `Original Clara Mendes artwork adapted for the ${family.format.toLowerCase()}. Choose the art capsule that suits your space and everyday ritual.`;
-
-  return [
-    `<p>${intro}</p>`,
-    '<ul>',
-    `<li>${family.material}</li>`,
-    `<li>${family.format}</li>`,
-    '<li>Printed to order and fulfilled in white-label packaging</li>',
-    '</ul>',
-    '<p>Colours can vary slightly between screens, materials, and the finished print.</p>',
-  ].join('');
 }
 
 function standardVariant(family, capsuleName, file) {
@@ -191,7 +182,7 @@ function productInput(family) {
       {
         name: 'Edition',
         position: 1,
-        values: [{name: '2027'}],
+        values: [{name: editionOf(family)}],
       },
     ];
     variants = [
@@ -202,7 +193,7 @@ function productInput(family) {
           tracked: false,
         },
         inventoryPolicy: 'DENY',
-        optionValues: [{name: '2027', optionName: 'Edition'}],
+        optionValues: [{name: editionOf(family), optionName: 'Edition'}],
         price: family.price,
         sku: `CM-${family.skuSuffix}`,
         taxable: true,
@@ -245,10 +236,7 @@ function productInput(family) {
     handle: family.handle,
     productOptions,
     productType: family.productType,
-    seo: {
-      description: `${family.title} featuring original Clara Mendes artwork. Printed to order.`,
-      title: `${family.title} | Clara Mendes`,
-    },
+    seo: seoFor(family),
     status: 'DRAFT',
     tags: family.frameOnly
       ? [
@@ -272,15 +260,7 @@ function productInput(family) {
 }
 
 function expectedVariantCount(family) {
-  if (family.frameOnly) return family.sizeVariants.length;
-  if (family.collectionVariant) return 1;
-  if (family.deviceOptions) {
-    return (
-      extensionCatalog.capsuleOrder.length *
-      extensionCatalog.deviceVariants.length
-    );
-  }
-  return extensionCatalog.capsuleOrder.length;
+  return manifestVariantCount(family, extensionCatalog);
 }
 
 function validateLocalPreviews() {
@@ -426,6 +406,15 @@ async function main() {
     );
   }
 
+  for (const family of extensionCatalog.families) {
+    const previous = family.previousHandles ?? [];
+    if (previous.length) {
+      console.log(
+        `  note: ${family.handle} replaces ${previous.join(', ')} — the live record must be renamed in place (scripts/rename-calendar-2027.mjs --apply) before --apply; the apply path refuses while a previous handle is still live.`,
+      );
+    }
+  }
+
   if (!apply) {
     console.log(
       '\nDry run complete. Products will remain DRAFT. Deploy the preview images and rerun with --apply to create them in Shopify.',
@@ -451,14 +440,43 @@ async function main() {
     endpoint: `https://${storeDomain}/admin/api/${apiVersion}/graphql.json`,
   });
 
+  // Read before write: the live record, not only the storefront flag,
+  // decides whether a family may be upserted. A product that is no longer
+  // DRAFT is Admin-managed whatever its flag says (a flag rollback must
+  // never let a re-sync unpublish it or restore the gate tags), and a family
+  // whose previous handle is still live must be renamed in place first —
+  // upserting by the new handle would create a duplicate and orphan the
+  // mapped variants.
+  const liveBody = await adminGraphql(LIVE_PRODUCTS_QUERY, {
+    first: 100,
+    query: "tag:'Art for Everyday Living' OR tag:'Clara Mendes Frame'",
+  });
+  const liveByHandle = new Map(
+    (liveBody.data?.products?.nodes ?? []).map((product) => [
+      product.handle,
+      product,
+    ]),
+  );
+
   let synced = 0;
   for (const family of extensionCatalog.families) {
-    // Released families are live and Admin-managed: re-syncing would force
-    // them back to DRAFT (status is part of the upsert) and clobber
-    // post-release tag cleanup.
-    if (EXTENSION_RELEASE_FLAGS[family.handle]) {
-      console.log(`${family.handle}: RELEASED — skipped, manage in Admin.`);
+    const live = liveByHandle.get(family.handle);
+    if (
+      EXTENSION_RELEASE_FLAGS[family.handle] ||
+      (live && live.status !== 'DRAFT')
+    ) {
+      console.log(
+        `${family.handle}: ${live?.status ?? 'RELEASED'} — skipped, manage in Admin.`,
+      );
       continue;
+    }
+    const stillLive = (family.previousHandles ?? []).find((handle) =>
+      liveByHandle.has(handle),
+    );
+    if (stillLive && !live) {
+      throw new Error(
+        `${family.handle}: the previous handle ${stillLive} is still live in Shopify. Run "node scripts/rename-calendar-2027.mjs --apply" first so the mapped variant keeps its id; upserting by the new handle would create a duplicate product.`,
+      );
     }
     const body = await adminGraphql(PRODUCT_SET, {
       identifier: {handle: family.handle},

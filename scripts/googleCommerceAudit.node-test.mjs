@@ -76,6 +76,48 @@ test('publication readiness requires every original and excludes every extension
   );
 });
 
+test('a released extension may be published and approved without being flagged', () => {
+  const publicationId = 'gid://shopify/Publication/9';
+  const released = {
+    handle: 'fine-art-greeting-card',
+    id: 'gid://shopify/Product/3',
+  };
+  const issues = validateGooglePublicationReadiness({
+    approvedHandles: ['quiet-form-i-art-print', released.handle],
+    expectedExtensionHandles: extensions.map((product) => product.handle),
+    expectedOriginalHandles: originals.map((product) => product.handle),
+    googlePublicationIds: [publicationId],
+    publicationAuditAvailable: true,
+    publicationProducts: [
+      {
+        ...originals[0],
+        resourcePublicationsV2: {
+          nodes: [{isPublished: true, publication: {id: publicationId}}],
+        },
+      },
+      {
+        ...released,
+        resourcePublicationsV2: {
+          nodes: [{isPublished: true, publication: {id: publicationId}}],
+        },
+      },
+    ],
+    releasedExtensionHandles: [released.handle],
+  });
+  assert.deepEqual(issues, []);
+
+  // Without the released list the same state is (correctly) an issue.
+  const strict = validateGooglePublicationReadiness({
+    approvedHandles: ['quiet-form-i-art-print', released.handle],
+    expectedExtensionHandles: extensions.map((product) => product.handle),
+    expectedOriginalHandles: originals.map((product) => product.handle),
+    googlePublicationIds: [publicationId],
+    publicationAuditAvailable: true,
+    publicationProducts: [],
+  });
+  assert.ok(strict.some((issue) => issue.includes('unexpected product')));
+});
+
 test('Google attribute readback proves MPN, custom product, GTIN, and Hydrogen links', () => {
   assert.deepEqual(
     validateGoogleAttributeReadback({

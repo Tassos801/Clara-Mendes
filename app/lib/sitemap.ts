@@ -2,7 +2,10 @@
 // which cannot resolve the Vite "~" alias.
 import {
   EXTENSION_COLLECTION_HANDLE,
+  EXTENSION_COLLECTION_POPULATED,
+  FEATURE_PAGE_PATHS,
   hasReleasedExtensions,
+  isFeaturePageHandle,
   isOffThemeCollectionHandle,
   isOffThemeProductHandle,
   isUnreleasedExtensionHandle,
@@ -26,6 +29,8 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   ),
   // Curated gallery edits — storefront-rendered like the capsule pages.
   ...listGalleryPages().map((page) => `/collections/${page.slug}`),
+  // Feature pages (e.g. /your-sky) replace their product URL.
+  ...Object.values(FEATURE_PAGE_PATHS),
   '/our-story',
   '/contact',
   '/policies',
@@ -52,11 +57,16 @@ export function removeExcludedSitemapEntries(xml: string) {
     if (EXCLUDED_RESOURCE_PATHS.has(`${type}/${handle}`)) return '';
     if (type === 'products' && isOffThemeProductHandle(handle)) return '';
     if (type === 'products' && isUnreleasedExtensionHandle(handle)) return '';
+    if (type === 'products' && isFeaturePageHandle(handle)) return '';
     if (type === 'collections' && isOffThemeCollectionHandle(handle)) return '';
+    // The Everyday collection URL is only worth indexing once a family is
+    // released AND the collection actually holds products (it is a manual
+    // collection; an empty one redirects, and a redirecting sitemap entry
+    // is worse than none).
     if (
       type === 'collections' &&
       handle === EXTENSION_COLLECTION_HANDLE &&
-      !hasReleasedExtensions()
+      !(hasReleasedExtensions() && EXTENSION_COLLECTION_POPULATED)
     ) {
       return '';
     }
@@ -85,8 +95,5 @@ export function injectCustomSitemapEntry(indexXml: string, origin: string) {
   const entry = `<sitemap><loc>${origin}/sitemap/custom/1.xml</loc></sitemap>`;
   if (indexXml.includes(entry)) return indexXml;
 
-  return indexXml.replace(
-    /<\/sitemapindex>/,
-    `${entry}\n</sitemapindex>`,
-  );
+  return indexXml.replace(/<\/sitemapindex>/, `${entry}\n</sitemapindex>`);
 }

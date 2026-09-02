@@ -2,8 +2,8 @@
 
 Scope: releasing **Art Snap Phone Case** (`art-snap-phone-case`) to the live
 storefront. The storefront work is merged and dormant; this document is the
-complete flip procedure. Nothing here touches the other 11 Draft extension
-families.
+complete flip procedure. Nothing here touches the other extension families
+(the greeting card and postcard are live; the rest stay Draft).
 
 ## Current state
 
