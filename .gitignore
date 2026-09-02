@@ -39,3 +39,4 @@ Thumbs.db
 # Operational state (product restore list)
 scripts/unpublished-products-backup.json
 data/sky-sources/
+/video/out/

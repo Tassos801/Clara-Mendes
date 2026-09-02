@@ -1,0 +1,30 @@
+{
+  "name": "clara-mendes-film",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Introducing Clara Mendes — the silent 45-second brand film, rendered with Remotion from the storefront's own assets.",
+  "scripts": {
+    "studio": "remotion studio",
+    "compositions": "remotion compositions",
+    "still": "remotion still IntroducingClaraMendes",
+    "poster": "remotion still IntroducingClaraMendes out/introducing-clara-mendes-poster.jpg --frame=48",
+    "render": "remotion render IntroducingClaraMendes out/introducing-clara-mendes.mp4 --codec=h264 --crf=20",
+    "check": "node scripts/check-render.mjs out/introducing-clara-mendes.mp4",
+    "test": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON --test src/film/*.test.mts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.520",
+    "@remotion/fonts": "4.0.520",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "4.0.520"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^18.3.28",
+    "@types/react-dom": "^18.3.7",
+    "mediabunny": "^1.55.5",
+    "typescript": "^5.9.2"
+  }
+}
