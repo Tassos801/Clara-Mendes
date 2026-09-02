@@ -2,7 +2,6 @@ import {useEffect, useRef} from 'react';
 import {Link} from 'react-router';
 import type {Route} from './+types/our-story';
 import {StructuredData} from '~/components/StructuredData';
-import {BrandFilm} from '~/components/BrandFilm';
 import {useAside} from '~/components/Aside';
 import {ORIGINAL_ART_COLLECTIONS} from '~/lib/catalogFilters';
 import {buildSeoMeta} from '~/lib/seo';
@@ -156,8 +155,6 @@ export default function OurStory() {
         <div ref={dotRef} className="os-cursor-dot" />
         <div ref={outlineRef} className="os-cursor-outline" />
       </section>
-
-      <BrandFilm />
 
       <section
         id="os-collection"
@@ -468,32 +465,6 @@ html:has(.our-story-root) main {
 .os-active-tab {
   border-bottom: 1px solid white;
   padding-bottom: 2px;
-}
-
-/* ── Brand film ── */
-.os-film {
-  margin: 0 auto;
-  max-width: 1060px;
-  padding: clamp(40px, 6vw, 88px) clamp(20px, 5vw, 70px) 0;
-}
-
-.os-film-video {
-  aspect-ratio: 16 / 9;
-  background: var(--os-ink);
-  border-radius: 4px;
-  box-shadow: 0 30px 60px -30px rgba(38, 35, 31, 0.45);
-  display: block;
-  height: auto;
-  width: 100%;
-}
-
-.os-film-caption {
-  color: var(--os-muted);
-  font-family: var(--os-font-sans);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  margin: 14px 0 0;
-  text-transform: uppercase;
 }
 
 /* ── Story content ── */

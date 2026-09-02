@@ -3964,3 +3964,27 @@ html.lenis body {
     font-size: 0.66rem;
   }
 }
+
+/* Brand film (Introducing Clara Mendes) — shared by the homepage and Our Story */
+.brand-film-video {
+  aspect-ratio: 16 / 9;
+  background: var(--color-ink);
+  border-radius: 4px;
+  box-shadow: 0 30px 60px -30px rgba(38, 35, 31, 0.45);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.brand-film-caption {
+  color: var(--color-muted);
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  margin: 14px 0 0;
+  text-transform: uppercase;
+}
+
+.home-film {
+  padding: 0 clamp(18px, 4vw, 70px) clamp(52px, 7vw, 100px);
+}

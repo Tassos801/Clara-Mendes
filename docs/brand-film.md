@@ -2,7 +2,8 @@
 
 Silent, 45 seconds, 1920 × 1080, 24 fps. Rendered from `video/`
 (Remotion) out of the storefront's own mockups; hosted on Shopify Files;
-embedded on `/our-story`. Design: `superpowers/specs/2026-09-02-brand-film-design.md`.
+embedded on the homepage between the collection intro and the capsule
+carousel (Our Story carries no film, by owner decision). Design: `superpowers/specs/2026-09-02-brand-film-design.md`.
 
 ## YouTube
 

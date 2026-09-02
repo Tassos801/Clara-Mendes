@@ -630,3 +630,15 @@ is not a site bug. YouTube upload deferred by the owner.
 
 Sources: [Brand Film](modules/brand-film.md), `docs/brand-film.md`,
 `docs/superpowers/specs/2026-09-02-brand-film-design.md`.
+
+## 2026-09-02 - Brand film moved to the homepage
+
+At the owner's request the film now sits only on the homepage, between
+"Original work, ready to live with." and the capsule carousel
+(`<BrandFilm className="home-film" chapter="clay" />`); the Our Story
+embed and its route-scoped CSS were removed. `BrandFilm` takes a spacing
+class and chapter, and its video/caption styles are global in
+`app/styles/app.css`. The caption uses the ink muted token (the white
+hero token made it unreadable on paper, fixed in #69).
+
+Sources: [Brand Film](modules/brand-film.md).

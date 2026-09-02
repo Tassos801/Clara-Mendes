@@ -18,8 +18,8 @@ the close.
 - `scripts/upload-brand-film.mjs` — stages MP4 + poster into Shopify Files
   (`stagedUploadsCreate` → `fileCreate` → poll `READY`) and prints CDN URLs.
 - `app/lib/brandFilm.ts` — the two CDN URLs; `brandFilmIsLive()`.
-- `app/components/BrandFilm.tsx` — the `/our-story` section: muted,
-  looping, inline `<video>` with poster; reduced-motion shows the poster.
+- `app/components/BrandFilm.tsx` — the homepage section (between the collection intro and the capsule carousel): muted,
+  looping, inline `<video>` with poster; reduced-motion shows the poster. Video and caption styles are global in `app/styles/app.css` (`.brand-film-*`, `.home-film`). Our Story carries no film (owner decision 2026-09-02).
 - `docs/brand-film.md` — owner-facing YouTube copy and re-render steps.
 
 ## Invariants
