@@ -165,6 +165,36 @@ Sources: `app/components/ClaraProductCard.tsx`,
 `app/routes/collections.all.tsx`, `app/routes/collections.$handle.tsx`,
 `app/routes/products.$handle.tsx`.
 
+## Your Sky Guided Configurator
+
+The 2026-09-01 approved single-page refinement is implemented and locally
+verified. Your Sky now exposes Linen, Midnight Garden, and Quiet Form; shows the
+selected unframed, natural-frame, or black-frame presentation around the live
+artwork; and presents the product story and price before configuration on
+mobile. The place field is an accessible combobox with complete keyboard,
+empty, failure, retry, and clear states. A validated versioned draft survives
+same-tab navigation, and an explicit reset clears it.
+
+The purchase flow follows Personalise, Size and finish, then Review and buy.
+The review repeats style, title, place, date/time, size, finish, and price.
+Add-to-cart remains unavailable until the current validated inputs match the
+latest successful render, so a stale or failed preview cannot be purchased.
+The signed cart normalizes the customer-visible Style label from the trusted
+theme identifier; its canonical signed fields and order pipeline are unchanged.
+
+Primary sources: `app/components/SkyConfigurator.tsx`,
+`app/lib/sky/configuratorState.ts`, `app/lib/sky/params.ts`,
+`app/lib/sky/products.ts`, `app/routes/products.$handle.tsx`, and
+`app/styles/app.css`. Behavioral contracts live in
+`scripts/skyConfigurator.node-test.mjs`, `scripts/skyParams.node-test.mjs`,
+`scripts/skyProducts.node-test.mjs`, and
+`docs/superpowers/specs/2026-09-01-your-sky-refinement-design.md`.
+
+The refinement is deployed in production at `/products/your-sky-star-map` from
+merge commit `300c87d` (PR #64). The six Shopify SKUs, prices, Prodigi mappings,
+PDF geometry, checkout integration, and First Light release state remain
+explicitly unchanged.
+
 ## Admin Cleanup Relationship
 
 The code filters off-theme products defensively, but the Admin cleanup document

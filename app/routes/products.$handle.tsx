@@ -48,16 +48,25 @@ import {
   UNFRAMED_PRINT_SIZE_LABELS,
 } from '~/lib/classicFrame';
 import {NatalConfigurator} from '~/components/NatalConfigurator';
-import {SkyConfigurator} from '~/components/SkyConfigurator';
+import {
+  SkyConfigurator,
+  type SkyConfiguratorStatus,
+} from '~/components/SkyConfigurator';
 import {
   toNatalCartAttributes,
   type NatalParams,
 } from '~/lib/natal/params';
 import {NATAL_PRODUCT_HANDLE} from '~/lib/natal/products';
-import {toCartAttributes, type SkyParams} from '~/lib/sky/params';
 import {
+  formatSkyDate,
+  SKY_THEME_LABELS,
+  toCartAttributes,
+} from '~/lib/sky/params';
+import {
+  SKY_FINISH_LABELS,
   SKY_PRODUCT_TYPE,
   SKY_SIZES,
+  skyFinishFromOptions,
   skySizeFromOptions,
 } from '~/lib/sky/products';
 import {DEFAULT_SKY_THEME} from '~/lib/sky/themes';
@@ -172,6 +181,12 @@ type ClassicFrameCrossSell = {
   price: MoneyAmount;
   sizeLabel: string;
   url: string;
+};
+
+const EMPTY_SKY_STATUS: SkyConfiguratorStatus = {
+  nextRequired: 'place',
+  params: null,
+  preview: 'example',
 };
 
 function sanitizeOriginalArtProduct(product: ProductDetail): ProductDetail {
@@ -448,6 +463,7 @@ export default function Product() {
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
   const atcRef = useRef<HTMLDivElement>(null);
+  const skyIntroRef = useRef<HTMLDivElement>(null);
   const [showStickyATC, setShowStickyATC] = useState(false);
   const selectedVariant =
     product.selectedOrFirstAvailableVariant ?? product.variants.nodes[0];
@@ -463,11 +479,14 @@ export default function Product() {
   const isNatal =
     isPersonalisedType && product.handle === NATAL_PRODUCT_HANDLE;
   const isSkyMap = isPersonalisedType && !isNatal;
-  // Complete, validated personalisation from the configurator; null until
-  // the customer has filled the required fields.
-  const [skyParams, setSkyParams] = useState<SkyParams | null>(null);
+  // Complete personalisation is released only when the current preview has
+  // rendered from the exact same canonical input.
+  const [skyStatus, setSkyStatus] =
+    useState<SkyConfiguratorStatus>(EMPTY_SKY_STATUS);
+  const skyParams = skyStatus.params;
   const [natalParams, setNatalParams] = useState<NatalParams | null>(null);
   const skySize = skySizeFromOptions(selectedVariant?.selectedOptions);
+  const skyFinish = skyFinishFromOptions(selectedVariant?.selectedOptions);
   const skyAttributes =
     isSkyMap && skyParams
       ? toCartAttributes(skyParams)
@@ -493,6 +512,12 @@ export default function Product() {
     : selectedVariant?.availableForSale && selectedVariantPrice
       ? `Add - ${selectedVariantPrice}`
       : 'Sold out';
+  const skyPendingAction =
+    skyStatus.nextRequired === 'place'
+      ? {href: '#sky-place', label: 'Choose a place'}
+      : skyStatus.nextRequired === 'date'
+        ? {href: '#sky-date', label: 'Choose a date'}
+        : {href: '#sky-preview', label: 'Check your preview'};
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
   const productDescription = getProductDescription(product);
@@ -545,7 +570,7 @@ export default function Product() {
     product.images?.nodes,
   ]);
   useEffect(() => {
-    const target = atcRef.current;
+    const target = isSkyMap ? skyIntroRef.current : atcRef.current;
     if (!target) return;
     const observer = new IntersectionObserver(
       ([entry]) =>
@@ -556,7 +581,7 @@ export default function Product() {
     );
     observer.observe(target);
     return () => observer.disconnect();
-  }, []);
+  }, [isSkyMap]);
 
   useEffect(() => {
     // Snapshot the released "From" floor, never the selected variant —
@@ -699,7 +724,11 @@ export default function Product() {
         <span>{product.title}</span>
       </nav>
 
-      <section className="product-detail-layout">
+      <section
+        className={`product-detail-layout${
+          isSkyMap ? ' product-detail-layout--sky' : ''
+        }`}
+      >
         {isNatal ? (
           <NatalConfigurator
             size={skySize}
@@ -708,9 +737,10 @@ export default function Product() {
           />
         ) : isSkyMap ? (
           <SkyConfigurator
+            finish={skyFinish}
+            initialTheme={skyTheme}
+            onStatus={setSkyStatus}
             size={skySize}
-            theme={skyTheme}
-            onChange={setSkyParams}
           />
         ) : (
           <ProductGalleryCarousel
@@ -723,42 +753,62 @@ export default function Product() {
         )}
 
         <div className="product-purchase-panel">
-          <p className="eyebrow">
-            {product.productType ||
-              getVendorLabel(product.vendor) ||
-              'Curated object'}
-          </p>
-          <h1>{product.title}</h1>
-          <p className="product-lede">{productLede}</p>
-          {selectedVariant ? (
-            <ProductPrice
-              price={selectedVariant.price}
-              compareAtPrice={selectedVariant.compareAtPrice}
-            />
-          ) : null}
+          <div className="product-purchase-intro" ref={skyIntroRef}>
+            <p className="eyebrow">
+              {product.productType ||
+                getVendorLabel(product.vendor) ||
+                'Curated object'}
+            </p>
+            <h1>{product.title}</h1>
+            <p className="product-lede">{productLede}</p>
+            {selectedVariant ? (
+              <ProductPrice
+                price={selectedVariant.price}
+                compareAtPrice={selectedVariant.compareAtPrice}
+              />
+            ) : null}
 
-          <div
-            className="product-availability-row"
-            aria-label="Purchase status"
-          >
-            <span
-              className={`product-availability-chip ${
-                selectedVariant?.availableForSale
-                  ? 'is-available'
-                  : 'is-unavailable'
-              }`}
+            <div
+              className="product-availability-row"
+              aria-label="Purchase status"
             >
-              {selectedVariant?.availableForSale
-                ? 'Made to order'
-                : 'Unavailable'}
-            </span>
-            <span>
-              Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days
-            </span>
-            <span>{RETURN_WINDOW_DAYS}-day returns</span>
+              <span
+                className={`product-availability-chip ${
+                  selectedVariant?.availableForSale
+                    ? 'is-available'
+                    : 'is-unavailable'
+                }`}
+              >
+                {selectedVariant?.availableForSale
+                  ? 'Made to order'
+                  : 'Unavailable'}
+              </span>
+              <span>
+                Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days
+              </span>
+              <span>{RETURN_WINDOW_DAYS}-day returns</span>
+            </div>
           </div>
 
-          <VariantOptions product={product} selectedVariant={selectedVariant} />
+          {isSkyMap ? (
+            <section
+              aria-labelledby="sky-options-heading"
+              className="sky-product-options-stage"
+            >
+              <p className="sky-stage-heading" id="sky-options-heading">
+                <span>2</span> Size and finish
+              </p>
+              <VariantOptions
+                product={product}
+                selectedVariant={selectedVariant}
+              />
+            </section>
+          ) : (
+            <VariantOptions
+              product={product}
+              selectedVariant={selectedVariant}
+            />
+          )}
 
           {classicFrameCrossSell ? (
             <aside
@@ -827,6 +877,52 @@ export default function Product() {
             </aside>
           ) : null}
 
+          {isSkyMap && skyParams ? (
+            <section className="sky-review" aria-labelledby="sky-review-heading">
+              <p className="sky-stage-heading" id="sky-review-heading">
+                <span>3</span> Review and buy
+              </p>
+              <dl>
+                <div>
+                  <dt>Style</dt>
+                  <dd>{SKY_THEME_LABELS[skyParams.theme]}</dd>
+                </div>
+                {skyParams.title ? (
+                  <div>
+                    <dt>Title</dt>
+                    <dd>{skyParams.title}</dd>
+                  </div>
+                ) : null}
+                <div>
+                  <dt>Place</dt>
+                  <dd>{skyParams.place}</dd>
+                </div>
+                <div>
+                  <dt>Date</dt>
+                  <dd>{formatSkyDate(skyParams)}</dd>
+                </div>
+                <div>
+                  <dt>Size</dt>
+                  <dd>{SKY_SIZES[skySize].label}</dd>
+                </div>
+                <div>
+                  <dt>Finish</dt>
+                  <dd>{SKY_FINISH_LABELS[skyFinish]}</dd>
+                </div>
+                {selectedVariantPrice ? (
+                  <div>
+                    <dt>Price</dt>
+                    <dd>{selectedVariantPrice}</dd>
+                  </div>
+                ) : null}
+              </dl>
+              <p>
+                We print exactly this artwork. Screen colour and natural wood
+                grain can vary slightly.
+              </p>
+            </section>
+          ) : null}
+
           <div className="product-buy-box">
             <div className="quantity-row">
               <span>Quantity</span>
@@ -852,27 +948,38 @@ export default function Product() {
             </div>
 
             <div ref={atcRef}>
-              <AddToCartButton
-                analytics={addToCartAnalytics}
-                className="primary-button full-width"
-                disabled={purchaseBlocked}
-                lines={
-                  selectedVariant
-                    ? [
-                        {
-                          merchandiseId: selectedVariant.id,
-                          quantity,
-                          selectedVariant,
-                          ...(skyAttributes ? {attributes: skyAttributes} : {}),
-                        },
-                      ]
-                    : []
-                }
-                onSuccess={openCart}
-                pendingChildren="Adding..."
-              >
-                {purchaseButtonLabel}
-              </AddToCartButton>
+              {isSkyMap && !skyParams ? (
+                <a
+                  className="primary-button full-width"
+                  href={skyPendingAction.href}
+                >
+                  {skyPendingAction.label}
+                </a>
+              ) : (
+                <AddToCartButton
+                  analytics={addToCartAnalytics}
+                  className="primary-button full-width"
+                  disabled={purchaseBlocked}
+                  lines={
+                    selectedVariant
+                      ? [
+                          {
+                            merchandiseId: selectedVariant.id,
+                            quantity,
+                            selectedVariant,
+                            ...(skyAttributes
+                              ? {attributes: skyAttributes}
+                              : {}),
+                          },
+                        ]
+                      : []
+                  }
+                  onSuccess={openCart}
+                  pendingChildren="Adding..."
+                >
+                  {purchaseButtonLabel}
+                </AddToCartButton>
+              )}
             </div>
 
             {!isSkyMap &&
@@ -1203,26 +1310,35 @@ export default function Product() {
             ) : null}
           </div>
         </div>
-        <AddToCartButton
-          analytics={addToCartAnalytics}
-          className="primary-button sticky-atc-button"
-          disabled={purchaseBlocked}
-          lines={
-            selectedVariant
-              ? [
-                  {
-                    merchandiseId: selectedVariant.id,
-                    quantity,
-                    selectedVariant,
-                    ...(skyAttributes ? {attributes: skyAttributes} : {}),
-                  },
-                ]
-              : []
-          }
-          onSuccess={openCart}
-        >
-          {stickyButtonLabel}
-        </AddToCartButton>
+        {isSkyMap && !skyParams ? (
+          <a
+            className="primary-button sticky-atc-button"
+            href={skyPendingAction.href}
+          >
+            {skyPendingAction.label}
+          </a>
+        ) : (
+          <AddToCartButton
+            analytics={addToCartAnalytics}
+            className="primary-button sticky-atc-button"
+            disabled={purchaseBlocked}
+            lines={
+              selectedVariant
+                ? [
+                    {
+                      merchandiseId: selectedVariant.id,
+                      quantity,
+                      selectedVariant,
+                      ...(skyAttributes ? {attributes: skyAttributes} : {}),
+                    },
+                  ]
+                : []
+            }
+            onSuccess={openCart}
+          >
+            {stickyButtonLabel}
+          </AddToCartButton>
+        )}
       </div>
     </div>
   );
