@@ -683,3 +683,24 @@ class and chapter, and its video/caption styles are global in
 hero token made it unreadable on paper, fixed in #69).
 
 Sources: [Brand Film](modules/brand-film.md).
+
+## 2026-09-02 - Homepage refined around the film
+
+Owner review of the live homepage: the film ran edge to edge and the
+"Ready now" block showed the star map beside two near-identical Quiet
+Form cards, stacked screen-tall on mobile, with a proof row repeating
+the trust band. Changes: the film now follows the trust band as the
+introduction (`.home-film`, max-width 1240px, centred, eyebrow "The
+film"); "Start with an original piece" shows one print per temperament
+(`FEATURED_PRINT_HANDLES`: Quiet Form I, Patina Blue I, Midnight Garden
+I, picked from the original-art query with a fallback to best sellers)
+with new copy and no proof row; on mobile the trust band is one compact
+row, the three prints sit in a horizontal snap rail, and the collection
+eyebrow is "The collection" so it no longer wraps into the heading.
+Verified on the dev server at desktop and 375px: film after
+`.home-trust-band`, before `.home-shop-accelerator`; three print cards;
+no console errors after a clean load. The blank band after the capsule
+carousel on mobile is the Living Edit reveal animation, not layout.
+
+Sources: [Brand Film](modules/brand-film.md), `app/routes/_index.tsx`,
+`app/styles/app.css`.
