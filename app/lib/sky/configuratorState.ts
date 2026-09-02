@@ -41,6 +41,17 @@ export function nextSkyRequiredField(
   return null;
 }
 
+export function nextSkyPlaceIndex(
+  current: number,
+  key: 'ArrowDown' | 'ArrowUp',
+  count: number,
+) {
+  if (count <= 0) return -1;
+  if (current < 0) return key === 'ArrowDown' ? 0 : count - 1;
+  const delta = key === 'ArrowDown' ? 1 : -1;
+  return (current + delta + count) % count;
+}
+
 export function serializeSkyDraft(draft: SkyDraft) {
   return JSON.stringify({v: 1, ...draft});
 }

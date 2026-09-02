@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import {
   createSkyRenderKey,
   getSkyPreviewStatus,
+  nextSkyPlaceIndex,
   nextSkyRequiredField,
   parseSkyDraft,
   serializeSkyDraft,
@@ -61,6 +62,14 @@ test('next required field is deterministic', () => {
   assert.equal(nextSkyRequiredField({place: null, date: ''}), 'place');
   assert.equal(nextSkyRequiredField({place, date: ''}), 'date');
   assert.equal(nextSkyRequiredField({place, date: '2019-06-14'}), null);
+});
+
+test('the first place-list arrow selects the first result, then wraps', () => {
+  assert.equal(nextSkyPlaceIndex(-1, 'ArrowDown', 3), 0);
+  assert.equal(nextSkyPlaceIndex(-1, 'ArrowUp', 3), 2);
+  assert.equal(nextSkyPlaceIndex(2, 'ArrowDown', 3), 0);
+  assert.equal(nextSkyPlaceIndex(0, 'ArrowUp', 3), 2);
+  assert.equal(nextSkyPlaceIndex(0, 'ArrowDown', 0), -1);
 });
 
 test('preview is ready only for the exact current rendered input', () => {
@@ -168,5 +177,10 @@ test('Your Sky uses one responsive grid with theme and frame treatments', () => 
   assert.match(
     appCss,
     /@media \(max-width: 767px\)[\s\S]*?"intro"[\s\S]*?"preview"[\s\S]*?"form"[\s\S]*?"themes"[\s\S]*?"options"[\s\S]*?"review"[\s\S]*?"buy"/,
+  );
+  assert.match(
+    appCss,
+    /\.sky-field input \{[\s\S]*?scroll-margin-top:/,
+    'anchored fields must clear the fixed header',
   );
 });

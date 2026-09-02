@@ -9,6 +9,7 @@ import {loadSkyCatalog, type SkyCatalog} from '~/lib/sky/catalog';
 import {
   createSkyRenderKey,
   getSkyPreviewStatus,
+  nextSkyPlaceIndex,
   nextSkyRequiredField,
   parseSkyDraft,
   serializeSkyDraft,
@@ -201,7 +202,7 @@ export function SkyConfigurator({
       .then(({results}) => {
         if (requestId !== placesRequestRef.current) return;
         setPlaceResults(results);
-        setActivePlaceIndex(results.length > 0 ? 0 : -1);
+        setActivePlaceIndex(-1);
         setPlacesOpen(true);
         setPlacesStatus(results.length > 0 ? 'ready' : 'empty');
       })
@@ -269,10 +270,10 @@ export function SkyConfigurator({
     }
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      const delta = event.key === 'ArrowDown' ? 1 : -1;
+      const direction =
+        event.key === 'ArrowDown' ? 'ArrowDown' : 'ArrowUp';
       setActivePlaceIndex(
-        (current) =>
-          (current + delta + placeResults.length) % placeResults.length,
+        (current) => nextSkyPlaceIndex(current, direction, placeResults.length),
       );
     } else if (event.key === 'Home' || event.key === 'End') {
       event.preventDefault();

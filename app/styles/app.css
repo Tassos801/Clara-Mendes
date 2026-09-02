@@ -3656,6 +3656,7 @@ html.lenis body {
   min-height: 48px;
   min-width: 0;
   padding: 0.72rem 0.85rem;
+  scroll-margin-top: calc(var(--header-height) + 24px);
   width: 100%;
 }
 
