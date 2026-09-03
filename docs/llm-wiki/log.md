@@ -821,3 +821,25 @@ while the input shows the chosen label and a pick aborts in-flight requests.
 Self-checked on the dev server at 375×812: scrollY stable across samples,
 strip 70–139px, anchored inputs at 156px with the input as hit target, list
 never reopens after selection. Tests 152/152.
+
+## 2026-09-03 - Brand film: a play control instead of autoplay
+
+Owner: "add an elegant play button on the video". The homepage film no
+longer autoplays or loops. `BrandFilm` shows the poster with a play control
+on top: `.brand-film-control` covers the frame, a paper ring on dark glass
+with a slow breathing halo, "Watch the film" beneath, a soft vignette over
+the still. One tap plays the film inline (muted — it has no sound); while
+it runs the cluster fades out and the frame stays the pause target (a
+"Pause" pill appears bottom-right on hover); a tap pauses ("Resume"); at
+the end the poster returns with "Watch again" (`load()` after `ended`).
+States idle / playing / paused / ended ride `data-film-state`; reduced
+motion drops the halo and the scale transitions; coarse pointers drop the
+backdrop blur. `scripts/brandFilm.node-test.mjs` pins the CDN sources and
+the no-autoplay invariant. Checked on the dev server: desktop 1920 (idle,
+playing with the hover hint, ended → "Watch again") in the owner's Chrome
+and 375×812 (idle, paused → "Resume") in the Browser pane; the pane's
+event log ran play → seek → end → `ended` → poster reload. Gotcha: the
+owner's Chrome tab sat behind the desktop app (`visibilityState=hidden`),
+so Chrome itself paused the muted video ~10 ms after `play()` — not the
+component; the visible pane played through. Tests 154/154, lint and
+typecheck clean.
