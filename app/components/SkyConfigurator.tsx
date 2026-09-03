@@ -1,10 +1,4 @@
-import {
-  type KeyboardEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import {type KeyboardEvent, useEffect, useMemo, useRef, useState} from 'react';
 import {loadSkyCatalog, type SkyCatalog} from '~/lib/sky/catalog';
 import {
   createSkyRenderKey,
@@ -225,9 +219,12 @@ export function SkyConfigurator({
     return () => window.removeEventListener(SKY_PRESET_EVENT, applyPreset);
   }, []);
 
-  // On narrow screens the preview sticks below the header while the form
-  // is filled in. Once it is actually pinned (its top edge sits at the
-  // sticky offset) it collapses to a strip so the inputs stay visible.
+  // On narrow screens the full preview scrolls away like any other block.
+  // Once it has left the viewport, a fixed strip (thumbnail, status and a
+  // way back) stands in for it until the buying panel has scrolled past.
+  // Nothing in the flow ever changes size, so the browser never has to
+  // re-anchor the scroll position — which is what made the old collapsing
+  // preview flicker and jump on phones.
   useEffect(() => {
     const preview = previewRef.current;
     if (!preview) return;
@@ -239,19 +236,43 @@ export function SkyConfigurator({
         setCompactPreview(false);
         return;
       }
-      const stickyTop = parseFloat(getComputedStyle(preview).top) || 0;
-      const pinned = preview.getBoundingClientRect().top <= stickyTop + 1;
-      setCompactPreview(pinned && window.scrollY > 0);
+      const headerHeight =
+        parseFloat(
+          getComputedStyle(document.documentElement).getPropertyValue(
+            '--header-height',
+          ),
+        ) || 60;
+      const stage =
+        preview.closest('.product-detail-layout') ?? preview.parentElement;
+      const previewGone =
+        preview.getBoundingClientRect().bottom <= headerHeight;
+      const stageInView = stage
+        ? stage.getBoundingClientRect().bottom > headerHeight + 160
+        : true;
+      setCompactPreview(previewGone && stageInView);
+    };
+    // One measurement per frame while scrolling, with a short timer as the
+    // fallback for throttled or hidden documents. The strip is a fixed
+    // overlay, so flipping it never changes layout or feeds back into scroll.
+    let raf = 0;
+    const run = () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      if (timer) window.clearTimeout(timer);
+      raf = 0;
+      timer = 0;
+      measure();
     };
     const schedule = () => {
-      if (timer) window.clearTimeout(timer);
-      timer = window.setTimeout(measure, 60);
+      if (raf || timer) return;
+      raf = window.requestAnimationFrame(run);
+      timer = window.setTimeout(run, 80);
     };
     measure();
     window.addEventListener('scroll', schedule, {passive: true});
     window.addEventListener('resize', schedule);
     narrow.addEventListener('change', schedule);
     return () => {
+      if (raf) window.cancelAnimationFrame(raf);
       if (timer) window.clearTimeout(timer);
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
@@ -260,11 +281,23 @@ export function SkyConfigurator({
   }, []);
 
   const debouncedQuery = useDebounced(placeQuery, 200);
+  // Mirrors the live input so the search effect can tell a fresh keystroke
+  // from the moment right after a pick, when the debounced query still
+  // holds what was typed but the field already shows the chosen label.
+  const placeQueryRef = useRef(placeQuery);
+  useEffect(() => {
+    placeQueryRef.current = placeQuery;
+  }, [placeQuery]);
+  const selectedLabel = place?.label ?? null;
   useEffect(() => {
     abortRef.current?.abort();
     const requestId = ++placesRequestRef.current;
     const query = debouncedQuery.trim();
-    if (query.length < 2 || place?.label === debouncedQuery) {
+    if (
+      query.length < 2 ||
+      selectedLabel === debouncedQuery ||
+      (selectedLabel !== null && placeQueryRef.current === selectedLabel)
+    ) {
       setPlaceResults([]);
       setPlacesStatus('idle');
       return;
@@ -301,9 +334,12 @@ export function SkyConfigurator({
         setPlacesOpen(true);
       });
     return () => controller.abort();
-  }, [debouncedQuery, place?.label, placesAttempt]);
+  }, [debouncedQuery, placesAttempt, selectedLabel]);
 
   function selectPlace(result: PlaceResult) {
+    // A search still in flight must not reopen the list over the pick.
+    abortRef.current?.abort();
+    placesRequestRef.current += 1;
     setPlace(result);
     setPlaceQuery(result.label);
     setPlaceResults([]);
@@ -352,16 +388,13 @@ export function SkyConfigurator({
     }
     if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
       event.preventDefault();
-      const direction =
-        event.key === 'ArrowDown' ? 'ArrowDown' : 'ArrowUp';
-      setActivePlaceIndex(
-        (current) => nextSkyPlaceIndex(current, direction, placeResults.length),
+      const direction = event.key === 'ArrowDown' ? 'ArrowDown' : 'ArrowUp';
+      setActivePlaceIndex((current) =>
+        nextSkyPlaceIndex(current, direction, placeResults.length),
       );
     } else if (event.key === 'Home' || event.key === 'End') {
       event.preventDefault();
-      setActivePlaceIndex(
-        event.key === 'Home' ? 0 : placeResults.length - 1,
-      );
+      setActivePlaceIndex(event.key === 'Home' ? 0 : placeResults.length - 1);
     } else if (event.key === 'Enter' && activePlaceIndex >= 0) {
       event.preventDefault();
       selectPlace(placeResults[activePlaceIndex]);
@@ -477,7 +510,7 @@ export function SkyConfigurator({
     <div className="sky-configurator">
       <section
         aria-label="Your Sky artwork preview"
-        className={compactPreview ? 'sky-preview sky-preview--compact' : 'sky-preview'}
+        className="sky-preview"
         ref={previewRef}
         id="sky-preview"
         tabIndex={-1}
@@ -489,7 +522,7 @@ export function SkyConfigurator({
           >
             {PREVIEW_LABELS[preview]}
           </span>
-          {readyParams && !compactPreview ? (
+          {readyParams ? (
             <button
               className="sky-inline-action"
               onClick={copyShareLink}
@@ -514,7 +547,7 @@ export function SkyConfigurator({
           ) : null}
         </div>
         {rendered.kind === 'ready' ? (
-          view === 'wall' && !compactPreview ? (
+          view === 'wall' ? (
             <div className={`sky-wall sky-wall--${size} sky-wall--${finish}`}>
               <img
                 alt=""
@@ -551,12 +584,16 @@ export function SkyConfigurator({
             {preview === 'error' ? 'Preview unavailable' : 'Charting your sky…'}
           </div>
         )}
-        {rendered.kind === 'ready' && !compactPreview ? (
+        {rendered.kind === 'ready' ? (
           <div className="sky-preview-footer">
             <p className="sky-preview-facts">
               {describeSkyScene(rendered.scene, previewInput.lat)}
             </p>
-            <div aria-label="Preview view" className="sky-view-toggle" role="group">
+            <div
+              aria-label="Preview view"
+              className="sky-view-toggle"
+              role="group"
+            >
               <button
                 aria-pressed={view === 'print'}
                 onClick={() => setView('print')}
@@ -580,6 +617,29 @@ export function SkyConfigurator({
           </p>
         ) : null}
       </section>
+
+      {compactPreview ? (
+        <a
+          aria-label="Back to your preview"
+          className="sky-preview-strip"
+          href="#sky-preview"
+          onClick={(event) => {
+            event.preventDefault();
+            previewRef.current?.scrollIntoView({block: 'start'});
+          }}
+        >
+          <img alt="" src={platePath(theme, 'preview')} />
+          <span className="sky-preview-strip-text">
+            <span className={`sky-preview-status is-${preview}`}>
+              {PREVIEW_LABELS[preview]}
+            </span>
+            <span className="sky-preview-strip-summary">
+              {place ? place.label : 'Add your place and date'}
+            </span>
+          </span>
+          <span className="sky-preview-strip-cta">View</span>
+        </a>
+      ) : null}
 
       <form
         aria-label="Personalise your star map"
@@ -612,9 +672,7 @@ export function SkyConfigurator({
             aria-autocomplete="list"
             aria-controls={listId}
             aria-describedby={
-              placeError
-                ? `${placeStatusId} sky-place-error`
-                : placeStatusId
+              placeError ? `${placeStatusId} sky-place-error` : placeStatusId
             }
             aria-expanded={placesOpen && placeResults.length > 0}
             aria-invalid={Boolean(placeError)}
@@ -776,7 +834,10 @@ export function SkyConfigurator({
         </div>
       </form>
 
-      <fieldset aria-label="Choose the artwork style" className="sky-theme-picker">
+      <fieldset
+        aria-label="Choose the artwork style"
+        className="sky-theme-picker"
+      >
         <legend>
           <span>2</span> Style
         </legend>

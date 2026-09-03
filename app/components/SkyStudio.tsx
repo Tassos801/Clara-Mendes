@@ -1,4 +1,11 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {
+  type MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import {ProductPrice} from '~/components/ProductPrice';
@@ -115,6 +122,19 @@ export function SkyStudio({
       : skyStatus.nextRequired === 'date'
         ? {href: '#sky-date', label: 'Choose a date'}
         : {href: '#sky-preview', label: 'Check your preview'};
+
+  // A bare anchor does nothing when the hash already matches (a second tap,
+  // or after "View" on the preview strip), so scroll explicitly and focus the
+  // field; the href stays as the no-JS fallback.
+  const goToPending = (event: MouseEvent<HTMLAnchorElement>) => {
+    const target = document.querySelector<HTMLElement>(pendingAction.href);
+    if (!target) return;
+    event.preventDefault();
+    target.scrollIntoView({block: 'start'});
+    if (target instanceof HTMLInputElement) {
+      target.focus({preventScroll: true});
+    }
+  };
 
   const lines = useMemo(
     () =>
@@ -288,8 +308,8 @@ export function SkyStudio({
                 />
                 <p>
                   <span>
-                    Printed on a card inside the parcel, never on the
-                    artwork. No prices inside.
+                    Printed on a card inside the parcel, never on the artwork.
+                    No prices inside.
                   </span>
                   <span aria-live="polite">
                     {[...giftNote].length}/{GIFT_NOTE_MAX}
@@ -308,6 +328,7 @@ export function SkyStudio({
               <a
                 className="primary-button full-width"
                 href={pendingAction.href}
+                onClick={goToPending}
               >
                 {pendingAction.label}
               </a>
@@ -350,6 +371,7 @@ export function SkyStudio({
           <a
             className="primary-button sticky-atc-button"
             href={pendingAction.href}
+            onClick={goToPending}
           >
             {pendingAction.label}
           </a>

@@ -127,10 +127,18 @@ export default function YourSkyPage() {
             <li key={occasion.title}>
               <a
                 href="#sky-place"
-                onClick={() => {
+                onClick={(event) => {
                   window.dispatchEvent(
-                    new CustomEvent(SKY_PRESET_EVENT, {detail: occasion.preset}),
+                    new CustomEvent(SKY_PRESET_EVENT, {
+                      detail: occasion.preset,
+                    }),
                   );
+                  // Scroll explicitly: the hash may already be #sky-place.
+                  const field = document.getElementById('sky-place');
+                  if (field) {
+                    event.preventDefault();
+                    field.scrollIntoView({block: 'start'});
+                  }
                 }}
               >
                 <img
