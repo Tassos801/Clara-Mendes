@@ -802,3 +802,22 @@ fetches and prints the slip.
 Sources: `app/lib/sky/gift.ts`, `app/lib/sky/slip.server.ts`,
 `app/lib/sky/cartLines.server.ts`, `app/lib/sky/fulfilment.ts`,
 `app/routes/api.sky-slip.$token[.pdf].tsx`, `app/components/SkyStudio.tsx`.
+
+## 2026-09-02 - Your Sky mobile fixes after the owner's "buggy on mobile"
+
+A fresh adversarial verifier reproduced three phone defects on the live page:
+the compact sticky preview shrank its own in-flow height while pinned, so
+Chrome's scroll anchoring toggled it every scroll tick (scrollY bouncing by
+~445px); the pending-action anchors landed the Place field under that strip;
+and the place list reopened for ~200ms after a pick (the search effect
+re-ran on `place.label` with the stale debounced query). Fix: on phones the
+preview stays in normal flow and a fixed `.sky-preview-strip` (plate
+thumbnail, status, place, "View") stands in once it has scrolled out above,
+measured per frame with a timer fallback — no layout change, so nothing to
+re-anchor; anchored fields clear header + strip (`scroll-margin-top`); the
+pending actions, the strip and the occasion cards scroll explicitly (a bare
+hash link is inert when the hash already matches); the search effect bails
+while the input shows the chosen label and a pick aborts in-flight requests.
+Self-checked on the dev server at 375×812: scrollY stable across samples,
+strip 70–139px, anchored inputs at 156px with the input as hit target, list
+never reopens after selection. Tests 152/152.

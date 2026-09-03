@@ -4106,47 +4106,69 @@ html.lenis body {
   }
 
   .product-detail-layout--sky .sky-preview {
-    position: sticky;
+    position: relative;
+    scroll-margin-top: calc(var(--header-height) + 10px);
+    top: auto;
+  }
+
+  /* Anchored fields must clear the header and the preview strip. */
+  .product-detail-layout--sky .sky-field input {
+    scroll-margin-top: calc(var(--header-height) + 96px);
+  }
+
+  /* Fixed stand-in for the preview once it has scrolled out above. */
+  .sky-preview-strip {
+    align-items: center;
+    backdrop-filter: blur(14px) saturate(1.1);
+    -webkit-backdrop-filter: blur(14px) saturate(1.1);
+    background: rgba(251, 250, 246, 0.94);
+    border: 1px solid rgba(38, 35, 31, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(55, 48, 39, 0.22);
+    color: var(--color-ink);
+    column-gap: 12px;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    left: 12px;
+    padding: 6px 14px 6px 6px;
+    position: fixed;
+    right: 12px;
+    text-decoration: none;
     top: calc(var(--header-height) + 10px);
-    transition: box-shadow 200ms ease;
     z-index: 4;
   }
 
-  .product-detail-layout--sky .sky-preview--compact {
-    align-items: center;
-    box-shadow: 0 12px 30px rgba(55, 48, 39, 0.22);
-    column-gap: 12px;
-    display: grid;
-    grid-template-columns: 64px minmax(0, 1fr);
-    padding: 6px 12px 6px 6px;
-  }
-
-  .product-detail-layout--sky .sky-preview--compact .sky-preview-toolbar {
-    background: none;
-    border: 0;
-    min-height: 0;
-    order: 2;
-    padding: 0;
-  }
-
-  .product-detail-layout--sky .sky-preview--compact .sky-preview-frame,
-  .product-detail-layout--sky .sky-preview--compact .sky-preview-loading {
+  .sky-preview-strip img {
     aspect-ratio: 4 / 5;
-    background: #f6f2ea;
     border-radius: 4px;
-    font-size: 0;
-    order: 1;
+    display: block;
+    object-fit: cover;
+    width: 44px;
+  }
+
+  .sky-preview-strip-text {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .sky-preview-strip .sky-preview-status {
+    justify-content: flex-start;
+    min-height: 0;
+  }
+
+  .sky-preview-strip-summary {
+    color: var(--color-muted);
+    font-size: 0.78rem;
     overflow: hidden;
-    padding: 0;
-    width: 64px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .product-detail-layout--sky .sky-preview--compact .sky-preview-svg {
-    box-shadow: none;
-  }
-
-  .product-detail-layout--sky .sky-preview--compact .sky-preview-hint {
-    display: none;
+  .sky-preview-strip-cta {
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .product-detail-layout--sky .product-purchase-intro,

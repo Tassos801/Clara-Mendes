@@ -46,7 +46,10 @@ const complete = {
 test('draft codec preserves valid incomplete state and rejects unsafe state', () => {
   assert.equal(SKY_DRAFT_STORAGE_KEY, 'cm:your-sky:draft:v1');
   const incomplete = {...complete, date: ''};
-  assert.deepEqual(parseSkyDraft(serializeSkyDraft(incomplete), 'linen'), incomplete);
+  assert.deepEqual(
+    parseSkyDraft(serializeSkyDraft(incomplete), 'linen'),
+    incomplete,
+  );
   assert.equal(parseSkyDraft('{bad json', 'linen'), null);
   assert.equal(
     parseSkyDraft(JSON.stringify({...complete, theme: 'neon'}), 'linen'),
@@ -182,5 +185,24 @@ test('Your Sky uses one responsive grid with theme and frame treatments', () => 
     appCss,
     /\.sky-field input \{[\s\S]*?scroll-margin-top:/,
     'anchored fields must clear the fixed header',
+  );
+  // On phones the preview must stay in normal flow (a sticky block that
+  // changes height while pinned makes the page re-anchor and flicker); a
+  // fixed strip stands in for it, and anchored fields clear that strip.
+  const phone = appCss.slice(appCss.indexOf('@media (max-width: 767px)'));
+  assert.match(
+    phone,
+    /\.product-detail-layout--sky \.sky-preview \{[\s\S]*?position: relative;/,
+    'the phone preview must not be sticky',
+  );
+  assert.ok(
+    !appCss.includes('.sky-preview--compact'),
+    'collapsing preview left',
+  );
+  assert.match(phone, /\.sky-preview-strip \{[\s\S]*?position: fixed;/);
+  assert.match(
+    phone,
+    /\.product-detail-layout--sky \.sky-field input \{\s*scroll-margin-top: calc\(var\(--header-height\) \+ 96px\);/,
+    'anchored fields must clear the preview strip',
   );
 });
