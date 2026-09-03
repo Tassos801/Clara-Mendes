@@ -18,8 +18,10 @@ the close.
 - `scripts/upload-brand-film.mjs` — stages MP4 + poster into Shopify Files
   (`stagedUploadsCreate` → `fileCreate` → poll `READY`) and prints CDN URLs.
 - `app/lib/brandFilm.ts` — the two CDN URLs; `brandFilmIsLive()`.
-- `app/components/BrandFilm.tsx` — the homepage section (between the collection intro and the capsule carousel): muted,
-  looping, inline `<video>` with poster; reduced-motion shows the poster. Video and caption styles are global in `app/styles/app.css` (`.brand-film-*`, `.home-film`). Our Story carries no film (owner decision 2026-09-02).
+- `app/components/BrandFilm.tsx` — the homepage section (right after the trust band): poster first with a play control
+  on top (`.brand-film-control` covers the frame; states idle / playing / paused / ended via `data-film-state`); the film
+  plays inline, muted, on the visitor's tap, pauses on another, and returns to the poster with "Watch again" when it ends.
+  No autoplay. Video and caption styles are global in `app/styles/app.css` (`.brand-film-*`, `.home-film`). Our Story carries no film (owner decision 2026-09-02).
 - `docs/brand-film.md` — owner-facing YouTube copy and re-render steps.
 
 ## Invariants
