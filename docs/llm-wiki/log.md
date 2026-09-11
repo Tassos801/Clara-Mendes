@@ -843,3 +843,40 @@ owner's Chrome tab sat behind the desktop app (`visibilityState=hidden`),
 so Chrome itself paused the muted video ~10 ms after `play()` — not the
 component; the visible pane played through. Tests 154/154, lint and
 typecheck clean.
+
+## 2026-09-11 - Bug sweep: search, cart rejections, redirects, tokens
+
+Owner: "improve the code and fix bugs on my shop". Three read-only audits
+(routes/server, client components, Your Sky/fulfilment) plus live checks.
+Fixed and verified on the dev server (174 tests, lint and typecheck clean):
+`/search` no longer 500s on a bad cursor or `direction=previous` (live repro:
+HTTP 500 on `?cursor=garbage`) — the loader's `.catch` was attached to a
+promise nobody awaited; a sold-out add-to-cart now shows Shopify's message
+under the button instead of opening the drawer on a €0.00 quantity-zero line
+(Shopify reports stock through `warnings`, not `userErrors`; the action drops
+the empty line); quantity, remove, discount and gift-card forms surface
+errors; `isLocalPath` rejects the tab/backslash open redirect; paginated
+loaders redirect a bad cursor to page one; sitemap children validate params,
+link articles under the journal and drop redirecting collections; wrongly
+cased product handles 301; drawers close on history navigation and their
+scrims carry `data-lenis-prevent`; gtag commands are pushed as `arguments`
+objects (consent mode was silently ignored); review dates format in UTC;
+review photo previews are revoked only on unmount; the wall-set add opens
+the drawer; the sky configurator names an out-of-range date instead of
+"Charting your sky…" forever and keeps share-link drafts; print/slip tokens
+are signed over a purpose so the cart `_sig` cannot fetch the print PDF
+(verified: forged token 404, minted token 200); the webhook acknowledges
+Prodigi 4xx instead of exhausting Shopify's retries; blank recipient fields
+are omitted; blank coordinates are rejected. Not done: durable "needs
+attention" flagging (Admin API), natal typeahead re-open guard (product dark),
+wall-set optimistic `selectedVariant`.
+
+Verifier round (same day): FAIL on one criterion — a cart carrying an
+inapplicable discount code made every later add look refused, because Shopify
+re-attaches a cart-level `DISCOUNT_NOT_FOUND` warning to each mutation and the
+forms showed every warning. The action now returns only warnings relevant to
+the submitted change (`relevantCartWarnings`, tested), mutations return a
+fuller cart fragment (`CART_MUTATE_FRAGMENT`: attributes, line ids and
+variants), and the webhook acknowledges only Prodigi 400/409/422 so an auth
+failure keeps Shopify's retries. Self-checked on the dev server after the
+fix; not independently re-verified.

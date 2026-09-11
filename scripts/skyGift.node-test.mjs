@@ -202,7 +202,7 @@ test('the webhook turns a signed note into a Prodigi packing slip', async () => 
     /^https:\/\/shopclaramendes\.com\/api\/sky-slip\/[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.pdf$/,
   );
   const token = url.split('/api/sky-slip/')[1].replace(/\.pdf$/, '');
-  const decoded = await decodeCanonicalToken(token, SECRET);
+  const decoded = await decodeCanonicalToken(token, SECRET, 'slip');
   assert.equal(decoded.ok, true);
   const slip = parseSlipCanonical(decoded.canonical);
   assert.deepEqual(slip, {ok: true, orderName: '#1077', note: NOTE});
@@ -219,7 +219,7 @@ test('notes are deduplicated across lines, absent without a note, fatal when tam
     .split('/api/sky-slip/')[1]
     .replace(/\.pdf$/, '');
   const slip = parseSlipCanonical(
-    (await decodeCanonicalToken(token, SECRET)).canonical,
+    (await decodeCanonicalToken(token, SECRET, 'slip')).canonical,
   );
   assert.equal(slip.note, `${NOTE}\nSecond card.`);
 

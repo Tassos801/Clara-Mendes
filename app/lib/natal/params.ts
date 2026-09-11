@@ -7,6 +7,7 @@
  */
 import {
   isValidTimeZone,
+  parseCoordinate,
   sanitizeText,
   unprintableCharacters,
   type CartAttribute,
@@ -96,11 +97,11 @@ export function validateNatalParams(input: NatalParamsInput): NatalValidation {
     return {ok: false, error: 'Enter a time such as 07:32, or leave it blank.'};
   }
 
-  const lat = Number(input.lat);
-  const lon = Number(input.lon);
+  const lat = parseCoordinate(input.lat);
+  const lon = parseCoordinate(input.lon);
   if (
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lon) ||
+    lat === null ||
+    lon === null ||
     Math.abs(lat) > 90 ||
     Math.abs(lon) > 180
   ) {

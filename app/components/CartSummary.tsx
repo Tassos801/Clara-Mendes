@@ -5,6 +5,11 @@ import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {useMarketingCheckoutUrl} from '~/hooks/useMarketingCheckoutUrl';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
+import {
+  getCartFormErrorMessages,
+  getInapplicableDiscountMessages,
+} from '~/lib/cartFormErrors';
+import {CartFormError} from './CartFormError';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -83,6 +88,10 @@ function CartDiscounts({
     discountCodes
       ?.filter((discount) => discount.applicable)
       ?.map(({code}) => code) || [];
+  // Shopify keeps an unknown or unmet code on the cart with
+  // `applicable: false` and reports no error, so the cart itself is the
+  // only place the refusal shows up.
+  const [inapplicableMessage] = getInapplicableDiscountMessages(discountCodes);
 
   return (
     <section aria-label="Discounts">
@@ -123,6 +132,11 @@ function CartDiscounts({
             Apply
           </button>
         </div>
+        {inapplicableMessage ? (
+          <p className="cart-form-error" role="alert">
+            {inapplicableMessage}
+          </p>
+        ) : null}
       </UpdateDiscountForm>
     </section>
   );
@@ -143,7 +157,12 @@ function UpdateDiscountForm({
         discountCodes: discountCodes || [],
       }}
     >
-      {children}
+      {(fetcher) => (
+        <>
+          {children}
+          <CartFormError data={fetcher.data} />
+        </>
+      )}
     </CartForm>
   );
 }
@@ -164,7 +183,12 @@ function CartGiftCard({
   const [removedCardIndex, setRemovedCardIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    if (giftCardAddFetcher.data) {
+    // Clear the code only once Shopify accepted it; a refused code stays in
+    // the field beside its message so the customer can correct it.
+    if (
+      giftCardAddFetcher.data &&
+      getCartFormErrorMessages(giftCardAddFetcher.data).length === 0
+    ) {
       if (giftCardCodeInput.current !== null) {
         giftCardCodeInput.current.value = '';
       }
@@ -252,6 +276,7 @@ function CartGiftCard({
             Apply
           </button>
         </div>
+        <CartFormError data={giftCardAddFetcher.data} />
       </AddGiftCardForm>
     </section>
   );

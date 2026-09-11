@@ -8,6 +8,10 @@ import {
   MARKETING_ATTRIBUTION_INPUT_NAME,
   mergeCartAttributes,
 } from '~/lib/marketingAttribution';
+import {
+  relevantCartWarnings,
+  removeUnfulfilledLines,
+} from '~/lib/cartLineWarnings';
 import {isLocalPath} from '~/lib/redirect';
 import {signSkyCartLines} from '~/lib/sky/cartLines.server';
 
@@ -32,6 +36,12 @@ export async function action({request, context}: Route.ActionArgs) {
 
   let status = 200;
   let result;
+  // What the customer submitted, so only warnings about that change reach
+  // the form: Shopify re-attaches cart-level warnings (an inapplicable
+  // discount code, say) to every later mutation.
+  let submittedLineIds: string[] = [];
+  let submittedMerchandiseIds: string[] = [];
+  let warnedLines: Parameters<typeof relevantCartWarnings>[0]['lines'];
 
   switch (action) {
     case CartForm.ACTIONS.AttributesUpdateInput:
@@ -48,7 +58,17 @@ export async function action({request, context}: Route.ActionArgs) {
       if (!signed.ok) {
         return data({errors: [{message: signed.error}]}, {status: 400});
       }
-      result = await cart.addLines(signed.lines);
+      const added = await cart.addLines(signed.lines);
+      submittedMerchandiseIds = signed.lines.map((line) => line.merchandiseId);
+      warnedLines = added.cart?.lines?.nodes;
+      // Shopify keeps a sold-out line at quantity zero and only warns; drop
+      // it again so the cart holds what the customer actually got, and let
+      // the warning travel back to the form as the failure message.
+      result = await removeUnfulfilledLines({
+        result: added,
+        removeLines: (lineIds) =>
+          cart.removeLines(lineIds, {cartId: added.cart?.id}),
+      });
       result = await updateCartAttribution({
         cart,
         formData,
@@ -57,9 +77,13 @@ export async function action({request, context}: Route.ActionArgs) {
       break;
     }
     case CartForm.ACTIONS.LinesUpdate:
+      submittedLineIds = (inputs.lines as Array<{id: string}>).map(
+        (line) => line.id,
+      );
       result = await cart.updateLines(inputs.lines);
       break;
     case CartForm.ACTIONS.LinesRemove:
+      submittedLineIds = inputs.lineIds as string[];
       result = await cart.removeLines(inputs.lineIds);
       break;
     case CartForm.ACTIONS.DiscountCodesUpdate: {
@@ -108,7 +132,13 @@ export async function action({request, context}: Route.ActionArgs) {
       cart: cartResult,
       errors: result?.errors,
       userErrors: result?.userErrors,
-      warnings: result?.warnings,
+      warnings: relevantCartWarnings({
+        action,
+        warnings: result?.warnings,
+        lineIds: submittedLineIds,
+        merchandiseIds: submittedMerchandiseIds,
+        lines: warnedLines ?? cartResult?.lines?.nodes,
+      }),
     },
     {status, headers},
   );

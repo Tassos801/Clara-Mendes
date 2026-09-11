@@ -7,6 +7,10 @@ import {
   type RegularSearchReturn,
   type PredictiveSearchReturn,
   getEmptyPredictiveSearchResult,
+  getEmptyRegularSearchResult,
+  getSearchTerm,
+  runSearch,
+  SEARCH_PARTIAL_MESSAGE,
 } from '~/lib/search';
 import type {
   RegularSearchQuery,
@@ -28,21 +32,26 @@ export const meta: Route.MetaFunction = ({data}) => {
 
 export async function loader({request, context}: Route.LoaderArgs) {
   const url = new URL(request.url);
-  const isPredictive = url.searchParams.has('predictive');
-  const searchPromise: Promise<PredictiveSearchReturn | RegularSearchReturn> =
-    isPredictive
-      ? predictiveSearch({request, context})
-      : regularSearch({request, context});
+  const term = getSearchTerm(url);
+  const seoUrl = getCanonicalUrl(request, '/search');
 
-  searchPromise.catch((error: Error) => {
-    console.error(error);
-    return {term: '', result: null, error: error.message};
-  });
+  // A Storefront API failure must not throw here: that would swap the whole
+  // page for the route error boundary. `runSearch` logs it and returns an
+  // empty result carrying a short customer-facing message instead.
+  const search: PredictiveSearchReturn | RegularSearchReturn =
+    url.searchParams.has('predictive')
+      ? await runSearch({
+          type: 'predictive',
+          term,
+          search: () => predictiveSearch({request, context}),
+        })
+      : await runSearch({
+          type: 'regular',
+          term,
+          search: () => regularSearch({request, context}),
+        });
 
-  return {
-    ...(await searchPromise),
-    seoUrl: getCanonicalUrl(request, '/search'),
-  };
+  return {...search, seoUrl};
 }
 
 /**
@@ -88,9 +97,7 @@ export default function SearchPage() {
           {error}
         </p>
       )}
-      {!term || !result?.total ? (
-        <SearchResults.Empty term={term} />
-      ) : (
+      {result.total > 0 ? (
         <SearchResults result={result} term={term}>
           {({articles, pages, products, term}) => (
             <div className="search-page-results">
@@ -100,6 +107,8 @@ export default function SearchPage() {
             </div>
           )}
         </SearchResults>
+      ) : error ? null : (
+        <SearchResults.Empty term={term} />
       )}
       <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />
     </div>
@@ -214,10 +223,12 @@ export const SEARCH_QUERY = `#graphql
     $term: String!
     $startCursor: String
   ) @inContext(country: $country, language: $language) {
+    # Articles and pages are not paginated: a fixed page size keeps these
+    # valid when the products connection is walked backwards ($last only).
     articles: search(
       query: $term,
       types: [ARTICLE],
-      first: $first,
+      first: 8,
     ) {
       nodes {
         ...on Article {
@@ -228,7 +239,7 @@ export const SEARCH_QUERY = `#graphql
     pages: search(
       query: $term,
       types: [PAGE],
-      first: $first,
+      first: 8,
     ) {
       nodes {
         ...on Page {
@@ -275,7 +286,10 @@ async function regularSearch({
   const {storefront} = context;
   const url = new URL(request.url);
   const variables = getPaginationVariables(request, {pageBy: 8});
-  const term = String(url.searchParams.get('q') || '');
+  const term = getSearchTerm(url);
+  const type = 'regular';
+
+  if (!term) return {type, term, result: getEmptyRegularSearchResult()};
 
   // Search articles, pages, and products for the `q` term
   const {
@@ -286,8 +300,19 @@ async function regularSearch({
       variables: {...variables, term},
     });
 
-  if (!items) {
-    throw new Error('No search data returned from Shopify API');
+  // GraphQL errors arrive beside the data rather than throwing. With no data
+  // there is nothing to render, so fail into the loader's fallback; with
+  // partial data, render what arrived and say so.
+  if (!items.articles?.nodes || !items.pages?.nodes || !items.products?.nodes) {
+    throw new Error(
+      errors?.length
+        ? `Shopify API errors: ${errors.map(({message}) => message).join(', ')}`
+        : 'No search data returned from Shopify API',
+    );
+  }
+
+  if (errors?.length) {
+    console.error('Search returned partial results.', errors);
   }
 
   const filteredItems = {
@@ -303,11 +328,12 @@ async function regularSearch({
     0,
   );
 
-  const error = errors
-    ? errors.map(({message}: {message: string}) => message).join(', ')
-    : undefined;
-
-  return {type: 'regular', term, error, result: {total, items: filteredItems}};
+  return {
+    type,
+    term,
+    error: errors?.length ? SEARCH_PARTIAL_MESSAGE : undefined,
+    result: {total, items: filteredItems},
+  };
 }
 
 /**
@@ -450,7 +476,7 @@ async function predictiveSearch({
 >): Promise<PredictiveSearchReturn> {
   const {storefront} = context;
   const url = new URL(request.url);
-  const term = String(url.searchParams.get('q') || '').trim();
+  const term = getSearchTerm(url);
   const limit = Math.min(
     Math.max(Number(url.searchParams.get('limit')) || 10, 1),
     20,

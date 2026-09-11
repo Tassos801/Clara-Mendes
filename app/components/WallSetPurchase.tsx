@@ -3,6 +3,7 @@ import type {CurrencyCode} from '@shopify/hydrogen/storefront-api-types';
 import {useMemo, useState} from 'react';
 import {Link} from 'react-router';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {useAside} from '~/components/Aside';
 import {
   PRINT_SIZE_SPECS,
   type PrintSizeKey,
@@ -56,6 +57,7 @@ export function WallSetPurchase({
   );
 
   const built = bySize[size];
+  const {open} = useAside();
   const analytics = useMemo(() => {
     if (!built) return undefined;
     return {
@@ -175,6 +177,7 @@ export function WallSetPurchase({
             className="primary-button wall-set-add"
             disabled={!built}
             lines={built?.lines ?? []}
+            onSuccess={() => open('cart')}
             pendingChildren="Adding the wall…"
           >
             Add the wall to cart — 3 prints

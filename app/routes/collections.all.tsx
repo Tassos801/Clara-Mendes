@@ -7,6 +7,7 @@ import {
   useSearchParams,
 } from 'react-router';
 import {Analytics, getPaginationVariables, Pagination} from '@shopify/hydrogen';
+import {ensurePaginatedData} from '~/lib/pagination';
 import type {Route} from './+types/collections.all';
 import {
   ClaraProductCard,
@@ -135,6 +136,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       query: searchQuery || null,
     },
   });
+  ensurePaginatedData(request, data);
 
   return {
     activeCapsule: capsule?.slug ?? null,

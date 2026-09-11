@@ -111,7 +111,7 @@ export async function buildProdigiOrderFromShopify(
       if (!variant) {
         return {kind: 'problem', reason: `Line ${line.id}: unknown SKU ${line.sku ?? '(none)'}.`};
       }
-      const token = await encodeCanonicalToken(canonical, secret);
+      const token = await encodeCanonicalToken(canonical, secret, 'print');
       items.push({
         merchantReference: `line:${line.id}`,
         sku: variant.prodigiSku,
@@ -155,10 +155,14 @@ export async function buildProdigiOrderFromShopify(
   const name =
     a.name || [a.first_name, a.last_name].filter(Boolean).join(' ') || 'Customer';
 
-  // Prodigi rejects empty-string address parts (MustNotBeEmptyOrWhitespace),
-  // so optional lines are omitted entirely when blank — caught by the first
+  // Prodigi rejects empty strings anywhere (MustNotBeEmptyOrWhitespace) and
+  // Shopify sends "" rather than null for some blank fields, so every
+  // optional value is dropped unless it has content — caught by the first
   // sandbox order, whose recipient had no second address line.
   const line2 = a.address2?.trim();
+  const email = order.email?.trim() || undefined;
+  const phoneNumber = a.phone?.trim() || order.phone?.trim() || undefined;
+  const stateOrCounty = a.province?.trim() || null;
 
   // A gift note becomes Prodigi's packing slip: a signed token URL the lab
   // fetches at print time, so the note is never stored on our side.
@@ -170,6 +174,7 @@ export async function buildProdigiOrderFromShopify(
             await encodeCanonicalToken(
               slipCanonical({orderName: order.name, note: giftNotes.join('\n')}),
               secret,
+              'slip',
             ),
           ),
         }
@@ -184,13 +189,13 @@ export async function buildProdigiOrderFromShopify(
       ...(packingSlip ? {packingSlip} : {}),
       recipient: {
         name,
-        email: order.email ?? undefined,
-        phoneNumber: a.phone ?? order.phone ?? undefined,
+        ...(email ? {email} : {}),
+        ...(phoneNumber ? {phoneNumber} : {}),
         address: {
           line1: a.address1,
           ...(line2 ? {line2} : {}),
           townOrCity: a.city,
-          stateOrCounty: a.province ?? null,
+          stateOrCounty,
           postalOrZipCode: a.zip,
           countryCode: a.country_code,
         },

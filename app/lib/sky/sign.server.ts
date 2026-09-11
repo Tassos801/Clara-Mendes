@@ -2,6 +2,16 @@
  * HMAC-SHA256 signing of sky parameters (WebCrypto, works in Oxygen workers,
  * browsers and Node). The cart action signs; the webhook and the print route
  * verify, so nobody can order artwork we did not compute.
+ *
+ * Two kinds of signature exist and must never verify for each other:
+ *
+ * - The cart attribute `_sig` is a bare HMAC over the canonical parameters.
+ *   It is returned to the browser in every cart response, so it proves only
+ *   that the parameters came from this server.
+ * - A token (`<base64url(canonical)>.<hmac>`) grants access to a print-ready
+ *   asset or a packing slip. Its HMAC covers the purpose as well, so the
+ *   `_sig` a customer can read from their cart cannot be turned into the
+ *   URL of the finished print.
  */
 import {
   canonicalSkyParams,
@@ -12,6 +22,9 @@ import {
 
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
+
+/** What a token grants. Part of the signed message. */
+export type TokenPurpose = 'print' | 'slip';
 
 export function base64UrlEncode(bytes: Uint8Array) {
   let binary = '';
@@ -67,9 +80,18 @@ export async function signSkyParams(params: SkyParams, secret: string) {
   return signCanonical(canonicalSkyParams(params), secret);
 }
 
+/** The message a token's HMAC covers: the purpose, then the canonical. */
+function tokenMessage(purpose: TokenPurpose, canonical: string) {
+  return `${purpose}\n${canonical}`;
+}
+
 /** `<base64url(canonical)>.<base64url(hmac)>` — safe in a URL path segment. */
-export async function encodeCanonicalToken(canonical: string, secret: string) {
-  const sig = await signCanonical(canonical, secret);
+export async function encodeCanonicalToken(
+  canonical: string,
+  secret: string,
+  purpose: TokenPurpose,
+) {
+  const sig = await signCanonical(tokenMessage(purpose, canonical), secret);
   return `${base64UrlEncode(encoder.encode(canonical))}.${sig}`;
 }
 
@@ -77,10 +99,14 @@ export type CanonicalTokenDecode =
   | {ok: true; canonical: string}
   | {ok: false; error: string};
 
-/** Verify a token's HMAC and return its canonical string, kind-agnostic. */
+/**
+ * Verify a token's HMAC for the given purpose and return its canonical
+ * string, kind-agnostic.
+ */
 export async function decodeCanonicalToken(
   token: string,
   secret: string,
+  purpose: TokenPurpose,
 ): Promise<CanonicalTokenDecode> {
   const [body, sig, extra] = token.split('.');
   if (!body || !sig || extra !== undefined) {
@@ -89,21 +115,21 @@ export async function decodeCanonicalToken(
   const bytes = base64UrlDecode(body);
   if (!bytes) return {ok: false, error: 'Malformed token.'};
   const canonical = decoder.decode(bytes);
-  if (!(await verifyCanonical(canonical, sig, secret))) {
+  if (!(await verifyCanonical(tokenMessage(purpose, canonical), sig, secret))) {
     return {ok: false, error: 'Bad signature.'};
   }
   return {ok: true, canonical};
 }
 
 export async function encodeSkyToken(params: SkyParams, secret: string) {
-  return encodeCanonicalToken(canonicalSkyParams(params), secret);
+  return encodeCanonicalToken(canonicalSkyParams(params), secret, 'print');
 }
 
 export async function decodeSkyToken(
   token: string,
   secret: string,
 ): Promise<SkyValidation> {
-  const decoded = await decodeCanonicalToken(token, secret);
+  const decoded = await decodeCanonicalToken(token, secret, 'print');
   if (!decoded.ok) return decoded;
   const parsed = parseCanonicalSkyParams(decoded.canonical);
   if (!parsed.ok) return parsed;

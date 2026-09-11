@@ -49,12 +49,18 @@ export function ReviewForm({
   const succeeded = response?.ok === true;
   const serverError = response && !response.ok ? response.error : null;
 
-  // Revoke object URLs on unmount / change to avoid leaks.
+  // Revoke every preview URL once, on unmount. Keying the cleanup on
+  // `photos` would revoke URLs that are still rendered whenever the list
+  // changes; `removePhoto` revokes the one it drops.
+  const photosRef = useRef(photos);
+  photosRef.current = photos;
   useEffect(() => {
     return () => {
-      photos.forEach((photo) => URL.revokeObjectURL(photo.previewUrl));
+      photosRef.current.forEach((photo) =>
+        URL.revokeObjectURL(photo.previewUrl),
+      );
     };
-  }, [photos]);
+  }, []);
 
   const displayRating = hoverRating || rating;
 

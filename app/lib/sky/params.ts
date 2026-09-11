@@ -128,11 +128,11 @@ export function validateSkyParams(input: SkyParamsInput): SkyValidation {
     return {ok: false, error: 'Choose a time such as 22:00.'};
   }
 
-  const lat = Number(input.lat);
-  const lon = Number(input.lon);
+  const lat = parseCoordinate(input.lat);
+  const lon = parseCoordinate(input.lon);
   if (
-    !Number.isFinite(lat) ||
-    !Number.isFinite(lon) ||
+    lat === null ||
+    lon === null ||
     Math.abs(lat) > 90 ||
     Math.abs(lon) > 180
   ) {
@@ -307,4 +307,17 @@ export function isSkyCartLine(
     attrs?.some((a) => a.key === '_v') &&
       !attrs?.some((a) => a.key === '_kind'),
   );
+}
+
+/**
+ * A finite coordinate from a number or a plain decimal string. `Number('')`
+ * and `Number(null)` are 0, which would silently place a blank or missing
+ * attribute at 0°, 0° in the Gulf of Guinea instead of rejecting it.
+ */
+export function parseCoordinate(value: unknown): number | null {
+  if (typeof value === 'number') return Number.isFinite(value) ? value : null;
+  if (typeof value !== 'string') return null;
+  const text = value.trim();
+  if (!/^-?[0-9]+([.][0-9]+)?$/.test(text)) return null;
+  return Number(text);
 }

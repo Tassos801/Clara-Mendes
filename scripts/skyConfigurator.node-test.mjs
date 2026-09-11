@@ -206,3 +206,25 @@ test('Your Sky uses one responsive grid with theme and frame treatments', () => 
     'anchored fields must clear the preview strip',
   );
 });
+
+// A complete pair whose parameters do not validate (for example a typed year
+// outside the supported range) has no render key and can never become
+// ready; the status says so instead of promising an update.
+assert.equal(
+  getSkyPreviewStatus({
+    failed: false,
+    hasRequired: true,
+    renderKey: null,
+    sceneKey: null,
+  }),
+  'error',
+);
+
+// A place restored from a share link carries no country code; the session
+// draft must survive it rather than being thrown away on the next visit.
+{
+  const shared = {...complete, place: {...complete.place, countryCode: ''}};
+  const restored = parseSkyDraft(serializeSkyDraft(shared), 'linen');
+  assert.ok(restored, 'share-link draft discarded');
+  assert.equal(restored.place.countryCode, '');
+}

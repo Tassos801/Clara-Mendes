@@ -133,13 +133,15 @@ export function parseSkyDraft(
           label: String(candidate.label ?? ''),
         }
       : null;
+    // A place restored from a share link carries no country code; the draft
+    // must survive that, or the whole session draft is thrown away.
     if (
       place &&
       (!place.name ||
         place.name.length > 100 ||
         !place.country ||
         place.country.length > 100 ||
-        !/^[A-Z]{2}$/.test(place.countryCode))
+        !/^([A-Z]{2})?$/.test(place.countryCode))
     ) {
       return null;
     }
@@ -192,5 +194,9 @@ export function getSkyPreviewStatus({
 }): SkyPreviewStatus {
   if (failed) return 'error';
   if (!hasRequired) return 'example';
-  return renderKey && renderKey === sceneKey ? 'ready' : 'updating';
+  // Both fields are present but the parameters do not validate (a typed
+  // year outside the supported range, say): nothing will ever render, so
+  // say so instead of promising an update.
+  if (!renderKey) return 'error';
+  return renderKey === sceneKey ? 'ready' : 'updating';
 }

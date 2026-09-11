@@ -332,6 +332,16 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw new Response('Product not found', {status: 404});
   }
 
+  // Shopify resolves handles case-insensitively, but the capsule table and
+  // the presentation guard above are exact: a wrongly cased link would skip
+  // both and expose the staged framed variants. Send it to the canonical URL.
+  if (data.product.handle !== handle) {
+    throw redirect(
+      `/products/${data.product.handle}${new URL(request.url).search}`,
+      301,
+    );
+  }
+
   const rawProduct = data.product as ProductDetail;
   const product = capsule
     ? sanitizeOriginalArtProduct(rawProduct)

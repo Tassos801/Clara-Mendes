@@ -2,7 +2,9 @@ import type {Route} from './+types/sitemap.$type.$page[.xml]';
 import {getSitemap} from '@shopify/hydrogen';
 import {
   buildCustomRoutesSitemapXml,
+  isValidSitemapRequest,
   removeExcludedSitemapEntries,
+  sitemapLink,
 } from '~/lib/sitemap';
 
 export async function loader({
@@ -19,6 +21,10 @@ export async function loader({
     });
   }
 
+  if (!isValidSitemapRequest(params.type, params.page)) {
+    throw new Response('Not found', {status: 404});
+  }
+
   let response = await getSitemap({
     storefront,
     request,
@@ -26,7 +32,7 @@ export async function loader({
     // No locale-prefixed routes exist in this storefront, so no hreflang
     // alternates may be emitted — they would point at 404s.
     locales: [],
-    getLink: ({type, baseUrl, handle}) => `${baseUrl}/${type}/${handle}`,
+    getLink: sitemapLink,
   });
 
   const xml = await response.text();
