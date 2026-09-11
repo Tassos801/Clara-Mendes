@@ -6,7 +6,7 @@ import {
   FEATURE_PAGE_PATHS,
   hasReleasedExtensions,
   isFeaturePageHandle,
-  isOffThemeCollectionHandle,
+  isDemoCollection,
   isOffThemeProductHandle,
   isUnreleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
@@ -58,7 +58,6 @@ export function removeExcludedSitemapEntries(xml: string) {
     if (type === 'products' && isOffThemeProductHandle(handle)) return '';
     if (type === 'products' && isUnreleasedExtensionHandle(handle)) return '';
     if (type === 'products' && isFeaturePageHandle(handle)) return '';
-    if (type === 'collections' && isOffThemeCollectionHandle(handle)) return '';
     // The Everyday collection URL is only worth indexing once a family is
     // released AND the collection actually holds products (it is a manual
     // collection; an empty one redirects, and a redirecting sitemap entry
@@ -70,6 +69,10 @@ export function removeExcludedSitemapEntries(xml: string) {
     ) {
       return '';
     }
+    // Every other collection must pass the guard the collection route
+    // applies before it queries Shopify: anything the route would send to
+    // /collections/all (empty manual collections included) stays out.
+    if (type === 'collections' && isDemoCollection({handle})) return '';
 
     return entry;
   });
@@ -96,4 +99,50 @@ export function injectCustomSitemapEntry(indexXml: string, origin: string) {
   if (indexXml.includes(entry)) return indexXml;
 
   return indexXml.replace(/<\/sitemapindex>/, `${entry}\n</sitemapindex>`);
+}
+
+/** The one journal today; its articles live under it, not under `/articles`. */
+export const JOURNAL_BLOG_HANDLE = 'karina-of-time';
+
+/** The child sitemap types Hydrogen's `getSitemap` knows how to build. */
+export const SITEMAP_TYPES: ReadonlySet<string> = new Set([
+  'products',
+  'collections',
+  'pages',
+  'articles',
+  'blogs',
+  'metaobjects',
+]);
+
+/**
+ * Storefront URL for a Shopify sitemap resource. Hydrogen hands over the
+ * bare article handle with type `articles`; the storefront serves articles
+ * at `/blogs/<blog>/<article>`, so that type needs the journal's handle.
+ */
+export function sitemapLink({
+  type,
+  baseUrl,
+  handle,
+}: {
+  type: string;
+  baseUrl: string;
+  handle?: string | null;
+  locale?: string;
+}) {
+  if (type === 'articles') {
+    return `${baseUrl}/blogs/${JOURNAL_BLOG_HANDLE}/${handle ?? ''}`;
+  }
+  return `${baseUrl}/${type}/${handle ?? ''}`;
+}
+
+/**
+ * Hydrogen looks the type up in a plain object and parses the page with
+ * `parseInt`, so `constructor` or `abc` would reach the Storefront API and
+ * fail; both are refused up front.
+ */
+export function isValidSitemapRequest(
+  type: string | undefined,
+  page: string | undefined,
+) {
+  return Boolean(type) && SITEMAP_TYPES.has(type as string) && /^[1-9][0-9]*$/.test(page ?? '');
 }

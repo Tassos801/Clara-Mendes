@@ -1,5 +1,6 @@
 import {Link, redirect, useLoaderData} from 'react-router';
 import {Analytics, getPaginationVariables} from '@shopify/hydrogen';
+import {ensurePaginatedData} from '~/lib/pagination';
 import type {Route} from './+types/collections.$handle';
 import {
   buildCollectionAnalyticsProducts,
@@ -240,6 +241,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       handle,
     },
   });
+  ensurePaginatedData(request, data);
 
   if (!data.collection) {
     throw new Response(`Collection ${handle} not found`, {status: 404});

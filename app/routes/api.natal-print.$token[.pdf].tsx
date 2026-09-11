@@ -57,7 +57,7 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
   const secret = context.env.SKY_SIGNING_SECRET;
   if (!secret) return new Response('Not configured', {status: 500});
 
-  const decoded = await decodeCanonicalToken(params.token, secret);
+  const decoded = await decodeCanonicalToken(params.token, secret, 'print');
   if (!decoded.ok) return new Response('Not found', {status: 404});
   const parsed = parseCanonicalNatalParams(decoded.canonical);
   if (!parsed.ok || canonicalNatalParams(parsed.params) !== decoded.canonical) {

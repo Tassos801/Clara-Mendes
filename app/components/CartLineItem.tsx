@@ -4,7 +4,8 @@ import {CartForm, Image, type OptimisticCartLine} from '@shopify/hydrogen';
 import {useEffect, useRef, useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {getSwipeIntent} from '~/lib/cartSwipe';
-import {Link} from 'react-router';
+import {Link, useFetcher} from 'react-router';
+import {CartFormError} from './CartFormError';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
 import {GIFT_NOTE_KEY} from '~/lib/sky/gift';
@@ -271,8 +272,19 @@ export function CartLineItem({
  * hasn't yet responded that it was successfully added to the cart.
  */
 function CartLineQuantity({line}: {line: CartLine}) {
+  const lineId = line?.id ?? '';
+  // The quantity and remove forms below submit through keyed fetchers; reading
+  // the same keys here surfaces a refused update (for example a quantity above
+  // the available stock) that would otherwise silently snap back.
+  const updateFetcher = useFetcher({
+    key: getLineActionKey(CartForm.ACTIONS.LinesUpdate, [lineId]),
+  });
+  const removeFetcher = useFetcher({
+    key: getLineActionKey(CartForm.ACTIONS.LinesRemove, [lineId]),
+  });
+
   if (!line || typeof line?.quantity === 'undefined') return null;
-  const {id: lineId, quantity, isOptimistic} = line;
+  const {quantity, isOptimistic} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
 
@@ -306,6 +318,8 @@ function CartLineQuantity({line}: {line: CartLine}) {
         lineIds={[lineId]}
         disabled={!!isOptimistic}
       />
+      <CartFormError data={updateFetcher.data} />
+      <CartFormError data={removeFetcher.data} />
     </div>
   );
 }

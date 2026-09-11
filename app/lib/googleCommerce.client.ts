@@ -166,7 +166,18 @@ export function pushGtag(
   if (!runtime) return;
 
   runtime.window.dataLayer = runtime.window.dataLayer ?? [];
-  runtime.window.dataLayer.push(args);
+  // gtag.js executes only `arguments` objects; a plain array falls into
+  // its legacy "obj.method" branch and is dropped, which would leave the
+  // consent defaults, every consent update and the linker unapplied.
+  runtime.window.dataLayer.push(toGtagArguments(args));
+}
+
+function toGtagArguments(values: unknown[]): IArguments {
+  const collect = function () {
+    // eslint-disable-next-line prefer-rest-params
+    return arguments;
+  } as (...entries: unknown[]) => IArguments;
+  return collect(...values);
 }
 
 export function emitGoogleCommerceEvent({

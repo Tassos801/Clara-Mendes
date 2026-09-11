@@ -8,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import {useLocation} from 'react-router';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -68,6 +69,13 @@ Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const close = useCallback(() => setType('closed'), []);
+  // A route change (back/forward, swipe-back, a link outside the drawer)
+  // must not leave the overlay, the body scroll lock and the drawer focus
+  // behind on the new page.
+  const {pathname} = useLocation();
+  useEffect(() => {
+    setType('closed');
+  }, [pathname]);
   const open = useCallback(
     (mode: AsideType) => {
       if (mode === 'closed') {

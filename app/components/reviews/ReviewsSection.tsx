@@ -23,8 +23,12 @@ const SORT_OPTIONS: Array<{label: string; value: SortMode}> = [
   {label: 'Most helpful', value: 'helpful'},
 ];
 
+// Fixed to UTC: this renders on the server (UTC) and again in the browser,
+// and a review submitted near a month boundary would otherwise hydrate to
+// a different month in the visitor's time zone.
 const monthYear = new Intl.DateTimeFormat('en-US', {
   month: 'long',
+  timeZone: 'UTC',
   year: 'numeric',
 });
 

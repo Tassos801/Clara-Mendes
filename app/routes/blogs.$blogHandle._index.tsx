@@ -2,6 +2,7 @@ import {useEffect, useRef} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/blogs.$blogHandle._index';
 import {Image, getPaginationVariables} from '@shopify/hydrogen';
+import {ensurePaginatedData} from '~/lib/pagination';
 import type {ArticleItemFragment} from 'storefrontapi.generated';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {StructuredData} from '~/components/StructuredData';
@@ -108,7 +109,7 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
     throw new Response(`blog not found`, {status: 404});
   }
 
-  const [{blog}] = await Promise.all([
+  const [result] = await Promise.all([
     context.storefront.query(BLOGS_QUERY, {
       variables: {
         blogHandle: params.blogHandle,
@@ -117,6 +118,8 @@ async function loadCriticalData({context, request, params}: Route.LoaderArgs) {
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
+  ensurePaginatedData(request, result);
+  const {blog} = result;
 
   if (!blog?.articles) {
     throw new Response('Not found', {status: 404});

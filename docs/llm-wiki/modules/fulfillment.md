@@ -44,3 +44,23 @@ Update the constants, mirror the change in the shipping-policy draft and
 re-paste it into Shopify Admin, and re-check runbook step 5. The live policy
 page and the Merchant Center shipping settings live in Shopify admin and do
 not update from code.
+
+## Corrections (2026-09-11)
+
+- Print and slip tokens are signed over a purpose (`print` / `slip`) as well
+  as the canonical string (`encodeCanonicalToken(canonical, secret, purpose)`
+  in `app/lib/sky/sign.server.ts`). The cart attribute `_sig` is a bare HMAC
+  over the canonical and is returned to the browser in every cart response;
+  before this it verified as a print token, so anyone with a sky in their cart
+  could download the print-ready PDF without buying. Tokens minted before the
+  change no longer verify (no real orders existed).
+- The webhook answers Prodigi's own 400/409/422 rejections (validation,
+  idempotency conflict) with 200 and a "needs attention" log line (replay
+  with `scripts/sky-replay-order.mjs`). Everything else, including 401/403,
+  rate limits, network and 5xx failures, answers 502: Shopify retries a failing
+  subscription 19 times over 48 hours and then removes it, which would strand
+  every later personalised order.
+- Recipient fields (`email`, `phoneNumber`, `line2`) are omitted when blank
+  and `stateOrCounty` is `null` when blank; Prodigi rejects empty strings.
+- `parseCoordinate` (`app/lib/sky/params.ts`) rejects blank or malformed
+  `_lat`/`_lon` values instead of reading them as 0°, 0°.

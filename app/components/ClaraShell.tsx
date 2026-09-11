@@ -225,6 +225,7 @@ function ClaraMobileNav() {
     <div
       className={`mobile-nav-backdrop ${isOpen ? 'is-open' : ''}`}
       aria-hidden={!isOpen}
+      data-lenis-prevent
     >
       <button
         className="mobile-nav-scrim"
@@ -292,6 +293,7 @@ function ClaraCartDrawer({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
     <div
       className={`cart-drawer-backdrop ${isOpen ? 'is-open' : ''}`}
       aria-hidden={!isOpen}
+      data-lenis-prevent
     >
       <button
         className="cart-drawer-scrim"

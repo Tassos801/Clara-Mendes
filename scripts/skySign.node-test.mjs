@@ -51,3 +51,17 @@ test('token encodes params and rejects tampering', async () => {
   assert.equal((await decodeSkyToken('garbage', SECRET)).ok, false);
   assert.equal((await decodeSkyToken(token, 'wrong')).ok, false);
 });
+
+test('the cart signature never verifies as a print token', async () => {
+  // `_sig` travels to the browser in every cart response; the print token
+  // must be signed over something the browser never sees.
+  const {base64UrlEncode, signSkyParams, decodeSkyToken: decodePrint} =
+    await import('../app/lib/sky/sign.server.ts');
+  const {canonicalSkyParams} = await import('../app/lib/sky/params.ts');
+  const canonical = canonicalSkyParams(params);
+  const cartSig = await signSkyParams(params, SECRET);
+  const forged = `${base64UrlEncode(new TextEncoder().encode(canonical))}.${cartSig}`;
+  const decoded = await decodePrint(forged, SECRET);
+  assert.equal(decoded.ok, false);
+  assert.equal(decoded.error, 'Bad signature.');
+});

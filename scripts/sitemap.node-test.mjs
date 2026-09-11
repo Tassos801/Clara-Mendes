@@ -176,3 +176,41 @@ assert.equal(
   injected,
   'injection must be idempotent',
 );
+
+// Collections the collection route would redirect to /collections/all (empty
+// manual collections, legacy handles) must not be advertised either — the
+// live Shopify sitemap listed two empty "everyday living" collections.
+{
+  const {
+    isValidSitemapRequest,
+    sitemapLink,
+  } = await import('../app/lib/sitemap.ts');
+  const collectionsXml = [
+    '<urlset>',
+    entry('https://shopclaramendes.com/collections/art-for-everyday-living'),
+    entry('https://shopclaramendes.com/collections/art-for-everyday-living-1'),
+    entry('https://shopclaramendes.com/collections/quiet-form'),
+    '</urlset>',
+  ].join('\n');
+  const kept = removeExcludedSitemapEntries(collectionsXml);
+  assert.ok(!kept.includes('art-for-everyday-living'), 'empty collection advertised');
+  assert.ok(kept.includes('/collections/quiet-form'), 'capsule collection dropped');
+
+  // Articles are served under their blog, never under /articles.
+  assert.equal(
+    sitemapLink({type: 'articles', baseUrl: 'https://shopclaramendes.com', handle: 'why-karina-of-time'}),
+    'https://shopclaramendes.com/blogs/karina-of-time/why-karina-of-time',
+  );
+  assert.equal(
+    sitemapLink({type: 'products', baseUrl: 'https://shopclaramendes.com', handle: 'quiet-form-i-art-print'}),
+    'https://shopclaramendes.com/products/quiet-form-i-art-print',
+  );
+
+  assert.equal(isValidSitemapRequest('products', '1'), true);
+  assert.equal(isValidSitemapRequest('articles', '12'), true);
+  assert.equal(isValidSitemapRequest('constructor', '1'), false);
+  assert.equal(isValidSitemapRequest('toString', '1'), false);
+  assert.equal(isValidSitemapRequest('products', 'abc'), false);
+  assert.equal(isValidSitemapRequest('products', '0'), false);
+  assert.equal(isValidSitemapRequest(undefined, '1'), false);
+}

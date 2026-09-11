@@ -1,6 +1,7 @@
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/blogs._index';
 import {getPaginationVariables} from '@shopify/hydrogen';
+import {ensurePaginatedData} from '~/lib/pagination';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import type {BlogsQuery} from 'storefrontapi.generated';
 
@@ -46,7 +47,7 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
     pageBy: 10,
   });
 
-  const [{blogs}] = await Promise.all([
+  const [result] = await Promise.all([
     context.storefront.query(BLOGS_QUERY, {
       variables: {
         ...paginationVariables,
@@ -54,6 +55,8 @@ async function loadCriticalData({context, request}: Route.LoaderArgs) {
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
+  ensurePaginatedData(request, result);
+  const {blogs} = result;
 
   return {blogs};
 }

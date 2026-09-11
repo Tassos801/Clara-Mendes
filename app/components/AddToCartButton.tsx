@@ -1,5 +1,6 @@
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import {useCallback, useEffect, useRef} from 'react';
+import {CartFormError} from '~/components/CartFormError';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
 import {getCartFormErrorMessages} from '~/lib/cartFormErrors';
 import {
@@ -78,7 +79,6 @@ function AddToCartButtonContent({
   const wasSubmitting = useRef(false);
   const attributionInputRef = useRef<HTMLInputElement>(null);
   const marketingConsent = useMarketingConsent();
-  const errors = getCartFormErrorMessages(fetcher.data);
   const isBusy = fetcher.state !== 'idle';
   const refreshMarketingAttribution = useCallback(() => {
     if (attributionInputRef.current) {
@@ -128,11 +128,7 @@ function AddToCartButtonContent({
       >
         {isBusy && pendingChildren ? pendingChildren : children}
       </button>
-      {showErrors && errors.length > 0 ? (
-        <p className="cart-form-error" role="alert">
-          {errors[0]}
-        </p>
-      ) : null}
+      {showErrors ? <CartFormError data={fetcher.data} /> : null}
     </>
   );
 }

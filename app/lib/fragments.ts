@@ -242,3 +242,33 @@ export const FOOTER_QUERY = `#graphql
   }
   ${MENU_FRAGMENT}
 ` as const;
+
+/**
+ * The cart every mutation returns. Hydrogen's default is only id,
+ * totalQuantity and checkoutUrl; the cart action also needs the current
+ * attributes (to merge marketing attribution without dropping anything) and
+ * the lines (to tell which line a stock warning targets and whether Shopify
+ * left it at quantity zero). The name is fixed by Hydrogen.
+ */
+export const CART_MUTATE_FRAGMENT = `#graphql
+  fragment CartApiMutation on Cart {
+    id
+    totalQuantity
+    checkoutUrl
+    attributes {
+      key
+      value
+    }
+    lines(first: 250) {
+      nodes {
+        id
+        quantity
+        merchandise {
+          ... on ProductVariant {
+            id
+          }
+        }
+      }
+    }
+  }
+` as const;

@@ -136,4 +136,30 @@ The search route supports both regular and predictive search. Search results are
 filtered so demo/off-theme products and collections do not leak into the
 customer-facing search experience.
 
-Source: `app/routes/search.tsx`, `app/lib/search.ts`.
+The loader never throws for a Storefront API problem: `runSearch`
+(`app/lib/search.ts`) logs the failure and returns an empty result with a short
+customer-facing message, so the page keeps its form instead of showing the
+route error boundary. Articles and pages use a fixed `first: 8` because only the
+products connection is paginated (a `direction=previous` request supplies
+`$last`, not `$first`).
+
+Source: `app/routes/search.tsx`, `app/lib/search.ts`,
+`scripts/searchFallback.node-test.mjs`.
+
+## Pagination, redirects and sitemaps
+
+- Paginated loaders (`/collections/all`, `/collections/:handle`, `/blogs`,
+  `/blogs/:handle`) call `ensurePaginatedData` (`app/lib/pagination.ts`): a
+  malformed or expired cursor (Shopify answers with GraphQL errors and no data)
+  redirects to the same URL without `cursor`/`direction`; the same failure on a
+  first-page request is a 502, never a redirect loop.
+- `isLocalPath` (`app/lib/redirect.ts`) rejects control characters and
+  backslashes anywhere and re-parses the value against a fixed origin, closing
+  the `/%09/evil.com` open redirect on `/discount/:code?redirect=` and the cart
+  `redirectTo`.
+- `/products/:handle` 301s a wrongly cased handle to Shopify's canonical one so
+  the capsule table and presentation guard (both exact-match) always apply.
+- Sitemap children validate `type`/`page` (404 otherwise), link articles under
+  `/blogs/karina-of-time/<handle>` (`sitemapLink`), and drop every collection
+  the collection route would redirect (`isDemoCollection`), not only the legacy
+  list. Source: `app/lib/sitemap.ts`, `app/routes/sitemap.$type.$page[.xml].tsx`.

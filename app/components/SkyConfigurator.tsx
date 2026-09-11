@@ -471,7 +471,15 @@ export function SkyConfigurator({
   const badTitleCharacter = unprintableCharacters(title)[0] ?? null;
   const placeError =
     placeBlurred && !place ? 'Choose a place from the list.' : null;
-  const dateError = dateBlurred && !date ? 'Choose a date.' : null;
+  // A complete but invalid pair (for example a typed year outside the
+  // supported range) can never render; say why under the field instead of
+  // leaving the preview on "Charting your sky…".
+  const dateError =
+    dateBlurred && !date
+      ? 'Choose a date.'
+      : purchasable && !purchasable.ok && !badTitleCharacter
+        ? purchasable.error
+        : null;
   const titleError = badTitleCharacter
     ? `“${badTitleCharacter}” can’t be printed — please use letters, numbers and punctuation.`
     : null;

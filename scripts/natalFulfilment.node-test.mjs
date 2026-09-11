@@ -111,7 +111,7 @@ test('a mixed order builds one Prodigi payload with both personalised kinds', as
   const token = natalItem.assets[0].url
     .split('/api/natal-print/')[1]
     .replace(/\.pdf\?size=8x10$/, '');
-  const decoded = await decodeCanonicalToken(token, SECRET);
+  const decoded = await decodeCanonicalToken(token, SECRET, 'print');
   assert.ok(decoded.ok);
   const parsed = parseCanonicalNatalParams(decoded.canonical);
   assert.ok(parsed.ok);

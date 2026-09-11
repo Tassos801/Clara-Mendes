@@ -12,6 +12,12 @@ import {
   removeMarketingCartAttributes,
 } from '../app/lib/marketingAttribution.ts';
 
+// gtag.js executes only `arguments` objects; anything else is dropped.
+function gtagCall(entry) {
+  assert.equal(Object.prototype.toString.call(entry), '[object Arguments]');
+  return Array.from(entry);
+}
+
 function createStorage(initial = {}) {
   const values = new Map(Object.entries(initial));
   return {
@@ -50,7 +56,7 @@ const runtime = {
 // Consent defaults are queued before linker configuration, GTM startup, and
 // script loading. Re-initialization is idempotent.
 assert.equal(initializeGoogleTagManager('GTM-TEST123', runtime), true);
-assert.deepEqual(runtime.window.dataLayer[0], [
+assert.deepEqual(gtagCall(runtime.window.dataLayer[0]), [
   'consent',
   'default',
   {
@@ -64,7 +70,7 @@ assert.deepEqual(runtime.window.dataLayer[0], [
     wait_for_update: 500,
   },
 ]);
-assert.deepEqual(runtime.window.dataLayer[1], [
+assert.deepEqual(gtagCall(runtime.window.dataLayer[1]), [
   'set',
   'linker',
   {
@@ -93,7 +99,7 @@ pushConsentMode(
   }),
   runtime,
 );
-assert.deepEqual(runtime.window.dataLayer.at(-1), [
+assert.deepEqual(gtagCall(runtime.window.dataLayer.at(-1)), [
   'consent',
   'update',
   {
