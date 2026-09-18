@@ -917,3 +917,14 @@ every row reads "Fulfilled by Prodigi automatically" on a fresh load. Quoted
 delivered cost is EUR 15.25 ex tax (Standard, NL to CY). All four Shopify
 products remain Drafts and all four release flags remain false. Native source
 detail (~140 PPI) and physical print quality remain the open owner decision.
+
+## 2026-09-18 - Sci-fi & Cinema release
+
+Released all four prints with owner approval. Shopify: untracked inventory
+with DENY policy (the existing originals' pattern), pending tags removed,
+Active, published to the Clara Mendes and Clara Mendes Headless channels only;
+Storefront API reads all four as available at EUR 29.99. Storefront: the four
+`SCIFI_ART_RELEASE_FLAGS` are true, so the Sci-fi & Cinema shop filter is
+live. `isUnreleasedSciFiArtHandle` now takes injectable flags so the staged
+state stays covered by tests; the sellable-handle count test includes the four
+released prints. Physical print quality is unverified until the first order.

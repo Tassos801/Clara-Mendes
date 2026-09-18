@@ -1,14 +1,15 @@
 import scifiCatalog from '../../data/scifi-cinema-catalog.json' with {type: 'json'};
 
 /**
- * New prints need their own verified Prodigi mapping and Shopify publication.
- * Keep every flag false until the release runbook is complete.
+ * Each print needs its own verified Prodigi mapping and Shopify publication
+ * before its flag flips. All four released 2026-09-18 (mapped to
+ * ART-FAP-EMA-8X10; see docs/scifi-cinema-prints.md).
  */
 export const SCIFI_ART_RELEASE_FLAGS: Record<string, boolean> = {
-  'orbital-silence-art-print': false,
-  'neon-after-rain-art-print': false,
-  'desert-signal-art-print': false,
-  'the-fold-art-print': false,
+  'orbital-silence-art-print': true,
+  'neon-after-rain-art-print': true,
+  'desert-signal-art-print': true,
+  'the-fold-art-print': true,
 };
 
 export const SCIFI_ART_CAPSULE = {
@@ -26,11 +27,12 @@ export function releasedSciFiArtHandles(
 }
 
 /** Staged handles stay out of generated sitemaps after accidental publication. */
-export function isUnreleasedSciFiArtHandle(handle?: string | null) {
+export function isUnreleasedSciFiArtHandle(
+  handle?: string | null,
+  flags: Record<string, boolean> = SCIFI_ART_RELEASE_FLAGS,
+) {
   const key = handle?.toLowerCase();
   return Boolean(
-    key &&
-    scifiCatalog.some((item) => item.handle === key) &&
-    !SCIFI_ART_RELEASE_FLAGS[key],
+    key && scifiCatalog.some((item) => item.handle === key) && !flags[key],
   );
 }

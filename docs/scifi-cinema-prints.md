@@ -1,17 +1,17 @@
-# Sci-fi & Cinema print staging
+# Sci-fi & Cinema prints
 
 Updated: 2026-09-18
 
-Four original compositions have been added to Clara Mendes as **Shopify Drafts**. The artwork was generated with the built-in image generator using invented worlds and structures. Storefront support is prepared with all four release flags disabled.
+Four original compositions were **released on 2026-09-18** with owner approval. The artwork was generated with the built-in image generator using invented worlds and structures. All four are Active in Shopify, published to the Clara Mendes (Hydrogen) and Clara Mendes Headless channels, and enabled in `SCIFI_ART_RELEASE_FLAGS`.
 
-| Design          | Shopify product ID | SKU           | Planned retail |
-| --------------- | ------------------ | ------------- | -------------- |
-| Orbital Silence | 16078105313614     | CM-SC-01-8X10 | EUR 29.99      |
-| Neon After Rain | 16078105477454     | CM-SC-02-8X10 | EUR 29.99      |
-| Desert Signal   | 16078105510222     | CM-SC-03-8X10 | EUR 29.99      |
-| The Fold        | 16078105575758     | CM-SC-04-8X10 | EUR 29.99      |
+| Design          | Shopify product ID | SKU           | Retail    |
+| --------------- | ------------------ | ------------- | --------- |
+| Orbital Silence | 16078105313614     | CM-SC-01-8X10 | EUR 29.99 |
+| Neon After Rain | 16078105477454     | CM-SC-02-8X10 | EUR 29.99 |
+| Desert Signal   | 16078105510222     | CM-SC-03-8X10 | EUR 29.99 |
+| The Fold        | 16078105575758     | CM-SC-04-8X10 | EUR 29.99 |
 
-Each draft has one 8 × 10 inch / Unframed variant, one READY 1120 × 1400 artwork image, tracked inventory of zero, and DENY inventory policy. Tags include `Prodigi Mapping Pending` and `Print File Review Pending`. Fresh Admin readback and CDN image requests verified all four records. A before/after comparison verified the 29 pre-existing Clara Mendes products were unchanged.
+Each product has one 8 × 10 inch / Unframed variant and one READY 1120 × 1400 artwork image. At release the variants were switched to untracked inventory with DENY policy — the same print-on-demand pattern as the fifteen existing originals — and the `Prodigi Mapping Pending` and `Print File Review Pending` tags were removed. Staging verified the 29 pre-existing Clara Mendes products were unchanged.
 
 ## Assets and source detail
 
@@ -25,23 +25,22 @@ It contains the four unmodified 1122 × 1402 PNG originals; four 1120 × 1400 We
 
 The JPEGs are Lanczos-resized exports, not native 300-DPI masters. Native source detail is about 140.2 PPI at 8 × 10 inches. Original SHA-256 hashes were checked after export. Provider crop and SKU mappings were verified on 2026-09-18 (below); physical appearance remains unverified. No larger or framed variant was added.
 
-## Storefront preparation
+## Storefront
 
-[app/lib/scifiArt.ts](../app/lib/scifiArt.ts) defines an independent release flag for each of the four handles. All flags are `false`. Catalogue listing, search, recommendations and generated product sitemaps continue excluding these staged prints even if a Shopify record is accidentally published.
+[app/lib/scifiArt.ts](../app/lib/scifiArt.ts) defines an independent release flag for each of the four handles. All four are `true` since 2026-09-18. A handle whose flag is `false` stays out of catalogue listing, search, recommendations and generated product sitemaps even if its Shopify record is published.
 
-After the first verified member is released, the shop gains a **Sci-fi & Cinema** filter at `/collections/all?capsule=scifi-cinema`. Its count and description reflect released members and state only the staged unframed 8 × 10 format. The five legacy capsules remain unchanged; no separate Sci-fi & Cinema landing page is introduced. Product-page print-size wording follows each product's actual Shopify options, so the single-size drafts do not promise larger formats.
+The shop has a **Sci-fi & Cinema** filter at `/collections/all?capsule=scifi-cinema`. Its count and description reflect released members and state only the staged unframed 8 × 10 format. The five legacy capsules remain unchanged; no separate Sci-fi & Cinema landing page is introduced. Product-page print-size wording follows each product's actual Shopify options, so the single-size drafts do not promise larger formats.
 
-[scripts/scifiArt.node-test.mjs](../scripts/scifiArt.node-test.mjs) covers default exclusion, accidental-publication protection, partial release, the existing capsules, and filter links.
+[scripts/scifiArt.node-test.mjs](../scripts/scifiArt.node-test.mjs) covers staged exclusion (injected all-false flags), the released state, accidental-publication protection, partial release, the existing capsules, and filter links.
 
-## Release work remaining
+## Release — 2026-09-18
 
-1. Review composition and the source-detail limit for the 8 × 10 candidate files.
-2. ~~Map every `CM-SC-01`–`04` SKU in Prodigi~~ — done 2026-09-18, see _Prodigi mapping_ below.
-3. Set sellable inventory behavior for the four variants (account-level billing and 24h auto-release already apply channel-wide).
-4. Remove the pending tags only after their respective reviews pass, publish to the intended sales channels, and enable only the verified handles in `SCIFI_ART_RELEASE_FLAGS`. Follow the repository validation and deployment workflow for that release commit.
-5. Verify live image delivery, the Sci-fi & Cinema filter, product selection, and cart behavior.
+1. Prodigi mapping verified for all four SKUs (below).
+2. Owner accepted the ~140 PPI native source detail for 8 × 10 and approved release of all four.
+3. Shopify: inventory untracked (DENY), pending tags removed, status Active, published to the Clara Mendes and Clara Mendes Headless channels. Storefront API readback: all four `availableForSale` at EUR 29.99. Not published to Facebook & Instagram or Google & YouTube.
+4. Storefront: all four flags enabled; filter, product page (8 × 10-only copy) and add-to-cart checked on the dev server before merge.
 
-Provider mapping is complete. No sample order, inventory release or Shopify publication has been performed for these designs. These are drafts and release preparation; production sales remain disabled.
+Still open: no sample order has been placed, so physical print quality is unverified — the first order is the first QC. Larger and framed formats are not offered; they would need higher-resolution masters.
 
 ## Prodigi mapping — done 2026-09-18
 

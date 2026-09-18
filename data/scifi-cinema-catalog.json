@@ -23,8 +23,9 @@
     "variantId": "gid://shopify/ProductVariant/60855266345294",
     "stagedSku": "CM-SC-01-8X10",
     "stagedPriceEUR": "29.99",
-    "status": "DRAFT",
-    "releaseReady": false,
+    "status": "ACTIVE",
+    "releaseReady": true,
+    "providerSku": "ART-FAP-EMA-8X10",
     "printCandidate": "print-8x10-candidates/orbital-silence-8x10-300dpi.jpg"
   },
   {
@@ -51,8 +52,9 @@
     "variantId": "gid://shopify/ProductVariant/60855268245838",
     "stagedSku": "CM-SC-02-8X10",
     "stagedPriceEUR": "29.99",
-    "status": "DRAFT",
-    "releaseReady": false,
+    "status": "ACTIVE",
+    "releaseReady": true,
+    "providerSku": "ART-FAP-EMA-8X10",
     "printCandidate": "print-8x10-candidates/neon-after-rain-8x10-300dpi.jpg"
   },
   {
@@ -79,8 +81,9 @@
     "variantId": "gid://shopify/ProductVariant/60855269687630",
     "stagedSku": "CM-SC-03-8X10",
     "stagedPriceEUR": "29.99",
-    "status": "DRAFT",
-    "releaseReady": false,
+    "status": "ACTIVE",
+    "releaseReady": true,
+    "providerSku": "ART-FAP-EMA-8X10",
     "printCandidate": "print-8x10-candidates/desert-signal-8x10-300dpi.jpg"
   },
   {
@@ -107,8 +110,9 @@
     "variantId": "gid://shopify/ProductVariant/60855269753166",
     "stagedSku": "CM-SC-04-8X10",
     "stagedPriceEUR": "29.99",
-    "status": "DRAFT",
-    "releaseReady": false,
+    "status": "ACTIVE",
+    "releaseReady": true,
+    "providerSku": "ART-FAP-EMA-8X10",
     "printCandidate": "print-8x10-candidates/the-fold-8x10-300dpi.jpg"
   }
 ]

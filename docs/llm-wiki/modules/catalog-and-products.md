@@ -222,14 +222,20 @@ four; the 29 pre-existing Clara Mendes product records were unchanged.
 Definitions and generation briefs are kept separately in
 `data/scifi-cinema-catalog.json`; review WebP assets are under
 `public/images/product-art/scifi-cinema/`. An independent release gate in
-`app/lib/scifiArt.ts` keeps all four handles out of catalogue listing and
+`app/lib/scifiArt.ts` gates the four handles in catalogue listing and
 product sitemaps until enabled. The shop gains a Sci-fi & Cinema filter only
 after a verified member releases; the five legacy capsules and the
 fifteen-original Draft-reset sync remain unchanged. The local
 2400 × 3000 / 300-DPI JPEG candidates are resized from 1122 × 1402 source PNGs,
 so native detail remains approximately 140.2 PPI at 8 × 10 inches. New-SKU
-Prodigi mappings, crop review and channel publication remain open. Product-page
+Prodigi mappings, crop review and channel publication were open at staging. Product-page
 size copy now reads the actual Shopify size options instead of promising the
 legacy three-size range for every art print.
 
-Source and remaining work: [Sci-fi & Cinema print staging](../../scifi-cinema-prints.md).
+**Released 2026-09-18:** all four are mapped to Prodigi `ART-FAP-EMA-8X10`
+(Standard, full bleed, automatic fulfilment), Active with untracked inventory,
+published to the Clara Mendes and Clara Mendes Headless channels, and enabled
+in `SCIFI_ART_RELEASE_FLAGS`; the Sci-fi & Cinema shop filter is live.
+Physical print quality is unverified until the first order.
+
+Source: [Sci-fi & Cinema prints](../../scifi-cinema-prints.md).
