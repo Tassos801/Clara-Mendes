@@ -232,6 +232,11 @@ Prodigi mappings, crop review and channel publication were open at staging. Prod
 size copy now reads the actual Shopify size options instead of promising the
 legacy three-size range for every art print.
 
+**Superseded 2026-09-18 (product pipeline):** `data/scifi-cinema-catalog.json`,
+`app/lib/scifiArt.ts` and `SCIFI_ART_RELEASE_FLAGS` no longer exist. The four
+prints are the first collection in `data/print-catalog.json`; see "Print
+Catalog And Product Pipeline" below.
+
 **Released 2026-09-18:** all four are mapped to Prodigi `ART-FAP-EMA-8X10`
 (Standard, full bleed, automatic fulfilment), Active with untracked inventory,
 published to the Clara Mendes and Clara Mendes Headless channels, and enabled
@@ -239,3 +244,29 @@ in `SCIFI_ART_RELEASE_FLAGS`; the Sci-fi & Cinema shop filter is live.
 Physical print quality is unverified until the first order.
 
 Source: [Sci-fi & Cinema prints](../../scifi-cinema-prints.md).
+
+## Print Catalog And Product Pipeline
+
+New print collections are data, not code. `data/print-catalog.json` holds each
+collection (title, shop-filter note, SKU code, copy, sales channels, size
+variants with price and Prodigi SKU) and each print (copy, `released`, Shopify
+ids, verified Prodigi channel product per size). `app/lib/printCatalog.ts`
+derives handles, titles, SKUs and image paths, and feeds
+`computeSellableHandles`, `isUnreleasedExtensionHandle` (sitemap gate) and
+`listShopCapsules` (shop filter, members = released prints only). Collections
+without a landing page link to `/collections/all?capsule=<slug>`.
+`validatePrintCatalog` refuses a `released` print that lacks Shopify ids or a
+verified mapping for any size; the test suite runs it on the shipped file.
+
+`scripts/product.mjs` (`npm run product -- <step> <collection>`) runs the
+launch: `status`, `prepare`, `stage`, `handoff`, `mapped`, `release`, `verify`.
+Writes to Shopify need `--apply`; every step is idempotent and leaves evidence
+in the launch folder. Pure logic is in `scripts/lib/product-pipeline.mjs`.
+The dual gate is unchanged: `released: true` deployed AND the Shopify product
+Active and published.
+
+The fifteen launch originals, the extension families and the personalised
+products are not in this file and keep their own registries and runbooks.
+
+Source: [Adding prints runbook](../../add-products-runbook.md),
+`scripts/printCatalog.node-test.mjs`, `scripts/productPipeline.node-test.mjs`.

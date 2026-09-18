@@ -1,0 +1,112 @@
+# Adding prints — the runbook
+
+One data file, one command, six steps. Nothing here needs a new module, a
+route edit, or a one-off script. If a launch seems to need one, fix the
+pipeline instead and update this page.
+
+- **Data:** [data/print-catalog.json](../data/print-catalog.json) — the only file a launch edits by hand.
+- **Command:** `npm run product -- <step> <collection>` ([scripts/product.mjs](../scripts/product.mjs)).
+- **Storefront:** [app/lib/printCatalog.ts](../app/lib/printCatalog.ts) reads the same file; the shop filter, sellable list, sitemap gate and copy all derive from it.
+
+`npm run product -- status` shows every print and its next step at any time.
+
+## The launch, start to finish
+
+| # | Step | What it does | Writes to |
+| --- | --- | --- | --- |
+| 0 | Edit the catalog | Add the collection and/or print entries (template below), `released: false` | repo |
+| 1 | `prepare <collection>` | Source artwork → 1120×1400 WebP + 300 DPI JPEG per size; reports native PPI and crop | `public/images/product-art/<collection>/`, launch folder |
+| 2 | `stage <collection> --apply` | Creates Shopify **Drafts** (tracked at 0 + DENY, pending tags); writes ids back to the catalog; proves no other product changed | Shopify, repo |
+| 3 | `handoff <collection>` | Prodigi checklist (SKU, provider SKU, print file, hash) as `.md` + `.csv` | launch folder |
+| 4 | Map in Prodigi, then `mapped <collection> [--size 8x10] <print>=<channel product id> …` | Records each verified mapping | repo |
+| 5 | `release <collection> --apply` | Untracks inventory, removes pending tags, activates, publishes, checks the Storefront API, then sets `released: true` | Shopify, repo |
+| 6 | Commit → PR → owner merges → `verify <collection>` | Live checks: Storefront API price/availability, add to cart, PDP 200, sitemap, shop filter | launch folder |
+
+`stage` and `release` are dry runs without `--apply`. Every step is safe to
+re-run; `--only a,b` limits any step to some prints. Open the PR after step 2
+so CI runs early — a staged print is invisible on the storefront until both
+`released: true` is deployed **and** the product is Active and published.
+
+Put the source artwork at `<launch folder>/<collection>/source/<print-slug>.png`
+before step 1 (4:5 portrait; `.jpg`/`.tif` also accepted). The launch folder is
+printed by `status`.
+
+### Catalog entry template
+
+```json
+{
+  "slug": "botanical-study",
+  "title": "Botanical Study",
+  "note": "One line shown beside the shop filter",
+  "skuCode": "BS",
+  "collectionCopy": "A Clara Mendes composition from the Botanical Study collection, …",
+  "seoSuffix": "One sentence appended to every SEO description.",
+  "publications": ["Clara Mendes", "Clara Mendes Headless"],
+  "variants": [
+    {"size": "8x10", "finish": "Unframed", "priceEUR": "29.99", "providerSku": "ART-FAP-EMA-8X10"}
+  ],
+  "prints": [
+    {
+      "slug": "fern-in-shade",
+      "title": "Fern in Shade",
+      "sequence": 1,
+      "description": "One sentence; becomes the product description and SEO lead.",
+      "alt": "Image alt text.",
+      "palette": "Moss, ivory, charcoal",
+      "released": false
+    }
+  ]
+}
+```
+
+Derived, never typed: handle `fern-in-shade-art-print`, title `Fern in Shade Art
+Print`, SKU `CM-BS-01-8X10`, image `/images/product-art/botanical-study/fern-in-shade.webp`.
+Adding a print to an existing collection is just a new `prints` entry with the
+next `sequence`.
+
+Known sizes and their verified Prodigi SKUs (current prices for the originals):
+
+| Size | Print file | Provider SKU | Price |
+| --- | --- | --- | --- |
+| `8x10` | 2400×3000 | `ART-FAP-EMA-8X10` (not `GLOBAL-FAP-8X10`) | €29.99 |
+| `16x20` | 4800×6000 | `ART-FAP-EMA-16X20` | €39.99 |
+| `20x24` | 6000×7200 | `GLOBAL-FAP-20X24` (metric 50×60 cm; 5:6, so a 4:5 source is cropped ~4%) | €49.99 |
+
+## Gates that need a person
+
+- **Owner:** accepts any print `prepare` flags (below 150 PPI native, or cropped); approves prices; merges the release PR.
+- **Prodigi mapping** is dashboard-only. Per row in the handoff: provider SKU as listed, **Standard** shipping, **100% full bleed**, quality **Excellent**, "Fulfilled by Prodigi automatically" on a fresh load. Record the channel product id Prodigi shows for the row.
+- **Publishing** is automatic only when the Admin token has `read_publications` + `write_publications`. Without them `release` activates the products, prints the Admin clicks (Products → filter tag = collection title → select all → ⋯ → Include in sales channels), and is simply re-run afterwards. Google and Facebook & Instagram are deliberately not in `publications`.
+
+## Verify
+
+`verify` must pass, and a launch is not done without screenshots (in the
+owner's Chrome, not a hidden pane) of: the shop filter
+`/collections/all?capsule=<collection>`, one PDP, and the cart after add to
+cart. Follow-ups outside this pipeline: Merchant Center feed items, social.
+
+## Machine setup (once)
+
+Credentials and launch evidence live outside any one worktree. Lookup order:
+`CLARA_ENV_DIR` / `CLARA_LAUNCH_DIR`, then `~/.clara-mendes.json`, then the
+main worktree:
+
+```json
+{"envDir": "<folder holding .env and .env.shopify-admin.local>", "launchDir": "<folder for launch evidence>"}
+```
+
+`prepare` needs Python with Pillow (`PYTHON` overrides the interpreter).
+
+## Known traps
+
+- Prodigi: upload print files from the **Image library page**, not the editor modal (it wedges on "Uploading…"). Both modals drop the first typed search — type, check, retype. The shipping select needs a focusing click; confirm it took after a reload.
+- Browser automation: file upload only reads files under the session's working directory — copy the print files there first. `ctrl+a` types a literal "a"; triple-click instead.
+- Dev server in a worktree: start it with `npm --prefix <abs path> run dev -- --path <abs path>`; codegen dirties `*.generated.d.ts` — revert before committing.
+- `?variant=` links do nothing on Hydrogen; link sizes with option params.
+
+## What this does not cover
+
+The fifteen launch originals (`data/original-art-catalog.json`, their own sync
+scripts and landing pages), the extension families (`EXTENSION_RELEASE_FLAGS`)
+and the personalised products (`PERSONALISED_RELEASE_FLAGS`) keep their
+existing runbooks. New print collections get a shop filter, not a landing page.

@@ -1,9 +1,10 @@
 import extensionCatalog from '../../data/art-product-extensions.json' with {type: 'json'};
 import {
-  isUnreleasedSciFiArtHandle,
-  releasedSciFiArtHandles,
-  SCIFI_ART_RELEASE_FLAGS,
-} from './scifiArt.ts';
+  isUnreleasedPrintHandle,
+  PRINT_CATALOG,
+  releasedPrintHandles,
+  type PrintCatalog,
+} from './printCatalog.ts';
 
 export type CatalogProductLike = {
   handle?: string | null;
@@ -229,7 +230,7 @@ export function isUnreleasedExtensionHandle(handle?: string | null) {
   const key = handle?.toLowerCase();
   if (!key) return false;
   if (RETIRED_EXTENSION_HANDLES.has(key)) return true;
-  if (isUnreleasedSciFiArtHandle(key)) return true;
+  if (isUnreleasedPrintHandle(key)) return true;
   if (key in EXTENSION_RELEASE_FLAGS) return !EXTENSION_RELEASE_FLAGS[key];
   if (key in PERSONALISED_RELEASE_FLAGS)
     return !PERSONALISED_RELEASE_FLAGS[key];
@@ -237,13 +238,14 @@ export function isUnreleasedExtensionHandle(handle?: string | null) {
 }
 
 /**
- * The launch prints plus every released extension. Exported as a function so
- * tests can prove what a flag flip changes without mutating module state.
+ * The launch prints plus every released extension, personalised product and
+ * print-catalog entry. Exported as a function so tests can prove what a
+ * release changes without mutating module state.
  */
 export function computeSellableHandles(
   extensionFlags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
   personalisedFlags: Record<string, boolean> = PERSONALISED_RELEASE_FLAGS,
-  sciFiFlags: Record<string, boolean> = SCIFI_ART_RELEASE_FLAGS,
+  printCatalog: PrintCatalog = PRINT_CATALOG,
 ): ReadonlySet<string> {
   const handles = new Set(LAUNCH_PRODUCT_HANDLES);
   for (const flags of [extensionFlags, personalisedFlags]) {
@@ -251,7 +253,7 @@ export function computeSellableHandles(
       if (released) handles.add(handle.toLowerCase());
     }
   }
-  for (const handle of releasedSciFiArtHandles(sciFiFlags)) handles.add(handle);
+  for (const handle of releasedPrintHandles(printCatalog)) handles.add(handle);
   return handles;
 }
 

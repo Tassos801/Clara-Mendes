@@ -26,8 +26,8 @@ export function getRequiredEnv(env, key) {
   return value;
 }
 
-export function loadLocalEnv(fileName = '.env') {
-  const envPath = resolve(process.cwd(), fileName);
+export function loadLocalEnv(fileName = '.env', dir = process.cwd()) {
+  const envPath = resolve(dir, fileName);
 
   if (!existsSync(envPath)) return {};
 
