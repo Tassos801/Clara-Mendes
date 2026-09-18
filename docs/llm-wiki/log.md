@@ -880,3 +880,16 @@ fuller cart fragment (`CART_MUTATE_FRAGMENT`: attributes, line ids and
 variants), and the webhook acknowledges only Prodigi 400/409/422 so an auth
 failure keeps Shopify's retries. Self-checked on the dev server after the
 fix; not independently re-verified.
+
+
+## 2026-09-18 - Sci-fi & Cinema artwork and Shopify staging
+
+Created four new Draft products with READY artwork images and one zero-stock,
+tracked unframed 8 × 10 variant each at EUR 29.99. Scoped import and readback
+verified all four Drafts plus unchanged records for the 29 existing products.
+Prepared four WebP review previews and four resized 2400 × 3000 RGB JPEG
+candidates with 300-DPI metadata, while retaining and hash-checking the
+1122 × 1402 PNG originals. Added the independent design manifest and staging
+runbook. No storefront filters, existing product records, supplier mappings,
+inventory availability or publications were changed. Native-resolution and
+new-SKU fulfillment limitations are recorded in the runbook.

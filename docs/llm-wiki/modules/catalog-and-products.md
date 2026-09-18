@@ -210,3 +210,22 @@ says unwanted products and collections should be cleaned at the Shopify source
 so they cannot leak into search, feeds, SEO, or future storefront routes.
 
 Source: [Shopify Admin cleanup](../operations/shopify-admin-cleanup.md).
+
+
+## 2026-09-18 - Sci-fi & Cinema Drafts
+
+Four additional print compositions are staged as Drafts: Orbital Silence,
+Neon After Rain, Desert Signal, and The Fold. Each has one unframed 8 × 10
+variant at EUR 29.99, one READY flat-artwork image, tracked inventory of zero,
+and DENY inventory policy. Fresh Admin readback and CDN requests verified all
+four; the 29 pre-existing Clara Mendes product records were unchanged.
+
+Definitions and generation briefs are kept separately in
+`data/scifi-cinema-catalog.json`; review WebP assets are under
+`public/images/product-art/scifi-cinema/`. These handles have not been added
+to storefront filtering or the fifteen-original Draft-reset sync. The local
+2400 × 3000 / 300-DPI JPEG candidates are resized from 1122 × 1402 source PNGs,
+so native detail remains approximately 140.2 PPI at 8 × 10 inches. New-SKU
+Prodigi mappings, crop review and channel publication remain open.
+
+Source and remaining work: [Sci-fi & Cinema print staging](../../scifi-cinema-prints.md).
