@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import * as sizePresentation from '../app/lib/productSizePresentation.ts';
 
 import {
   filterGalleryImagesForSize,
@@ -121,4 +122,29 @@ test('scales both diagrams against the same 84 inch sofa', () => {
     },
     {height: 84, width: 70},
   );
+});
+
+test('print size copy follows the product options instead of promising all sizes', () => {
+  assert.equal(typeof sizePresentation.printSizeAvailabilityCopy, 'function');
+  assert.equal(
+    sizePresentation.printSizeAvailabilityCopy([
+      {name: 'Size', optionValues: [{name: '8 × 10 in'}]},
+      {name: 'Presentation', optionValues: [{name: 'Unframed'}]},
+    ]),
+    'Available in 8 × 10 in.',
+  );
+  assert.equal(
+    sizePresentation.printSizeAvailabilityCopy([
+      {
+        name: 'Size',
+        optionValues: [
+          {name: '8 × 10 in'},
+          {name: '16 × 20 in'},
+          {name: '20 × 24 in'},
+        ],
+      },
+    ]),
+    'Choose 8 × 10 in, 16 × 20 in, 20 × 24 in.',
+  );
+  assert.equal(sizePresentation.printSizeAvailabilityCopy([]), '');
 });

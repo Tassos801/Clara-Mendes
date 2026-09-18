@@ -574,6 +574,7 @@ on the failed Admin API credential exchange (open question).
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md),
 [Open questions](open-questions.md).
+
 ## 2026-09-01 - Your Sky guided-refinement design approved
 
 Recorded the owner-approved Your Sky refinement before implementation. The
@@ -646,6 +647,7 @@ the signed attributes; 135 tests, lint, typecheck and build green.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [PR #67](https://github.com/Tassos801/Clara-Mendes/pull/67).
+
 ## 2026-09-02 - Brand film: Introducing Clara Mendes
 
 Added a silent 45-second launch film built with Remotion in `video/`
@@ -880,3 +882,49 @@ fuller cart fragment (`CART_MUTATE_FRAGMENT`: attributes, line ids and
 variants), and the webhook acknowledges only Prodigi 400/409/422 so an auth
 failure keeps Shopify's retries. Self-checked on the dev server after the
 fix; not independently re-verified.
+
+## 2026-09-18 - Sci-fi & Cinema artwork and Shopify staging
+
+Created four new Draft products with READY artwork images and one zero-stock,
+tracked unframed 8 × 10 variant each at EUR 29.99. Scoped import and readback
+verified all four Drafts plus unchanged records for the 29 existing products.
+Prepared four WebP review previews and four resized 2400 × 3000 RGB JPEG
+candidates with 300-DPI metadata, while retaining and hash-checking the
+1122 × 1402 PNG originals. Added the independent design manifest and staging
+runbook. No storefront filters, existing product records, supplier mappings,
+inventory availability or publications were changed. Native-resolution and
+new-SKU fulfillment limitations are recorded in the runbook.
+
+## 2026-09-18 - Sci-fi & Cinema storefront release preparation
+
+Added per-print release flags, staged-handle sitemap exclusion and a shop
+filter that appears only after the first verified member releases. All four
+flags remain false. Partial releases use only approved manifest handles; the
+five legacy capsules and their landing pages remain unchanged. Added behavior
+checks for staged exclusion and partial release. Provider dashboard access is
+unavailable in this session, and new-SKU mapping and print-file review remain
+open. Product-page print details now describe the actual Shopify size options,
+with a regression check for a single-size print and the legacy three-size range.
+No Shopify inventory or publication changes were made during this step.
+
+## 2026-09-18 - Sci-fi & Cinema Prodigi mapping
+
+Mapped all four new variants in the connected Prodigi channel (channel
+products 6103444–6103447) to `ART-FAP-EMA-8X10` with Standard shipping — the
+same specification as the fifteen existing 8 × 10 unframed originals. Each
+hash-checked 2400 × 3000 JPEG places at 100 % full bleed and rates Excellent;
+every row reads "Fulfilled by Prodigi automatically" on a fresh load. Quoted
+delivered cost is EUR 15.25 ex tax (Standard, NL to CY). All four Shopify
+products remain Drafts and all four release flags remain false. Native source
+detail (~140 PPI) and physical print quality remain the open owner decision.
+
+## 2026-09-18 - Sci-fi & Cinema release
+
+Released all four prints with owner approval. Shopify: untracked inventory
+with DENY policy (the existing originals' pattern), pending tags removed,
+Active, published to the Clara Mendes and Clara Mendes Headless channels only;
+Storefront API reads all four as available at EUR 29.99. Storefront: the four
+`SCIFI_ART_RELEASE_FLAGS` are true, so the Sci-fi & Cinema shop filter is
+live. `isUnreleasedSciFiArtHandle` now takes injectable flags so the staged
+state stays covered by tests; the sellable-handle count test includes the four
+released prints. Physical print quality is unverified until the first order.

@@ -78,3 +78,19 @@ export function printScaleGeometry(size: PrintSizeKey) {
     width: spec.widthInches * unitsPerInch,
   };
 }
+
+/** Describe only the sizes offered by this product, including single-size prints. */
+export function printSizeAvailabilityCopy(
+  options: Array<{name: string; optionValues: Array<{name: string}>}> = [],
+) {
+  const values = options.find(
+    (option) => option.name.trim().toLowerCase() === 'size',
+  )?.optionValues;
+  const labels = [
+    ...new Set(values?.map((value) => value.name.trim()).filter(Boolean) ?? []),
+  ];
+  if (!labels.length) return '';
+  return labels.length === 1
+    ? `Available in ${labels[0]}.`
+    : `Choose ${labels.join(', ')}.`;
+}

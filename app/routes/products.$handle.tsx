@@ -45,17 +45,13 @@ import {
   isUnframedPresentation,
   selectAccurateClassicFrameImage,
   selectedClassicFrameSize,
-  UNFRAMED_PRINT_SIZE_LABELS,
 } from '~/lib/classicFrame';
 import {NatalConfigurator} from '~/components/NatalConfigurator';
 import {
   SkyConfigurator,
   type SkyConfiguratorStatus,
 } from '~/components/SkyConfigurator';
-import {
-  toNatalCartAttributes,
-  type NatalParams,
-} from '~/lib/natal/params';
+import {toNatalCartAttributes, type NatalParams} from '~/lib/natal/params';
 import {NATAL_PRODUCT_HANDLE} from '~/lib/natal/products';
 import {
   formatSkyDate,
@@ -88,6 +84,7 @@ import {
 import {
   filterGalleryImagesForSize,
   printScaleGeometry,
+  printSizeAvailabilityCopy,
   selectedPrintSize,
   type PrintSizeKey,
 } from '~/lib/productSizePresentation';
@@ -497,8 +494,7 @@ export default function Product() {
   const isPersonalisedType =
     (product.productType || '').toLowerCase() ===
     SKY_PRODUCT_TYPE.toLowerCase();
-  const isNatal =
-    isPersonalisedType && product.handle === NATAL_PRODUCT_HANDLE;
+  const isNatal = isPersonalisedType && product.handle === NATAL_PRODUCT_HANDLE;
   const isSkyMap = isPersonalisedType && !isNatal;
   // Complete personalisation is released only when the current preview has
   // rendered from the exact same canonical input.
@@ -904,7 +900,10 @@ export default function Product() {
           ) : null}
 
           {isSkyMap && skyParams ? (
-            <section className="sky-review" aria-labelledby="sky-review-heading">
+            <section
+              className="sky-review"
+              aria-labelledby="sky-review-heading"
+            >
               <p className="sky-stage-heading" id="sky-review-heading">
                 <span>3</span> Review and buy
               </p>
@@ -1044,7 +1043,7 @@ export default function Product() {
                 <dt>Print</dt>
                 <dd>
                   Giclée print in archival pigment inks on 200gsm Enhanced Matte
-                  Art paper. Choose {UNFRAMED_PRINT_SIZE_LABELS.join(', ')}.
+                  Art paper. {printSizeAvailabilityCopy(product.options)}
                   Ships unframed in the selected size; frame not included.
                   Screen and print colours can vary slightly.
                 </dd>
@@ -1177,10 +1176,10 @@ export default function Product() {
                 <div>
                   <dt>The medallion</dt>
                   <dd>
-                    A star chart of the sky over the birthplace at the moment
-                    of birth — every naked-eye star, the Moon at its true phase
-                    and the visible planets. Leave the time blank and the chart
-                    is drawn for midday, with no time printed. Star data: Yale
+                    A star chart of the sky over the birthplace at the moment of
+                    birth — every naked-eye star, the Moon at its true phase and
+                    the visible planets. Leave the time blank and the chart is
+                    drawn for midday, with no time printed. Star data: Yale
                     Bright Star Catalogue; places: GeoNames (CC BY 4.0).
                   </dd>
                 </div>

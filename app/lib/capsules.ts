@@ -2,6 +2,11 @@
 // which cannot resolve the Vite "~" alias.
 import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
 import {ORIGINAL_ART_COLLECTIONS} from './catalogFilters.ts';
+import {
+  releasedSciFiArtHandles,
+  SCIFI_ART_CAPSULE,
+  SCIFI_ART_RELEASE_FLAGS,
+} from './scifiArt.ts';
 
 export type Capsule = {
   /** Product handles belonging to this capsule, from the catalog source. */
@@ -42,4 +47,41 @@ export function getCapsuleBySlug(slug?: string | null): Capsule | null {
  */
 export function buildCapsuleTagQuery(capsule: Capsule) {
   return `tag:"${capsule.title}"`;
+}
+
+/** Shop filters include a new capsule only after at least one member releases. */
+export function listShopCapsules(
+  sciFiFlags: Record<string, boolean> = SCIFI_ART_RELEASE_FLAGS,
+): Capsule[] {
+  const handles = releasedSciFiArtHandles(sciFiFlags);
+  return handles.length
+    ? [...CAPSULES, {...SCIFI_ART_CAPSULE, handles}]
+    : [...CAPSULES];
+}
+
+export function getShopCapsuleBySlug(
+  slug?: string | null,
+  sciFiFlags: Record<string, boolean> = SCIFI_ART_RELEASE_FLAGS,
+): Capsule | null {
+  const normalized = slug?.trim().toLowerCase();
+  return (
+    listShopCapsules(sciFiFlags).find(
+      (capsule) => capsule.slug === normalized,
+    ) ?? null
+  );
+}
+
+/** Sci-fi currently uses the shop filter; there is no separate landing page. */
+export function shopCapsulePath(slug: string) {
+  return slug === SCIFI_ART_CAPSULE.slug
+    ? '/collections/all?capsule=scifi-cinema'
+    : `/collections/${slug}`;
+}
+
+export function shopCapsuleDescription(capsule: Capsule) {
+  const count = capsule.handles.length;
+  if (capsule.slug === SCIFI_ART_CAPSULE.slug) {
+    return `${capsule.title} — ${capsule.note}. ${count} original Clara Mendes ${count === 1 ? 'print' : 'prints'}, available unframed in 8 × 10 in.`;
+  }
+  return `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`;
 }
