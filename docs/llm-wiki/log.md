@@ -928,3 +928,20 @@ Storefront API reads all four as available at EUR 29.99. Storefront: the four
 live. `isUnreleasedSciFiArtHandle` now takes injectable flags so the staged
 state stays covered by tests; the sellable-handle count test includes the four
 released prints. Physical print quality is unverified until the first order.
+
+## 2026-09-18 - Standard product pipeline
+
+Replaced the per-collection launch code with one data file and one command.
+`data/print-catalog.json` supersedes `data/scifi-cinema-catalog.json`;
+`app/lib/printCatalog.ts` supersedes `app/lib/scifiArt.ts` and
+`SCIFI_ART_RELEASE_FLAGS` (release is now `released: true` on the entry).
+`scripts/product.mjs` replaces the one-off launch-pack scripts with
+`status / prepare / stage / handoff / mapped / release / verify`. Checked
+against the live Sci-fi & Cinema release without writing to Shopify: `stage`
+and `release` dry runs report nothing to do, the generated ProductSetInput is
+identical to the payload that created the four Drafts, `prepare` reproduces
+the uploaded print JPEG byte for byte, and `verify` passes 25/25 on
+shopclaramendes.com. `stage --apply` and `release --apply` have not yet run
+against Shopify from this script; automatic publishing additionally needs
+`read_publications` + `write_publications` on the Admin token and falls back
+to printed Admin steps without them. Runbook: `docs/add-products-runbook.md`.

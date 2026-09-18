@@ -15,6 +15,11 @@ analytics, fulfillment, launch, or "where is X?" questions:
    before answering.
 4. Cite source files when making non-obvious claims.
 
+For adding prints or print collections, follow
+`docs/add-products-runbook.md` (`npm run product -- status` shows the next
+step). Do not add per-collection modules, release-flag registries, or one-off
+launch scripts; extend the pipeline instead.
+
 ## Source Of Truth
 
 - The code, tests, configuration, scripts, docs, and data files in this repo are

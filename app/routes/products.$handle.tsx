@@ -1043,9 +1043,9 @@ export default function Product() {
                 <dt>Print</dt>
                 <dd>
                   Giclée print in archival pigment inks on 200gsm Enhanced Matte
-                  Art paper. {printSizeAvailabilityCopy(product.options)}
-                  Ships unframed in the selected size; frame not included.
-                  Screen and print colours can vary slightly.
+                  Art paper. {printSizeAvailabilityCopy(product.options)} Ships
+                  unframed in the selected size; frame not included. Screen and
+                  print colours can vary slightly.
                 </dd>
               </div>
             ) : null}

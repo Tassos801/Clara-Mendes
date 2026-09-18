@@ -2,7 +2,7 @@
 
 Updated: 2026-09-18
 
-Four original compositions were **released on 2026-09-18** with owner approval. The artwork was generated with the built-in image generator using invented worlds and structures. All four are Active in Shopify, published to the Clara Mendes (Hydrogen) and Clara Mendes Headless channels, and enabled in `SCIFI_ART_RELEASE_FLAGS`.
+Four original compositions were **released on 2026-09-18** with owner approval. The artwork was generated with the built-in image generator using invented worlds and structures. All four are Active in Shopify, published to the Clara Mendes (Hydrogen) and Clara Mendes Headless channels, and `released: true` in `data/print-catalog.json` (originally `SCIFI_ART_RELEASE_FLAGS`, replaced by the product pipeline the same day).
 
 | Design          | Shopify product ID | SKU           | Retail    |
 | --------------- | ------------------ | ------------- | --------- |
@@ -15,7 +15,7 @@ Each product has one 8 × 10 inch / Unframed variant and one READY 1120 × 1400 
 
 ## Assets and source detail
 
-The independent catalogue definitions and exact generation briefs are in [data/scifi-cinema-catalog.json](../data/scifi-cinema-catalog.json). Four WebP review previews are under `public/images/product-art/scifi-cinema/`. This independent manifest is not consumed by the existing fifteen-original Draft-reset sync.
+The catalogue definitions and exact generation briefs now live in [data/print-catalog.json](../data/print-catalog.json) (the `scifi-cinema` collection); later launches follow [add-products-runbook.md](add-products-runbook.md). Four WebP review previews are under `public/images/product-art/scifi-cinema/`. That file is not consumed by the existing fifteen-original Draft-reset sync.
 
 The local source pack is:
 
@@ -27,11 +27,11 @@ The JPEGs are Lanczos-resized exports, not native 300-DPI masters. Native source
 
 ## Storefront
 
-[app/lib/scifiArt.ts](../app/lib/scifiArt.ts) defines an independent release flag for each of the four handles. All four are `true` since 2026-09-18. A handle whose flag is `false` stays out of catalogue listing, search, recommendations and generated product sitemaps even if its Shopify record is published.
+Each print's `released` field in [data/print-catalog.json](../data/print-catalog.json), read by [app/lib/printCatalog.ts](../app/lib/printCatalog.ts), is its release gate. All four are `true` since 2026-09-18. A print that is not released stays out of catalogue listing, search, recommendations and generated product sitemaps even if its Shopify record is published.
 
 The shop has a **Sci-fi & Cinema** filter at `/collections/all?capsule=scifi-cinema`. Its count and description reflect released members and state only the staged unframed 8 × 10 format. The five legacy capsules remain unchanged; no separate Sci-fi & Cinema landing page is introduced. Product-page print-size wording follows each product's actual Shopify options, so the single-size drafts do not promise larger formats.
 
-[scripts/scifiArt.node-test.mjs](../scripts/scifiArt.node-test.mjs) covers staged exclusion (injected all-false flags), the released state, accidental-publication protection, partial release, the existing capsules, and filter links.
+[scripts/printCatalog.node-test.mjs](../scripts/printCatalog.node-test.mjs) covers staged exclusion (an injected fixture catalog), the released state, accidental-publication protection, partial release, the existing capsules, and filter links.
 
 ## Release — 2026-09-18
 

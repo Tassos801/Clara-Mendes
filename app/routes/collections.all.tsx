@@ -43,7 +43,7 @@ import {
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {releasedSciFiArtHandles} from '~/lib/scifiArt';
+import {releasedPrintHandles} from '~/lib/printCatalog';
 
 export type CollectionLink = {
   id: string;
@@ -104,9 +104,9 @@ export const meta: Route.MetaFunction = ({data}) => {
     title: isCapsule
       ? `${heading} Capsule`
       : 'Shop All Original Art Prints & Wall Art',
-    // Other facets canonicalize to the unfiltered page. Legacy capsules use
-    // their landing pages; Sci-fi & Cinema keeps its shop filter URL because
-    // it has no separate landing page.
+    // Other facets canonicalize to the unfiltered page. Launch capsules use
+    // their landing pages; print-catalog collections keep their shop filter
+    // URL because they have no separate landing page.
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
 };
@@ -154,7 +154,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ),
     description: capsule
       ? shopCapsuleDescription(capsule)
-      : releasedSciFiArtHandles().length > 0
+      : releasedPrintHandles().length > 0
         ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
         : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
     facets: {
