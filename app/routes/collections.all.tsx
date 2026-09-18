@@ -15,7 +15,13 @@ import {
 } from '~/components/ClaraProductCard';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
-import {buildCapsuleTagQuery, CAPSULES, getCapsuleBySlug} from '~/lib/capsules';
+import {
+  buildCapsuleTagQuery,
+  getShopCapsuleBySlug,
+  listShopCapsules,
+  shopCapsuleDescription,
+  shopCapsulePath,
+} from '~/lib/capsules';
 import {
   filterDemoCollections,
   filterDemoProducts,
@@ -37,6 +43,7 @@ import {
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {releasedSciFiArtHandles} from '~/lib/scifiArt';
 
 export type CollectionLink = {
   id: string;
@@ -97,9 +104,9 @@ export const meta: Route.MetaFunction = ({data}) => {
     title: isCapsule
       ? `${heading} Capsule`
       : 'Shop All Original Art Prints & Wall Art',
-    // Filter selections canonicalize to the unfiltered page; a capsule
-    // selection canonicalizes to that capsule's own landing page so the
-    // filtered view consolidates rather than competes with it.
+    // Other facets canonicalize to the unfiltered page. Legacy capsules use
+    // their landing pages; Sci-fi & Cinema keeps its shop filter URL because
+    // it has no separate landing page.
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
 };
@@ -111,7 +118,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const searchParams = new URL(request.url).searchParams;
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
-  const capsule = getCapsuleBySlug(searchParams.get('capsule'));
+  const capsule = getShopCapsuleBySlug(searchParams.get('capsule'));
   const normalizedProductTypes = normalizeSingleProductTypeSearch(
     searchParams,
     SHOP_PRODUCT_TYPES,
@@ -146,8 +153,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
       data.collections.nodes as CollectionLink[],
     ),
     description: capsule
-      ? `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`
-      : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
+      ? shopCapsuleDescription(capsule)
+      : releasedSciFiArtHandles().length > 0
+        ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
+        : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
     facets: {
       productTypes: SHOP_PRODUCT_TYPES.map((label) => ({label})),
       vendors: [] as Array<{label: string}>,
@@ -158,7 +167,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ),
     seoUrl: getCanonicalUrl(
       request,
-      capsule ? `/collections/${capsule.slug}` : '/collections/all',
+      capsule ? shopCapsulePath(capsule.slug) : '/collections/all',
     ),
   } satisfies CollectionViewData;
 }
@@ -189,7 +198,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   // shareable and survive sort, facet, and back/forward navigation. A real
   // Shopify collection with the same handle takes precedence when it exists.
   const shadowedSlugs = new Set(data.collections.map((c) => c.handle));
-  const capsuleLinks = CAPSULES.filter(
+  const capsuleLinks = listShopCapsules().filter(
     (capsule) => !shadowedSlugs.has(capsule.slug),
   );
 

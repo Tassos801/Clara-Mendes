@@ -211,7 +211,6 @@ so they cannot leak into search, feeds, SEO, or future storefront routes.
 
 Source: [Shopify Admin cleanup](../operations/shopify-admin-cleanup.md).
 
-
 ## 2026-09-18 - Sci-fi & Cinema Drafts
 
 Four additional print compositions are staged as Drafts: Orbital Silence,
@@ -222,10 +221,15 @@ four; the 29 pre-existing Clara Mendes product records were unchanged.
 
 Definitions and generation briefs are kept separately in
 `data/scifi-cinema-catalog.json`; review WebP assets are under
-`public/images/product-art/scifi-cinema/`. These handles have not been added
-to storefront filtering or the fifteen-original Draft-reset sync. The local
+`public/images/product-art/scifi-cinema/`. An independent release gate in
+`app/lib/scifiArt.ts` keeps all four handles out of catalogue listing and
+product sitemaps until enabled. The shop gains a Sci-fi & Cinema filter only
+after a verified member releases; the five legacy capsules and the
+fifteen-original Draft-reset sync remain unchanged. The local
 2400 × 3000 / 300-DPI JPEG candidates are resized from 1122 × 1402 source PNGs,
 so native detail remains approximately 140.2 PPI at 8 × 10 inches. New-SKU
-Prodigi mappings, crop review and channel publication remain open.
+Prodigi mappings, crop review and channel publication remain open. Product-page
+size copy now reads the actual Shopify size options instead of promising the
+legacy three-size range for every art print.
 
 Source and remaining work: [Sci-fi & Cinema print staging](../../scifi-cinema-prints.md).

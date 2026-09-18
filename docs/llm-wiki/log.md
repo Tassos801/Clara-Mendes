@@ -574,6 +574,7 @@ on the failed Admin API credential exchange (open question).
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [Art for Everyday Living](../art-product-extensions.md),
 [Open questions](open-questions.md).
+
 ## 2026-09-01 - Your Sky guided-refinement design approved
 
 Recorded the owner-approved Your Sky refinement before implementation. The
@@ -646,6 +647,7 @@ the signed attributes; 135 tests, lint, typecheck and build green.
 
 Sources: [Catalog and products](modules/catalog-and-products.md),
 [PR #67](https://github.com/Tassos801/Clara-Mendes/pull/67).
+
 ## 2026-09-02 - Brand film: Introducing Clara Mendes
 
 Added a silent 45-second launch film built with Remotion in `video/`
@@ -881,7 +883,6 @@ variants), and the webhook acknowledges only Prodigi 400/409/422 so an auth
 failure keeps Shopify's retries. Self-checked on the dev server after the
 fix; not independently re-verified.
 
-
 ## 2026-09-18 - Sci-fi & Cinema artwork and Shopify staging
 
 Created four new Draft products with READY artwork images and one zero-stock,
@@ -893,3 +894,15 @@ candidates with 300-DPI metadata, while retaining and hash-checking the
 runbook. No storefront filters, existing product records, supplier mappings,
 inventory availability or publications were changed. Native-resolution and
 new-SKU fulfillment limitations are recorded in the runbook.
+
+## 2026-09-18 - Sci-fi & Cinema storefront release preparation
+
+Added per-print release flags, staged-handle sitemap exclusion and a shop
+filter that appears only after the first verified member releases. All four
+flags remain false. Partial releases use only approved manifest handles; the
+five legacy capsules and their landing pages remain unchanged. Added behavior
+checks for staged exclusion and partial release. Provider dashboard access is
+unavailable in this session, and new-SKU mapping and print-file review remain
+open. Product-page print details now describe the actual Shopify size options,
+with a regression check for a single-size print and the legacy three-size range.
+No Shopify inventory or publication changes were made during this step.
