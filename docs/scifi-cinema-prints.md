@@ -23,7 +23,7 @@ The local source pack is:
 
 It contains the four unmodified 1122 × 1402 PNG originals; four 1120 × 1400 WebP previews; four 2400 × 3000 RGB JPEG candidates with 300-DPI metadata; scoped import scripts; the baseline; and `asset-validation.json`, `shopify-readback.json` and `final-verification.json`.
 
-The JPEGs are Lanczos-resized exports, not native 300-DPI masters. Native source detail is about 140.2 PPI at 8 × 10 inches. Original SHA-256 hashes were checked after export. Provider crop, physical appearance and new SKU mappings remain unverified. No larger or framed variant was added.
+The JPEGs are Lanczos-resized exports, not native 300-DPI masters. Native source detail is about 140.2 PPI at 8 × 10 inches. Original SHA-256 hashes were checked after export. Provider crop and SKU mappings were verified on 2026-09-18 (below); physical appearance remains unverified. No larger or framed variant was added.
 
 ## Storefront preparation
 
@@ -36,15 +36,28 @@ After the first verified member is released, the shop gains a **Sci-fi & Cinema*
 ## Release work remaining
 
 1. Review composition and the source-detail limit for the 8 × 10 candidate files.
-2. In the connected Prodigi account, map every exact `CM-SC-01`–`04` SKU to the established unframed 8 × 10 specification; upload the corresponding JPEG and verify crop, shipping and delivered cost. Existing-original mapping is not evidence of new-SKU mapping.
-3. Confirm billing and order-edit settings apply to these mappings and set sellable inventory only after mapping is verified. Record proof that each new SKU is fulfilled automatically.
+2. ~~Map every `CM-SC-01`–`04` SKU in Prodigi~~ — done 2026-09-18, see _Prodigi mapping_ below.
+3. Set sellable inventory behavior for the four variants (account-level billing and 24h auto-release already apply channel-wide).
 4. Remove the pending tags only after their respective reviews pass, publish to the intended sales channels, and enable only the verified handles in `SCIFI_ART_RELEASE_FLAGS`. Follow the repository validation and deployment workflow for that release commit.
 5. Verify live image delivery, the Sci-fi & Cinema filter, product selection, and cart behavior.
 
-No sample order, provider mapping, inventory release or Shopify publication has been performed for these designs. These are drafts and release preparation; production sales remain disabled.
+Provider mapping is complete. No sample order, inventory release or Shopify publication has been performed for these designs. These are drafts and release preparation; production sales remain disabled.
 
-## Provider access in this session
+## Prodigi mapping — done 2026-09-18
 
-No configured local Prodigi API credential was found. The supported browser-control runtime was unavailable, so the connected Prodigi dashboard was not inspected or changed. The published Print API reference documents orders, quotes and product details; no supported endpoint for configuring Shopify SKU mappings was found. Configuration must be verified in the connected sales channel using Prodigi's documented dashboard workflow.
+Configured and read back in the connected Prodigi dashboard (channel `99660041-3904-4706-813c-00caf0030e1a`).
 
-References: [Configure your products](https://www.prodigi.com/shopify-print-on-demand-app/support/configure-your-products/) and [Print API reference](https://www.prodigi.com/print-api/docs/reference/).
+| Design          | Channel product | Provider SKU     | Placement               | Quality   | Shipping | Fulfilment |
+| --------------- | --------------- | ---------------- | ----------------------- | --------- | -------- | ---------- |
+| Orbital Silence | 6103444         | ART-FAP-EMA-8X10 | 100 %, 0 / 0, no border | Excellent | Standard | Automatic  |
+| Neon After Rain | 6103445         | ART-FAP-EMA-8X10 | 100 %, 0 / 0, no border | Excellent | Standard | Automatic  |
+| Desert Signal   | 6103446         | ART-FAP-EMA-8X10 | 100 %, 0 / 0, no border | Excellent | Standard | Automatic  |
+| The Fold        | 6103447         | ART-FAP-EMA-8X10 | 100 %, 0 / 0, no border | Excellent | Standard | Automatic  |
+
+`ART-FAP-EMA-8X10` with Standard shipping is the same specification the fifteen existing originals use for 8 × 10 unframed (checked on Quiet Form I, channel product 5656798). The editor recommends 2400 × 3000 px at 300 dpi, which the candidate JPEGs match exactly, so each placement is full bleed with no crop; every crop was inspected in the editor. File hashes were checked against the local checklist before upload.
+
+Dashboard quote, single item, ex tax, to CY from NL: Standard EUR 5.00 + EUR 10.25 = **EUR 15.25**; Budget EUR 8.75. This is the same cost structure as the existing EUR 29.99 8 × 10 prints.
+
+Prodigi rates the pixel count of the upload, so "Excellent" does not reflect the ~140 PPI native detail. Physical print quality is unverified; the first order, or a sample, is the first QC.
+
+Reference: [Configure your products](https://www.prodigi.com/shopify-print-on-demand-app/support/configure-your-products/).

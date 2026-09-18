@@ -906,3 +906,14 @@ unavailable in this session, and new-SKU mapping and print-file review remain
 open. Product-page print details now describe the actual Shopify size options,
 with a regression check for a single-size print and the legacy three-size range.
 No Shopify inventory or publication changes were made during this step.
+
+## 2026-09-18 - Sci-fi & Cinema Prodigi mapping
+
+Mapped all four new variants in the connected Prodigi channel (channel
+products 6103444–6103447) to `ART-FAP-EMA-8X10` with Standard shipping — the
+same specification as the fifteen existing 8 × 10 unframed originals. Each
+hash-checked 2400 × 3000 JPEG places at 100 % full bleed and rates Excellent;
+every row reads "Fulfilled by Prodigi automatically" on a fresh load. Quoted
+delivered cost is EUR 15.25 ex tax (Standard, NL to CY). All four Shopify
+products remain Drafts and all four release flags remain false. Native source
+detail (~140 PPI) and physical print quality remain the open owner decision.
