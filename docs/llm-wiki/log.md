@@ -945,3 +945,14 @@ shopclaramendes.com. `stage --apply` and `release --apply` have not yet run
 against Shopify from this script; automatic publishing additionally needs
 `read_publications` + `write_publications` on the Admin token and falls back
 to printed Admin steps without them. Runbook: `docs/add-products-runbook.md`.
+
+## 2026-09-22 - Sci-fi listing expansion
+
+Four Sci-fi & Cinema prints gained five-image galleries (flat artwork plus
+four art-directed room scenes, exact art composited with Sharp) and refined
+copy, verified READY in Shopify. 16×20 and 20×24 variants were created on the
+live products at €39.99 / €49.99, tracked at zero, so they show as
+unavailable until `release --apply`. Pipeline gained `releasedSizes`,
+`expand` and `media`. Prodigi mapping of the eight new variants was blocked
+on the day: Prodigi's image library left every upload at "Processing" for
+hours (the runbook records the fallbacks tried). PR #81 merged and deployed.
