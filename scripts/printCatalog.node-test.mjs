@@ -12,6 +12,7 @@ function fixture(released = []) {
     description: 'Description.',
     prodigi: {'8x10': {channelProductId: '1', verified: true}},
     released: released.includes(slug),
+    releasedSizes: released.includes(slug) ? ['8x10'] : [],
     sequence,
     shopify: {productId: 'gid://p', variantIds: {'8x10': 'gid://v'}},
     slug,
@@ -142,7 +143,24 @@ test('a partial release filters the right members and links to a real shop URL',
     capsules.getShopCapsuleBySlug('beta-set', catalog),
   );
   assert.ok(betaCopy.includes('1 original Clara Mendes print,'));
-  assert.ok(betaCopy.endsWith('8 × 10 in and 16 × 20 in.'));
+  assert.ok(betaCopy.endsWith('available unframed in 8 × 10 in.'));
+});
+
+test('releasedSizes keeps staged expansion sizes out of consumer copy', () => {
+  const catalog = fixture(['beta-one']);
+  const [beta] = catalog.collections.slice(1);
+  const [print] = beta.prints;
+
+  assert.deepEqual(prints.validatePrintCatalog(catalog), []);
+  assert.deepEqual(
+    prints.releasedPrintCollections(catalog)[0].sizeLabels,
+    ['8 × 10 in'],
+  );
+
+  print.releasedSizes.push('16x20');
+  const problems = prints.validatePrintCatalog(catalog).join('\n');
+  assert.match(problems, /Shopify ids for 16x20/);
+  assert.match(problems, /verified Prodigi mapping for 16x20/);
 });
 
 test('the live Sci-fi & Cinema release is unchanged by the migration', () => {
@@ -187,6 +205,7 @@ test('validation refuses a release without ids or a verified mapping, and bad en
   );
 
   const partial = fixture(['beta-one']);
+  partial.collections[1].prints[0].releasedSizes.push('16x20');
   assert.match(
     prints.validatePrintCatalog(partial).join('\n'),
     /Shopify ids for 16x20/,

@@ -41,6 +41,8 @@ export type PrintCatalogPrint = {
   /** Per size: the Prodigi channel product, recorded once mapping is verified. */
   prodigi?: Record<string, {channelProductId?: string; verified?: boolean}>;
   released: boolean;
+  /** Sizes that are fully mapped and intentionally offered to consumers. */
+  releasedSizes?: PrintSizeKey[];
   sequence: number;
   /** Written back by `product stage`. */
   shopify?: {productId?: string; variantIds?: Record<string, string>};
@@ -129,18 +131,28 @@ export function releasedPrintCollections(
   catalog: PrintCatalog = PRINT_CATALOG,
 ): ReleasedPrintCollection[] {
   return catalog.collections
-    .map((collection) => ({
-      handles: collection.prints
-        .filter((print) => print.released === true)
-        .map(printHandle),
-      note: collection.note,
-      sizeLabels: collection.variants.map(
-        (variant) =>
-          PRINT_SIZES[variant.size as PrintSizeKey]?.label ?? variant.size,
-      ),
-      slug: collection.slug,
-      title: collection.title,
-    }))
+    .map((collection) => {
+      const released = collection.prints.filter(
+        (print) => print.released === true,
+      );
+      const commonSizes = collection.variants.filter((variant) =>
+        released.every((print) =>
+          (print.releasedSizes ?? []).includes(
+            variant.size as PrintSizeKey,
+          ),
+        ),
+      );
+      return {
+        handles: released.map(printHandle),
+        note: collection.note,
+        sizeLabels: commonSizes.map(
+          (variant) =>
+            PRINT_SIZES[variant.size as PrintSizeKey]?.label ?? variant.size,
+        ),
+        slug: collection.slug,
+        title: collection.title,
+      };
+    })
     .filter((collection) => collection.handles.length > 0);
 }
 
@@ -211,6 +223,16 @@ export function validatePrintCatalog(
         if (!print[field]?.trim()) problems.push(`${at}: missing ${field}`);
       if (typeof print.released !== 'boolean')
         problems.push(`${at}: released must be true or false`);
+      const releasedSizes = print.releasedSizes ?? [];
+      if (new Set(releasedSizes).size !== releasedSizes.length)
+        problems.push(`${at}: releasedSizes must not contain duplicates`);
+      for (const size of releasedSizes)
+        if (!sizes.has(size))
+          problems.push(`${at}: releasedSizes contains unknown size ${size}`);
+      if (print.released === true && releasedSizes.length === 0)
+        problems.push(`${at}: released without releasedSizes`);
+      if (print.released !== true && releasedSizes.length > 0)
+        problems.push(`${at}: staged print cannot have releasedSizes`);
 
       const handle = printHandle(print);
       if (seen.handles.has(handle)) problems.push(`${at}: duplicate handle`);
@@ -224,7 +246,10 @@ export function validatePrintCatalog(
 
         // A released print with an unmapped variant would sell orders no one
         // can fulfil, so release requires the full chain on every size.
-        if (print.released === true) {
+        if (
+          print.released === true &&
+          releasedSizes.includes(variant.size as PrintSizeKey)
+        ) {
           if (
             !print.shopify?.productId ||
             !print.shopify.variantIds?.[variant.size]

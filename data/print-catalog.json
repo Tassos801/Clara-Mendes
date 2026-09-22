@@ -18,6 +18,18 @@
           "finish": "Unframed",
           "priceEUR": "29.99",
           "providerSku": "ART-FAP-EMA-8X10"
+        },
+        {
+          "size": "16x20",
+          "finish": "Unframed",
+          "priceEUR": "39.99",
+          "providerSku": "ART-FAP-EMA-16X20"
+        },
+        {
+          "size": "20x24",
+          "finish": "Unframed",
+          "priceEUR": "49.99",
+          "providerSku": "GLOBAL-FAP-20X24"
         }
       ],
       "prints": [
@@ -29,6 +41,9 @@
           "alt": "Cinematic science-fiction artwork with a towering orbital ring, a pale planet and an amber spacecraft trajectory.",
           "palette": "Midnight indigo, mineral blue, ivory, copper",
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -59,6 +74,9 @@
           "alt": "Futuristic rainy city artwork with sculptural towers, elevated transit and an umbrella figure amid blue and amber reflections.",
           "palette": "Ink blue, teal, amber, muted plum",
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -89,6 +107,9 @@
           "alt": "Alien desert artwork with orange dunes, a lone traveller, two pale moons and a distant split tower emitting an amber beam.",
           "palette": "Terracotta, saffron, sand, bone, umber",
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -119,6 +140,9 @@
           "alt": "Surreal architectural artwork with floating ivory buildings, terracotta stairs and a tiny figure above a tranquil blue sea.",
           "palette": "Ivory, terracotta, mineral blue, slate",
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
