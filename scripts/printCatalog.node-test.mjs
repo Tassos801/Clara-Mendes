@@ -175,7 +175,7 @@ test('releasedSizes keeps staged expansion sizes out of consumer copy', () => {
   assert.match(problems, /verified Prodigi mapping for 16x20/);
 });
 
-test('the live Sci-fi & Cinema release is unchanged by the migration', () => {
+test('the live Sci-fi & Cinema release offers all three sizes', () => {
   const handles = [
     'orbital-silence-art-print',
     'neon-after-rain-art-print',
@@ -186,7 +186,7 @@ test('the live Sci-fi & Cinema release is unchanged by the migration', () => {
   assert.deepEqual(capsule.handles, handles);
   assert.equal(
     capsules.shopCapsuleDescription(capsule),
-    'Sci-fi & Cinema — Imagined worlds, cinematic light, and a sense of scale. 4 original Clara Mendes prints, available unframed in 8 × 10 in.',
+    'Sci-fi & Cinema — Imagined worlds, cinematic light, and a sense of scale. 4 original Clara Mendes prints, available unframed in 8 × 10 in, 16 × 20 in, and 20 × 24 in.',
   );
   const [collection] = prints.PRINT_CATALOG.collections;
   assert.deepEqual(

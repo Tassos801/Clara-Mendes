@@ -13,6 +13,7 @@ import {
   sizeBullet,
   toCsv,
   variantExpansionPlan,
+  normalizeHtml,
 } from './lib/product-pipeline.mjs';
 
 const collection = {
@@ -267,4 +268,22 @@ test('existing released products expand without replacing the live base variant'
     price: '39.99',
     taxable: true,
   });
+});
+
+test('normalizeHtml ignores the whitespace Shopify adds between tags', () => {
+  const stored = [
+    '<p>Lead</p>',
+    '<ul>',
+    '<li>Paper</li>',
+    '<li>Inks</li>',
+    '</ul>',
+    '<p>Note</p>',
+  ].join('\n');
+  const expected = [
+    '<p>Lead</p>',
+    '<ul><li>Paper</li><li>Inks</li></ul>',
+    '<p>Note</p>',
+  ].join('\n');
+  assert.equal(normalizeHtml(stored), normalizeHtml(expected));
+  assert.notEqual(normalizeHtml('<p>Lead</p>'), normalizeHtml('<p>Other</p>'));
 });

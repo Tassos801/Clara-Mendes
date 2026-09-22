@@ -345,3 +345,13 @@ function mainWorktree() {
     return null;
   }
 }
+
+/**
+ * Shopify reformats stored HTML (it re-indents list items), so readbacks are
+ * compared with inter-tag whitespace removed rather than byte for byte.
+ */
+export function normalizeHtml(html) {
+  return String(html ?? '')
+    .replace(/>\s+</g, '><')
+    .trim();
+}
