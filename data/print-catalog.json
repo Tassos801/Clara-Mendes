@@ -88,7 +88,9 @@
           ],
           "released": true,
           "releasedSizes": [
-            "8x10"
+            "8x10",
+            "16x20",
+            "20x24"
           ],
           "source": {
             "method": "built-in image_gen",
@@ -111,6 +113,16 @@
               "channelProductId": "6103444",
               "verified": true,
               "verifiedAt": "2026-09-18"
+            },
+            "16x20": {
+              "channelProductId": "6103444",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
+            },
+            "20x24": {
+              "channelProductId": "6103444",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
             }
           }
         },
@@ -169,7 +181,9 @@
           ],
           "released": true,
           "releasedSizes": [
-            "8x10"
+            "8x10",
+            "16x20",
+            "20x24"
           ],
           "source": {
             "method": "built-in image_gen",
@@ -192,6 +206,16 @@
               "channelProductId": "6103445",
               "verified": true,
               "verifiedAt": "2026-09-18"
+            },
+            "16x20": {
+              "channelProductId": "6103445",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
+            },
+            "20x24": {
+              "channelProductId": "6103445",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
             }
           }
         },
@@ -250,7 +274,9 @@
           ],
           "released": true,
           "releasedSizes": [
-            "8x10"
+            "8x10",
+            "16x20",
+            "20x24"
           ],
           "source": {
             "method": "built-in image_gen",
@@ -273,6 +299,16 @@
               "channelProductId": "6103446",
               "verified": true,
               "verifiedAt": "2026-09-18"
+            },
+            "16x20": {
+              "channelProductId": "6103446",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
+            },
+            "20x24": {
+              "channelProductId": "6103446",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
             }
           }
         },
@@ -331,7 +367,9 @@
           ],
           "released": true,
           "releasedSizes": [
-            "8x10"
+            "8x10",
+            "16x20",
+            "20x24"
           ],
           "source": {
             "method": "built-in image_gen",
@@ -354,6 +392,16 @@
               "channelProductId": "6103447",
               "verified": true,
               "verifiedAt": "2026-09-18"
+            },
+            "16x20": {
+              "channelProductId": "6103447",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
+            },
+            "20x24": {
+              "channelProductId": "6103447",
+              "verified": true,
+              "verifiedAt": "2026-09-22"
             }
           }
         }

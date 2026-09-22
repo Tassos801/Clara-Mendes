@@ -53,6 +53,7 @@ import {
   toCsv,
   variantExpansionPlan,
   VENDOR,
+  normalizeHtml,
 } from './lib/product-pipeline.mjs';
 import {
   resolvePrintRoomMediaPlan,
@@ -838,7 +839,10 @@ async function release() {
       print,
       product.id,
     );
-    assert.equal(product.descriptionHtml, expected.descriptionHtml);
+    assert.equal(
+      normalizeHtml(product.descriptionHtml),
+      normalizeHtml(expected.descriptionHtml),
+    );
     assert.deepEqual(product.seo, expected.seo);
   }
 

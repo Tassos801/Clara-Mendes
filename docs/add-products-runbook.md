@@ -17,12 +17,14 @@ pipeline instead and update this page.
 | 0 | Edit the catalog | Add the collection and/or print entries (template below), `released: false` | repo |
 | 1 | `prepare <collection>` | Source artwork → 1120×1400 WebP + 300 DPI JPEG per size; reports native PPI and crop | `public/images/product-art/<collection>/`, launch folder |
 | 2 | `stage <collection> --apply` | Creates Shopify **Drafts** (tracked at 0 + DENY, pending tags); writes ids back to the catalog; proves no other product changed | Shopify, repo |
+| 2b | `expand <collection> --apply` | For a size added to an already-released collection: creates the missing variants (tracked at 0 + DENY) on the live products, keeps every existing variant untouched, writes ids back | Shopify, repo |
 | 3 | `handoff <collection>` | Prodigi checklist (SKU, provider SKU, print file, hash) as `.md` + `.csv` | launch folder |
 | 4 | Map in Prodigi, then `mapped <collection> [--size 8x10] <print>=<channel product id> …` | Records each verified mapping | repo |
+| 4b | `media <collection> --apply` | Uploads the four tailored room scenes, keeps the flat artwork as image 1, orders the gallery, refines copy/SEO; exactly five images or it stops | Shopify |
 | 5 | `release <collection> --apply` | Untracks inventory, removes pending tags, activates, publishes, checks the Storefront API, then sets `released: true` | Shopify, repo |
 | 6 | Commit → PR → owner merges → `verify <collection>` | Live checks: Storefront API price/availability, add to cart, PDP 200, sitemap, shop filter | launch folder |
 
-`stage` and `release` are dry runs without `--apply`. Every step is safe to
+`stage`, `expand`, `media` and `release` are dry runs without `--apply`. Every step is safe to
 re-run; `--only a,b` limits any step to some prints. Open the PR after step 2
 so CI runs early — a staged print is invisible on the storefront until both
 `released: true` is deployed **and** the product is Active and published.
@@ -30,6 +32,26 @@ so CI runs early — a staged print is invisible on the storefront until both
 Put the source artwork at `<launch folder>/<collection>/source/<print-slug>.png`
 before step 1 (4:5 portrait; `.jpg`/`.tif` also accepted). The launch folder is
 printed by `status`.
+
+### Adding a size to a released collection
+
+Add the variant to `collection.variants` (see the size table below). Each
+released print keeps `releasedSizes` (the sizes a shopper can buy); the new
+size is absent there until `release --apply` proves it on the Storefront API.
+Then: `prepare` → `expand --apply` → `handoff` → map in Prodigi →
+`mapped --size <size>` → `release --apply`. Between `expand` and `release` the
+storefront shows the new size struck through as unavailable, with its price.
+
+### Room scenes (four tailored images per print)
+
+Each print carries `rooms`: four scenes in the order `living-room`, `bedroom`,
+`study`, `wide-interior`, each with its own `alt`, a blank interior
+`backgroundFile` under `scripts/assets/print-room-mockups/<collection>/`, and
+a 4:5 `placement`. `npm run catalog:prints:room-mockups <collection>` composites
+the exact flat artwork into every interior (1080×1350 JPEG under
+`public/images/product-art-mockups/<collection>/` plus a hash manifest).
+`media --apply` then syncs them to Shopify. Interiors are empty rooms: no art,
+text, people or brands.
 
 ### Catalog entry template
 
@@ -99,6 +121,9 @@ main worktree:
 
 ## Known traps
 
+- Prodigi image processing can stall account-wide (22 Sep 2026: every upload sat at "Processing" for hours, including a 2 MB file that had processed fine four days earlier). Nothing on our side fixes it; wait, then re-check the library before mapping.
+- Prodigi "Add from URL" accepts a public Shopify staged-upload URL (`stagedUploadsCreate`, resource `IMAGE`) when a file cannot be sent from disk; the Admin token has no `write_files` scope, so Shopify Files is not an option.
+- Chrome-extension uploads: the Prodigi file input is recreated after every upload, so look it up again before each file, and send one file per call (10 MB limit).
 - Prodigi: upload print files from the **Image library page**, not the editor modal (it wedges on "Uploading…"). Both modals drop the first typed search — type, check, retype. The shipping select needs a focusing click; confirm it took after a reload.
 - Browser automation: file upload only reads files under the session's working directory — copy the print files there first. `ctrl+a` types a literal "a"; triple-click instead.
 - Dev server in a worktree: start it with `npm --prefix <abs path> run dev -- --path <abs path>`; codegen dirties `*.generated.d.ts` — revert before committing.
