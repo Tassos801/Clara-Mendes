@@ -141,7 +141,7 @@ test('status names the single next step', () => {
       '16x20': {channelProductId: '2', verified: true},
     },
   };
-  assert.equal(printStatus(collection, mapped).next, 'release');
+  assert.equal(printStatus(collection, mapped).next, 'media → release');
   assert.equal(
     printStatus(collection, {
       ...mapped,

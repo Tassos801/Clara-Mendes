@@ -242,7 +242,7 @@ export function printStatus(collection, print, {hasWebImage = true} = {}) {
   else if (!print.shopify?.productId) next = 'stage';
   else if (!staged) next = print.released ? 'expand' : 'stage';
   else if (!mapped) next = 'handoff → map in Prodigi → mapped';
-  else if (!print.released || !allSizesReleased) next = 'release';
+  else if (!print.released || !allSizesReleased) next = 'media → release';
   return {mapped, next, released: print.released === true, staged};
 }
 

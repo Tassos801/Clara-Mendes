@@ -4,6 +4,8 @@ import test from 'node:test';
 import catalog from '../data/print-catalog.json' with {type: 'json'};
 import {
   ROOM_KEYS,
+  mediaMatchesRoomSource,
+  resolvePrintRoomMediaPlan,
   roomMediaPlan,
   validateRoomScenes,
 } from './lib/print-room-scenes.mjs';
@@ -53,4 +55,78 @@ test('room validation rejects missing, duplicate and non-portrait placements', (
   assert.match(problems, /four room scenes/);
   assert.match(problems, /duplicate room key/);
   assert.match(problems, /4:5 portrait/);
+});
+
+function readyMedia(entry, index) {
+  return {
+    alt: entry.alt,
+    id: `room-${index}`,
+    image: {
+      url: `https://cdn.shopify.com/files/${entry.outputRelativePath.split('/').at(-1)}`,
+    },
+    mediaContentType: 'IMAGE',
+    status: 'READY',
+  };
+}
+
+test('room media reconciliation migrates one flat image to an exact five-image gallery', () => {
+  const [collection] = catalog.collections;
+  const print = collection.prints[0];
+  const planned = roomMediaPlan(collection, print);
+  const flat = {
+    alt: print.alt,
+    id: 'flat',
+    image: {url: 'https://cdn.shopify.com/files/orbital-silence.webp'},
+    mediaContentType: 'IMAGE',
+    status: 'READY',
+  };
+
+  assert.equal(
+    resolvePrintRoomMediaPlan([flat], planned, print.alt).action,
+    'migrate',
+  );
+  const exact = [flat, ...planned.map(readyMedia)];
+  const complete = resolvePrintRoomMediaPlan(exact, planned, print.alt);
+  assert.equal(complete.action, 'complete');
+  assert.equal(complete.currentByAlt.size, 4);
+  assert.ok(
+    planned.every((entry, index) =>
+      mediaMatchesRoomSource(exact[index + 1], entry),
+    ),
+  );
+});
+
+test('room media reconciliation refuses duplicates, failed images and unknown extras', () => {
+  const [collection] = catalog.collections;
+  const print = collection.prints[0];
+  const planned = roomMediaPlan(collection, print);
+  const flat = {
+    alt: print.alt,
+    id: 'flat',
+    image: {url: 'https://cdn.shopify.com/files/orbital-silence.webp'},
+    mediaContentType: 'IMAGE',
+    status: 'READY',
+  };
+  const exact = planned.map(readyMedia);
+  assert.equal(
+    resolvePrintRoomMediaPlan([flat, ...exact, exact[0]], planned, print.alt)
+      .action,
+    'mismatch',
+  );
+  assert.equal(
+    resolvePrintRoomMediaPlan(
+      [flat, {...exact[0], status: 'FAILED'}, ...exact.slice(1)],
+      planned,
+      print.alt,
+    ).action,
+    'mismatch',
+  );
+  assert.equal(
+    resolvePrintRoomMediaPlan(
+      [flat, ...exact, {id: 'unknown', alt: 'Unknown image'}],
+      planned,
+      print.alt,
+    ).action,
+    'mismatch',
+  );
 });

@@ -69,5 +69,102 @@ export function roomMediaPlan(collection, print) {
       collection.slug,
       roomOutputFileName(print, room),
     ),
+    fileName: roomOutputFileName(print, room),
   }));
+}
+
+function mediaUrl(media) {
+  return media?.image?.url || media?.preview?.image?.url || '';
+}
+
+function fileNameFromUrl(value) {
+  if (!value) return '';
+  try {
+    const pathname = new URL(value).pathname;
+    return decodeURIComponent(pathname.slice(pathname.lastIndexOf('/') + 1));
+  } catch {
+    return '';
+  }
+}
+
+export function mediaMatchesRoomSource(media, planned) {
+  const actual = fileNameFromUrl(mediaUrl(media));
+  const expected = planned?.fileName ?? '';
+  if (!actual || !expected) return false;
+  if (actual === expected) return true;
+  const extensionIndex = expected.lastIndexOf('.');
+  const stem = expected.slice(0, extensionIndex);
+  const extension = expected.slice(extensionIndex);
+  const escapedStem = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const escapedExtension = extension.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const shopifySuffix =
+    '(?:\\d+|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})';
+  return new RegExp(
+    `^${escapedStem}_${shopifySuffix}${escapedExtension}$`,
+    'i',
+  ).test(actual);
+}
+
+export function resolvePrintRoomMediaPlan(existingMedia, plannedMedia, flatAlt) {
+  const expectedByAlt = new Map(
+    plannedMedia.map((planned) => [planned.alt, planned]),
+  );
+  const expectedMatches = existingMedia.filter((media) =>
+    expectedByAlt.has(media?.alt),
+  );
+  const duplicateExpected = expectedMatches.find(
+    (media, index) =>
+      expectedMatches.findIndex((entry) => entry.alt === media.alt) !== index,
+  );
+  const invalidExpected = expectedMatches.find((media) => {
+    const planned = expectedByAlt.get(media.alt);
+    return (
+      media?.mediaContentType !== 'IMAGE' ||
+      media?.status === 'FAILED' ||
+      (media?.status === 'READY' && !mediaMatchesRoomSource(media, planned))
+    );
+  });
+  const currentByAlt = new Map(
+    expectedMatches.map((media) => [media.alt, media]),
+  );
+  const nonRoom = existingMedia.filter(
+    (media) => !expectedByAlt.has(media?.alt),
+  );
+  const flat = nonRoom.length === 1 ? nonRoom[0] : null;
+  const validFlat =
+    flat?.id &&
+    flat.alt === flatAlt &&
+    flat.mediaContentType === 'IMAGE' &&
+    flat.status === 'READY' &&
+    existingMedia[0]?.id === flat.id;
+  const unexpected = nonRoom.find((media) => media?.id !== flat?.id);
+
+  if (
+    duplicateExpected ||
+    invalidExpected ||
+    unexpected ||
+    !validFlat ||
+    existingMedia.length > plannedMedia.length + 1
+  ) {
+    return {
+      action: 'mismatch',
+      currentByAlt,
+      duplicateExpected,
+      flat,
+      invalidExpected,
+      unexpected,
+    };
+  }
+
+  const complete =
+    existingMedia.length === plannedMedia.length + 1 &&
+    plannedMedia.every((planned, index) => {
+      const current = currentByAlt.get(planned.alt);
+      return (
+        current?.status === 'READY' &&
+        mediaMatchesRoomSource(current, planned) &&
+        existingMedia[index + 1]?.id === current.id
+      );
+    });
+  return {action: complete ? 'complete' : 'migrate', currentByAlt, flat};
 }
