@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  assertPrintMediaTarget,
   buildStagedVariantInput,
   buildProductSetInput,
   buildReleasedProductUpdateInput,
@@ -144,12 +145,39 @@ test('status names the single next step', () => {
   };
   assert.equal(printStatus(collection, mapped).next, 'media → release');
   assert.equal(
+    printStatus(collection, mapped, {hasRoomAssets: false}).next,
+    'rooms',
+  );
+  assert.equal(
     printStatus(collection, {
       ...mapped,
       released: true,
       releasedSizes: ['8x10', '16x20'],
     }).next,
     'verify',
+  );
+});
+
+test('room media can be staged while Draft without activating the product', () => {
+  const product = {
+    id: 'gid://shopify/Product/1',
+    handle: 'alpha-one-art-print',
+  };
+  assert.doesNotThrow(() =>
+    assertPrintMediaTarget({...product, status: 'DRAFT'}, product.handle),
+  );
+  assert.doesNotThrow(() =>
+    assertPrintMediaTarget({...product, status: 'ACTIVE'}, product.handle),
+  );
+  assert.throws(
+    () =>
+      assertPrintMediaTarget({...product, status: 'ARCHIVED'}, product.handle),
+    /cannot sync room media/,
+  );
+  assert.throws(
+    () =>
+      assertPrintMediaTarget({...product, status: 'DRAFT'}, 'other-art-print'),
+    /identity does not match/,
   );
 });
 

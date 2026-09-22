@@ -956,3 +956,12 @@ unavailable until `release --apply`. Pipeline gained `releasedSizes`,
 `expand` and `media`. Prodigi mapping of the eight new variants was blocked
 on the day: Prodigi's image library left every upload at "Processing" for
 hours (the runbook records the fallbacks tried). PR #81 merged and deployed.
+
+## 2026-09-22 - Print pipeline room-media preflight
+
+The `product` command now has a `rooms` step with per-print selection and
+`status` reports whether each room set matches the current artwork,
+backgrounds, and generated images. `media` checks the image hash manifest
+before Shopify writes, accepts the intended Draft-to-release sequence, and
+verifies the product status did not change. The add-products runbook now includes
+the complete four-room catalog template.

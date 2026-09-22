@@ -14,6 +14,11 @@ import {roomMediaPlan} from './lib/print-room-scenes.mjs';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const collectionSlug = process.argv[2];
+const only = process.argv
+  .find((argument) => argument.startsWith('--only='))
+  ?.slice('--only='.length)
+  .split(',')
+  .filter(Boolean);
 
 if (!collectionSlug) {
   throw new Error(
@@ -25,6 +30,13 @@ const collection = PRINT_CATALOG.collections.find(
   (candidate) => candidate.slug === collectionSlug,
 );
 if (!collection) throw new Error(`Unknown collection: ${collectionSlug}`);
+const unknown = (only ?? []).filter(
+  (slug) => !collection.prints.some((print) => print.slug === slug),
+);
+if (unknown.length) throw new Error(`Unknown print(s): ${unknown.join(', ')}`);
+const selected = only?.length
+  ? collection.prints.filter((print) => only.includes(print.slug))
+  : collection.prints;
 const sourceRoot = path.join(
   __dirname,
   'assets',
@@ -110,19 +122,50 @@ async function buildRoomMockup(print, scene) {
   };
 }
 
-const manifest = [];
-for (const print of collection.prints) {
+const manifestPath = path.join(outputRoot, 'manifest.json');
+let previous = [];
+try {
+  const existing = JSON.parse(await readFile(manifestPath, 'utf8'));
+  if (
+    existing.collection !== collectionSlug ||
+    !Array.isArray(existing.images)
+  ) {
+    throw new Error(
+      'Room manifest belongs to another collection or is invalid',
+    );
+  }
+  previous = existing.images;
+} catch (error) {
+  if (error.code !== 'ENOENT') throw error;
+}
+const generated = [];
+for (const print of selected) {
   for (const scene of roomMediaPlan(collection, print)) {
-    manifest.push(await buildRoomMockup(print, scene));
+    generated.push(await buildRoomMockup(print, scene));
   }
 }
 
+const byKey = new Map(
+  [
+    ...previous.filter(
+      (entry) => !selected.some((print) => print.slug === entry.print),
+    ),
+    ...generated,
+  ].map((entry) => [`${entry.print}/${entry.room}`, entry]),
+);
+const manifest = collection.prints.flatMap((print) =>
+  roomMediaPlan(collection, print)
+    .map((scene) => byKey.get(`${print.slug}/${scene.key}`))
+    .filter(Boolean),
+);
+
+await mkdir(outputRoot, {recursive: true});
 await writeFile(
-  path.join(outputRoot, 'manifest.json'),
+  manifestPath,
   `${JSON.stringify({collection: collectionSlug, images: manifest}, null, 2)}\n`,
 );
 
-console.log(`Generated ${manifest.length} tailored room mockups:`);
-for (const entry of manifest) console.log(`  ${entry.output.file}`);
+console.log(`Generated ${generated.length} tailored room mockups:`);
+for (const entry of generated) console.log(`  ${entry.output.file}`);
 
 /* eslint-enable no-console */

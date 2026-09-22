@@ -259,7 +259,10 @@ without a landing page link to `/collections/all?capsule=<slug>`.
 verified mapping for any size; the test suite runs it on the shipped file.
 
 `scripts/product.mjs` (`npm run product -- <step> <collection>`) runs the
-launch: `status`, `prepare`, `stage`, `handoff`, `mapped`, `release`, `verify`.
+launch: `status`, `prepare`, `stage`, `expand`, `handoff`, `mapped`, `rooms`, `media`,
+`release`, `verify`. `rooms` generates selected room scenes and keeps a hash
+manifest; `media` verifies it against current artwork and backgrounds before
+uploading to a Draft or Active product, without changing its status.
 Writes to Shopify need `--apply`; every step is idempotent and leaves evidence
 in the launch folder. Pure logic is in `scripts/lib/product-pipeline.mjs`.
 The dual gate is unchanged: `released: true` deployed AND the Shopify product

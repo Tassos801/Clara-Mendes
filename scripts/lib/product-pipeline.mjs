@@ -224,7 +224,11 @@ export function buildReleasedProductUpdateInput(collection, print, id) {
 }
 
 /** Where a print stands and the one command that moves it forward. */
-export function printStatus(collection, print, {hasWebImage = true} = {}) {
+export function printStatus(
+  collection,
+  print,
+  {hasWebImage = true, hasRoomAssets = true} = {},
+) {
   const sizes = collection.variants.map((variant) => variant.size);
   const staged =
     Boolean(print.shopify?.productId) &&
@@ -242,8 +246,21 @@ export function printStatus(collection, print, {hasWebImage = true} = {}) {
   else if (!print.shopify?.productId) next = 'stage';
   else if (!staged) next = print.released ? 'expand' : 'stage';
   else if (!mapped) next = 'handoff → map in Prodigi → mapped';
+  else if (!hasRoomAssets) next = 'rooms';
   else if (!print.released || !allSizesReleased) next = 'media → release';
   return {mapped, next, released: print.released === true, staged};
+}
+
+/** Room media can be attached before activation, while a product is Draft. */
+export function assertPrintMediaTarget(product, handle) {
+  if (!product?.id || product.handle !== handle) {
+    throw new Error(`${handle}: Shopify product identity does not match`);
+  }
+  if (!['DRAFT', 'ACTIVE'].includes(product.status)) {
+    throw new Error(
+      `${handle}: cannot sync room media while ${product.status}`,
+    );
+  }
 }
 
 export function handoffRows(collection, prints, {printDir, sha256}) {

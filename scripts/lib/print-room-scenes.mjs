@@ -1,3 +1,5 @@
+import {createHash} from 'node:crypto';
+import {existsSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import {PRINT_ROOM_KEYS} from '../../app/lib/printCatalog.ts';
 
@@ -23,7 +25,8 @@ export function validateRoomScenes(print) {
       problems.push(`${print.slug}: duplicate room key ${room.key}`);
     }
     seenKeys.add(room.key);
-    if (!room.alt?.trim()) problems.push(`${print.slug}/${room.key}: missing alt`);
+    if (!room.alt?.trim())
+      problems.push(`${print.slug}/${room.key}: missing alt`);
     if (seenAlts.has(room.alt)) {
       problems.push(`${print.slug}: duplicate room alt`);
     }
@@ -40,7 +43,9 @@ export function validateRoomScenes(print) {
       continue;
     }
     if (Math.abs(placement.width / placement.height - 0.8) > 0.01) {
-      problems.push(`${print.slug}/${room.key}: placement must be 4:5 portrait`);
+      problems.push(
+        `${print.slug}/${room.key}: placement must be 4:5 portrait`,
+      );
     }
   }
   return problems;
@@ -73,6 +78,101 @@ export function roomMediaPlan(collection, print) {
   }));
 }
 
+/** Ensure each room image still depicts the current artwork and room source. */
+export function inspectRoomAssets(collection, print, manifest, repoRoot) {
+  const issues = [];
+  if (
+    manifest?.collection !== collection.slug ||
+    !Array.isArray(manifest.images)
+  ) {
+    return [
+      `${print.slug}: room manifest is missing or belongs to another collection`,
+    ];
+  }
+  const planned = roomMediaPlan(collection, print);
+  const records = manifest.images.filter((entry) => entry?.print === print.slug);
+  if (records.length !== planned.length) {
+    issues.push(
+      `${print.slug}: room manifest has ${records.length}/${planned.length} scenes`,
+    );
+  }
+  const hashes = new Map();
+  const digest = (file) => {
+    if (!hashes.has(file)) {
+      hashes.set(
+        file,
+        existsSync(file)
+          ? createHash('sha256').update(readFileSync(file)).digest('hex')
+          : null,
+      );
+    }
+    return hashes.get(file);
+  };
+  for (const scene of planned) {
+    const matches = records.filter((entry) => entry.room === scene.key);
+    if (matches.length !== 1) {
+      issues.push(`${print.slug}/${scene.key}: expected one manifest record`);
+      continue;
+    }
+    const [record] = matches;
+    if (
+      record.alt !== scene.alt ||
+      Object.entries(scene.placement).some(
+        ([key, value]) => record.placement?.[key] !== value,
+      ) ||
+      record.dimensions?.width !== 1080 ||
+      record.dimensions?.height !== 1350
+    ) {
+      issues.push(`${print.slug}/${scene.key}: room metadata changed`);
+    }
+    for (const [kind, expectedPath, absolutePath] of [
+      [
+        'background',
+        scene.backgroundRelativePath,
+        path.join(
+          repoRoot,
+          'scripts/assets/print-room-mockups',
+          scene.backgroundRelativePath,
+        ),
+      ],
+      [
+        'artwork',
+        path.posix.join(
+          'images/product-art',
+          collection.slug,
+          `${print.slug}.webp`,
+        ),
+        path.join(
+          repoRoot,
+          'public/images/product-art',
+          collection.slug,
+          `${print.slug}.webp`,
+        ),
+      ],
+      [
+        'output',
+        scene.outputRelativePath,
+        path.join(
+          repoRoot,
+          'public/images/product-art-mockups',
+          scene.outputRelativePath,
+        ),
+      ],
+    ]) {
+      if (
+        record[kind]?.file !== expectedPath ||
+        !record[kind]?.sha256 ||
+        digest(absolutePath) !== record[kind].sha256
+      ) {
+        issues.push(
+          `${print.slug}/${scene.key}: ${kind} is missing or changed`,
+        );
+      }
+    }
+  }
+  return issues;
+}
+
 function mediaUrl(media) {
   return media?.image?.url || media?.preview?.image?.url || '';
 }
@@ -97,15 +197,18 @@ export function mediaMatchesRoomSource(media, planned) {
   const extension = expected.slice(extensionIndex);
   const escapedStem = stem.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const escapedExtension = extension.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const shopifySuffix =
-    '(?:\\d+|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})';
+  const shopifySuffix = '(?:\\d+|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})';
   return new RegExp(
     `^${escapedStem}_${shopifySuffix}${escapedExtension}$`,
     'i',
   ).test(actual);
 }
 
-export function resolvePrintRoomMediaPlan(existingMedia, plannedMedia, flatAlt) {
+export function resolvePrintRoomMediaPlan(
+  existingMedia,
+  plannedMedia,
+  flatAlt,
+) {
   const expectedByAlt = new Map(
     plannedMedia.map((planned) => [planned.alt, planned]),
   );

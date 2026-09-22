@@ -8,6 +8,7 @@
  *
  *   npm run product -- status   [collection]
  *   npm run product -- prepare  <collection> [--only a,b]
+ *   npm run product -- rooms    <collection> [--only a,b]
  *   npm run product -- stage    <collection> [--only a,b] [--apply]
  *   npm run product -- expand   <collection> [--only a,b] [--apply]
  *   npm run product -- handoff  <collection> [--only a,b]
@@ -35,6 +36,7 @@ import {
 import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 import {
+  assertPrintMediaTarget,
   buildProductSetInput,
   buildReleasedProductUpdateInput,
   buildStagedVariantInput,
@@ -56,6 +58,7 @@ import {
   normalizeHtml,
 } from './lib/product-pipeline.mjs';
 import {
+  inspectRoomAssets,
   resolvePrintRoomMediaPlan,
   roomMediaPlan,
 } from './lib/print-room-scenes.mjs';
@@ -88,6 +91,7 @@ const steps = {
   media,
   prepare,
   release,
+  rooms,
   stage,
   status,
   verify,
@@ -124,18 +128,24 @@ function status() {
     ? [findCollection(catalog, wanted)]
     : catalog.collections;
   for (const collection of collections) {
+    const roomManifest = loadRoomManifest(collection);
     console.log(
       `\n${collection.title} (${collection.slug}) — ${describeVariants(collection)}`,
     );
     console.table(
       collection.prints.map((print) => {
+        const roomsReady =
+          inspectRoomAssets(collection, print, roomManifest, REPO_ROOT)
+            .length === 0;
         const state = printStatus(collection, print, {
           hasWebImage: existsSync(webImage(collection, print)),
+          hasRoomAssets: roomsReady,
         });
         return {
           print: print.slug,
           staged: state.staged,
           mapped: state.mapped,
+          roomsReady,
           released: state.released,
           next: state.next,
         };
@@ -212,6 +222,28 @@ function prepare() {
     );
   console.log(
     `\nWeb images: ${path.relative(REPO_ROOT, plan.webDir)} (commit these)\nPrint files: ${plan.printDir}`,
+  );
+}
+
+function rooms() {
+  const {collection, prints} = context({needsLaunchDir: false});
+  execFileSync(
+    process.execPath,
+    [
+      path.join(REPO_ROOT, 'scripts/generate-print-room-mockups.mjs'),
+      collection.slug,
+      ...(only?.length ? [`--only=${only.join(',')}`] : []),
+    ],
+    {stdio: 'inherit'},
+  );
+  const manifest = loadRoomManifest(collection);
+  const issues = prints.flatMap((print) =>
+    inspectRoomAssets(collection, print, manifest, REPO_ROOT),
+  );
+  if (issues.length)
+    throw new Error(`Room images are not ready:\n- ${issues.join('\n- ')}`);
+  console.log(
+    `Verified four current room images for ${prints.length} print(s).`,
   );
 }
 
@@ -405,7 +437,11 @@ async function expand() {
     const current = after.find((product) => product.id === old.id);
     assert.ok(current, `Shopify product disappeared: ${old.handle}`);
     if (!scoped.has(old.handle)) {
-      assert.deepEqual(current, old, `Unrelated product changed: ${old.handle}`);
+      assert.deepEqual(
+        current,
+        old,
+        `Unrelated product changed: ${old.handle}`,
+      );
       continue;
     }
     for (const oldVariant of old.variants.nodes) {
@@ -523,6 +559,7 @@ function mapped() {
 
 async function media() {
   const {collection, prints, launchDir} = context();
+  const manifest = loadRoomManifest(collection);
   const plannedFor = (print) =>
     roomMediaPlan(collection, print).map((entry) => ({
       ...entry,
@@ -536,11 +573,12 @@ async function media() {
     }));
   for (const print of prints) {
     assert.ok(print.shopify?.productId, `${print.slug}: not staged in Shopify`);
-    for (const planned of plannedFor(print))
-      assert.ok(
-        existsSync(planned.localPath),
-        `${print.slug}: missing ${planned.localPath}; run catalog:prints:room-mockups first`,
-      );
+    const issues = inspectRoomAssets(collection, print, manifest, REPO_ROOT);
+    assert.equal(
+      issues.length,
+      0,
+      `${issues.join('; ')}; run npm run product -- rooms ${collection.slug}${only?.length ? ` --only=${only.join(',')}` : ''}`,
+    );
   }
 
   const admin = await adminClient();
@@ -550,9 +588,7 @@ async function media() {
   );
   const work = prints.map((print) => {
     const product = before.find((node) => node?.id === print.shopify.productId);
-    assert.ok(product, `${print.slug}: Shopify product not found`);
-    assert.equal(product.handle, printHandle(print));
-    assert.equal(product.status, 'ACTIVE');
+    assertPrintMediaTarget(product, printHandle(print));
     const planned = plannedFor(print);
     const plan = resolvePrintRoomMediaPlan(
       product.media.nodes,
@@ -611,7 +647,10 @@ async function media() {
         }`,
         {media: stagedMedia, product: {id: entry.product.id}},
       );
-      mutationErrors(result.data.productUpdate, `Add rooms ${entry.print.slug}`);
+      mutationErrors(
+        result.data.productUpdate,
+        `Add rooms ${entry.print.slug}`,
+      );
     }
 
     let ready = await waitForRoomMedia(
@@ -665,19 +704,23 @@ async function media() {
       },
     );
     mutationErrors(copy.data.productUpdate, `Refine copy ${entry.print.slug}`);
-    ready = await waitForRoomMedia(
-      admin,
-      entry.print,
-      entry.planned,
-      true,
+    ready = await waitForRoomMedia(admin, entry.print, entry.planned, true);
+    console.log(
+      `VERIFIED ${entry.print.slug}: ${ready.product.media.nodes.length} READY images`,
     );
-    console.log(`VERIFIED ${entry.print.slug}: ${ready.product.media.nodes.length} READY images`);
   }
 
   const after = await printMediaProducts(
     admin,
     prints.map((print) => print.shopify.productId),
   );
+  for (const product of before) {
+    assert.equal(
+      after.find((entry) => entry?.id === product.id)?.status,
+      product.status,
+      `${product.handle}: media sync changed Shopify product status`,
+    );
+  }
   writeJson(path.join(launchDir, `media-${stamp()}.json`), {before, after});
   console.log(
     '\nEvery selected product now has its flat artwork first and four ordered, READY room images. Copy and SEO are refined.',
@@ -807,11 +850,7 @@ async function release() {
         }
       }`,
       {
-        product: buildReleasedProductUpdateInput(
-          collection,
-          print,
-          product.id,
-        ),
+        product: buildReleasedProductUpdateInput(collection, print, product.id),
       },
     );
     mutationErrors(copy.data.productUpdate, `Update copy ${print.slug}`);
@@ -855,7 +894,8 @@ async function release() {
     if (!entry?.availableForSale) unavailable.push(printHandle(print));
     for (const variant of collection.variants) {
       const live = entry?.variants.find(
-        (candidate) => candidate.sku === printSku(collection, print, variant.size),
+        (candidate) =>
+          candidate.sku === printSku(collection, print, variant.size),
       );
       if (
         !live?.availableForSale ||
@@ -1055,6 +1095,21 @@ function webImage(collection, print) {
   return path.join(REPO_ROOT, 'public', printImagePath(collection, print));
 }
 
+function loadRoomManifest(collection) {
+  const file = path.join(
+    REPO_ROOT,
+    'public/images/product-art-mockups',
+    collection.slug,
+    'manifest.json',
+  );
+  if (!existsSync(file)) return null;
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
 function saveCatalog() {
   writeJson(CATALOG_PATH, catalog);
 }
@@ -1123,10 +1178,18 @@ function delay(milliseconds) {
 
 async function waitForRoomMedia(admin, print, planned, exactOrder) {
   for (let attempt = 0; attempt < 45; attempt += 1) {
-    const [product] = await printMediaProducts(admin, [print.shopify.productId]);
-    const plan = resolvePrintRoomMediaPlan(product?.media?.nodes ?? [], planned, print.alt);
+    const [product] = await printMediaProducts(admin, [
+      print.shopify.productId,
+    ]);
+    const plan = resolvePrintRoomMediaPlan(
+      product?.media?.nodes ?? [],
+      planned,
+      print.alt,
+    );
     if (plan.action === 'mismatch') {
-      throw new Error(`${print.slug}: gallery changed unexpectedly while processing`);
+      throw new Error(
+        `${print.slug}: gallery changed unexpectedly while processing`,
+      );
     }
     const allReady = planned.every(
       (entry) => plan.currentByAlt.get(entry.alt)?.status === 'READY',
@@ -1194,12 +1257,7 @@ function recordIds(collection, actions) {
   }
 }
 
-async function uploadImage(
-  admin,
-  file,
-  filename,
-  mimeType = 'image/webp',
-) {
+async function uploadImage(admin, file, filename, mimeType = 'image/webp') {
   const staged = await admin(
     `mutation StageUpload($input: [StagedUploadInput!]!) {
       stagedUploadsCreate(input: $input) { stagedTargets { url resourceUrl parameters { name value } } userErrors { field message } }
