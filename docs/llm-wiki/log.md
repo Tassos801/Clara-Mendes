@@ -965,3 +965,11 @@ backgrounds, and generated images. `media` checks the image hash manifest
 before Shopify writes, accepts the intended Draft-to-release sequence, and
 verifies the product status did not change. The add-products runbook now includes
 the complete four-room catalog template.
+
+## 2026-09-22 - Light & Silence photography-inspired collection
+
+Added five original AI-generated monochrome nature compositions through the
+print catalog, exported all three existing print sizes, and generated 20 room
+scenes. The collection remains `released: false` pending Shopify Draft staging,
+Prodigi mapping, and owner review of native image detail (140.2, 70.1, and
+56.1 PPI for the three sizes). Source PNGs are tracked for repeatable export.

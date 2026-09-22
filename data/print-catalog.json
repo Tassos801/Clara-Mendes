@@ -406,6 +406,355 @@
           }
         }
       ]
+    },
+    {
+      "slug": "light-and-silence",
+      "title": "Light & Silence",
+      "note": "Black-and-white nature studies of texture, light and stillness",
+      "skuCode": "LS",
+      "collectionCopy": "An original AI-generated, photo-inspired composition from Clara Mendes’s Light & Silence collection, exploring natural forms through monochrome light and shadow.",
+      "seoSuffix": "Explore original black-and-white, photo-inspired art prints from the Light & Silence collection.",
+      "publications": [
+        "Clara Mendes",
+        "Clara Mendes Headless"
+      ],
+      "variants": [
+        {
+          "size": "8x10",
+          "finish": "Unframed",
+          "priceEUR": "29.99",
+          "providerSku": "ART-FAP-EMA-8X10"
+        },
+        {
+          "size": "16x20",
+          "finish": "Unframed",
+          "priceEUR": "39.99",
+          "providerSku": "ART-FAP-EMA-16X20"
+        },
+        {
+          "size": "20x24",
+          "finish": "Unframed",
+          "priceEUR": "49.99",
+          "providerSku": "GLOBAL-FAP-20X24"
+        }
+      ],
+      "prints": [
+        {
+          "slug": "veil-of-stone",
+          "title": "Veil of Stone",
+          "sequence": 1,
+          "description": "Sunlight grazes the folded surface of a coastal limestone cliff, turning weathered stone into a study of line and shadow.",
+          "alt": "Black-and-white image of sunlit limestone folds receding into deep shadow.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Veil of Stone art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Veil of Stone art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Veil of Stone art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Veil of Stone art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-22",
+            "promptSummary": "Original 4:5 black-and-white, silver-gelatin-inspired nature image: limestone folds with grazing sunlight; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "18ad96bbd5df6f11ae3b710255d7a595e16e3f2a216aee87d15c06aa54db0ba6"
+          }
+        },
+        {
+          "slug": "tidal-mirror",
+          "title": "Tidal Mirror",
+          "sequence": 2,
+          "description": "A single curling ripple crosses a still tidal pool, where dark water, shallow sand and reflected sky meet.",
+          "alt": "Black-and-white image of a curling ripple on a dark tidal pool reflecting clouded sky.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Tidal Mirror art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Tidal Mirror art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Tidal Mirror art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Tidal Mirror art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-22",
+            "promptSummary": "Original 4:5 black-and-white, silver-gelatin-inspired nature image: tidal pool with one curling ripple; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "2c47b46a90974e8d020cffdbf2ccfcc59ebe0b9db17599ec7e585d8fff185585"
+          }
+        },
+        {
+          "slug": "winter-script",
+          "title": "Winter Script",
+          "sequence": 3,
+          "description": "Bare branches trace fine lines across a mist-filled woodland, with distant trunks fading softly from view.",
+          "alt": "Black-and-white image of bare winter branches against a foggy woodland.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Winter Script art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Winter Script art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Winter Script art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Winter Script art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-22",
+            "promptSummary": "Original 4:5 black-and-white, silver-gelatin-inspired nature image: bare branches crossing a foggy clearing; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "010d0d1f8342201877bc14263dcad62393941f208fb92ff331f882972fe347ea"
+          }
+        },
+        {
+          "slug": "fern-in-shadow",
+          "title": "Fern in Shadow",
+          "sequence": 4,
+          "description": "A fern frond catches a narrow band of light before the forest floor falls away into darkness.",
+          "alt": "Black-and-white image of a backlit fern frond arching into a dark forest background.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Fern in Shadow art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Fern in Shadow art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Fern in Shadow art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Fern in Shadow art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-22",
+            "promptSummary": "Original 4:5 black-and-white, silver-gelatin-inspired nature image: one fern frond lit against a dark forest; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "6e67e4db873e2a1e5bdc53c4cb88e0c2845fb663d9ba1a725fb8a03c7b74cc20"
+          }
+        },
+        {
+          "slug": "where-mist-rests",
+          "title": "Where Mist Rests",
+          "sequence": 5,
+          "description": "Layered mountain ridges rise through morning mist, their forms reduced to luminous bands of light and shade.",
+          "alt": "Black-and-white image of mist filling a mountain valley between dark layered ridges.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Where Mist Rests art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Where Mist Rests art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Where Mist Rests art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Where Mist Rests art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-22",
+            "promptSummary": "Original 4:5 black-and-white, silver-gelatin-inspired nature image: mist moving between mountain ridgelines; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "a489523e020f40afedd714ee034de0e1c619b3c4c5dd129cd06a0bb891d7895d"
+          }
+        }
+      ]
     }
   ]
 }
