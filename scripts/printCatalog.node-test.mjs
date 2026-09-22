@@ -7,12 +7,24 @@ import * as prints from '../app/lib/printCatalog.ts';
 
 /** A two-collection fixture so the gates are proven on data, not on today's catalog. */
 function fixture(released = []) {
+  const rooms = [
+    'living-room',
+    'bedroom',
+    'study',
+    'wide-interior',
+  ].map((key, index) => ({
+    alt: `Room ${index + 1}`,
+    backgroundFile: `${key}.png`,
+    key,
+    placement: {height: 250, left: 10, top: 10, width: 200},
+  }));
   const print = (slug, sequence) => ({
     alt: 'Alt',
     description: 'Description.',
     prodigi: {'8x10': {channelProductId: '1', verified: true}},
     released: released.includes(slug),
     releasedSizes: released.includes(slug) ? ['8x10'] : [],
+    rooms: structuredClone(rooms),
     sequence,
     shopify: {productId: 'gid://p', variantIds: {'8x10': 'gid://v'}},
     slug,
@@ -215,10 +227,12 @@ test('validation refuses a release without ids or a verified mapping, and bad en
   broken.collections[1].skuCode = 'AA';
   broken.collections[1].variants[0].priceEUR = '29';
   broken.collections[0].prints[1].sequence = 1;
+  delete broken.collections[0].prints[2].rooms;
   const problems = prints.validatePrintCatalog(broken).join('\n');
   assert.match(problems, /duplicate slug, skuCode or title "AA"/);
   assert.match(problems, /priceEUR must look like/);
   assert.match(problems, /duplicate sequence 1/);
+  assert.match(problems, /needs exactly four room scenes/);
 
   assert.deepEqual(prints.validatePrintCatalog(fixture()), []);
 });

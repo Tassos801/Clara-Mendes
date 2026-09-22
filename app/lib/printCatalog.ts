@@ -16,6 +16,20 @@ import printCatalog from '../../data/print-catalog.json' with {type: 'json'};
 
 export type PrintSizeKey = '8x10' | '16x20' | '20x24';
 
+export const PRINT_ROOM_KEYS = [
+  'living-room',
+  'bedroom',
+  'study',
+  'wide-interior',
+] as const;
+
+export type PrintRoomScene = {
+  alt: string;
+  backgroundFile: string;
+  key: (typeof PRINT_ROOM_KEYS)[number];
+  placement: {height: number; left: number; top: number; width: number};
+};
+
 /** Print-file pixel sizes are 300 DPI at the nominal inch size. */
 export const PRINT_SIZES: Record<
   PrintSizeKey,
@@ -43,6 +57,7 @@ export type PrintCatalogPrint = {
   released: boolean;
   /** Sizes that are fully mapped and intentionally offered to consumers. */
   releasedSizes?: PrintSizeKey[];
+  rooms: PrintRoomScene[];
   sequence: number;
   /** Written back by `product stage`. */
   shopify?: {productId?: string; variantIds?: Record<string, string>};
@@ -223,6 +238,41 @@ export function validatePrintCatalog(
         if (!print[field]?.trim()) problems.push(`${at}: missing ${field}`);
       if (typeof print.released !== 'boolean')
         problems.push(`${at}: released must be true or false`);
+      const rooms = print.rooms ?? [];
+      if (rooms.length !== PRINT_ROOM_KEYS.length)
+        problems.push(`${at}: needs exactly four room scenes`);
+      const roomKeys = new Set<string>();
+      const roomAlts = new Set<string>();
+      for (const [index, room] of rooms.entries()) {
+        if (room.key !== PRINT_ROOM_KEYS[index])
+          problems.push(
+            `${at}: room ${index + 1} must be ${PRINT_ROOM_KEYS[index]}`,
+          );
+        if (roomKeys.has(room.key))
+          problems.push(`${at}: duplicate room key ${room.key}`);
+        roomKeys.add(room.key);
+        if (!room.alt?.trim()) problems.push(`${at}/${room.key}: missing alt`);
+        if (roomAlts.has(room.alt)) problems.push(`${at}: duplicate room alt`);
+        roomAlts.add(room.alt);
+        if (!/^[a-z0-9-]+\.png$/i.test(room.backgroundFile ?? ''))
+          problems.push(`${at}/${room.key}: invalid background file`);
+        const placement = room.placement ?? ({} as PrintRoomScene['placement']);
+        const dimensions = [
+          placement.left,
+          placement.top,
+          placement.width,
+          placement.height,
+        ];
+        if (
+          !dimensions.every(
+            (value) => Number.isInteger(value) && value > 0,
+          )
+        ) {
+          problems.push(`${at}/${room.key}: invalid placement`);
+        } else if (Math.abs(placement.width / placement.height - 0.8) > 0.01) {
+          problems.push(`${at}/${room.key}: placement must be 4:5 portrait`);
+        }
+      }
       const releasedSizes = print.releasedSizes ?? [];
       if (new Set(releasedSizes).size !== releasedSizes.length)
         problems.push(`${at}: releasedSizes must not contain duplicates`);
