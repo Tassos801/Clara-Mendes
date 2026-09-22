@@ -1,0 +1,437 @@
+{
+  "collection": "scifi-cinema",
+  "images": [
+    {
+      "print": "orbital-silence",
+      "room": "living-room",
+      "alt": "Orbital Silence art print above a low linen sofa in a midnight-blue contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 265,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/orbital-silence-living-room.png",
+        "sha256": "618a8ec382d452a79b4a85d084592f230fc9eaf495e73d564d696460112ebf14"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/orbital-silence.webp",
+        "sha256": "1e8bfb768d9f0da28058bbf6a2288f2349ec9a9aed39e7a102239f8a86f06b5d"
+      },
+      "output": {
+        "file": "scifi-cinema/orbital-silence-living-room.jpg",
+        "sha256": "194e45e910f496f1abba72ee18a7661ad31d735bc51bd6618e86698c356e9e58"
+      }
+    },
+    {
+      "print": "orbital-silence",
+      "room": "bedroom",
+      "alt": "Orbital Silence art print styled in a charcoal bedroom with restrained copper details.",
+      "placement": {
+        "left": 420,
+        "top": 190,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/orbital-silence-bedroom.png",
+        "sha256": "d90d1420694d5ef4cfa8694edbd58f962e2961ea106b81d98309b39558db32e8"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/orbital-silence.webp",
+        "sha256": "1e8bfb768d9f0da28058bbf6a2288f2349ec9a9aed39e7a102239f8a86f06b5d"
+      },
+      "output": {
+        "file": "scifi-cinema/orbital-silence-bedroom.jpg",
+        "sha256": "6217fa8e1ac8b329d553a3d9850c3186a21425a2572ba6420a35f44c6f417956"
+      }
+    },
+    {
+      "print": "orbital-silence",
+      "room": "study",
+      "alt": "Orbital Silence art print in a dark modern study with brushed-metal accents.",
+      "placement": {
+        "left": 428,
+        "top": 263,
+        "width": 224,
+        "height": 280
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/orbital-silence-study.png",
+        "sha256": "ad05a9908f43653503b8b2069e3f94af325a9dde5ae3df2b66f1a7899e19cd25"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/orbital-silence.webp",
+        "sha256": "1e8bfb768d9f0da28058bbf6a2288f2349ec9a9aed39e7a102239f8a86f06b5d"
+      },
+      "output": {
+        "file": "scifi-cinema/orbital-silence-study.jpg",
+        "sha256": "f5874000d69d476dd903b85e1c0c1bf7aaf020ee576713fb29d1598c21d715ac"
+      }
+    },
+    {
+      "print": "orbital-silence",
+      "room": "wide-interior",
+      "alt": "Orbital Silence art print shown at scale in a spacious indigo and charcoal interior.",
+      "placement": {
+        "left": 449,
+        "top": 359,
+        "width": 176,
+        "height": 220
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/orbital-silence-wide-interior.png",
+        "sha256": "2c7ee428fa9a268a03c6b60636f4bf038da374ac7521e8dcbe0b1ef658bc1bb4"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/orbital-silence.webp",
+        "sha256": "1e8bfb768d9f0da28058bbf6a2288f2349ec9a9aed39e7a102239f8a86f06b5d"
+      },
+      "output": {
+        "file": "scifi-cinema/orbital-silence-wide-interior.jpg",
+        "sha256": "4eb1346609d773f0a94d068a400e5dbf01c2a83adfbd14cc95e14dadeca99639"
+      }
+    },
+    {
+      "print": "neon-after-rain",
+      "room": "living-room",
+      "alt": "Neon After Rain art print in a mineral-teal city loft with warm brass lighting.",
+      "placement": {
+        "left": 405,
+        "top": 175,
+        "width": 264,
+        "height": 330
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/neon-after-rain-living-room.png",
+        "sha256": "aaf3461b3fd3245b14bc6c795add4f797859806e5b520344da2d710222a06a81"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/neon-after-rain.webp",
+        "sha256": "3fe7fa31c61ff6ed6f70b97d8298f4e65167a433636b5b9d3b47e5ac674deacb"
+      },
+      "output": {
+        "file": "scifi-cinema/neon-after-rain-living-room.jpg",
+        "sha256": "95eddc58d9feef2304210d2235aff10f0a107a63b10f0e4ebdb7c7f6674135d8"
+      }
+    },
+    {
+      "print": "neon-after-rain",
+      "room": "bedroom",
+      "alt": "Neon After Rain art print above a charcoal bed with dark walnut and teal accents.",
+      "placement": {
+        "left": 420,
+        "top": 188,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/neon-after-rain-bedroom.png",
+        "sha256": "73e675ceb7f6ee68b46365469f14ccabd829e7dd0d33aa76f981205d95fdba99"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/neon-after-rain.webp",
+        "sha256": "3fe7fa31c61ff6ed6f70b97d8298f4e65167a433636b5b9d3b47e5ac674deacb"
+      },
+      "output": {
+        "file": "scifi-cinema/neon-after-rain-bedroom.jpg",
+        "sha256": "64c71273e1eaec09882476c4e470f0934b48af96742258998854d341b90bb803"
+      }
+    },
+    {
+      "print": "neon-after-rain",
+      "room": "study",
+      "alt": "Neon After Rain art print in a moody walnut study lit by a small brass lamp.",
+      "placement": {
+        "left": 427,
+        "top": 228,
+        "width": 224,
+        "height": 280
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/neon-after-rain-study.png",
+        "sha256": "7b283dc17b076db34220e5bd41a2f3a222ba03259b696d0e285cf1ad5ceccc94"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/neon-after-rain.webp",
+        "sha256": "3fe7fa31c61ff6ed6f70b97d8298f4e65167a433636b5b9d3b47e5ac674deacb"
+      },
+      "output": {
+        "file": "scifi-cinema/neon-after-rain-study.jpg",
+        "sha256": "0d5c208f3ed42ec86e914e3d72aa656409bd5c031200343a4afdb68a678d30ee"
+      }
+    },
+    {
+      "print": "neon-after-rain",
+      "room": "wide-interior",
+      "alt": "Neon After Rain art print shown at scale in a restrained teal loft interior.",
+      "placement": {
+        "left": 497,
+        "top": 400,
+        "width": 136,
+        "height": 170
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/neon-after-rain-wide-interior.png",
+        "sha256": "f61d27f39827781d417503bbdbdcdcf6dc8413490e8ebf70734f495cfd0a8b4c"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/neon-after-rain.webp",
+        "sha256": "3fe7fa31c61ff6ed6f70b97d8298f4e65167a433636b5b9d3b47e5ac674deacb"
+      },
+      "output": {
+        "file": "scifi-cinema/neon-after-rain-wide-interior.jpg",
+        "sha256": "3777d266184f3e2ec26aa75a89429cc46939f6d750bbdc00f2f432ce169771bd"
+      }
+    },
+    {
+      "print": "desert-signal",
+      "room": "living-room",
+      "alt": "Desert Signal art print above a sand-coloured sofa in a warm terracotta living room.",
+      "placement": {
+        "left": 408,
+        "top": 208,
+        "width": 264,
+        "height": 330
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/desert-signal-living-room.png",
+        "sha256": "89af7f9f21caf2d3d8ceee38f3128d8c86e84b478f5a48ce675908b02e174ceb"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/desert-signal.webp",
+        "sha256": "de1dd18cb9b4a134e86e9ae873456c34cda5acf5937df5af218d80679feb45b2"
+      },
+      "output": {
+        "file": "scifi-cinema/desert-signal-living-room.jpg",
+        "sha256": "7429233f96eb24d94c8bd6d2e47fff1b073f44e37a1585e4dca5f6622618887c"
+      }
+    },
+    {
+      "print": "desert-signal",
+      "room": "bedroom",
+      "alt": "Desert Signal art print styled in a quiet plaster bedroom with ochre linen.",
+      "placement": {
+        "left": 420,
+        "top": 188,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/desert-signal-bedroom.png",
+        "sha256": "34a2b5ff170affc9c2f2780816f57ca56339185ca880635701d7044f62c49e19"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/desert-signal.webp",
+        "sha256": "de1dd18cb9b4a134e86e9ae873456c34cda5acf5937df5af218d80679feb45b2"
+      },
+      "output": {
+        "file": "scifi-cinema/desert-signal-bedroom.jpg",
+        "sha256": "f261ea072b8965967749d7a0dce3f03bf5740c7b40719138e750ed4fc10ca076"
+      }
+    },
+    {
+      "print": "desert-signal",
+      "room": "study",
+      "alt": "Desert Signal art print in a sunlit oak study with earth-toned ceramics.",
+      "placement": {
+        "left": 429,
+        "top": 221,
+        "width": 224,
+        "height": 280
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/desert-signal-study.png",
+        "sha256": "a86c28a80b666a17af4bb15747c6fc5cb330c81d89dee276455e308af28f94d4"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/desert-signal.webp",
+        "sha256": "de1dd18cb9b4a134e86e9ae873456c34cda5acf5937df5af218d80679feb45b2"
+      },
+      "output": {
+        "file": "scifi-cinema/desert-signal-study.jpg",
+        "sha256": "ab91c566ec3e7876b80fa7edf72ea5569280ef3d1d7abcfecbc2025a911232a0"
+      }
+    },
+    {
+      "print": "desert-signal",
+      "room": "wide-interior",
+      "alt": "Desert Signal art print shown at scale in a spacious desert-modern interior.",
+      "placement": {
+        "left": 458,
+        "top": 350,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/desert-signal-wide-interior.png",
+        "sha256": "7a96371caab3a9dcbbc202cf5f1b084a0a48f1876e19c6b63e841b246a901387"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/desert-signal.webp",
+        "sha256": "de1dd18cb9b4a134e86e9ae873456c34cda5acf5937df5af218d80679feb45b2"
+      },
+      "output": {
+        "file": "scifi-cinema/desert-signal-wide-interior.jpg",
+        "sha256": "6335ac323973c47952428226600367cb46462aeabb1ea346af53100ba6315cbc"
+      }
+    },
+    {
+      "print": "the-fold",
+      "room": "living-room",
+      "alt": "The Fold art print in an ivory Mediterranean living room with mineral-blue accents.",
+      "placement": {
+        "left": 408,
+        "top": 208,
+        "width": 264,
+        "height": 330
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/the-fold-living-room.png",
+        "sha256": "6afcd3f79dd8d34603186788a2c02f2beb6666735de51b617f9d20557325ca80"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/the-fold.webp",
+        "sha256": "a4cb3b02a3601d634fb7dd88c9d477d680fcdd1923776d0453f2716557a99084"
+      },
+      "output": {
+        "file": "scifi-cinema/the-fold-living-room.jpg",
+        "sha256": "92bf9ff22c50052614c8e856b54524605a332617d302e2a91ed8614a0c04a9ca"
+      }
+    },
+    {
+      "print": "the-fold",
+      "room": "bedroom",
+      "alt": "The Fold art print above a light linen bed with travertine and terracotta details.",
+      "placement": {
+        "left": 420,
+        "top": 188,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/the-fold-bedroom.png",
+        "sha256": "982e4208d7c5763864244bee70e99204c1407409584297acdf52513c8122be66"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/the-fold.webp",
+        "sha256": "a4cb3b02a3601d634fb7dd88c9d477d680fcdd1923776d0453f2716557a99084"
+      },
+      "output": {
+        "file": "scifi-cinema/the-fold-bedroom.jpg",
+        "sha256": "2f3ac8e24c1f0ffa15beaa98454afca1baf449c8870ac16988d22e278ea491dd"
+      }
+    },
+    {
+      "print": "the-fold",
+      "room": "study",
+      "alt": "The Fold art print in an airy architectural study with ivory plaster walls.",
+      "placement": {
+        "left": 433,
+        "top": 228,
+        "width": 224,
+        "height": 280
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/the-fold-study.png",
+        "sha256": "fa84d3358090ee9f8636ddb9f1af71130d2fcebcb0b422397a0ed018bd8ad333"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/the-fold.webp",
+        "sha256": "a4cb3b02a3601d634fb7dd88c9d477d680fcdd1923776d0453f2716557a99084"
+      },
+      "output": {
+        "file": "scifi-cinema/the-fold-study.jpg",
+        "sha256": "e1bf22360a76c9c8f5eda4fd9a79ecc5c79ee702411fd33e10797b69157c016f"
+      }
+    },
+    {
+      "print": "the-fold",
+      "room": "wide-interior",
+      "alt": "The Fold art print shown at scale in a bright mineral-blue and travertine interior.",
+      "placement": {
+        "left": 471,
+        "top": 416,
+        "width": 156,
+        "height": 195
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "scifi-cinema/the-fold-wide-interior.png",
+        "sha256": "45455452a22c89ef2a7e6482308d69f089110bca5abfb494812d3cac00cc60c4"
+      },
+      "artwork": {
+        "file": "images/product-art/scifi-cinema/the-fold.webp",
+        "sha256": "a4cb3b02a3601d634fb7dd88c9d477d680fcdd1923776d0453f2716557a99084"
+      },
+      "output": {
+        "file": "scifi-cinema/the-fold-wide-interior.jpg",
+        "sha256": "bd7be777e329adf7b6bca4bbbefb0307044d3d10b9fc28f7cfd592d0380d0efb"
+      }
+    }
+  ]
+}

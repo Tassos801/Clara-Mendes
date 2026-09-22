@@ -7,11 +7,24 @@ import * as prints from '../app/lib/printCatalog.ts';
 
 /** A two-collection fixture so the gates are proven on data, not on today's catalog. */
 function fixture(released = []) {
+  const rooms = [
+    'living-room',
+    'bedroom',
+    'study',
+    'wide-interior',
+  ].map((key, index) => ({
+    alt: `Room ${index + 1}`,
+    backgroundFile: `${key}.png`,
+    key,
+    placement: {height: 250, left: 10, top: 10, width: 200},
+  }));
   const print = (slug, sequence) => ({
     alt: 'Alt',
     description: 'Description.',
     prodigi: {'8x10': {channelProductId: '1', verified: true}},
     released: released.includes(slug),
+    releasedSizes: released.includes(slug) ? ['8x10'] : [],
+    rooms: structuredClone(rooms),
     sequence,
     shopify: {productId: 'gid://p', variantIds: {'8x10': 'gid://v'}},
     slug,
@@ -142,7 +155,24 @@ test('a partial release filters the right members and links to a real shop URL',
     capsules.getShopCapsuleBySlug('beta-set', catalog),
   );
   assert.ok(betaCopy.includes('1 original Clara Mendes print,'));
-  assert.ok(betaCopy.endsWith('8 × 10 in and 16 × 20 in.'));
+  assert.ok(betaCopy.endsWith('available unframed in 8 × 10 in.'));
+});
+
+test('releasedSizes keeps staged expansion sizes out of consumer copy', () => {
+  const catalog = fixture(['beta-one']);
+  const [beta] = catalog.collections.slice(1);
+  const [print] = beta.prints;
+
+  assert.deepEqual(prints.validatePrintCatalog(catalog), []);
+  assert.deepEqual(
+    prints.releasedPrintCollections(catalog)[0].sizeLabels,
+    ['8 × 10 in'],
+  );
+
+  print.releasedSizes.push('16x20');
+  const problems = prints.validatePrintCatalog(catalog).join('\n');
+  assert.match(problems, /Shopify ids for 16x20/);
+  assert.match(problems, /verified Prodigi mapping for 16x20/);
 });
 
 test('the live Sci-fi & Cinema release is unchanged by the migration', () => {
@@ -187,6 +217,7 @@ test('validation refuses a release without ids or a verified mapping, and bad en
   );
 
   const partial = fixture(['beta-one']);
+  partial.collections[1].prints[0].releasedSizes.push('16x20');
   assert.match(
     prints.validatePrintCatalog(partial).join('\n'),
     /Shopify ids for 16x20/,
@@ -196,10 +227,12 @@ test('validation refuses a release without ids or a verified mapping, and bad en
   broken.collections[1].skuCode = 'AA';
   broken.collections[1].variants[0].priceEUR = '29';
   broken.collections[0].prints[1].sequence = 1;
+  delete broken.collections[0].prints[2].rooms;
   const problems = prints.validatePrintCatalog(broken).join('\n');
   assert.match(problems, /duplicate slug, skuCode or title "AA"/);
   assert.match(problems, /priceEUR must look like/);
   assert.match(problems, /duplicate sequence 1/);
+  assert.match(problems, /needs exactly four room scenes/);
 
   assert.deepEqual(prints.validatePrintCatalog(fixture()), []);
 });

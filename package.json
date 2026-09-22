@@ -43,6 +43,7 @@
     "catalog:art:sofa-mockups:dry-run": "node ./scripts/sync-sofa-mockups.mjs",
     "catalog:art:sofa-mockups:preflight": "node ./scripts/sync-sofa-mockups.mjs --preflight",
     "catalog:art:sofa-mockups:sync": "node ./scripts/sync-sofa-mockups.mjs --apply",
+    "catalog:prints:room-mockups": "node ./scripts/generate-print-room-mockups.mjs",
     "catalog:extensions:prepare": "python ./scripts/prepare-art-product-extensions.py",
     "catalog:extensions:frames": "node ./scripts/generate-classic-frame-mockups.mjs",
     "catalog:extensions:frames:dry-run": "node ./scripts/sync-classic-frame-mockups.mjs",

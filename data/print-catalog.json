@@ -18,6 +18,18 @@
           "finish": "Unframed",
           "priceEUR": "29.99",
           "providerSku": "ART-FAP-EMA-8X10"
+        },
+        {
+          "size": "16x20",
+          "finish": "Unframed",
+          "priceEUR": "39.99",
+          "providerSku": "ART-FAP-EMA-16X20"
+        },
+        {
+          "size": "20x24",
+          "finish": "Unframed",
+          "priceEUR": "49.99",
+          "providerSku": "GLOBAL-FAP-20X24"
         }
       ],
       "prints": [
@@ -28,7 +40,56 @@
           "description": "A monumental orbital structure above a distant planet, with a fine amber trajectory.",
           "alt": "Cinematic science-fiction artwork with a towering orbital ring, a pale planet and an amber spacecraft trajectory.",
           "palette": "Midnight indigo, mineral blue, ivory, copper",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Orbital Silence art print above a low linen sofa in a midnight-blue contemporary living room.",
+              "backgroundFile": "orbital-silence-living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 265,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Orbital Silence art print styled in a charcoal bedroom with restrained copper details.",
+              "backgroundFile": "orbital-silence-bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 190,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Orbital Silence art print in a dark modern study with brushed-metal accents.",
+              "backgroundFile": "orbital-silence-study.png",
+              "placement": {
+                "left": 428,
+                "top": 263,
+                "width": 224,
+                "height": 280
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Orbital Silence art print shown at scale in a spacious indigo and charcoal interior.",
+              "backgroundFile": "orbital-silence-wide-interior.png",
+              "placement": {
+                "left": 449,
+                "top": 359,
+                "width": 176,
+                "height": 220
+              }
+            }
+          ],
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -40,7 +101,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16078105313614",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/60855266345294"
+              "8x10": "gid://shopify/ProductVariant/60855266345294",
+              "16x20": "gid://shopify/ProductVariant/60908865421646",
+              "20x24": "gid://shopify/ProductVariant/60908865454414"
             }
           },
           "prodigi": {
@@ -58,7 +121,56 @@
           "description": "A solitary figure walks through a rain-washed future city beneath elevated transit.",
           "alt": "Futuristic rainy city artwork with sculptural towers, elevated transit and an umbrella figure amid blue and amber reflections.",
           "palette": "Ink blue, teal, amber, muted plum",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Neon After Rain art print in a mineral-teal city loft with warm brass lighting.",
+              "backgroundFile": "neon-after-rain-living-room.png",
+              "placement": {
+                "left": 405,
+                "top": 175,
+                "width": 264,
+                "height": 330
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Neon After Rain art print above a charcoal bed with dark walnut and teal accents.",
+              "backgroundFile": "neon-after-rain-bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 188,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Neon After Rain art print in a moody walnut study lit by a small brass lamp.",
+              "backgroundFile": "neon-after-rain-study.png",
+              "placement": {
+                "left": 427,
+                "top": 228,
+                "width": 224,
+                "height": 280
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Neon After Rain art print shown at scale in a restrained teal loft interior.",
+              "backgroundFile": "neon-after-rain-wide-interior.png",
+              "placement": {
+                "left": 497,
+                "top": 400,
+                "width": 136,
+                "height": 170
+              }
+            }
+          ],
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -70,7 +182,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16078105477454",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/60855268245838"
+              "8x10": "gid://shopify/ProductVariant/60855268245838",
+              "16x20": "gid://shopify/ProductVariant/60908865487182",
+              "20x24": "gid://shopify/ProductVariant/60908865519950"
             }
           },
           "prodigi": {
@@ -88,7 +202,56 @@
           "description": "A lone traveller crosses warm alien dunes toward a monumental signal tower.",
           "alt": "Alien desert artwork with orange dunes, a lone traveller, two pale moons and a distant split tower emitting an amber beam.",
           "palette": "Terracotta, saffron, sand, bone, umber",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Desert Signal art print above a sand-coloured sofa in a warm terracotta living room.",
+              "backgroundFile": "desert-signal-living-room.png",
+              "placement": {
+                "left": 408,
+                "top": 208,
+                "width": 264,
+                "height": 330
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Desert Signal art print styled in a quiet plaster bedroom with ochre linen.",
+              "backgroundFile": "desert-signal-bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 188,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Desert Signal art print in a sunlit oak study with earth-toned ceramics.",
+              "backgroundFile": "desert-signal-study.png",
+              "placement": {
+                "left": 429,
+                "top": 221,
+                "width": 224,
+                "height": 280
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Desert Signal art print shown at scale in a spacious desert-modern interior.",
+              "backgroundFile": "desert-signal-wide-interior.png",
+              "placement": {
+                "left": 458,
+                "top": 350,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -100,7 +263,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16078105510222",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/60855269687630"
+              "8x10": "gid://shopify/ProductVariant/60855269687630",
+              "16x20": "gid://shopify/ProductVariant/60908865552718",
+              "20x24": "gid://shopify/ProductVariant/60908865585486"
             }
           },
           "prodigi": {
@@ -118,7 +283,56 @@
           "description": "Terracotta stairs lead through a vast ivory arch toward suspended architecture above a blue sea.",
           "alt": "Surreal architectural artwork with floating ivory buildings, terracotta stairs and a tiny figure above a tranquil blue sea.",
           "palette": "Ivory, terracotta, mineral blue, slate",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "The Fold art print in an ivory Mediterranean living room with mineral-blue accents.",
+              "backgroundFile": "the-fold-living-room.png",
+              "placement": {
+                "left": 408,
+                "top": 208,
+                "width": 264,
+                "height": 330
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "The Fold art print above a light linen bed with travertine and terracotta details.",
+              "backgroundFile": "the-fold-bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 188,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "The Fold art print in an airy architectural study with ivory plaster walls.",
+              "backgroundFile": "the-fold-study.png",
+              "placement": {
+                "left": 433,
+                "top": 228,
+                "width": 224,
+                "height": 280
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "The Fold art print shown at scale in a bright mineral-blue and travertine interior.",
+              "backgroundFile": "the-fold-wide-interior.png",
+              "placement": {
+                "left": 471,
+                "top": 416,
+                "width": 156,
+                "height": 195
+              }
+            }
+          ],
           "released": true,
+          "releasedSizes": [
+            "8x10"
+          ],
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-18",
@@ -130,7 +344,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16078105575758",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/60855269753166"
+              "8x10": "gid://shopify/ProductVariant/60855269753166",
+              "16x20": "gid://shopify/ProductVariant/60908865618254",
+              "20x24": "gid://shopify/ProductVariant/60908865651022"
             }
           },
           "prodigi": {

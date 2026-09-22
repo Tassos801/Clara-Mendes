@@ -9,8 +9,10 @@
  *   npm run product -- status   [collection]
  *   npm run product -- prepare  <collection> [--only a,b]
  *   npm run product -- stage    <collection> [--only a,b] [--apply]
+ *   npm run product -- expand   <collection> [--only a,b] [--apply]
  *   npm run product -- handoff  <collection> [--only a,b]
  *   npm run product -- mapped   <collection> --size 8x10 <print>=<prodigi id> ...
+ *   npm run product -- media    <collection> [--only a,b] [--apply]
  *   npm run product -- release  <collection> [--only a,b] [--apply]
  *   npm run product -- verify   <collection> [--origin https://…]
  *
@@ -34,6 +36,8 @@ import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 import {
   buildProductSetInput,
+  buildReleasedProductUpdateInput,
+  buildStagedVariantInput,
   CATALOG_PATH,
   findCollection,
   handoffRows,
@@ -47,8 +51,13 @@ import {
   selectPrints,
   sizeLabel,
   toCsv,
+  variantExpansionPlan,
   VENDOR,
 } from './lib/product-pipeline.mjs';
+import {
+  resolvePrintRoomMediaPlan,
+  roomMediaPlan,
+} from './lib/print-room-scenes.mjs';
 
 const DEFAULT_ORIGIN = 'https://shopclaramendes.com';
 
@@ -71,7 +80,17 @@ const positional = rest.filter(
 const apply = flags.has('--apply');
 const only = option('only')?.split(',').filter(Boolean);
 
-const steps = {handoff, mapped, prepare, release, stage, status, verify};
+const steps = {
+  expand,
+  handoff,
+  mapped,
+  media,
+  prepare,
+  release,
+  stage,
+  status,
+  verify,
+};
 if (!steps[step]) {
   console.error(
     `Unknown step "${step}". Steps: ${Object.keys(steps).sort().join(', ')}`,
@@ -310,6 +329,116 @@ async function stage() {
   );
 }
 
+async function expand() {
+  const {collection, prints, launchDir} = context();
+  const admin = await adminClient();
+  const before = await vendorProducts(admin);
+  const byHandle = new Map(before.map((product) => [product.handle, product]));
+  const work = prints.map((print) => {
+    assert.equal(
+      print.released,
+      true,
+      `${print.slug}: expand is only for an already released print`,
+    );
+    const product = byHandle.get(printHandle(print));
+    assert.ok(product, `${print.slug}: Shopify product not found`);
+    assert.equal(
+      product.status,
+      'ACTIVE',
+      `${print.slug}: expected ACTIVE before expansion`,
+    );
+    return {
+      plan: variantExpansionPlan(collection, print, product),
+      print,
+      product,
+    };
+  });
+
+  console.table(
+    work.flatMap(({plan, print}) =>
+      plan.map((row) => ({
+        print: print.slug,
+        size: row.variant.size,
+        sku: row.sku,
+        price: row.variant.priceEUR,
+        action: row.action === 'create' ? 'stage unavailable' : 'preserve',
+      })),
+    ),
+  );
+  if (!apply) {
+    console.log(
+      'Dry run — nothing written. Re-run with --apply to stage only the missing variants.',
+    );
+    return;
+  }
+
+  let created = 0;
+  for (const entry of work) {
+    const missing = entry.plan.filter((row) => row.action === 'create');
+    if (!missing.length) continue;
+    const result = await admin(
+      `mutation ExpandPrint($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+        productVariantsBulkCreate(productId: $productId, variants: $variants) {
+          productVariants { id sku price selectedOptions { name value } inventoryItem { requiresShipping tracked } inventoryPolicy }
+          userErrors { code field message }
+        }
+      }`,
+      {
+        productId: entry.product.id,
+        variants: missing.map(buildStagedVariantInput),
+      },
+    );
+    const payload = result.data.productVariantsBulkCreate;
+    mutationErrors(payload, `Expand ${entry.print.slug}`);
+    assert.equal(
+      payload.productVariants.length,
+      missing.length,
+      `${entry.print.slug}: Shopify created an unexpected variant count`,
+    );
+    created += payload.productVariants.length;
+  }
+
+  const after = await vendorProducts(admin);
+  const scoped = new Set(prints.map(printHandle));
+  for (const old of before) {
+    const current = after.find((product) => product.id === old.id);
+    assert.ok(current, `Shopify product disappeared: ${old.handle}`);
+    if (!scoped.has(old.handle)) {
+      assert.deepEqual(current, old, `Unrelated product changed: ${old.handle}`);
+      continue;
+    }
+    for (const oldVariant of old.variants.nodes) {
+      assert.deepEqual(
+        current.variants.nodes.find((variant) => variant.id === oldVariant.id),
+        oldVariant,
+        `${old.handle}: existing variant changed during expansion`,
+      );
+    }
+  }
+  const scopedAfter = after.filter((product) => scoped.has(product.handle));
+  for (const {print} of work) {
+    const product = scopedAfter.find(
+      (candidate) => candidate.handle === printHandle(print),
+    );
+    const plan = variantExpansionPlan(collection, print, product);
+    assert.ok(plan.every((row) => row.action === 'present'));
+    recordIds(collection, [{found: product, print}]);
+  }
+  saveCatalog();
+  writeJson(path.join(launchDir, `expand-${stamp()}.json`), {
+    before: before.filter((product) => scoped.has(product.handle)),
+    after: scopedAfter,
+    created,
+    unrelatedProductsChecked: before.filter(
+      (product) => !scoped.has(product.handle),
+    ).length,
+    unrelatedProductsUnchanged: true,
+  });
+  console.log(
+    `\nStaged ${created} unavailable variant(s); existing variants and unrelated products are unchanged.`,
+  );
+}
+
 function handoff() {
   const {collection, prints, launchDir} = context();
   const printDir = path.join(launchDir, 'print');
@@ -391,6 +520,169 @@ function mapped() {
   saveCatalog();
 }
 
+async function media() {
+  const {collection, prints, launchDir} = context();
+  const plannedFor = (print) =>
+    roomMediaPlan(collection, print).map((entry) => ({
+      ...entry,
+      localPath: path.join(
+        REPO_ROOT,
+        'public',
+        'images',
+        'product-art-mockups',
+        ...entry.outputRelativePath.split('/'),
+      ),
+    }));
+  for (const print of prints) {
+    assert.ok(print.shopify?.productId, `${print.slug}: not staged in Shopify`);
+    for (const planned of plannedFor(print))
+      assert.ok(
+        existsSync(planned.localPath),
+        `${print.slug}: missing ${planned.localPath}; run catalog:prints:room-mockups first`,
+      );
+  }
+
+  const admin = await adminClient();
+  const before = await printMediaProducts(
+    admin,
+    prints.map((print) => print.shopify.productId),
+  );
+  const work = prints.map((print) => {
+    const product = before.find((node) => node?.id === print.shopify.productId);
+    assert.ok(product, `${print.slug}: Shopify product not found`);
+    assert.equal(product.handle, printHandle(print));
+    assert.equal(product.status, 'ACTIVE');
+    const planned = plannedFor(print);
+    const plan = resolvePrintRoomMediaPlan(
+      product.media.nodes,
+      planned,
+      print.alt,
+    );
+    assert.notEqual(
+      plan.action,
+      'mismatch',
+      `${print.slug}: existing gallery is not the exact flat-art baseline or approved room set`,
+    );
+    return {plan, planned, print, product};
+  });
+
+  console.table(
+    work.map(({plan, planned, print, product}) => ({
+      print: print.slug,
+      currentMedia: product.media.nodes.length,
+      add: planned.length - plan.currentByAlt.size,
+      result: 'flat artwork + four tailored rooms',
+      action: plan.action,
+    })),
+  );
+  if (!apply) {
+    console.log(
+      'Dry run — no media or copy changed. Re-run with --apply to create and verify the exact five-image galleries.',
+    );
+    return;
+  }
+
+  for (const entry of work) {
+    const missing = entry.planned.filter(
+      (planned) => !entry.plan.currentByAlt.has(planned.alt),
+    );
+    if (missing.length) {
+      const stagedMedia = [];
+      for (const planned of missing) {
+        const resourceUrl = await uploadImage(
+          admin,
+          planned.localPath,
+          planned.fileName,
+          'image/jpeg',
+        );
+        stagedMedia.push({
+          alt: planned.alt,
+          mediaContentType: 'IMAGE',
+          originalSource: resourceUrl,
+        });
+      }
+      const result = await admin(
+        `mutation AddPrintRooms($product: ProductUpdateInput!, $media: [CreateMediaInput!]) {
+          productUpdate(product: $product, media: $media) {
+            product { id }
+            userErrors { field message }
+          }
+        }`,
+        {media: stagedMedia, product: {id: entry.product.id}},
+      );
+      mutationErrors(result.data.productUpdate, `Add rooms ${entry.print.slug}`);
+    }
+
+    let ready = await waitForRoomMedia(
+      admin,
+      entry.print,
+      entry.planned,
+      false,
+    );
+    const moves = entry.planned
+      .map((planned, index) => ({
+        id: ready.plan.currentByAlt.get(planned.alt)?.id,
+        newPosition: String(index + 1),
+      }))
+      .filter(
+        (move, index) =>
+          move.id &&
+          ready.product.media.nodes.findIndex((node) => node.id === move.id) !==
+            index + 1,
+      );
+    if (moves.length) {
+      const reordered = await admin(
+        `mutation OrderPrintRooms($id: ID!, $moves: [MoveInput!]!) {
+          productReorderMedia(id: $id, moves: $moves) {
+            job { done id }
+            mediaUserErrors { code field message }
+          }
+        }`,
+        {id: entry.product.id, moves},
+      );
+      const payload = reordered.data.productReorderMedia;
+      mutationErrors(
+        {userErrors: payload.mediaUserErrors},
+        `Order rooms ${entry.print.slug}`,
+      );
+      await waitForMediaOrderJob(admin, payload.job);
+    }
+
+    const copy = await admin(
+      `mutation RefinePrintCopy($product: ProductUpdateInput!) {
+        productUpdate(product: $product) {
+          product { id descriptionHtml seo { title description } }
+          userErrors { field message }
+        }
+      }`,
+      {
+        product: buildReleasedProductUpdateInput(
+          collection,
+          entry.print,
+          entry.product.id,
+        ),
+      },
+    );
+    mutationErrors(copy.data.productUpdate, `Refine copy ${entry.print.slug}`);
+    ready = await waitForRoomMedia(
+      admin,
+      entry.print,
+      entry.planned,
+      true,
+    );
+    console.log(`VERIFIED ${entry.print.slug}: ${ready.product.media.nodes.length} READY images`);
+  }
+
+  const after = await printMediaProducts(
+    admin,
+    prints.map((print) => print.shopify.productId),
+  );
+  writeJson(path.join(launchDir, `media-${stamp()}.json`), {before, after});
+  console.log(
+    '\nEvery selected product now has its flat artwork first and four ordered, READY room images. Copy and SEO are refined.',
+  );
+}
+
 async function release() {
   const {collection, prints, launchDir} = context();
   for (const print of prints) {
@@ -406,7 +698,7 @@ async function release() {
     (
       await admin(
         `query ReleaseRead($ids: [ID!]!) {
-          nodes(ids: $ids) { ... on Product { id handle status tags variants(first: 10) { nodes { id sku price inventoryPolicy inventoryItem { tracked } } } } }
+          nodes(ids: $ids) { ... on Product { id handle status tags descriptionHtml seo { title description } featuredMedia { id } media(first: 10) { nodes { alt id mediaContentType status preview { image { url } } ... on MediaImage { image { url } } } } variants(first: 10) { nodes { id sku price inventoryPolicy inventoryItem { tracked } } } } }
         }`,
         {ids: prints.map((print) => print.shopify.productId)},
       )
@@ -420,6 +712,17 @@ async function release() {
       `${print.slug}: Shopify product ${print.shopify.productId} not found`,
     );
     assert.equal(product.handle, printHandle(print));
+    const gallery = resolvePrintRoomMediaPlan(
+      product.media.nodes,
+      roomMediaPlan(collection, print),
+      print.alt,
+    );
+    assert.equal(
+      gallery.action,
+      'complete',
+      `${print.slug}: run media --apply and verify the five-image gallery before release`,
+    );
+    assert.equal(product.featuredMedia?.id, gallery.flat.id);
     for (const variant of collection.variants) {
       const live = product.variants.nodes.find(
         (node) => node.id === print.shopify.variantIds[variant.size],
@@ -450,6 +753,10 @@ async function release() {
       removeTags: untag.length,
       activate,
       flipReleased: !print.released,
+      releaseSizes: collection.variants
+        .map((variant) => variant.size)
+        .filter((size) => !(print.releasedSizes ?? []).includes(size))
+        .join(' '),
     })),
   );
   if (!apply) {
@@ -491,6 +798,22 @@ async function release() {
       );
       mutationErrors(result.data.productUpdate, `Activate ${print.slug}`);
     }
+    const copy = await admin(
+      `mutation UpdateReleasedPrintCopy($product: ProductUpdateInput!) {
+        productUpdate(product: $product) {
+          product { id descriptionHtml seo { title description } }
+          userErrors { field message }
+        }
+      }`,
+      {
+        product: buildReleasedProductUpdateInput(
+          collection,
+          print,
+          product.id,
+        ),
+      },
+    );
+    mutationErrors(copy.data.productUpdate, `Update copy ${print.slug}`);
   }
 
   const publication = await publish(
@@ -507,12 +830,38 @@ async function release() {
         (node) => node.inventoryItem.tracked === false,
       ),
     );
+    const print = prints.find(
+      (candidate) => printHandle(candidate) === product.handle,
+    );
+    const expected = buildReleasedProductUpdateInput(
+      collection,
+      print,
+      product.id,
+    );
+    assert.equal(product.descriptionHtml, expected.descriptionHtml);
+    assert.deepEqual(product.seo, expected.seo);
   }
 
   const storefront = await storefrontProducts(prints);
-  const unavailable = storefront
-    .filter((entry) => !entry.availableForSale)
-    .map((entry) => entry.handle);
+  const unavailable = [];
+  for (const print of prints) {
+    const entry = storefront.find(
+      (candidate) => candidate.handle === printHandle(print),
+    );
+    if (!entry?.availableForSale) unavailable.push(printHandle(print));
+    for (const variant of collection.variants) {
+      const live = entry?.variants.find(
+        (candidate) => candidate.sku === printSku(collection, print, variant.size),
+      );
+      if (
+        !live?.availableForSale ||
+        Number(live.price.amount) !== Number(variant.priceEUR) ||
+        live.price.currencyCode !== 'EUR'
+      ) {
+        unavailable.push(`${print.slug}/${variant.size}`);
+      }
+    }
+  }
   writeJson(path.join(launchDir, `release-${stamp()}.json`), {
     before,
     after,
@@ -530,10 +879,13 @@ async function release() {
     );
     process.exit(1);
   }
-  for (const print of prints) print.released = true;
+  for (const print of prints) {
+    print.released = true;
+    print.releasedSizes = collection.variants.map((variant) => variant.size);
+  }
   saveCatalog();
   console.log(
-    '\nReleased in Shopify and sellable through the Storefront API. `released: true` written — commit data/print-catalog.json, merge the PR, then run verify.',
+    '\nReleased in Shopify and every catalog size is sellable through the Storefront API. `releasedSizes` written — commit data/print-catalog.json, merge the PR, then run verify.',
   );
 }
 
@@ -547,6 +899,11 @@ async function verify() {
     checks.push({subject, check: name, ok: Boolean(ok), detail});
 
   const storefront = await storefrontProducts(released);
+  const admin = await adminClient();
+  const adminProducts = await printMediaProducts(
+    admin,
+    released.map((print) => print.shopify.productId),
+  );
   for (const print of released) {
     const entry = storefront.find(
       (candidate) => candidate.handle === printHandle(print),
@@ -580,6 +937,25 @@ async function verify() {
         cart.errors.join('; ') || `subtotal ${cart.subtotal}`,
       );
     }
+    const adminProduct = adminProducts.find(
+      (candidate) => candidate?.id === print.shopify.productId,
+    );
+    const gallery = adminProduct
+      ? resolvePrintRoomMediaPlan(
+          adminProduct.media.nodes,
+          roomMediaPlan(collection, print),
+          print.alt,
+        )
+      : {action: 'missing'};
+    check(
+      print.slug,
+      'admin: flat artwork + four ordered READY room images',
+      gallery.action === 'complete' &&
+        adminProduct.featuredMedia?.id === gallery.flat?.id,
+      adminProduct
+        ? `${adminProduct.media.nodes.length} media; ${gallery.action}`
+        : 'product missing',
+    );
   }
 
   const sitemap = await sitemapProductUrls(origin);
@@ -709,6 +1085,72 @@ function adminClient() {
   });
 }
 
+async function printMediaProducts(admin, ids) {
+  return (
+    await admin(
+      `query PrintMediaProducts($ids: [ID!]!) {
+        nodes(ids: $ids) {
+          ... on Product {
+            featuredMedia { id }
+            handle
+            id
+            status
+            media(first: 10) {
+              nodes {
+                alt
+                id
+                mediaContentType
+                preview { image { url } }
+                status
+                ... on MediaImage { image { url } }
+              }
+            }
+          }
+        }
+      }`,
+      {ids},
+    )
+  ).data.nodes;
+}
+
+function delay(milliseconds) {
+  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+}
+
+async function waitForRoomMedia(admin, print, planned, exactOrder) {
+  for (let attempt = 0; attempt < 45; attempt += 1) {
+    const [product] = await printMediaProducts(admin, [print.shopify.productId]);
+    const plan = resolvePrintRoomMediaPlan(product?.media?.nodes ?? [], planned, print.alt);
+    if (plan.action === 'mismatch') {
+      throw new Error(`${print.slug}: gallery changed unexpectedly while processing`);
+    }
+    const allReady = planned.every(
+      (entry) => plan.currentByAlt.get(entry.alt)?.status === 'READY',
+    );
+    if (allReady && (!exactOrder || plan.action === 'complete')) {
+      assert.equal(product.featuredMedia?.id, plan.flat.id);
+      return {plan, product};
+    }
+    await delay(1500);
+  }
+  throw new Error(
+    `${print.slug}: timed out waiting for four READY room images${exactOrder ? ' in their approved order' : ''}`,
+  );
+}
+
+async function waitForMediaOrderJob(admin, job) {
+  if (!job?.id || job.done) return;
+  for (let attempt = 0; attempt < 30; attempt += 1) {
+    await delay(1000);
+    const result = await admin(
+      `query PrintMediaOrderJob($id: ID!) { job(id: $id) { done id } }`,
+      {id: job.id},
+    );
+    if (result.data.job?.done) return;
+  }
+  throw new Error(`Timed out waiting for Shopify media-order job ${job.id}`);
+}
+
 async function vendorProducts(admin) {
   const products = [];
   let cursor = null;
@@ -748,7 +1190,12 @@ function recordIds(collection, actions) {
   }
 }
 
-async function uploadImage(admin, file, filename) {
+async function uploadImage(
+  admin,
+  file,
+  filename,
+  mimeType = 'image/webp',
+) {
   const staged = await admin(
     `mutation StageUpload($input: [StagedUploadInput!]!) {
       stagedUploadsCreate(input: $input) { stagedTargets { url resourceUrl parameters { name value } } userErrors { field message } }
@@ -758,7 +1205,7 @@ async function uploadImage(admin, file, filename) {
         {
           filename,
           httpMethod: 'POST',
-          mimeType: 'image/webp',
+          mimeType,
           resource: 'PRODUCT_IMAGE',
         },
       ],
@@ -771,7 +1218,7 @@ async function uploadImage(admin, file, filename) {
     form.append(parameter.name, parameter.value);
   form.append(
     'file',
-    new Blob([readFileSync(file)], {type: 'image/webp'}),
+    new Blob([readFileSync(file)], {type: mimeType}),
     filename,
   );
   const uploaded = await fetch(target.url, {body: form, method: 'POST'});
