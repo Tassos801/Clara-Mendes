@@ -36,10 +36,10 @@ to the local launch folder. The generated source pixels are 1122×1402:
 | 20×24 | 6000×7200 | 56.1 PPI | 4% |
 
 The print JPEGs are enlarged exports; the 300-DPI metadata does not add native
-detail. The owner wants to review the previews before accepting the source
-softness and 20×24 crop for release, as required by the
-[add-products runbook](add-products-runbook.md). A physical print proof would
-give the best evidence for the two larger sizes.
+detail. After reviewing the previews, the owner approved the source softness
+and 20×24 crop for all three sizes on 2026-09-22. This satisfies the owner
+acceptance gate in the [add-products runbook](add-products-runbook.md).
+Physical print quality remains unverified until a proof or first order.
 
 ## Current launch state
 

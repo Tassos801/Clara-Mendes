@@ -973,3 +973,5 @@ print catalog, exported all three existing print sizes, and generated 20 room
 scenes. The collection remains `released: false` pending Shopify Draft staging,
 Prodigi mapping, and owner review of native image detail (140.2, 70.1, and
 56.1 PPI for the three sizes). Source PNGs are tracked for repeatable export.
+The owner approved the three-size prices, source softness, and 20×24 crop
+after preview review; physical print quality is still unverified.
