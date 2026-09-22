@@ -9,6 +9,7 @@
  *   npm run product -- status   [collection]
  *   npm run product -- prepare  <collection> [--only a,b]
  *   npm run product -- stage    <collection> [--only a,b] [--apply]
+ *   npm run product -- expand   <collection> [--only a,b] [--apply]
  *   npm run product -- handoff  <collection> [--only a,b]
  *   npm run product -- mapped   <collection> --size 8x10 <print>=<prodigi id> ...
  *   npm run product -- release  <collection> [--only a,b] [--apply]
@@ -34,6 +35,8 @@ import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 import {
   buildProductSetInput,
+  buildReleasedProductUpdateInput,
+  buildStagedVariantInput,
   CATALOG_PATH,
   findCollection,
   handoffRows,
@@ -47,6 +50,7 @@ import {
   selectPrints,
   sizeLabel,
   toCsv,
+  variantExpansionPlan,
   VENDOR,
 } from './lib/product-pipeline.mjs';
 
@@ -71,7 +75,7 @@ const positional = rest.filter(
 const apply = flags.has('--apply');
 const only = option('only')?.split(',').filter(Boolean);
 
-const steps = {handoff, mapped, prepare, release, stage, status, verify};
+const steps = {expand, handoff, mapped, prepare, release, stage, status, verify};
 if (!steps[step]) {
   console.error(
     `Unknown step "${step}". Steps: ${Object.keys(steps).sort().join(', ')}`,
@@ -310,6 +314,116 @@ async function stage() {
   );
 }
 
+async function expand() {
+  const {collection, prints, launchDir} = context();
+  const admin = await adminClient();
+  const before = await vendorProducts(admin);
+  const byHandle = new Map(before.map((product) => [product.handle, product]));
+  const work = prints.map((print) => {
+    assert.equal(
+      print.released,
+      true,
+      `${print.slug}: expand is only for an already released print`,
+    );
+    const product = byHandle.get(printHandle(print));
+    assert.ok(product, `${print.slug}: Shopify product not found`);
+    assert.equal(
+      product.status,
+      'ACTIVE',
+      `${print.slug}: expected ACTIVE before expansion`,
+    );
+    return {
+      plan: variantExpansionPlan(collection, print, product),
+      print,
+      product,
+    };
+  });
+
+  console.table(
+    work.flatMap(({plan, print}) =>
+      plan.map((row) => ({
+        print: print.slug,
+        size: row.variant.size,
+        sku: row.sku,
+        price: row.variant.priceEUR,
+        action: row.action === 'create' ? 'stage unavailable' : 'preserve',
+      })),
+    ),
+  );
+  if (!apply) {
+    console.log(
+      'Dry run — nothing written. Re-run with --apply to stage only the missing variants.',
+    );
+    return;
+  }
+
+  let created = 0;
+  for (const entry of work) {
+    const missing = entry.plan.filter((row) => row.action === 'create');
+    if (!missing.length) continue;
+    const result = await admin(
+      `mutation ExpandPrint($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
+        productVariantsBulkCreate(productId: $productId, variants: $variants) {
+          productVariants { id sku price selectedOptions { name value } inventoryItem { requiresShipping tracked } inventoryPolicy }
+          userErrors { code field message }
+        }
+      }`,
+      {
+        productId: entry.product.id,
+        variants: missing.map(buildStagedVariantInput),
+      },
+    );
+    const payload = result.data.productVariantsBulkCreate;
+    mutationErrors(payload, `Expand ${entry.print.slug}`);
+    assert.equal(
+      payload.productVariants.length,
+      missing.length,
+      `${entry.print.slug}: Shopify created an unexpected variant count`,
+    );
+    created += payload.productVariants.length;
+  }
+
+  const after = await vendorProducts(admin);
+  const scoped = new Set(prints.map(printHandle));
+  for (const old of before) {
+    const current = after.find((product) => product.id === old.id);
+    assert.ok(current, `Shopify product disappeared: ${old.handle}`);
+    if (!scoped.has(old.handle)) {
+      assert.deepEqual(current, old, `Unrelated product changed: ${old.handle}`);
+      continue;
+    }
+    for (const oldVariant of old.variants.nodes) {
+      assert.deepEqual(
+        current.variants.nodes.find((variant) => variant.id === oldVariant.id),
+        oldVariant,
+        `${old.handle}: existing variant changed during expansion`,
+      );
+    }
+  }
+  const scopedAfter = after.filter((product) => scoped.has(product.handle));
+  for (const {print} of work) {
+    const product = scopedAfter.find(
+      (candidate) => candidate.handle === printHandle(print),
+    );
+    const plan = variantExpansionPlan(collection, print, product);
+    assert.ok(plan.every((row) => row.action === 'present'));
+    recordIds(collection, [{found: product, print}]);
+  }
+  saveCatalog();
+  writeJson(path.join(launchDir, `expand-${stamp()}.json`), {
+    before: before.filter((product) => scoped.has(product.handle)),
+    after: scopedAfter,
+    created,
+    unrelatedProductsChecked: before.filter(
+      (product) => !scoped.has(product.handle),
+    ).length,
+    unrelatedProductsUnchanged: true,
+  });
+  console.log(
+    `\nStaged ${created} unavailable variant(s); existing variants and unrelated products are unchanged.`,
+  );
+}
+
 function handoff() {
   const {collection, prints, launchDir} = context();
   const printDir = path.join(launchDir, 'print');
@@ -406,7 +520,7 @@ async function release() {
     (
       await admin(
         `query ReleaseRead($ids: [ID!]!) {
-          nodes(ids: $ids) { ... on Product { id handle status tags variants(first: 10) { nodes { id sku price inventoryPolicy inventoryItem { tracked } } } } }
+          nodes(ids: $ids) { ... on Product { id handle status tags descriptionHtml seo { title description } variants(first: 10) { nodes { id sku price inventoryPolicy inventoryItem { tracked } } } } }
         }`,
         {ids: prints.map((print) => print.shopify.productId)},
       )
@@ -450,6 +564,10 @@ async function release() {
       removeTags: untag.length,
       activate,
       flipReleased: !print.released,
+      releaseSizes: collection.variants
+        .map((variant) => variant.size)
+        .filter((size) => !(print.releasedSizes ?? []).includes(size))
+        .join(' '),
     })),
   );
   if (!apply) {
@@ -491,6 +609,22 @@ async function release() {
       );
       mutationErrors(result.data.productUpdate, `Activate ${print.slug}`);
     }
+    const copy = await admin(
+      `mutation UpdateReleasedPrintCopy($product: ProductUpdateInput!) {
+        productUpdate(product: $product) {
+          product { id descriptionHtml seo { title description } }
+          userErrors { field message }
+        }
+      }`,
+      {
+        product: buildReleasedProductUpdateInput(
+          collection,
+          print,
+          product.id,
+        ),
+      },
+    );
+    mutationErrors(copy.data.productUpdate, `Update copy ${print.slug}`);
   }
 
   const publication = await publish(
@@ -507,12 +641,38 @@ async function release() {
         (node) => node.inventoryItem.tracked === false,
       ),
     );
+    const print = prints.find(
+      (candidate) => printHandle(candidate) === product.handle,
+    );
+    const expected = buildReleasedProductUpdateInput(
+      collection,
+      print,
+      product.id,
+    );
+    assert.equal(product.descriptionHtml, expected.descriptionHtml);
+    assert.deepEqual(product.seo, expected.seo);
   }
 
   const storefront = await storefrontProducts(prints);
-  const unavailable = storefront
-    .filter((entry) => !entry.availableForSale)
-    .map((entry) => entry.handle);
+  const unavailable = [];
+  for (const print of prints) {
+    const entry = storefront.find(
+      (candidate) => candidate.handle === printHandle(print),
+    );
+    if (!entry?.availableForSale) unavailable.push(printHandle(print));
+    for (const variant of collection.variants) {
+      const live = entry?.variants.find(
+        (candidate) => candidate.sku === printSku(collection, print, variant.size),
+      );
+      if (
+        !live?.availableForSale ||
+        Number(live.price.amount) !== Number(variant.priceEUR) ||
+        live.price.currencyCode !== 'EUR'
+      ) {
+        unavailable.push(`${print.slug}/${variant.size}`);
+      }
+    }
+  }
   writeJson(path.join(launchDir, `release-${stamp()}.json`), {
     before,
     after,
@@ -530,10 +690,13 @@ async function release() {
     );
     process.exit(1);
   }
-  for (const print of prints) print.released = true;
+  for (const print of prints) {
+    print.released = true;
+    print.releasedSizes = collection.variants.map((variant) => variant.size);
+  }
   saveCatalog();
   console.log(
-    '\nReleased in Shopify and sellable through the Storefront API. `released: true` written — commit data/print-catalog.json, merge the PR, then run verify.',
+    '\nReleased in Shopify and every catalog size is sellable through the Storefront API. `releasedSizes` written — commit data/print-catalog.json, merge the PR, then run verify.',
   );
 }
 

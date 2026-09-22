@@ -1,7 +1,9 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
+  buildStagedVariantInput,
   buildProductSetInput,
+  buildReleasedProductUpdateInput,
   findCollection,
   handoffRows,
   parseMappings,
@@ -10,6 +12,7 @@ import {
   selectPrints,
   sizeBullet,
   toCsv,
+  variantExpansionPlan,
 } from './lib/product-pipeline.mjs';
 
 const collection = {
@@ -116,6 +119,14 @@ test('status names the single next step', () => {
   };
   assert.match(printStatus(collection, staged).next, /^handoff/);
 
+  const expanding = {
+    ...print,
+    released: true,
+    releasedSizes: ['8x10'],
+    shopify: {productId: 'p', variantIds: {'8x10': 'a'}},
+  };
+  assert.equal(printStatus(collection, expanding).next, 'expand');
+
   // One mapped size out of two is not mapped.
   const half = {
     ...staged,
@@ -132,7 +143,11 @@ test('status names the single next step', () => {
   };
   assert.equal(printStatus(collection, mapped).next, 'release');
   assert.equal(
-    printStatus(collection, {...mapped, released: true}).next,
+    printStatus(collection, {
+      ...mapped,
+      released: true,
+      releasedSizes: ['8x10', '16x20'],
+    }).next,
     'verify',
   );
 });
@@ -173,4 +188,83 @@ test('the Prodigi handoff has one row per print and size, with file hashes', () 
 
   const csv = toCsv([{a: 'x"y', b: 1}]);
   assert.equal(csv, '"a","b"\r\n"x""y","1"\r\n');
+});
+
+test('released product copy is derived without changing status or identity', () => {
+  const input = buildReleasedProductUpdateInput(
+    collection,
+    collection.prints[0],
+    'gid://shopify/Product/1',
+  );
+  assert.equal(input.id, 'gid://shopify/Product/1');
+  assert.equal(input.status, undefined);
+  assert.equal(input.handle, undefined);
+  assert.match(input.descriptionHtml, /8 × 10 and 16 × 20 inch sizes/);
+  assert.match(input.descriptionHtml, /Frame not included/);
+  assert.equal(input.seo.title, 'Alpha One Art Print | Clara Mendes');
+});
+
+test('existing released products expand without replacing the live base variant', () => {
+  const expanded = structuredClone(collection);
+  expanded.variants.push({
+    finish: 'Unframed',
+    priceEUR: '49.99',
+    providerSku: 'GLOBAL-FAP-20X24',
+    size: '20x24',
+  });
+  const product = {
+    handle: 'alpha-one-art-print',
+    id: 'gid://shopify/Product/1',
+    variants: {
+      nodes: [
+        {
+          id: 'gid://shopify/ProductVariant/8',
+          inventoryItem: {requiresShipping: true, tracked: false},
+          inventoryPolicy: 'DENY',
+          price: '29.99',
+          selectedOptions: [
+            {name: 'Size', value: '8 × 10 in'},
+            {name: 'Finish', value: 'Unframed'},
+          ],
+          sku: 'CM-AA-01-8X10',
+        },
+      ],
+    },
+  };
+
+  const plan = variantExpansionPlan(expanded, expanded.prints[0], product);
+  assert.deepEqual(
+    plan.map((row) => [row.variant.size, row.action, row.existing?.id]),
+    [
+      ['8x10', 'present', 'gid://shopify/ProductVariant/8'],
+      ['16x20', 'create', undefined],
+      ['20x24', 'create', undefined],
+    ],
+  );
+
+  const conflicting = structuredClone(product);
+  conflicting.variants.nodes.push({
+    ...conflicting.variants.nodes[0],
+    id: 'gid://shopify/ProductVariant/bad',
+    sku: 'OTHER-SKU',
+  });
+  assert.throws(
+    () => variantExpansionPlan(expanded, expanded.prints[0], conflicting),
+    /unexpected SKU OTHER-SKU/,
+  );
+
+  assert.deepEqual(buildStagedVariantInput(plan[1]), {
+    inventoryItem: {
+      requiresShipping: true,
+      sku: 'CM-AA-01-16X20',
+      tracked: true,
+    },
+    inventoryPolicy: 'DENY',
+    optionValues: [
+      {name: '16 × 20 in', optionName: 'Size'},
+      {name: 'Unframed', optionName: 'Finish'},
+    ],
+    price: '39.99',
+    taxable: true,
+  });
 });

@@ -92,6 +92,79 @@ export function printFileName(print, size) {
   return `${print.slug}-${size}-300dpi.jpg`;
 }
 
+/**
+ * Reconcile the catalog's ordered size list with one existing Shopify product.
+ * Existing variants are never replaced: a conflict aborts before any mutation.
+ */
+export function variantExpansionPlan(collection, print, product) {
+  const handle = printHandle(print);
+  if (!product?.id || product.handle !== handle) {
+    throw new Error(`${handle}: Shopify product identity does not match`);
+  }
+
+  const expected = new Map(
+    collection.variants.map((variant) => [
+      printSku(collection, print, variant.size),
+      variant,
+    ]),
+  );
+  const existingBySku = new Map();
+  for (const node of product.variants?.nodes ?? []) {
+    if (!expected.has(node.sku)) {
+      throw new Error(`${handle}: unexpected SKU ${node.sku || '(missing)'}`);
+    }
+    if (existingBySku.has(node.sku)) {
+      throw new Error(`${handle}: duplicate SKU ${node.sku}`);
+    }
+    existingBySku.set(node.sku, node);
+  }
+
+  return collection.variants.map((variant) => {
+    const sku = printSku(collection, print, variant.size);
+    const existing = existingBySku.get(sku);
+    if (existing) {
+      const selected = new Map(
+        (existing.selectedOptions ?? []).map((option) => [
+          option.name,
+          option.value,
+        ]),
+      );
+      const issues = [];
+      if (selected.get('Size') !== sizeLabel(variant.size))
+        issues.push(`Size is ${selected.get('Size') || 'missing'}`);
+      if (selected.get('Finish') !== variant.finish)
+        issues.push(`Finish is ${selected.get('Finish') || 'missing'}`);
+      if (existing.price !== variant.priceEUR)
+        issues.push(`price is ${existing.price}`);
+      if (existing.inventoryPolicy !== 'DENY')
+        issues.push(`inventory policy is ${existing.inventoryPolicy}`);
+      if (existing.inventoryItem?.requiresShipping !== true)
+        issues.push('does not require shipping');
+      if (issues.length) {
+        throw new Error(`${handle} ${sku}: ${issues.join('; ')}`);
+      }
+    }
+    return {action: existing ? 'present' : 'create', existing, sku, variant};
+  });
+}
+
+export function buildStagedVariantInput(row) {
+  return {
+    inventoryItem: {
+      requiresShipping: true,
+      sku: row.sku,
+      tracked: true,
+    },
+    inventoryPolicy: 'DENY',
+    optionValues: [
+      {name: sizeLabel(row.variant.size), optionName: 'Size'},
+      {name: row.variant.finish, optionName: 'Finish'},
+    ],
+    price: row.variant.priceEUR,
+    taxable: true,
+  };
+}
+
 /** The ProductSetInput for a new Draft, minus the uploaded image file. */
 export function buildProductSetInput(collection, print) {
   const finishes = [...new Set(collection.variants.map((v) => v.finish))];
@@ -141,6 +214,15 @@ export function buildProductSetInput(collection, print) {
   };
 }
 
+export function buildReleasedProductUpdateInput(collection, print, id) {
+  const staged = buildProductSetInput(collection, print);
+  return {
+    descriptionHtml: staged.descriptionHtml,
+    id,
+    seo: staged.seo,
+  };
+}
+
 /** Where a print stands and the one command that moves it forward. */
 export function printStatus(collection, print, {hasWebImage = true} = {}) {
   const sizes = collection.variants.map((variant) => variant.size);
@@ -152,11 +234,15 @@ export function printStatus(collection, print, {hasWebImage = true} = {}) {
       print.prodigi?.[size]?.verified &&
       print.prodigi?.[size]?.channelProductId,
   );
+  const allSizesReleased = sizes.every((size) =>
+    (print.releasedSizes ?? []).includes(size),
+  );
   let next = 'verify';
   if (!hasWebImage) next = 'prepare';
-  else if (!staged) next = 'stage';
+  else if (!print.shopify?.productId) next = 'stage';
+  else if (!staged) next = print.released ? 'expand' : 'stage';
   else if (!mapped) next = 'handoff → map in Prodigi → mapped';
-  else if (!print.released) next = 'release';
+  else if (!print.released || !allSizesReleased) next = 'release';
   return {mapped, next, released: print.released === true, staged};
 }
 
