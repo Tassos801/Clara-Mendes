@@ -324,10 +324,14 @@ function ReviewCard({
   onOpenPhoto: (url: string, reviewId: string) => void;
 }) {
   const fetcher = useFetcher<
-    {ok: true; message: string} | {ok: false; error: string}
+    | {ok: true; message: string; helpfulCount?: number}
+    | {ok: false; error: string}
   >();
   const storageKey = `review-helpful:${review.id}`;
   const [voted, setVoted] = useState(false);
+  // A vote remembered from an earlier visit is already in helpfulCount, so
+  // only a vote cast in this visit may be added optimistically.
+  const [votedNow, setVotedNow] = useState(false);
 
   // Read prior-vote state from localStorage after mount (SSR-safe).
   useEffect(() => {
@@ -339,13 +343,18 @@ function ReviewCard({
   }, [storageKey]);
 
   const submitting = fetcher.state !== 'idle';
-  // Optimistic count: bump by one the moment the user has voted this session.
-  const optimisticCount = review.helpfulCount + (voted ? 1 : 0);
+  // The server's answer wins; until it arrives, count this visit's vote.
+  const serverCount =
+    fetcher.data?.ok === true ? fetcher.data.helpfulCount : undefined;
+  const optimisticCount =
+    serverCount ??
+    review.helpfulCount + (votedNow && fetcher.data?.ok !== false ? 1 : 0);
   const initial = review.authorName.trim().charAt(0).toUpperCase() || '?';
 
   const onHelpful = () => {
     if (voted || submitting) return;
     setVoted(true);
+    setVotedNow(true);
     try {
       localStorage.setItem(storageKey, '1');
     } catch {

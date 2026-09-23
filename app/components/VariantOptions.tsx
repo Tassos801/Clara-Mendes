@@ -40,8 +40,12 @@ export function VariantOptions({
       option.value,
     ]) ?? [],
   );
+  // A picker with one value (e.g. "Finish: Unframed" on a print-catalog
+  // print) offers no choice; the value still reaches the URL through the
+  // other options' links, which carry every selected option.
   const visibleOptions = product.options.filter(
     (option) =>
+      option.optionValues.length > 1 &&
       !(
         product.productType?.trim().toLowerCase() === 'art prints' &&
         option.name.trim().toLowerCase() === 'presentation'

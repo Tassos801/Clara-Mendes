@@ -124,27 +124,46 @@ test('scales both diagrams against the same 84 inch sofa', () => {
   );
 });
 
-test('print size copy follows the product options instead of promising all sizes', () => {
+const variant = (size, availableForSale = true) => ({
+  availableForSale,
+  selectedOptions: [
+    {name: 'Size', value: size},
+    {name: 'Finish', value: 'Enhanced Matte Art Paper'},
+  ],
+});
+
+test('print size copy names the sizes on sale instead of promising all sizes', () => {
   assert.equal(typeof sizePresentation.printSizeAvailabilityCopy, 'function');
   assert.equal(
-    sizePresentation.printSizeAvailabilityCopy([
-      {name: 'Size', optionValues: [{name: '8 × 10 in'}]},
-      {name: 'Presentation', optionValues: [{name: 'Unframed'}]},
-    ]),
+    sizePresentation.printSizeAvailabilityCopy([variant('8 × 10 in')]),
     'Available in 8 × 10 in.',
   );
   assert.equal(
     sizePresentation.printSizeAvailabilityCopy([
-      {
-        name: 'Size',
-        optionValues: [
-          {name: '8 × 10 in'},
-          {name: '16 × 20 in'},
-          {name: '20 × 24 in'},
-        ],
-      },
+      variant('8 × 10 in'),
+      variant('16 × 20 in'),
+      variant('20 × 24 in'),
     ]),
     'Choose 8 × 10 in, 16 × 20 in, 20 × 24 in.',
   );
   assert.equal(sizePresentation.printSizeAvailabilityCopy([]), '');
+});
+
+test('sizes staged by expand stay out of the copy until they are released', () => {
+  assert.equal(
+    sizePresentation.printSizeAvailabilityCopy([
+      variant('8 × 10 in'),
+      variant('16 × 20 in', false),
+      variant('20 × 24 in', false),
+    ]),
+    'Available in 8 × 10 in.',
+  );
+  // A sold-out product still says which sizes it comes in.
+  assert.equal(
+    sizePresentation.printSizeAvailabilityCopy([
+      variant('8 × 10 in', false),
+      variant('16 × 20 in', false),
+    ]),
+    'Choose 8 × 10 in, 16 × 20 in.',
+  );
 });

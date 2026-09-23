@@ -135,6 +135,8 @@ export function isUnreleasedPrintHandle(
 
 export type ReleasedPrintCollection = {
   handles: string[];
+  /** Web artwork of the first released print, for share cards. */
+  image: string;
   note: string;
   sizeLabels: string[];
   slug: string;
@@ -159,6 +161,7 @@ export function releasedPrintCollections(
       );
       return {
         handles: released.map(printHandle),
+        image: released[0] ? printImagePath(collection, released[0]) : '',
         note: collection.note,
         sizeLabels: commonSizes.map(
           (variant) =>
