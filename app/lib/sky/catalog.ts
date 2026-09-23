@@ -26,7 +26,17 @@ export async function loadSkyCatalog(): Promise<SkyCatalog> {
   const [stars, lines, names] = await Promise.all([
     import('../../data/sky/stars.json'),
     import('../../data/sky/constellations.json'),
-    import('../../data/sky/constellation-names.json').catch(() => null),
+    // Optional at runtime: a missing chunk here must not break the preview
+    // or a paid print, so it falls back to undefined and the names detail
+    // simply draws nothing. Contrast scripts/lib/sky-catalog.mjs, whose
+    // sync loader requires the committed file — repo corruption should
+    // fail loudly there, in tests, rather than silently in production.
+    import('../../data/sky/constellation-names.json').catch(
+      (error: unknown) => {
+        console.warn('sky: constellation names unavailable', error);
+        return null;
+      },
+    ),
   ]);
   return {
     stars: stars.default.data,

@@ -6,7 +6,7 @@ const json = JSON.parse(
   readFileSync('app/data/sky/constellation-names.json', 'utf8'),
 );
 
-test('constellation names: IAU Latin names with J2000 label points', () => {
+test('constellation names: IAU names with J2000 label points', () => {
   assert.match(json.source, /d3-celestial/);
   assert.ok(json.count >= 88 && json.count <= 89, `count ${json.count}`);
   assert.equal(json.data.length, json.count);

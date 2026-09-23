@@ -2,12 +2,12 @@
 /* eslint-disable no-console */
 // Builds app/data/sky/constellation-names.json from d3-celestial
 // constellations.json (BSD-3-Clause, © Olaf Frohn): IAU name and a label
-// point per constellation. Uses properties.name (the IAU English/ASCII
-// form, e.g. "Ursa Major") rather than properties.la (classical Latin
-// spellings such as "Ursa Maior" with irregular whitespace, which the
-// print font may not render and customers would read as typos). The
-// source is cached in data/sky-sources/ (gitignored); the derived JSON is
-// committed.
+// point per constellation. Uses properties.name (the IAU names, with
+// ordinary spaces, e.g. "Ursa Major") rather than properties.la (classical
+// Latin spellings such as "Ursa Maior", which use U+2005 spaces instead of
+// an ordinary space and which the print font may not render, so customers
+// would read them as typos). The source is cached in data/sky-sources/
+// (gitignored); the derived JSON is committed.
 //
 //   node scripts/build-sky-names.mjs
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
