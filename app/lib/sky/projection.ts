@@ -37,6 +37,7 @@ export function layoutFor(width: number, height: number): SkyLayout {
   return skyPageLayout('classic', width, height);
 }
 
+/** Used by First Light only; Your Sky uses `starStyle` (style.ts). */
 export function starRadius(mag: number, scale: number) {
   const base =
     mag <= 0 ? 2.6

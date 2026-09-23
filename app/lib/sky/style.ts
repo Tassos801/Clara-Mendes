@@ -30,7 +30,10 @@ export const MOON_GLOW = [
 export const MOON_EDGE_WIDTH = 0.35;
 export const MOON_EDGE_OPACITY = 0.55;
 
-/** Planets: a ring of the scene radius around a dot of PLANET_DOT × radius. */
+/**
+ * Planets: a ring of the scene's `SceneBody.r` (already scaled) with a dot
+ * at its centre sized PLANET_DOT × that same r.
+ */
 export const PLANET_STROKE = 0.45;
 export const PLANET_DOT = 0.45;
 
@@ -42,7 +45,11 @@ export const GRID_WIDTH = 0.25;
 export const LABEL_SIZE = 5;
 export const LABEL_TRACKING = 1.1;
 
-/** Compass ring: ticks every 2°, long every 10°, numerals every 30°. */
+/**
+ * Compass ring: ticks every 2°, long every 10°, numerals every 30°. `gap`
+ * is the radial gap between the disc edge and the first tick — unrelated
+ * to `RING.gap`, which is the horizon ring's own inner hairline offset.
+ */
 export const TICK = {
   gap: 2.5,
   minor: 3,

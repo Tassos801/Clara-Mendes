@@ -6,6 +6,7 @@
  */
 import {Astronomy} from './astronomyEngine.ts';
 import type {SkyCatalog} from './catalog.ts';
+import {GALAXY_SAMPLES, type GalaxySample} from './galaxy.ts';
 
 const DEG = Math.PI / 180;
 const RAD = 180 / Math.PI;
@@ -22,6 +23,8 @@ export type MoonPosition = HorizontalPoint & {
   phaseFraction: number;
   waxing: boolean;
 };
+export type GalaxyPosition = HorizontalPoint & GalaxySample;
+export type LabelPosition = HorizontalPoint & {name: string; rank: number};
 
 export type SkyPositions = {
   stars: StarPosition[];
@@ -29,6 +32,8 @@ export type SkyPositions = {
   moon: MoonPosition;
   sun: HorizontalPoint;
   planets: BodyPosition[];
+  galaxy: GalaxyPosition[];
+  labels: LabelPosition[];
 };
 
 export const PLANET_NAMES = [
@@ -142,5 +147,12 @@ export function skyPositions({
   };
   const planets = PLANET_NAMES.map((name) => ({name, ...body(name)}));
 
-  return {stars, segments, moon, sun: body('Sun'), planets};
+  const galaxy = GALAXY_SAMPLES.map((g) => ({...g, ...toHorizontal(g.ra, g.dec)}));
+  const labels = (catalog.names ?? []).map(([, name, ra, dec, rank]) => ({
+    name,
+    rank,
+    ...toHorizontal(ra, dec),
+  }));
+
+  return {stars, segments, moon, sun: body('Sun'), planets, galaxy, labels};
 }

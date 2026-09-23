@@ -11,10 +11,16 @@ export type SkyRingStyle = 'plain' | 'compass';
 
 export type SkyPageLayout = SkyLayout & {
   id: SkyLayoutId;
+  /** 'plain' = double horizon ring only; 'compass' = adds the tick/numeral ring. */
   ring: SkyRingStyle;
   /** Font size of the N/E/S/W letters. */
   cardinalSize: number;
-  /** How far the cardinal letters sit outside the disc. */
+  /**
+   * How far the cardinal letters sit outside the disc. scene.ts places the
+   * baselines from this: N at r + offset − 2·scale above the centre, S at
+   * r + offset + 5·scale below, E/W at r + offset + scale to the side.
+   * Classic (offset 11, scale 1) reproduces the old fixed 9 / 16 / 12.
+   */
   cardinalOffset: number;
 };
 
