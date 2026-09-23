@@ -1,0 +1,545 @@
+{
+  "collection": "light-and-silence",
+  "images": [
+    {
+      "print": "veil-of-stone",
+      "room": "living-room",
+      "alt": "Veil of Stone art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/veil-of-stone.webp",
+        "sha256": "78b93398286551fbe6c47051902baa6f79fb3e68ab0980b6ed7b48a51a7cddcc"
+      },
+      "output": {
+        "file": "light-and-silence/veil-of-stone-living-room.jpg",
+        "sha256": "975e02cc2a93fbfe403bcf25a421b19e6eb7fdccf81c2911c4b782c260fbfcb9"
+      }
+    },
+    {
+      "print": "veil-of-stone",
+      "room": "bedroom",
+      "alt": "Veil of Stone art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/veil-of-stone.webp",
+        "sha256": "78b93398286551fbe6c47051902baa6f79fb3e68ab0980b6ed7b48a51a7cddcc"
+      },
+      "output": {
+        "file": "light-and-silence/veil-of-stone-bedroom.jpg",
+        "sha256": "0dca62c4da9711d3d2ff081f7583672e5c9a6a9aad9a702688b8f3abf4ca8701"
+      }
+    },
+    {
+      "print": "veil-of-stone",
+      "room": "study",
+      "alt": "Veil of Stone art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/veil-of-stone.webp",
+        "sha256": "78b93398286551fbe6c47051902baa6f79fb3e68ab0980b6ed7b48a51a7cddcc"
+      },
+      "output": {
+        "file": "light-and-silence/veil-of-stone-study.jpg",
+        "sha256": "2539f2fb57bfb389a92079e02038f40270fd360ebee6b5988fa10ca2a80e3906"
+      }
+    },
+    {
+      "print": "veil-of-stone",
+      "room": "wide-interior",
+      "alt": "Veil of Stone art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/veil-of-stone.webp",
+        "sha256": "78b93398286551fbe6c47051902baa6f79fb3e68ab0980b6ed7b48a51a7cddcc"
+      },
+      "output": {
+        "file": "light-and-silence/veil-of-stone-wide-interior.jpg",
+        "sha256": "c29bf5606dfea2e211004d7e26d7fbd69ce0adaac53aa9b94b0061729e4b80e0"
+      }
+    },
+    {
+      "print": "tidal-mirror",
+      "room": "living-room",
+      "alt": "Tidal Mirror art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/tidal-mirror.webp",
+        "sha256": "be3e8d91b3a46336300a42ad188a5c06be0bbc0fcadd2cec2409722825c04d3e"
+      },
+      "output": {
+        "file": "light-and-silence/tidal-mirror-living-room.jpg",
+        "sha256": "3959d09e23143ad8f7a845ef41b7e7c2b9dbdcb6ceb6de6d70a026143a34e24f"
+      }
+    },
+    {
+      "print": "tidal-mirror",
+      "room": "bedroom",
+      "alt": "Tidal Mirror art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/tidal-mirror.webp",
+        "sha256": "be3e8d91b3a46336300a42ad188a5c06be0bbc0fcadd2cec2409722825c04d3e"
+      },
+      "output": {
+        "file": "light-and-silence/tidal-mirror-bedroom.jpg",
+        "sha256": "75eb32411220bc208302f32d2063d8f3c5a4ab8e39e52361a79d06312323f34d"
+      }
+    },
+    {
+      "print": "tidal-mirror",
+      "room": "study",
+      "alt": "Tidal Mirror art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/tidal-mirror.webp",
+        "sha256": "be3e8d91b3a46336300a42ad188a5c06be0bbc0fcadd2cec2409722825c04d3e"
+      },
+      "output": {
+        "file": "light-and-silence/tidal-mirror-study.jpg",
+        "sha256": "c4a2070398299381d2187ac2824baa3c8f465ee7dce903074a5724d323c50598"
+      }
+    },
+    {
+      "print": "tidal-mirror",
+      "room": "wide-interior",
+      "alt": "Tidal Mirror art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/tidal-mirror.webp",
+        "sha256": "be3e8d91b3a46336300a42ad188a5c06be0bbc0fcadd2cec2409722825c04d3e"
+      },
+      "output": {
+        "file": "light-and-silence/tidal-mirror-wide-interior.jpg",
+        "sha256": "e759270faaff7f3aa62acd9ced87cac22b7fd6be93ace497e05310dee055fbb9"
+      }
+    },
+    {
+      "print": "winter-script",
+      "room": "living-room",
+      "alt": "Winter Script art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/winter-script.webp",
+        "sha256": "4f722ebf69b976eb7f5263c672e9c7b306133b855dd9ddade0fbcc7452e7074f"
+      },
+      "output": {
+        "file": "light-and-silence/winter-script-living-room.jpg",
+        "sha256": "c2e14f47af103613a417d71645b99016a7b73c5af76ff5bc5374ca9a97ca6ee8"
+      }
+    },
+    {
+      "print": "winter-script",
+      "room": "bedroom",
+      "alt": "Winter Script art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/winter-script.webp",
+        "sha256": "4f722ebf69b976eb7f5263c672e9c7b306133b855dd9ddade0fbcc7452e7074f"
+      },
+      "output": {
+        "file": "light-and-silence/winter-script-bedroom.jpg",
+        "sha256": "87a51dc8837cf9fd9ab6e76ec04bd3ba3938fa3126cde7262fcb57f006e220a1"
+      }
+    },
+    {
+      "print": "winter-script",
+      "room": "study",
+      "alt": "Winter Script art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/winter-script.webp",
+        "sha256": "4f722ebf69b976eb7f5263c672e9c7b306133b855dd9ddade0fbcc7452e7074f"
+      },
+      "output": {
+        "file": "light-and-silence/winter-script-study.jpg",
+        "sha256": "866c36d7d5fbdd5a518c959d6164ae19ec863cece9482b83d331758c774e245b"
+      }
+    },
+    {
+      "print": "winter-script",
+      "room": "wide-interior",
+      "alt": "Winter Script art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/winter-script.webp",
+        "sha256": "4f722ebf69b976eb7f5263c672e9c7b306133b855dd9ddade0fbcc7452e7074f"
+      },
+      "output": {
+        "file": "light-and-silence/winter-script-wide-interior.jpg",
+        "sha256": "d675e6b9b554943248b340f20d271953e577ef2084c249b052facdc24f5701a8"
+      }
+    },
+    {
+      "print": "fern-in-shadow",
+      "room": "living-room",
+      "alt": "Fern in Shadow art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/fern-in-shadow.webp",
+        "sha256": "663ee8d542ed57ab1520938d82e1bcc884b53d69733500eae3f2e7b7efdf964c"
+      },
+      "output": {
+        "file": "light-and-silence/fern-in-shadow-living-room.jpg",
+        "sha256": "5a7c213dbdb5a244814405682e6fb642a8390256ec8b542fbf7d9362a8059c6f"
+      }
+    },
+    {
+      "print": "fern-in-shadow",
+      "room": "bedroom",
+      "alt": "Fern in Shadow art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/fern-in-shadow.webp",
+        "sha256": "663ee8d542ed57ab1520938d82e1bcc884b53d69733500eae3f2e7b7efdf964c"
+      },
+      "output": {
+        "file": "light-and-silence/fern-in-shadow-bedroom.jpg",
+        "sha256": "d5a41503735f3d3d488bb9004b36e73b06803d55505ba697071df4fc0ea89785"
+      }
+    },
+    {
+      "print": "fern-in-shadow",
+      "room": "study",
+      "alt": "Fern in Shadow art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/fern-in-shadow.webp",
+        "sha256": "663ee8d542ed57ab1520938d82e1bcc884b53d69733500eae3f2e7b7efdf964c"
+      },
+      "output": {
+        "file": "light-and-silence/fern-in-shadow-study.jpg",
+        "sha256": "bed51b4b2a4dca31e1ac1a17f204ad82150eb9ef84f614040ee33e284fbd45cf"
+      }
+    },
+    {
+      "print": "fern-in-shadow",
+      "room": "wide-interior",
+      "alt": "Fern in Shadow art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/fern-in-shadow.webp",
+        "sha256": "663ee8d542ed57ab1520938d82e1bcc884b53d69733500eae3f2e7b7efdf964c"
+      },
+      "output": {
+        "file": "light-and-silence/fern-in-shadow-wide-interior.jpg",
+        "sha256": "fac5af3a72efe72490d42618c9afdeaa5e73b7b39d27be42d51092f4015ab65b"
+      }
+    },
+    {
+      "print": "where-mist-rests",
+      "room": "living-room",
+      "alt": "Where Mist Rests art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/where-mist-rests.webp",
+        "sha256": "59784002a980d8eb8df3326fa678f715f6f9b59358f00c978123d4b0e08b89e8"
+      },
+      "output": {
+        "file": "light-and-silence/where-mist-rests-living-room.jpg",
+        "sha256": "84274b81f05c2faddc34b1749dd066675369a648d5933712be85ef0923651264"
+      }
+    },
+    {
+      "print": "where-mist-rests",
+      "room": "bedroom",
+      "alt": "Where Mist Rests art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/where-mist-rests.webp",
+        "sha256": "59784002a980d8eb8df3326fa678f715f6f9b59358f00c978123d4b0e08b89e8"
+      },
+      "output": {
+        "file": "light-and-silence/where-mist-rests-bedroom.jpg",
+        "sha256": "55a5ea1fbf4860b16a42c831d226956323275990332b9b8d0d3e78888cf490af"
+      }
+    },
+    {
+      "print": "where-mist-rests",
+      "room": "study",
+      "alt": "Where Mist Rests art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/where-mist-rests.webp",
+        "sha256": "59784002a980d8eb8df3326fa678f715f6f9b59358f00c978123d4b0e08b89e8"
+      },
+      "output": {
+        "file": "light-and-silence/where-mist-rests-study.jpg",
+        "sha256": "c37b1e22db929674ab0a795408037ea69449964a8e4d00c9352a3d655754ca43"
+      }
+    },
+    {
+      "print": "where-mist-rests",
+      "room": "wide-interior",
+      "alt": "Where Mist Rests art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/where-mist-rests.webp",
+        "sha256": "59784002a980d8eb8df3326fa678f715f6f9b59358f00c978123d4b0e08b89e8"
+      },
+      "output": {
+        "file": "light-and-silence/where-mist-rests-wide-interior.jpg",
+        "sha256": "e3b7c5317621796310cf5a503591c9e6c0811deb699a839602356a7fdf58e096"
+      }
+    }
+  ]
+}

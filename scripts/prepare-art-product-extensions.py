@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
 
-from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
 
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -293,6 +293,31 @@ def framed_object(art: Image.Image, *, frame_color=(166, 137, 100)) -> Image.Ima
     return outer
 
 
+def wrapped_canvas(art: Image.Image) -> Image.Image:
+    """The face exactly as the production file crops it (full bleed, 4:5)
+    plus the mirror-wrapped 38 mm side, foreshortened as seen from the left."""
+    face = cover(art, (960, 1200))
+    side_width, skew = 46, 16
+    side = ImageOps.mirror(face.crop((face.width - 90, 0, face.width, face.height)))
+    side = ImageEnhance.Brightness(side.resize((side_width, face.height))).enhance(0.72)
+    side = side.convert("RGBA").transform(
+        (side_width, face.height + skew),
+        Image.Transform.QUAD,
+        (0, 0, 0, face.height - 1, side_width - 1, face.height - 1 + skew, side_width - 1, -skew),
+        Image.Resampling.BICUBIC,
+    )
+    mask = Image.new("L", side.size, 0)
+    ImageDraw.Draw(mask).polygon(
+        [(0, 0), (side_width, skew), (side_width, face.height - skew), (0, face.height)],
+        fill=255,
+    )
+    obj = Image.new("RGBA", (face.width + side_width, face.height + skew), (0, 0, 0, 0))
+    obj.paste(face, (0, 0))
+    obj.paste(side, (face.width, 0), mask)
+    ImageDraw.Draw(obj).line([(face.width, 0), (face.width, face.height)], fill=(255, 255, 255, 60), width=2)
+    return obj
+
+
 def preview_for(family: dict, capsule: Capsule) -> Image.Image:
     kind = family["assetKind"]
     if kind == "classic_frame":
@@ -304,9 +329,12 @@ def preview_for(family: dict, capsule: Capsule) -> Image.Image:
     art = open_art(capsule.item(max(1, family.get("sourceSequence", 1))))
     draw = ImageDraw.Draw(canvas)
 
-    if kind in {"large_print", "canvas"}:
+    if kind == "large_print":
         obj = framed_object(art, frame_color=(248, 246, 241))
         shadowed_layer(canvas, obj, (325, 210))
+    elif kind == "canvas":
+        # No border: the canvas file is full bleed with a mirror wrap.
+        shadowed_layer(canvas, wrapped_canvas(art), (300, 250), blur=30, offset=(22, 28))
     elif kind in {"greeting_card", "postcard"}:
         card = contain(art, (850, 1190), color=WARM_WHITE).convert("RGBA")
         shadowed_layer(canvas, card, (375, 340))
