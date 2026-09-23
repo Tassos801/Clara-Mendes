@@ -1015,3 +1015,12 @@ print remains blocked by the prior frame-only owner specification; the fleece
 blanket remains below delivered cost in Cyprus.
 
 Source: [Everyday canvas release](../everyday-canvas-release-2026-09-23.md).
+
+## 2026-09-23 - Canvas previews show the wrapped canvas
+
+The five canvas product images showed the art inside an off-white border, like
+a matted print, although the Prodigi file is full bleed with a mirror wrap.
+`preview_for` in `scripts/prepare-art-product-extensions.py` now renders the
+production crop edge to edge plus the mirror-wrapped side (`wrapped_canvas`).
+The five regenerated previews replaced the live Shopify media (new images first,
+one per Artwork variant, old images deleted after readback).
