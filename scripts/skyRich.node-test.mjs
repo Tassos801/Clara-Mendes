@@ -3,6 +3,7 @@ import test from 'node:test';
 import {GLOW_RINGS, milkyWayOpacity, starStyle} from '../app/lib/sky/style.ts';
 import {GALAXY_SAMPLES, galacticToEquatorial} from '../app/lib/sky/galaxy.ts';
 import {SKY_THEMES} from '../app/lib/sky/themes.ts';
+import {placeLabels} from '../app/lib/sky/labels.ts';
 
 test('star tone: bright stars full ink, the faintest ~35 % and smaller', () => {
   assert.equal(starStyle(0.5, 1).opacity, 1);
@@ -54,4 +55,19 @@ test('every theme defines the richer-sky tokens', () => {
     for (const key of opacities) assert.ok(theme[key] > 0 && theme[key] <= 1, `${theme.id}.${key}`);
     assert.ok(theme.moonLit && theme.moonDark, `${theme.id} keeps First Light's tokens`);
   }
+});
+
+test('labels skip collisions, the avoided Moon box and the disc edge', () => {
+  const disc = {cx: 100, cy: 100, r: 90};
+  const placed = placeLabels(
+    [
+      {x: 100, y: 100, text: 'ORION', rank: 1},
+      {x: 102, y: 101, text: 'LEPUS', rank: 2}, // overlaps Orion
+      {x: 100, y: 60, text: 'TAURUS', rank: 1},
+      {x: 100, y: 140, text: 'CANIS MAJOR', rank: 1}, // inside the Moon box
+      {x: 185, y: 100, text: 'ERIDANUS', rank: 1}, // spills over the edge
+    ],
+    {disc, size: 5, tracking: 1, avoid: [{x0: 80, x1: 120, y0: 130, y1: 150}]},
+  );
+  assert.deepEqual(placed.map((l) => l.text).sort(), ['ORION', 'TAURUS']);
 });
