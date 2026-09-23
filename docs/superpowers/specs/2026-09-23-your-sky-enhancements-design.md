@@ -179,3 +179,23 @@ adversarially verified, then live-checked with screenshots:
    Safe alone: defaults render Classic with toggles off.
 2. **Designer** — Layout and Details controls, time slider, living preview.
 3. **Page** — live hero, showcase, imagery, FAQ, Shopify product images.
+
+## 10. Amendment (planning, 2026-09-23)
+
+- **Milky Way source:** computed, not catalogued. `app/lib/sky/galaxy.ts`
+  samples the galactic plane every 2° of galactic longitude (J2000 via the
+  IAU galactic pole), each sample a soft disc whose angular radius and
+  intensity rise toward the galactic centre. Reason: d3-celestial `mw.json`
+  is a sphere-wrapping ring with holes; clipping it at the horizon
+  identically in the SVG and the PDF is fragile. No data file needed.
+- **Theme tokens:** the new Moon tokens are `moonFace`, `moonShade`,
+  `moonShadeOpacity`, `moonEdge` (First Light still reads `moonLit` /
+  `moonDark`, which stay unchanged). Other new tokens: `milkyWay`,
+  `milkyWayOpacity`, `glow`, `grid`, `gridOpacity`, `label`,
+  `labelOpacity`.
+- **Details** are one signed list `details` (`names`, `grid`, `time`)
+  rather than three booleans: canonical `details=grid,names` or
+  `details=none`.
+- **Page images** are regenerated in PR 1 (the generator uses the real
+  renderer), so `/your-sky` never shows the old look beside the new
+  preview; PR 3 adds layout variety.
