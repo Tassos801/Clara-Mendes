@@ -79,10 +79,12 @@ export default function Article() {
   const {article, blogHandle, blogTitle} = useLoaderData<typeof loader>();
   const {title, image, contentHtml} = article;
 
+  // A fixed zone keeps the server and browser text identical for hydration.
   const publishedDate = new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   }).format(new Date(article.publishedAt));
 
   const articleUrl = `${STOREFRONT_ORIGIN}/blogs/${blogHandle}/${article.handle}`;

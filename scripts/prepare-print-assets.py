@@ -7,9 +7,10 @@ the report carries the native pixels-per-inch for every size.
 import argparse
 import hashlib
 import json
+from io import BytesIO
 from pathlib import Path
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageCms, ImageOps
 
 WEB_SIZE = (1120, 1400)
 SOURCE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".tif", ".tiff", ".webp")
@@ -25,6 +26,24 @@ def find_source(source_dir: Path, slug: str) -> Path:
         if candidate.exists():
             return candidate
     raise SystemExit(f"Missing source artwork: {source_dir / slug}.(png|jpg|tif)")
+
+
+def to_rgb(opened: Image.Image) -> tuple[Image.Image, bytes]:
+    """RGB pixels plus an ICC profile that actually describes them.
+
+    RGB sources keep their own profile. A CMYK or greyscale profile must not
+    be embedded in an RGB file, so those sources are colour-managed into sRGB
+    (or, without a profile, converted plainly and saved untagged).
+    """
+    icc = opened.info.get("icc_profile") or b""
+    if opened.mode in ("RGB", "RGBA", "RGBX", "P", "PA"):
+        return opened.convert("RGB"), icc
+    if icc:
+        srgb = ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB"))
+        rgb = ImageCms.profileToProfile(
+            opened, ImageCms.ImageCmsProfile(BytesIO(icc)), srgb, outputMode="RGB")
+        return rgb, srgb.tobytes()
+    return opened.convert("RGB"), b""
 
 
 def cropped_fraction(native: tuple[int, int], target: tuple[int, int]) -> float:
@@ -53,8 +72,7 @@ def main() -> None:
         digest = sha256(source)
         with Image.open(source) as opened:
             native = opened.size
-            icc = opened.info.get("icc_profile", b"")
-            rgb = opened.convert("RGB")
+            rgb, icc = to_rgb(opened)
             if abs(native[0] / native[1] - 0.8) > 0.01:
                 raise SystemExit(f"{source.name}: source must be 4:5 portrait, got {native[0]}x{native[1]}")
 

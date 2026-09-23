@@ -79,15 +79,28 @@ export function printScaleGeometry(size: PrintSizeKey) {
   };
 }
 
-/** Describe only the sizes offered by this product, including single-size prints. */
+/**
+ * Describe only the sizes this product sells, including single-size prints.
+ * Sizes staged in Shopify but not yet released (tracked at zero, DENY) are
+ * left out; a fully sold-out product still names its sizes.
+ */
 export function printSizeAvailabilityCopy(
-  options: Array<{name: string; optionValues: Array<{name: string}>}> = [],
+  variants: Array<{
+    availableForSale: boolean;
+    selectedOptions: Array<{name: string; value: string}>;
+  }> = [],
 ) {
-  const values = options.find(
-    (option) => option.name.trim().toLowerCase() === 'size',
-  )?.optionValues;
+  const available = variants.filter((variant) => variant.availableForSale);
   const labels = [
-    ...new Set(values?.map((value) => value.name.trim()).filter(Boolean) ?? []),
+    ...new Set(
+      (available.length ? available : variants)
+        .map((variant) =>
+          variant.selectedOptions
+            .find((option) => option.name.trim().toLowerCase() === 'size')
+            ?.value.trim(),
+        )
+        .filter(Boolean),
+    ),
   ];
   if (!labels.length) return '';
   return labels.length === 1

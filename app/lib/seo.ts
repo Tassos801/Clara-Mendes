@@ -1,10 +1,10 @@
-import type {ClaraCardProduct} from '~/components/ClaraProductCard';
-import {deriveCardPricing} from '~/lib/productCardPricing';
+import type {ClaraCardProduct} from '../components/ClaraProductCard.tsx';
+import {deriveCardPricing} from './productCardPricing.ts';
 import {
   RETURN_WINDOW_DAYS,
   SHIPPING_COUNTRY_CODES,
   STOREFRONT_ORIGIN,
-} from '~/lib/storefrontBasics';
+} from './storefrontBasics.ts';
 
 type MoneyAmount = {
   amount: string;
@@ -222,15 +222,30 @@ export function productSchema({
     reviewSummary.count >= 3 &&
     reviewSummary.averageRating != null;
 
+  // A product sold in several variants is a ProductGroup (schema.org and
+  // Google's variant markup); hasVariant is not a Product property. Staged
+  // sizes stay out, like the price bounds above.
+  const offeredVariants = (variants ?? []).filter(
+    (variant) => variant.availableForSale,
+  );
+  const listedVariants = (
+    offeredVariants.length ? offeredVariants : (variants ?? [])
+  ).slice(0, 50);
+  const isGroup = listedVariants.length > 1;
+
   return {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': isGroup ? 'ProductGroup' : 'Product',
     name: title,
     description: truncate(description, 500),
     image: image ? [image] : undefined,
     productID: gidNumber(productId),
-    sku: sku || undefined,
-    gtin: gtin || undefined,
+    productGroupID: isGroup ? gidNumber(productId) : undefined,
+    variesBy: isGroup ? variesBy(listedVariants) : undefined,
+    url: isGroup ? url : undefined,
+    // SKU and GTIN identify one variant; a group carries them per variant.
+    sku: (!isGroup && sku) || undefined,
+    gtin: (!isGroup && gtin) || undefined,
     category: productType || undefined,
     brand: {
       '@type': 'Brand',
@@ -258,17 +273,16 @@ export function productSchema({
         : minPrice
           ? offerFromPrice({availableForSale, price: minPrice, url})
           : undefined,
-    hasVariant:
-      variants && variants.length > 1
-        ? variants.slice(0, 50).map((variant) =>
-            productVariantSchema({
-              parentTitle: title,
-              url,
-              variant,
-              vendor,
-            }),
-          )
-        : undefined,
+    hasVariant: isGroup
+      ? listedVariants.map((variant) =>
+          productVariantSchema({
+            parentTitle: title,
+            url,
+            variant,
+            vendor,
+          }),
+        )
+      : undefined,
   };
 }
 
@@ -374,12 +388,21 @@ function productVariantSchema({
     .filter(Boolean)
     .join(' / ');
 
+  // Each variant offer links to its own selection, as the option pickers do.
+  const variantUrl = new URL(url);
+  for (const option of variant.selectedOptions)
+    variantUrl.searchParams.set(option.name, option.value);
+  const size = variant.selectedOptions.find(
+    (option) => option.name.trim().toLowerCase() === 'size',
+  )?.value;
+
   return {
     '@type': 'Product',
     name: optionLabel ? `${parentTitle} - ${optionLabel}` : variant.title,
     productID: gidNumber(variant.id),
     sku: variant.sku || undefined,
     gtin: variant.barcode || undefined,
+    size: size || undefined,
     brand: {
       '@type': 'Brand',
       name: vendor || SITE_NAME,
@@ -387,9 +410,35 @@ function productVariantSchema({
     offers: offerFromPrice({
       availableForSale: variant.availableForSale,
       price: variant.price,
-      url,
+      url: variantUrl.toString(),
     }),
   };
+}
+
+/** schema.org properties the variants differ in (only those schema.org names). */
+function variesBy(
+  variants: NonNullable<ProductSchemaInput['variants']>,
+): string[] | undefined {
+  const properties: Record<string, string> = {
+    color: 'https://schema.org/color',
+    colour: 'https://schema.org/color',
+    material: 'https://schema.org/material',
+    pattern: 'https://schema.org/pattern',
+    size: 'https://schema.org/size',
+  };
+  const differing = new Set<string>();
+  for (const [name, property] of Object.entries(properties)) {
+    const values = new Set(
+      variants.map(
+        (variant) =>
+          variant.selectedOptions.find(
+            (option) => option.name.trim().toLowerCase() === name,
+          )?.value,
+      ),
+    );
+    if (values.size > 1) differing.add(property);
+  }
+  return differing.size ? [...differing] : undefined;
 }
 
 function schemaAvailability(availableForSale: boolean) {

@@ -120,6 +120,23 @@ test('skips orders without sky lines and flags problems', async () => {
   assert.equal(sku.kind, 'problem');
   assert.match(sku.reason, /unknown SKU/i);
 
+  // Bought through a /cart permalink: the sky SKU arrives with no properties.
+  const unsigned = await buildProdigiOrderFromShopify(
+    await order({
+      line_items: [{id: 3, sku: 'CM-SKY-20X24-BLK', quantity: 1, properties: []}],
+    }),
+    {secret: SECRET, origin: 'https://x'},
+  );
+  assert.equal(unsigned.kind, 'problem');
+  assert.match(unsigned.reason, /without its personalisation/);
+
+  // …and in a mixed order it must not ride along silently with a signed line.
+  const mixed = await order();
+  mixed.line_items.push({id: 4, sku: 'cm-sky-8x10-blk', quantity: 1, properties: null});
+  const mixedResult = await buildProdigiOrderFromShopify(mixed, {secret: SECRET, origin: 'https://x'});
+  assert.equal(mixedResult.kind, 'problem');
+  assert.match(mixedResult.reason, /Line 4/);
+
   const noAddress = await buildProdigiOrderFromShopify(await order({shipping_address: null}), {
     secret: SECRET,
     origin: 'https://x',

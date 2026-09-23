@@ -266,18 +266,27 @@ async function stage() {
   const actions = plan.map(({print, input}) => {
     const found = existing.get(input.handle);
     if (!found) return {print, input, action: 'create'};
-    const skus = found.variants.nodes.map((variant) => variant.sku).sort();
-    assert.deepEqual(
-      skus,
-      input.variants.map((variant) => variant.sku).sort(),
+    const skus = found.variants.nodes.map((variant) => variant.sku);
+    const expected = input.variants.map((variant) => variant.sku);
+    // A released print that lacks a newly added size is expand's job; it must
+    // not stop new prints in the same collection from being staged.
+    const missing = expected.filter((sku) => !skus.includes(sku));
+    assert.ok(
+      skus.every((sku) => expected.includes(sku)) &&
+        (missing.length === 0 || print.released === true),
       `${input.handle} already exists in Shopify with different SKUs — resolve by hand.`,
     );
-    return {print, input, found, action: 'present'};
+    return {print, input, found, action: missing.length ? 'expand' : 'present'};
   });
   console.table(
     actions.map(({input, found, action}) => ({
       handle: input.handle,
-      action: action === 'create' ? 'create Draft' : `already ${found.status}`,
+      action:
+        action === 'create'
+          ? 'create Draft'
+          : action === 'expand'
+            ? `already ${found.status}; new sizes need expand`
+            : `already ${found.status}`,
       skus: input.variants.map((variant) => variant.sku).join(' '),
       prices: input.variants.map((variant) => variant.price).join(' '),
     })),
@@ -360,6 +369,11 @@ async function stage() {
   console.log(
     `\nStaged ${created.length} new Draft(s); ids written to data/print-catalog.json. Next: handoff.`,
   );
+  const toExpand = actions.filter((entry) => entry.action === 'expand');
+  if (toExpand.length)
+    console.log(
+      `Released print(s) missing a catalog size: ${toExpand.map(({print}) => print.slug).join(', ')} — run expand for those.`,
+    );
 }
 
 async function expand() {
@@ -961,6 +975,16 @@ async function verify() {
       const live = entry?.variants.find(
         (node) => node.sku === printSku(collection, print, variant.size),
       );
+      // Sizes staged by expand are unbuyable until release lists them.
+      if (!(print.releasedSizes ?? []).includes(variant.size)) {
+        check(
+          print.slug,
+          `storefront: staged ${variant.size} not for sale`,
+          !live?.availableForSale,
+          live ? 'available' : 'not in Shopify yet',
+        );
+        continue;
+      }
       check(
         print.slug,
         `storefront: ${variant.size} at €${variant.priceEUR}`,
@@ -971,7 +995,7 @@ async function verify() {
           : 'variant missing',
       );
     }
-    const first = entry?.variants[0];
+    const first = entry?.variants.find((node) => node.availableForSale);
     if (first) {
       const cart = await addToCart(first.id);
       check(

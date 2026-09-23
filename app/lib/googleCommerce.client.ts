@@ -236,7 +236,13 @@ function createEventId(
 }
 
 function wasRecentlySent(key: string, runtime: GoogleCommerceRuntime) {
-  const storage = runtime.window.sessionStorage;
+  let storage: RuntimeStorage | undefined;
+  try {
+    // The getter itself throws when the browser blocks site data.
+    storage = runtime.window.sessionStorage;
+  } catch {
+    return false;
+  }
   if (!storage) return false;
 
   const now = runtime.now?.() ?? Date.now();

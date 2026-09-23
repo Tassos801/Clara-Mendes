@@ -1,8 +1,15 @@
 # Dependency security triage
 
-Updated: 2026-07-28
+Updated: 2026-09-23
 
 ## Production tree (`npm audit --omit=dev`)
+
+**2026-09-23:** 0 vulnerabilities after upgrading `@shopify/hydrogen`
+2026.4.4 → 2026.4.5 and the React Router family 7.18.1 → 7.18.4 (still pinned
+through `overrides`), plus `npm audit fix` for `nanoid` and `postcss`. The
+RSC CSRF advisory accepted below no longer reports against 7.18.4. The
+history below is kept for context.
+
 
 Baseline before remediation: **1 high + 4 moderate** (react-router ≤7.16.0 via
 `react-router`, `react-router-dom`, `@react-router/node`, `@react-router/dev`,

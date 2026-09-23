@@ -44,7 +44,11 @@ export default function AccountOrder() {
           <h2 id="account-order-title">{order.name}</h2>
           {order.processedAt ? (
             <p className="small-muted">
-              Placed {new Date(order.processedAt).toDateString()}
+              Placed{' '}
+              {new Intl.DateTimeFormat('en-GB', {
+                dateStyle: 'long',
+                timeZone: 'UTC',
+              }).format(new Date(order.processedAt))}
             </p>
           ) : null}
         </div>

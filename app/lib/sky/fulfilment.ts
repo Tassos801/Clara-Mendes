@@ -71,6 +71,20 @@ export async function buildProdigiOrderFromShopify(
   const personalisedLines = order.line_items.filter((l) =>
     l.properties?.some((p) => p.name === '_v'),
   );
+  // A personalised SKU bought without its signed properties (a /cart
+  // permalink, the Shop app, a raw Storefront API cart) has nothing to
+  // print. Flag it: acknowledging it as "no personalised lines" would take
+  // the payment and never fulfil the order.
+  const unsigned = order.line_items.find(
+    (l) =>
+      !personalisedLines.includes(l) &&
+      (skyVariantForSku(l.sku) || natalVariantForSku(l.sku)),
+  );
+  if (unsigned)
+    return {
+      kind: 'problem',
+      reason: `Line ${unsigned.id}: personalised SKU ${unsigned.sku} was bought without its personalisation.`,
+    };
   if (personalisedLines.length === 0)
     return {kind: 'skip', reason: 'No personalised lines.'};
 

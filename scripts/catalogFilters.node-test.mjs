@@ -89,16 +89,21 @@ assert.equal(isDemoProduct(phoneCase), true);
 // become sellable while the three-size frame-only replacement is unresolved.
 assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
 assert.equal(isReleasedExtensionHandle(FRAME_HANDLE), false);
-// Cards and postcards released 2026-09-01; every other family stays dark.
+// Cards and postcards released 2026-09-01; canvas released 2026-09-23.
 assert.equal(hasReleasedExtensions(), true);
 assert.equal(isReleasedExtensionHandle('fine-art-greeting-card'), true);
 assert.equal(isReleasedExtensionHandle('fine-art-postcard'), true);
+assert.equal(isReleasedExtensionHandle('stretched-canvas-art-16x20'), true);
 // A released family is sellable on the storefront (PDP, search, grid)…
 assert.equal(isStoreThemeProduct(greetingCard), true);
 assert.equal(isDemoProduct(greetingCard), false);
 assert.equal(isUnreleasedExtensionHandle('fine-art-greeting-card'), false);
 // …and its product type is offered by the shop's type filter.
-assert.deepEqual(releasedExtensionProductTypes(), ['Cards', 'Postcards']);
+assert.deepEqual(releasedExtensionProductTypes(), [
+  'Cards',
+  'Postcards',
+  'Canvas Art',
+]);
 assert.deepEqual(releasedExtensionProductTypes({}), []);
 assert.equal(hasReleasedExtensions({}), false);
 
@@ -120,7 +125,7 @@ assert.equal(isRetiredExtensionHandle('clara-mendes-art-calendar-2027'), false);
 const releasedCount = Object.values(EXTENSION_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
-assert.equal(releasedCount, 2);
+assert.equal(releasedCount, 3);
 
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);

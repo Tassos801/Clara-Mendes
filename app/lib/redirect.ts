@@ -14,11 +14,31 @@ export function isLocalPath(value: string): boolean {
   if (!value.startsWith('/') || value.startsWith('//')) return false;
   if (hasUnsafeUrlCharacter(value)) return false;
   try {
-    const origin = 'http://local.invalid';
-    return new URL(value, origin).origin === origin;
+    return new URL(value, LOCAL_ORIGIN).origin === LOCAL_ORIGIN;
   } catch {
     return false;
   }
+}
+
+const LOCAL_ORIGIN = 'http://local.invalid';
+
+/**
+ * A local path re-serialised by the URL parser, or null when the value is
+ * not local. Use this for a Location header: headers only carry Latin-1, so
+ * a raw `/café` or `/€` from a query string would throw after the cart
+ * mutation already ran, turning the redirect into a 500.
+ */
+export function toLocalPath(value: unknown): string | null {
+  if (typeof value !== 'string' || !isLocalPath(value)) return null;
+  const url = new URL(value, LOCAL_ORIGIN);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+/** Appends query parameters to a local path, keeping any fragment last. */
+export function withSearchParams(path: string, params: URLSearchParams) {
+  const url = new URL(path, LOCAL_ORIGIN);
+  for (const [key, value] of params) url.searchParams.append(key, value);
+  return `${url.pathname}${url.search}${url.hash}`;
 }
 
 function hasUnsafeUrlCharacter(value: string) {
