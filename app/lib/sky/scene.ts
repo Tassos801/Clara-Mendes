@@ -13,6 +13,7 @@ import {
   GLOW_COUNT,
   LABEL_SIZE,
   LABEL_TRACKING,
+  MILKY_WAY_PASSES,
   MOON_GLOW,
   MOON_RADIUS,
   starStyle,
@@ -39,8 +40,12 @@ export type SceneMoon = {
 };
 /** A bright star's glow centre and the star's own radius. */
 export type SceneGlow = {x: number; y: number; r: number};
-/** One soft Milky Way disc: `r` is the outer-pass radius, in points; `intensity` is 0–1 (faded near the horizon). */
-export type SceneGalaxy = {x: number; y: number; r: number; intensity: number};
+/**
+ * One Milky Way pass: `path` is the union of that pass's discs (every
+ * circle sub-path wound the same way, so the default nonzero fill rule
+ * fills the union once); `weight` scales the theme's Milky Way opacity.
+ */
+export type SceneGalaxyPass = {path: string; weight: number};
 export type SceneGrid = {circles: number[]; spokes: SceneLine[]};
 export type SceneCompass = {
   ticks: SceneLine[];
@@ -49,7 +54,7 @@ export type SceneCompass = {
 };
 
 /**
- * Milky Way discs, glows and the Moon's glow may extend past `disc`'s
+ * Milky Way marks, glows and the Moon's glow may extend past `disc`'s
  * radius even though their centres don't — every renderer must clip its
  * drawing to the disc, not just skip out-of-disc centres.
  */
@@ -57,7 +62,7 @@ export type SkyScene = SkyPageLayout & {
   stars: SceneStar[];
   glows: SceneGlow[];
   lines: SceneLine[];
-  milkyWay: SceneGalaxy[];
+  milkyWay: SceneGalaxyPass[];
   grid: SceneGrid | null;
   labels: SceneLabel[];
   compass: SceneCompass | null;
@@ -139,6 +144,19 @@ export function horizonCrossing(
 function projectedRadius(altDeg: number, deg: number, disc: Disc) {
   const k = Math.tan(((90 - altDeg) * DEG) / 2);
   return (disc.r * deg * DEG * (1 + k * k)) / 2;
+}
+
+/** Round to 2 decimal places (points, at scale 1 this is 1/50 pt — plenty). */
+const n2 = (v: number) => Math.round(v * 100) / 100;
+
+/**
+ * A circle as an SVG/PDF path: two semicircular arcs, both with the same
+ * sweep flag, so every circle built this way winds the same direction. That
+ * lets several circles be concatenated into one path and filled once under
+ * the nonzero rule — the union, not a stack of overlapping fills.
+ */
+export function circlePath(x: number, y: number, r: number): string {
+  return `M ${n2(x - r)} ${n2(y)} a ${n2(r)} ${n2(r)} 0 1 0 ${n2(2 * r)} 0 a ${n2(r)} ${n2(r)} 0 1 0 ${n2(-2 * r)} 0 Z`;
 }
 
 /** Point at `radius` from the disc centre toward azimuth `azDeg` (E left). */
@@ -232,14 +250,26 @@ export function computeSky({
   // rather than drawn for nothing. Discs centred well below the horizon
   // fade out over the last 8° instead of cutting off at a hard altitude,
   // so they don't stack into a bright sliver hugging the ring.
-  const milkyWay: SceneGalaxy[] = [];
+  const gxSamples: Array<{x: number; y: number; r: number; intensity: number}> = [];
   for (const g of sky.galaxy) {
     if (g.alt <= -8) continue;
     const {x, y} = projectAltAz(g.alt, g.az, disc);
     const r = projectedRadius(g.alt, g.width, disc);
     if (Math.hypot(x - disc.cx, y - disc.cy) - r >= disc.r) continue;
     const fade = Math.min(1, (g.alt + 8) / 16);
-    milkyWay.push({x, y, r, intensity: g.intensity * fade});
+    gxSamples.push({x, y, r, intensity: g.intensity * fade});
+  }
+  // Each pass becomes ONE filled path — the union of that pass's discs —
+  // composited once, so hundreds of near-transparent overlaps never stack
+  // into 8-bit rounding drift (see MILKY_WAY_PASSES doc comment).
+  const milkyWay: SceneGalaxyPass[] = [];
+  for (const pass of MILKY_WAY_PASSES) {
+    const included = gxSamples.filter((s) => s.intensity >= pass.minIntensity);
+    if (included.length === 0) continue;
+    const path = included
+      .map((s) => circlePath(s.x, s.y, s.r * pass.radius))
+      .join(' ');
+    milkyWay.push({path, weight: pass.weight});
   }
 
   const moon: SceneMoon | null =

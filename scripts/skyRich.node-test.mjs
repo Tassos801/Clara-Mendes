@@ -5,15 +5,13 @@ import {
   GLOW_RINGS,
   LABEL_SIZE,
   LABEL_TRACKING,
-  MILKY_WAY_PASSES,
   MOON_RADIUS,
-  milkyWayOpacity,
   starStyle,
 } from '../app/lib/sky/style.ts';
 import {GALAXY_SAMPLES, galacticToEquatorial} from '../app/lib/sky/galaxy.ts';
 import {SKY_THEMES} from '../app/lib/sky/themes.ts';
 import {placeLabels} from '../app/lib/sky/labels.ts';
-import {computeSky, horizonCrossing} from '../app/lib/sky/scene.ts';
+import {circlePath, computeSky, horizonCrossing} from '../app/lib/sky/scene.ts';
 import {validateSkyParams} from '../app/lib/sky/params.ts';
 import {loadSkyCatalogSync} from './lib/sky-catalog.mjs';
 
@@ -53,8 +51,8 @@ test('galaxy samples: every 3°, brightest and widest at the centre', () => {
   assert.ok(GALAXY_SAMPLES.every((s) => s.intensity > 0 && s.intensity <= 1));
 });
 
-test('milky way opacity is quantised to limit PDF graphics states', () => {
-  assert.equal(milkyWayOpacity(0.035, 0.73333, 0.45), 0.012);
+test('circlePath draws a two-arc circle wound the same way both times', () => {
+  assert.equal(circlePath(10, 20, 5), 'M 5 20 a 5 5 0 1 0 10 0 a 5 5 0 1 0 -10 0 Z');
 });
 
 test('every theme defines the richer-sky tokens', () => {
@@ -115,16 +113,23 @@ test('richer sky: tone, glows, clipped lines, Milky Way, Moon', () => {
   assert.ok(scene.lines.every((l) => inDisc(scene, l.x1, l.y1) && inDisc(scene, l.x2, l.y2)));
   const onRing = (x, y) => Math.abs(Math.hypot(x - scene.disc.cx, y - scene.disc.cy) - scene.disc.r) < 1e-6;
   assert.ok(scene.lines.some((l) => onRing(l.x1, l.y1) || onRing(l.x2, l.y2)), 'some lines clipped at the ring');
-  assert.ok(scene.milkyWay.length > 20, `${scene.milkyWay.length} galaxy discs`);
-  assert.ok(scene.milkyWay.every((m) => m.r > 0 && m.intensity > 0));
+  assert.ok(scene.milkyWay.length >= 2 && scene.milkyWay.length <= 4, `${scene.milkyWay.length} Milky Way passes`);
+  assert.ok(scene.milkyWay.every((p) => p.path.startsWith('M') && p.path.includes(' Z')));
+  assert.ok(scene.milkyWay.every((p) => p.weight > 0));
+  const subPathCount = (path) => (path.match(/M /g) ?? []).length;
+  for (let i = 1; i < scene.milkyWay.length; i++) {
+    // Inner passes (later in the array) only include the brighter samples,
+    // so they can never have more sub-paths (discs) than the pass before.
+    assert.ok(
+      subPathCount(scene.milkyWay[i].path) <= subPathCount(scene.milkyWay[i - 1].path),
+      `pass ${i} has more sub-paths than pass ${i - 1}`,
+    );
+  }
   assert.ok(scene.moon, 'the Moon is up over Paris at 22:00 on 2019-06-14');
   assert.equal(scene.moon.r, MOON_RADIUS * scene.scale);
-  // Spec budget: the SVG stays under ~6,000 drawn elements.
-  const nodes =
-    scene.stars.length +
-    scene.lines.length +
-    scene.milkyWay.length * MILKY_WAY_PASSES.length +
-    scene.glows.length * 3;
+  // Spec budget: the SVG stays under ~6,000 drawn elements. The Milky Way
+  // now contributes one path element per pass.
+  const nodes = scene.stars.length + scene.lines.length + scene.milkyWay.length + scene.glows.length * 3;
   assert.ok(nodes < 6000, `${nodes} SVG elements`);
   assert.equal(scene.grid, null);
   assert.deepEqual(scene.labels, []);
@@ -207,7 +212,7 @@ test('worst-case scene stays under the ~6,000 SVG element budget', () => {
   const nodes =
     scene.stars.length +
     scene.lines.length +
-    scene.milkyWay.length * MILKY_WAY_PASSES.length +
+    scene.milkyWay.length +
     scene.glows.length * 3 +
     (scene.grid ? scene.grid.circles.length + scene.grid.spokes.length : 0) +
     scene.labels.length +

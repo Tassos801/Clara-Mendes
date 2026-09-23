@@ -33,8 +33,6 @@ import {
   LABEL_SIZE,
   LABEL_TRACKING,
   LINE_WIDTH,
-  MILKY_WAY_PASSES,
-  milkyWayOpacity,
   MOON_EDGE_OPACITY,
   MOON_EDGE_WIDTH,
   MOON_GLOW,
@@ -199,16 +197,16 @@ export async function renderSkyPdf({
 
   pushCircleClip(page, disc.cx, Y(disc.cy), disc.r);
 
-  for (const pass of MILKY_WAY_PASSES) {
-    for (const m of scene.milkyWay) {
-      page.drawCircle({
-        x: m.x,
-        y: Y(m.y),
-        size: m.r * pass.radius,
-        color: hex(theme.milkyWay),
-        opacity: milkyWayOpacity(theme.milkyWayOpacity, m.intensity, pass.opacity),
-      });
-    }
+  for (const pass of scene.milkyWay) {
+    // drawSvgPath uses a top-left origin at (x, y) with y growing downward
+    // (like the Moon path below), so the scene path can be reused verbatim
+    // anchored at the page top.
+    page.drawSvgPath(pass.path, {
+      x: 0,
+      y: H,
+      color: hex(theme.milkyWay),
+      opacity: theme.milkyWayOpacity * pass.weight,
+    });
   }
 
   if (scene.grid) {

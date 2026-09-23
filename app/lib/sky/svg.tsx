@@ -8,8 +8,6 @@ import {
   LABEL_SIZE,
   LABEL_TRACKING,
   LINE_WIDTH,
-  MILKY_WAY_PASSES,
-  milkyWayOpacity,
   MOON_EDGE_OPACITY,
   MOON_EDGE_WIDTH,
   MOON_GLOW,
@@ -138,20 +136,15 @@ export function SkySvg({
           the catalogue contains a few coincident stars, so coordinates are
           not unique. */}
       <g clipPath={`url(#${clipId})`}>
-        <g fill={theme.milkyWay}>
-          {MILKY_WAY_PASSES.map((pass, p) =>
-            scene.milkyWay.map((m, i) => (
-              <circle
-                // eslint-disable-next-line react/no-array-index-key
-                key={`${p}-${i}`}
-                cx={m.x}
-                cy={m.y}
-                r={m.r * pass.radius}
-                opacity={milkyWayOpacity(theme.milkyWayOpacity, m.intensity, pass.opacity)}
-              />
-            )),
-          )}
-        </g>
+        {scene.milkyWay.map((pass, i) => (
+          <path
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            d={pass.path}
+            fill={theme.milkyWay}
+            opacity={theme.milkyWayOpacity * pass.weight}
+          />
+        ))}
         {scene.grid ? (
           <g
             fill="none"

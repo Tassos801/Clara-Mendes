@@ -17,16 +17,18 @@ export const GLOW_RINGS = [
 ] as const;
 
 /**
- * Each Milky Way sample is drawn as five graduated passes, widest and
- * faintest first, narrowest and brightest last, so the disc reads as a soft
- * Gaussian-like falloff rather than a ring of hard-edged circles.
+ * Milky Way passes. Each pass is ONE filled path — the union of its discs
+ * under the nonzero rule — composited once, so overlaps never stack and
+ * 8-bit rounding can't tint the band. Inner passes only take the brighter
+ * samples, which brightens the core toward Sagittarius and lets the band
+ * fade toward the horizon (sample intensity already includes that fade).
+ * `radius` scales each sample's disc; `weight` scales the theme opacity.
  */
 export const MILKY_WAY_PASSES = [
-  {radius: 1, opacity: 0.16},
-  {radius: 0.78, opacity: 0.2},
-  {radius: 0.58, opacity: 0.24},
-  {radius: 0.4, opacity: 0.28},
-  {radius: 0.24, opacity: 0.32},
+  {radius: 1, weight: 1, minIntensity: 0.2},
+  {radius: 0.72, weight: 1, minIntensity: 0.35},
+  {radius: 0.48, weight: 1, minIntensity: 0.6},
+  {radius: 0.28, weight: 1, minIntensity: 0.82},
 ] as const;
 
 export const MOON_RADIUS = 9.5;
@@ -88,13 +90,4 @@ export function starStyle(mag: number, scale: number) {
     : mag <= 5.5 ? 0.5
     : 0.36;
   return {r: base * scale, opacity};
-}
-
-/** Per-disc Milky Way opacity, rounded to 3 dp (fewer PDF graphics states). */
-export function milkyWayOpacity(
-  themeOpacity: number,
-  intensity: number,
-  passOpacity: number,
-) {
-  return Math.round(themeOpacity * intensity * passOpacity * 1000) / 1000;
 }
