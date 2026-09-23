@@ -966,6 +966,16 @@ before Shopify writes, accepts the intended Draft-to-release sequence, and
 verifies the product status did not change. The add-products runbook now includes
 the complete four-room catalog template.
 
+## 2026-09-22 - Light & Silence photography-inspired collection
+
+Added five original AI-generated monochrome nature compositions through the
+print catalog, exported all three existing print sizes, and generated 20 room
+scenes. The collection remains `released: false` pending Shopify Draft staging,
+Prodigi mapping, and owner review of native image detail (140.2, 70.1, and
+56.1 PPI for the three sizes). Source PNGs are tracked for repeatable export.
+The owner approved the three-size prices, source softness, and 20×24 crop
+after preview review; physical print quality is still unverified.
+
 ## 2026-09-23 - Bug sweep two
 
 Reviewed PRs #80–#82, crawled the live site and audited server and client
@@ -1024,3 +1034,18 @@ a matted print, although the Prodigi file is full bleed with a mirror wrap.
 production crop edge to edge plus the mirror-wrapped side (`wrapped_canvas`).
 The five regenerated previews replaced the live Shopify media (new images first,
 one per Artwork variant, old images deleted after readback).
+
+## 2026-09-23 - Light & Silence released
+
+The five monochrome prints were released in 8×10, 16×20 and 20×24. Their
+Shopify Draft ids (staged 2026-09-22 but never committed) were written back by
+an idempotent `stage --apply`. The 15 print files were regenerated from the
+committed sources, uploaded to the Prodigi image library and mapped per size on
+channel products 6133660–6133674 (provider SKU as listed, Excellent, Standard
+shipping, automatic fulfilment; read back after reload). `media --apply`
+verified the five-image galleries; `release --apply` activated the products,
+checked every variant on the Storefront API after the two storefront channels
+were included in Admin, and set `releasedSizes`. The owner re-approved all
+three sizes despite the 70 PPI (16×20) and 56 PPI (20×24) native detail.
+
+Source: [Light & Silence launch](../light-and-silence-launch.md).

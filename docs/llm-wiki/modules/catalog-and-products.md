@@ -278,6 +278,15 @@ products are not in this file and keep their own registries and runbooks.
 Source: [Adding prints runbook](../../add-products-runbook.md),
 `scripts/printCatalog.node-test.mjs`, `scripts/productPipeline.node-test.mjs`.
 
+**Prepared 2026-09-22:** Light & Silence adds five original AI-generated,
+photo-inspired monochrome nature prints in the existing three sizes. The
+catalog released all five in all three sizes on 2026-09-23 after Prodigi
+mapping (15 variants, Excellent, automatic) and a Storefront API check. The
+owner accepted the source softness and 20×24 crop
+after reviewing the previews; physical print quality is still unverified.
+Five artwork sources, five WebP previews, and 20 room mockups were prepared.
+See [Light & Silence launch](../../light-and-silence-launch.md).
+
 ## 2026-09-22 - Staged sizes and tailored room galleries
 
 Each released print now records `releasedSizes`, the subset of the
