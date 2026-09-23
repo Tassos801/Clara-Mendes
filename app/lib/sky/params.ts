@@ -28,6 +28,7 @@ export const SKY_LAYOUT_LABELS: Record<SkyLayoutId, string> = {
 
 /** Optional print details, in their canonical (signed) order. */
 export type SkyDetail = 'names' | 'grid' | 'time';
+// Signed order — never reorder; append new ids at the end.
 export const SKY_DETAIL_IDS: SkyDetail[] = ['names', 'grid', 'time'];
 export const SKY_DETAIL_LABELS: Record<SkyDetail, string> = {
   names: 'Constellation names',
@@ -41,8 +42,15 @@ export const SKY_DETAIL_LABELS: Record<SkyDetail, string> = {
  * entry makes the whole value invalid (null).
  */
 export function parseSkyDetails(value: unknown): SkyDetail[] | null {
-  if (value == null || value === '' || value === 'none') return [];
-  const items = Array.isArray(value) ? value.map(String) : String(value).split(',');
+  if (value == null) return [];
+  let items: string[];
+  if (Array.isArray(value)) {
+    items = value.map(String);
+  } else {
+    const text = String(value).trim();
+    if (text === '' || text === 'none') return [];
+    items = text.split(',');
+  }
   const chosen = new Set<string>();
   for (const raw of items) {
     const item = raw.trim();
@@ -223,7 +231,8 @@ export function validateSkyParams(input: SkyParamsInput): SkyValidation {
   let layout: SkyLayoutId = 'classic';
   let details: SkyDetail[] = [];
   if (v === 2) {
-    const layoutInput = String(input.layout ?? 'classic') as SkyLayoutId;
+    const layoutText = String(input.layout ?? '').trim();
+    const layoutInput = (layoutText === '' ? 'classic' : layoutText) as SkyLayoutId;
     if (!SKY_LAYOUT_IDS.includes(layoutInput)) {
       return {ok: false, error: 'Unknown layout.'};
     }
@@ -269,10 +278,13 @@ export function canonicalSkyParams(p: SkyParams) {
     `theme=${p.theme}`,
   ];
   if (p.v === 1) return base.join('&');
+  // Re-sort into canonical order even if an in-memory object was built with
+  // details out of order — a signed string can never come out unprintable.
+  const sortedDetails = SKY_DETAIL_IDS.filter((d) => p.details.includes(d));
   return [
     ...base,
     `layout=${p.layout}`,
-    `details=${p.details.length ? p.details.join(',') : 'none'}`,
+    `details=${sortedDetails.length ? sortedDetails.join(',') : 'none'}`,
   ].join('&');
 }
 

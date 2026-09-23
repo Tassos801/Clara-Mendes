@@ -69,10 +69,11 @@ New theme tokens in `themes.ts`: `milkyWay`, `glow`, `moonLit`, `moonShadow`,
 
 **Params (`params.ts`)**, format `v` → 2, appended to the signed canonical:
 `layout` ∈ `classic | compass | full | minimal` (default `classic`),
-`names`, `grid`, `time` booleans (default off). v1 inputs decode with the
-defaults. Cart attributes: visible `Layout` (e.g. "Compass") and `Details`
-(e.g. "Constellation names · Time", omitted when none), hidden `_layout`,
-`_opts`. Carried through every hop: `canonicalSkyParams` /
+`details` — a signed list of `names`, `grid`, `time` in canonical order
+(default empty). v1 inputs decode with the defaults. Cart attributes:
+visible `Layout` (e.g. "Compass") and `Details` (e.g. "Constellation names ·
+Time", omitted when none), hidden `_layout`, `_details`. Carried through
+every hop: `canonicalSkyParams` /
 `parseCanonicalSkyParams`, `toCartAttributes` / `fromCartAttributes`,
 `cart.tsx` → `cartLines.server.ts`, `webhooks.orders-paid` →
 `fulfilment.ts`, `sign.server.ts` token, `api.sky-print.$token[.pdf].tsx`,
@@ -194,7 +195,7 @@ adversarially verified, then live-checked with screenshots:
   `milkyWayOpacity`, `glow`, `grid`, `gridOpacity`, `label`,
   `labelOpacity`.
 - **Details** are one signed list `details` (`names`, `grid`, `time`)
-  rather than three booleans: canonical `details=grid,names` or
+  rather than three booleans: canonical `details=names,grid` or
   `details=none`.
 - **Page images** are regenerated in PR 1 (the generator uses the real
   renderer), so `/your-sky` never shows the old look beside the new
