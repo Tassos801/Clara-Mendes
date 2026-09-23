@@ -13,14 +13,14 @@ test('constellation names: IAU Latin names with J2000 label points', () => {
   const orion = json.data.find((row) => row[1] === 'Orion');
   assert.deepEqual(orion.slice(2, 4), [84, 13]);
   // d3-celestial's "la" (IAU Latin) field is the classical Latin spelling,
-  // not the English name — "Ursa Maior", not "Ursa Major" — and some
+  // not the English name -- "Ursa Maior", not "Ursa Major" -- and some
   // two-word Latin names use U+2005 (four-per-em space) instead of an
   // ASCII space, so match loosely rather than with strict equality.
   assert.ok(json.data.some((row) => /^Ursa\s+Maior$/.test(row[1])));
   for (const [id, name, ra, dec, rank] of json.data) {
     assert.match(id, /^[A-Z][A-Za-z0-9]{1,4}$/, id);
-    // Some two-word Latin names in the source use U+2005 (four-per-em
-    // space) instead of an ASCII space (e.g. "Canis Maior"); \s covers it.
+    // Some two-word Latin names use U+2005 instead of an ASCII space
+    // between the two words; the \s class in this pattern covers it.
     assert.match(name, /^[A-Za-z\s]+$/, name);
     assert.ok(ra >= 0 && ra < 360, `${name} ra ${ra}`);
     assert.ok(dec >= -90 && dec <= 90, `${name} dec ${dec}`);
