@@ -2,16 +2,48 @@
  * Print file: a vector PDF at the exact sheet size (Prodigi processes PDFs
  * at received size). Background plate as an embedded JPEG, everything else
  * as vector marks and fully embedded EB Garamond. Small enough to render
- * inside an Oxygen worker on every fetch.
+ * inside an Oxygen worker on every fetch. Layer order and every constant
+ * match the SVG preview (app/lib/sky/svg.tsx).
  */
 import fontkit from '@pdf-lib/fontkit';
-import {PDFDocument, rgb, type PDFFont, type PDFPage, type RGB} from 'pdf-lib';
+import {
+  appendBezierCurve,
+  clip,
+  closePath,
+  endPath,
+  moveTo,
+  PDFDocument,
+  popGraphicsState,
+  pushGraphicsState,
+  rgb,
+  type PDFFont,
+  type PDFPage,
+  type RGB,
+} from 'pdf-lib';
 import {fitSubtitle, fitTitle, trackedWidth} from './fit.ts';
 import {moonLitPath} from './moon.ts';
 import type {SkyScene} from './scene.ts';
+import {
+  GLOW_RINGS,
+  GRID_WIDTH,
+  LABEL_SIZE,
+  LABEL_TRACKING,
+  LINE_WIDTH,
+  MILKY_WAY_PASSES,
+  milkyWayOpacity,
+  MOON_EDGE_OPACITY,
+  MOON_EDGE_WIDTH,
+  MOON_GLOW,
+  PLANET_DOT,
+  PLANET_STROKE,
+  RING,
+  TICK,
+} from './style.ts';
 import type {SkyTheme} from './themes.ts';
 
 export type SkyFonts = {regular: Uint8Array; italic: Uint8Array};
+
+const KAPPA = 0.5522847498; // cubic Bézier circle constant
 
 function hex(color: string): RGB {
   const n = parseInt(color.slice(1), 16);
@@ -29,7 +61,16 @@ function drawTracked(
     font,
     color,
     tracking,
-  }: {x: number; y: number; size: number; font: PDFFont; color: RGB; tracking: number},
+    opacity,
+  }: {
+    x: number;
+    y: number;
+    size: number;
+    font: PDFFont;
+    color: RGB;
+    tracking: number;
+    opacity?: number;
+  },
 ) {
   const chars = [...text];
   const width =
@@ -37,7 +78,7 @@ function drawTracked(
     tracking * (chars.length - 1);
   let cursor = x - width / 2;
   for (const c of chars) {
-    page.drawText(c, {x: cursor, y, size, font, color});
+    page.drawText(c, {x: cursor, y, size, font, color, opacity});
     cursor += font.widthOfTextAtSize(c, size) + tracking;
   }
 }
@@ -54,6 +95,22 @@ export function supported(font: PDFFont, text: string) {
     }
   });
   return kept.join('');
+}
+
+/** Everything drawn until the matching `pop` is clipped to the circle. */
+function pushCircleClip(page: PDFPage, cx: number, cy: number, r: number) {
+  const k = r * KAPPA;
+  page.pushOperators(
+    pushGraphicsState(),
+    moveTo(cx + r, cy),
+    appendBezierCurve(cx + r, cy + k, cx + k, cy + r, cx, cy + r),
+    appendBezierCurve(cx - k, cy + r, cx - r, cy + k, cx - r, cy),
+    appendBezierCurve(cx - r, cy - k, cx - k, cy - r, cx, cy - r),
+    appendBezierCurve(cx + k, cy - r, cx + r, cy - k, cx + r, cy),
+    closePath(),
+    clip(),
+    endPath(),
+  );
 }
 
 export async function renderSkyPdf({
@@ -107,65 +164,187 @@ export async function renderSkyPdf({
     });
   }
 
+  pushCircleClip(page, disc.cx, Y(disc.cy), disc.r);
+
+  for (const pass of MILKY_WAY_PASSES) {
+    for (const m of scene.milkyWay) {
+      page.drawCircle({
+        x: m.x,
+        y: Y(m.y),
+        size: m.r * pass.radius,
+        color: hex(theme.milkyWay),
+        opacity: milkyWayOpacity(theme.milkyWayOpacity, m.intensity, pass.opacity),
+      });
+    }
+  }
+
+  if (scene.grid) {
+    for (const r of scene.grid.circles) {
+      page.drawCircle({
+        x: disc.cx,
+        y: Y(disc.cy),
+        size: r,
+        opacity: 0,
+        borderColor: hex(theme.grid),
+        borderOpacity: theme.gridOpacity,
+        borderWidth: GRID_WIDTH * scale,
+      });
+    }
+    for (const l of scene.grid.spokes) {
+      page.drawLine({
+        start: {x: l.x1, y: Y(l.y1)},
+        end: {x: l.x2, y: Y(l.y2)},
+        thickness: GRID_WIDTH * scale,
+        color: hex(theme.grid),
+        opacity: theme.gridOpacity,
+      });
+    }
+  }
+
   for (const line of scene.lines) {
     page.drawLine({
       start: {x: line.x1, y: Y(line.y1)},
       end: {x: line.x2, y: Y(line.y2)},
-      thickness: 0.35 * scale,
+      thickness: LINE_WIDTH * scale,
       color: hex(theme.line),
       opacity: theme.lineOpacity,
     });
   }
 
-  for (const star of scene.stars) {
-    if (star.mag < 1.5) {
+  for (const ring of GLOW_RINGS) {
+    for (const g of scene.glows) {
       page.drawCircle({
-        x: star.x,
-        y: Y(star.y),
-        size: star.r * 2.4,
-        color: hex(theme.halo),
-        opacity: 0.12,
+        x: g.x,
+        y: Y(g.y),
+        size: g.r * ring.radius,
+        color: hex(theme.glow),
+        opacity: ring.opacity,
       });
     }
-    page.drawCircle({x: star.x, y: Y(star.y), size: star.r, color: hex(theme.star)});
+  }
+
+  for (const star of scene.stars) {
+    page.drawCircle({
+      x: star.x,
+      y: Y(star.y),
+      size: star.r,
+      color: hex(theme.star),
+      opacity: star.opacity < 1 ? star.opacity : undefined,
+    });
   }
 
   for (const planet of scene.planets) {
-    page.drawCircle({x: planet.x, y: Y(planet.y), size: planet.r, color: hex(theme.planet)});
+    page.drawCircle({
+      x: planet.x,
+      y: Y(planet.y),
+      size: planet.r,
+      opacity: 0,
+      borderColor: hex(theme.planet),
+      borderOpacity: 1,
+      borderWidth: PLANET_STROKE * scale,
+    });
+    page.drawCircle({
+      x: planet.x,
+      y: Y(planet.y),
+      size: planet.r * PLANET_DOT,
+      color: hex(theme.planet),
+    });
   }
 
   if (scene.moon) {
     const m = scene.moon;
+    for (const g of MOON_GLOW) {
+      page.drawCircle({
+        x: m.x,
+        y: Y(m.y),
+        size: m.r * g.radius,
+        color: hex(theme.glow),
+        opacity: g.opacity,
+      });
+    }
+    page.drawCircle({x: m.x, y: Y(m.y), size: m.r, color: hex(theme.background)});
     page.drawCircle({
       x: m.x,
       y: Y(m.y),
       size: m.r,
-      color: hex(theme.moonDark),
-      borderColor: hex(theme.moonLit),
-      borderWidth: 0.4 * scale,
+      color: hex(theme.moonShade),
+      opacity: theme.moonShadeOpacity,
     });
     // drawSvgPath uses a top-left origin at (x, y) with y growing downward,
     // so the scene path can be reused verbatim anchored at the page top.
     const path = moonLitPath(m.x, m.y, m.r, m.phaseFraction, m.litRight);
-    if (path) page.drawSvgPath(path, {x: 0, y: H, color: hex(theme.moonLit)});
+    if (path) page.drawSvgPath(path, {x: 0, y: H, color: hex(theme.moonFace)});
+    page.drawCircle({
+      x: m.x,
+      y: Y(m.y),
+      size: m.r,
+      opacity: 0,
+      borderColor: hex(theme.moonEdge),
+      borderOpacity: MOON_EDGE_OPACITY,
+      borderWidth: MOON_EDGE_WIDTH * scale,
+    });
   }
+
+  for (const label of scene.labels) {
+    drawTracked(page, supported(regular, label.text), {
+      x: label.x,
+      y: Y(label.y),
+      size: LABEL_SIZE * scale,
+      font: regular,
+      color: hex(theme.labelColor),
+      tracking: LABEL_TRACKING * scale,
+      opacity: theme.labelColorOpacity,
+    });
+  }
+
+  page.pushOperators(popGraphicsState());
 
   page.drawCircle({
     x: disc.cx,
     y: Y(disc.cy),
     size: disc.r,
     borderColor: hex(theme.ring),
-    borderWidth: 0.6 * scale,
+    borderWidth: RING.outer * scale,
     opacity: 0,
     borderOpacity: theme.ringOpacity,
   });
+  page.drawCircle({
+    x: disc.cx,
+    y: Y(disc.cy),
+    size: disc.r - RING.gap * scale,
+    borderColor: hex(theme.ring),
+    borderWidth: RING.inner * scale,
+    opacity: 0,
+    borderOpacity: theme.ringOpacity * 0.7,
+  });
+
+  if (scene.compass) {
+    for (const t of scene.compass.ticks) {
+      page.drawLine({
+        start: {x: t.x1, y: Y(t.y1)},
+        end: {x: t.x2, y: Y(t.y2)},
+        thickness: TICK.width * scale,
+        color: hex(theme.ring),
+        opacity: theme.ringOpacity,
+      });
+    }
+    const numeralSize = TICK.numeralSize * scale;
+    for (const n of scene.compass.numerals) {
+      page.drawText(n.text, {
+        x: n.x - regular.widthOfTextAtSize(n.text, numeralSize) / 2,
+        y: Y(n.y),
+        size: numeralSize,
+        font: regular,
+        color: hex(theme.cardinal),
+      });
+    }
+  }
 
   for (const c of scene.cardinal) {
-    const size = 7 * scale;
     page.drawText(c.label, {
-      x: c.x - regular.widthOfTextAtSize(c.label, size) / 2,
+      x: c.x - regular.widthOfTextAtSize(c.label, scene.cardinalSize) / 2,
       y: Y(c.y),
-      size,
+      size: scene.cardinalSize,
       font: regular,
       color: hex(theme.cardinal),
     });

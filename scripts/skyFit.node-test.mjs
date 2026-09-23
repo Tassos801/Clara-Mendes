@@ -93,3 +93,30 @@ test('a 40-character title stays inside the sheet margins in the PDF', async () 
   const sizes = [...ops.matchAll(/\/EBGaramond-[\w-]+ ([\d.]+) Tf/g)].map((m) => Number(m[1]));
   assert.ok(sizes.some((s) => s < 30 && s >= 30 * 0.3), `title sizes: ${[...new Set(sizes)].join(', ')}`);
 });
+
+test('a 40-character title stays inside the margins in every layout', async () => {
+  const fonts = {
+    regular: new Uint8Array(readFileSync('public/fonts/EBGaramond-Regular.ttf')),
+    italic: new Uint8Array(readFileSync('public/fonts/EBGaramond-Italic.ttf')),
+  };
+  const catalog = loadSkyCatalogSync();
+  for (const layout of ['classic', 'compass', 'full', 'minimal']) {
+    for (const [size, W, H] of [['8x10', 576, 720], ['20x24', 1440, 1728]]) {
+      const params = validateSkyParams({
+        date: '2019-06-14', time: '22:00', lat: 48.8566, lon: 2.3522, tz: 'Europe/Paris',
+        place: 'Saint-Rémy-de-Provence-les-Alpilles, France',
+        title: 'W'.repeat(40), theme: 'linen', layout, details: 'time',
+      }).params;
+      const scene = computeSky({params, size, catalog});
+      const pdf = await renderSkyPdf({scene, theme: SKY_THEMES.linen, fonts, plate: null, createdAt: new Date('2019-06-14T00:00:00Z')});
+      const ops = contentStreams(pdf);
+      const discBottom = H - (scene.disc.cy + scene.disc.r + scene.cardinalOffset + 10 * scene.scale);
+      const runs = [...ops.matchAll(/1 0 0 1 ([-\d.]+) ([-\d.]+) Tm/g)]
+        .map((m) => ({x: Number(m[1]), y: Number(m[2])}))
+        .filter((r) => r.y < discBottom); // text block under the map only
+      assert.ok(runs.length > 10, `${layout} ${size}: ${runs.length} text runs`);
+      const margin = (W - scene.maxTextWidth) / 2;
+      assert.ok(runs.every((r) => r.x >= margin - 0.5), `${layout} ${size}: run left of margin ${Math.min(...runs.map((r) => r.x))} < ${margin}`);
+    }
+  }
+});
