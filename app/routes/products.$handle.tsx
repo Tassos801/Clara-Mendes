@@ -27,8 +27,13 @@ import {
   buildPhoneCaseUrl,
   formatPhoneCaseDeviceList,
 } from '~/lib/artExtensions';
-import {buildCapsuleTagQuery, CAPSULES} from '~/lib/capsules';
-import {capsulePagePath, getCapsulePage} from '~/lib/capsulePages';
+import {
+  buildCapsuleTagQuery,
+  CAPSULES,
+  findShopCapsuleForHandle,
+  shopCapsulePath,
+} from '~/lib/capsules';
+import {getCapsulePage} from '~/lib/capsulePages';
 import {
   filterDemoProducts,
   isDemoProduct,
@@ -95,6 +100,7 @@ import {
   productSchema,
 } from '~/lib/seo';
 import {wallSetsContainingHandle} from '~/lib/wallSets';
+import {keepTabInside} from '~/lib/focusTrap';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
@@ -216,6 +222,39 @@ function sanitizeOriginalArtProduct(product: ProductDetail): ProductDetail {
   };
 }
 
+/**
+ * Shopify only honours a complete option set: `?Size=20+×+24+in` without
+ * `Finish=` falls back to the first variant, so a hand-built or shared link
+ * showed 8 × 10 in at the 8 × 10 price. Pick the variant that matches every
+ * option the URL does name, preferring one that is on sale.
+ */
+function resolveRequestedVariant(
+  product: ProductDetail,
+  requested: SelectedOption[],
+): ProductDetail {
+  const optionNames = new Set(
+    product.options.map((option) => option.name.toLowerCase()),
+  );
+  const wanted = requested.filter((option) =>
+    optionNames.has(option.name.toLowerCase()),
+  );
+  if (!wanted.length) return product;
+  const matches = (variant: ProductVariant) =>
+    wanted.every((option) =>
+      variant.selectedOptions.some(
+        (selected) =>
+          selected.name.toLowerCase() === option.name.toLowerCase() &&
+          selected.value === option.value,
+      ),
+    );
+  const current = product.selectedOrFirstAvailableVariant;
+  if (current && matches(current)) return product;
+  const candidates = product.variants.nodes.filter(matches);
+  const match =
+    candidates.find((variant) => variant.availableForSale) ?? candidates[0];
+  return match ? {...product, selectedOrFirstAvailableVariant: match} : product;
+}
+
 function sanitizeClassicFrameProduct(product: ProductDetail): ProductDetail {
   const variants: ProductVariant[] = [...product.variants.nodes];
   const selectedVariant: ProductVariant | null =
@@ -289,9 +328,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     throw redirect(featureRedirect, 301);
   }
 
-  // "Pair with" prefers the two companion prints from the same capsule;
-  // best sellers only fill any remaining slots.
+  // Launch capsules carry the presentation guard and cross-sells below.
   const capsule = CAPSULES.find((entry) => entry.handles.includes(handle));
+  // "Pair with" and the breadcrumb also cover print-catalog collections:
+  // companions come from the same capsule first, best sellers only fill any
+  // remaining slots.
+  const shopCapsule = findShopCapsuleForHandle(handle);
   const unframedRedirect = capsule
     ? getUnframedPresentationRedirectPath(request.url)
     : null;
@@ -310,8 +352,8 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       // The fallback is a tag no product carries, so non-capsule products
       // get zero capsule siblings (tag is a supported search field; an
       // unsupported field would be silently ignored and match everything).
-      capsuleQuery: capsule
-        ? buildCapsuleTagQuery(capsule)
+      capsuleQuery: shopCapsule
+        ? buildCapsuleTagQuery(shopCapsule)
         : 'tag:"__no-capsule__"',
       first: 4,
       classicFrameHandle: classicFrameEligible
@@ -339,7 +381,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     );
   }
 
-  const rawProduct = data.product as ProductDetail;
+  const rawProduct = resolveRequestedVariant(
+    data.product as ProductDetail,
+    selectedOptions,
+  );
   const product = capsule
     ? sanitizeOriginalArtProduct(rawProduct)
     : handle === CLASSIC_FRAME_HANDLE
@@ -448,16 +493,17 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   }
 
   return {
-    capsuleSummary: capsule
+    capsuleSummary: shopCapsule
       ? {
           blurb: capsulePage?.pdpBlurb ?? null,
-          slug: capsule.slug,
-          title: capsule.title,
+          path: shopCapsulePath(shopCapsule.slug),
+          title: shopCapsule.title,
         }
       : null,
     phoneCaseCrossSell,
     classicFrameCrossSell,
     product,
+    relatedFromCapsule: capsuleSiblings.length > 0,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
@@ -467,11 +513,20 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 }
 
 export default function Product() {
+  const {product} = useLoaderData<typeof loader>();
+  // React Router keeps this route mounted when only the handle changes, so
+  // without a key the quantity, a half-written review, the gallery position
+  // and the configurators would carry over from the previous product.
+  return <ProductPage key={product.id} />;
+}
+
+function ProductPage() {
   const {
     capsuleSummary,
     classicFrameCrossSell,
     phoneCaseCrossSell,
     product,
+    relatedFromCapsule,
     relatedProducts,
     reviews,
     seoUrl,
@@ -717,10 +772,7 @@ export default function Product() {
                 ? [
                     {
                       name: capsuleSummary.title,
-                      url: new URL(
-                        capsulePagePath(capsuleSummary.slug),
-                        seoUrl,
-                      ).toString(),
+                      url: new URL(capsuleSummary.path, seoUrl).toString(),
                     },
                   ]
                 : []),
@@ -737,7 +789,7 @@ export default function Product() {
         <span aria-hidden="true">›</span>
         {capsuleSummary ? (
           <>
-            <Link to={capsulePagePath(capsuleSummary.slug)} prefetch="intent">
+            <Link to={capsuleSummary.path} prefetch="intent">
               {capsuleSummary.title}
             </Link>
             <span aria-hidden="true">›</span>
@@ -1043,9 +1095,9 @@ export default function Product() {
                 <dt>Print</dt>
                 <dd>
                   Giclée print in archival pigment inks on 200gsm Enhanced Matte
-                  Art paper. {printSizeAvailabilityCopy(product.options)} Ships
-                  unframed in the selected size; frame not included. Screen and
-                  print colours can vary slightly.
+                  Art paper. {printSizeAvailabilityCopy(product.variants.nodes)}{' '}
+                  Ships unframed in the selected size; frame not included.
+                  Screen and print colours can vary slightly.
                 </dd>
               </div>
             ) : null}
@@ -1083,7 +1135,7 @@ export default function Product() {
                   {capsuleSummary.blurb}{' '}
                   <Link
                     className="text-link"
-                    to={capsulePagePath(capsuleSummary.slug)}
+                    to={capsuleSummary.path}
                     prefetch="intent"
                   >
                     Explore {capsuleSummary.title}
@@ -1283,13 +1335,7 @@ export default function Product() {
           <div className="section-heading-row">
             <div>
               <p className="eyebrow">
-                {CAPSULES.some(
-                  (capsule) =>
-                    capsule.handles.includes(product.handle) &&
-                    relatedProducts.some((related) =>
-                      capsule.handles.includes(related.handle),
-                    ),
-                )
+                {relatedFromCapsule
                   ? 'From the same capsule'
                   : 'Also in the catalog'}
               </p>
@@ -1298,7 +1344,7 @@ export default function Product() {
             {capsuleSummary ? (
               <Link
                 className="text-link"
-                to={capsulePagePath(capsuleSummary.slug)}
+                to={capsuleSummary.path}
                 prefetch="intent"
               >
                 View {capsuleSummary.title}
@@ -1384,6 +1430,7 @@ function ProductGalleryCarousel({
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [zoomIndex, setZoomIndex] = useState<number | null>(null);
+  const zoomOverlayRef = useRef<HTMLDivElement>(null);
   const galleryTrackRef = useRef<HTMLDivElement>(null);
   const galleryScrollFrameRef = useRef<number | null>(null);
   const zoomCloseRef = useRef<HTMLButtonElement>(null);
@@ -1519,6 +1566,8 @@ function ProductGalleryCarousel({
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') closeZoom();
+      if (event.key === 'Tab' && zoomOverlayRef.current)
+        keepTabInside(event, zoomOverlayRef.current);
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
         navigateZoom(-1);
@@ -1702,6 +1751,7 @@ function ProductGalleryCarousel({
       {zoomImage ? (
         <div
           className="product-zoom-overlay"
+          ref={zoomOverlayRef}
           role="dialog"
           aria-modal="true"
           aria-label={`${productTitle} enlarged view`}

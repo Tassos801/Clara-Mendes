@@ -234,18 +234,27 @@ async function stage() {
   const actions = plan.map(({print, input}) => {
     const found = existing.get(input.handle);
     if (!found) return {print, input, action: 'create'};
-    const skus = found.variants.nodes.map((variant) => variant.sku).sort();
-    assert.deepEqual(
-      skus,
-      input.variants.map((variant) => variant.sku).sort(),
+    const skus = found.variants.nodes.map((variant) => variant.sku);
+    const expected = input.variants.map((variant) => variant.sku);
+    // A released print that lacks a newly added size is expand's job; it must
+    // not stop new prints in the same collection from being staged.
+    const missing = expected.filter((sku) => !skus.includes(sku));
+    assert.ok(
+      skus.every((sku) => expected.includes(sku)) &&
+        (missing.length === 0 || print.released === true),
       `${input.handle} already exists in Shopify with different SKUs — resolve by hand.`,
     );
-    return {print, input, found, action: 'present'};
+    return {print, input, found, action: missing.length ? 'expand' : 'present'};
   });
   console.table(
     actions.map(({input, found, action}) => ({
       handle: input.handle,
-      action: action === 'create' ? 'create Draft' : `already ${found.status}`,
+      action:
+        action === 'create'
+          ? 'create Draft'
+          : action === 'expand'
+            ? `already ${found.status}; new sizes need expand`
+            : `already ${found.status}`,
       skus: input.variants.map((variant) => variant.sku).join(' '),
       prices: input.variants.map((variant) => variant.price).join(' '),
     })),
@@ -328,6 +337,11 @@ async function stage() {
   console.log(
     `\nStaged ${created.length} new Draft(s); ids written to data/print-catalog.json. Next: handoff.`,
   );
+  const toExpand = actions.filter((entry) => entry.action === 'expand');
+  if (toExpand.length)
+    console.log(
+      `Released print(s) missing a catalog size: ${toExpand.map(({print}) => print.slug).join(', ')} — run expand for those.`,
+    );
 }
 
 async function expand() {
@@ -405,7 +419,11 @@ async function expand() {
     const current = after.find((product) => product.id === old.id);
     assert.ok(current, `Shopify product disappeared: ${old.handle}`);
     if (!scoped.has(old.handle)) {
-      assert.deepEqual(current, old, `Unrelated product changed: ${old.handle}`);
+      assert.deepEqual(
+        current,
+        old,
+        `Unrelated product changed: ${old.handle}`,
+      );
       continue;
     }
     for (const oldVariant of old.variants.nodes) {
@@ -611,7 +629,10 @@ async function media() {
         }`,
         {media: stagedMedia, product: {id: entry.product.id}},
       );
-      mutationErrors(result.data.productUpdate, `Add rooms ${entry.print.slug}`);
+      mutationErrors(
+        result.data.productUpdate,
+        `Add rooms ${entry.print.slug}`,
+      );
     }
 
     let ready = await waitForRoomMedia(
@@ -665,13 +686,10 @@ async function media() {
       },
     );
     mutationErrors(copy.data.productUpdate, `Refine copy ${entry.print.slug}`);
-    ready = await waitForRoomMedia(
-      admin,
-      entry.print,
-      entry.planned,
-      true,
+    ready = await waitForRoomMedia(admin, entry.print, entry.planned, true);
+    console.log(
+      `VERIFIED ${entry.print.slug}: ${ready.product.media.nodes.length} READY images`,
     );
-    console.log(`VERIFIED ${entry.print.slug}: ${ready.product.media.nodes.length} READY images`);
   }
 
   const after = await printMediaProducts(
@@ -807,11 +825,7 @@ async function release() {
         }
       }`,
       {
-        product: buildReleasedProductUpdateInput(
-          collection,
-          print,
-          product.id,
-        ),
+        product: buildReleasedProductUpdateInput(collection, print, product.id),
       },
     );
     mutationErrors(copy.data.productUpdate, `Update copy ${print.slug}`);
@@ -855,7 +869,8 @@ async function release() {
     if (!entry?.availableForSale) unavailable.push(printHandle(print));
     for (const variant of collection.variants) {
       const live = entry?.variants.find(
-        (candidate) => candidate.sku === printSku(collection, print, variant.size),
+        (candidate) =>
+          candidate.sku === printSku(collection, print, variant.size),
       );
       if (
         !live?.availableForSale ||
@@ -921,6 +936,16 @@ async function verify() {
       const live = entry?.variants.find(
         (node) => node.sku === printSku(collection, print, variant.size),
       );
+      // Sizes staged by expand are unbuyable until release lists them.
+      if (!(print.releasedSizes ?? []).includes(variant.size)) {
+        check(
+          print.slug,
+          `storefront: staged ${variant.size} not for sale`,
+          !live?.availableForSale,
+          live ? 'available' : 'not in Shopify yet',
+        );
+        continue;
+      }
       check(
         print.slug,
         `storefront: ${variant.size} at €${variant.priceEUR}`,
@@ -931,7 +956,7 @@ async function verify() {
           : 'variant missing',
       );
     }
-    const first = entry?.variants[0];
+    const first = entry?.variants.find((node) => node.availableForSale);
     if (first) {
       const cart = await addToCart(first.id);
       check(
@@ -1123,10 +1148,18 @@ function delay(milliseconds) {
 
 async function waitForRoomMedia(admin, print, planned, exactOrder) {
   for (let attempt = 0; attempt < 45; attempt += 1) {
-    const [product] = await printMediaProducts(admin, [print.shopify.productId]);
-    const plan = resolvePrintRoomMediaPlan(product?.media?.nodes ?? [], planned, print.alt);
+    const [product] = await printMediaProducts(admin, [
+      print.shopify.productId,
+    ]);
+    const plan = resolvePrintRoomMediaPlan(
+      product?.media?.nodes ?? [],
+      planned,
+      print.alt,
+    );
     if (plan.action === 'mismatch') {
-      throw new Error(`${print.slug}: gallery changed unexpectedly while processing`);
+      throw new Error(
+        `${print.slug}: gallery changed unexpectedly while processing`,
+      );
     }
     const allReady = planned.every(
       (entry) => plan.currentByAlt.get(entry.alt)?.status === 'READY',
@@ -1194,12 +1227,7 @@ function recordIds(collection, actions) {
   }
 }
 
-async function uploadImage(
-  admin,
-  file,
-  filename,
-  mimeType = 'image/webp',
-) {
+async function uploadImage(admin, file, filename, mimeType = 'image/webp') {
   const staged = await admin(
     `mutation StageUpload($input: [StagedUploadInput!]!) {
       stagedUploadsCreate(input: $input) { stagedTargets { url resourceUrl parameters { name value } } userErrors { field message } }

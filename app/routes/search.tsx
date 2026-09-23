@@ -81,6 +81,8 @@ export default function SearchPage() {
               className="search-page-input"
               defaultValue={term}
               id="search-page-input"
+              // Uncontrolled: remount on a new term so Back/Forward shows it.
+              key={term}
               name="q"
               placeholder="Try “Quiet Form”, “print”, “blue”…"
               ref={inputRef}

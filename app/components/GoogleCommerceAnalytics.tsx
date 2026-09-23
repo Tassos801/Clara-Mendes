@@ -17,6 +17,7 @@ import {
   consentModeFromShopify,
   createGoogleCommercePrivacyReader,
   ecommerceValue,
+  isRepeatedView,
   normalizeGoogleCommerceItem,
   shouldEmitGoogleCommerceEvent,
   type GoogleCommerceItem,
@@ -108,6 +109,7 @@ export function GoogleCommerceAnalytics({
       const privacy = privacyReader.current();
       return shouldEmitGoogleCommerceEvent(privacy);
     };
+    const lastViews = new Map<string, string>();
     const emitEvent = (input: StorefrontEventInput) => {
       const privacy = privacyReader.current();
       return emitGoogleCommerceEvent({
@@ -121,6 +123,7 @@ export function GoogleCommerceAnalytics({
 
     subscribe(AnalyticsEvent.PAGE_VIEWED, (payload) => {
       if (!trackingAllowed()) return;
+      if (isRepeatedView(lastViews, 'page_view', payload.url)) return;
 
       emitEvent({
         dedupeKey: `page_view:${payload.url}`,
@@ -135,6 +138,7 @@ export function GoogleCommerceAnalytics({
 
       const items = normalizeProductViewItems(payload);
       if (!items.length) return;
+      if (isRepeatedView(lastViews, 'view_item', payload.url)) return;
 
       pushEcommerceEvent({
         currency: String(payload.shop?.currency ?? 'EUR'),
@@ -153,6 +157,15 @@ export function GoogleCommerceAnalytics({
         (payload.customData as {products?: unknown} | undefined)?.products,
       );
       if (!items.length) return;
+      if (
+        isRepeatedView(
+          lastViews,
+          'view_item_list',
+          payload.url,
+          payload.collection.id,
+        )
+      )
+        return;
 
       pushEcommerceEvent({
         currency: String(payload.shop?.currency ?? 'EUR'),
@@ -170,6 +183,8 @@ export function GoogleCommerceAnalytics({
 
     subscribe(AnalyticsEvent.SEARCH_VIEWED, (payload) => {
       if (!trackingAllowed()) return;
+      if (isRepeatedView(lastViews, 'search', payload.url, payload.searchTerm))
+        return;
 
       emitEvent({
         dedupeKey: `search:${payload.url}:${payload.searchTerm}`,

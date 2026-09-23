@@ -85,6 +85,30 @@ export function consentModeFromShopify({
   };
 }
 
+/**
+ * Hydrogen's view components re-publish on every query-string change
+ * (variant picks, sort, filters, infinite-scroll cursors), so only a new
+ * pathname — plus `scope`, such as a collection id or search term — counts
+ * as a new view. `lastViews` holds the previous view per event name.
+ */
+export function isRepeatedView(
+  lastViews: Map<string, string>,
+  event: string,
+  url: string | undefined,
+  scope = '',
+) {
+  let pathname = url ?? '';
+  try {
+    pathname = new URL(pathname, 'https://view.invalid').pathname;
+  } catch {
+    // Keep the raw value; it still identifies the view.
+  }
+  const key = `${pathname}|${scope}`;
+  if (lastViews.get(event) === key) return true;
+  lastViews.set(event, key);
+  return false;
+}
+
 export function shouldEmitGoogleCommerceEvent({
   analyticsAllowed,
   canTrack,

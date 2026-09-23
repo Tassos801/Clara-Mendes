@@ -11,6 +11,8 @@ import {
 export type Capsule = {
   /** Product handles belonging to this capsule, from the catalog source. */
   handles: string[];
+  /** Site-relative artwork path used for the capsule's share card. */
+  image: string;
   note: string;
   /** Offered sizes; set only for print-catalog collections. */
   sizeLabels?: string[];
@@ -28,6 +30,8 @@ export const CAPSULES: Capsule[] = ORIGINAL_ART_COLLECTIONS.map(
     handles: artCatalog
       .filter((item) => item.capsule === collection.title)
       .map((item) => item.handle),
+    image:
+      artCatalog.find((item) => item.capsule === collection.title)?.image ?? '',
     note: collection.note,
     slug: collection.handle,
     title: collection.title,
@@ -70,6 +74,20 @@ export function getShopCapsuleBySlug(
   return (
     listShopCapsules(printCatalog).find(
       (capsule) => capsule.slug === normalized,
+    ) ?? null
+  );
+}
+
+/** The shop capsule a product belongs to, including print-catalog collections. */
+export function findShopCapsuleForHandle(
+  handle?: string | null,
+  printCatalog: PrintCatalog = PRINT_CATALOG,
+): Capsule | null {
+  const key = handle?.toLowerCase();
+  if (!key) return null;
+  return (
+    listShopCapsules(printCatalog).find((capsule) =>
+      capsule.handles.includes(key),
     ) ?? null
   );
 }

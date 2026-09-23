@@ -4,6 +4,7 @@ import {useMemo, useState} from 'react';
 import {Link} from 'react-router';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
+import {StructuredData} from '~/components/StructuredData';
 import {
   PRINT_SIZE_SPECS,
   type PrintSizeKey,
@@ -97,10 +98,7 @@ export function WallSetPurchase({
 
   return (
     <section className="wall-set" aria-label={`Buy ${set.name}`}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{__html: JSON.stringify(itemList)}}
-      />
+      <StructuredData data={itemList} />
       <div className="section-heading-row">
         <div>
           <p className="eyebrow">Buy the complete wall</p>

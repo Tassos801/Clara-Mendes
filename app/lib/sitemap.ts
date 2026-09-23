@@ -11,7 +11,9 @@ import {
   isUnreleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
 } from './catalogFilters.ts';
+import {shopCapsulePath} from './capsules.ts';
 import {listGalleryPages} from './galleryPages.ts';
+import {releasedPrintCollections} from './printCatalog.ts';
 import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 
 /**
@@ -26,6 +28,11 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/collections/all',
   ...ORIGINAL_ART_COLLECTIONS.map(
     (collection) => `/collections/${collection.handle}`,
+  ),
+  // Released print-catalog collections have no landing page; their shop
+  // filter URL is the canonical, indexable page.
+  ...releasedPrintCollections().map((collection) =>
+    shopCapsulePath(collection.slug),
   ),
   // Curated gallery edits — storefront-rendered like the capsule pages.
   ...listGalleryPages().map((page) => `/collections/${page.slug}`),

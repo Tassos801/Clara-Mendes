@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 // Stages the rendered brand film and its poster into Shopify Files and
 // prints their CDN URLs. Dry by default; pass --apply to upload.
 //
@@ -193,3 +194,4 @@ main().catch((error) => {
   console.error(error.message || error);
   process.exitCode = 1;
 });
+/* eslint-enable no-console */

@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {releasedPrintCollections} from '../app/lib/printCatalog.ts';
 import {
   buildCustomRoutesSitemapXml,
   CUSTOM_SITEMAP_PATHS,
@@ -87,6 +88,10 @@ assert.deepEqual(
     '/collections/neo-deco',
     '/collections/midnight-garden',
     '/collections/sunlit-mosaic',
+    // Released print-catalog collections: their shop filter is the page.
+    ...releasedPrintCollections().map(
+      (collection) => `/collections/all?capsule=${collection.slug}`,
+    ),
     '/collections/terracotta-wall-art',
     '/collections/blue-abstract-wall-art',
     '/collections/geometric-wall-art',
@@ -181,10 +186,8 @@ assert.equal(
 // manual collections, legacy handles) must not be advertised either — the
 // live Shopify sitemap listed two empty "everyday living" collections.
 {
-  const {
-    isValidSitemapRequest,
-    sitemapLink,
-  } = await import('../app/lib/sitemap.ts');
+  const {isValidSitemapRequest, sitemapLink} =
+    await import('../app/lib/sitemap.ts');
   const collectionsXml = [
     '<urlset>',
     entry('https://shopclaramendes.com/collections/art-for-everyday-living'),
@@ -193,16 +196,30 @@ assert.equal(
     '</urlset>',
   ].join('\n');
   const kept = removeExcludedSitemapEntries(collectionsXml);
-  assert.ok(!kept.includes('art-for-everyday-living'), 'empty collection advertised');
-  assert.ok(kept.includes('/collections/quiet-form'), 'capsule collection dropped');
+  assert.ok(
+    !kept.includes('art-for-everyday-living'),
+    'empty collection advertised',
+  );
+  assert.ok(
+    kept.includes('/collections/quiet-form'),
+    'capsule collection dropped',
+  );
 
   // Articles are served under their blog, never under /articles.
   assert.equal(
-    sitemapLink({type: 'articles', baseUrl: 'https://shopclaramendes.com', handle: 'why-karina-of-time'}),
+    sitemapLink({
+      type: 'articles',
+      baseUrl: 'https://shopclaramendes.com',
+      handle: 'why-karina-of-time',
+    }),
     'https://shopclaramendes.com/blogs/karina-of-time/why-karina-of-time',
   );
   assert.equal(
-    sitemapLink({type: 'products', baseUrl: 'https://shopclaramendes.com', handle: 'quiet-form-i-art-print'}),
+    sitemapLink({
+      type: 'products',
+      baseUrl: 'https://shopclaramendes.com',
+      handle: 'quiet-form-i-art-print',
+    }),
     'https://shopclaramendes.com/products/quiet-form-i-art-print',
   );
 

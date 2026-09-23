@@ -1,6 +1,6 @@
 import {redirect} from 'react-router';
 import type {Route} from './+types/discount.$code';
-import {isLocalPath} from '~/lib/redirect';
+import {toLocalPath, withSearchParams} from '~/lib/redirect';
 
 /**
  * Automatically applies a discount found on the url
@@ -19,20 +19,16 @@ export async function loader({request, context, params}: Route.LoaderArgs) {
 
   const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
-  let redirectParam =
-    searchParams.get('redirect') || searchParams.get('return_to') || '/';
-
-  if (!isLocalPath(redirectParam)) {
-    redirectParam = '/';
-  }
+  const redirectParam =
+    toLocalPath(
+      searchParams.get('redirect') || searchParams.get('return_to'),
+    ) ?? '/';
 
   searchParams.delete('redirect');
   searchParams.delete('return_to');
 
-  const remainingParams = searchParams.toString();
-  const redirectUrl = remainingParams
-    ? `${redirectParam}?${remainingParams}`
-    : redirectParam;
+  // Remaining parameters (utm_*, etc.) join the target's own query string.
+  const redirectUrl = withSearchParams(redirectParam, searchParams);
 
   if (!code) {
     return redirect(redirectUrl);
