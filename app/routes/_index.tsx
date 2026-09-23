@@ -34,6 +34,12 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
+
+// Read from the catalog data so a new collection release updates the copy.
+const CATALOG = catalogCounts();
+const CAPSULE_COUNT_WORD = countWord(CATALOG.capsules);
+const WORK_COUNT_WORD = countWord(CATALOG.works);
 
 type HomeCollection = {
   id: string;
@@ -370,7 +376,8 @@ export default function Homepage() {
           </div>
 
           <div className="hm-coords">
-            Five capsules · fifteen original works
+            {capitalize(CAPSULE_COUNT_WORD)} capsules · {WORK_COUNT_WORD}{' '}
+            original works
           </div>
 
           <div className="hm-interaction-anchor">
@@ -459,7 +466,7 @@ export default function Homepage() {
         <p>
           {products.length > 0
             ? 'The collection begins with original prints and leaves room for considered objects and editions to follow.'
-            : 'Fifteen original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.'}
+            : `${capitalize(WORK_COUNT_WORD)} original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.`}
         </p>
       </section>
 
@@ -581,8 +588,9 @@ export default function Homepage() {
           <p className="eyebrow">Original art collection</p>
           <h2>Explore the complete first print edition.</h2>
           <p>
-            Browse all fifteen works now. Product pages and secure Shopify
-            checkout appear automatically as each print becomes available.
+            Browse all {WORK_COUNT_WORD} works now. Product pages and secure
+            Shopify checkout appear automatically as each print becomes
+            available.
           </p>
           <Link className="primary-button" to="/collections/all">
             Browse the print collection

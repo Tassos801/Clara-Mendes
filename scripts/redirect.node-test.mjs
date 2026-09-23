@@ -1,7 +1,11 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import {isLocalPath} from '../app/lib/redirect.ts';
+import {
+  isLocalPath,
+  toLocalPath,
+  withSearchParams,
+} from '../app/lib/redirect.ts';
 
 const TAB = String.fromCharCode(9);
 const LF = String.fromCharCode(10);
@@ -49,4 +53,24 @@ test('a decoded redirect parameter cannot smuggle a tab past the check', () => {
     'the browser resolves the tabbed path off-origin',
   );
   assert.equal(isLocalPath(value), false);
+});
+
+test('a local path is re-serialised so it is always a valid Location header', () => {
+  for (const value of ['/€', '/café?q=naïve#sélection']) {
+    const path = toLocalPath(value);
+    assert.ok(path, value);
+    assert.doesNotThrow(() => new Headers({Location: path}), path);
+  }
+  assert.throws(() => new Headers({Location: '/€'}), 'raw input would throw');
+  assert.equal(toLocalPath('/products/a?x=1#top'), '/products/a?x=1#top');
+  assert.equal(toLocalPath('//evil.com'), null);
+  assert.equal(toLocalPath(null), null);
+});
+
+test('discount redirects keep extra parameters in the query, before the fragment', () => {
+  assert.equal(
+    withSearchParams('/p?a=1#top', new URLSearchParams('utm_source=ig')),
+    '/p?a=1&utm_source=ig#top',
+  );
+  assert.equal(withSearchParams('/', new URLSearchParams()), '/');
 });

@@ -1,6 +1,6 @@
 import type {MarketCountryCode} from './markets.ts';
 import {MARKET_SESSION_KEY, normalizeMarketCountry} from './markets.ts';
-import {isLocalPath} from './redirect.ts';
+import {toLocalPath} from './redirect.ts';
 
 type MarketCartResult = {
   cart?: {
@@ -128,11 +128,7 @@ export async function processMarketSelectionRequest({
   const headers = cartId ? cart.setCartId(cartId) : new Headers();
   headers.append('Set-Cookie', await session.commit());
 
-  const redirectTo = formData.get('redirectTo');
-  const destination =
-    typeof redirectTo === 'string' && isLocalPath(redirectTo)
-      ? redirectTo
-      : '/';
+  const destination = toLocalPath(formData.get('redirectTo')) ?? '/';
 
   return {
     ok: true as const,

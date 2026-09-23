@@ -6,11 +6,12 @@ import {useAside} from '~/components/Aside';
 import {ORIGINAL_ART_COLLECTIONS} from '~/lib/catalogFilters';
 import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {catalogCounts, countWord} from '~/lib/catalogSummary';
 
+const CATALOG = catalogCounts();
 const PAGE_URL = `${STOREFRONT_ORIGIN}/our-story`;
 // Kept under the 155-char meta truncation in buildSeoMeta.
-const PAGE_DESCRIPTION =
-  'Clara Mendes creates original art for calm, collected spaces: fifteen works across five capsules, giclée-printed to order in three sizes up to 20 × 24 in.';
+const PAGE_DESCRIPTION = `Clara Mendes creates original art for calm, collected spaces: ${countWord(CATALOG.works)} works across ${countWord(CATALOG.capsules)} capsules, giclée-printed to order in three sizes up to 20 × 24 in.`;
 
 export const meta: Route.MetaFunction = () => {
   return buildSeoMeta({
@@ -199,8 +200,8 @@ export default function OurStory() {
           <div>
             <dt>Format</dt>
             <dd>
-              Unframed portrait prints in three sizes — 8 × 10, 16 × 20, and
-              20 × 24 in — that work alone, in pairs, or as a full capsule of
+              Unframed portrait prints in three sizes — 8 × 10, 16 × 20, and 20
+              × 24 in — that work alone, in pairs, or as a full capsule of
               three.
             </dd>
           </div>

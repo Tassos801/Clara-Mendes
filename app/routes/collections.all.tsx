@@ -90,6 +90,7 @@ export type CollectionViewData = {
   heading: string;
   products: CollectionProductConnection;
   seoUrl?: string;
+  shareImage?: string | null;
 };
 
 export const meta: Route.MetaFunction = ({data}) => {
@@ -100,7 +101,7 @@ export const meta: Route.MetaFunction = ({data}) => {
     description:
       data?.description ??
       'Shop original Clara Mendes wall art in three unframed sizes.',
-    image: `${STOREFRONT_ORIGIN}/images/product-art/quiet-form/quiet-form-01.webp`,
+    image: `${STOREFRONT_ORIGIN}${data?.shareImage || '/images/product-art/quiet-form/quiet-form-01.webp'}`,
     title: isCapsule
       ? `${heading} Capsule`
       : 'Shop All Original Art Prints & Wall Art',
@@ -162,6 +163,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       vendors: [] as Array<{label: string}>,
     },
     heading: capsule ? capsule.title : 'Shop All',
+    shareImage: capsule?.image ?? null,
     products: filterProductConnection(
       data.products as CollectionProductConnection,
     ),

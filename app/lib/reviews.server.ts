@@ -18,7 +18,9 @@ import {
   REVIEWS_METAFIELD_NAMESPACE,
 } from '~/lib/reviewTypes';
 
-const ADMIN_API_VERSION = '2025-01';
+// 2025-01 left Shopify's support window, so requests were silently served by
+// the oldest supported version. Kept in step with scripts/lib/admin.mjs.
+const ADMIN_API_VERSION = '2026-07';
 
 /** Thrown when the Admin token is absent so reviews cannot be written. */
 export class ReviewsNotConfiguredError extends Error {
@@ -111,7 +113,9 @@ function validateSubmitInput(input: SubmitReviewInput): void {
   const {rating, authorName, body, photos} = input;
 
   if (!Number.isInteger(rating) || rating < 1 || rating > 5) {
-    throw new ReviewValidationError('Rating must be a whole number from 1 to 5.');
+    throw new ReviewValidationError(
+      'Rating must be a whole number from 1 to 5.',
+    );
   }
 
   const trimmedAuthor = authorName.trim();
@@ -233,6 +237,12 @@ const METAOBJECT_HELPFUL_QUERY = `#graphql
   query ReviewHelpfulCount($id: ID!) {
     metaobject(id: $id) {
       id
+      type
+      capabilities {
+        publishable {
+          status
+        }
+      }
       field(key: "helpful_count") {
         value
       }
@@ -368,10 +378,24 @@ export async function submitReview(
 
   const admin = createAdminClient(env);
 
-  // 1. Upload each photo and collect the resulting file GIDs.
+  // 0. The product must exist before anything is uploaded or created, so a
+  //    forged product id cannot leave orphaned files and metaobjects behind.
+  const target = await readProductReviewGids(admin, input.productGid);
+  if (!target.exists) throw new ReviewValidationError('Invalid product.');
+
+  // 1. Upload each photo and collect the resulting file GIDs. A failed
+  //    upload (a missing write_files scope, a staged-upload hiccup) costs the
+  //    photo, never the written review.
   const photoGids: string[] = [];
   for (const photo of input.photos) {
-    photoGids.push(await uploadPhoto(admin, photo));
+    try {
+      photoGids.push(await uploadPhoto(admin, photo));
+    } catch (error) {
+      console.error(
+        'Review photo upload failed; saving the review without it.',
+        error,
+      );
+    }
   }
 
   // 2. Create the review metaobject (starts DRAFT = pending moderation).
@@ -403,17 +427,18 @@ export async function submitReview(
     throw new Error('metaobjectCreate returned no metaobject id.');
   }
 
-  // 3. Append the review GID to the product's custom.reviews metafield.
-  const current = await admin<{
-    product: {metafield: {value: string} | null} | null;
-  }>(PRODUCT_REVIEWS_METAFIELD_QUERY, {
-    id: input.productGid,
-    namespace: REVIEWS_METAFIELD_NAMESPACE,
-    key: REVIEWS_METAFIELD_KEY,
-  });
-
-  const existingGids = parseGidList(current.product?.metafield?.value);
-  const nextGids = [...existingGids, reviewGid];
+  // 3. Add the review GID to the product's custom.reviews metafield, newest
+  //    first: the storefront reads only the first 50 references, so an
+  //    appended review would never appear once a product has more. Re-read
+  //    right before writing to keep the read-modify-write window short.
+  const {gids: existingGids} = await readProductReviewGids(
+    admin,
+    input.productGid,
+  );
+  const nextGids = [
+    reviewGid,
+    ...existingGids.filter((gid) => gid !== reviewGid),
+  ];
 
   const set = await admin<{
     metafieldsSet: {
@@ -452,10 +477,20 @@ export async function markReviewHelpful(
   const admin = createAdminClient(env);
 
   const current = await admin<{
-    metaobject: {field: {value: string | null} | null} | null;
+    metaobject: {
+      capabilities?: {publishable?: {status?: string | null} | null} | null;
+      field: {value: string | null} | null;
+      type: string;
+    } | null;
   }>(METAOBJECT_HELPFUL_QUERY, {id: reviewGid});
 
-  if (!current.metaobject) {
+  // Only published reviews can be voted on; any other metaobject id (a draft,
+  // another type) is treated as not found instead of reaching the update.
+  if (
+    !current.metaobject ||
+    current.metaobject.type !== REVIEW_METAOBJECT_TYPE ||
+    current.metaobject.capabilities?.publishable?.status !== 'ACTIVE'
+  ) {
     throw new ReviewValidationError('Review not found.');
   }
 
@@ -485,6 +520,20 @@ export async function markReviewHelpful(
 }
 
 // --- Helpers -----------------------------------------------------------------
+
+async function readProductReviewGids(admin: AdminClient, productGid: string) {
+  const current = await admin<{
+    product: {metafield: {value: string} | null} | null;
+  }>(PRODUCT_REVIEWS_METAFIELD_QUERY, {
+    id: productGid,
+    namespace: REVIEWS_METAFIELD_NAMESPACE,
+    key: REVIEWS_METAFIELD_KEY,
+  });
+  return {
+    exists: Boolean(current.product),
+    gids: parseGidList(current.product?.metafield?.value),
+  };
+}
 
 function parseGidList(value: string | null | undefined): string[] {
   if (!value) return [];

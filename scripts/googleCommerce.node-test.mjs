@@ -17,6 +17,7 @@ import {
   ecommerceValue,
   normalizeGoogleCommerceItem,
   normalizeGtmContainerId,
+  isRepeatedView,
   pruneAndRecordDedupeEntries,
   shouldEmitGoogleCommerceEvent,
 } from '../app/lib/googleCommerce.ts';
@@ -427,4 +428,40 @@ assert.match(handleCollectionSource, /<Analytics\.CollectionView/);
 assert.ok(
   !rootSource.includes('cookieDomain='),
   'Hydrogen Analytics.Provider must not receive a cookieDomain prop; Google cross-domain linking belongs in the optional GTM bridge',
+);
+
+// Hydrogen re-publishes views on query-string changes; those are not new views.
+const lastViews = new Map();
+const pdp = 'https://shopclaramendes.com/products/the-fold-art-print';
+assert.equal(isRepeatedView(lastViews, 'page_view', pdp), false);
+assert.equal(
+  isRepeatedView(lastViews, 'page_view', `${pdp}?Size=16+%C3%97+20+in`),
+  true,
+  'a variant pick is not a page view',
+);
+assert.equal(
+  isRepeatedView(lastViews, 'view_item', `${pdp}?Size=16+%C3%97+20+in`),
+  false,
+  'each event keeps its own history',
+);
+const shop = 'https://shopclaramendes.com/collections/all';
+assert.equal(isRepeatedView(lastViews, 'view_item_list', shop, 'c1'), false);
+assert.equal(
+  isRepeatedView(lastViews, 'view_item_list', `${shop}?cursor=abc`, 'c1'),
+  true,
+  'an infinite-scroll page is the same list view',
+);
+assert.equal(isRepeatedView(lastViews, 'page_view', shop), false);
+assert.equal(
+  isRepeatedView(lastViews, 'page_view', pdp),
+  false,
+  'back to the PDP is a new view',
+);
+assert.equal(
+  isRepeatedView(lastViews, 'search', '/search?q=blue', 'blue'),
+  false,
+);
+assert.equal(
+  isRepeatedView(lastViews, 'search', '/search?q=quiet', 'quiet'),
+  false,
 );

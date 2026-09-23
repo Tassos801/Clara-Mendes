@@ -20,7 +20,7 @@ function loadPlate(base: URL, path: string) {
   let plate = plateCache.get(path);
   if (!plate) {
     plate = fetchBytes(new URL(path, base)).catch((error: unknown) => {
-      console.error('sky-print: plate unavailable, using flat background', error);
+      console.error('sky-print: plate unavailable', error);
       plateCache.delete(path);
       return null;
     });
@@ -51,6 +51,14 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
     loadSkyFonts(url),
     loadPlate(url, platePath(theme.id, size)),
   ]);
+  // Every theme ships a plate, so a missing one is a transient fetch
+  // failure. Answer 503 so Prodigi retries rather than printing a paid order
+  // on a flat background that the customer never saw in the preview.
+  if (!plate)
+    return new Response('Plate temporarily unavailable', {
+      status: 503,
+      headers: {'Retry-After': '60'},
+    });
   const scene = computeSky({params: decoded.params, size, catalog});
   const pdf = await renderSkyPdf({
     scene,

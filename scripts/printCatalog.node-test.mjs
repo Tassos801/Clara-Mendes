@@ -7,17 +7,14 @@ import * as prints from '../app/lib/printCatalog.ts';
 
 /** A two-collection fixture so the gates are proven on data, not on today's catalog. */
 function fixture(released = []) {
-  const rooms = [
-    'living-room',
-    'bedroom',
-    'study',
-    'wide-interior',
-  ].map((key, index) => ({
-    alt: `Room ${index + 1}`,
-    backgroundFile: `${key}.png`,
-    key,
-    placement: {height: 250, left: 10, top: 10, width: 200},
-  }));
+  const rooms = ['living-room', 'bedroom', 'study', 'wide-interior'].map(
+    (key, index) => ({
+      alt: `Room ${index + 1}`,
+      backgroundFile: `${key}.png`,
+      key,
+      placement: {height: 250, left: 10, top: 10, width: 200},
+    }),
+  );
   const print = (slug, sequence) => ({
     alt: 'Alt',
     description: 'Description.',
@@ -129,6 +126,29 @@ test('a staged collection adds no shop filter and never changes the launch capsu
   assert.ok(capsules.CAPSULES.every((capsule) => capsule.handles.length === 3));
 });
 
+test('a PDP finds its print-catalog collection only once that print is released', () => {
+  const catalog = fixture(['alpha-one', 'alpha-three']);
+  assert.equal(
+    capsules.findShopCapsuleForHandle('alpha-one-art-print', catalog).slug,
+    'alpha-set',
+  );
+  assert.equal(
+    capsules.findShopCapsuleForHandle('ALPHA-THREE-ART-PRINT', catalog).slug,
+    'alpha-set',
+  );
+  assert.equal(
+    capsules.findShopCapsuleForHandle('alpha-two-art-print', catalog),
+    null,
+  );
+  assert.equal(
+    capsules.findShopCapsuleForHandle('quiet-form-i-art-print', catalog).slug,
+    capsules.CAPSULES.find((capsule) =>
+      capsule.handles.includes('quiet-form-i-art-print'),
+    ).slug,
+  );
+  assert.equal(capsules.findShopCapsuleForHandle('', catalog), null);
+});
+
 test('a partial release filters the right members and links to a real shop URL', () => {
   const catalog = fixture(['alpha-one', 'alpha-three', 'beta-one']);
   assert.equal(capsules.listShopCapsules(catalog).length, 7);
@@ -164,10 +184,9 @@ test('releasedSizes keeps staged expansion sizes out of consumer copy', () => {
   const [print] = beta.prints;
 
   assert.deepEqual(prints.validatePrintCatalog(catalog), []);
-  assert.deepEqual(
-    prints.releasedPrintCollections(catalog)[0].sizeLabels,
-    ['8 × 10 in'],
-  );
+  assert.deepEqual(prints.releasedPrintCollections(catalog)[0].sizeLabels, [
+    '8 × 10 in',
+  ]);
 
   print.releasedSizes.push('16x20');
   const problems = prints.validatePrintCatalog(catalog).join('\n');
