@@ -11,13 +11,17 @@ import {
   clip,
   closePath,
   endPath,
+  LineCapStyle,
   moveTo,
   PDFDocument,
   popGraphicsState,
   pushGraphicsState,
   rgb,
+  type PDFDict,
   type PDFFont,
+  type PDFName,
   type PDFPage,
+  type PDFRef,
   type RGB,
 } from 'pdf-lib';
 import {fitSubtitle, fitTitle, trackedWidth} from './fit.ts';
@@ -97,6 +101,34 @@ export function supported(font: PDFFont, text: string) {
   return kept.join('');
 }
 
+/**
+ * pdf-lib mints a fresh `/ExtGState` resource for every draw call that
+ * carries an opacity (PDFPage.maybeEmbedGraphicsState -> PDFPageLeaf.
+ * newExtGState), even when an identical one — same Type/ca/CA/BM — already
+ * sits in the page's resources: a star field, a Milky Way and a triple-ring
+ * glow easily produce thousands of draws sharing a few dozen distinct
+ * opacities, so unpatched this can add thousands of duplicate dicts (and
+ * hundreds of KB) to one page. Patch the page's own `newExtGState` with a
+ * cache keyed by the dict's serialised form (`dict.toString()`, which for
+ * these dicts prints only the Type/ca/CA/BM entries that are actually set)
+ * so a repeat opacity reuses the existing resource name. Deterministic: for
+ * a given scene the draw calls happen in the same order every render, so
+ * the same calls hit (and miss) the cache the same way every time.
+ */
+function dedupeExtGState(page: PDFPage) {
+  const cache = new Map<string, PDFName>();
+  const node = page.node;
+  const original = node.newExtGState.bind(node);
+  node.newExtGState = (tag: string, dict: PDFRef | PDFDict): PDFName => {
+    const key = dict.toString();
+    const cached = cache.get(key);
+    if (cached) return cached;
+    const name = original(tag, dict);
+    cache.set(key, name);
+    return name;
+  };
+}
+
 /** Everything drawn until the matching `pop` is clipped to the circle. */
 function pushCircleClip(page: PDFPage, cx: number, cy: number, r: number) {
   const k = r * KAPPA;
@@ -141,6 +173,7 @@ export async function renderSkyPdf({
   const italic = await doc.embedFont(fonts.italic, {subset: false});
   const {width: W, height: H, disc, scale} = scene;
   const page = doc.addPage([W, H]);
+  dedupeExtGState(page);
   const Y = (y: number) => H - y; // scene y grows downward
 
   page.drawRectangle({x: 0, y: 0, width: W, height: H, color: hex(theme.background)});
@@ -208,6 +241,10 @@ export async function renderSkyPdf({
       thickness: LINE_WIDTH * scale,
       color: hex(theme.line),
       opacity: theme.lineOpacity,
+      // Matches the SVG preview's strokeLinecap="round" on constellation
+      // lines. Grid spokes and compass ticks stay the PDF default (butt) in
+      // both renderers.
+      lineCap: LineCapStyle.Round,
     });
   }
 

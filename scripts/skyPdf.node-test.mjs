@@ -107,3 +107,26 @@ test('details add marks; a 20×24 compass with everything stays small', async ()
   assert.ok(contentStreams(b).length > contentStreams(a).length, 'names, grid and compass add content');
   assert.ok(b.byteLength < 3 * 1024 * 1024, `${b.byteLength} bytes`);
 });
+
+test('ExtGState dicts are deduplicated on the worst-case page', async () => {
+  // Southern-hemisphere winter midday: a near-empty sky would undercount
+  // this — this date/place/time was picked to maximise visible stars,
+  // glows and Milky Way discs (i.e. distinct opacity values) on one page.
+  const worst = validateSkyParams({
+    date: '2019-06-14',
+    time: '11:20',
+    lat: -30,
+    lon: 0,
+    tz: 'UTC',
+    place: 'Test, Test',
+    title: 'Worst case',
+    theme: 'linen',
+    layout: 'compass',
+    details: 'names,grid,time',
+  }).params;
+  const scene = computeSky({params: worst, size: '20x24', catalog});
+  const pdf = await renderSkyPdf({scene, theme: SKY_THEMES.linen, fonts, plate: plates['20x24'], createdAt});
+  const text = Buffer.from(pdf).toString('latin1');
+  const extGStates = text.match(/\/Type\s*\/ExtGState/g) ?? [];
+  assert.ok(extGStates.length < 100, `${extGStates.length} ExtGState dicts (worst case ${pdf.byteLength} bytes)`);
+});
