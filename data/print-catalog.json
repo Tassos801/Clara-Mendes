@@ -492,7 +492,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-22",
@@ -508,7 +508,29 @@
               "16x20": "gid://shopify/ProductVariant/60917850374478",
               "20x24": "gid://shopify/ProductVariant/60917850407246"
             }
-          }
+          },
+          "prodigi": {
+            "8x10": {
+              "channelProductId": "6133660",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "16x20": {
+              "channelProductId": "6133660",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "20x24": {
+              "channelProductId": "6133660",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "tidal-mirror",
@@ -563,7 +585,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-22",
@@ -579,7 +601,29 @@
               "16x20": "gid://shopify/ProductVariant/60917850505550",
               "20x24": "gid://shopify/ProductVariant/60917850538318"
             }
-          }
+          },
+          "prodigi": {
+            "8x10": {
+              "channelProductId": "6133661",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "16x20": {
+              "channelProductId": "6133661",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "20x24": {
+              "channelProductId": "6133661",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "winter-script",
@@ -634,7 +678,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-22",
@@ -650,7 +694,29 @@
               "16x20": "gid://shopify/ProductVariant/60917850603854",
               "20x24": "gid://shopify/ProductVariant/60917850636622"
             }
-          }
+          },
+          "prodigi": {
+            "8x10": {
+              "channelProductId": "6133662",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "16x20": {
+              "channelProductId": "6133662",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "20x24": {
+              "channelProductId": "6133662",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "fern-in-shadow",
@@ -705,7 +771,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-22",
@@ -721,7 +787,29 @@
               "16x20": "gid://shopify/ProductVariant/60917850702158",
               "20x24": "gid://shopify/ProductVariant/60917850734926"
             }
-          }
+          },
+          "prodigi": {
+            "8x10": {
+              "channelProductId": "6133672",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "16x20": {
+              "channelProductId": "6133672",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "20x24": {
+              "channelProductId": "6133672",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "where-mist-rests",
@@ -776,7 +864,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "method": "built-in image_gen",
             "created": "2026-09-22",
@@ -792,7 +880,29 @@
               "16x20": "gid://shopify/ProductVariant/60917850865998",
               "20x24": "gid://shopify/ProductVariant/60917850898766"
             }
-          }
+          },
+          "prodigi": {
+            "8x10": {
+              "channelProductId": "6133674",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "16x20": {
+              "channelProductId": "6133674",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            },
+            "20x24": {
+              "channelProductId": "6133674",
+              "verified": true,
+              "verifiedAt": "2026-09-23"
+            }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         }
       ]
     }

@@ -43,10 +43,14 @@ Physical print quality remains unverified until a proof or first order.
 
 ## Current launch state
 
-The catalog entries have `released: false`. All five web images, four room
-images per print, and the room hash manifest are prepared. `npm run product --
-status light-and-silence` reports the next step. Shopify staging requires a
-valid Admin session or `SHOPIFY_ADMIN_ACCESS_TOKEN`; Prodigi mapping is done in
-its dashboard for each of the 15 size variants. After mapping, run `media`,
-`release`, and live `verify` per the runbook. Until release, the collection is
-absent from customer-facing shop filters and product listings.
+Released 2026-09-23 in all three sizes. The five products were staged as
+Shopify Drafts on 2026-09-22; their ids were recorded on 2026-09-23. Prodigi
+channel products 6133660 (Veil of Stone), 6133661 (Tidal Mirror), 6133662
+(Winter Script), 6133672 (Fern in Shadow) and 6133674 (Where Mist Rests) map
+every size to the listed provider SKU with the matching print file, **Excellent**
+quality, full bleed, Standard shipping and automatic fulfilment, each read
+back after a reload. `media --apply` verified five READY images per product;
+`release --apply` untracked inventory, removed the pending tags, activated the
+products, confirmed all 15 variants on the Storefront API after they were
+published to Clara Mendes and Clara Mendes Headless in Admin, and wrote
+`releasedSizes`. Live `verify` runs after the PR is merged and deployed.

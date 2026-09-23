@@ -1025,3 +1025,18 @@ print remains blocked by the prior frame-only owner specification; the fleece
 blanket remains below delivered cost in Cyprus.
 
 Source: [Everyday canvas release](../everyday-canvas-release-2026-09-23.md).
+
+## 2026-09-23 - Light & Silence released
+
+The five monochrome prints were released in 8×10, 16×20 and 20×24. Their
+Shopify Draft ids (staged 2026-09-22 but never committed) were written back by
+an idempotent `stage --apply`. The 15 print files were regenerated from the
+committed sources, uploaded to the Prodigi image library and mapped per size on
+channel products 6133660–6133674 (provider SKU as listed, Excellent, Standard
+shipping, automatic fulfilment; read back after reload). `media --apply`
+verified the five-image galleries; `release --apply` activated the products,
+checked every variant on the Storefront API after the two storefront channels
+were included in Admin, and set `releasedSizes`. The owner re-approved all
+three sizes despite the 70 PPI (16×20) and 56 PPI (20×24) native detail.
+
+Source: [Light & Silence launch](../light-and-silence-launch.md).
