@@ -22,6 +22,9 @@ export type SkyTheme = {
   milkyWay: string;
   milkyWayOpacity: number;
   glow: string;
+  /** Moon glow colour and strength: light themes need a paler, weaker glow than `glow` gives, so the Moon doesn't read as a dark smudge on a white hole. */
+  moonGlow: string;
+  moonGlowStrength: number;
   moonFace: string;
   moonShade: string;
   moonShadeOpacity: number;
@@ -59,6 +62,8 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
     milkyWay: '#8a7d6b',
     milkyWayOpacity: 0.035,
     glow: '#3c3831',
+    moonGlow: '#fffaf0',
+    moonGlowStrength: 3,
     moonFace: '#f8f3ea',
     moonShade: '#26231f',
     moonShadeOpacity: 0.2,
@@ -90,6 +95,8 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
     milkyWay: '#e8dcc0',
     milkyWayOpacity: 0.05,
     glow: '#f1e3b8',
+    moonGlow: '#f1e3b8',
+    moonGlowStrength: 1,
     moonFace: '#f4ecd8',
     moonShade: '#f1e3b8',
     moonShadeOpacity: 0.12,
@@ -121,6 +128,8 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
     milkyWay: '#7a6a5a',
     milkyWayOpacity: 0.03,
     glow: '#2b2622',
+    moonGlow: '#fffdf8',
+    moonGlowStrength: 3,
     moonFace: '#fbf8f2',
     moonShade: '#2b2622',
     moonShadeOpacity: 0.2,

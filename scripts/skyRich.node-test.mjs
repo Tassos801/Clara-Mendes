@@ -5,6 +5,7 @@ import {
   GLOW_RINGS,
   LABEL_SIZE,
   LABEL_TRACKING,
+  MILKY_WAY_PASSES,
   MOON_RADIUS,
   milkyWayOpacity,
   starStyle,
@@ -43,10 +44,10 @@ test('galactic centre lands in Sagittarius (J2000)', () => {
   assert.ok(Math.abs(pole.ra - 192.8595) < 0.01 && Math.abs(pole.dec - 27.1283) < 0.01);
 });
 
-test('galaxy samples: every 2°, brightest and widest at the centre', () => {
-  assert.equal(GALAXY_SAMPLES.length, 180);
+test('galaxy samples: every 3°, brightest and widest at the centre', () => {
+  assert.equal(GALAXY_SAMPLES.length, 120);
   const centre = GALAXY_SAMPLES[0];
-  const anticentre = GALAXY_SAMPLES[90];
+  const anticentre = GALAXY_SAMPLES[60];
   assert.ok(centre.intensity > anticentre.intensity);
   assert.ok(centre.width > anticentre.width);
   assert.ok(GALAXY_SAMPLES.every((s) => s.intensity > 0 && s.intensity <= 1));
@@ -59,11 +60,12 @@ test('milky way opacity is quantised to limit PDF graphics states', () => {
 test('every theme defines the richer-sky tokens', () => {
   // `labelColor` (not `label`): the plan's `label` would collide with the
   // pre-existing SkyTheme.label display-name field (e.g. "Linen").
-  const colours = ['milkyWay', 'glow', 'moonFace', 'moonShade', 'moonEdge', 'grid', 'labelColor'];
+  const colours = ['milkyWay', 'glow', 'moonGlow', 'moonFace', 'moonShade', 'moonEdge', 'grid', 'labelColor'];
   const opacities = ['milkyWayOpacity', 'moonShadeOpacity', 'gridOpacity', 'labelColorOpacity'];
   for (const theme of Object.values(SKY_THEMES)) {
     for (const key of colours) assert.match(theme[key], /^#[0-9a-f]{6}$/, `${theme.id}.${key}`);
     for (const key of opacities) assert.ok(theme[key] > 0 && theme[key] <= 1, `${theme.id}.${key}`);
+    assert.ok(theme.moonGlowStrength > 0, `${theme.id}.moonGlowStrength`);
     assert.ok(theme.moonLit && theme.moonDark, `${theme.id} keeps First Light's tokens`);
   }
 });
@@ -119,7 +121,10 @@ test('richer sky: tone, glows, clipped lines, Milky Way, Moon', () => {
   assert.equal(scene.moon.r, MOON_RADIUS * scene.scale);
   // Spec budget: the SVG stays under ~6,000 drawn elements.
   const nodes =
-    scene.stars.length + scene.lines.length + scene.milkyWay.length * 2 + scene.glows.length * 3;
+    scene.stars.length +
+    scene.lines.length +
+    scene.milkyWay.length * MILKY_WAY_PASSES.length +
+    scene.glows.length * 3;
   assert.ok(nodes < 6000, `${nodes} SVG elements`);
   assert.equal(scene.grid, null);
   assert.deepEqual(scene.labels, []);
@@ -202,7 +207,7 @@ test('worst-case scene stays under the ~6,000 SVG element budget', () => {
   const nodes =
     scene.stars.length +
     scene.lines.length +
-    scene.milkyWay.length * 2 +
+    scene.milkyWay.length * MILKY_WAY_PASSES.length +
     scene.glows.length * 3 +
     (scene.grid ? scene.grid.circles.length + scene.grid.spokes.length : 0) +
     scene.labels.length +

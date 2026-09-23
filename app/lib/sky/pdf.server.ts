@@ -295,8 +295,8 @@ export async function renderSkyPdf({
         x: m.x,
         y: Y(m.y),
         size: m.r * g.radius,
-        color: hex(theme.glow),
-        opacity: g.opacity,
+        color: hex(theme.moonGlow),
+        opacity: Math.min(1, g.opacity * theme.moonGlowStrength),
       });
     }
     page.drawCircle({x: m.x, y: Y(m.y), size: m.r, color: hex(theme.background)});

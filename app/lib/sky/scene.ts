@@ -39,7 +39,7 @@ export type SceneMoon = {
 };
 /** A bright star's glow centre and the star's own radius. */
 export type SceneGlow = {x: number; y: number; r: number};
-/** One soft Milky Way disc: `r` is the outer-pass radius, in points; `intensity` is 0.45–1. */
+/** One soft Milky Way disc: `r` is the outer-pass radius, in points; `intensity` is 0–1 (faded near the horizon). */
 export type SceneGalaxy = {x: number; y: number; r: number; intensity: number};
 export type SceneGrid = {circles: number[]; spokes: SceneLine[]};
 export type SceneCompass = {
@@ -229,14 +229,17 @@ export function computeSky({
   // Discs just below the horizon still soften the band's edge; the
   // renderers clip everything to the ring. Discs that can't reach the ring
   // at all (fully below or far out at low altitude) are dropped outright
-  // rather than drawn for nothing.
+  // rather than drawn for nothing. Discs centred well below the horizon
+  // fade out over the last 8° instead of cutting off at a hard altitude,
+  // so they don't stack into a bright sliver hugging the ring.
   const milkyWay: SceneGalaxy[] = [];
   for (const g of sky.galaxy) {
-    if (g.alt < -20) continue;
+    if (g.alt <= -8) continue;
     const {x, y} = projectAltAz(g.alt, g.az, disc);
     const r = projectedRadius(g.alt, g.width, disc);
     if (Math.hypot(x - disc.cx, y - disc.cy) - r >= disc.r) continue;
-    milkyWay.push({x, y, r, intensity: g.intensity});
+    const fade = Math.min(1, (g.alt + 8) / 16);
+    milkyWay.push({x, y, r, intensity: g.intensity * fade});
   }
 
   const moon: SceneMoon | null =

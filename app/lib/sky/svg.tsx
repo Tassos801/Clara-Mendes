@@ -226,8 +226,8 @@ export function SkySvg({
                 cx={moon.x}
                 cy={moon.y}
                 r={moon.r * g.radius}
-                fill={theme.glow}
-                opacity={g.opacity}
+                fill={theme.moonGlow}
+                opacity={Math.min(1, g.opacity * theme.moonGlowStrength)}
               />
             ))}
             <circle cx={moon.x} cy={moon.y} r={moon.r} fill={theme.background} />

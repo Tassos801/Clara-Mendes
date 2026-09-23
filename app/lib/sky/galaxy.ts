@@ -40,9 +40,9 @@ export function galacticToEquatorial(lDeg: number, bDeg: number) {
 const fold = (l: number) => ((((l + 180) % 360) + 360) % 360) - 180;
 
 export const GALAXY_SAMPLES: GalaxySample[] = Array.from(
-  {length: 180},
+  {length: 120},
   (_, i) => {
-    const l = i * 2;
+    const l = i * 3;
     const core = Math.exp(-((fold(l) / 55) ** 2));
     return {
       ...galacticToEquatorial(l, 0),

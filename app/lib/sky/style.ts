@@ -16,10 +16,17 @@ export const GLOW_RINGS = [
   {radius: 5, opacity: 0.03},
 ] as const;
 
-/** Each Milky Way sample is drawn twice: a wide faint pass and a core. */
+/**
+ * Each Milky Way sample is drawn as five graduated passes, widest and
+ * faintest first, narrowest and brightest last, so the disc reads as a soft
+ * Gaussian-like falloff rather than a ring of hard-edged circles.
+ */
 export const MILKY_WAY_PASSES = [
-  {radius: 1, opacity: 0.45},
-  {radius: 0.5, opacity: 1},
+  {radius: 1, opacity: 0.16},
+  {radius: 0.78, opacity: 0.2},
+  {radius: 0.58, opacity: 0.24},
+  {radius: 0.4, opacity: 0.28},
+  {radius: 0.24, opacity: 0.32},
 ] as const;
 
 export const MOON_RADIUS = 9.5;
@@ -28,7 +35,7 @@ export const MOON_GLOW = [
   {radius: 2.3, opacity: 0.05},
 ] as const;
 export const MOON_EDGE_WIDTH = 0.35;
-export const MOON_EDGE_OPACITY = 0.55;
+export const MOON_EDGE_OPACITY = 0.35;
 
 /**
  * Planets: a ring of the scene's `SceneBody.r` (already scaled) with a dot
