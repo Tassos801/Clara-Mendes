@@ -500,6 +500,14 @@
             "nativeHeight": 1402,
             "nativeWidth": 1122,
             "sourceSha256": "18ad96bbd5df6f11ae3b710255d7a595e16e3f2a216aee87d15c06aa54db0ba6"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16088536449358",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60917850341710",
+              "16x20": "gid://shopify/ProductVariant/60917850374478",
+              "20x24": "gid://shopify/ProductVariant/60917850407246"
+            }
           }
         },
         {
@@ -563,6 +571,14 @@
             "nativeHeight": 1402,
             "nativeWidth": 1122,
             "sourceSha256": "2c47b46a90974e8d020cffdbf2ccfcc59ebe0b9db17599ec7e585d8fff185585"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16088536482126",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60917850472782",
+              "16x20": "gid://shopify/ProductVariant/60917850505550",
+              "20x24": "gid://shopify/ProductVariant/60917850538318"
+            }
           }
         },
         {
@@ -626,6 +642,14 @@
             "nativeHeight": 1402,
             "nativeWidth": 1122,
             "sourceSha256": "010d0d1f8342201877bc14263dcad62393941f208fb92ff331f882972fe347ea"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16088536514894",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60917850571086",
+              "16x20": "gid://shopify/ProductVariant/60917850603854",
+              "20x24": "gid://shopify/ProductVariant/60917850636622"
+            }
           }
         },
         {
@@ -689,6 +713,14 @@
             "nativeHeight": 1402,
             "nativeWidth": 1122,
             "sourceSha256": "6e67e4db873e2a1e5bdc53c4cb88e0c2845fb663d9ba1a725fb8a03c7b74cc20"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16088536547662",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60917850669390",
+              "16x20": "gid://shopify/ProductVariant/60917850702158",
+              "20x24": "gid://shopify/ProductVariant/60917850734926"
+            }
           }
         },
         {
@@ -752,6 +784,14 @@
             "nativeHeight": 1402,
             "nativeWidth": 1122,
             "sourceSha256": "a489523e020f40afedd714ee034de0e1c619b3c4c5dd129cd06a0bb891d7895d"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16088536645966",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60917850833230",
+              "16x20": "gid://shopify/ProductVariant/60917850865998",
+              "20x24": "gid://shopify/ProductVariant/60917850898766"
+            }
           }
         }
       ]
