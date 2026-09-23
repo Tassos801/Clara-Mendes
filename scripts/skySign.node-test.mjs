@@ -65,3 +65,27 @@ test('the cart signature never verifies as a print token', async () => {
   assert.equal(decoded.ok, false);
   assert.equal(decoded.error, 'Bad signature.');
 });
+
+test('print tokens carry v2 layout and details, and v1 tokens still decode', async () => {
+  const base = {
+    date: '2019-06-14',
+    time: '22:00',
+    lat: 48.8566,
+    lon: 2.3522,
+    tz: 'Europe/Paris',
+    place: 'Paris, France',
+    title: 'The night we met',
+    theme: 'linen',
+  };
+  const secret = 'test-secret-for-v2';
+  for (const input of [
+    {...base, layout: 'compass', details: 'names,grid,time'},
+    {...base, v: 1},
+  ]) {
+    const params = validateSkyParams(input).params;
+    const token = await encodeSkyToken(params, secret);
+    const decoded = await decodeSkyToken(token, secret);
+    assert.equal(decoded.ok, true, JSON.stringify(input));
+    assert.deepEqual(decoded.params, params);
+  }
+});

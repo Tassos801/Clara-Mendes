@@ -17,8 +17,45 @@ export const SKY_THEME_LABELS: Record<SkyThemeId, string> = {
   'quiet-form': 'Quiet Form',
 };
 
+export type SkyLayoutId = 'classic' | 'compass' | 'full' | 'minimal';
+export const SKY_LAYOUT_IDS: SkyLayoutId[] = ['classic', 'compass', 'full', 'minimal'];
+export const SKY_LAYOUT_LABELS: Record<SkyLayoutId, string> = {
+  classic: 'Classic',
+  compass: 'Compass',
+  full: 'Full sky',
+  minimal: 'Minimal',
+};
+
+/** Optional print details, in their canonical (signed) order. */
+export type SkyDetail = 'names' | 'grid' | 'time';
+export const SKY_DETAIL_IDS: SkyDetail[] = ['names', 'grid', 'time'];
+export const SKY_DETAIL_LABELS: Record<SkyDetail, string> = {
+  names: 'Constellation names',
+  grid: 'Grid',
+  time: 'Time',
+};
+
+/**
+ * Details from a list or a comma string, deduplicated and sorted into
+ * canonical order. `''`, `'none'` and missing mean no details; an unknown
+ * entry makes the whole value invalid (null).
+ */
+export function parseSkyDetails(value: unknown): SkyDetail[] | null {
+  if (value == null || value === '' || value === 'none') return [];
+  const items = Array.isArray(value) ? value.map(String) : String(value).split(',');
+  const chosen = new Set<string>();
+  for (const raw of items) {
+    const item = raw.trim();
+    if (!item) continue;
+    if (!(SKY_DETAIL_IDS as string[]).includes(item)) return null;
+    chosen.add(item);
+  }
+  return SKY_DETAIL_IDS.filter((id) => chosen.has(id));
+}
+
 export type SkyParams = {
-  v: 1;
+  /** 1 = legacy (no layout/details in the signed form); 2 = current. */
+  v: 1 | 2;
   /** YYYY-MM-DD, local calendar date at the place. */
   date: string;
   /** HH:MM, local wall-clock time at the place. */
@@ -34,11 +71,15 @@ export type SkyParams = {
   /** Customer title line, may be empty. */
   title: string;
   theme: SkyThemeId;
+  /** Always 'classic' for v1. */
+  layout: SkyLayoutId;
+  /** Canonical order; always empty for v1. */
+  details: SkyDetail[];
 };
 
 export type SkyParamsInput = Partial<
   Record<keyof Omit<SkyParams, 'v'>, unknown>
->;
+> & {v?: unknown};
 
 export type SkyValidation =
   | {ok: true; params: SkyParams}
@@ -101,6 +142,12 @@ export function sanitizeText(value: unknown) {
 }
 
 export function validateSkyParams(input: SkyParamsInput): SkyValidation {
+  const versionText =
+    input.v == null || input.v === '' ? '2' : String(input.v);
+  if (versionText !== '1' && versionText !== '2') {
+    return {ok: false, error: 'Unsupported personalisation version.'};
+  }
+  const v: 1 | 2 = versionText === '1' ? 1 : 2;
   const date = String(input.date ?? '');
   const match = date.match(DATE_RE);
   if (!match) return {ok: false, error: 'Choose a date.'};
@@ -173,10 +220,23 @@ export function validateSkyParams(input: SkyParamsInput): SkyValidation {
     return {ok: false, error: 'Unknown style.'};
   }
 
+  let layout: SkyLayoutId = 'classic';
+  let details: SkyDetail[] = [];
+  if (v === 2) {
+    const layoutInput = String(input.layout ?? 'classic') as SkyLayoutId;
+    if (!SKY_LAYOUT_IDS.includes(layoutInput)) {
+      return {ok: false, error: 'Unknown layout.'};
+    }
+    layout = layoutInput;
+    const parsedDetails = parseSkyDetails(input.details);
+    if (!parsedDetails) return {ok: false, error: 'Unknown print detail.'};
+    details = parsedDetails;
+  }
+
   return {
     ok: true,
     params: {
-      v: 1,
+      v,
       date,
       time,
       lat: round4(lat),
@@ -185,13 +245,19 @@ export function validateSkyParams(input: SkyParamsInput): SkyValidation {
       place,
       title,
       theme,
+      layout,
+      details,
     },
   };
 }
 
-/** Fixed key order; this exact string is what gets signed. */
+/**
+ * Fixed key order; this exact string is what gets signed. v1 keeps its
+ * original nine keys byte for byte, so signatures and print tokens made
+ * before v2 still verify.
+ */
 export function canonicalSkyParams(p: SkyParams) {
-  return [
+  const base = [
     `v=${p.v}`,
     `date=${p.date}`,
     `time=${p.time}`,
@@ -201,12 +267,19 @@ export function canonicalSkyParams(p: SkyParams) {
     `place=${encodeURIComponent(p.place)}`,
     `title=${encodeURIComponent(p.title)}`,
     `theme=${p.theme}`,
+  ];
+  if (p.v === 1) return base.join('&');
+  return [
+    ...base,
+    `layout=${p.layout}`,
+    `details=${p.details.length ? p.details.join(',') : 'none'}`,
   ].join('&');
 }
 
 export function parseCanonicalSkyParams(canonical: string): SkyValidation {
   const entries = new URLSearchParams(canonical);
   return validateSkyParams({
+    v: entries.get('v'),
     date: entries.get('date'),
     time: entries.get('time'),
     lat: entries.get('lat'),
@@ -215,6 +288,8 @@ export function parseCanonicalSkyParams(canonical: string): SkyValidation {
     place: entries.get('place'),
     title: entries.get('title') ?? '',
     theme: entries.get('theme'),
+    layout: entries.get('layout'),
+    details: entries.get('details'),
   });
 }
 
@@ -255,6 +330,15 @@ export function toCartAttributes(p: SkyParams, sig?: string): CartAttribute[] {
   const attrs: CartAttribute[] = [
     ...(p.title ? [{key: 'Title', value: p.title}] : []),
     {key: 'Style', value: SKY_THEME_LABELS[p.theme]},
+    ...(p.v === 2 ? [{key: 'Layout', value: SKY_LAYOUT_LABELS[p.layout]}] : []),
+    ...(p.v === 2 && p.details.length
+      ? [
+          {
+            key: 'Details',
+            value: p.details.map((d) => SKY_DETAIL_LABELS[d]).join(' · '),
+          },
+        ]
+      : []),
     {key: 'Place', value: p.place},
     {key: 'Date', value: formatSkyDate(p)},
     {key: '_v', value: String(p.v)},
@@ -264,6 +348,12 @@ export function toCartAttributes(p: SkyParams, sig?: string): CartAttribute[] {
     {key: '_lon', value: String(p.lon)},
     {key: '_tz', value: p.tz},
     {key: '_theme', value: p.theme},
+    ...(p.v === 2
+      ? [
+          {key: '_layout', value: p.layout},
+          {key: '_details', value: p.details.length ? p.details.join(',') : 'none'},
+        ]
+      : []),
   ];
   if (sig) attrs.push({key: '_sig', value: sig});
   return attrs;
@@ -280,10 +370,14 @@ export function fromCartAttributes(
     | undefined,
 ): CartAttributesDecode {
   const map = new Map((attrs ?? []).map((a) => [a.key, a.value ?? '']));
-  if (map.get('_v') !== '1' || map.has('_kind')) {
+  const version = map.get('_v');
+  if ((version !== '1' && version !== '2') || map.has('_kind')) {
     return {ok: false, error: 'Not a sky line.'};
   }
   const result = validateSkyParams({
+    v: version,
+    layout: map.get('_layout'),
+    details: map.get('_details'),
     date: map.get('_date'),
     time: map.get('_time'),
     lat: map.get('_lat'),
