@@ -975,3 +975,53 @@ Prodigi mapping, and owner review of native image detail (140.2, 70.1, and
 56.1 PPI for the three sizes). Source PNGs are tracked for repeatable export.
 The owner approved the three-size prices, source softness, and 20×24 crop
 after preview review; physical print quality is still unverified.
+
+## 2026-09-23 - Bug sweep two
+
+Reviewed PRs #80–#82, crawled the live site and audited server and client
+code. Fixed: paid star maps or birth posters bought without their signed
+properties (a `/cart` permalink) were acknowledged as "no personalised lines"
+and never fulfilled — now flagged "needs attention"; a missing print plate
+now answers 503 so Prodigi retries instead of printing a flat background;
+redirect targets are re-serialised (`toLocalPath`) so a non-Latin-1 path no
+longer 500s after the cart mutation; reviews check the product before
+uploading, keep the review when a photo upload fails, list newest first
+(the PDP reads the first 50), and "helpful" votes only count published
+reviews; the reviews Admin API version moves from the retired 2025-01 to
+2026-07. Storefront: print-catalog prints get their collection in the
+breadcrumb and as "Pair with" companions (`findShopCapsuleForHandle`);
+size copy lists only sizes on sale; one-value pickers (Finish: Unframed) are
+hidden; a partial option link (`?Size=` without `Finish=`) resolves to the
+matching variant; Product JSON-LD with several variants is a `ProductGroup`
+with per-variant offer URLs; the PDP remounts per product (quantity and
+review drafts no longer carry over); drawers and the zoom view keep Tab
+focus inside; blocked sessionStorage no longer crashes Your Sky; blog and
+order dates format in UTC (hydration); Google Commerce views count once per
+pathname. The Sci-fi & Cinema filter URL is in the custom sitemap with its
+own share image; "N capsules · N works" copy derives from the catalog data
+(`app/lib/catalogSummary.ts`); `/blogs` redirects to the journal. Pipeline:
+`verify` checks `releasedSizes` (staged sizes must be unbuyable), `stage`
+no longer aborts on a released print that only needs `expand`, and
+`prepare` colour-manages CMYK/greyscale sources instead of embedding their
+profile in an RGB file. Dependencies: Hydrogen 2026.4.5, React Router 7.18.4
+(production audit now clean), mini-oxygen 4.2.2 and tooling patches.
+Open: review spam limits beyond the session cooldown, customer order history
+on `/account`, and `SHOPIFY_ADMIN_ACCESS_TOKEN` `write_files` scope for
+review photos are owner items.
+
+## 2026-09-23 - Everyday canvas release
+
+Released the 16 × 20 in stretched canvas after the owner waived samples.
+Prodigi showed all five variants automatically fulfilled on `GLOBAL-CAN-16X20`
+with Acceptable uploaded files and Standard shipping. The Cyprus supplier
+quote was €66.45 delivered, against €89 retail before customer shipping.
+Shopify was set Active on the Clara Mendes and Clara Mendes Headless channels;
+all five Storefront API variants were available and cartable. The manual
+Everyday collection gained the canvas, greeting card, and postcard, and its
+storefront flag now permits the collection route and sitemap. The large print
+draft was kept hidden after a same-format and artwork comparison found its
+€49 price duplicated the existing €39.99 original-art variant. The framed
+print remains blocked by the prior frame-only owner specification; the fleece
+blanket remains below delivered cost in Cyprus.
+
+Source: [Everyday canvas release](../everyday-canvas-release-2026-09-23.md).

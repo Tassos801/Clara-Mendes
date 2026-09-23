@@ -12,7 +12,7 @@ import {
   relevantCartWarnings,
   removeUnfulfilledLines,
 } from '~/lib/cartLineWarnings';
-import {isLocalPath} from '~/lib/redirect';
+import {toLocalPath} from '~/lib/redirect';
 import {signSkyCartLines} from '~/lib/sky/cartLines.server';
 
 export const meta: Route.MetaFunction = () => {
@@ -120,9 +120,9 @@ export async function action({request, context}: Route.ActionArgs) {
   const headers = cartResult?.id
     ? cart.setCartId(cartResult.id)
     : new Headers();
-  const redirectTo = formData.get('redirectTo');
+  const redirectTo = toLocalPath(formData.get('redirectTo'));
 
-  if (typeof redirectTo === 'string' && isLocalPath(redirectTo)) {
+  if (redirectTo) {
     status = 303;
     headers.set('Location', redirectTo);
   }

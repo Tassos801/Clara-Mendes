@@ -303,10 +303,12 @@ function KarinaJournal({
 
 function formatIssueDate(publishedAt?: string | null) {
   if (!publishedAt) return '';
+  // A fixed zone keeps the server and browser text identical for hydration.
   return new Intl.DateTimeFormat('en-GB', {
     year: 'numeric',
     month: 'short',
     day: '2-digit',
+    timeZone: 'UTC',
   }).format(new Date(publishedAt));
 }
 
@@ -489,6 +491,7 @@ function ArticleItem({
     year: 'numeric',
     month: 'long',
     day: 'numeric',
+    timeZone: 'UTC',
   }).format(new Date(article.publishedAt!));
   return (
     <div className="blog-article" key={article.id}>

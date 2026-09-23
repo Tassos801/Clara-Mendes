@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 import {useLocation} from 'react-router';
+import {FOCUSABLE_SELECTOR, keepTabInside} from '~/lib/focusTrap';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -100,14 +101,13 @@ Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
     const panel = document.querySelector<HTMLElement>(
       `[data-aside-panel="${type}"]`,
     );
-    const focusTarget = panel?.querySelector<HTMLElement>(
-      'button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    );
+    const focusTarget = panel?.querySelector<HTMLElement>(FOCUSABLE_SELECTOR);
     const focusFrame = window.requestAnimationFrame(() => {
       (focusTarget ?? panel)?.focus();
     });
     const handleKeydown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') close();
+      if (event.key === 'Tab' && panel) keepTabInside(event, panel);
     };
 
     document.body.style.overflow = 'hidden';

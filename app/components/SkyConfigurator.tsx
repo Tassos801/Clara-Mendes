@@ -86,6 +86,26 @@ export type SkyConfiguratorStatus = {
  * purchasable params after the current input and the rendered preview share
  * the same canonical key.
  */
+// With site data blocked the sessionStorage getter itself throws
+// (SecurityError), and setItem can throw on quota; the draft is a nicety, so
+// neither may take the page down.
+function readSessionDraft() {
+  try {
+    return window.sessionStorage.getItem(SKY_DRAFT_STORAGE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function writeSessionDraft(value: string | null) {
+  try {
+    if (value === null) window.sessionStorage.removeItem(SKY_DRAFT_STORAGE_KEY);
+    else window.sessionStorage.setItem(SKY_DRAFT_STORAGE_KEY, value);
+  } catch {
+    // Drafts simply do not persist in this browser.
+  }
+}
+
 export function SkyConfigurator({
   finish,
   initialTheme,
@@ -166,10 +186,7 @@ export function SkyConfigurator({
       setRestored(true);
       return;
     }
-    const restoredDraft = parseSkyDraft(
-      window.sessionStorage.getItem(SKY_DRAFT_STORAGE_KEY),
-      initialTheme,
-    );
+    const restoredDraft = parseSkyDraft(readSessionDraft(), initialTheme);
     if (restoredDraft) {
       setPlace(restoredDraft.place);
       setPlaceQuery(restoredDraft.place?.label ?? '');
@@ -195,12 +212,9 @@ export function SkyConfigurator({
       time === SKY_DEFAULT_TIME &&
       theme === initialTheme
     ) {
-      window.sessionStorage.removeItem(SKY_DRAFT_STORAGE_KEY);
+      writeSessionDraft(null);
     } else {
-      window.sessionStorage.setItem(
-        SKY_DRAFT_STORAGE_KEY,
-        serializeSkyDraft({place, date, time, title, theme}),
-      );
+      writeSessionDraft(serializeSkyDraft({place, date, time, title, theme}));
     }
   }, [date, initialTheme, place, restored, theme, time, title]);
 
@@ -378,7 +392,7 @@ export function SkyConfigurator({
     setTouched(false);
     setPlaceBlurred(false);
     setDateBlurred(false);
-    window.sessionStorage.removeItem(SKY_DRAFT_STORAGE_KEY);
+    writeSessionDraft(null);
   }
 
   function handlePlaceKeyDown(event: KeyboardEvent<HTMLInputElement>) {

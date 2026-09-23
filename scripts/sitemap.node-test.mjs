@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {releasedPrintCollections} from '../app/lib/printCatalog.ts';
 import {
   buildCustomRoutesSitemapXml,
   CUSTOM_SITEMAP_PATHS,
@@ -23,6 +24,8 @@ const xml = [
   entry('https://shopclaramendes.com/products/first-light-birth-poster'),
   entry('https://shopclaramendes.com/products/fine-art-greeting-card'),
   entry('https://shopclaramendes.com/products/fine-art-postcard'),
+  entry('https://shopclaramendes.com/products/large-fine-art-print-16x20'),
+  entry('https://shopclaramendes.com/products/stretched-canvas-art-16x20'),
   entry(
     'https://shopclaramendes.com/products/art-premium-fleece-blanket-30x40',
   ),
@@ -53,6 +56,8 @@ assert.ok(
 // live Shopify handle until the in-place rename runs.
 assert.ok(filtered.includes('/products/fine-art-greeting-card'));
 assert.ok(filtered.includes('/products/fine-art-postcard'));
+assert.ok(!filtered.includes('/products/large-fine-art-print-16x20'));
+assert.ok(filtered.includes('/products/stretched-canvas-art-16x20'));
 assert.ok(
   !filtered.includes('/products/art-premium-fleece-blanket-30x40'),
   'dark blanket leaked into the sitemap',
@@ -65,11 +70,10 @@ assert.ok(
   !filtered.includes('/products/clara-mendes-art-calendar-2026'),
   'retired calendar handle leaked into the sitemap',
 );
-// The Everyday collection is a manual collection that is still empty (its
-// route redirects), so its URL stays out until it is populated in Admin.
+// The Everyday collection is now populated with three released families.
 assert.ok(
-  !filtered.includes('/collections/clara-mendes-art-living'),
-  'empty Everyday collection leaked into the sitemap',
+  filtered.includes('/collections/clara-mendes-art-living'),
+  'populated Everyday collection missing from the sitemap',
 );
 assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));
@@ -87,6 +91,10 @@ assert.deepEqual(
     '/collections/neo-deco',
     '/collections/midnight-garden',
     '/collections/sunlit-mosaic',
+    // Released print-catalog collections: their shop filter is the page.
+    ...releasedPrintCollections().map(
+      (collection) => `/collections/all?capsule=${collection.slug}`,
+    ),
     '/collections/terracotta-wall-art',
     '/collections/blue-abstract-wall-art',
     '/collections/geometric-wall-art',
@@ -181,10 +189,8 @@ assert.equal(
 // manual collections, legacy handles) must not be advertised either — the
 // live Shopify sitemap listed two empty "everyday living" collections.
 {
-  const {
-    isValidSitemapRequest,
-    sitemapLink,
-  } = await import('../app/lib/sitemap.ts');
+  const {isValidSitemapRequest, sitemapLink} =
+    await import('../app/lib/sitemap.ts');
   const collectionsXml = [
     '<urlset>',
     entry('https://shopclaramendes.com/collections/art-for-everyday-living'),
@@ -193,16 +199,30 @@ assert.equal(
     '</urlset>',
   ].join('\n');
   const kept = removeExcludedSitemapEntries(collectionsXml);
-  assert.ok(!kept.includes('art-for-everyday-living'), 'empty collection advertised');
-  assert.ok(kept.includes('/collections/quiet-form'), 'capsule collection dropped');
+  assert.ok(
+    !kept.includes('art-for-everyday-living'),
+    'empty collection advertised',
+  );
+  assert.ok(
+    kept.includes('/collections/quiet-form'),
+    'capsule collection dropped',
+  );
 
   // Articles are served under their blog, never under /articles.
   assert.equal(
-    sitemapLink({type: 'articles', baseUrl: 'https://shopclaramendes.com', handle: 'why-karina-of-time'}),
+    sitemapLink({
+      type: 'articles',
+      baseUrl: 'https://shopclaramendes.com',
+      handle: 'why-karina-of-time',
+    }),
     'https://shopclaramendes.com/blogs/karina-of-time/why-karina-of-time',
   );
   assert.equal(
-    sitemapLink({type: 'products', baseUrl: 'https://shopclaramendes.com', handle: 'quiet-form-i-art-print'}),
+    sitemapLink({
+      type: 'products',
+      baseUrl: 'https://shopclaramendes.com',
+      handle: 'quiet-form-i-art-print',
+    }),
     'https://shopclaramendes.com/products/quiet-form-i-art-print',
   );
 

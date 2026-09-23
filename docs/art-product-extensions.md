@@ -141,14 +141,19 @@ Clara Mendes Headless catalogs plus Facebook & Instagram (mirroring the live
 prints), their three Pending gate tags are removed, and the storefront flags
 are true. The first real card order is the first physical QC
 (`docs/first-order-runbook.md`; its tracking step does not apply to letter
-post). Two follow-ups found by the post-release review: the products belong
-to no Shopify collection — the extension sync tags but never assigns, so the
-"Art for Everyday Living" collection is empty and its route redirects until
-the owner adds the two products in Admin and flips
-`EXTENSION_COLLECTION_POPULATED` in `app/lib/catalogFilters.ts`; and the
-shop's type filter now derives its tabs from the released families
+post). The Shopify collection assignment was completed on 2026-09-23 and
+`EXTENSION_COLLECTION_POPULATED` is now true. The shop's type filter derives
+its tabs from the released families
 (`releasedExtensionProductTypes()`), so `?type=Cards` and `?type=Postcards`
 resolve.
+
+On 2026-09-23, the Stretched Canvas Art family was released in all five art
+variants after live Prodigi, delivered-cost, Shopify, and Storefront cart
+checks. The owner waived physical samples for this release. The other nine
+families remain Draft, including the duplicate Large Fine Art Print and the
+previously withdrawn framed print. See
+[Everyday canvas release](everyday-canvas-release-2026-09-23.md) for evidence
+and remaining blocks.
 
 On 2026-09-01, the calendar family was re-pointed at the 2027 edition. Prodigi's
 public product page states the dated calendar SKUs now include 2027 date grids
