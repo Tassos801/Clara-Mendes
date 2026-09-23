@@ -3,6 +3,8 @@ import test from 'node:test';
 import {
   GLOW_COUNT,
   GLOW_RINGS,
+  LABEL_SIZE,
+  LABEL_TRACKING,
   MOON_RADIUS,
   milkyWayOpacity,
   starStyle,
@@ -113,7 +115,8 @@ test('richer sky: tone, glows, clipped lines, Milky Way, Moon', () => {
   assert.ok(scene.lines.some((l) => onRing(l.x1, l.y1) || onRing(l.x2, l.y2)), 'some lines clipped at the ring');
   assert.ok(scene.milkyWay.length > 20, `${scene.milkyWay.length} galaxy discs`);
   assert.ok(scene.milkyWay.every((m) => m.r > 0 && m.intensity > 0));
-  if (scene.moon) assert.equal(scene.moon.r, MOON_RADIUS * scene.scale);
+  assert.ok(scene.moon, 'the Moon is up over Paris at 22:00 on 2019-06-14');
+  assert.equal(scene.moon.r, MOON_RADIUS * scene.scale);
   // Spec budget: the SVG stays under ~6,000 drawn elements.
   const nodes =
     scene.stars.length + scene.lines.length + scene.milkyWay.length * 2 + scene.glows.length * 3;
@@ -145,8 +148,94 @@ test('layouts: compass ring and per-layout disc sizes', () => {
     compass.compass.numerals.map((n) => n.text),
     ['30', '60', '120', '150', '210', '240', '300', '330'],
   );
+  const sixty = compass.compass.numerals.find((n) => n.text === '60');
+  assert.ok(sixty.x < compass.disc.cx, 'east is on the left, so 60° sits left of centre');
   const r = (layout) => computeSky({params: sky({layout}), size: '8x10', catalog}).disc.r;
   assert.ok(r('full') > r('classic') && r('classic') > r('compass') && r('compass') > r('minimal'));
   const minimal = computeSky({params: sky({layout: 'minimal'}), size: '8x10', catalog});
   assert.ok(minimal.stars.every((s) => inDisc(minimal, s.x, s.y)));
+});
+
+test('glows are exactly the GLOW_COUNT lowest-magnitude visible stars', () => {
+  const scene = computeSky({params: sky(), size: '8x10', catalog});
+  const expected = [...scene.stars]
+    .sort((a, b) => a.mag - b.mag)
+    .slice(0, GLOW_COUNT)
+    .map(({x, y, r}) => ({x, y, r}));
+  assert.deepEqual(scene.glows, expected);
+});
+
+test('horizon crossing handles the 360° wrap and lies on the great circle', () => {
+  const a = {alt: 5, az: 355};
+  const b = {alt: -5, az: 5};
+  const p = horizonCrossing(a, b);
+  const wrapDistance = Math.min(p.az, 360 - p.az);
+  assert.ok(wrapDistance < 0.5, `az ${p.az}`);
+
+  const toVec = ({alt, az}) => {
+    const A = (alt * Math.PI) / 180;
+    const Z = (az * Math.PI) / 180;
+    return [Math.cos(A) * Math.cos(Z), Math.cos(A) * Math.sin(Z), Math.sin(A)];
+  };
+  const [va, vb, vp] = [toVec(a), toVec(b), toVec(p)];
+  const cross = [
+    va[1] * vb[2] - va[2] * vb[1],
+    va[2] * vb[0] - va[0] * vb[2],
+    va[0] * vb[1] - va[1] * vb[0],
+  ];
+  const triple = cross[0] * vp[0] + cross[1] * vp[1] + cross[2] * vp[2];
+  assert.ok(Math.abs(triple) < 1e-6, `triple product ${triple}`);
+});
+
+test('worst-case scene stays under the ~6,000 SVG element budget', () => {
+  const params = sky({
+    layout: 'compass',
+    details: 'names,grid,time',
+    lat: -30,
+    lon: 0,
+    tz: 'UTC',
+    place: 'Test, Test',
+    date: '2019-06-14',
+    time: '11:20',
+  });
+  const scene = computeSky({params, size: '20x24', catalog});
+  const nodes =
+    scene.stars.length +
+    scene.lines.length +
+    scene.milkyWay.length * 2 +
+    scene.glows.length * 3 +
+    (scene.grid ? scene.grid.circles.length + scene.grid.spokes.length : 0) +
+    scene.labels.length +
+    (scene.compass ? scene.compass.ticks.length + scene.compass.numerals.length : 0) +
+    scene.planets.length * 2 +
+    (scene.moon ? 6 : 0) +
+    12; // rings, cardinals, title/subtitle/credit text
+  assert.ok(nodes < 6000, `${nodes} SVG elements`);
+});
+
+test('names detail with no catalog names does not throw and yields no labels', () => {
+  const scene = computeSky({
+    params: sky({details: 'names'}),
+    size: '8x10',
+    catalog: {...catalog, names: undefined},
+  });
+  assert.deepEqual(scene.labels, []);
+});
+
+test('labels never overlap a planet marker', () => {
+  const scene = computeSky({params: sky({details: 'names,grid,time'}), size: '8x10', catalog});
+  const overlaps = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+  const labelBox = (l) => {
+    const size = LABEL_SIZE * scene.scale;
+    const tracking = LABEL_TRACKING * scene.scale;
+    const width = l.text.length * size * 0.66 + tracking * (l.text.length - 1);
+    return {x0: l.x - width / 2, x1: l.x + width / 2, y0: l.y - size * 0.9, y1: l.y + size * 0.3};
+  };
+  for (const l of scene.labels) {
+    const lb = labelBox(l);
+    for (const p of scene.planets) {
+      const pb = {x0: p.x - 2 * p.r, x1: p.x + 2 * p.r, y0: p.y - 2 * p.r, y1: p.y + 2 * p.r};
+      assert.ok(!overlaps(lb, pb), `${l.text} overlaps a planet marker`);
+    }
+  }
 });

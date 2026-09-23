@@ -1,12 +1,14 @@
 /**
  * Greedy constellation-label placement: brightest-rank constellations
  * first, each label kept only if its box stays inside the disc and clears
- * every label (and avoided box, e.g. the Moon) placed before it. Widths are
- * estimated (tracked capitals ≈ 0.66 em each) — good enough for spacing;
- * the renderers centre the real glyphs on (x, y).
+ * every label (and avoided box, e.g. the Moon or a planet) placed before
+ * it. Widths are estimated (tracked capitals ≈ 0.66 em each) — good enough
+ * for spacing; the renderers draw the real glyphs horizontally centred on
+ * x, with y as the text baseline.
  */
 import type {Disc} from './projection.ts';
 
+/** x is the horizontal centre; y is the text baseline. */
 export type SceneLabel = {x: number; y: number; text: string};
 export type LabelBox = {x0: number; y0: number; x1: number; y1: number};
 export type LabelCandidate = SceneLabel & {rank: number};

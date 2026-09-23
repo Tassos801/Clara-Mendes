@@ -19,7 +19,8 @@ export type SkyPageLayout = SkyLayout & {
    * How far the cardinal letters sit outside the disc. scene.ts places the
    * baselines from this: N at r + offset − 2·scale above the centre, S at
    * r + offset + 5·scale below, E/W at r + offset + scale to the side.
-   * Classic (offset 11, scale 1) reproduces the old fixed 9 / 16 / 12.
+   * Classic reproduces the old 9/16/12; E/W baseline moves 0.01·scale
+   * (cardinalSize × 0.43 = 3.01·scale vs. the old fixed 3·scale).
    */
   cardinalOffset: number;
 };

@@ -13,6 +13,7 @@ import {
   GLOW_COUNT,
   LABEL_SIZE,
   LABEL_TRACKING,
+  MOON_GLOW,
   MOON_RADIUS,
   starStyle,
   TICK,
@@ -38,14 +39,20 @@ export type SceneMoon = {
 };
 /** A bright star's glow centre and the star's own radius. */
 export type SceneGlow = {x: number; y: number; r: number};
-/** One soft Milky Way disc. */
+/** One soft Milky Way disc: `r` is the outer-pass radius, in points; `intensity` is 0.45–1. */
 export type SceneGalaxy = {x: number; y: number; r: number; intensity: number};
 export type SceneGrid = {circles: number[]; spokes: SceneLine[]};
 export type SceneCompass = {
   ticks: SceneLine[];
+  /** x is the horizontal centre; y is the text baseline. */
   numerals: Array<{x: number; y: number; text: string}>;
 };
 
+/**
+ * Milky Way discs, glows and the Moon's glow may extend past `disc`'s
+ * radius even though their centres don't — every renderer must clip its
+ * drawing to the disc, not just skip out-of-disc centres.
+ */
 export type SkyScene = SkyPageLayout & {
   stars: SceneStar[];
   glows: SceneGlow[];
@@ -65,6 +72,9 @@ export type SkyScene = SkyPageLayout & {
 };
 
 const DEG = Math.PI / 180;
+
+/** Labels this close to the horizon get clipped by the ring, so skip them. */
+const LABEL_MIN_ALTITUDE = 4;
 
 const MONTHS = [
   'JANUARY',
@@ -99,13 +109,19 @@ export function skySubtitle(p: SkyParams) {
 
 function toVector({alt, az}: HorizontalPoint): [number, number, number] {
   const a = alt * DEG;
-  const z = az * DEG;
-  return [Math.cos(a) * Math.cos(z), Math.cos(a) * Math.sin(z), Math.sin(a)];
+  const azimuth = az * DEG;
+  return [
+    Math.cos(a) * Math.cos(azimuth),
+    Math.cos(a) * Math.sin(azimuth),
+    Math.sin(a),
+  ];
 }
 
 /**
  * Where the (short, great-circle) segment a→b crosses the horizon. Used to
- * clip constellation lines at the ring instead of dropping them.
+ * clip constellation lines at the ring instead of dropping them. The two
+ * points must lie on opposite sides of the horizon (one at alt > 0, the
+ * other at alt ≤ 0) — computeSky only calls this on such pairs.
  */
 export function horizonCrossing(
   a: HorizontalPoint,
@@ -193,9 +209,10 @@ export function computeSky({
     const style = starStyle(s.mag, scale);
     stars.push({x, y, r: style.r, opacity: style.opacity, mag: s.mag});
   }
-  // The catalogue is sorted bright → faint, so these are the brightest
-  // stars above the horizon.
-  const glows: SceneGlow[] = stars
+  // Explicit brightest-first sort (stable): the GLOW_COUNT lowest-magnitude
+  // stars above the horizon, independent of catalogue order.
+  const glows: SceneGlow[] = [...stars]
+    .sort((a, b) => a.mag - b.mag)
     .slice(0, GLOW_COUNT)
     .map(({x, y, r}) => ({x, y, r}));
 
@@ -210,17 +227,16 @@ export function computeSky({
   }
 
   // Discs just below the horizon still soften the band's edge; the
-  // renderers clip everything to the ring.
+  // renderers clip everything to the ring. Discs that can't reach the ring
+  // at all (fully below or far out at low altitude) are dropped outright
+  // rather than drawn for nothing.
   const milkyWay: SceneGalaxy[] = [];
   for (const g of sky.galaxy) {
     if (g.alt < -20) continue;
     const {x, y} = projectAltAz(g.alt, g.az, disc);
-    milkyWay.push({
-      x,
-      y,
-      r: projectedRadius(g.alt, g.width, disc),
-      intensity: g.intensity,
-    });
+    const r = projectedRadius(g.alt, g.width, disc);
+    if (Math.hypot(x - disc.cx, y - disc.cy) - r >= disc.r) continue;
+    milkyWay.push({x, y, r, intensity: g.intensity});
   }
 
   const moon: SceneMoon | null =
@@ -242,20 +258,30 @@ export function computeSky({
       name: p.name,
     }));
 
-  const avoid: LabelBox[] = moon
-    ? [
-        {
-          x0: moon.x - moon.r * 2,
-          x1: moon.x + moon.r * 2,
-          y0: moon.y - moon.r * 2,
-          y1: moon.y + moon.r * 2,
-        },
-      ]
-    : [];
+  const avoid: LabelBox[] = [];
+  if (moon) {
+    // The Moon's own glow (MOON_GLOW) reaches further than its disc, so
+    // avoid that reach rather than a plain ±2r box.
+    const reach = MOON_GLOW[MOON_GLOW.length - 1].radius * moon.r;
+    avoid.push({
+      x0: moon.x - reach,
+      x1: moon.x + reach,
+      y0: moon.y - reach,
+      y1: moon.y + reach,
+    });
+  }
+  for (const p of planets) {
+    avoid.push({
+      x0: p.x - 2 * p.r,
+      x1: p.x + 2 * p.r,
+      y0: p.y - 2 * p.r,
+      y1: p.y + 2 * p.r,
+    });
+  }
   const labels = params.details.includes('names')
     ? placeLabels(
         sky.labels
-          .filter((l) => l.alt > 4)
+          .filter((l) => l.alt > LABEL_MIN_ALTITUDE)
           .map((l) => ({
             ...projectAltAz(l.alt, l.az, disc),
             text: l.name.toUpperCase(),
