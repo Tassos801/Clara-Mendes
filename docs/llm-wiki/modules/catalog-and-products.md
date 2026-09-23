@@ -78,8 +78,12 @@ false. Prodigi `GLOBAL-CFP-16X20` necessarily includes a fine-art print and is
 therefore not a valid fulfillment mapping for the corrected offer. On
 2026-09-01 the Fine Art Greeting Card and Fine Art Postcard became the first
 extension families to go live (flags true, products Active, Budget letter
-post, a dedicated €2.90 "Letter post" shipping profile); the other ten
-extension flags are false and their products are Draft. The calendar family
+post, a dedicated €2.90 "Letter post" shipping profile). On 2026-09-23 the
+Stretched Canvas Art family became Active and available in all five artwork
+variants after Prodigi mapping, cost, and Storefront cart checks; the owner
+waived physical samples. Its release flag is true. The other nine extension
+flags remain false and their products are Draft. The Art for Everyday Living
+manual collection now contains the canvas, greeting card, and postcard. The calendar family
 was re-pointed at the 2027 edition the same day (manifest `edition` +
 `previousHandles`; the live record still awaits the in-place rename script).
 

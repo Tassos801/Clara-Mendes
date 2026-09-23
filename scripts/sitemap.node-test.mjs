@@ -24,6 +24,8 @@ const xml = [
   entry('https://shopclaramendes.com/products/first-light-birth-poster'),
   entry('https://shopclaramendes.com/products/fine-art-greeting-card'),
   entry('https://shopclaramendes.com/products/fine-art-postcard'),
+  entry('https://shopclaramendes.com/products/large-fine-art-print-16x20'),
+  entry('https://shopclaramendes.com/products/stretched-canvas-art-16x20'),
   entry(
     'https://shopclaramendes.com/products/art-premium-fleece-blanket-30x40',
   ),
@@ -54,6 +56,8 @@ assert.ok(
 // live Shopify handle until the in-place rename runs.
 assert.ok(filtered.includes('/products/fine-art-greeting-card'));
 assert.ok(filtered.includes('/products/fine-art-postcard'));
+assert.ok(!filtered.includes('/products/large-fine-art-print-16x20'));
+assert.ok(filtered.includes('/products/stretched-canvas-art-16x20'));
 assert.ok(
   !filtered.includes('/products/art-premium-fleece-blanket-30x40'),
   'dark blanket leaked into the sitemap',
@@ -66,11 +70,10 @@ assert.ok(
   !filtered.includes('/products/clara-mendes-art-calendar-2026'),
   'retired calendar handle leaked into the sitemap',
 );
-// The Everyday collection is a manual collection that is still empty (its
-// route redirects), so its URL stays out until it is populated in Admin.
+// The Everyday collection is now populated with three released families.
 assert.ok(
-  !filtered.includes('/collections/clara-mendes-art-living'),
-  'empty Everyday collection leaked into the sitemap',
+  filtered.includes('/collections/clara-mendes-art-living'),
+  'populated Everyday collection missing from the sitemap',
 );
 assert.ok(filtered.includes('/pages/data-sharing-opt-out'));
 assert.ok(filtered.includes('/products/quiet-form-i-art-print'));
