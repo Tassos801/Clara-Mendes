@@ -36,9 +36,8 @@ Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md),
   sides) survive the in-place rename? The script preserves the product and
   variant ids, which is what the mapping keys on, but the dashboard has not
   yet been re-read after a run.
-- Will the owner add the greeting card and postcard to the "Art for Everyday
-  Living" collection in Admin (the sync only tags), then flip
-  `EXTENSION_COLLECTION_POPULATED`?
+- The Everyday collection was populated on 2026-09-23; verify its live
+  Hydrogen route and sitemap after the release-flag deployment.
 - Should the card families stay on Prodigi's Budget (untracked) service with
   the storefront saying so, or move back to Standard (tracked, ≈€3.25 more per
   order)? The Shopify shipping-policy page still promises tracked delivery for

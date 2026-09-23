@@ -114,7 +114,7 @@ export const EXTENSION_RELEASE_FLAGS: Record<string, boolean> = {
   'fine-art-greeting-card': true,
   'fine-art-postcard': true,
   'large-fine-art-print-16x20': false,
-  'stretched-canvas-art-16x20': false,
+  'stretched-canvas-art-16x20': true,
 };
 
 /**
@@ -160,7 +160,7 @@ export function releasedExtensionProductTypes(
  * and its URL must stay out of the sitemap. Flip to true after the Admin
  * assignment has been verified.
  */
-export const EXTENSION_COLLECTION_POPULATED = false;
+export const EXTENSION_COLLECTION_POPULATED = true;
 
 export const SKY_PRODUCT_HANDLE = 'your-sky-star-map';
 export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';

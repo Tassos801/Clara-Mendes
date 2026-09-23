@@ -956,3 +956,20 @@ unavailable until `release --apply`. Pipeline gained `releasedSizes`,
 `expand` and `media`. Prodigi mapping of the eight new variants was blocked
 on the day: Prodigi's image library left every upload at "Processing" for
 hours (the runbook records the fallbacks tried). PR #81 merged and deployed.
+
+## 2026-09-23 - Everyday canvas release
+
+Released the 16 × 20 in stretched canvas after the owner waived samples.
+Prodigi showed all five variants automatically fulfilled on `GLOBAL-CAN-16X20`
+with Acceptable uploaded files and Standard shipping. The Cyprus supplier
+quote was €66.45 delivered, against €89 retail before customer shipping.
+Shopify was set Active on the Clara Mendes and Clara Mendes Headless channels;
+all five Storefront API variants were available and cartable. The manual
+Everyday collection gained the canvas, greeting card, and postcard, and its
+storefront flag now permits the collection route and sitemap. The large print
+draft was kept hidden after a same-format and artwork comparison found its
+€49 price duplicated the existing €39.99 original-art variant. The framed
+print remains blocked by the prior frame-only owner specification; the fleece
+blanket remains below delivered cost in Cyprus.
+
+Source: [Everyday canvas release](../everyday-canvas-release-2026-09-23.md).
