@@ -5,6 +5,7 @@ import {
   GLOW_RINGS,
   LABEL_SIZE,
   LABEL_TRACKING,
+  MILKY_WAY_PASSES,
   MOON_RADIUS,
   starStyle,
 } from '../app/lib/sky/style.ts';
@@ -113,7 +114,7 @@ test('richer sky: tone, glows, clipped lines, Milky Way, Moon', () => {
   assert.ok(scene.lines.every((l) => inDisc(scene, l.x1, l.y1) && inDisc(scene, l.x2, l.y2)));
   const onRing = (x, y) => Math.abs(Math.hypot(x - scene.disc.cx, y - scene.disc.cy) - scene.disc.r) < 1e-6;
   assert.ok(scene.lines.some((l) => onRing(l.x1, l.y1) || onRing(l.x2, l.y2)), 'some lines clipped at the ring');
-  assert.ok(scene.milkyWay.length >= 2 && scene.milkyWay.length <= 4, `${scene.milkyWay.length} Milky Way passes`);
+  assert.ok(scene.milkyWay.length >= 2 && scene.milkyWay.length <= MILKY_WAY_PASSES.length, `${scene.milkyWay.length} Milky Way passes`);
   assert.ok(scene.milkyWay.every((p) => p.path.startsWith('M') && p.path.includes(' Z')));
   assert.ok(scene.milkyWay.every((p) => p.weight > 0));
   const subPathCount = (path) => (path.match(/M /g) ?? []).length;

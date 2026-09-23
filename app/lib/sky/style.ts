@@ -25,10 +25,14 @@ export const GLOW_RINGS = [
  * `radius` scales each sample's disc; `weight` scales the theme opacity.
  */
 export const MILKY_WAY_PASSES = [
-  {radius: 1, weight: 1, minIntensity: 0.2},
-  {radius: 0.72, weight: 1, minIntensity: 0.35},
-  {radius: 0.48, weight: 1, minIntensity: 0.6},
-  {radius: 0.28, weight: 1, minIntensity: 0.82},
+  {radius: 1, weight: 1, minIntensity: 0.18},
+  {radius: 0.86, weight: 1, minIntensity: 0.24},
+  {radius: 0.73, weight: 1, minIntensity: 0.3},
+  {radius: 0.61, weight: 1, minIntensity: 0.38},
+  {radius: 0.5, weight: 1, minIntensity: 0.48},
+  {radius: 0.39, weight: 1, minIntensity: 0.6},
+  {radius: 0.29, weight: 1, minIntensity: 0.72},
+  {radius: 0.2, weight: 1, minIntensity: 0.85},
 ] as const;
 
 export const MOON_RADIUS = 9.5;
