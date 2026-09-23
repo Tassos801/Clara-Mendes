@@ -1,14 +1,53 @@
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import path from 'node:path';
 import test from 'node:test';
 
 import catalog from '../data/print-catalog.json' with {type: 'json'};
 import {
   ROOM_KEYS,
+  inspectRoomAssets,
   mediaMatchesRoomSource,
   resolvePrintRoomMediaPlan,
   roomMediaPlan,
   validateRoomScenes,
 } from './lib/print-room-scenes.mjs';
+import {REPO_ROOT} from './lib/product-pipeline.mjs';
+
+test('room manifest matches current source images and rejects stale artwork', () => {
+  const [collection] = catalog.collections;
+  const manifest = JSON.parse(
+    readFileSync(
+      path.join(
+        REPO_ROOT,
+        'public/images/product-art-mockups',
+        collection.slug,
+        'manifest.json',
+      ),
+      'utf8',
+    ),
+  );
+  const [print] = collection.prints;
+  assert.deepEqual(
+    inspectRoomAssets(collection, print, manifest, REPO_ROOT),
+    [],
+  );
+
+  const stale = structuredClone(manifest);
+  stale.images.find((entry) => entry.print === print.slug).artwork.sha256 =
+    'stale';
+  assert.match(
+    inspectRoomAssets(collection, print, stale, REPO_ROOT).join('; '),
+    /artwork is missing or changed/,
+  );
+  stale.images = stale.images.filter(
+    (entry) => entry.print !== print.slug || entry.room !== 'bedroom',
+  );
+  assert.match(
+    inspectRoomAssets(collection, print, stale, REPO_ROOT).join('; '),
+    /expected one manifest record/,
+  );
+});
 
 test('every Sci-fi print defines four ordered tailored room scenes', () => {
   assert.deepEqual(ROOM_KEYS, [

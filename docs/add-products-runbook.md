@@ -1,6 +1,6 @@
 # Adding prints — the runbook
 
-One data file, one command, six steps. Nothing here needs a new module, a
+One data file and one command from artwork to live verification. Nothing here needs a new module, a
 route edit, or a one-off script. If a launch seems to need one, fix the
 pipeline instead and update this page.
 
@@ -20,12 +20,13 @@ pipeline instead and update this page.
 | 2b | `expand <collection> --apply` | For a size added to an already-released collection: creates the missing variants (tracked at 0 + DENY) on the live products, keeps every existing variant untouched, writes ids back | Shopify, repo |
 | 3 | `handoff <collection>` | Prodigi checklist (SKU, provider SKU, print file, hash) as `.md` + `.csv` | launch folder |
 | 4 | Map in Prodigi, then `mapped <collection> [--size 8x10] <print>=<channel product id> …` | Records each verified mapping | repo |
-| 4b | `media <collection> --apply` | Uploads the four tailored room scenes, keeps the flat artwork as image 1, orders the gallery, refines copy/SEO; exactly five images or it stops | Shopify |
+| 4a | `rooms <collection>` | Composites and checks four current room images per print; `--only a,b` leaves other prints untouched | `public/images/product-art-mockups/<collection>/` |
+| 4b | `media <collection> --apply` | Checks room image hashes, then uploads four scenes to the **Draft** (or Active), keeps the flat image first, orders the gallery, refines copy/SEO; preserves product status | Shopify |
 | 5 | `release <collection> --apply` | Untracks inventory, removes pending tags, activates, publishes, checks the Storefront API, then sets `released: true` | Shopify, repo |
 | 6 | Commit → PR → owner merges → `verify <collection>` | Live checks: Storefront API price/availability, add to cart, PDP 200, sitemap, shop filter | launch folder |
 
 `stage`, `expand`, `media` and `release` are dry runs without `--apply`. Every step is safe to
-re-run; `--only a,b` limits any step to some prints. Open the PR after step 2
+re-run; `--only a,b` limits any step to some prints, including `rooms`. Open the PR after step 2
 so CI runs early — a staged print is invisible on the storefront until both
 `released: true` is deployed **and** the product is Active and published.
 
@@ -47,11 +48,15 @@ storefront shows the new size struck through as unavailable, with its price.
 Each print carries `rooms`: four scenes in the order `living-room`, `bedroom`,
 `study`, `wide-interior`, each with its own `alt`, a blank interior
 `backgroundFile` under `scripts/assets/print-room-mockups/<collection>/`, and
-a 4:5 `placement`. `npm run catalog:prints:room-mockups <collection>` composites
+a 4:5 `placement`. Run `npm run product -- rooms <collection> --only=<print-slug>`
+after preparing its artwork and placing the four blank backgrounds. It composites
 the exact flat artwork into every interior (1080×1350 JPEG under
 `public/images/product-art-mockups/<collection>/` plus a hash manifest).
-`media --apply` then syncs them to Shopify. Interiors are empty rooms: no art,
-text, people or brands.
+`status` shows `roomsReady`; `media` refuses missing or stale artwork,
+backgrounds, or mockups before touching Shopify. It can finish the gallery
+while the product is still Draft. Interiors are empty rooms: no art, text,
+people or brands. The older `catalog:prints:room-mockups` command remains an
+alias for regenerating a whole collection.
 
 ### Catalog entry template
 
@@ -75,6 +80,12 @@ text, people or brands.
       "description": "One sentence; becomes the product description and SEO lead.",
       "alt": "Image alt text.",
       "palette": "Moss, ivory, charcoal",
+      "rooms": [
+        {"key": "living-room", "alt": "Specific living-room scene", "backgroundFile": "fern-living-room.png", "placement": {"left": 400, "top": 280, "width": 240, "height": 300}},
+        {"key": "bedroom", "alt": "Specific bedroom scene", "backgroundFile": "fern-bedroom.png", "placement": {"left": 400, "top": 280, "width": 240, "height": 300}},
+        {"key": "study", "alt": "Specific study scene", "backgroundFile": "fern-study.png", "placement": {"left": 400, "top": 280, "width": 240, "height": 300}},
+        {"key": "wide-interior", "alt": "Specific wide interior scene", "backgroundFile": "fern-wide-interior.png", "placement": {"left": 400, "top": 280, "width": 240, "height": 300}}
+      ],
       "released": false
     }
   ]
