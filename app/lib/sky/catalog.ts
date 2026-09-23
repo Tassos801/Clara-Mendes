@@ -1,9 +1,19 @@
-/** Star + constellation-line data in the compact built form. */
+/** Star, constellation-line and label data in the compact built form. */
+export type SkyNameRow = readonly [
+  id: string,
+  name: string,
+  ra: number,
+  dec: number,
+  rank: number,
+];
+
 export type SkyCatalog = {
   /** Flat [ra°, dec°, mag, ...] sorted bright → faint. */
   stars: ArrayLike<number>;
   /** Flat [ra1, dec1, ra2, dec2, ...] great-circle segments. */
   lines: ArrayLike<number>;
+  /** Constellation label points; absent → the names detail draws nothing. */
+  names?: ReadonlyArray<SkyNameRow>;
 };
 
 /**
@@ -13,9 +23,16 @@ export type SkyCatalog = {
  * scripts/lib/sky-catalog.mjs instead.
  */
 export async function loadSkyCatalog(): Promise<SkyCatalog> {
-  const [stars, lines] = await Promise.all([
+  const [stars, lines, names] = await Promise.all([
     import('../../data/sky/stars.json'),
     import('../../data/sky/constellations.json'),
+    import('../../data/sky/constellation-names.json').catch(() => null),
   ]);
-  return {stars: stars.default.data, lines: lines.default.data};
+  return {
+    stars: stars.default.data,
+    lines: lines.default.data,
+    names: names
+      ? (names.default.data as unknown as ReadonlyArray<SkyNameRow>)
+      : undefined,
+  };
 }
