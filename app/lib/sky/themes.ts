@@ -18,6 +18,22 @@ export type SkyTheme = {
   moonLit: string;
   moonDark: string;
   planet: string;
+  /** Richer sky (Your Sky only; First Light still uses moonLit/moonDark). */
+  milkyWay: string;
+  milkyWayOpacity: number;
+  glow: string;
+  moonFace: string;
+  moonShade: string;
+  moonShadeOpacity: number;
+  moonEdge: string;
+  grid: string;
+  gridOpacity: number;
+  /**
+   * Ink for constellation-name labels. Named `labelColor` (not `label`) to
+   * avoid colliding with the pre-existing theme display-name field above.
+   */
+  labelColor: string;
+  labelColorOpacity: number;
   title: string;
   subtitle: string;
   credit: string;
@@ -40,6 +56,17 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
     moonLit: '#26231f',
     moonDark: '#efe8dc',
     planet: '#9c6f5d',
+    milkyWay: '#8a7d6b',
+    milkyWayOpacity: 0.035,
+    glow: '#3c3831',
+    moonFace: '#f8f3ea',
+    moonShade: '#26231f',
+    moonShadeOpacity: 0.2,
+    moonEdge: '#26231f',
+    grid: '#746f65',
+    gridOpacity: 0.35,
+    labelColor: '#5c564c',
+    labelColorOpacity: 0.8,
     title: '#26231f',
     subtitle: '#746f65',
     credit: '#9c6f5d',
@@ -60,6 +87,17 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
     moonLit: '#f1e3b8',
     moonDark: '#141b2b',
     planet: '#d9a066',
+    milkyWay: '#e8dcc0',
+    milkyWayOpacity: 0.05,
+    glow: '#f1e3b8',
+    moonFace: '#f4ecd8',
+    moonShade: '#f1e3b8',
+    moonShadeOpacity: 0.12,
+    moonEdge: '#f1e3b8',
+    grid: '#b7ad93',
+    gridOpacity: 0.3,
+    labelColor: '#cbbf9f',
+    labelColorOpacity: 0.85,
     title: '#f4ecd8',
     subtitle: '#b7ad93',
     credit: '#b08d57',
@@ -80,6 +118,17 @@ export const SKY_THEMES: Record<SkyThemeId, SkyTheme> = {
     moonLit: '#2b2622',
     moonDark: '#dfd3c3',
     planet: '#a2735b',
+    milkyWay: '#7a6a5a',
+    milkyWayOpacity: 0.03,
+    glow: '#2b2622',
+    moonFace: '#fbf8f2',
+    moonShade: '#2b2622',
+    moonShadeOpacity: 0.2,
+    moonEdge: '#2b2622',
+    grid: '#7b7166',
+    gridOpacity: 0.35,
+    labelColor: '#5a4f44',
+    labelColorOpacity: 0.8,
     title: '#2b2622',
     subtitle: '#7b7166',
     credit: '#a2735b',

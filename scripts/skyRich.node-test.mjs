@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {GLOW_RINGS, milkyWayOpacity, starStyle} from '../app/lib/sky/style.ts';
 import {GALAXY_SAMPLES, galacticToEquatorial} from '../app/lib/sky/galaxy.ts';
+import {SKY_THEMES} from '../app/lib/sky/themes.ts';
 
 test('star tone: bright stars full ink, the faintest ~35 % and smaller', () => {
   assert.equal(starStyle(0.5, 1).opacity, 1);
@@ -41,4 +42,16 @@ test('galaxy samples: every 2°, brightest and widest at the centre', () => {
 
 test('milky way opacity is quantised to limit PDF graphics states', () => {
   assert.equal(milkyWayOpacity(0.035, 0.73333, 0.45), 0.012);
+});
+
+test('every theme defines the richer-sky tokens', () => {
+  // `labelColor` (not `label`): the plan's `label` would collide with the
+  // pre-existing SkyTheme.label display-name field (e.g. "Linen").
+  const colours = ['milkyWay', 'glow', 'moonFace', 'moonShade', 'moonEdge', 'grid', 'labelColor'];
+  const opacities = ['milkyWayOpacity', 'moonShadeOpacity', 'gridOpacity', 'labelColorOpacity'];
+  for (const theme of Object.values(SKY_THEMES)) {
+    for (const key of colours) assert.match(theme[key], /^#[0-9a-f]{6}$/, `${theme.id}.${key}`);
+    for (const key of opacities) assert.ok(theme[key] > 0 && theme[key] <= 1, `${theme.id}.${key}`);
+    assert.ok(theme.moonLit && theme.moonDark, `${theme.id} keeps First Light's tokens`);
+  }
 });
