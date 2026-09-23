@@ -1,9 +1,13 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 // Builds app/data/sky/constellation-names.json from d3-celestial
-// constellations.json (BSD-3-Clause, © Olaf Frohn): IAU Latin name and a
-// label point per constellation. The source is cached in data/sky-sources/
-// (gitignored); the derived JSON is committed.
+// constellations.json (BSD-3-Clause, © Olaf Frohn): IAU name and a label
+// point per constellation. Uses properties.name (the IAU English/ASCII
+// form, e.g. "Ursa Major") rather than properties.la (classical Latin
+// spellings such as "Ursa Maior" with irregular whitespace, which the
+// print font may not render and customers would read as typos). The
+// source is cached in data/sky-sources/ (gitignored); the derived JSON is
+// committed.
 //
 //   node scripts/build-sky-names.mjs
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
@@ -24,11 +28,17 @@ if (!existsSync(cached)) {
 
 const geo = JSON.parse(readFileSync(cached, 'utf8'));
 const r2 = (n) => Math.round(n * 100) / 100;
+// d3-celestial's properties.name is the IAU name for every constellation
+// except Corona Australis, which it lists under its older name.
+const IAU_OVERRIDES = {'Corona Austrina': 'Corona Australis'};
 const seen = new Set();
 const data = [];
 for (const feature of geo.features) {
-  const name = feature.properties.la || feature.properties.name;
-  if (!name || seen.has(name)) continue;
+  let name = feature.properties.name;
+  if (!name) continue;
+  name = name.replace(/\s+/g, ' ').trim();
+  name = IAU_OVERRIDES[name] || name;
+  if (seen.has(name)) continue;
   seen.add(name);
   const [ra, dec] = feature.geometry.coordinates;
   data.push([
