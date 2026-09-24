@@ -1049,3 +1049,24 @@ were included in Admin, and set `releasedSizes`. The owner re-approved all
 three sizes despite the 70 PPI (16×20) and 56 PPI (20×24) native detail.
 
 Source: [Light & Silence launch](../light-and-silence-launch.md).
+
+## 2026-09-24 - Your Sky engine: richer sky, layouts, details
+
+Every Your Sky print now draws a soft Milky Way (galactic-plane samples, each
+pass one union path so overlaps never stack), magnitude-toned stars with soft
+glows on the 25 brightest, constellation lines clipped at the horizon, ringed
+planets, a Moon with a lit face and theme-coloured glow, and a double horizon
+ring. The engine adds four layouts (`app/lib/sky/layouts.ts`: Classic,
+Compass, Full sky, Minimal) and three details (IAU constellation names from
+d3-celestial label points, altitude/azimuth grid, time in the details line)
+carried as signed `v=2` personalisation; `v=1` canonical strings are
+byte-identical so old signatures and tokens verify. Drawing constants live in
+`app/lib/sky/style.ts`; both renderers draw the same layers in the same
+order, clipped to the disc. The PDF shares ExtGState dictionaries (40 instead
+of ~5,400 on the heaviest page). Owner approved the review sheet
+(`node scripts/render-sky-review.mjs`). First Light is unchanged apart from a
+type-only `opacity: 1` on its stars.
+
+Source: [spec](../superpowers/specs/2026-09-23-your-sky-enhancements-design.md),
+[plan](../superpowers/plans/2026-09-23-your-sky-engine.md),
+[release runbook](../your-sky-release.md).

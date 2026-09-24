@@ -260,3 +260,19 @@ branch is intact and the redirect is gated by the same list.
 from PR #64 inside the product page's sky composition, on a linen stage within
 the night section (see the spec amendment in
 `docs/superpowers/specs/2026-09-02-your-sky-feature-page-design.md`).
+
+## Personalisation v2 (2026-09-23)
+
+New lines are `_v=2` and carry `_layout` (`classic|compass|full|minimal`)
+and `_details` (a subset of `names,grid,time` in that order, or `none`),
+shown to the customer as `Layout` and `Details`. Both are inside the signed
+canonical string, so the webhook, the Prodigi order and the print token
+carry them unchanged. `_v=1` lines and print tokens still verify and render
+as Classic with no details. Print render budget: < 2 s for 20×24 Compass
+with every detail (`node scripts/time-sky-pdf.mjs`; ~0.3 s locally).
+
+**Fix forward only.** Once a v2 order exists, reverting the v2 engine makes
+that order unprintable (the old decoder answers "Not a sky line." at the
+webhook and "Non-canonical token." at the print route, and Prodigi fetches
+the PDF after the 24-hour hold). Never reorder `SKY_DETAIL_IDS`; append new
+details at the end.
