@@ -30,7 +30,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 
 | Route                                           | File                                 | Purpose                                                                         |
 | ----------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------- |
-| `/`                                             | `app/routes/_index.tsx`              | Home page, featured products, collection previews, trust band, structured data. |
+| `/`                                             | `app/routes/_index.tsx`              | Home page: hero, film, featured prints, capsule index, rooms, studio close.     |
 | `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
 | `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all.          |
 | `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
@@ -45,11 +45,28 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 
 ## Home Page
 
-The home page queries products and collections, filters out demo/off-theme
-catalog entries, and renders a high-touch commerce landing experience for Clara
-Mendes. The original-art preview accepts the handles that are actually
-available through the Storefront API; matching cards link to their product
-pages, while unavailable Draft works remain non-interactive previews.
+The home page queries products (best-selling slice, the original-art catalog
+tags, the classic frame), filters out demo/off-theme entries, and renders a
+high-touch commerce landing experience for Clara Mendes.
+
+Below the "Objects with soul" hero the order is (since 2026-09-24, the
+"gallery walk"): a slim trust line → the brand film on a full-bleed ink band
+(chapter `ink`) → Ready now (three featured originals) → the capsule index →
+Your Sky teaser → the living edit → framed art (when released) → More from
+the edit → "From the studio" (Our story card over the *Where Mist Rests* room
+scene, plus the Karina of Time journal card). `scripts/homeLayout.node-test.mjs`
+pins that order and the removal of the old text-only capsule carousel,
+compact "Five moods" grid and stock-photo story block.
+
+The capsule index (`app/components/CapsuleIndex.tsx`, data in
+`app/lib/capsuleIndex.ts`) renders one artwork tile per `listShopCapsules()`
+entry, so every released print-catalog collection appears without a homepage
+edit; tiles link via `shopCapsulePath`. On mouse hover or keyboard focus a
+tile fades to its room scene — `{slug}-01-room-detail-20x24.webp` for launch
+capsules, `{print}-living-room.jpg` for pipeline collections — which is only
+requested on first hover. A closing "All works" tile spans the leftover
+columns at 2/3/4 columns so rows always close. A new pipeline collection must
+ship its living-room mockup or `scripts/capsuleIndex.node-test.mjs` fails.
 
 The homepage editorial ("the living edit") is static curated content, not
 product-aware. It always renders the three styled art-in-room photographs in
@@ -71,15 +88,18 @@ lock that short-viewport composition.
 Important dependencies:
 
 - `filterDemoProducts`
-- `filterDemoCollections`
 - `PRODUCT_CARD_FRAGMENT`
 - SEO helpers and structured data helpers
 - `ClaraProductCard`
+- `CapsuleIndex` / `listShopCapsules`
 - `HomepageEditorial`
 - `HOME_EDITORIAL_ITEMS`
 
-Sources: `app/routes/_index.tsx`, `app/components/HomepageEditorial.tsx`,
-`app/content/homeEditorial.ts`, `scripts/mobileLanding.node-test.mjs`.
+Sources: `app/routes/_index.tsx`, `app/components/CapsuleIndex.tsx`,
+`app/lib/capsuleIndex.ts`, `app/components/HomepageEditorial.tsx`,
+`app/content/homeEditorial.ts`, `scripts/mobileLanding.node-test.mjs`,
+`scripts/homeLayout.node-test.mjs`, `scripts/capsuleIndex.node-test.mjs`,
+[design spec](../../superpowers/specs/2026-09-24-home-below-hero-design.md).
 
 ## Product Page
 
