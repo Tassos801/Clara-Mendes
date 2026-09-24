@@ -1,9 +1,13 @@
 import {
   canonicalSkyParams,
+  parseSkyDetails,
   SKY_DEFAULT_TIME,
+  SKY_LAYOUT_IDS,
   SKY_THEME_IDS,
   SKY_TITLE_MAX,
   validateSkyParams,
+  type SkyDetail,
+  type SkyLayoutId,
   type SkyParams,
   type SkyThemeId,
   unprintableCharacters,
@@ -69,6 +73,8 @@ export type SkyDraft = {
   time: string;
   title: string;
   theme: SkyThemeId;
+  layout: SkyLayoutId;
+  details: SkyDetail[];
 };
 
 export type SkyRequiredField = 'place' | 'date' | null;
@@ -104,7 +110,7 @@ export function nextSkyPlaceIndex(
 }
 
 export function serializeSkyDraft(draft: SkyDraft) {
-  return JSON.stringify({v: 1, ...draft});
+  return JSON.stringify({v: 2, ...draft});
 }
 
 export function parseSkyDraft(
@@ -114,9 +120,16 @@ export function parseSkyDraft(
   if (!raw) return null;
   try {
     const value = JSON.parse(raw) as Record<string, unknown>;
-    if (value.v !== 1) return null;
+    if (value.v !== 1 && value.v !== 2) return null;
     const theme = String(value.theme ?? fallbackTheme) as SkyThemeId;
     if (!SKY_THEME_IDS.includes(theme)) return null;
+    // v1 drafts predate layouts and details.
+    const layout = (
+      value.v === 2 ? String(value.layout ?? 'classic') : 'classic'
+    ) as SkyLayoutId;
+    if (!SKY_LAYOUT_IDS.includes(layout)) return null;
+    const details = value.v === 2 ? parseSkyDetails(value.details ?? []) : [];
+    if (!details) return null;
     const date = String(value.date ?? '');
     const time = String(value.time ?? SKY_DEFAULT_TIME);
     const title = String(value.title ?? '');
@@ -155,6 +168,8 @@ export function parseSkyDraft(
       place: validationPlace.label,
       title,
       theme,
+      layout,
+      details,
     });
     if (!validation.ok) return null;
     return {
@@ -171,6 +186,8 @@ export function parseSkyDraft(
       time: validation.params.time,
       title: validation.params.title,
       theme,
+      layout: validation.params.layout,
+      details: validation.params.details,
     };
   } catch {
     return null;

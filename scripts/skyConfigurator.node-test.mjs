@@ -41,6 +41,8 @@ const complete = {
   time: '22:00',
   title: 'Our first night',
   theme: 'midnight-garden',
+  layout: 'compass',
+  details: ['names', 'time'],
 };
 
 test('draft codec preserves valid incomplete state and rejects unsafe state', () => {
@@ -59,6 +61,39 @@ test('draft codec preserves valid incomplete state and rejects unsafe state', ()
     parseSkyDraft(JSON.stringify({...complete, date: '1850-01-01'}), 'linen'),
     null,
   );
+});
+
+test('a v1 draft restores as Classic with no details', () => {
+  const v1 = {
+    place,
+    date: complete.date,
+    time: complete.time,
+    title: complete.title,
+    theme: complete.theme,
+  };
+  assert.deepEqual(parseSkyDraft(JSON.stringify({v: 1, ...v1}), 'linen'), {
+    ...v1,
+    layout: 'classic',
+    details: [],
+  });
+});
+
+test('draft details are canonical and unknown layouts or details are refused', () => {
+  const shuffled = JSON.stringify({
+    v: 2,
+    ...complete,
+    details: ['time', 'names', 'time'],
+  });
+  assert.deepEqual(parseSkyDraft(shuffled, 'linen').details, ['names', 'time']);
+  assert.equal(
+    parseSkyDraft(JSON.stringify({v: 2, ...complete, layout: 'spiral'}), 'linen'),
+    null,
+  );
+  assert.equal(
+    parseSkyDraft(JSON.stringify({v: 2, ...complete, details: ['stars']}), 'linen'),
+    null,
+  );
+  assert.equal(JSON.parse(serializeSkyDraft(complete)).v, 2);
 });
 
 test('next required field is deterministic', () => {
