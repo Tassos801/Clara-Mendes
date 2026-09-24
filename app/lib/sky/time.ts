@@ -1,17 +1,30 @@
+const formatters = new Map<string, Intl.DateTimeFormat>();
+
+/** One formatter per zone: building one costs far more than using it. */
+function formatterFor(tz: string) {
+  let formatter = formatters.get(tz);
+  if (!formatter) {
+    formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: tz,
+      hourCycle: 'h23',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+    formatters.set(tz, formatter);
+  }
+  return formatter;
+}
+
 /** Offset (minutes east of UTC) that `tz` applies at the instant `utcMs`. */
 export function tzOffsetMinutes(utcMs: number, tz: string) {
-  const dtf = new Intl.DateTimeFormat('en-US', {
-    timeZone: tz,
-    hourCycle: 'h23',
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-  });
   const parts = Object.fromEntries(
-    dtf.formatToParts(new Date(utcMs)).map((p) => [p.type, p.value]),
+    formatterFor(tz)
+      .formatToParts(new Date(utcMs))
+      .map((p) => [p.type, p.value]),
   );
   const asUtc = Date.UTC(
     Number(parts.year),
