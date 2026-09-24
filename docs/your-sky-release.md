@@ -288,3 +288,31 @@ rejects anything that is not TrueType; the routes then answer 503 so Prodigi
 retries instead of printing broken text. Check after any deploy:
 `curl -s https://shopclaramendes.com/fonts/pdf/EBGaramond-Regular.bin | head -c 4 | xxd`
 must show `0001 0000`.
+
+## Designer (2026-09-24)
+
+Step 2 of the designer offers **Colour**, **Layout** (Classic, Compass, Full
+sky, Minimal) and **Details** (constellation names, grid, time). They travel
+as the signed v2 `layout` / `details` params, in session drafts (value
+`v: 2`; v1 drafts restore as Classic, no details) and in share links.
+
+- **Time of night:** a slider under the map (00:00–23:55, 5-minute steps,
+  PageUp/PageDown an hour) bound to the Time field. Its track is shaded from
+  the Sun's geometric altitude every 15 minutes (`app/lib/sky/twilight.ts`):
+  day above −0.833°, civil to −6°, nautical to −12°, astronomical to −18°.
+  The caption's "dark" is below −12°. Skipped spring-forward hours stay flat
+  so clock-change days report real times.
+- **Living preview:** while the slider moves, a canvas sketch of the disc
+  (`app/lib/sky/sketch.ts`, the scene recomputed per frame) covers the exact
+  SVG; the SVG catches up 150 ms after the last move and the sketch fades.
+  Colour, layout, detail, place and date changes crossfade (a cloned SVG fades
+  out on top); title edits update in place. Reduced motion: instant swaps,
+  no sketch. A text-only edit reuses the scene's layers (`sceneMemo.ts`) and
+  the SVG's memoised layers skip the ~5,000 map elements.
+- **Swatches:** `public/images/your-sky/swatch-{layout}-{colour}.webp` (12)
+  serve both pickers. Regenerate with `node scripts/generate-your-sky-images.mjs`
+  and commit only the swatch changes unless the hero/occasion images changed
+  on purpose.
+- **Refactor guard:** `node scripts/sky-svg-fingerprint.mjs` prints one hash
+  over 48 renders; run it before and after any change to `svg.tsx` that
+  should not change the artwork.

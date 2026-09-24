@@ -3722,10 +3722,14 @@ html.lenis body {
   -webkit-appearance: none;
   appearance: none;
   background: transparent;
+  border: 0;
+  border-radius: 999px;
+  box-shadow: none;
   cursor: pointer;
   display: block;
   height: 32px;
   margin: 0;
+  padding: 0;
   position: relative;
   touch-action: pan-y;
   width: 100%;
@@ -4456,7 +4460,16 @@ html.lenis body {
 
   .sky-layout-options {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.4rem;
+    gap: 0.25rem;
+  }
+
+  .sky-layout-options button {
+    padding: 0.2rem;
+  }
+
+  .sky-layout-options span {
+    font-size: 0.6rem;
+    white-space: nowrap;
   }
 }
 
