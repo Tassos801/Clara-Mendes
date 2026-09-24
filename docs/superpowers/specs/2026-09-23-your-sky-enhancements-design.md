@@ -184,16 +184,20 @@ adversarially verified, then live-checked with screenshots:
 ## 10. Amendment (planning, 2026-09-23)
 
 - **Milky Way source:** computed, not catalogued. `app/lib/sky/galaxy.ts`
-  samples the galactic plane every 2° of galactic longitude (J2000 via the
-  IAU galactic pole), each sample a soft disc whose angular radius and
-  intensity rise toward the galactic centre. Reason: d3-celestial `mw.json`
-  is a sphere-wrapping ring with holes; clipping it at the horizon
-  identically in the SVG and the PDF is fragile. No data file needed.
+  samples the galactic plane every 3° of galactic longitude (120 samples,
+  J2000 via the IAU galactic pole), each sample a soft disc whose angular
+  radius and intensity rise toward the galactic centre. The scene draws them
+  in eight passes (`MILKY_WAY_PASSES`), each pass one union path of its
+  discs filled once, inner passes taking only the brighter samples. Reason:
+  d3-celestial `mw.json` is a sphere-wrapping ring with holes; clipping it
+  at the horizon identically in the SVG and the PDF is fragile. No data file
+  needed.
 - **Theme tokens:** the new Moon tokens are `moonFace`, `moonShade`,
-  `moonShadeOpacity`, `moonEdge` (First Light still reads `moonLit` /
-  `moonDark`, which stay unchanged). Other new tokens: `milkyWay`,
-  `milkyWayOpacity`, `glow`, `grid`, `gridOpacity`, `label`,
-  `labelOpacity`.
+  `moonShadeOpacity`, `moonEdge`, and `moonGlow` / `moonGlowStrength` for
+  its glow (First Light still reads `moonLit` / `moonDark`, which stay
+  unchanged). Other new tokens: `milkyWay`, `milkyWayOpacity`, `glow`,
+  `grid`, `gridOpacity`, and `labelColor` / `labelColorOpacity` for the
+  constellation names (`label` was already the theme's display name).
 - **Details** are one signed list `details` (`names`, `grid`, `time`)
   rather than three booleans: canonical `details=names,grid` or
   `details=none`.

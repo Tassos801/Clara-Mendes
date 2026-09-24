@@ -11,7 +11,7 @@ import {
 } from '../app/lib/sky/style.ts';
 import {GALAXY_SAMPLES, galacticToEquatorial} from '../app/lib/sky/galaxy.ts';
 import {SKY_THEMES} from '../app/lib/sky/themes.ts';
-import {placeLabels} from '../app/lib/sky/labels.ts';
+import {labelWidth, placeLabels} from '../app/lib/sky/labels.ts';
 import {circlePath, computeSky, horizonCrossing} from '../app/lib/sky/scene.ts';
 import {validateSkyParams} from '../app/lib/sky/params.ts';
 import {loadSkyCatalogSync} from './lib/sky-catalog.mjs';
@@ -239,7 +239,7 @@ test('labels never overlap a planet marker', () => {
   const labelBox = (l) => {
     const size = LABEL_SIZE * scene.scale;
     const tracking = LABEL_TRACKING * scene.scale;
-    const width = l.text.length * size * 0.66 + tracking * (l.text.length - 1);
+    const width = labelWidth(l.text, size, tracking);
     return {x0: l.x - width / 2, x1: l.x + width / 2, y0: l.y - size * 0.9, y1: l.y + size * 0.3};
   };
   for (const l of scene.labels) {

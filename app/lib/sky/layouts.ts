@@ -5,7 +5,8 @@
  */
 import {maxTextWidth} from './fit.ts';
 import type {SkyLayoutId} from './params.ts';
-import type {SkyLayout} from './projection.ts';
+import type {Disc, SkyLayout} from './projection.ts';
+import {TITLE_LINE_HEIGHT} from './style.ts';
 
 export type SkyRingStyle = 'plain' | 'compass';
 
@@ -23,7 +24,56 @@ export type SkyPageLayout = SkyLayout & {
    * (cardinalSize × 0.43 = 3.01·scale vs. the old fixed 3·scale).
    */
   cardinalOffset: number;
+  /**
+   * Largest size a two-line title may take so it stays in the band between
+   * the S cardinal letter and the subtitle (fitTitle's maxTwoLineSize).
+   */
+  titleTwoLineMaxSize: number;
 };
+
+/**
+ * EB Garamond's vertical reach in em, measured with fontkit from the glyph
+ * bounding boxes in public/fonts: italic ascenders top out at 0.709 (b d h
+ * k l; italic capitals at 0.676), italic descenders at 0.290 (f g j y), and
+ * regular capitals at 0.694 (T; the rest 0.653–0.686).
+ */
+const TITLE_ASCENT = 0.72;
+const TITLE_DESCENT = 0.29;
+const SUBTITLE_CAP_HEIGHT = 0.7;
+/** Air between a title line and the S letter or the subtitle, × scale. */
+const TITLE_CLEARANCE = 3;
+
+/** Baseline of the S cardinal letter (scene.ts draws it here). */
+export function southCardinalY(disc: Disc, cardinalOffset: number, scale: number) {
+  return disc.cy + disc.r + cardinalOffset + 5 * scale;
+}
+
+/**
+ * Two title lines straddle titleY, so the size is capped twice: the top
+ * line's ascenders must stay below the S letter's baseline, and the bottom
+ * line's descenders above the subtitle's capitals, each with a clearance.
+ * The subtitle only ever shrinks (and its second line goes below), so its
+ * design size is the worst case.
+ */
+function titleTwoLineMaxSize({
+  titleY,
+  subtitleY,
+  subtitleSize,
+  southY,
+  scale,
+}: {
+  titleY: number;
+  subtitleY: number;
+  subtitleSize: number;
+  southY: number;
+  scale: number;
+}) {
+  const half = TITLE_LINE_HEIGHT / 2;
+  const above = titleY - (southY + TITLE_CLEARANCE * scale);
+  const below =
+    subtitleY - SUBTITLE_CAP_HEIGHT * subtitleSize - TITLE_CLEARANCE * scale - titleY;
+  return Math.min(above / (half + TITLE_ASCENT), below / (half + TITLE_DESCENT));
+}
 
 type Proportions = {
   radius: (width: number, height: number) => number;
@@ -101,21 +151,33 @@ export function skyPageLayout(
 ): SkyPageLayout {
   const p = PROPORTIONS[id];
   const scale = width / 576;
+  const disc = {cx: width / 2, cy: height * p.cy, r: p.radius(width, height)};
+  const cardinalOffset = p.cardinalOffset * scale;
+  const titleY = height * p.titleY;
+  const subtitleY = height * p.subtitleY;
+  const subtitleSize = p.subtitleSize * scale;
   return {
     id,
     width,
     height,
     scale,
     maxTextWidth: maxTextWidth(width),
-    disc: {cx: width / 2, cy: height * p.cy, r: p.radius(width, height)},
-    titleY: height * p.titleY,
-    subtitleY: height * p.subtitleY,
+    disc,
+    titleY,
+    subtitleY,
     creditY: height * p.creditY,
     titleSize: p.titleSize * scale,
-    subtitleSize: p.subtitleSize * scale,
+    subtitleSize,
     creditSize: p.creditSize * scale,
     ring: p.ring,
     cardinalSize: p.cardinalSize * scale,
-    cardinalOffset: p.cardinalOffset * scale,
+    cardinalOffset,
+    titleTwoLineMaxSize: titleTwoLineMaxSize({
+      titleY,
+      subtitleY,
+      subtitleSize,
+      southY: southCardinalY(disc, cardinalOffset, scale),
+      scale,
+    }),
   };
 }

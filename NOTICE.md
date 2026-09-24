@@ -8,6 +8,9 @@ Used by the "Your Sky" personalised star map.
 - **Constellation lines** — d3-celestial by Olaf Frohn,
   `data/constellations.lines.json`. BSD-3-Clause. Copyright (c) 2015,
   Olaf Frohn. All rights reserved.
+- **Constellation names and label points** — d3-celestial by Olaf Frohn,
+  `data/constellations.json`. BSD-3-Clause. Copyright (c) 2015,
+  Olaf Frohn. All rights reserved.
 - **Place names, coordinates and time zones** — GeoNames
   (https://www.geonames.org), `cities15000`. Licensed under
   Creative Commons Attribution 4.0 (https://creativecommons.org/licenses/by/4.0/).

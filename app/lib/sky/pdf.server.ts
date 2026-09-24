@@ -40,6 +40,7 @@ import {
   PLANET_STROKE,
   RING,
   TICK,
+  TITLE_LINE_HEIGHT,
 } from './style.ts';
 import type {SkyTheme} from './themes.ts';
 
@@ -396,11 +397,14 @@ export async function renderSkyPdf({
     scene.titleSize,
     scene.maxTextWidth,
     measureItalic,
+    {maxTwoLineSize: scene.titleTwoLineMaxSize},
   );
-  // One line sits on the design baseline; two lines straddle it so the
-  // block grows upward into the gap below the sky, not into the subtitle.
+  // One line sits on the design baseline; two lines straddle it, capped in
+  // size so they clear both the S cardinal and the subtitle.
   const titleOffset = (index: number) =>
-    title.lines.length === 1 ? 0 : (index - 0.5) * title.size * 1.2;
+    title.lines.length === 1
+      ? 0
+      : (index - 0.5) * title.size * TITLE_LINE_HEIGHT;
   title.lines.forEach((line, index) => {
     page.drawText(line, {
       x: (W - italic.widthOfTextAtSize(line, title.size)) / 2,

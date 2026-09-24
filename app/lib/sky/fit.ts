@@ -91,6 +91,15 @@ function splitNearMiddle(text: string): [string, string] | null {
   return [text.slice(0, bestIndex).trim(), text.slice(bestIndex + 1).trim()];
 }
 
+export type FitTitleOptions = {
+  /**
+   * Largest size a two-line title may take — the height of the band it has
+   * to fit (the sky layouts compute it; see layouts.ts). One-line titles
+   * ignore it. Omitted, a two-line title is limited by width alone.
+   */
+  maxTwoLineSize?: number;
+};
+
 /**
  * Titles keep one line while that needs no more than a 40 % shrink; longer
  * ones break into two lines at the middle. A single unbreakable word may
@@ -101,6 +110,7 @@ export function fitTitle(
   baseSize: number,
   maxWidth: number,
   measure: MeasureText,
+  {maxTwoLineSize = Infinity}: FitTitleOptions = {},
 ): FittedTitle {
   if (!text) return {lines: [], size: baseSize};
   const single = fitTextSize(text, baseSize, maxWidth, measure, SKY_TITLE_SPLIT_SCALE);
@@ -112,6 +122,7 @@ export function fitTitle(
   const size = Math.min(
     fitTextSize(halves[0], baseSize, maxWidth, measure, SKY_TITLE_FLOOR_SCALE),
     fitTextSize(halves[1], baseSize, maxWidth, measure, SKY_TITLE_FLOOR_SCALE),
+    maxTwoLineSize,
   );
   return {lines: halves, size};
 }

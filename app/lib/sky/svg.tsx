@@ -15,6 +15,7 @@ import {
   PLANET_STROKE,
   RING,
   TICK,
+  TITLE_LINE_HEIGHT,
 } from './style';
 import type {SkyTheme} from './themes';
 
@@ -77,10 +78,14 @@ export function SkySvg({
   const clipId = `sky-disc-${useId().replace(/[^\w-]/g, '')}`;
   const measure = useTextMeasure();
   const title = measure
-    ? fitTitle(scene.title, scene.titleSize, scene.maxTextWidth, measure('italic'))
+    ? fitTitle(scene.title, scene.titleSize, scene.maxTextWidth, measure('italic'), {
+        maxTwoLineSize: scene.titleTwoLineMaxSize,
+      })
     : {lines: scene.title ? [scene.title] : [], size: scene.titleSize};
   const titleOffset = (index: number) =>
-    title.lines.length === 1 ? 0 : (index - 0.5) * title.size * 1.2;
+    title.lines.length === 1
+      ? 0
+      : (index - 0.5) * title.size * TITLE_LINE_HEIGHT;
   const titleLines = title.lines.map((text, index) => ({
     text,
     slot: index === 0 ? 'first' : 'second',

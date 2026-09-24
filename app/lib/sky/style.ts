@@ -59,6 +59,12 @@ export const LABEL_SIZE = 5;
 export const LABEL_TRACKING = 1.1;
 
 /**
+ * A two-line title's baselines sit at titleY ± half this × the title size,
+ * straddling the design baseline (both renderers).
+ */
+export const TITLE_LINE_HEIGHT = 1.2;
+
+/**
  * Compass ring: ticks every 2°, long every 10°, numerals every 30°. `gap`
  * is the radial gap between the disc edge and the first tick — unrelated
  * to `RING.gap`, which is the horizon ring's own inner hairline offset.

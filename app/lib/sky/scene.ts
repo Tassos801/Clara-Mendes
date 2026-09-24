@@ -5,7 +5,7 @@
 import {skyPositions, type HorizontalPoint} from './astro.ts';
 import type {SkyCatalog} from './catalog.ts';
 import {placeLabels, type LabelBox, type SceneLabel} from './labels.ts';
-import {skyPageLayout, type SkyPageLayout} from './layouts.ts';
+import {skyPageLayout, southCardinalY, type SkyPageLayout} from './layouts.ts';
 import {formatCoordinates, type SkyParams} from './params.ts';
 import {SKY_SIZES, type SkySizeKey} from './products.ts';
 import {projectAltAz, type Disc} from './projection.ts';
@@ -332,7 +332,7 @@ export function computeSky({
   const o = layout.cardinalOffset;
   const cardinal = [
     {label: 'N', x: disc.cx, y: disc.cy - disc.r - (o - 2 * scale)},
-    {label: 'S', x: disc.cx, y: disc.cy + disc.r + o + 5 * scale},
+    {label: 'S', x: disc.cx, y: southCardinalY(disc, o, scale)},
     {
       label: 'E',
       x: disc.cx - disc.r - o - scale,
