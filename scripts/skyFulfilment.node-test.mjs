@@ -3,8 +3,8 @@ import test from 'node:test';
 import {createHmac} from 'node:crypto';
 import {buildProdigiOrderFromShopify} from '../app/lib/sky/fulfilment.ts';
 import {prodigiCfpAttributes} from '../app/lib/sky/products.ts';
-import {toCartAttributes, validateSkyParams} from '../app/lib/sky/params.ts';
-import {decodeSkyToken, signSkyParams} from '../app/lib/sky/sign.server.ts';
+import {canonicalSkyParams, toCartAttributes, validateSkyParams} from '../app/lib/sky/params.ts';
+import {decodeSkyToken, signCanonical, signSkyParams} from '../app/lib/sky/sign.server.ts';
 import {verifyShopifyWebhook} from '../app/lib/shopifyWebhook.server.ts';
 
 const SECRET = 'test-secret-at-least-32-characters-long!!';
@@ -143,6 +143,58 @@ test('skips orders without sky lines and flags problems', async () => {
   });
   assert.equal(noAddress.kind, 'problem');
   assert.match(noAddress.reason, /shipping address/i);
+});
+
+test('a v1 order paid after this deploy still fulfils', async () => {
+  const pinnedV1Canonical =
+    'v=1&date=2019-06-14&time=22:00&lat=48.8566&lon=2.3522&tz=Europe%2FParis&place=Paris%2C%20France&title=The%20night%20we%20met&theme=linen';
+  const v1Params = validateSkyParams({
+    date: '2019-06-14',
+    time: '22:00',
+    lat: 48.8566,
+    lon: 2.3522,
+    tz: 'Europe/Paris',
+    place: 'Paris, France',
+    title: 'The night we met',
+    theme: 'linen',
+    v: 1,
+  }).params;
+  assert.equal(canonicalSkyParams(v1Params), pinnedV1Canonical);
+  const sig = await signCanonical(pinnedV1Canonical, SECRET);
+  const props = toCartAttributes(v1Params, sig).map(({key, value}) => ({name: key, value}));
+
+  const result = await buildProdigiOrderFromShopify(
+    await order({
+      line_items: [
+        {id: 1, sku: 'CM-PRINT-8X10', quantity: 1, properties: []},
+        {id: 2, sku: 'CM-SKY-20X24-BLK', quantity: 1, properties: props},
+      ],
+    }),
+    {secret: SECRET, origin: 'https://shopclaramendes.com'},
+  );
+  assert.equal(result.kind, 'order');
+  const url = result.payload.items[0].assets[0].url;
+  const token = url.split('/api/sky-print/')[1].split('.pdf')[0];
+  const decoded = await decodeSkyToken(token, SECRET);
+  assert.equal(decoded.ok, true);
+  assert.equal(decoded.params.v, 1);
+  assert.equal(decoded.params.layout, 'classic');
+  assert.deepEqual(decoded.params.details, []);
+});
+
+test('tampering v2 _layout or _details on a signed line fails like a tampered _sig', async () => {
+  for (const [tamperKey, tamperValue] of [
+    ['_layout', 'compass'],
+    ['_details', 'names'],
+  ]) {
+    const tampered = await order();
+    tampered.line_items[1].properties = tampered.line_items[1].properties.map((p) =>
+      p.name === tamperKey ? {...p, value: tamperValue} : p,
+    );
+    const bad = await buildProdigiOrderFromShopify(tampered, {secret: SECRET, origin: 'https://x'});
+    assert.equal(bad.kind, 'problem', tamperKey);
+    assert.match(bad.reason, /signature/i, tamperKey);
+  }
 });
 
 test('Shopify webhook HMAC verification', async () => {

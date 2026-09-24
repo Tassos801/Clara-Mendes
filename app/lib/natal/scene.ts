@@ -136,7 +136,9 @@ export function computeNatal({
   for (const s of sky.stars) {
     if (s.alt <= 0) continue;
     const {x, y} = projectAltAz(s.alt, s.az, disc);
-    stars.push({x, y, r: starRadius(s.mag, scale), mag: s.mag});
+    // opacity: 1 — First Light stars are single-tone; the field only exists
+    // because SceneStar is shared with Your Sky's magnitude-toned stars.
+    stars.push({x, y, r: starRadius(s.mag, scale), mag: s.mag, opacity: 1});
   }
 
   const lines: SceneLine[] = [];

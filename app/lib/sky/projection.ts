@@ -1,4 +1,4 @@
-import {maxTextWidth} from './fit.ts';
+import {skyPageLayout} from './layouts.ts';
 
 export type Disc = {cx: number; cy: number; r: number};
 
@@ -32,25 +32,12 @@ export type SkyLayout = {
   creditSize: number;
 };
 
-/** Shared proportions for both print sizes. */
+/** Shared proportions for both print sizes (the Classic layout). */
 export function layoutFor(width: number, height: number): SkyLayout {
-  const scale = width / 576;
-  const r = Math.min(width * 0.4, height * 0.32);
-  return {
-    width,
-    height,
-    scale,
-    maxTextWidth: maxTextWidth(width),
-    disc: {cx: width / 2, cy: height * 0.4, r},
-    titleY: height * 0.79,
-    subtitleY: height * 0.835,
-    creditY: height * 0.95,
-    titleSize: 30 * scale,
-    subtitleSize: 9.5 * scale,
-    creditSize: 7 * scale,
-  };
+  return skyPageLayout('classic', width, height);
 }
 
+/** Used by First Light only; Your Sky uses `starStyle` (style.ts). */
 export function starRadius(mag: number, scale: number) {
   const base =
     mag <= 0 ? 2.6
