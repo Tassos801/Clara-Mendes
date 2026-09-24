@@ -29,10 +29,14 @@ export function minutesToTime(minutes: number) {
   return `${pad(Math.floor(m / 60))}:${pad(m % 60)}`;
 }
 
-/** An hour per PageUp/PageDown; null leaves the key to the native input. */
+/**
+ * An hour per PageUp/PageDown, from the nearest 5-minute step; null leaves
+ * the key to the native input.
+ */
 export function sliderKeyTarget(key: string, minutes: number): number | null {
-  if (key === 'PageUp') return Math.min(SLIDER_MAX, minutes + HOUR);
-  if (key === 'PageDown') return Math.max(0, minutes - HOUR);
+  const snapped = Math.round(minutes / SLIDER_STEP) * SLIDER_STEP;
+  if (key === 'PageUp') return Math.max(minutes, Math.min(SLIDER_MAX, snapped + HOUR));
+  if (key === 'PageDown') return Math.min(minutes, Math.max(0, snapped - HOUR));
   return null;
 }
 
@@ -92,22 +96,24 @@ export function trackGradient(timeline: SkyTimeline) {
 }
 
 export function twilightCaption(timeline: SkyTimeline) {
-  const clock = (minutes: number) => minutesToTime(minutes);
   const highest = Math.max(...timeline.altitudes);
   const lowest = Math.min(...timeline.altitudes);
   if (lowest > SUN_HORIZON) return 'Midnight sun — the sun never sets';
   if (highest <= SUN_HORIZON) {
     return timeline.darkFrom !== null
-      ? `The sun stays down · dark from ${clock(timeline.darkFrom)}`
+      ? `The sun stays down · dark from ${minutesToTime(timeline.darkFrom)}`
       : 'The sun stays down all day';
   }
-  const parts: string[] = [];
-  if (timeline.sunrise !== null) parts.push(`Sunrise ${clock(timeline.sunrise)}`);
-  if (timeline.sunset !== null) {
-    parts.push(`${parts.length ? 'sunset' : 'Sunset'} ${clock(timeline.sunset)}`);
-  }
-  if (timeline.darkFrom !== null) parts.push(`dark from ${clock(timeline.darkFrom)}`);
-  else if (timeline.darkUntil !== null) parts.push(`dark until ${clock(timeline.darkUntil)}`);
-  else parts.push('twilight all night');
-  return parts.join(' · ');
+  // In chronological order: far north, the date's sunset can be last
+  // night's, just after midnight, before this morning's sunrise.
+  const events: Array<[number, string]> = [];
+  if (timeline.sunrise !== null) events.push([timeline.sunrise, 'sunrise']);
+  if (timeline.sunset !== null) events.push([timeline.sunset, 'sunset']);
+  if (timeline.darkFrom !== null) events.push([timeline.darkFrom, 'dark from']);
+  else if (timeline.darkUntil !== null) events.push([timeline.darkUntil, 'dark until']);
+  events.sort((a, b) => a[0] - b[0]);
+  const parts = events.map(([at, label]) => `${label} ${minutesToTime(at)}`);
+  if (timeline.darkFrom === null && timeline.darkUntil === null) parts.push('twilight all night');
+  const caption = parts.join(' · ');
+  return caption[0].toUpperCase() + caption.slice(1);
 }

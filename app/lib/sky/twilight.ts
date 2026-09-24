@@ -6,7 +6,7 @@
  * Sun's radius), civil −6°, nautical −12°, astronomical −18°.
  */
 import {Astronomy} from './astronomyEngine.ts';
-import {localToUtc} from './time.ts';
+import {localToUtc, tzOffsetMinutes} from './time.ts';
 
 export type SkyPhase = 'day' | 'civil' | 'nautical' | 'astronomical' | 'night';
 
@@ -24,7 +24,10 @@ const LIMITS: Array<[number, SkyPhase]> = [
 ];
 
 export type SkyTimeline = {
-  /** Sun altitude (degrees) at local minute i × TIMELINE_STEP, 00:00 … 24:00. */
+  /**
+   * Sun altitude (degrees) at local wall-clock minute i × TIMELINE_STEP,
+   * 00:00 … 24:00 (flat through an hour a clock change skips).
+   */
   altitudes: number[];
   /** Merged phases covering 0 … 1440 local minutes. */
   segments: Array<{from: number; to: number; phase: SkyPhase}>;
@@ -84,16 +87,32 @@ export function skyTimeline({
   tz: string;
 }): SkyTimeline {
   const observer = new Astronomy.Observer(lat, lon, 0);
-  const altitudes: number[] = [];
+  const [y, m, d] = date.split('-').map(Number);
+  const midnight = Date.UTC(y, m - 1, d);
+  const instants: number[] = [];
+  const skipped: boolean[] = [];
   for (let minutes = 0; minutes <= DAY_MINUTES; minutes += TIMELINE_STEP) {
-    const when =
+    const when = (
       minutes === DAY_MINUTES
         ? localToUtc(nextDate(date), '00:00', tz)
-        : localToUtc(date, `${pad(Math.floor(minutes / 60))}:${pad(minutes % 60)}`, tz);
-    const time = Astronomy.MakeTime(when);
-    const equator = Astronomy.Equator(Astronomy.Body.Sun, time, observer, true, true);
-    altitudes.push(Astronomy.Horizon(time, observer, equator.ra, equator.dec).altitude);
+        : localToUtc(date, `${pad(Math.floor(minutes / 60))}:${pad(minutes % 60)}`, tz)
+    ).getTime();
+    // A wall-clock time the spring-forward change skips resolves to an
+    // instant another sample already covers; sampling it would repeat part
+    // of the curve and invent crossings. Such samples take the instant of
+    // the next real one, so the curve stays flat through the missing hour.
+    const wall = (when + tzOffsetMinutes(when, tz) * 60000 - midnight) / 60000;
+    instants.push(when);
+    skipped.push(Math.round(wall) !== minutes);
   }
+  for (let i = instants.length - 2; i >= 0; i--) {
+    if (skipped[i]) instants[i] = instants[i + 1];
+  }
+  const altitudes = instants.map((when) => {
+    const time = Astronomy.MakeTime(new Date(when));
+    const equator = Astronomy.Equator(Astronomy.Body.Sun, time, observer, true, true);
+    return Astronomy.Horizon(time, observer, equator.ra, equator.dec).altitude;
+  });
 
   const cuts = [0, DAY_MINUTES];
   for (const [limit] of LIMITS) {

@@ -97,3 +97,13 @@ test('altitude interpolates between samples', () => {
   assert.ok(mid > Math.min(t.altitudes[0], t.altitudes[1]));
   assert.equal(altitudeAt(t.altitudes, 1440), t.altitudes.at(-1));
 });
+
+test('a spring-forward day keeps real times and invents no crossings', () => {
+  // Nuuk skips 23:00–23:59 on 30 March 2024; Oslo skips 02:00–02:59 on 31 March.
+  const nuuk = skyTimeline({date: '2024-03-30', lat: 64.1814, lon: -51.6941, tz: 'America/Nuuk'});
+  assert.equal(Math.round(nuuk.darkFrom), 22 * 60 + 8);
+  const tromso = skyTimeline({date: '2024-03-31', lat: 69.6492, lon: 18.9553, tz: 'Europe/Oslo'});
+  assert.equal(Math.round(tromso.darkUntil), 3 * 60 + 15);
+  const morning = tromso.segments.filter((s) => s.to <= 12 * 60).map((s) => s.phase);
+  assert.deepEqual(morning, ['astronomical', 'nautical', 'civil']);
+});

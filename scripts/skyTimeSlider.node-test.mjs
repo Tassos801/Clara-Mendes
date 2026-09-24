@@ -66,3 +66,15 @@ test('the track gradient runs through every phase in order', () => {
   assert.equal(sliderPercent(SLIDER_MAX), 100);
   assert.equal(sliderPercent(1440), 100);
 });
+
+test('page keys work from the 5-minute grid and never move backwards', () => {
+  assert.equal(sliderKeyTarget('PageUp', 1323), 1385);
+  assert.equal(sliderKeyTarget('PageDown', 1323), 1265);
+  assert.equal(sliderKeyTarget('PageUp', 1435), 1435);
+  assert.equal(sliderKeyTarget('PageDown', 0), 0);
+});
+
+test('caption events read in the order they happen', () => {
+  const reykjavik = skyTimeline({date: '2023-06-21', lat: 64.1466, lon: -21.9426, tz: 'Atlantic/Reykjavik'});
+  assert.match(twilightCaption(reykjavik), /^Sunset 00:0\d · sunrise 02:5\d · twilight all night$/);
+});

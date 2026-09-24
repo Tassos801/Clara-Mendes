@@ -1,9 +1,14 @@
 const formatters = new Map<string, Intl.DateTimeFormat>();
 
-/** One formatter per zone: building one costs far more than using it. */
+/**
+ * One formatter per zone: building one costs far more than using it. The
+ * cache is cleared past a few dozen zones so odd inputs (any capitalisation
+ * of a zone id is valid) can't grow it without bound.
+ */
 function formatterFor(tz: string) {
   let formatter = formatters.get(tz);
   if (!formatter) {
+    if (formatters.size >= 64) formatters.clear();
     formatter = new Intl.DateTimeFormat('en-US', {
       timeZone: tz,
       hourCycle: 'h23',
