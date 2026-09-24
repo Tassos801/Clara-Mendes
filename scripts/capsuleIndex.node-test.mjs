@@ -24,8 +24,14 @@ test('every shop capsule gets a tile whose artwork and room scene exist', () => 
   assert.ok(tiles.some((tile) => tile.slug === 'light-and-silence'));
   assert.ok(tiles.some((tile) => tile.slug === 'scifi-cinema'));
   for (const tile of tiles) {
-    assert.ok(onDisk(tile.image), `${tile.slug} artwork missing: ${tile.image}`);
-    assert.ok(onDisk(tile.room), `${tile.slug} room scene missing: ${tile.room}`);
+    assert.ok(
+      onDisk(tile.image),
+      `${tile.slug} artwork missing: ${tile.image}`,
+    );
+    assert.ok(
+      onDisk(tile.room),
+      `${tile.slug} room scene missing: ${tile.room}`,
+    );
     assert.ok(tile.works > 0, `${tile.slug} has no released works`);
   }
 });
@@ -78,7 +84,9 @@ test('works labels are singular for one work', () => {
 });
 
 test('heading copy counts capsules and works from the tiles', () => {
-  const copy = capsuleIndexCopy([3, 3, 3, 3, 3, 4, 5].map((works) => ({works})));
+  const copy = capsuleIndexCopy(
+    [3, 3, 3, 3, 3, 4, 5].map((works) => ({works})),
+  );
   assert.equal(copy.moods, 'Seven moods.');
   assert.equal(copy.totalWorks, 24);
   assert.equal(
