@@ -276,3 +276,15 @@ that order unprintable (the old decoder answers "Not a sky line." at the
 webhook and "Non-canonical token." at the print route, and Prodigi fetches
 the PDF after the 24-hour hold). Never reorder `SKY_DETAIL_IDS`; append new
 details at the end.
+
+## Print fonts (2026-09-24)
+
+Shopify's CDN transcodes files served as fonts: `/fonts/EBGaramond-*.ttf`
+arrive as WOFF2 even though the deploy holds TrueType. pdf-lib embeds the
+raw bytes, so every server PDF (star map, birth poster, gift slip, hanging
+guides) carried an unusable font program until this fix. PDF routes now load
+byte-identical copies from `/fonts/pdf/*.bin` via `loadSkyFonts()`, which
+rejects anything that is not TrueType; the routes then answer 503 so Prodigi
+retries instead of printing broken text. Check after any deploy:
+`curl -s https://shopclaramendes.com/fonts/pdf/EBGaramond-Regular.bin | head -c 4 | xxd`
+must show `0001 0000`.

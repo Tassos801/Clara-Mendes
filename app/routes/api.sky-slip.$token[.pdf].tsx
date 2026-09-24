@@ -1,5 +1,8 @@
 import type {Route} from './+types/api.sky-slip.$token[.pdf]';
-import {loadSkyFonts} from '~/lib/sky/fonts.server';
+import {
+  fontsUnavailableResponse,
+  loadSkyFontsOrNull,
+} from '~/lib/sky/fonts.server';
 import {parseSlipCanonical} from '~/lib/sky/gift';
 import {decodeCanonicalToken} from '~/lib/sky/sign.server';
 import {renderGiftSlipPdf} from '~/lib/sky/slip.server';
@@ -18,7 +21,8 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
   const slip = parseSlipCanonical(decoded.canonical);
   if (!slip.ok) return new Response('Not found', {status: 404});
 
-  const fonts = await loadSkyFonts(new URL(request.url));
+  const fonts = await loadSkyFontsOrNull(new URL(request.url), 'sky-slip');
+  if (!fonts) return fontsUnavailableResponse();
   const pdf = await renderGiftSlipPdf({
     note: slip.note,
     orderName: slip.orderName,

@@ -10,33 +10,16 @@ import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'
 import type {Route} from './+types/api.hanging-guide.$file';
 import {PRINT_SIZE_SPECS} from '~/lib/productSizePresentation';
 import {
+  fontsUnavailableResponse,
+  loadSkyFontsOrNull,
+} from '~/lib/sky/fonts.server';
+import {
   parseWallGuideFileName,
   wallGuideGeometry,
   type WallSet,
 } from '~/lib/wallSets';
 
-// Per-isolate font cache: static public assets, shared across requests.
 type GuideFonts = {regular: Uint8Array; italic: Uint8Array};
-let fontsPromise: Promise<GuideFonts> | null = null;
-
-async function fetchBytes(url: URL) {
-  const res = await fetch(url.toString());
-  if (!res.ok) throw new Error(`${url.pathname} → ${res.status}`);
-  return new Uint8Array(await res.arrayBuffer());
-}
-
-function loadFonts(base: URL) {
-  fontsPromise ??= Promise.all([
-    fetchBytes(new URL('/fonts/EBGaramond-Regular.ttf', base)),
-    fetchBytes(new URL('/fonts/EBGaramond-Italic.ttf', base)),
-  ])
-    .then(([regular, italic]) => ({regular, italic}))
-    .catch((error: unknown) => {
-      fontsPromise = null;
-      throw error;
-    });
-  return fontsPromise;
-}
 
 const INK = rgb(0.13, 0.11, 0.1);
 const SOFT = rgb(0.72, 0.68, 0.63);
@@ -252,7 +235,8 @@ export async function loader({params, request}: Route.LoaderArgs) {
   const parsed = parseWallGuideFileName(params.file);
   if (!parsed) return new Response('Not found', {status: 404});
 
-  const fonts = await loadFonts(new URL(request.url));
+  const fonts = await loadSkyFontsOrNull(new URL(request.url), 'hanging-guide');
+  if (!fonts) return fontsUnavailableResponse();
   const pdf = await renderGuidePdf(parsed.set, parsed.size, fonts);
 
   return new Response(new Blob([pdf as BlobPart], {type: 'application/pdf'}), {
