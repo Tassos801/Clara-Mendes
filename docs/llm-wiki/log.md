@@ -1096,3 +1096,18 @@ reading `/fonts/pdf/*.bin` (byte-identical TrueType, not transcoded) with a
 TrueType magic check and a 503 fallback. No real orders had printed yet.
 
 Source: [release runbook](../your-sky-release.md#print-fonts-2026-09-24).
+
+## 2026-09-24 - Your Sky designer: layouts, details, time slider, living preview
+
+PR 2 of the Your Sky enhancements. Step 2 gains Layout (four swatches in the
+chosen colour) and Details switches; drafts and share links carry both. A
+time-of-night slider under the map is shaded by twilight for the chosen date
+and place and captioned with sunrise, sunset and "dark from" (Sun below
+−12°). While it moves, a canvas sketch of the disc stands in for the exact
+SVG; other changes crossfade. The style swatches no longer crop (the `height`
+attribute had beaten `aspect-ratio`).
+
+Sources: `app/components/SkyConfigurator.tsx`, `app/components/SkyLivePreview.tsx`,
+`app/components/SkyTimeSlider.tsx`, `app/lib/sky/twilight.ts`,
+`app/lib/sky/timeSlider.ts`, `app/lib/sky/sceneMemo.ts`, `app/lib/sky/sketch.ts`,
+[release runbook](../your-sky-release.md#designer-2026-09-24).

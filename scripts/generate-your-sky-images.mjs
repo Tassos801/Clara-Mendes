@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
-// Renders the four static images for /your-sky from the real sky engine:
-// the hero (the linen print in a natural frame on a night wall, with faint
-// constellation lines behind it) and three occasion skies. Deterministic;
-// outputs are committed under public/images/your-sky/.
+// Renders the static images for /your-sky from the real sky engine: the
+// hero (the linen print in a natural frame on a night wall, with faint
+// constellation lines behind it), three occasion skies, and twelve swatches
+// (every layout in every colour) for the designer's style step.
+// Deterministic; outputs are committed under public/images/your-sky/.
 //
 //   node scripts/generate-your-sky-images.mjs
 
@@ -108,10 +109,15 @@ const SKIES = {
   },
 };
 
-async function printPng(key, width, theme = SKIES[key].theme) {
+async function printPng(
+  key,
+  width,
+  theme = SKIES[key].theme,
+  layout = 'classic',
+) {
   const {scene, svg} = renderSkySvg({
     catalog,
-    params: {...SKIES[key], theme},
+    params: {...SKIES[key], theme, layout},
     plateDataUrl: theme === 'linen' ? plateDataUrl : plateDataUrlFor(theme),
     size: '8x10',
     theme,
@@ -123,15 +129,17 @@ async function printPng(key, width, theme = SKIES[key].theme) {
   return {png, scene};
 }
 
-// Occasion cards: the print itself, 800px wide.
-// Style swatches: the example sky on each plate, 320px wide.
-for (const theme of ['linen', 'midnight-garden', 'quiet-form']) {
-  const {png} = await printPng('hero', 320, theme);
-  const out = path.join(outDir, `style-${theme}.webp`);
-  await sharp(png).webp({quality: 84}).toFile(out);
-  console.log('wrote', path.relative(repoRoot, out));
+// Swatches: the example sky in every layout on every plate, 320px wide.
+for (const layout of ['classic', 'compass', 'full', 'minimal']) {
+  for (const theme of ['linen', 'midnight-garden', 'quiet-form']) {
+    const {png} = await printPng('hero', 320, theme, layout);
+    const out = path.join(outDir, `swatch-${layout}-${theme}.webp`);
+    await sharp(png).webp({quality: 84}).toFile(out);
+    console.log('wrote', path.relative(repoRoot, out));
+  }
 }
 
+// Occasion cards: the print itself, 800px wide.
 for (const key of ['occasion-met', 'occasion-born', 'occasion-yes']) {
   const {png} = await printPng(key, 800);
   const out = path.join(outDir, `${key}.webp`);

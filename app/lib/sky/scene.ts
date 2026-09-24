@@ -112,6 +112,16 @@ export function skySubtitle(p: SkyParams) {
   return `${parts.place} · ${parts.rest}`;
 }
 
+/** The scene's text: everything a title or place-label edit can change. */
+export function skySceneText(p: SkyParams) {
+  return {
+    title: p.title,
+    subtitle: skySubtitle(p),
+    subtitleParts: skySubtitleParts(p),
+    credit: SKY_CREDIT,
+  };
+}
+
 function toVector({alt, az}: HorizontalPoint): [number, number, number] {
   const a = alt * DEG;
   const azimuth = az * DEG;
@@ -357,9 +367,6 @@ export function computeSky({
     moon,
     planets,
     cardinal,
-    title: params.title,
-    subtitle: skySubtitle(params),
-    subtitleParts: skySubtitleParts(params),
-    credit: SKY_CREDIT,
+    ...skySceneText(params),
   };
 }

@@ -1,4 +1,13 @@
-import {type KeyboardEvent, useEffect, useMemo, useRef, useState} from 'react';
+import {
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {SkyLivePreview} from '~/components/SkyLivePreview';
+import {SkyTimeSlider} from '~/components/SkyTimeSlider';
 import {loadSkyCatalog, type SkyCatalog} from '~/lib/sky/catalog';
 import {
   createSkyRenderKey,
@@ -16,7 +25,12 @@ import {
   type SkyRequiredField,
 } from '~/lib/sky/configuratorState';
 import {
+  parseSkyDetails,
   SKY_DEFAULT_TIME,
+  SKY_DETAIL_IDS,
+  SKY_DETAIL_LABELS,
+  SKY_LAYOUT_IDS,
+  SKY_LAYOUT_LABELS,
   SKY_MAX_YEAR,
   SKY_MIN_YEAR,
   SKY_THEME_IDS,
@@ -24,15 +38,20 @@ import {
   SKY_TITLE_MAX,
   unprintableCharacters,
   validateSkyParams,
+  type SkyDetail,
+  type SkyLayoutId,
   type SkyParams,
   type SkyThemeId,
 } from '~/lib/sky/params';
 import type {PlaceResult} from '~/lib/sky/places.server';
 import {describeSkyScene} from '~/lib/sky/describe';
 import {SKY_SIZES, type SkyFinish, type SkySizeKey} from '~/lib/sky/products';
-import {computeSky} from '~/lib/sky/scene';
+import {createSkySceneMemo} from '~/lib/sky/sceneMemo';
 import {SkySvg} from '~/lib/sky/svg';
 import {platePath, SKY_THEMES} from '~/lib/sky/themes';
+import {minutesToTime, timeToMinutes} from '~/lib/sky/timeSlider';
+import {skyTimeline} from '~/lib/sky/twilight';
+import {useReducedMotion} from '~/lib/useReducedMotion';
 
 const EXAMPLE = {
   date: '2019-06-14',
@@ -48,6 +67,12 @@ const EXAMPLE_PLACE: PlaceResult = {
   lon: 2.3522,
   tz: 'Europe/Paris',
   label: 'Paris, France',
+};
+
+const DETAIL_HINTS: Record<SkyDetail, string> = {
+  names: 'Latin names of the constellations above the horizon',
+  grid: 'Altitude rings and compass spokes',
+  time: 'Adds the hour to the line under the title',
 };
 
 /** An empty sage wall from the story page; the print is placed on it to scale. */
@@ -131,6 +156,11 @@ export function SkyConfigurator({
   const [time, setTime] = useState(SKY_DEFAULT_TIME);
   const [title, setTitle] = useState('');
   const [theme, setTheme] = useState(initialTheme);
+  const [layout, setLayout] = useState<SkyLayoutId>('classic');
+  const [details, setDetails] = useState<SkyDetail[]>([]);
+  const [scrubbing, setScrubbing] = useState(false);
+  const reducedMotion = useReducedMotion();
+  const [sceneMemo] = useState(createSkySceneMemo);
   const [touched, setTouched] = useState(false);
   const [placeBlurred, setPlaceBlurred] = useState(false);
   const [dateBlurred, setDateBlurred] = useState(false);
@@ -182,6 +212,8 @@ export function SkyConfigurator({
       setTime(shared.time);
       setTitle(shared.title);
       setTheme(shared.theme);
+      setLayout(shared.layout);
+      setDetails(shared.details);
       setTouched(true);
       setRestored(true);
       return;
@@ -194,6 +226,8 @@ export function SkyConfigurator({
       setTime(restoredDraft.time);
       setTitle(restoredDraft.title);
       setTheme(restoredDraft.theme);
+      setLayout(restoredDraft.layout);
+      setDetails(restoredDraft.details);
       setTouched(
         Boolean(
           restoredDraft.place || restoredDraft.date || restoredDraft.title,
@@ -210,13 +244,17 @@ export function SkyConfigurator({
       !date &&
       !title &&
       time === SKY_DEFAULT_TIME &&
-      theme === initialTheme
+      theme === initialTheme &&
+      layout === 'classic' &&
+      details.length === 0
     ) {
       writeSessionDraft(null);
     } else {
-      writeSessionDraft(serializeSkyDraft({place, date, time, title, theme}));
+      writeSessionDraft(
+        serializeSkyDraft({place, date, time, title, theme, layout, details}),
+      );
     }
-  }, [date, initialTheme, place, restored, theme, time, title]);
+  }, [date, details, initialTheme, layout, place, restored, theme, time, title]);
 
   useEffect(() => {
     function applyPreset(event: Event) {
@@ -389,6 +427,8 @@ export function SkyConfigurator({
     setTime(SKY_DEFAULT_TIME);
     setTitle('');
     setTheme(initialTheme);
+    setLayout('classic');
+    setDetails([]);
     setTouched(false);
     setPlaceBlurred(false);
     setDateBlurred(false);
@@ -430,8 +470,10 @@ export function SkyConfigurator({
       place: previewPlace.label,
       title: touched ? title : EXAMPLE.title,
       theme,
+      layout,
+      details,
     };
-  }, [date, place, theme, time, title, touched]);
+  }, [date, details, layout, place, theme, time, title, touched]);
   const debouncedInput = useDebounced(previewInput, 150);
   const previewValidation = useMemo(
     () => validateSkyParams(debouncedInput),
@@ -446,13 +488,49 @@ export function SkyConfigurator({
         kind: 'ready',
         attempt: renderAttempt,
         key: createSkyRenderKey(previewValidation.params, size),
-        scene: computeSky({params: previewValidation.params, size, catalog}),
+        scene: sceneMemo({params: previewValidation.params, size, catalog}),
       } as const;
     } catch (error) {
       console.error('Sky preview failed to render', error);
       return {kind: 'error', attempt: renderAttempt} as const;
     }
-  }, [catalog, previewValidation, renderAttempt, size]);
+  }, [catalog, previewValidation, renderAttempt, sceneMemo, size]);
+
+  // The undebounced current sky, for the sketch while the slider moves.
+  const live = useMemo(() => {
+    const validation = validateSkyParams(previewInput);
+    return validation.ok
+      ? {
+          params: validation.params,
+          key: createSkyRenderKey(validation.params, size),
+        }
+      : null;
+  }, [previewInput, size]);
+  const timeline = useMemo(() => {
+    try {
+      return skyTimeline({
+        date: previewInput.date,
+        lat: previewInput.lat,
+        lon: previewInput.lon,
+        tz: previewInput.tz,
+      });
+    } catch {
+      return null;
+    }
+  }, [previewInput.date, previewInput.lat, previewInput.lon, previewInput.tz]);
+  const onSlide = useCallback(
+    (minutes: number) => setTime(minutesToTime(minutes)),
+    [],
+  );
+  function toggleDetail(id: SkyDetail, on: boolean) {
+    setDetails(
+      (current) =>
+        parseSkyDetails(
+          on ? [...current, id] : current.filter((d) => d !== id),
+        ) ?? [],
+    );
+    setTouched(true);
+  }
 
   const purchasable = useMemo(
     () =>
@@ -466,9 +544,11 @@ export function SkyConfigurator({
             place: place.label,
             title,
             theme,
+            layout,
+            details,
           })
         : null,
-    [date, place, theme, time, title],
+    [date, details, layout, place, theme, time, title],
   );
   const purchasableParams = purchasable?.ok ? purchasable.params : null;
   const currentRenderKey = purchasableParams
@@ -593,10 +673,15 @@ export function SkyConfigurator({
             </div>
           ) : (
             <div className={`sky-preview-frame sky-preview-frame--${finish}`}>
-              <SkySvg
-                className="sky-preview-svg"
+              <SkyLivePreview
+                catalog={catalog}
+                live={live}
                 plateUrl={platePath(theme, 'preview')}
+                reducedMotion={reducedMotion}
                 scene={rendered.scene}
+                sceneKey={rendered.key}
+                scrubbing={scrubbing}
+                size={size}
                 theme={SKY_THEMES[theme]}
               />
             </div>
@@ -606,6 +691,12 @@ export function SkyConfigurator({
             {preview === 'error' ? 'Preview unavailable' : 'Charting your sky…'}
           </div>
         )}
+        <SkyTimeSlider
+          minutes={timeToMinutes(time) ?? timeToMinutes(SKY_DEFAULT_TIME) ?? 1320}
+          onChange={onSlide}
+          onScrub={setScrubbing}
+          timeline={timeline}
+        />
         {rendered.kind === 'ready' ? (
           <div className="sky-preview-footer">
             <p className="sky-preview-facts">
@@ -857,13 +948,14 @@ export function SkyConfigurator({
       </form>
 
       <fieldset
-        aria-label="Choose the artwork style"
+        aria-label="Choose the style, layout and details"
         className="sky-theme-picker"
       >
         <legend>
           <span>2</span> Style
         </legend>
-        <div className="sky-theme-options">
+        <p className="sky-option-label" id="sky-colour-label">Colour</p>
+        <div aria-labelledby="sky-colour-label" className="sky-theme-options" role="group">
           {SKY_THEME_IDS.map((id) => (
             <button
               aria-pressed={theme === id}
@@ -880,11 +972,63 @@ export function SkyConfigurator({
                 aria-hidden="true"
                 height={400}
                 loading="lazy"
-                src={`/images/your-sky/style-${id}.webp`}
+                src={`/images/your-sky/swatch-${layout}-${id}.webp`}
                 width={320}
               />
               <span>{SKY_THEME_LABELS[id]}</span>
             </button>
+          ))}
+        </div>
+        <p className="sky-option-label" id="sky-layout-label">Layout</p>
+        <div
+          aria-labelledby="sky-layout-label"
+          className="sky-theme-options sky-layout-options"
+          role="group"
+        >
+          {SKY_LAYOUT_IDS.map((id) => (
+            <button
+              aria-pressed={layout === id}
+              className={layout === id ? 'is-selected' : ''}
+              key={id}
+              onClick={() => {
+                setLayout(id);
+                setTouched(true);
+              }}
+              type="button"
+            >
+              <img
+                alt=""
+                aria-hidden="true"
+                height={400}
+                loading="lazy"
+                src={`/images/your-sky/swatch-${id}-${theme}.webp`}
+                width={320}
+              />
+              <span>{SKY_LAYOUT_LABELS[id]}</span>
+            </button>
+          ))}
+        </div>
+        <p className="sky-option-label" id="sky-details-label">Details</p>
+        <div
+          aria-labelledby="sky-details-label"
+          className="sky-detail-switches"
+          role="group"
+        >
+          {SKY_DETAIL_IDS.map((id) => (
+            <label className="sky-switch" key={id}>
+              <input
+                aria-describedby={`sky-detail-hint-${id}`}
+                checked={details.includes(id)}
+                onChange={(event) => toggleDetail(id, event.target.checked)}
+                role="switch"
+                type="checkbox"
+              />
+              <span aria-hidden="true" className="sky-switch-track" />
+              <span className="sky-switch-text">
+                {SKY_DETAIL_LABELS[id]}
+                <small id={`sky-detail-hint-${id}`}>{DETAIL_HINTS[id]}</small>
+              </span>
+            </label>
           ))}
         </div>
       </fieldset>

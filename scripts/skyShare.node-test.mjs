@@ -45,3 +45,22 @@ test('searches without a complete sky give nothing back', () => {
   assert.equal(parseSkySearch('?Size=8+%C3%97+10+in'), null);
   assert.equal(parseSkySearch('?date=2019-06-14&place=Paris'), null);
 });
+
+test('a share link carries layout and details', () => {
+  const layered = validateSkyParams({
+    date: '2019-06-14',
+    time: '22:00',
+    lat: 48.8566,
+    lon: 2.3522,
+    tz: 'Europe/Paris',
+    place: 'Paris, France',
+    title: '',
+    theme: 'linen',
+    layout: 'minimal',
+    details: 'grid,time',
+  }).params;
+  const url = buildSkyShareUrl('https://shop.example', '/your-sky', layered, '');
+  const back = parseSkySearch(new URL(url).search);
+  assert.equal(back.layout, 'minimal');
+  assert.deepEqual(back.details, ['grid', 'time']);
+});
