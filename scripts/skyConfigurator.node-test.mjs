@@ -172,6 +172,12 @@ test('configurator exposes accessible recovery and all existing styles', () => {
     'Reset',
     'SKY_THEME_IDS',
     'Ready to print',
+    'SKY_LAYOUT_IDS',
+    'SKY_DETAIL_IDS',
+    'role="switch"',
+    'SkyTimeSlider',
+    'SkyLivePreview',
+    'swatch-',
   ]) {
     assert.ok(configuratorSource.includes(token), `missing ${token}`);
   }
@@ -209,6 +215,10 @@ test('Your Sky uses one responsive grid with theme and frame treatments', () => 
     '.sky-review',
     '.sky-preview-status',
     '.sky-place-status',
+    '.sky-layout-options',
+    '.sky-switch',
+    '.sky-time-track',
+    '.sky-live-sketch',
   ]) {
     assert.ok(appCss.includes(token), `missing ${token}`);
   }

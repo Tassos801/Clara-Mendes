@@ -4101,6 +4101,7 @@ html.lenis body {
 .sky-theme-options img {
   aspect-ratio: 4 / 5;
   display: block;
+  height: auto;
   object-fit: cover;
   width: 100%;
 }
@@ -4110,6 +4111,95 @@ html.lenis body {
   font-size: 0.72rem;
   line-height: 1.25;
   margin-top: 0.4rem;
+}
+
+.sky-option-label {
+  color: var(--color-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 1.1rem 0 0.55rem;
+  text-transform: uppercase;
+}
+
+.sky-theme-picker legend + .sky-option-label {
+  margin-top: 0;
+}
+
+.sky-layout-options {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.sky-detail-switches {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sky-switch {
+  align-items: center;
+  cursor: pointer;
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-height: 44px;
+  position: relative;
+}
+
+.sky-switch input {
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  width: 1px;
+}
+
+.sky-switch-track {
+  background: rgba(38, 35, 31, 0.2);
+  border-radius: 999px;
+  height: 20px;
+  position: relative;
+  transition: background 160ms ease;
+  width: 36px;
+}
+
+.sky-switch-track::after {
+  background: var(--color-paper);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(24, 21, 18, 0.3);
+  content: '';
+  height: 16px;
+  left: 2px;
+  position: absolute;
+  top: 2px;
+  transition: transform 160ms ease;
+  width: 16px;
+}
+
+.sky-switch input:checked + .sky-switch-track {
+  background: var(--color-ink);
+}
+
+.sky-switch input:checked + .sky-switch-track::after {
+  transform: translateX(16px);
+}
+
+.sky-switch input:focus-visible + .sky-switch-track {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.sky-switch-text {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.sky-switch-text small {
+  color: var(--color-muted);
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.35;
 }
 
 .sky-product-options-stage {
@@ -4362,6 +4452,11 @@ html.lenis body {
 
   .sky-theme-options span {
     font-size: 0.66rem;
+  }
+
+  .sky-layout-options {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.4rem;
   }
 }
 
