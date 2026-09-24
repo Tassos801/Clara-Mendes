@@ -1,6 +1,9 @@
 import type {Route} from './+types/api.sky-print.$token[.pdf]';
 import {loadSkyCatalog} from '~/lib/sky/catalog';
-import {loadSkyFonts} from '~/lib/sky/fonts.server';
+import {
+  fontsUnavailableResponse,
+  loadSkyFontsOrNull,
+} from '~/lib/sky/fonts.server';
 import {renderSkyPdf} from '~/lib/sky/pdf.server';
 import type {SkySizeKey} from '~/lib/sky/products';
 import {computeSky} from '~/lib/sky/scene';
@@ -48,9 +51,10 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
 
   const [catalog, fonts, plate] = await Promise.all([
     loadSkyCatalog(),
-    loadSkyFonts(url),
+    loadSkyFontsOrNull(url, 'sky-print'),
     loadPlate(url, platePath(theme.id, size)),
   ]);
+  if (!fonts) return fontsUnavailableResponse();
   // Every theme ships a plate, so a missing one is a transient fetch
   // failure. Answer 503 so Prodigi retries rather than printing a paid order
   // on a flat background that the customer never saw in the preview.

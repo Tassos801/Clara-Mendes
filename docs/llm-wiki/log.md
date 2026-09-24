@@ -1084,3 +1084,15 @@ one-line titles and First Light are unchanged. Tests: `scripts/skyLabels.node-te
 (480-sky sweep) and `scripts/skyFit.node-test.mjs`.
 
 Source: [spec](../superpowers/specs/2026-09-23-your-sky-enhancements-design.md).
+
+## 2026-09-24 - Print PDFs embedded WOFF2 fonts
+
+The live-print check after PR #90 found every server-rendered PDF embedding
+WOFF2 bytes as a TrueType font program (`wOF2` magic): Shopify's CDN
+"imagery" optimisation transcodes `/fonts/*.ttf`. pdf-lib read them for
+metrics and embedded them raw, which PDF readers reject. The star-map print,
+birth poster, gift slip and hanging-guide routes now share `loadSkyFonts()`
+reading `/fonts/pdf/*.bin` (byte-identical TrueType, not transcoded) with a
+TrueType magic check and a 503 fallback. No real orders had printed yet.
+
+Source: [release runbook](../your-sky-release.md#print-fonts-2026-09-24).
