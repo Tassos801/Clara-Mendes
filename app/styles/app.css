@@ -3659,6 +3659,163 @@ html.lenis body {
   outline-offset: -2px;
 }
 
+/* Time-of-night slider under the Your Sky preview. The shaded track is a
+   pseudo-element inset by the thumb radius, so ticks and gradient stops line
+   up with the thumb's centre at every value. */
+.sky-time {
+  background: rgba(251, 250, 246, 0.92);
+  border-top: 1px solid rgba(38, 35, 31, 0.1);
+  padding: 10px 12px 8px;
+}
+
+.sky-time-head {
+  align-items: baseline;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.sky-time-head label {
+  color: var(--color-muted);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sky-time-head output {
+  font-family: var(--serif);
+  font-size: 0.92rem;
+}
+
+.sky-time-track {
+  --thumb: 20px;
+  margin-top: 4px;
+  position: relative;
+}
+
+.sky-time-track::before {
+  background: var(--sky-time-track, #373a52);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1px rgba(38, 35, 31, 0.14);
+  content: '';
+  height: 8px;
+  left: calc(var(--thumb) / 2);
+  position: absolute;
+  right: calc(var(--thumb) / 2);
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.sky-time-tick {
+  background: rgba(246, 242, 234, 0.95);
+  height: 16px;
+  left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--at));
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.5px;
+}
+
+.sky-time-track input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  display: block;
+  height: 32px;
+  margin: 0;
+  position: relative;
+  touch-action: pan-y;
+  width: 100%;
+}
+
+.sky-time-track input[type='range']::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 8px;
+}
+
+.sky-time-track input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: var(--color-paper);
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(24, 21, 18, 0.25);
+  height: var(--thumb);
+  margin-top: -6px;
+  width: var(--thumb);
+}
+
+.sky-time-track input[type='range']::-moz-range-track {
+  background: transparent;
+  height: 8px;
+}
+
+.sky-time-track input[type='range']::-moz-range-thumb {
+  background: var(--color-paper);
+  border: 2px solid var(--color-ink);
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(24, 21, 18, 0.25);
+  height: 16px;
+  width: 16px;
+}
+
+.sky-time-track input[type='range']:focus-visible {
+  border-radius: 999px;
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.sky-time-caption,
+.sky-time-note {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  line-height: 1.4;
+  margin: 2px 0 0;
+}
+
+/* Living preview: a fading copy of the previous SVG over the new one, and a
+   canvas sketch of the disc while the time slider moves. */
+.sky-live,
+.sky-live-host {
+  position: relative;
+}
+
+.sky-live-ghosts {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.sky-live-ghosts svg {
+  display: block;
+  height: 100%;
+  inset: 0;
+  position: absolute;
+  transition: opacity 250ms ease;
+  width: 100%;
+}
+
+.sky-live-ghosts svg.is-leaving {
+  opacity: 0;
+}
+
+.sky-live-sketch {
+  height: 100%;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 250ms ease;
+  width: 100%;
+}
+
+.sky-live-sketch.is-visible {
+  opacity: 1;
+  transition: none;
+}
+
 .sky-wall {
   aspect-ratio: 3 / 2;
   background: #aab4a8;
