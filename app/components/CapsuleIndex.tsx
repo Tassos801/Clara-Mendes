@@ -184,6 +184,12 @@ const capsuleIndexCss = `
   text-decoration: none;
 }
 
+/* reset.css underlines every a:hover; tiles and the closing tile opt out. */
+.capsule-tile:hover,
+.capsule-index__all:hover {
+  text-decoration: none;
+}
+
 .capsule-tile__media {
   aspect-ratio: 4 / 5;
   background: #ded7cb;

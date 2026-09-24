@@ -1116,6 +1116,12 @@ html:has(.home-root) main {
     text-align: center;
   }
 
+  @media (max-width: 400px) {
+    .home-trust-band p + p::before {
+      display: none;
+    }
+  }
+
   .home-shop-accelerator {
     grid-template-columns: 1fr;
     padding-bottom: 54px;
@@ -1316,6 +1322,7 @@ html:has(.home-root) main {
 .studio-card:hover,
 .journal-teaser-card:hover {
   box-shadow: 0 36px 84px rgba(20, 15, 10, 0.42);
+  text-decoration: none;
   transform: translateY(-3px);
 }
 
