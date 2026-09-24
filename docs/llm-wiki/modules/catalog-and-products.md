@@ -300,3 +300,12 @@ five-image gallery (flat artwork first, then four tailored room scenes from
 `release` refuses to run until every catalog size is mapped in Prodigi and the
 gallery reads back complete. Sci-fi & Cinema is the first collection with
 16×20 (€39.99) and 20×24 (€49.99) staged this way.
+## 2026-09-24 Light & Silence expansion
+
+Four additional monochrome prints — Wind in Sand, Shell at Low Tide, River in
+Motion and Cloud at Rest — are staged as Shopify Drafts with three sizes each.
+Their artwork and five-image galleries are prepared, but the products are not
+released. Owner acceptance of the new source-resolution/crop limits and 12
+Prodigi mapping checks remain outstanding. See
+[Light & Silence launch](../../light-and-silence-launch.md) and
+[`data/print-catalog.json`](../../../data/print-catalog.json).

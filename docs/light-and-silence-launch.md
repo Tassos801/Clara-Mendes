@@ -54,3 +54,38 @@ back after a reload. `media --apply` verified five READY images per product;
 products, confirmed all 15 variants on the Storefront API after they were
 published to Clara Mendes and Clara Mendes Headless in Admin, and wrote
 `releasedSizes`. Live `verify` runs after the PR is merged and deployed.
+## 2026-09-24 expansion — four Draft prints
+
+Four new original, AI-generated monochrome nature studies extend the five-print
+Light & Silence capsule. Their source prompts and hashes are recorded in
+[`data/print-catalog.json`](../data/print-catalog.json); the 1122×1402 PNG sources
+are in `scripts/assets/print-sources/light-and-silence/`.
+
+| Print | Subject | Artwork |
+| --- | --- | --- |
+| Wind in Sand | Wind-shaped dune and fine sand ripples | [Preview](../public/images/product-art/light-and-silence/wind-in-sand.webp) |
+| Shell at Low Tide | Weathered shell and soft reflection | [Preview](../public/images/product-art/light-and-silence/shell-at-low-tide.webp) |
+| River in Motion | Flowing stream between dark stones | [Preview](../public/images/product-art/light-and-silence/river-in-motion.webp) |
+| Cloud at Rest | One luminous cloud over open grassland | [Preview](../public/images/product-art/light-and-silence/cloud-at-rest.webp) |
+
+`product prepare` exported 8×10, 16×20 and 20×24 RGB JPEGs for each new
+print. Native detail is 140.2, 70.1 and 56.1 PPI respectively; the 20×24
+export crops 4% of the 4:5 source. The 300-DPI export metadata does not
+increase native detail. The owner approval of the first five prints does not
+cover these four; acceptance of softness and the 20×24 crop is pending.
+
+All four are Shopify **Drafts** with tracked zero inventory and no publication.
+Each has the flat artwork first and four ordered, READY room images. Product
+titles, copy, SEO, sizes and prices match the existing capsule. The 12 exact
+variant-to-artwork mappings remain unverified in Prodigi. The full handoff
+(including all nine prints) and print files are in the configured
+`output/launches/light-and-silence/` folder. `product release` correctly refuses
+to activate the Drafts until every new size has a verified mapping. Physical
+print quality remains unverified until a proof or first order.
+
+After owner acceptance, verify each of the 12 Prodigi rows with the matching
+file and provider SKU, Excellent quality, full bleed, Standard shipping and
+"Fulfilled by Prodigi automatically" after reload. Record channel product IDs
+with `product mapped`, run `product release --apply`, merge/deploy the
+released catalog and assets, then verify all 12 product-size cart combinations
+on production.

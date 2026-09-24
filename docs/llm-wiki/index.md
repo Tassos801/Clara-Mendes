@@ -32,7 +32,7 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [Adding prints runbook](../add-products-runbook.md) - One catalog file and `npm run product` steps for artwork, room images, Draft staging, supplier handoff, release, and live verification.
 - [Sci-fi & Cinema Print Staging](../scifi-cinema-prints.md) - Four Draft designs, disabled storefront release flags, export candidates and remaining provider work.
-- [Light & Silence Print Launch](../light-and-silence-launch.md) - Five monochrome nature designs, three-size exports, room scenes, and print-quality release gate.
+- [Light & Silence Print Launch](../light-and-silence-launch.md) - Five released monochrome prints plus four staged designs, three-size exports, room scenes, and print-quality release gate.
 
 ## Source Notes
 

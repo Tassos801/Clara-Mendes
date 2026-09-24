@@ -1049,3 +1049,13 @@ were included in Admin, and set `releasedSizes`. The owner re-approved all
 three sizes despite the 70 PPI (16×20) and 56 PPI (20×24) native detail.
 
 Source: [Light & Silence launch](../light-and-silence-launch.md).
+## 2026-09-24 - Four more Light & Silence prints staged
+
+Wind in Sand, Shell at Low Tide, River in Motion and Cloud at Rest were added to
+`data/print-catalog.json` as unreleased prints. Their original source art,
+three-size print exports and 16 room images were prepared. Four Shopify Drafts
+with 12 size variants and five READY images each were verified. They remain
+hidden pending owner acceptance of native-resolution/crop limits and exact
+Prodigi mapping for every size.
+
+Source: [Light & Silence launch](../light-and-silence-launch.md).

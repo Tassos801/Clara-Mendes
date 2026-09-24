@@ -903,6 +903,290 @@
             "16x20",
             "20x24"
           ]
+        },
+        {
+          "slug": "wind-in-sand",
+          "title": "Wind in Sand",
+          "sequence": 6,
+          "description": "A wind-carved dune crest cuts through morning light, its fine ripples dissolving into deep shadow.",
+          "alt": "Black-and-white image of a wind-carved sand dune, with delicate ripples and a deep shadow.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Wind in Sand art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Wind in Sand art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Wind in Sand art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Wind in Sand art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-24",
+            "promptSummary": "Original 4:5 black-and-white nature image: one wind-carved dune ridge at dawn, rippled sand and deep shadow; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "6895104cfd1728d0a0e7acab545a564155e51d91b2b014a07296a35dba1e00d6"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16092026044750",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60935970554190",
+              "16x20": "gid://shopify/ProductVariant/60935970586958",
+              "20x24": "gid://shopify/ProductVariant/60935970619726"
+            }
+          }
+        },
+        {
+          "slug": "shell-at-low-tide",
+          "title": "Shell at Low Tide",
+          "sequence": 7,
+          "description": "A weathered sea shell rests on wet sand, its ridged surface reflected in a thin film of water.",
+          "alt": "Black-and-white image of a weathered spiral sea shell reflected on dark wet sand.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Shell at Low Tide art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Shell at Low Tide art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Shell at Low Tide art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Shell at Low Tide art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-24",
+            "promptSummary": "Original 4:5 black-and-white nature image: weathered spiral sea shell on wet sand with a soft reflection; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "ebfb95b9a4d9348c12243f2e49c6db4db082a83d4594e870e62e712833023ea9"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16092026175822",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60935970881870",
+              "16x20": "gid://shopify/ProductVariant/60935970914638",
+              "20x24": "gid://shopify/ProductVariant/60935970947406"
+            }
+          }
+        },
+        {
+          "slug": "river-in-motion",
+          "title": "River in Motion",
+          "sequence": 8,
+          "description": "A ribbon of flowing water threads between dark river stones, making motion feel quiet.",
+          "alt": "Black-and-white image of flowing water weaving through dark, smooth river stones.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "River in Motion art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "River in Motion art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "River in Motion art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "River in Motion art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-24",
+            "promptSummary": "Original 4:5 black-and-white nature image: narrow stream flowing around smooth dark river stones; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "f3a109c7f9ac86b83fecf92bc441a091030fa6b40fff1622cadadcc2e1054674"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16092026241358",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60935971438926",
+              "16x20": "gid://shopify/ProductVariant/60935971471694",
+              "20x24": "gid://shopify/ProductVariant/60935971504462"
+            }
+          }
+        },
+        {
+          "slug": "cloud-at-rest",
+          "title": "Cloud at Rest",
+          "sequence": 9,
+          "description": "One sunlit cloud floats above open grassland, casting a broad shadow near the horizon.",
+          "alt": "Black-and-white image of one luminous cloud above an open grassland horizon.",
+          "palette": "Black, white, silver gray",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Cloud at Rest art print above a pale linen sofa in a light contemporary living room.",
+              "backgroundFile": "living-room.png",
+              "placement": {
+                "left": 410,
+                "top": 220,
+                "width": 260,
+                "height": 325
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Cloud at Rest art print above a linen bed in a warm neutral bedroom.",
+              "backgroundFile": "bedroom.png",
+              "placement": {
+                "left": 420,
+                "top": 205,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Cloud at Rest art print on a charcoal wall above a dark walnut study desk.",
+              "backgroundFile": "study.png",
+              "placement": {
+                "left": 410,
+                "top": 245,
+                "width": 256,
+                "height": 320
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Cloud at Rest art print at scale in a spacious stone-toned interior.",
+              "backgroundFile": "wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 285,
+                "width": 180,
+                "height": 225
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "method": "built-in image_gen",
+            "created": "2026-09-24",
+            "promptSummary": "Original 4:5 black-and-white nature image: sculptural cloud over a flat grassland horizon; no copied photograph, lettering, frame or watermark.",
+            "nativeHeight": 1402,
+            "nativeWidth": 1122,
+            "sourceSha256": "ce99598f31f03904ff219af36f8420e1647ffcabd3b7eec0ebbe78342192144f"
+          },
+          "shopify": {
+            "productId": "gid://shopify/Product/16092026306894",
+            "variantIds": {
+              "8x10": "gid://shopify/ProductVariant/60935971733838",
+              "16x20": "gid://shopify/ProductVariant/60935971766606",
+              "20x24": "gid://shopify/ProductVariant/60935971799374"
+            }
+          }
         }
       ]
     }
