@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {readFileSync} from 'node:fs';
+import {existsSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -263,3 +263,17 @@ assert.equal(
   assert.ok(restored, 'share-link draft discarded');
   assert.equal(restored.place.countryCode, '');
 }
+
+test('a 320 px swatch exists for every layout in every colour', () => {
+  for (const layout of ['classic', 'compass', 'full', 'minimal']) {
+    for (const theme of ['linen', 'midnight-garden', 'quiet-form']) {
+      assert.ok(
+        existsSync(
+          path.join(ROOT, `public/images/your-sky/swatch-${layout}-${theme}.webp`),
+        ),
+        `missing swatch-${layout}-${theme}.webp`,
+      );
+    }
+  }
+  assert.ok(!existsSync(path.join(ROOT, 'public/images/your-sky/style-linen.webp')));
+});
