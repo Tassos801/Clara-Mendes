@@ -4,7 +4,7 @@ export const HOME_EDITORIAL_COPY = {
   ctaLabel: 'Explore the collection',
   eyebrow: 'The living edit',
   footer: ['Original art', 'Tactile materials', 'Everyday living'],
-  title: 'Original art, made to live with.',
+  title: 'Made for the rooms you live in.',
 } as const;
 
 export type HomeEditorialItem = {

@@ -4700,10 +4700,21 @@ html.lenis body {
   color: var(--color-muted);
 }
 
+/* Homepage: the film on a full-bleed ink band, frame capped at 1240px, so
+   it reads as the hero's cinematic continuation. */
 .home-film {
-  margin: 0 auto;
-  max-width: 1240px;
-  padding: clamp(48px, 7vw, 96px) clamp(18px, 4vw, 70px);
+  background: var(--color-ink);
+  padding: clamp(48px, 7vw, 96px)
+    max(clamp(18px, 4vw, 70px), calc((100% - 1240px) / 2));
+}
+
+.home-film .brand-film-eyebrow,
+.home-film .brand-film-caption {
+  color: rgba(251, 250, 246, 0.6);
+}
+
+.home-film .brand-film-frame {
+  box-shadow: 0 40px 90px -40px rgba(0, 0, 0, 0.8);
 }
 
 @media (max-width: 720px) {

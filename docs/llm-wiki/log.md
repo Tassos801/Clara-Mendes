@@ -1111,3 +1111,20 @@ Sources: `app/components/SkyConfigurator.tsx`, `app/components/SkyLivePreview.ts
 `app/components/SkyTimeSlider.tsx`, `app/lib/sky/twilight.ts`,
 `app/lib/sky/timeSlider.ts`, `app/lib/sky/sceneMemo.ts`, `app/lib/sky/sketch.ts`,
 [release runbook](../your-sky-release.md#designer-2026-09-24).
+
+## 2026-09-24 - Homepage below the hero: gallery walk
+
+Owner ask: make the landing page after "Objects with soul" more attractive.
+The text-only capsule carousel, the collection intro and the stale compact
+"Five moods" grid became one image-led capsule index over
+`listShopCapsules()` (seven capsules, twenty-four works; new print-catalog
+releases join on their own), with a room-scene reveal on hover or focus that
+loads only on first hover and an "All works" tile that closes the last row.
+The film moved onto a full-bleed ink band, the trust band became one slim
+line, and the stock-photo "Considered editions" block plus the standalone
+journal section became a "From the studio" close. The homepage no longer
+queries `collections`; the Living edit title stopped repeating "Original art".
+
+Sources: `app/components/CapsuleIndex.tsx`, `app/lib/capsuleIndex.ts`,
+`app/routes/_index.tsx`, [routes and pages](modules/routes-and-pages.md#home-page),
+[design spec](../superpowers/specs/2026-09-24-home-below-hero-design.md).
