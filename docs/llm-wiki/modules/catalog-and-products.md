@@ -305,7 +305,7 @@ gallery reads back complete. Sci-fi & Cinema is the first collection with
 Four additional monochrome prints — Wind in Sand, Shell at Low Tide, River in
 Motion and Cloud at Rest — are staged as Shopify Drafts with three sizes each.
 Their artwork and five-image galleries are prepared, but the products are not
-released. Owner acceptance of the new source-resolution/crop limits and 12
-Prodigi mapping checks remain outstanding. See
+released. The owner approved all three sizes with the documented native-detail
+and crop limits on 2026-09-25; 12 Prodigi mapping checks remain outstanding. See
 [Light & Silence launch](../../light-and-silence-launch.md) and
 [`data/print-catalog.json`](../../../data/print-catalog.json).

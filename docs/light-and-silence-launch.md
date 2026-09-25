@@ -71,8 +71,8 @@ are in `scripts/assets/print-sources/light-and-silence/`.
 `product prepare` exported 8×10, 16×20 and 20×24 RGB JPEGs for each new
 print. Native detail is 140.2, 70.1 and 56.1 PPI respectively; the 20×24
 export crops 4% of the 4:5 source. The 300-DPI export metadata does not
-increase native detail. The owner approval of the first five prints does not
-cover these four; acceptance of softness and the 20×24 crop is pending.
+increase native detail. On 2026-09-25, the owner explicitly approved all three
+sizes for these four prints with these native-detail limits and the 20×24 crop.
 
 All four are Shopify **Drafts** with tracked zero inventory and no publication.
 Each has the flat artwork first and four ordered, READY room images. Product
@@ -83,7 +83,7 @@ variant-to-artwork mappings remain unverified in Prodigi. The full handoff
 to activate the Drafts until every new size has a verified mapping. Physical
 print quality remains unverified until a proof or first order.
 
-After owner acceptance, verify each of the 12 Prodigi rows with the matching
+Verify each of the 12 Prodigi rows with the matching
 file and provider SKU, Excellent quality, full bleed, Standard shipping and
 "Fulfilled by Prodigi automatically" after reload. Record channel product IDs
 with `product mapped`, run `product release --apply`, merge/deploy the
