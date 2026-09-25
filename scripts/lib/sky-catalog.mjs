@@ -8,5 +8,9 @@ const read = (file) =>
   ).data;
 
 export function loadSkyCatalogSync() {
-  return {stars: read('stars.json'), lines: read('constellations.json')};
+  return {
+    stars: read('stars.json'),
+    lines: read('constellations.json'),
+    names: read('constellation-names.json'),
+  };
 }

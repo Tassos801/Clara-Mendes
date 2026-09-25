@@ -7,31 +7,20 @@ import {renderNatalPdf} from '~/lib/natal/pdf.server';
 import type {NatalSizeKey} from '~/lib/natal/products';
 import {computeNatal} from '~/lib/natal/scene';
 import {loadSkyCatalog} from '~/lib/sky/catalog';
-import type {SkyFonts} from '~/lib/sky/pdf.server';
+import {
+  fontsUnavailableResponse,
+  loadSkyFontsOrNull,
+} from '~/lib/sky/fonts.server';
 import {decodeCanonicalToken} from '~/lib/sky/sign.server';
 import {platePath, SKY_THEMES} from '~/lib/sky/themes';
 
-// Per-isolate caches: fonts and plates are static public assets.
-let fontsPromise: Promise<SkyFonts> | null = null;
+// Per-isolate cache: plates are static public assets (fonts: fonts.server).
 const plateCache = new Map<string, Promise<Uint8Array | null>>();
 
 async function fetchBytes(url: URL) {
   const res = await fetch(url.toString());
   if (!res.ok) throw new Error(`${url.pathname} → ${res.status}`);
   return new Uint8Array(await res.arrayBuffer());
-}
-
-function loadFonts(base: URL) {
-  fontsPromise ??= Promise.all([
-    fetchBytes(new URL('/fonts/EBGaramond-Regular.ttf', base)),
-    fetchBytes(new URL('/fonts/EBGaramond-Italic.ttf', base)),
-  ])
-    .then(([regular, italic]) => ({regular, italic}))
-    .catch((error: unknown) => {
-      fontsPromise = null;
-      throw error;
-    });
-  return fontsPromise;
 }
 
 function loadPlate(base: URL, path: string) {
@@ -71,9 +60,10 @@ export async function loader({params, request, context}: Route.LoaderArgs) {
 
   const [catalog, fonts, plate] = await Promise.all([
     loadSkyCatalog(),
-    loadFonts(url),
+    loadSkyFontsOrNull(url, 'natal-print'),
     loadPlate(url, platePath(theme.id, size)),
   ]);
+  if (!fonts) return fontsUnavailableResponse();
   // Every theme ships a plate, so a missing one is a transient fetch
   // failure. Answer 503 so Prodigi retries rather than printing a paid order
   // on a flat background that the customer never saw in the preview.

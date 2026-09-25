@@ -21,6 +21,8 @@ import {formatMoney, type MoneyAmount} from '~/lib/money';
 import {GIFT_NOTE_KEY, GIFT_NOTE_MAX, normaliseGiftNote} from '~/lib/sky/gift';
 import {
   formatSkyDate,
+  SKY_DETAIL_LABELS,
+  SKY_LAYOUT_LABELS,
   SKY_THEME_LABELS,
   toCartAttributes,
   type SkyThemeId,
@@ -265,6 +267,20 @@ export function SkyStudio({
                   <dt>Style</dt>
                   <dd>{SKY_THEME_LABELS[skyParams.theme]}</dd>
                 </div>
+                <div>
+                  <dt>Layout</dt>
+                  <dd>{SKY_LAYOUT_LABELS[skyParams.layout]}</dd>
+                </div>
+                {skyParams.details.length ? (
+                  <div>
+                    <dt>Details</dt>
+                    <dd>
+                      {skyParams.details
+                        .map((d) => SKY_DETAIL_LABELS[d])
+                        .join(' · ')}
+                    </dd>
+                  </div>
+                ) : null}
                 {skyParams.title ? (
                   <div>
                     <dt>Title</dt>

@@ -1,7 +1,22 @@
-import {useEffect, useMemo, useState} from 'react';
+import {memo, useEffect, useId, useMemo, useState} from 'react';
 import {fitSubtitle, fitTitle, trackedWidth, type MeasureText} from './fit';
 import {moonLitPath} from './moon';
 import type {SkyScene} from './scene';
+import {
+  GLOW_RINGS,
+  GRID_WIDTH,
+  LABEL_SIZE,
+  LABEL_TRACKING,
+  LINE_WIDTH,
+  MOON_EDGE_OPACITY,
+  MOON_EDGE_WIDTH,
+  MOON_GLOW,
+  PLANET_DOT,
+  PLANET_STROKE,
+  RING,
+  TICK,
+  TITLE_LINE_HEIGHT,
+} from './style';
 import type {SkyTheme} from './themes';
 
 const FONT = "'EB Garamond', Georgia, 'Times New Roman', serif";
@@ -44,7 +59,251 @@ function useTextMeasure() {
   }, [fontsReady]);
 }
 
-/** Live preview. Draws the same scene the PDF renderer prints. */
+type DiscLayerProps = Pick<
+  SkyScene,
+  | 'milkyWay'
+  | 'grid'
+  | 'lines'
+  | 'glows'
+  | 'stars'
+  | 'planets'
+  | 'moon'
+  | 'labels'
+  | 'disc'
+  | 'scale'
+> & {theme: SkyTheme; clipId: string};
+
+/**
+ * Everything inside the horizon. Memoised: the live preview's scene memo
+ * hands over the same arrays for a text-only edit, so ~5,000 elements are
+ * not re-rendered while a title is typed.
+ */
+const SkyDiscLayers = memo(function SkyDiscLayers({
+  milkyWay,
+  grid,
+  lines,
+  glows,
+  stars,
+  planets,
+  moon,
+  labels,
+  disc,
+  scale,
+  theme,
+  clipId,
+}: DiscLayerProps) {
+  const moonPath = moon
+    ? moonLitPath(moon.x, moon.y, moon.r, moon.phaseFraction, moon.litRight)
+    : '';
+  return (
+    <g clipPath={`url(#${clipId})`}>
+      {milkyWay.map((pass, i) => (
+        <path
+          // eslint-disable-next-line react/no-array-index-key
+          key={i}
+          d={pass.path}
+          fill={theme.milkyWay}
+          opacity={theme.milkyWayOpacity * pass.weight}
+        />
+      ))}
+      {grid ? (
+        <g
+          fill="none"
+          stroke={theme.grid}
+          strokeOpacity={theme.gridOpacity}
+          strokeWidth={GRID_WIDTH * scale}
+        >
+          {grid.circles.map((r) => (
+            <circle key={r} cx={disc.cx} cy={disc.cy} r={r} />
+          ))}
+          {grid.spokes.map((l, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+          ))}
+        </g>
+      ) : null}
+      <g
+        stroke={theme.line}
+        strokeOpacity={theme.lineOpacity}
+        strokeWidth={LINE_WIDTH * scale}
+        strokeLinecap="round"
+      >
+        {lines.map((l, i) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
+        ))}
+      </g>
+      <g fill={theme.glow}>
+        {GLOW_RINGS.map((ring, r) =>
+          glows.map((g, i) => (
+            <circle
+              // eslint-disable-next-line react/no-array-index-key
+              key={`${r}-${i}`}
+              cx={g.x}
+              cy={g.y}
+              r={g.r * ring.radius}
+              opacity={ring.opacity}
+            />
+          )),
+        )}
+      </g>
+      <g fill={theme.star}>
+        {stars.map((s, i) => (
+          <circle
+            // eslint-disable-next-line react/no-array-index-key
+            key={i}
+            cx={s.x}
+            cy={s.y}
+            r={s.r}
+            opacity={s.opacity < 1 ? s.opacity : undefined}
+          />
+        ))}
+      </g>
+      {planets.map((p) => (
+        <g key={p.name}>
+          <circle
+            cx={p.x}
+            cy={p.y}
+            r={p.r}
+            fill="none"
+            stroke={theme.planet}
+            strokeWidth={PLANET_STROKE * scale}
+          />
+          <circle cx={p.x} cy={p.y} r={p.r * PLANET_DOT} fill={theme.planet} />
+        </g>
+      ))}
+      {moon ? (
+        <g>
+          {MOON_GLOW.map((g) => (
+            <circle
+              key={g.radius}
+              cx={moon.x}
+              cy={moon.y}
+              r={moon.r * g.radius}
+              fill={theme.moonGlow}
+              opacity={Math.min(1, g.opacity * theme.moonGlowStrength)}
+            />
+          ))}
+          <circle cx={moon.x} cy={moon.y} r={moon.r} fill={theme.background} />
+          <circle
+            cx={moon.x}
+            cy={moon.y}
+            r={moon.r}
+            fill={theme.moonShade}
+            opacity={theme.moonShadeOpacity}
+          />
+          {moonPath ? <path d={moonPath} fill={theme.moonFace} /> : null}
+          <circle
+            cx={moon.x}
+            cy={moon.y}
+            r={moon.r}
+            fill="none"
+            stroke={theme.moonEdge}
+            strokeOpacity={MOON_EDGE_OPACITY}
+            strokeWidth={MOON_EDGE_WIDTH * scale}
+          />
+        </g>
+      ) : null}
+      {labels.length ? (
+        <g
+          fill={theme.labelColor}
+          opacity={theme.labelColorOpacity}
+          fontFamily={FONT}
+          fontSize={LABEL_SIZE * scale}
+          letterSpacing={LABEL_TRACKING * scale}
+          textAnchor="middle"
+        >
+          {labels.map((l) => (
+            <text key={l.text} x={l.x} y={l.y}>
+              {l.text}
+            </text>
+          ))}
+        </g>
+      ) : null}
+    </g>
+  );
+});
+
+type FrameLayerProps = Pick<
+  SkyScene,
+  'disc' | 'scale' | 'compass' | 'cardinal' | 'cardinalSize'
+> & {theme: SkyTheme};
+
+/** Horizon rings, compass ticks and cardinals: they only move with the layout. */
+const SkyFrameLayers = memo(function SkyFrameLayers({
+  disc,
+  scale,
+  compass,
+  cardinal,
+  cardinalSize,
+  theme,
+}: FrameLayerProps) {
+  return (
+    <>
+      <circle
+        cx={disc.cx}
+        cy={disc.cy}
+        r={disc.r}
+        fill="none"
+        stroke={theme.ring}
+        strokeOpacity={theme.ringOpacity}
+        strokeWidth={RING.outer * scale}
+      />
+      <circle
+        cx={disc.cx}
+        cy={disc.cy}
+        r={disc.r - RING.gap * scale}
+        fill="none"
+        stroke={theme.ring}
+        strokeOpacity={theme.ringOpacity * 0.7}
+        strokeWidth={RING.inner * scale}
+      />
+      {compass ? (
+        <g>
+          <g
+            stroke={theme.ring}
+            strokeOpacity={theme.ringOpacity}
+            strokeWidth={TICK.width * scale}
+          >
+            {compass.ticks.map((t, i) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <line key={i} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} />
+            ))}
+          </g>
+          <g
+            fill={theme.cardinal}
+            fontFamily={FONT}
+            fontSize={TICK.numeralSize * scale}
+            textAnchor="middle"
+          >
+            {compass.numerals.map((n) => (
+              <text key={n.text} x={n.x} y={n.y}>
+                {n.text}
+              </text>
+            ))}
+          </g>
+        </g>
+      ) : null}
+      <g
+        fill={theme.cardinal}
+        fontFamily={FONT}
+        fontSize={cardinalSize}
+        textAnchor="middle"
+      >
+        {cardinal.map((c) => (
+          <text key={c.label} x={c.x} y={c.y}>
+            {c.label}
+          </text>
+        ))}
+      </g>
+    </>
+  );
+});
+
+/**
+ * Live preview. Draws the same scene, in the same layer order, as the PDF
+ * renderer prints (app/lib/sky/pdf.server.ts).
+ */
 export function SkySvg({
   scene,
   theme,
@@ -57,12 +316,17 @@ export function SkySvg({
   className?: string;
 }) {
   const {width: W, height: H, disc, scale} = scene;
+  const clipId = `sky-disc-${useId().replace(/[^\w-]/g, '')}`;
   const measure = useTextMeasure();
   const title = measure
-    ? fitTitle(scene.title, scene.titleSize, scene.maxTextWidth, measure('italic'))
+    ? fitTitle(scene.title, scene.titleSize, scene.maxTextWidth, measure('italic'), {
+        maxTwoLineSize: scene.titleTwoLineMaxSize,
+      })
     : {lines: scene.title ? [scene.title] : [], size: scene.titleSize};
   const titleOffset = (index: number) =>
-    title.lines.length === 1 ? 0 : (index - 0.5) * title.size * 1.2;
+    title.lines.length === 1
+      ? 0
+      : (index - 0.5) * title.size * TITLE_LINE_HEIGHT;
   const titleLines = title.lines.map((text, index) => ({
     text,
     slot: index === 0 ? 'first' : 'second',
@@ -78,6 +342,7 @@ export function SkySvg({
         (t, s) => trackedWidth(t, s, subtitleTracking(s), measure('normal')),
       )
     : {lines: [scene.subtitle], size: scene.subtitleSize};
+
   return (
     <svg
       className={className}
@@ -86,6 +351,11 @@ export function SkySvg({
       aria-label={`Star map preview: ${scene.subtitle}`}
       xmlns="http://www.w3.org/2000/svg"
     >
+      <defs>
+        <clipPath id={clipId}>
+          <circle cx={disc.cx} cy={disc.cy} r={disc.r} />
+        </clipPath>
+      </defs>
       <rect width={W} height={H} fill={theme.background} />
       {plateUrl ? (
         <image
@@ -104,82 +374,31 @@ export function SkySvg({
           opacity={theme.discOpacity}
         />
       ) : null}
-      <g
-        stroke={theme.line}
-        strokeOpacity={theme.lineOpacity}
-        strokeWidth={0.35 * scale}
-        strokeLinecap="round"
-      >
-        {scene.lines.map((l, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
-        ))}
-      </g>
       {/* Static, wholesale-recomputed lists: index keys are correct here, and
           the catalogue contains a few coincident stars, so coordinates are
           not unique. */}
-      <g fill={theme.halo} opacity={0.12}>
-        {scene.stars
-          .filter((s) => s.mag < 1.5)
-          .map((s, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <circle key={i} cx={s.x} cy={s.y} r={s.r * 2.4} />
-          ))}
-      </g>
-      <g fill={theme.star}>
-        {scene.stars.map((s, i) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <circle key={i} cx={s.x} cy={s.y} r={s.r} />
-        ))}
-      </g>
-      <g fill={theme.planet}>
-        {scene.planets.map((p) => (
-          <circle key={p.name} cx={p.x} cy={p.y} r={p.r} />
-        ))}
-      </g>
-      {scene.moon ? (
-        <g>
-          <circle
-            cx={scene.moon.x}
-            cy={scene.moon.y}
-            r={scene.moon.r}
-            fill={theme.moonDark}
-            stroke={theme.moonLit}
-            strokeWidth={0.4 * scale}
-          />
-          <path
-            d={moonLitPath(
-              scene.moon.x,
-              scene.moon.y,
-              scene.moon.r,
-              scene.moon.phaseFraction,
-              scene.moon.litRight,
-            )}
-            fill={theme.moonLit}
-          />
-        </g>
-      ) : null}
-      <circle
-        cx={disc.cx}
-        cy={disc.cy}
-        r={disc.r}
-        fill="none"
-        stroke={theme.ring}
-        strokeOpacity={theme.ringOpacity}
-        strokeWidth={0.6 * scale}
+      <SkyDiscLayers
+        clipId={clipId}
+        disc={disc}
+        glows={scene.glows}
+        grid={scene.grid}
+        labels={scene.labels}
+        lines={scene.lines}
+        milkyWay={scene.milkyWay}
+        moon={scene.moon}
+        planets={scene.planets}
+        scale={scale}
+        stars={scene.stars}
+        theme={theme}
       />
-      <g
-        fill={theme.cardinal}
-        fontFamily={FONT}
-        fontSize={7 * scale}
-        textAnchor="middle"
-      >
-        {scene.cardinal.map((c) => (
-          <text key={c.label} x={c.x} y={c.y}>
-            {c.label}
-          </text>
-        ))}
-      </g>
+      <SkyFrameLayers
+        cardinal={scene.cardinal}
+        cardinalSize={scene.cardinalSize}
+        compass={scene.compass}
+        disc={disc}
+        scale={scale}
+        theme={theme}
+      />
       {titleLines.map((line) => (
         <text
           key={line.slot}
