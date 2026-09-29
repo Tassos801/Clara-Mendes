@@ -1,6 +1,6 @@
 # Fulfillment And Delivery Promises
 
-Snapshot: 2026-08-14
+Snapshot: 2026-09-29
 
 ## Facts
 
@@ -18,12 +18,19 @@ Snapshot: 2026-08-14
   slip, so a gift parcel carries the note and no price.
 - Prodigi Standard delivery estimates, counted from dispatch: EU 5–10 and
   US 7–15 business days. Only the EU window is promised on the storefront.
-- Live Shopify Markets (checked 2026-08-14 via the Storefront API
-  `localization.availableCountries` query) enable 15 EU countries:
-  AT BE CY CZ DE DK ES FI FR IE IT NL PL PT SE — no US, no GB, and 12 EU
-  members absent. Code-side allowlist is `MARKET_COUNTRIES`
+- Live Shopify Markets (checked 2026-09-29 via the Storefront API
+  `localization.availableCountries` query) enable all 27 EU countries:
+  a `Cyprus` market plus a `European Union` market holding the other 26.
+  No US, no GB, no non-EU Europe. Code-side allowlist is `MARKET_COUNTRIES`
   (`app/lib/markets.ts`, EU-27 + GB + US); the live intersection governs
   checkout, so re-run the query before widening any copy claims.
+- A country needs three admin settings to be sellable, and missing any one
+  fails quietly: membership in an active market (without it the Storefront
+  API returns `MERCHANDISE_OUT_OF_STOCK` and a €0 cart), plus a zone in the
+  General profile (prints, €16 International) and in the `Letter post -
+  cards & postcards` profile (€2.90). Shopify only lets a zone include a
+  country after it is in a market. Until 2026-09-29, 12 EU members (BG EE
+  GR HR HU LT LU LV MT RO SI SK) failed the first two checks.
 
 ## Where The Promises Render
 

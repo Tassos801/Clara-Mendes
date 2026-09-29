@@ -1111,3 +1111,17 @@ Sources: `app/components/SkyConfigurator.tsx`, `app/components/SkyLivePreview.ts
 `app/components/SkyTimeSlider.tsx`, `app/lib/sky/twilight.ts`,
 `app/lib/sky/timeSlider.ts`, `app/lib/sky/sceneMemo.ts`, `app/lib/sky/sketch.ts`,
 [release runbook](../your-sky-release.md#designer-2026-09-24).
+
+## 2026-09-29 - All 27 EU countries sellable
+
+Only 15 EU countries could check out. Carts from the other 12 (BG EE GR HR
+HU LT LU LV MT RO SI SK) came back `MERCHANDISE_OUT_OF_STOCK` at €0 because
+those countries sat in no Shopify market and no shipping zone, while the
+storefront said it ships "across the EU". In Shopify admin they were added to
+the European Union market, the General profile's International zone (€16)
+and the Letter post card zone (€2.90). `SHIPPING_COUNTRY_CODES` (Offer
+structured data) now lists all 27. Verified: `availableCountries` returns 27,
+a print adds to cart in every EU country, GR/MT/RO carts quote €16 (print) and
+€2.90 (card), and a Greek checkout totals €45.99.
+
+Source: [fulfillment](modules/fulfillment.md).
