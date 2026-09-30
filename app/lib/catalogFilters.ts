@@ -174,7 +174,11 @@ export const EXTENSION_COLLECTION_POPULATED = true;
  * so it is not an extension family. Flip only via docs/art-tough-phone-case.md.
  */
 export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
-  [TOUGH_CASE_HANDLE]: false,
+  // Released 2026-09-30: 40 SKUs + attributes read back from Prodigi's live
+  // API, webhook fulfilment unit-tested, previews on all 960 variants, owner
+  // approved €39.99 with €4.95 EU / €3.99 CY shipping ("Phone cases"
+  // profile); the first live order is the first physical QC.
+  [TOUGH_CASE_HANDLE]: true,
 };
 
 /** Shop type-filter value for each standalone product. */

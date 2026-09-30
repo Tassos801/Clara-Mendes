@@ -1,8 +1,12 @@
 # Art Tough Phone Case
 
 The owner authorized an everyday artwork accessory and expanded it to all 24
-released art prints and popular phone models on 2026-09-30. The new product is
-staged in Shopify as **DRAFT**. It is not ready for consumer purchase.
+released art prints and popular phone models on 2026-09-30. **Released
+2026-09-30**: `PRODUCT_RELEASE_FLAGS['art-tough-phone-case']` is true, the
+product is ACTIVE on the two storefront channels with untracked inventory, and
+it ships through the "Phone cases" profile (€3.99 CY / €4.95 EU). The first
+live order is the first physical QC; set `custom.fulfillment_verified` after it.
+The sections below record how it was staged.
 
 ## Verified Shopify record
 
