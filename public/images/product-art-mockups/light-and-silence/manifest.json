@@ -540,6 +540,438 @@
         "file": "light-and-silence/where-mist-rests-wide-interior.jpg",
         "sha256": "e3b7c5317621796310cf5a503591c9e6c0811deb699a839602356a7fdf58e096"
       }
+    },
+    {
+      "print": "wind-in-sand",
+      "room": "living-room",
+      "alt": "Wind in Sand art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/wind-in-sand.webp",
+        "sha256": "1e94afb630aa74f07bf2fd4c04e1c2bbdc204eead5765f6c31671325ffa49270"
+      },
+      "output": {
+        "file": "light-and-silence/wind-in-sand-living-room.jpg",
+        "sha256": "8ff5292365cebd8f1f6bd750454a9f52c06d1c1e7e55a16f9e1b4e6dbb964fc4"
+      }
+    },
+    {
+      "print": "wind-in-sand",
+      "room": "bedroom",
+      "alt": "Wind in Sand art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/wind-in-sand.webp",
+        "sha256": "1e94afb630aa74f07bf2fd4c04e1c2bbdc204eead5765f6c31671325ffa49270"
+      },
+      "output": {
+        "file": "light-and-silence/wind-in-sand-bedroom.jpg",
+        "sha256": "4a101c1eac6e3e553afe4342a45371e6a0eb34a0535e7886a3215c8b416d2038"
+      }
+    },
+    {
+      "print": "wind-in-sand",
+      "room": "study",
+      "alt": "Wind in Sand art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/wind-in-sand.webp",
+        "sha256": "1e94afb630aa74f07bf2fd4c04e1c2bbdc204eead5765f6c31671325ffa49270"
+      },
+      "output": {
+        "file": "light-and-silence/wind-in-sand-study.jpg",
+        "sha256": "54835539cdfab722c01d3b1de4ea1dc32d658c51876ce7a6bd095b4142c6f5f1"
+      }
+    },
+    {
+      "print": "wind-in-sand",
+      "room": "wide-interior",
+      "alt": "Wind in Sand art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/wind-in-sand.webp",
+        "sha256": "1e94afb630aa74f07bf2fd4c04e1c2bbdc204eead5765f6c31671325ffa49270"
+      },
+      "output": {
+        "file": "light-and-silence/wind-in-sand-wide-interior.jpg",
+        "sha256": "5b7ff49a3755c790c316ff9c6b1c1b5af2a6471a5d1e37fb6ff88bcb39649626"
+      }
+    },
+    {
+      "print": "shell-at-low-tide",
+      "room": "living-room",
+      "alt": "Shell at Low Tide art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/shell-at-low-tide.webp",
+        "sha256": "3cacda197b3feced1d4435d5ad1caa929e502c32755e8019469acd7d73f801c7"
+      },
+      "output": {
+        "file": "light-and-silence/shell-at-low-tide-living-room.jpg",
+        "sha256": "a070bee05344b50bd3e4183b33123139ddf477436d0862f10d1fd08e66801aae"
+      }
+    },
+    {
+      "print": "shell-at-low-tide",
+      "room": "bedroom",
+      "alt": "Shell at Low Tide art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/shell-at-low-tide.webp",
+        "sha256": "3cacda197b3feced1d4435d5ad1caa929e502c32755e8019469acd7d73f801c7"
+      },
+      "output": {
+        "file": "light-and-silence/shell-at-low-tide-bedroom.jpg",
+        "sha256": "13db8eb3f67e2aef12ce56e411241c8593c94327979ec035f6e405b82cac052d"
+      }
+    },
+    {
+      "print": "shell-at-low-tide",
+      "room": "study",
+      "alt": "Shell at Low Tide art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/shell-at-low-tide.webp",
+        "sha256": "3cacda197b3feced1d4435d5ad1caa929e502c32755e8019469acd7d73f801c7"
+      },
+      "output": {
+        "file": "light-and-silence/shell-at-low-tide-study.jpg",
+        "sha256": "7cc5a36b08c0c56c6d72e1f65ba5028002786576ac35fc2141b0fbf13d268177"
+      }
+    },
+    {
+      "print": "shell-at-low-tide",
+      "room": "wide-interior",
+      "alt": "Shell at Low Tide art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/shell-at-low-tide.webp",
+        "sha256": "3cacda197b3feced1d4435d5ad1caa929e502c32755e8019469acd7d73f801c7"
+      },
+      "output": {
+        "file": "light-and-silence/shell-at-low-tide-wide-interior.jpg",
+        "sha256": "e3ef9e6e642df69bdb9d98b0c65fb3486cd7ab8c0961f16eeea11e53def36e46"
+      }
+    },
+    {
+      "print": "river-in-motion",
+      "room": "living-room",
+      "alt": "River in Motion art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/river-in-motion.webp",
+        "sha256": "1905cf09b6994524c12a9e794bf5b7b2cd94327ed68825b67ced45fa9047454a"
+      },
+      "output": {
+        "file": "light-and-silence/river-in-motion-living-room.jpg",
+        "sha256": "7e500e946b8cf63134bf2b6a9fa17019f825df614b755c622c3b9cf31f4e9b4c"
+      }
+    },
+    {
+      "print": "river-in-motion",
+      "room": "bedroom",
+      "alt": "River in Motion art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/river-in-motion.webp",
+        "sha256": "1905cf09b6994524c12a9e794bf5b7b2cd94327ed68825b67ced45fa9047454a"
+      },
+      "output": {
+        "file": "light-and-silence/river-in-motion-bedroom.jpg",
+        "sha256": "15dd3365488fe34d87b36bb35f8e5a16a252ec3a074caed56c955f9e0408c50d"
+      }
+    },
+    {
+      "print": "river-in-motion",
+      "room": "study",
+      "alt": "River in Motion art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/river-in-motion.webp",
+        "sha256": "1905cf09b6994524c12a9e794bf5b7b2cd94327ed68825b67ced45fa9047454a"
+      },
+      "output": {
+        "file": "light-and-silence/river-in-motion-study.jpg",
+        "sha256": "c332850404118288ef3afa58790e52d602f41feb27c446c052950a45af197a8e"
+      }
+    },
+    {
+      "print": "river-in-motion",
+      "room": "wide-interior",
+      "alt": "River in Motion art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/river-in-motion.webp",
+        "sha256": "1905cf09b6994524c12a9e794bf5b7b2cd94327ed68825b67ced45fa9047454a"
+      },
+      "output": {
+        "file": "light-and-silence/river-in-motion-wide-interior.jpg",
+        "sha256": "b5b0a6f00a405df517d4538a2701f072148a61fa5e3619aa84aafc2563458e5c"
+      }
+    },
+    {
+      "print": "cloud-at-rest",
+      "room": "living-room",
+      "alt": "Cloud at Rest art print above a pale linen sofa in a light contemporary living room.",
+      "placement": {
+        "left": 410,
+        "top": 220,
+        "width": 260,
+        "height": 325
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/living-room.png",
+        "sha256": "e721efdd8d289561cbf4e498ee95b1a91f1be3b2c74b08b8ff05d5687a92b219"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/cloud-at-rest.webp",
+        "sha256": "9b874cd976e5a5c7aec689eec3285f35e9e885d8deff1aa4d295ac49ce4e8ad2"
+      },
+      "output": {
+        "file": "light-and-silence/cloud-at-rest-living-room.jpg",
+        "sha256": "e81f2368b7d90632ab9905eb412e7faa38a60d2e1cf39b7de57ee4b6476dd80c"
+      }
+    },
+    {
+      "print": "cloud-at-rest",
+      "room": "bedroom",
+      "alt": "Cloud at Rest art print above a linen bed in a warm neutral bedroom.",
+      "placement": {
+        "left": 420,
+        "top": 205,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/bedroom.png",
+        "sha256": "554556aae64cc2cf876f2ce6d212ed13cca7e47d89ac2d751bfc2617c02a168a"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/cloud-at-rest.webp",
+        "sha256": "9b874cd976e5a5c7aec689eec3285f35e9e885d8deff1aa4d295ac49ce4e8ad2"
+      },
+      "output": {
+        "file": "light-and-silence/cloud-at-rest-bedroom.jpg",
+        "sha256": "6742daa13045b510f0ebb2a0ec027580614e89e80d2f245a4cdd4c7cd9f2f078"
+      }
+    },
+    {
+      "print": "cloud-at-rest",
+      "room": "study",
+      "alt": "Cloud at Rest art print on a charcoal wall above a dark walnut study desk.",
+      "placement": {
+        "left": 410,
+        "top": 245,
+        "width": 256,
+        "height": 320
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/study.png",
+        "sha256": "5724b9f10e7845669e912729888a1249d9a3799f510100ed0df2f1978f784038"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/cloud-at-rest.webp",
+        "sha256": "9b874cd976e5a5c7aec689eec3285f35e9e885d8deff1aa4d295ac49ce4e8ad2"
+      },
+      "output": {
+        "file": "light-and-silence/cloud-at-rest-study.jpg",
+        "sha256": "89e058cd47928ec1dc8d33465495ee67ddc46e3b15743af822d90ccae1c0e81f"
+      }
+    },
+    {
+      "print": "cloud-at-rest",
+      "room": "wide-interior",
+      "alt": "Cloud at Rest art print at scale in a spacious stone-toned interior.",
+      "placement": {
+        "left": 450,
+        "top": 285,
+        "width": 180,
+        "height": 225
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "light-and-silence/wide-interior.png",
+        "sha256": "3ed2fad9cd068657645738331a6e9aab298b91ad6ece01fd2345645286495de5"
+      },
+      "artwork": {
+        "file": "images/product-art/light-and-silence/cloud-at-rest.webp",
+        "sha256": "9b874cd976e5a5c7aec689eec3285f35e9e885d8deff1aa4d295ac49ce4e8ad2"
+      },
+      "output": {
+        "file": "light-and-silence/cloud-at-rest-wide-interior.jpg",
+        "sha256": "0b818c368fa596ba5581acf7cc2f04ca23878faa8fafd4fe04377471a5fb2a86"
+      }
     }
   ]
 }
