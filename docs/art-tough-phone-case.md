@@ -136,13 +136,22 @@ UK-origin totals do not (€25.97 CY, €28.54 BG).
 
 ## Remaining release work
 
-1. Shipping: cases fall into the General profile, which charges €16 outside
-   Cyprus. Decide the customer rate (a dedicated phone-case profile) before
-   release. Confirm how UK-origin CY/BG parcels clear import VAT.
-2. Activate and publish to the Headless channel (Admin UI; the app lacks
-   publication scopes) while inventory stays tracked at 0, then QA
-   `/products/art-tough-phone-case` with `CASE_PREVIEW_UNLOCK=true` on a preview.
+State on 2026-09-30: ACTIVE and published to the two storefront channels
+(Clara Mendes, Clara Mendes Headless) for QA, still unbuyable (every variant
+tracked at 0, DENY) and hidden by the storefront until the flag flips. Owner
+decisions: customers pay €4.95 EU / €3.99 Cyprus; CY and BG stay open and the
+owner adds an IOSS number to Prodigi's company details later.
+
+1. Shipping profile "Phone cases" with only this product: Cyprus €3.99, the
+   other 26 EU countries €4.95. The Admin "Manage products" dialog lists only
+   the first 50 variants of a product, so add them 40 at a time: Search by SKU,
+   `<artwork prefix>-TC` (e.g. `CM-QF-01-TC`), tick the product row, repeat for
+   all 24 prefixes until the dialog reads "Adding 960". (With the
+   `write_shipping` scope this becomes one `deliveryProfileCreate` call.)
+2. Merge this PR (flag still false). Until then the live products sitemap lists
+   `/products/art-tough-phone-case`, which redirects to /collections/all.
 3. Release: set every variant's inventory untracked, remove the pending gate
    tags, flip `PRODUCT_RELEASE_FLAGS['art-tough-phone-case']` in
    `app/lib/catalogFilters.ts`, add the product to the Everyday collection, and
-   verify one live order end to end (the first order is the first physical QC).
+   verify add to cart, checkout shipping and one live order end to end (the
+   first order is the first physical QC).
