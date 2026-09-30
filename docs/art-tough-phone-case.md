@@ -142,12 +142,13 @@ tracked at 0, DENY) and hidden by the storefront until the flag flips. Owner
 decisions: customers pay €4.95 EU / €3.99 Cyprus; CY and BG stay open and the
 owner adds an IOSS number to Prodigi's company details later.
 
-1. Shipping profile "Phone cases" with only this product: Cyprus €3.99, the
-   other 26 EU countries €4.95. The Admin "Manage products" dialog lists only
-   the first 50 variants of a product, so add them 40 at a time: Search by SKU,
-   `<artwork prefix>-TC` (e.g. `CM-QF-01-TC`), tick the product row, repeat for
-   all 24 prefixes until the dialog reads "Adding 960". (With the
-   `write_shipping` scope this becomes one `deliveryProfileCreate` call.)
+1. Done 2026-09-30: shipping profile "Phone cases" (all 960 variants) with
+   Standard €3.99 to Cyprus and Standard €4.95 to the other 26 EU countries,
+   transit "None" (the storefront states dispatch and delivery windows). The
+   Admin "Manage products" dialog lists only the first 50 variants of a
+   product, so variants were added 40 at a time (Search by SKU,
+   `<artwork prefix>-TC`) until it read "Adding 960". Re-check a variant's
+   Profile column there if cases are ever re-staged.
 2. Merge this PR (flag still false). Until then the live products sitemap lists
    `/products/art-tough-phone-case`, which redirects to /collections/all.
 3. Release: set every variant's inventory untracked, remove the pending gate
