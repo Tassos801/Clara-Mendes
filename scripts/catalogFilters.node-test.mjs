@@ -99,12 +99,17 @@ assert.equal(isStoreThemeProduct(greetingCard), true);
 assert.equal(isDemoProduct(greetingCard), false);
 assert.equal(isUnreleasedExtensionHandle('fine-art-greeting-card'), false);
 // …and its product type is offered by the shop's type filter.
+// The Art Tough Phone Case (released 2026-09-30) is a standalone product,
+// not an extension family, but the shop's type filter offers it too.
 assert.deepEqual(releasedExtensionProductTypes(), [
   'Cards',
   'Postcards',
   'Canvas Art',
+  'Phone Cases',
 ]);
-assert.deepEqual(releasedExtensionProductTypes({}), []);
+assert.deepEqual(releasedExtensionProductTypes({}, {}), []);
+assert.equal(isStoreThemeProduct({...print, handle: 'art-tough-phone-case', productType: 'Phone Cases'}), true);
+assert.equal(isUnreleasedExtensionHandle('art-tough-phone-case'), false);
 assert.equal(hasReleasedExtensions({}), false);
 
 // A handle retired by an in-place rename (the calendar's previous edition)
@@ -130,11 +135,16 @@ assert.equal(releasedCount, 3);
 // The launch prints are unaffected by the staging machinery.
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
-// 15 prints + released extensions + the released Your Sky star map + every
-// released print-catalog entry. The count is read from the catalog so adding
-// a print never needs an edit here; printCatalog.node-test.mjs owns the gate.
+// 15 prints + released extensions + the released Your Sky star map + the
+// released Art Tough Phone Case + every released print-catalog entry. The
+// count is read from the catalog so adding a print never needs an edit here;
+// printCatalog.node-test.mjs owns the gate.
 const releasedCatalogCount = releasedPrintHandles().length;
-assert.equal(sellableToday.size, 15 + releasedCount + 1 + releasedCatalogCount);
+assert.equal(
+  sellableToday.size,
+  15 + releasedCount + 1 + 1 + releasedCatalogCount,
+);
+assert.ok(sellableToday.has('art-tough-phone-case'));
 assert.ok(!sellableToday.has(FRAME_HANDLE));
 assert.ok(!sellableToday.has(BLANKET_HANDLE));
 assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
@@ -142,7 +152,7 @@ assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 // Flipping a flag adds exactly that handle and keeps all 15 prints — the
 // one-line storefront release described in docs/phone-case-release.md.
 const sellableReleased = computeSellableHandles({[PHONE_CASE_HANDLE]: true});
-assert.equal(sellableReleased.size, 17 + releasedCatalogCount);
+assert.equal(sellableReleased.size, 18 + releasedCatalogCount);
 assert.ok(sellableReleased.has(PHONE_CASE_HANDLE));
 assert.ok(sellableReleased.has('quiet-form-i-art-print'));
 assert.ok(!sellableReleased.has(BLANKET_HANDLE));
