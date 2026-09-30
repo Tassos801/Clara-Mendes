@@ -5194,3 +5194,141 @@ html.lenis body {
     object-position: 72% 50%;
   }
 }
+
+/* Art Tough Phone Case teaser: linen band after the Your Sky night band. The
+   previews are rendered on this same linen, so their edges disappear. */
+.case-teaser {
+  --case-linen: #eeeae3;
+  align-items: center;
+  background: var(--case-linen);
+  color: var(--color-ink);
+  display: grid;
+  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  overflow: hidden;
+  padding: clamp(56px, 8vw, 120px) clamp(18px, 4vw, 70px);
+}
+
+.case-teaser h2 {
+  font-family: var(--serif);
+  font-size: clamp(2.3rem, 4.6vw, 4.2rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+  margin: 0 0 1rem;
+  max-width: 12ch;
+  text-wrap: balance;
+}
+
+.case-teaser__sub {
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin: 0 0 1.1rem;
+  max-width: 34rem;
+}
+
+.case-teaser__price {
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  margin: 0 0 1.6rem;
+  text-transform: uppercase;
+}
+
+.case-teaser__cases {
+  align-items: start;
+  display: grid;
+  gap: clamp(4px, 1vw, 14px);
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.case-teaser__cases li:nth-child(even) {
+  margin-top: clamp(22px, 3.4vw, 52px);
+}
+
+.case-teaser__cases a {
+  color: var(--color-muted);
+  display: block;
+  text-decoration: none;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.case-teaser__cases a:hover,
+.case-teaser__cases a:focus-visible {
+  transform: translateY(-8px);
+}
+
+.case-teaser__cases a:focus-visible {
+  outline: 1px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.case-teaser__cases img {
+  aspect-ratio: 11 / 20;
+  display: block;
+  height: auto;
+  /* The crop keeps linen above and below each case; it matches the band, so
+     overlapping it pulls the label up to the case without a visible edge. */
+  margin: -13% 0 -11%;
+  width: 100%;
+}
+
+.case-teaser__cases span {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  margin-top: 0.35rem;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-teaser__cases a {
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  .case-teaser {
+    gap: 22px;
+    grid-template-columns: 1fr;
+    padding: 44px 0 52px;
+  }
+
+  .case-teaser__copy {
+    padding: 0 18px;
+  }
+
+  .case-teaser h2 {
+    font-size: clamp(2rem, 9.4vw, 2.9rem);
+    max-width: none;
+  }
+
+  /* A swipeable strip of cases above the copy. */
+  .case-teaser__cases {
+    display: flex;
+    gap: 10px;
+    order: -1;
+    overflow-x: auto;
+    padding: 0 18px 6px;
+    scroll-padding-inline: 18px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .case-teaser__cases::-webkit-scrollbar {
+    display: none;
+  }
+
+  .case-teaser__cases li {
+    flex: 0 0 36%;
+    scroll-snap-align: start;
+  }
+
+  .case-teaser__cases li:nth-child(even) {
+    margin-top: 18px;
+  }
+}

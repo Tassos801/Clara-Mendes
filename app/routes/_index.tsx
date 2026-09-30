@@ -11,12 +11,17 @@ import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {BrandFilm} from '~/components/BrandFilm';
 import {YourSkyTeaser} from '~/components/YourSkyTeaser';
+import {
+  ToughCaseTeaser,
+  type ToughCaseTeaserCase,
+} from '~/components/ToughCaseTeaser';
 import {useAside} from '~/components/Aside';
 import {
   filterDemoCollections,
   filterDemoProducts,
   isDemoProduct,
   isReleasedExtensionHandle,
+  isReleasedProductHandle,
   ORIGINAL_ART_COLLECTIONS,
 } from '~/lib/catalogFilters';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
@@ -27,6 +32,12 @@ import {
   type OriginalArtProductMap,
 } from '~/lib/originalArt';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {type MoneyAmount} from '~/lib/money';
+import {
+  TOUGH_CASE_ARTWORK_OPTION,
+  TOUGH_CASE_HANDLE,
+  TOUGH_CASE_TEASER_ARTWORKS,
+} from '~/lib/toughCase';
 import {
   buildSeoMeta,
   getCanonicalUrl,
@@ -92,6 +103,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
         first: 12,
+        toughCaseHandle: isReleasedProductHandle(TOUGH_CASE_HANDLE)
+          ? TOUGH_CASE_HANDLE
+          : '__tough-case-not-released__',
       },
     });
 
@@ -112,10 +126,14 @@ export async function loader({context, request}: Route.LoaderArgs) {
           ? (data.frameProduct as ClaraCardProduct)
           : null,
       products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+      caseTeaser: buildCaseTeaser(
+        data.toughCase as ToughCaseTeaserProduct | null,
+      ),
       seoUrl: getCanonicalUrl(request, '/'),
     };
   } catch {
     return {
+      caseTeaser: null as CaseTeaser | null,
       collections: [] as HomeCollection[],
       frameProduct: null as ClaraCardProduct | null,
       originalArtProducts: {} as OriginalArtProductMap,
@@ -124,6 +142,48 @@ export async function loader({context, request}: Route.LoaderArgs) {
       seoUrl: getCanonicalUrl(request, '/'),
     };
   }
+}
+
+type ToughCaseTeaserProduct = {
+  handle: string;
+  productType?: string | null;
+  tags?: string[] | null;
+  title?: string | null;
+  vendor?: string | null;
+  priceRange: {minVariantPrice: MoneyAmount};
+  options: Array<{
+    name: string;
+    optionValues: Array<{
+      name: string;
+      firstSelectableVariant?: {
+        availableForSale: boolean;
+        image?: {url: string; altText?: string | null} | null;
+      } | null;
+    }>;
+  }>;
+};
+
+type CaseTeaser = {cases: ToughCaseTeaserCase[]; price: MoneyAmount | null};
+
+/** The released case's curated previews; null hides the section. */
+function buildCaseTeaser(
+  product: ToughCaseTeaserProduct | null,
+): CaseTeaser | null {
+  if (!product || isDemoProduct(product)) return null;
+  const values =
+    product.options.find((option) => option.name === TOUGH_CASE_ARTWORK_OPTION)
+      ?.optionValues ?? [];
+  const cases = TOUGH_CASE_TEASER_ARTWORKS.flatMap((artwork) => {
+    const variant = values.find(
+      (value) => value.name === artwork,
+    )?.firstSelectableVariant;
+    return variant?.availableForSale && variant.image
+      ? [{artwork, image: variant.image}]
+      : [];
+  });
+  return cases.length >= 3
+    ? {cases, price: product.priceRange.minVariantPrice}
+    : null;
 }
 
 /** One work per temperament — calm, cool, night — for the "Ready now" block. */
@@ -146,6 +206,7 @@ function pickFeaturedPrints(products: ClaraCardProduct[]): ClaraCardProduct[] {
 
 export default function Homepage() {
   const {
+    caseTeaser,
     collections,
     featuredPrints,
     frameProduct,
@@ -548,6 +609,8 @@ export default function Homepage() {
 
       <YourSkyTeaser />
 
+      {caseTeaser ? <ToughCaseTeaser {...caseTeaser} /> : null}
+
       <HomepageEditorial />
 
       <OriginalArtPreview products={originalArtProducts} compact />
@@ -653,6 +716,7 @@ const HOMEPAGE_QUERY = `#graphql
     $first: Int!
     $frameHandle: String!
     $language: LanguageCode
+    $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
     products(first: $first, sortKey: BEST_SELLING) {
       nodes {
@@ -666,6 +730,33 @@ const HOMEPAGE_QUERY = `#graphql
     }
     frameProduct: product(handle: $frameHandle) {
       ...ClaraProductCard
+    }
+    toughCase: product(handle: $toughCaseHandle) {
+      handle
+      productType
+      tags
+      title
+      vendor
+      priceRange {
+        minVariantPrice {
+          amount
+          currencyCode
+        }
+      }
+      options {
+        name
+        optionValues {
+          name
+          firstSelectableVariant {
+            availableForSale
+            image {
+              # Tight portrait crop: the previews carry linen either side.
+              url(transform: {crop: CENTER, maxWidth: 440, maxHeight: 800})
+              altText
+            }
+          }
+        }
+      }
     }
     collections(first: 12) {
       nodes {

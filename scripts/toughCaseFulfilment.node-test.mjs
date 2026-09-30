@@ -11,6 +11,7 @@ import {buildProdigiOrderFromShopify} from '../app/lib/sky/fulfilment.ts';
 import {
   TOUGH_CASE_DESIGNS,
   TOUGH_CASE_PHONES,
+  TOUGH_CASE_TEASER_ARTWORKS,
   toughCaseArtworkSlug,
   toughCaseVariantForSku,
 } from '../app/lib/toughCase.ts';
@@ -167,5 +168,13 @@ test('every artwork has a committed 4:5 print file that covers the largest print
     // Centre-cropping a 4:5 file to a taller device keeps the full height.
     assert.ok(height >= largest.height, `${design.title} height ${height}`);
     assert.ok((height * 4) / 5 >= largest.width, `${design.title} width`);
+  }
+});
+
+test('every homepage teaser artwork is a released case artwork', () => {
+  const titles = new Set(TOUGH_CASE_DESIGNS.map((design) => design.title));
+  assert.ok(TOUGH_CASE_TEASER_ARTWORKS.length >= 3);
+  for (const artwork of TOUGH_CASE_TEASER_ARTWORKS) {
+    assert.ok(titles.has(artwork), `${artwork} is not a case artwork`);
   }
 });
