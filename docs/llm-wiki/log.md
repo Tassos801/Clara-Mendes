@@ -1125,3 +1125,26 @@ a print adds to cart in every EU country, GR/MT/RO carts quote €16 (print) and
 €2.90 (card), and a Greek checkout totals €45.99.
 
 Source: [fulfillment](modules/fulfillment.md).
+
+## 2026-09-30 - Art Tough Phone Case staged across the released art catalog
+
+Created one Shopify Draft for 24 released artwork identities and 40 phone
+models (960 combinations), with provisional EUR 39.99 retail and false
+storefront/fulfillment approvals. Downloaded and checked all 40 official model
+templates, retaining unknown matte provider SKUs as null. Documented the
+separate provider, crop, shipping, quality and large-variant storefront gates.
+The Draft's production URL returned 404; no production release was performed.
+
+Source: [Art Tough Phone Case](../art-tough-phone-case.md).
+
+## 2026-09-30 - Art Tough Phone Case fulfilment, assets and storefront
+
+All 40 matte SKUs and their required attributes read back from Prodigi's live
+API; case lines now go to Prodigi through the orders/paid webhook with one
+2000 × 2500 print file per artwork (`fillPrintArea`). 24 case previews lead
+the Draft's gallery and front all 960 variants. A dedicated route
+(`products.art-tough-phone-case.tsx`) sells Artwork × Phone Model without
+loading 960 variants and never defaults the phone. Release stays behind
+`PRODUCT_RELEASE_FLAGS`; shipping rate and publication are the open gates.
+
+Source: [Art Tough Phone Case](../art-tough-phone-case.md).

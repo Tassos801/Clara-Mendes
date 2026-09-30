@@ -350,6 +350,8 @@ const robots = robotsTxtData({url: 'https://shopclaramendes.com'});
 assert.match(robots, /User-agent: Googlebot\n/);
 assert.match(robots, /User-agent: Googlebot-Image\nAllow: \//);
 assert.ok(!robots.includes('Disallow: /policies/'));
+// Case print files are for the lab; every agent block keeps them unindexed.
+assert.equal(robots.match(/Disallow: \/print-files\//g).length, 5);
 assert.match(robots, /Sitemap: https:\/\/shopclaramendes\.com\/sitemap\.xml/);
 
 for (const handle of POLICY_HANDLES) {

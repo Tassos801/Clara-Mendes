@@ -1,5 +1,25 @@
 # Catalog And Products
 
+## 2026-09-30 - Art Tough Phone Case Draft
+
+The owner requested all 24 released artworks on an everyday accessory for
+popular phones. Shopify product `16107883462990`, handle
+`art-tough-phone-case`, is DRAFT with 24 Artwork values, 40 Phone Model values
+and 960 variants at provisional EUR 39.99. Its 24 source artwork media are
+READY, `publishedAt` is null, and both custom approval metafields are false.
+No publication mutation was made; the installed app lacks `read_publications`
+for an independent all-channel audit. The production PDP returned 404.
+
+Forty official Prodigi templates were checked, but only two exact matte provider
+SKUs have public confirmation. Every variant still needs account mapping,
+production crop/file review, finished-case imagery and delivered-cost evidence.
+The current PDP's 100-variant/10-image query and existing snap-case handling
+need work before this product can release. The old snap-case Draft and source
+prints remain separate.
+
+Source: [Art Tough Phone Case runbook](../../art-tough-phone-case.md),
+`data/art-tough-phone-case.json`, `scripts/stage-art-tough-phone-case.mjs`.
+
 ## Current Picture
 
 The 49 legacy products were moved to Draft on 2026-07-23. The replacement is an

@@ -1520,6 +1520,126 @@ button {
   }
 }
 
+/* Art Tough Phone Case page */
+.tough-case-gallery {
+  align-self: start;
+  margin: 0;
+}
+
+.tough-case-gallery .product-gallery-frame img {
+  aspect-ratio: 4 / 5;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.tough-case-gallery figcaption {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin-top: 14px;
+  max-width: 46ch;
+}
+
+.tough-case-page .variant-fieldset legend span {
+  color: var(--color-ink);
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.tough-case-artworks {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.tough-case-artworks a {
+  aspect-ratio: 5 / 8;
+  background: var(--color-soft);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  display: block;
+  overflow: hidden;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.tough-case-artworks a:hover {
+  transform: translateY(-1px);
+}
+
+.tough-case-artworks a:focus-visible {
+  outline: 1px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.tough-case-artworks a.is-selected {
+  border-color: var(--color-ink);
+  box-shadow: 0 0 0 1px var(--color-ink);
+}
+
+.tough-case-artworks img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  /* Previews are 4:5 with linen around the case; the narrower tile crops the
+     sides and the zoom trims the top and bottom so the case fills it. */
+  transform: scale(1.14);
+  width: 100%;
+}
+
+.tough-case-phone {
+  margin-top: 22px;
+}
+
+.tough-case-phone label {
+  color: var(--color-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.tough-case-phone select {
+  appearance: none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%2326231f' stroke-width='1.5'/%3E%3C/svg%3E")
+      no-repeat right 18px center,
+    var(--glass-surface);
+  border: 1px solid var(--glass-border-ink);
+  border-radius: 999px;
+  color: var(--color-ink);
+  min-height: 48px;
+  padding: 0 44px 0 18px;
+  width: 100%;
+}
+
+.tough-case-phone select:focus-visible {
+  outline: 1px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.tough-case-phone-help {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.product-buy-box label.primary-button {
+  cursor: pointer;
+  justify-content: center;
+  text-align: center;
+}
+
+@media (max-width: 520px) {
+  .tough-case-artworks {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
 .product-cross-sell {
   align-items: center;
   backdrop-filter: blur(14px) saturate(1.15);

@@ -5,6 +5,7 @@ import {
   releasedPrintHandles,
   type PrintCatalog,
 } from './printCatalog.ts';
+import {TOUGH_CASE_HANDLE} from './toughCase.ts';
 
 export type CatalogProductLike = {
   handle?: string | null;
@@ -143,12 +144,16 @@ export function isRetiredExtensionHandle(handle?: string | null) {
  */
 export function releasedExtensionProductTypes(
   flags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
+  productFlags: Record<string, boolean> = PRODUCT_RELEASE_FLAGS,
 ): string[] {
   const types: string[] = [];
   for (const family of extensionCatalog.families) {
     if (flags[family.handle] && !types.includes(family.productType)) {
       types.push(family.productType);
     }
+  }
+  for (const [handle, type] of Object.entries(PRODUCT_RELEASE_TYPES)) {
+    if (productFlags[handle] && !types.includes(type)) types.push(type);
   }
   return types;
 }
@@ -161,6 +166,28 @@ export function releasedExtensionProductTypes(
  * assignment has been verified.
  */
 export const EXTENSION_COLLECTION_POPULATED = true;
+
+/**
+ * Products outside the extension manifest, under the same dual gate (flag AND
+ * Active + published in Shopify). The Art Tough Phone Case is fulfilled by
+ * the orders/paid webhook (app/lib/toughCase.ts), not Prodigi's Shopify app,
+ * so it is not an extension family. Flip only via docs/art-tough-phone-case.md.
+ */
+export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
+  [TOUGH_CASE_HANDLE]: false,
+};
+
+/** Shop type-filter value for each standalone product. */
+const PRODUCT_RELEASE_TYPES: Record<string, string> = {
+  [TOUGH_CASE_HANDLE]: 'Phone Cases',
+};
+
+export function isReleasedProductHandle(
+  handle?: string | null,
+  flags: Record<string, boolean> = PRODUCT_RELEASE_FLAGS,
+) {
+  return Boolean(handle && flags[handle.toLowerCase()]);
+}
 
 export const SKY_PRODUCT_HANDLE = 'your-sky-star-map';
 export const NATAL_PRODUCT_HANDLE = 'first-light-birth-poster';
@@ -234,6 +261,7 @@ export function isUnreleasedExtensionHandle(handle?: string | null) {
   if (key in EXTENSION_RELEASE_FLAGS) return !EXTENSION_RELEASE_FLAGS[key];
   if (key in PERSONALISED_RELEASE_FLAGS)
     return !PERSONALISED_RELEASE_FLAGS[key];
+  if (key in PRODUCT_RELEASE_FLAGS) return !PRODUCT_RELEASE_FLAGS[key];
   return false;
 }
 
@@ -246,9 +274,10 @@ export function computeSellableHandles(
   extensionFlags: Record<string, boolean> = EXTENSION_RELEASE_FLAGS,
   personalisedFlags: Record<string, boolean> = PERSONALISED_RELEASE_FLAGS,
   printCatalog: PrintCatalog = PRINT_CATALOG,
+  productFlags: Record<string, boolean> = PRODUCT_RELEASE_FLAGS,
 ): ReadonlySet<string> {
   const handles = new Set(LAUNCH_PRODUCT_HANDLES);
-  for (const flags of [extensionFlags, personalisedFlags]) {
+  for (const flags of [extensionFlags, personalisedFlags, productFlags]) {
     for (const [handle, released] of Object.entries(flags)) {
       if (released) handles.add(handle.toLowerCase());
     }
