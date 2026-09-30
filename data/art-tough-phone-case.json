@@ -1,0 +1,1066 @@
+{
+  "version": 1,
+  "handle": "art-tough-phone-case",
+  "title": "Art Tough Phone Case",
+  "currency": "EUR",
+  "price": "39.99",
+  "finish": "Matte",
+  "status": "DRAFT",
+  "verifiedOn": "2026-09-30",
+  "designScope": "All 24 released art prints; unreleased prints excluded",
+  "sourceEvidence": {
+    "shop": {
+      "name": "Clara Mendes",
+      "currencyCode": "EUR",
+      "resourceLimits": {
+        "maxProductVariants": 2048,
+        "maxProductOptions": 3
+      }
+    },
+    "providerCatalog": "https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/",
+    "modelSelection": "Recent supplier-template-listed Apple iPhone, Samsung Galaxy S and Google Pixel devices",
+    "providerSkuConfirmedModels": 2,
+    "productionFilesReady": false,
+    "phoneCaseMockupsReady": false,
+    "deliveredCostsVerified": false
+  },
+  "designs": [
+    {
+      "title": "Midnight Garden II",
+      "sourceTitle": "Midnight Garden II Art Print",
+      "sourceHandle": "midnight-garden-ii-art-print",
+      "sourceProductId": "gid://shopify/Product/15949020922190",
+      "skuPrefix": "CM-MG-02",
+      "mediaId": "gid://shopify/MediaImage/72922900398414",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/midnight-garden-02.jpg?v=1784879132",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Patina Blue II",
+      "sourceTitle": "Patina Blue II Art Print",
+      "sourceHandle": "patina-blue-ii-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433326414",
+      "skuPrefix": "CM-PB-02",
+      "mediaId": "gid://shopify/MediaImage/72922899939662",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/patina-blue-02_5e414f14-5339-41b8-83ea-0bdca6d2eee0.jpg?v=1784879127",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Quiet Form I",
+      "sourceTitle": "Quiet Form I Art Print",
+      "sourceHandle": "quiet-form-i-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433097038",
+      "skuPrefix": "CM-QF-01",
+      "mediaId": "gid://shopify/MediaImage/72922899775822",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/quiet-form-01_24e49023-1686-4cdc-bd69-8e50efb650e5.jpg?v=1784879125",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Quiet Form II",
+      "sourceTitle": "Quiet Form II Art Print",
+      "sourceHandle": "quiet-form-ii-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433129806",
+      "skuPrefix": "CM-QF-02",
+      "mediaId": "gid://shopify/MediaImage/72922899808590",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/quiet-form-02_37148922-75e5-4b75-bab1-b4f53a7c6ef2.jpg?v=1784879126",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Quiet Form III",
+      "sourceTitle": "Quiet Form III Art Print",
+      "sourceHandle": "quiet-form-iii-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433195342",
+      "skuPrefix": "CM-QF-03",
+      "mediaId": "gid://shopify/MediaImage/72922899874126",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/quiet-form-03_43738ac9-2e38-46b9-893a-fa917e845936.jpg?v=1784879126",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Patina Blue I",
+      "sourceTitle": "Patina Blue I Art Print",
+      "sourceHandle": "patina-blue-i-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433260878",
+      "skuPrefix": "CM-PB-01",
+      "mediaId": "gid://shopify/MediaImage/72922899906894",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/patina-blue-01_c8d290ea-86c0-448b-b802-e632f4bbe741.jpg?v=1784879127",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Patina Blue III",
+      "sourceTitle": "Patina Blue III Art Print",
+      "sourceHandle": "patina-blue-iii-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433359182",
+      "skuPrefix": "CM-PB-03",
+      "mediaId": "gid://shopify/MediaImage/72922900005198",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/patina-blue-03_e2590daa-d683-4307-b4be-954d4ca62653.jpg?v=1784879128",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Neo Deco I",
+      "sourceTitle": "Neo Deco I Art Print",
+      "sourceHandle": "neo-deco-i-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433391950",
+      "skuPrefix": "CM-ND-01",
+      "mediaId": "gid://shopify/MediaImage/72922900234574",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/neo-deco-01_ebf66399-4193-4b42-9d3e-1659d829054e.jpg?v=1784879128",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Neo Deco II",
+      "sourceTitle": "Neo Deco II Art Print",
+      "sourceHandle": "neo-deco-ii-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433424718",
+      "skuPrefix": "CM-ND-02",
+      "mediaId": "gid://shopify/MediaImage/72922900267342",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/neo-deco-02_b1094aa1-1a96-43be-9dcf-81caf35d5ccb.jpg?v=1784879129",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Neo Deco III",
+      "sourceTitle": "Neo Deco III Art Print",
+      "sourceHandle": "neo-deco-iii-art-print",
+      "sourceProductId": "gid://shopify/Product/15948433457486",
+      "skuPrefix": "CM-ND-03",
+      "mediaId": "gid://shopify/MediaImage/72922900300110",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/neo-deco-03_fda2d642-a096-49e9-b97d-1a3ba3c52eb5.jpg?v=1784879129",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Midnight Garden I",
+      "sourceTitle": "Midnight Garden I Art Print",
+      "sourceHandle": "midnight-garden-i-art-print",
+      "sourceProductId": "gid://shopify/Product/15949020889422",
+      "skuPrefix": "CM-MG-01",
+      "mediaId": "gid://shopify/MediaImage/72922900332878",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/midnight-garden-01.jpg?v=1784879131",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Midnight Garden III",
+      "sourceTitle": "Midnight Garden III Art Print",
+      "sourceHandle": "midnight-garden-iii-art-print",
+      "sourceProductId": "gid://shopify/Product/15949020954958",
+      "skuPrefix": "CM-MG-03",
+      "mediaId": "gid://shopify/MediaImage/72922900431182",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/midnight-garden-03.jpg?v=1784879133",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Sunlit Mosaic I",
+      "sourceTitle": "Sunlit Mosaic I Art Print",
+      "sourceHandle": "sunlit-mosaic-i-art-print",
+      "sourceProductId": "gid://shopify/Product/15949020987726",
+      "skuPrefix": "CM-SM-01",
+      "mediaId": "gid://shopify/MediaImage/72922900463950",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/sunlit-mosaic-01.jpg?v=1784879133",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Sunlit Mosaic II",
+      "sourceTitle": "Sunlit Mosaic II Art Print",
+      "sourceHandle": "sunlit-mosaic-ii-art-print",
+      "sourceProductId": "gid://shopify/Product/15949021020494",
+      "skuPrefix": "CM-SM-02",
+      "mediaId": "gid://shopify/MediaImage/72922900529486",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/sunlit-mosaic-02.jpg?v=1784879134",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Sunlit Mosaic III",
+      "sourceTitle": "Sunlit Mosaic III Art Print",
+      "sourceHandle": "sunlit-mosaic-iii-art-print",
+      "sourceProductId": "gid://shopify/Product/15949021053262",
+      "skuPrefix": "CM-SM-03",
+      "mediaId": "gid://shopify/MediaImage/72922900562254",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/sunlit-mosaic-03.jpg?v=1784879135",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Orbital Silence",
+      "sourceTitle": "Orbital Silence Art Print",
+      "sourceHandle": "orbital-silence-art-print",
+      "sourceProductId": "gid://shopify/Product/16078105313614",
+      "skuPrefix": "CM-SC-01",
+      "mediaId": "gid://shopify/MediaImage/73779498156366",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/cm-scifi-orbital-silence.webp?v=1789712024",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Neon After Rain",
+      "sourceTitle": "Neon After Rain Art Print",
+      "sourceHandle": "neon-after-rain-art-print",
+      "sourceProductId": "gid://shopify/Product/16078105477454",
+      "skuPrefix": "CM-SC-02",
+      "mediaId": "gid://shopify/MediaImage/73779499729230",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/cm-scifi-neon-after-rain.webp?v=1789712027",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Desert Signal",
+      "sourceTitle": "Desert Signal Art Print",
+      "sourceHandle": "desert-signal-art-print",
+      "sourceProductId": "gid://shopify/Product/16078105510222",
+      "skuPrefix": "CM-SC-03",
+      "mediaId": "gid://shopify/MediaImage/73779499958606",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/cm-scifi-desert-signal.webp?v=1789712029",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "The Fold",
+      "sourceTitle": "The Fold Art Print",
+      "sourceHandle": "the-fold-art-print",
+      "sourceProductId": "gid://shopify/Product/16078105575758",
+      "skuPrefix": "CM-SC-04",
+      "mediaId": "gid://shopify/MediaImage/73779500679502",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/cm-scifi-the-fold.webp?v=1789712030",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Veil of Stone",
+      "sourceTitle": "Veil of Stone Art Print",
+      "sourceHandle": "veil-of-stone-art-print",
+      "sourceProductId": "gid://shopify/Product/16088536449358",
+      "skuPrefix": "CM-LS-01",
+      "mediaId": "gid://shopify/MediaImage/73885673259342",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/veil-of-stone.webp?v=1790105527",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Tidal Mirror",
+      "sourceTitle": "Tidal Mirror Art Print",
+      "sourceHandle": "tidal-mirror-art-print",
+      "sourceProductId": "gid://shopify/Product/16088536482126",
+      "skuPrefix": "CM-LS-02",
+      "mediaId": "gid://shopify/MediaImage/73885673455950",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/tidal-mirror.webp?v=1790105529",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Winter Script",
+      "sourceTitle": "Winter Script Art Print",
+      "sourceHandle": "winter-script-art-print",
+      "sourceProductId": "gid://shopify/Product/16088536514894",
+      "skuPrefix": "CM-LS-03",
+      "mediaId": "gid://shopify/MediaImage/73885673718094",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/winter-script.webp?v=1790105529",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Fern in Shadow",
+      "sourceTitle": "Fern in Shadow Art Print",
+      "sourceHandle": "fern-in-shadow-art-print",
+      "sourceProductId": "gid://shopify/Product/16088536547662",
+      "skuPrefix": "CM-LS-04",
+      "mediaId": "gid://shopify/MediaImage/73885673947470",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/fern-in-shadow.webp?v=1790105529",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    },
+    {
+      "title": "Where Mist Rests",
+      "sourceTitle": "Where Mist Rests Art Print",
+      "sourceHandle": "where-mist-rests-art-print",
+      "sourceProductId": "gid://shopify/Product/16088536645966",
+      "skuPrefix": "CM-LS-05",
+      "mediaId": "gid://shopify/MediaImage/73885674373454",
+      "imageUrl": "https://cdn.shopify.com/s/files/1/1027/6533/0766/files/where-mist-rests.webp?v=1790105530",
+      "sourceImageDimensions": {
+        "width": 1120,
+        "height": 1400
+      }
+    }
+  ],
+  "phones": [
+    {
+      "label": "iPhone 13",
+      "code": "IPHONE-13",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1240,
+        "height": 2043,
+        "sha256": "7005b212989d0550091455254bc9ea54f8cf31836ca86e38d20fe89356db2e9f",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 13 Mini",
+      "code": "IPHONE-13-MINI",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-mini-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1122,
+        "height": 1831,
+        "sha256": "c7ec7e4d1f9cc4bbc20fe964f3029c563c4a093e68d8de9ab64129ab4e9d8385",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-mini-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 13 Pro",
+      "code": "IPHONE-13-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1240,
+        "height": 2043,
+        "sha256": "5514294808e9560deb6bf281fab755cf4be7f1df071a68c742100bd58f03069c",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 13 Pro Max",
+      "code": "IPHONE-13-PRO-MAX",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-pro-max-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1323,
+        "height": 2220,
+        "sha256": "ea98b6cae81dda175c3f568b0f437363cb6779f53c2e70f3bd0595f8816be64a",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-pro-max-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 14 Pro Max",
+      "code": "IPHONE-14-PRO-MAX",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-pro-max-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2245,
+        "sha256": "4be3201ec8d163271e8d46745f44c05efa49594a5c8987236809b10f26774656",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-pro-max-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 14 Pro",
+      "code": "IPHONE-14-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1245,
+        "height": 2084,
+        "sha256": "32b5f8565a24697497b356f48fd892d9754ab23925a216070027cabfcc0c92dd",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 14",
+      "code": "IPHONE-14",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1246,
+        "height": 2085,
+        "sha256": "33fa4db10fdb0aa82fc3056d150075f275bba43b131282d7abaea285ceba6eca",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 14 Plus",
+      "code": "IPHONE-14-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-plus-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2245,
+        "sha256": "8e111b53da2bef763f79f673bb621b5f3cc97e01a7469a0c84c5ceeae6c1ad56",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 15",
+      "code": "IPHONE-15",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1246,
+        "height": 2085,
+        "sha256": "6f7ce3ea79bcef583ed3b31eaf193a0ab95ec632be096e92ececa08c6c7277eb",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 15 Plus",
+      "code": "IPHONE-15-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-plus-tough-phone-case.png",
+      "providerSku": "GLOBAL-TECH-IP15PL-TCB-CS-M",
+      "providerSkuEvidence": "https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/",
+      "template": {
+        "width": 1359,
+        "height": 2245,
+        "sha256": "be8bbe3c6a3f7450f80c8d79f227b898999331f0490960f4415e90964a983b3f",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 15 Pro",
+      "code": "IPHONE-15-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1246,
+        "height": 2085,
+        "sha256": "b5a41df68d8bde6b4358a18b5a0d31f30326a28f42e0d3d0875bdf71db180935",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 15 Pro Max",
+      "code": "IPHONE-15-PRO-MAX",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-pro-max-tough-phone-case.png",
+      "providerSku": "GLOBAL-TECH-IP15PM-TCB-CS-M",
+      "providerSkuEvidence": "https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/",
+      "template": {
+        "width": 1359,
+        "height": 2245,
+        "sha256": "1d13029fb8e1146c06314d427e92513a4dd2806cc61567b3ac84f76f356eb65c",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-pro-max-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 16",
+      "code": "IPHONE-16",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1246,
+        "height": 2085,
+        "sha256": "3020096b9f2177c34b9db90c255b2dd214867867c71ccf45526bd043199d89c4",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 16 Pro",
+      "code": "IPHONE-16-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1246,
+        "height": 2085,
+        "sha256": "935343ef45eb085f8db60224b2e18daddbb0f0289c4b86b0f1777404ecea20e2",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 16 Pro Max",
+      "code": "IPHONE-16-PRO-MAX",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-pro-max-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2245,
+        "sha256": "584026fd9e77ddf2a638dd8c396f55f5bbe1e03dcba2a82394973784f6b341af",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-pro-max-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 16 Plus",
+      "code": "IPHONE-16-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-plus-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2245,
+        "sha256": "9ed543f22ceade8796776e5b67458dfc9d2f367c304261313ad9ea7939ac2bbb",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 17",
+      "code": "IPHONE-17",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-17-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1267,
+        "height": 2122,
+        "sha256": "b487fcfbef46ab656411ac9f88592a0607fa148777fd7aac4adcab01bf6302a8",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-17-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 17 Pro",
+      "code": "IPHONE-17-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-17-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1267,
+        "height": 2116,
+        "sha256": "909f3e736a30885704e8ed219a4cd4080ef4caa5dbcd381d6a087a1ad14a1e3c",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-17-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 17 Pro Max",
+      "code": "IPHONE-17-PRO-MAX",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-17-pro-max-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1339,
+        "height": 2275,
+        "sha256": "4a5833ae17930ecd05285b2b83a70a90fb4b09c42225d7a70307db6801a618fe",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-17-pro-max-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 16e",
+      "code": "IPHONE-16E",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16e-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1255,
+        "height": 2070,
+        "sha256": "89d58e12f2c5f32e1605b21f84a8026867345186417433c1f130373b7a8adf7a",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16e-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 18 Pro",
+      "code": "IPHONE-18-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-18-pro-tough-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1267,
+        "height": 2116,
+        "sha256": "6f16c30eccd1db9fc9d4e6890428c2a8c0acdb26ecb16159d4148eeaf45146ba",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-18-pro-tough-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "iPhone 18 Pro Max",
+      "code": "IPHONE-18-PRO-MAX",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-18-pro-max-tough-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1339,
+        "height": 2275,
+        "sha256": "3a732b3bebb2cf7c69cbd257afd6bd324e15b7145189bcc951f3392078e296b9",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-18-pro-max-tough-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Google Pixel 8",
+      "code": "GOOGLE-PIXEL-8",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-8-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1244,
+        "height": 2126,
+        "sha256": "1b2ee1915d936d33fcd64ea2b65da9417982947047aacb5ac4b6266dd3312636",
+        "embeddedDpi": null,
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-8-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Google Pixel 8 Pro",
+      "code": "GOOGLE-PIXEL-8-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-8-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1312,
+        "height": 2244,
+        "sha256": "935bb129c15839116c2309259aef7e6694dc4f7ba84609452d62c80a78d18ba5",
+        "embeddedDpi": null,
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-8-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Google Pixel 9",
+      "code": "GOOGLE-PIXEL-9",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-9-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1329,
+        "height": 2126,
+        "sha256": "d2d1d680b866e05ff2287ae1cb128252cf710633d7b0796c973982dc2462aeeb",
+        "embeddedDpi": null,
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-9-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Google Pixel 9 Pro",
+      "code": "GOOGLE-PIXEL-9-PRO",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-9-pro-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1329,
+        "height": 2126,
+        "sha256": "117b0003929954932ba1032854ce6894ab6480b4cccf365495ca11a949af1c5c",
+        "embeddedDpi": null,
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-9-pro-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Google Pixel 9 Pro XL",
+      "code": "GOOGLE-PIXEL-9-PRO-XL",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-9-pro-xl-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2244,
+        "sha256": "93b1ea6da67d85c9e3082273ed0bc76eab2325ee39a40ce1a0b9ac43b29f0ffd",
+        "embeddedDpi": null,
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-9-pro-xl-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S23",
+      "code": "SAMSUNG-GALAXY-S23",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1252,
+        "height": 2066,
+        "sha256": "8f3959f4186dc652b8d720b8f00b4eba8593061a34d783f023aad2431db42f89",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S23 Plus",
+      "code": "SAMSUNG-GALAXY-S23-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-plus-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1335,
+        "height": 2220,
+        "sha256": "1b21d4306e65d764279951f70c63405e04f5c3cfe46f76ebc5a0ba1d518e062b",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S23 Ultra",
+      "code": "SAMSUNG-GALAXY-S23-ULTRA",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-ultra-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1370,
+        "height": 2304,
+        "sha256": "eb0fbd10ed0546e125351f21106a289711584a5b2276e1ff82d7310f3336c98f",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-ultra-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S24",
+      "code": "SAMSUNG-GALAXY-S24",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s24-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1251,
+        "height": 2097,
+        "sha256": "3dc66e3e65d729c69e087e7c880561b18b398423da6367ac48964d48bc8c5e03",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s24-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S24 Plus",
+      "code": "SAMSUNG-GALAXY-S24-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s24-plus-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1314,
+        "height": 2231,
+        "sha256": "95e8f3411bf6cd943d9687e022a6c31bd038807c25a9858971447f2252b7b98f",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s24-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S24 Ultra",
+      "code": "SAMSUNG-GALAXY-S24-ULTRA",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s24-ultra-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1364,
+        "height": 2296,
+        "sha256": "20c6a867c10f2be84b38efbb04bd72c643bae5a971c0e131b0873df61c27832d",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s24-ultra-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S23 FE",
+      "code": "SAMSUNG-GALAXY-S23-FE",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-fe-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2244,
+        "sha256": "6bb63b0fdba6caacda6e1c837d83cbddab5a7f9285969f50fe0971fceef2720d",
+        "embeddedDpi": null,
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-fe-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S25",
+      "code": "SAMSUNG-GALAXY-S25",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s25-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1251,
+        "height": 2097,
+        "sha256": "b4cc83ce3299724e620bfdd37754a4ded0047d3e0cd2261850780f25166ef3de",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s25-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S25 Plus",
+      "code": "SAMSUNG-GALAXY-S25-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s25-plus-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1314,
+        "height": 2231,
+        "sha256": "774cf8b04b64d46307f08e136ff9ac40af7ea5e47d38fc265381c0823878a338",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s25-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S25 Ultra",
+      "code": "SAMSUNG-GALAXY-S25-ULTRA",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s25-ultra-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1359,
+        "height": 2244,
+        "sha256": "3412e250d8ec9e0bba0612933c43dad4372360412e893dedb6804a873816495d",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s25-ultra-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S26",
+      "code": "SAMSUNG-GALAXY-S26",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s26-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1270,
+        "height": 2122,
+        "sha256": "c6960287121d18dd6111c4f839d8c10ec1740a8d74ebd072cd917750b6b81829",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s26-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S26 Plus",
+      "code": "SAMSUNG-GALAXY-S26-PLUS",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s26-plus-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1318,
+        "height": 2227,
+        "sha256": "5fa58452731622c4f2c141bd657977bb7be788c157142d9f2ec1bf94452de5d6",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s26-plus-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    },
+    {
+      "label": "Samsung Galaxy S26 Ultra",
+      "code": "SAMSUNG-GALAXY-S26-ULTRA",
+      "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s26-ultra-tough-phone-case.png",
+      "providerSku": null,
+      "providerSkuEvidence": null,
+      "template": {
+        "width": 1345,
+        "height": 2286,
+        "sha256": "b5f8d0ab51f034460ee7c86583c8e119010d0a0c1f1463d52aaf1c7d43b33cac",
+        "embeddedDpi": {
+          "horizontal": 299.9994,
+          "vertical": 299.9994
+        },
+        "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s26-ultra-tough-phone-case.png"
+      },
+      "fulfillmentVerified": false
+    }
+  ],
+  "excludedPhones": [
+    {
+      "label": "Samsung Galaxy S24 FE",
+      "reason": "No tough-case template option appears in official live page"
+    },
+    {
+      "label": "iPhone 17 Air",
+      "reason": "Skip pending identity verification against Apple iPhone Air"
+    },
+    {
+      "label": "iPhone 17e",
+      "reason": "Public template exists but model absent from current availability list; excluded from selected production set"
+    }
+  ],
+  "releaseGates": {
+    "storefrontApproved": false,
+    "fulfillmentVerified": false,
+    "templateCropReview": false,
+    "billingAndReleaseWindowVerified": false,
+    "qualityEvidenceVerified": false
+  }
+}
