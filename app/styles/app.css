@@ -1555,7 +1555,7 @@ button {
 }
 
 .tough-case-artworks a {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 5 / 8;
   background: var(--color-soft);
   border: 1px solid transparent;
   border-radius: 12px;
@@ -1585,6 +1585,9 @@ button {
   display: block;
   height: 100%;
   object-fit: cover;
+  /* Previews are 4:5 with linen around the case; the narrower tile crops the
+     sides and the zoom trims the top and bottom so the case fills it. */
+  transform: scale(1.14);
   width: 100%;
 }
 
@@ -1627,6 +1630,8 @@ button {
 
 .product-buy-box label.primary-button {
   cursor: pointer;
+  justify-content: center;
+  text-align: center;
 }
 
 @media (max-width: 520px) {

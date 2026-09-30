@@ -718,3 +718,13 @@ test('case previews lead the files and front each variant while the shared print
   partial.designs[0].previewMediaId = 'gid://shopify/MediaImage/900';
   assert.throws(() => validateManifest(partial), /every artwork or none/);
 });
+
+test('read-only verification accepts the activated product; mutation still refuses it', () => {
+  const {manifest, product} = fixture();
+  product.status = 'ACTIVE';
+  assert.throws(() => assertTargetSafe(manifest, product), /ACTIVE/);
+  assert.doesNotThrow(() =>
+    assertTargetSafe(manifest, product, {mutating: false}),
+  );
+  assert.throws(() => buildProductInput(manifest, product), /ACTIVE/);
+});

@@ -9,6 +9,7 @@ import {RecentlyViewed} from '~/components/RecentlyViewed';
 import {StructuredData} from '~/components/StructuredData';
 import {isDemoProduct} from '~/lib/catalogFilters';
 import {formatMoney} from '~/lib/money';
+import {getProductDescription} from '~/lib/productCopy';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {breadcrumbSchema, buildSeoMeta, getCanonicalUrl, productSchema} from '~/lib/seo';
@@ -60,9 +61,9 @@ const BRAND_LABELS: Record<(typeof PHONE_BRANDS)[number], string> = {
 
 export const meta: Route.MetaFunction = ({data}) =>
   buildSeoMeta({
-    description:
-      data?.product.description ||
-      'A Clara Mendes artwork on a matte, dual-layer tough phone case for iPhone, Samsung Galaxy and Google Pixel.',
+    description: data?.product
+      ? getProductDescription(data.product)
+      : 'A Clara Mendes artwork on a matte, dual-layer tough phone case for iPhone, Samsung Galaxy and Google Pixel.',
     image: data?.artworkImage?.url,
     title: data?.product.title ?? 'Art Tough Phone Case',
     type: 'product',
@@ -154,7 +155,7 @@ export default function ToughCasePage() {
   const price = variant?.price ?? product.priceRange.minVariantPrice;
   const canBuy = Boolean(variant?.availableForSale);
   const buttonLabel = !phone
-    ? 'Choose your phone model'
+    ? 'Choose your phone'
     : canBuy
       ? `Add to cart - ${formatMoney(price)}`
       : 'Unavailable';
@@ -223,7 +224,7 @@ export default function ToughCasePage() {
         data={[
           productSchema({
             availableForSale: canBuy,
-            description: product.description,
+            description: getProductDescription(product),
             image: artworkImage?.url,
             priceRange: product.priceRange,
             productId: product.id,

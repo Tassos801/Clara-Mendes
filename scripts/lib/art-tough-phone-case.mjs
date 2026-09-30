@@ -419,14 +419,19 @@ function assertNoPublications(target) {
   );
 }
 
-export function assertTargetSafe(manifest, target) {
+/**
+ * Identity and safety of the existing product. Mutations require the DRAFT
+ * with no publications; read-only verification also accepts the product
+ * once it has been activated and published for storefront QA or release.
+ */
+export function assertTargetSafe(manifest, target, {mutating = true} = {}) {
   if (target === null) return;
   requireThat(
     target?.handle === TARGET_HANDLE,
     'Existing target handle mismatch',
   );
   requireThat(
-    target.status === 'DRAFT',
+    target.status === 'DRAFT' || (!mutating && target.status === 'ACTIVE'),
     `Refusing to mutate ${target.status} existing target; only this DRAFT is allowed`,
   );
   requireThat(
@@ -435,7 +440,8 @@ export function assertTargetSafe(manifest, target) {
       target.productType === 'Phone Cases',
     'Existing Draft target identity mismatch',
   );
-  assertNoPublications(target);
+  // A Draft is never published; the activated product is, for QA/release.
+  if (mutating || target.status === 'DRAFT') assertNoPublications(target);
   for (const field of ['storefrontApproved', 'fulfillmentVerified'])
     requireThat(
       target[field]?.type === 'boolean' && target[field].value === 'false',
@@ -642,7 +648,11 @@ export async function readTargetProduct(admin, id) {
   return {...product, variants, variantPages: seen.size + 1};
 }
 
-export async function preflight(admin, manifest, {checkTarget = true} = {}) {
+export async function preflight(
+  admin,
+  manifest,
+  {checkTarget = true, mutating = true} = {},
+) {
   const counts = validateManifest(manifest);
   const response = await admin(PREFLIGHT_QUERY, {
     ids: manifest.designs.map((d) => d.sourceProductId),
@@ -652,13 +662,13 @@ export async function preflight(admin, manifest, {checkTarget = true} = {}) {
   assertSources(manifest, response.data?.nodes);
   const targetId = await lookupTarget(admin);
   const target = targetId ? await readTargetProduct(admin, targetId) : null;
-  if (checkTarget) assertTargetSafe(manifest, target);
+  if (checkTarget) assertTargetSafe(manifest, target, {mutating});
   return {shop, sources: response.data.nodes, target, ...counts};
 }
 
 export function verifyProduct(manifest, shop, product) {
   assertShop(shop, manifest);
-  assertTargetSafe(manifest, product);
+  assertTargetSafe(manifest, product, {mutating: false});
   requireThat(product, 'Target product does not exist');
   const expected = combinations(manifest);
   requireThat(
@@ -820,6 +830,7 @@ export async function stageProduct({
   }
   const checked = await preflight(admin, manifest, {
     checkTarget: !resumeOperation,
+    mutating: !verifyOnly,
   });
   const plan = {
     handle: TARGET_HANDLE,
@@ -837,7 +848,9 @@ export async function stageProduct({
     providerSkuKnownCount: manifest.phones.filter((p) => p.providerSku !== null)
       .length,
     manifestSha256,
-    input: buildProductInput(manifest, resumeOperation ? null : checked.target),
+    input: verifyOnly
+      ? null
+      : buildProductInput(manifest, resumeOperation ? null : checked.target),
   };
   if (!apply && !resumeOperation && !verifyOnly)
     return {mode: 'dry-run', plan, preflight: checked};

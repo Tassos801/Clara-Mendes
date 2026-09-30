@@ -12,7 +12,12 @@
  * previews; they are never removed from the product, because deleting
  * product media can delete the shared file and blank the print pages.
  *
- *   node scripts/sync-tough-case-previews.mjs --env-dir <clara-mendes checkout> [--apply]
+ *   node scripts/sync-tough-case-previews.mjs --env-dir <clara-mendes checkout> [--apply] [--replace]
+ *
+ * `--replace` uploads regenerated previews over existing ones: the new
+ * images take over the gallery and the variants, then the old previews
+ * (uploaded only for this product) are deleted. Source print images are
+ * never deleted.
  */
 
 import {readFile, stat} from 'node:fs/promises';
@@ -29,6 +34,7 @@ const {values: args} = parseArgs({
   options: {
     'env-dir': {type: 'string'},
     apply: {type: 'boolean', default: false},
+    replace: {type: 'boolean', default: false},
   },
 });
 const envDir = args['env-dir'] ?? process.cwd();
@@ -105,6 +111,15 @@ const ATTACH = `#graphql
   }
 `;
 
+const DELETE_OLD_PREVIEWS = `#graphql
+  mutation DeleteOldToughCasePreviews($productId: ID!, $mediaIds: [ID!]!) {
+    productDeleteMedia(productId: $productId, mediaIds: $mediaIds) {
+      deletedMediaIds
+      mediaUserErrors { field message }
+    }
+  }
+`;
+
 const DETACH = `#graphql
   mutation DetachToughCaseSourceMedia($productId: ID!, $variantMedia: [ProductVariantDetachMediaInput!]!) {
     productVariantDetachMedia(productId: $productId, variantMedia: $variantMedia) {
@@ -139,8 +154,15 @@ function artworkOf(variant) {
   return variant.selectedOptions.find((option) => option.name === 'Artwork')?.value;
 }
 
+// Media ids superseded by `--replace`; ignored when matching previews by alt.
+const superseded = new Set();
+
 function previewsByTitle(product) {
-  const byAlt = new Map(product.media.nodes.map((media) => [media.alt, media]));
+  const byAlt = new Map(
+    product.media.nodes
+      .filter((media) => !superseded.has(media.id))
+      .map((media) => [media.alt, media]),
+  );
   return new Map(
     manifest.designs
       .map((design) => [design.title, byAlt.get(previewAlt(design.title))])
@@ -215,6 +237,13 @@ async function main() {
   if (product.variants.length !== manifest.designs.length * manifest.phones.length) {
     throw new Error('Variant count does not match the manifest');
   }
+  if (args.replace) {
+    for (const media of previewsByTitle(product).values()) superseded.add(media.id);
+    const sourceIds = new Set(manifest.designs.map((d) => d.mediaId));
+    if ([...superseded].some((id) => sourceIds.has(id))) {
+      throw new Error('Refusing to replace: a preview id is a shared source print image');
+    }
+  }
   const missing = manifest.designs.filter((design) => !previewsByTitle(product).has(design.title));
   console.log(`previews to upload: ${missing.length}`);
   if (!args.apply) {
@@ -275,6 +304,16 @@ async function main() {
     mutationErrors(result.data?.productVariantDetachMedia, 'productVariantDetachMedia');
   }
   console.log(`detached source print images from ${detach.length} variants`);
+
+  if (superseded.size) {
+    const result = await admin(DELETE_OLD_PREVIEWS, {
+      productId: product.id,
+      mediaIds: [...superseded],
+    });
+    const payload = result.data?.productDeleteMedia;
+    if (payload?.mediaUserErrors?.length) throw new Error(JSON.stringify(payload.mediaUserErrors));
+    console.log(`deleted ${payload?.deletedMediaIds?.length ?? 0} superseded previews`);
+  }
 
   product = await readProduct(admin);
   const problems = verify(product, previewsByTitle(product));

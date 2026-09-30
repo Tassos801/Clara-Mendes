@@ -185,12 +185,18 @@ export async function renderPreview(masterPath, masks) {
     .removeAlpha()
     .raw()
     .toBuffer();
+  if (art.length !== width * height * 3 || camera.length !== width * height * 3) {
+    throw new Error('Artwork and camera layers must be RGB');
+  }
   // Blurred case mask: low near the outline, so the rim darkens softly and
   // reads as the wrapped, rounded case edge.
   const edge = await sharp(caseMask, {raw: {width, height, channels: 1}})
     .blur(18)
+    .extractChannel(0)
     .raw()
     .toBuffer();
+  // A multi-channel buffer read with a one-channel stride draws stripes.
+  if (edge.length !== width * height) throw new Error('Edge mask must be one channel');
 
   const caseRgba = Buffer.alloc(width * height * 4);
   for (let i = 0; i < width * height; i += 1) {

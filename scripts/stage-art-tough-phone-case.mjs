@@ -226,7 +226,7 @@ export async function main(args = process.argv.slice(2)) {
         {
           mode: result.mode,
           handle: result.plan.handle,
-          status: 'DRAFT',
+          status: product?.status ?? 'DRAFT',
           designs: result.plan.designCount,
           phones: result.plan.phoneCount,
           variants: result.plan.variantCount,
