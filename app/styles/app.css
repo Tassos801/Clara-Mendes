@@ -24,6 +24,24 @@
     'Segoe UI', sans-serif;
 }
 
+.pastel-pot-teaser {
+  background: #fff;
+  padding: 56px max(5%, calc((100% - 1160px) / 2));
+}
+
+.pastel-pot-teaser h2 {
+  font-family: var(--serif);
+  font-size: 36px;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin: 12px 0;
+}
+
+.pastel-pot-teaser img {
+  width: 100%;
+  height: auto;
+}
+
 * {
   box-sizing: border-box;
 }

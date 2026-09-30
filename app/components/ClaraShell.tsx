@@ -184,6 +184,7 @@ function ClaraFooter() {
       </nav>
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
+        <Link to="/pastel-forms">Pastel Forms</Link>
         <Link to="/our-story">Our Story</Link>
         <Link to="/blogs/karina-of-time">Karina of Time</Link>
         <Link to="/contact">Contact</Link>

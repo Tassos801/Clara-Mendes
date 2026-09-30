@@ -1148,3 +1148,15 @@ loading 960 variants and never defaults the phone. Release stays behind
 `PRODUCT_RELEASE_FLAGS`; shipping rate and publication are the open gates.
 
 Source: [Art Tough Phone Case](../art-tough-phone-case.md).
+
+## 2026-09-30 - Pastel Forms plant-pot designs and preview
+
+Created four original pastel/minimal artworks for the official 194 x 109 mm
+Prodigi plant-pot template and exported 2291 x 1287 sRGB JPEGs at 300 dpi.
+Generated labeled-as-mockup product visuals. Staged four Shopify Drafts with
+eight READY images, zero tracked stock, DENY and false approvals. Built
+`/pastel-forms` as a public Coming soon preview linked from home and footer;
+the actual product handles remain unreleased. Account mapping, delivered
+costs, shipping setup and sample review/waiver remain purchase-release gates.
+
+Source: [Pastel Forms Plant Pots](../pastel-plant-pots.md).

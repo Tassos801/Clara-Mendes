@@ -1,5 +1,14 @@
 # Catalog And Products
 
+## Pastel Forms Preview (2026-09-30)
+
+Four original pastel plant-pot designs are staged as Shopify Drafts with zero
+tracked inventory, DENY policy and false approvals. `/pastel-forms` previews
+the series without checkout; the four product handles remain false in
+`PRODUCT_RELEASE_FLAGS`. Public template geometry is verified, but automatic
+Prodigi mapping, delivered costs and sample quality are not. See
+[Pastel Forms Plant Pots](../../pastel-plant-pots.md).
+
 ## 2026-09-30 - Art Tough Phone Case Draft
 
 The owner requested all 24 released artworks on an everyday accessory for

@@ -611,6 +611,19 @@ export default function Homepage() {
 
       {caseTeaser ? <ToughCaseTeaser {...caseTeaser} /> : null}
 
+      <section className="pastel-pot-teaser" aria-labelledby="pastel-pot-teaser-title">
+        <div className="section-heading-row">
+          <div>
+            <p className="eyebrow">Coming soon / Ceramic plant pots</p>
+            <h2 id="pastel-pot-teaser-title">Pastel Forms</h2>
+          </div>
+          <Link className="text-link" to="/pastel-forms">Explore the series</Link>
+        </div>
+        <Link to="/pastel-forms" aria-label="Preview the Pastel Forms plant pots">
+          <img src="/images/pastel-plant-pots/series.webp" alt="Design mockups of four minimal pastel ceramic plant pots" width={1536} height={1024} loading="lazy" />
+        </Link>
+      </section>
+
       <HomepageEditorial />
 
       <OriginalArtPreview products={originalArtProducts} compact />
