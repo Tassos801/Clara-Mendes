@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "collection": {"handle": "pastel-forms", "title": "Pastel Forms"},
+  "productType": "Plant Pots",
+  "providerSku": "PLANT-POT",
+  "providerSkuStatus": "public-catalogue-only",
+  "physicalSizeMm": {"diameter": 90, "height": 102},
+  "print": {
+    "width": 2291,
+    "height": 1287,
+    "dpi": 300,
+    "templateSizeMm": [194, 109]
+  },
+  "currency": "EUR",
+  "provisionalPrice": "24.99",
+  "release": {
+    "mappingVerified": false,
+    "deliveredCostsVerified": false,
+    "sampleReviewed": false
+  },
+  "designs": [
+    {
+      "id": "blush-arc",
+      "title": "Blush Arc",
+      "handle": "blush-arc-pastel-plant-pot",
+      "sku": "CM-POT-BLUSH",
+      "background": "#F9E7E9",
+      "accent": "#D89BA7",
+      "secondary": "#EFC4CB",
+      "story": "A soft rose arch and a small floating circle on a pale blush ground."
+    },
+    {
+      "id": "sage-stem",
+      "title": "Sage Stem",
+      "handle": "sage-stem-pastel-plant-pot",
+      "sku": "CM-POT-SAGE",
+      "background": "#EBF1E9",
+      "accent": "#89A88D",
+      "secondary": "#B9CEB6",
+      "story": "A single sculptural sprig in muted sage on a pale green ground."
+    },
+    {
+      "id": "blue-drift",
+      "title": "Blue Drift",
+      "handle": "blue-drift-pastel-plant-pot",
+      "sku": "CM-POT-BLUE",
+      "background": "#E9F0F8",
+      "accent": "#91B2D3",
+      "secondary": "#BBD1E7",
+      "story": "Two quiet, flowing forms in powder blue with room to breathe."
+    },
+    {
+      "id": "butter-sun",
+      "title": "Butter Sun",
+      "handle": "butter-sun-pastel-plant-pot",
+      "sku": "CM-POT-BUTTER",
+      "background": "#FBF5DE",
+      "accent": "#E4CB7E",
+      "secondary": "#EEDFAC",
+      "story": "A low sun above a gently curved horizon in soft butter yellow."
+    }
+  ]
+}

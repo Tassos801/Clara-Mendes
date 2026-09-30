@@ -86,6 +86,7 @@ assert.deepEqual(
   [
     '/',
     '/collections/all',
+    '/pastel-forms',
     '/collections/quiet-form',
     '/collections/patina-blue',
     '/collections/neo-deco',

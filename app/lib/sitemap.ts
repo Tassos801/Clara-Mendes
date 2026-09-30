@@ -26,6 +26,7 @@ import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/',
   '/collections/all',
+  '/pastel-forms',
   ...ORIGINAL_ART_COLLECTIONS.map(
     (collection) => `/collections/${collection.handle}`,
   ),

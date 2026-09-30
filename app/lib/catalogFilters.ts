@@ -174,6 +174,11 @@ export const EXTENSION_COLLECTION_POPULATED = true;
  * so it is not an extension family. Flip only via docs/art-tough-phone-case.md.
  */
 export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
+  // Pastel Forms previews are public; these unmapped Shopify Drafts are not.
+  'blush-arc-pastel-plant-pot': false,
+  'sage-stem-pastel-plant-pot': false,
+  'blue-drift-pastel-plant-pot': false,
+  'butter-sun-pastel-plant-pot': false,
   // Released 2026-09-30: 40 SKUs + attributes read back from Prodigi's live
   // API, webhook fulfilment unit-tested, previews on all 960 variants, owner
   // approved €39.99 with €4.95 EU / €3.99 CY shipping ("Phone cases"
