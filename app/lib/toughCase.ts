@@ -10,6 +10,15 @@
 import manifest from '../../data/art-tough-phone-case.json' with {type: 'json'};
 
 export const TOUGH_CASE_HANDLE = manifest.handle;
+
+/** Artworks the homepage teaser shows, one per temperament, in order. */
+export const TOUGH_CASE_TEASER_ARTWORKS = [
+  'Midnight Garden II',
+  'Sunlit Mosaic II',
+  'Neo Deco I',
+  'Neon After Rain',
+  'Fern in Shadow',
+];
 export const TOUGH_CASE_ARTWORK_OPTION = 'Artwork';
 export const TOUGH_CASE_PHONE_OPTION = 'Phone Model';
 

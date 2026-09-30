@@ -481,6 +481,7 @@ export type HomepageQueryVariables = StorefrontAPI.Exact<{
   first: StorefrontAPI.Scalars['Int']['input'];
   frameHandle: StorefrontAPI.Scalars['String']['input'];
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  toughCaseHandle: StorefrontAPI.Scalars['String']['input'];
 }>;
 
 export type HomepageQuery = {
@@ -660,6 +661,31 @@ export type HomepageQuery = {
           }
         >;
       };
+    }
+  >;
+  toughCase?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'productType' | 'tags' | 'title' | 'vendor'
+    > & {
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      options: Array<
+        Pick<StorefrontAPI.ProductOption, 'name'> & {
+          optionValues: Array<
+            Pick<StorefrontAPI.ProductOptionValue, 'name'> & {
+              firstSelectableVariant?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+                  image?: StorefrontAPI.Maybe<
+                    Pick<StorefrontAPI.Image, 'url' | 'altText'>
+                  >;
+                }
+              >;
+            }
+          >;
+        }
+      >;
     }
   >;
   collections: {
@@ -2318,7 +2344,7 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
-  '#graphql\n  query Homepage(\n    $artFirst: Int!\n    $artQuery: String!\n    $country: CountryCode\n    $first: Int!\n    $frameHandle: String!\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    originalArtProducts: products(first: $artFirst, query: $artQuery) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    frameProduct: product(handle: $frameHandle) {\n      ...ClaraProductCard\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        description\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
+  '#graphql\n  query Homepage(\n    $artFirst: Int!\n    $artQuery: String!\n    $country: CountryCode\n    $first: Int!\n    $frameHandle: String!\n    $language: LanguageCode\n    $toughCaseHandle: String!\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    originalArtProducts: products(first: $artFirst, query: $artQuery) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    frameProduct: product(handle: $frameHandle) {\n      ...ClaraProductCard\n    }\n    toughCase: product(handle: $toughCaseHandle) {\n      handle\n      productType\n      tags\n      title\n      vendor\n      priceRange {\n        minVariantPrice {\n          amount\n          currencyCode\n        }\n      }\n      options {\n        name\n        optionValues {\n          name\n          firstSelectableVariant {\n            availableForSale\n            image {\n              # Tight portrait crop: the previews carry linen either side.\n              url(transform: {crop: CENTER, maxWidth: 440, maxHeight: 800})\n              altText\n            }\n          }\n        }\n      }\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        description\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
     return: HomepageQuery;
     variables: HomepageQueryVariables;
   };
