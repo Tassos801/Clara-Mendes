@@ -194,6 +194,12 @@ export function validateManifest(manifest) {
       'Invalid source artwork media ID',
     );
     requireThat(
+      design.previewMediaId === undefined ||
+        (/^gid:\/\/shopify\/MediaImage\/\d+$/.test(design.previewMediaId) &&
+          design.previewMediaId !== design.mediaId),
+      'Invalid case preview media ID',
+    );
+    requireThat(
       /^CM-[A-Z0-9]+(?:-[A-Z0-9]+)*$/.test(design.skuPrefix),
       'Invalid source SKU prefix',
     );
@@ -212,6 +218,18 @@ export function validateManifest(manifest) {
     unique(
       manifest.designs.map((d) => d[field]),
       `artwork ${field}`,
+    );
+  const previewCount = manifest.designs.filter(
+    (d) => d.previewMediaId !== undefined,
+  ).length;
+  requireThat(
+    previewCount === 0 || previewCount === manifest.designs.length,
+    'Case preview media must be set for every artwork or none',
+  );
+  if (previewCount)
+    unique(
+      manifest.designs.map((d) => d.previewMediaId),
+      'artwork previewMediaId',
     );
   for (const phone of manifest.phones) {
     requireThat(
@@ -451,6 +469,11 @@ export function assertTargetSafe(manifest, target) {
   }
 }
 
+export const DESCRIPTION_HTML =
+  '<p>Carry a Clara Mendes artwork with you. Choose one of 24 original artworks and your exact phone model for a matte, dual-layer tough case: an impact-resistant polycarbonate shell over a shock-absorbing silicone liner.</p>' +
+  '<p>The artwork is printed edge to edge and wraps the sides of the case. It is centred on every model; the crop and camera opening follow the phone you choose. Product images show the case on iPhone 16 Pro.</p>' +
+  '<p>Cases are printed to order for the model selected. Similar model names are not interchangeable, so check the model in your phone settings before ordering.</p>';
+
 export function buildProductInput(manifest, target = null) {
   validateManifest(manifest);
   assertTargetSafe(manifest, target);
@@ -464,15 +487,18 @@ export function buildProductInput(manifest, target = null) {
     vendor: 'Clara Mendes',
     productType: 'Phone Cases',
     tags: TAGS,
-    descriptionHtml:
-      '<p>Carry a Clara Mendes artwork with you. Choose your artwork and exact phone model for a matte tough case with a rigid polycarbonate outer shell and a flexible protective inner liner.</p><p>The artwork wraps around the outer edges. The crop and camera opening vary by phone model.</p><p>Check your device model in your phone settings before selecting the Phone Model option. Cases are made for the specific model selected; similar model names are not interchangeable.</p><p>The images show the original artworks. Final case cropping, camera placement and model-specific mockups are pending review.</p>',
+    descriptionHtml: DESCRIPTION_HTML,
     metafields: ['storefront_approved', 'fulfillment_verified'].map((key) => ({
       namespace: 'custom',
       key,
       type: 'boolean',
       value: 'false',
     })),
-    files: manifest.designs.map((design) => ({id: design.mediaId})),
+    // Case previews (scripts/sync-tough-case-previews.mjs) lead the gallery
+    // and front each variant. The source print images stay attached behind
+    // them: they are shared with the live print products, so dropping them
+    // from this list must never be what removes them.
+    files: productFileIds(manifest).map((id) => ({id})),
     productOptions: [
       {
         name: 'Artwork',
@@ -496,9 +522,22 @@ export function buildProductInput(manifest, target = null) {
       taxable: true,
       inventoryPolicy: 'DENY',
       inventoryItem: {tracked: true, requiresShipping: true},
-      file: {id: entry.design.mediaId},
+      file: {id: variantMediaId(entry.design)},
     })),
   };
+}
+
+function variantMediaId(design) {
+  return design.previewMediaId ?? design.mediaId;
+}
+
+function productFileIds(manifest) {
+  return [
+    ...manifest.designs.map(variantMediaId),
+    ...manifest.designs
+      .filter((d) => d.previewMediaId !== undefined)
+      .map((d) => d.mediaId),
+  ];
 }
 
 function nextCursor(connection, previous, seen, label) {
@@ -640,17 +679,19 @@ export function verifyProduct(manifest, shop, product) {
     );
   }
   const media = completeConnection(product.media, 'product media');
-  const mediaIds = manifest.designs.map((d) => d.mediaId);
+  const mediaIds = productFileIds(manifest);
   requireThat(
-    media.length === 24 &&
-      new Set(media.map((m) => m.id)).size === 24 &&
+    media.length === mediaIds.length &&
+      new Set(media.map((m) => m.id)).size === mediaIds.length &&
       media.every(
-        (m) =>
+        (m, index) =>
           mediaIds.includes(m.id) &&
+          (index >= manifest.designs.length ||
+            m.id === variantMediaId(manifest.designs[index])) &&
           m.status === 'READY' &&
           m.mediaContentType === 'IMAGE',
       ),
-    'Product must have exactly 24 matching READY source images',
+    `Product must have exactly ${mediaIds.length} matching READY images, artwork images first`,
   );
   unique(
     product.variants.map((v) => v.sku),
@@ -670,7 +711,7 @@ export function verifyProduct(manifest, shop, product) {
     const associated = completeConnection(variant.media, 'variant media');
     requireThat(
       associated.length === 1 &&
-        associated[0].id === entry.design.mediaId &&
+        associated[0].id === variantMediaId(entry.design) &&
         associated[0].status === 'READY',
       `Variant artwork media mismatch for ${variant.id}`,
     );

@@ -19,9 +19,10 @@ export async function loader() {
 }
 
 /**
- * Shopify `orders/paid` → one Prodigi order per Shopify order for every
- * signed star-map line. A 2xx tells Shopify we are done; a 5xx makes it
- * retry (19 times over 48 hours), which is safe because the Prodigi
+ * Shopify `orders/paid` → one Prodigi order per Shopify order covering every
+ * signed personalised line and every Art Tough Phone Case line. A 2xx tells
+ * Shopify we are done; a 5xx makes it retry (19 times over 48 hours), which
+ * is safe because the Prodigi
  * idempotency key is derived from the Shopify order id. Only transient
  * failures may answer 5xx: Shopify removes a subscription that keeps
  * failing, after which no later order would reach the lab at all.
@@ -66,7 +67,7 @@ export async function action({request, context}: Route.ActionArgs) {
     origin: STOREFRONT_ORIGIN,
   });
   if (build.kind === 'skip') {
-    return new Response('No personalised lines', {status: 200});
+    return new Response('No lines for the Prodigi API', {status: 200});
   }
   if (build.kind === 'problem') {
     // Retrying cannot fix a bad signature or an unmapped SKU; log for the

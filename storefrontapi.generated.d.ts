@@ -1377,6 +1377,7 @@ export type ProductQueryVariables = StorefrontAPI.Exact<{
   selectedOptions:
     | Array<StorefrontAPI.SelectedOptionInput>
     | StorefrontAPI.SelectedOptionInput;
+  toughCaseHandle: StorefrontAPI.Scalars['String']['input'];
 }>;
 
 export type ProductQuery = {
@@ -1711,6 +1712,77 @@ export type ProductQuery = {
       };
     }
   >;
+  toughCase?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      caseOptions: Array<
+        Pick<StorefrontAPI.ProductOption, 'name'> & {
+          optionValues: Array<
+            Pick<StorefrontAPI.ProductOptionValue, 'name'> & {
+              firstSelectableVariant?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+                  image?: StorefrontAPI.Maybe<
+                    Pick<
+                      StorefrontAPI.Image,
+                      'url' | 'altText' | 'width' | 'height'
+                    >
+                  >;
+                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+                }
+              >;
+            }
+          >;
+        }
+      >;
+      featuredImage?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Image, 'id' | 'url' | 'altText' | 'width' | 'height'>
+      >;
+      images: {
+        nodes: Array<
+          Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'altText' | 'width' | 'height'
+          >
+        >;
+      };
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+        maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+      cardVariant: {
+        nodes: Array<
+          Pick<
+            StorefrontAPI.ProductVariant,
+            'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
+          > & {
+            compareAtPrice?: StorefrontAPI.Maybe<
+              Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+            >;
+            image?: StorefrontAPI.Maybe<
+              Pick<
+                StorefrontAPI.Image,
+                'id' | 'url' | 'altText' | 'width' | 'height'
+              >
+            >;
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+            product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+            selectedOptions: Array<
+              Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+            >;
+          }
+        >;
+      };
+    }
+  >;
   phoneCase?: StorefrontAPI.Maybe<
     Pick<
       StorefrontAPI.Product,
@@ -1777,6 +1849,75 @@ export type ProductQuery = {
           }
         >;
       };
+    }
+  >;
+};
+
+export type ToughCaseQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  handle: StorefrontAPI.Scalars['String']['input'];
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  selectedOptions:
+    | Array<StorefrontAPI.SelectedOptionInput>
+    | StorefrontAPI.SelectedOptionInput;
+}>;
+
+export type ToughCaseQuery = {
+  product?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      | 'id'
+      | 'handle'
+      | 'title'
+      | 'vendor'
+      | 'productType'
+      | 'tags'
+      | 'description'
+    > & {
+      featuredImage?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+        maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      options: Array<
+        Pick<StorefrontAPI.ProductOption, 'name'> & {
+          optionValues: Array<
+            Pick<StorefrontAPI.ProductOptionValue, 'name'> & {
+              firstSelectableVariant?: StorefrontAPI.Maybe<{
+                image?: StorefrontAPI.Maybe<
+                  Pick<
+                    StorefrontAPI.Image,
+                    'url' | 'altText' | 'width' | 'height'
+                  >
+                >;
+              }>;
+            }
+          >;
+        }
+      >;
+      selectedOrFirstAvailableVariant?: StorefrontAPI.Maybe<
+        Pick<
+          StorefrontAPI.ProductVariant,
+          'id' | 'title' | 'availableForSale' | 'barcode' | 'sku'
+        > & {
+          price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          compareAtPrice?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+          >;
+          selectedOptions: Array<
+            Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+          >;
+          image?: StorefrontAPI.Maybe<
+            Pick<
+              StorefrontAPI.Image,
+              'id' | 'url' | 'altText' | 'width' | 'height'
+            >
+          >;
+          product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+        }
+      >;
     }
   >;
 };
@@ -2225,9 +2366,13 @@ interface GeneratedQueryTypes {
     return: PoliciesQuery;
     variables: PoliciesQueryVariables;
   };
-  '#graphql\n  query Product(\n    $capsuleQuery: String!\n    $classicFrameHandle: String!\n    $country: CountryCode\n    $first: Int!\n    $handle: String!\n    $language: LanguageCode\n    $phoneCaseHandle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...ClaraProductCard\n      description\n      descriptionHtml\n      galleryImages: images(first: 10) {\n        nodes {\n          altText\n          height\n          url\n          width\n        }\n      }\n      options {\n        id\n        name\n        optionValues {\n          id\n          name\n        }\n      }\n      selectedOrFirstAvailableVariant(\n        selectedOptions: $selectedOptions\n        ignoreUnknownOptions: true\n        caseInsensitiveMatch: true\n      ) {\n        ...ClaraProductVariant\n      }\n      variants(first: 100) {\n        nodes {\n          ...ClaraProductVariant\n        }\n      }\n      reviewsMetafield: metafield(namespace: "custom", key: "reviews") {\n        references(first: 50) {\n          nodes {\n            ... on Metaobject {\n              id\n              fields {\n                key\n                value\n                references(first: 3) {\n                  nodes {\n                    ... on MediaImage {\n                      image {\n                        url\n                        altText\n                        width\n                        height\n                      }\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n    relatedProducts: products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    capsuleProducts: products(first: 3, query: $capsuleQuery) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    classicFrame: product(handle: $classicFrameHandle) {\n      ...ClaraProductCard\n      frameVariants: variants(first: 5) {\n        nodes {\n          availableForSale\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          price {\n            amount\n            currencyCode\n          }\n          selectedOptions {\n            name\n            value\n          }\n        }\n      }\n    }\n    phoneCase: product(handle: $phoneCaseHandle) {\n      ...ClaraProductCard\n      caseVariants: variants(first: 24) {\n        nodes {\n          availableForSale\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          price {\n            amount\n            currencyCode\n          }\n          selectedOptions {\n            name\n            value\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n  #graphql\n  fragment ClaraProductVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    barcode\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    product {\n      handle\n      title\n    }\n    sku\n  }\n\n': {
+  '#graphql\n  query Product(\n    $capsuleQuery: String!\n    $classicFrameHandle: String!\n    $country: CountryCode\n    $first: Int!\n    $handle: String!\n    $language: LanguageCode\n    $phoneCaseHandle: String!\n    $selectedOptions: [SelectedOptionInput!]!\n    $toughCaseHandle: String!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      ...ClaraProductCard\n      description\n      descriptionHtml\n      galleryImages: images(first: 10) {\n        nodes {\n          altText\n          height\n          url\n          width\n        }\n      }\n      options {\n        id\n        name\n        optionValues {\n          id\n          name\n        }\n      }\n      selectedOrFirstAvailableVariant(\n        selectedOptions: $selectedOptions\n        ignoreUnknownOptions: true\n        caseInsensitiveMatch: true\n      ) {\n        ...ClaraProductVariant\n      }\n      variants(first: 100) {\n        nodes {\n          ...ClaraProductVariant\n        }\n      }\n      reviewsMetafield: metafield(namespace: "custom", key: "reviews") {\n        references(first: 50) {\n          nodes {\n            ... on Metaobject {\n              id\n              fields {\n                key\n                value\n                references(first: 3) {\n                  nodes {\n                    ... on MediaImage {\n                      image {\n                        url\n                        altText\n                        width\n                        height\n                      }\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n    relatedProducts: products(first: $first, sortKey: BEST_SELLING) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    capsuleProducts: products(first: 3, query: $capsuleQuery) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    classicFrame: product(handle: $classicFrameHandle) {\n      ...ClaraProductCard\n      frameVariants: variants(first: 5) {\n        nodes {\n          availableForSale\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          price {\n            amount\n            currencyCode\n          }\n          selectedOptions {\n            name\n            value\n          }\n        }\n      }\n    }\n    toughCase: product(handle: $toughCaseHandle) {\n      ...ClaraProductCard\n      caseOptions: options {\n        name\n        optionValues {\n          name\n          firstSelectableVariant {\n            availableForSale\n            image {\n              url\n              altText\n              width\n              height\n            }\n            price {\n              amount\n              currencyCode\n            }\n          }\n        }\n      }\n    }\n    phoneCase: product(handle: $phoneCaseHandle) {\n      ...ClaraProductCard\n      caseVariants: variants(first: 24) {\n        nodes {\n          availableForSale\n          image {\n            id\n            url\n            altText\n            width\n            height\n          }\n          price {\n            amount\n            currencyCode\n          }\n          selectedOptions {\n            name\n            value\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n  #graphql\n  fragment ClaraProductVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    barcode\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    product {\n      handle\n      title\n    }\n    sku\n  }\n\n': {
     return: ProductQuery;
     variables: ProductQueryVariables;
+  };
+  '#graphql\n  query ToughCase(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n    $selectedOptions: [SelectedOptionInput!]!\n  ) @inContext(country: $country, language: $language) {\n    product(handle: $handle) {\n      id\n      handle\n      title\n      vendor\n      productType\n      tags\n      description\n      featuredImage {\n        url\n        altText\n        width\n        height\n      }\n      priceRange {\n        minVariantPrice {\n          amount\n          currencyCode\n        }\n        maxVariantPrice {\n          amount\n          currencyCode\n        }\n      }\n      options {\n        name\n        optionValues {\n          name\n          firstSelectableVariant {\n            image {\n              url\n              altText\n              width\n              height\n            }\n          }\n        }\n      }\n      selectedOrFirstAvailableVariant(\n        selectedOptions: $selectedOptions\n        ignoreUnknownOptions: true\n        caseInsensitiveMatch: true\n      ) {\n        ...ClaraProductVariant\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductVariant on ProductVariant {\n    id\n    title\n    availableForSale\n    barcode\n    price {\n      amount\n      currencyCode\n    }\n    compareAtPrice {\n      amount\n      currencyCode\n    }\n    selectedOptions {\n      name\n      value\n    }\n    image {\n      id\n      url\n      altText\n      width\n      height\n    }\n    product {\n      handle\n      title\n    }\n    sku\n  }\n\n': {
+    return: ToughCaseQuery;
+    variables: ToughCaseQueryVariables;
   };
   '#graphql\n  query RegularSearch(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $term: String!\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    # Articles and pages are not paginated: a fixed page size keeps these\n    # valid when the products connection is walked backwards ($last only).\n    articles: search(\n      query: $term,\n      types: [ARTICLE],\n      first: 8,\n    ) {\n      nodes {\n        ...on Article {\n          ...SearchArticle\n        }\n      }\n    }\n    pages: search(\n      query: $term,\n      types: [PAGE],\n      first: 8,\n    ) {\n      nodes {\n        ...on Page {\n          ...SearchPage\n        }\n      }\n    }\n    products: search(\n      after: $endCursor,\n      before: $startCursor,\n      first: $first,\n      last: $last,\n      query: $term,\n      sortKey: RELEVANCE,\n      types: [PRODUCT],\n      unavailableProducts: HIDE,\n    ) {\n      nodes {\n        ...on Product {\n          ...SearchProduct\n        }\n      }\n      pageInfo {\n        ...PageInfoFragment\n      }\n    }\n  }\n  #graphql\n  fragment SearchProduct on Product {\n    __typename\n    handle\n    id\n    publishedAt\n    title\n    trackingParameters\n    vendor\n    productType\n    tags\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing — mirrors the\n    # ClaraProductCard fragment: staged size variants exist in Shopify at\n    # full price with availableForSale=false and must never set the floor.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(\n      selectedOptions: []\n      ignoreUnknownOptions: true\n      caseInsensitiveMatch: true\n    ) {\n      id\n      image {\n        url\n        altText\n        width\n        height\n      }\n      price {\n        amount\n        currencyCode\n      }\n      compareAtPrice {\n        amount\n        currencyCode\n      }\n      selectedOptions {\n        name\n        value\n      }\n      product {\n        handle\n        title\n      }\n    }\n  }\n\n  #graphql\n  fragment SearchPage on Page {\n     __typename\n     handle\n    id\n    title\n    trackingParameters\n  }\n\n  #graphql\n  fragment SearchArticle on Article {\n    __typename\n    handle\n    id\n    title\n    trackingParameters\n    blog {\n      handle\n    }\n  }\n\n  #graphql\n  fragment PageInfoFragment on PageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n\n': {
     return: RegularSearchQuery;

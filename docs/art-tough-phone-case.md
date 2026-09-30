@@ -56,11 +56,16 @@ response status, native dimensions and SHA-256. The public catalog confirms
 candidate model coverage. It does not establish account availability, shipping
 routes, or Shopify automatic fulfillment.
 
-Only two exact matte provider SKUs are publicly confirmed:
-`GLOBAL-TECH-IP15PL-TCB-CS-M` (iPhone 15 Plus) and
-`GLOBAL-TECH-IP15PM-TCB-CS-M` (iPhone 15 Pro Max). The other 38 remain null.
-Never construct a provider SKU from a naming pattern. The product makes no
-MagSafe, waterproof or tested drop-protection claim.
+All 40 exact matte, non-MagSafe SKUs (`GLOBAL-TECH-<device>-TCB-CS-M`) were
+read from Prodigi's catalogue and then from the live product API
+(`GET /v4.0/products/{sku}`) on 2026-09-30. Each SKU requires four attributes
+with one allowed value each (`brand`, `finish: matte`, `size`, `style: Tough`);
+the manifest stores them per phone as `providerAttributes`, with the API's print
+area pixels. Device abbreviations are irregular (`IP14PR`, `IP13P`, `GP9PXL`,
+`size: "pixel 9 xl"`, `"galaxy s23 fan edition"`): never construct them.
+Re-check with `node scripts/tough-case-check-prodigi.mjs --env-dir <dir>`
+(reads `.env.sky.local`; read-only product and quote calls). The product makes
+no MagSafe, waterproof or tested drop-protection claim.
 
 Primary supplier sources: [Tough phone case](https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/)
 and [Product details API](https://www.prodigi.com/print-api/docs/reference/#product-details).
@@ -103,33 +108,41 @@ because Windows npm command wrappers failed on the workspace path's ampersand.
 Independent spec/safety and final code reviews passed. Markdown links were
 checked. These checks establish the Draft and tooling state, not release readiness.
 
+## Fulfilment
+
+Case lines are **not** mapped in Prodigi's Shopify app. The `orders/paid`
+webhook (`app/lib/sky/fulfilment.ts`, the Your Sky path) sends every case line
+to the Prodigi API: variant SKU `<artwork prefix>-TC-<phone code>` →
+`app/lib/toughCase.ts` → Prodigi SKU, attributes and the artwork's print file,
+`sizing: fillPrintArea`. Prints in the same order stay with the Prodigi app.
+
+- Print files: one 4:5 JPEG per artwork, 2000 × 2500, served from
+  `public/print-files/tough-case/`. Prodigi centre-crops it to each device; the
+  largest print area is 1380 × 2310 (Galaxy S23 Ultra). Generated from the
+  4800 × 6000 16×20 masters (themselves upscaled from 1122 × 1402 originals) by
+  `scripts/generate-tough-case-assets.mjs --source-dir …`.
+- Previews: the same crop on the iPhone 16 Pro template, attached as the first
+  24 product images and as every variant's image by
+  `scripts/sync-tough-case-previews.mjs --env-dir … --apply`. The 24 flat print
+  images Codex attached are shared with the live print products; they stay
+  attached behind the previews and must not be deleted from this product.
+
+## Costs (Prodigi live quotes, 2026-09-30)
+
+Case €13.42 in every market. Standard shipping: most of the EU €7.53 from
+Italy (3–8 days); Ireland €10.04; Cyprus €12.55 and Bulgaria €15.12 ship from
+the UK. Prodigi's totals add VAT for IT-origin parcels (≈ €25 DE/GR, €28 IE);
+UK-origin totals do not (€25.97 CY, €28.54 BG).
+
 ## Remaining release work
 
-1. Read exact matte product details through the authenticated Prodigi account
-   for every selected device; confirm availability and supported destination
-   routes. No usable Prodigi API credential or authenticated browser session was
-   available to this task.
-2. Prepare the 960 artwork/device print files and review their template bleed,
-   safe areas, camera cutouts and final crops. Remove template guides before
-   export. Source artwork is 1120 × 1400; changing DPI metadata or upscaling does
-   not prove physical detail. Produce accurate finished-case previews.
-3. Read back each Shopify variant's exact provider SKU, artwork file, matte
-   finish, quality and automatic-fulfillment setting in Prodigi. The two public
-   SKU matches do not satisfy this step.
-4. Quote product, tax and delivery costs to the intended EU markets. Confirm
-   margin at the provisional retail price, billing and the fulfillment release
-   window; configure and verify appropriate shipping without applying the print
-   or letter-post rate by assumption.
-5. Obtain applicable physical quality evidence or an explicit owner waiver.
-6. Implement and verify the storefront selection and gallery behavior for 960
-   variants and 24 artworks before publication. The current generic PDP fetches
-   `variants(first: 100)` and `images(first: 10)`; its existing snap-case fragment
-   is `caseVariants: variants(first: 24)`. Current catalog allowlists do not
-   release the new handle. Test every artwork/device cart path and representative
-   EU shipping totals after those changes.
-7. Only after the provider and consumer-path gates pass, approve and publish
-   through the normal release workflow, then verify the live product again.
-
-Sources for the storefront limits: `app/routes/products.$handle.tsx` and
-`app/lib/catalogFilters.ts`. Approval metafields record the Draft's false state;
-the current deployed storefront still uses its existing release registries.
+1. Shipping: cases fall into the General profile, which charges €16 outside
+   Cyprus. Decide the customer rate (a dedicated phone-case profile) before
+   release. Confirm how UK-origin CY/BG parcels clear import VAT.
+2. Activate and publish to the Headless channel (Admin UI; the app lacks
+   publication scopes) while inventory stays tracked at 0, then QA
+   `/products/art-tough-phone-case` with `CASE_PREVIEW_UNLOCK=true` on a preview.
+3. Release: set every variant's inventory untracked, remove the pending gate
+   tags, flip `PRODUCT_RELEASE_FLAGS['art-tough-phone-case']` in
+   `app/lib/catalogFilters.ts`, add the product to the Everyday collection, and
+   verify one live order end to end (the first order is the first physical QC).

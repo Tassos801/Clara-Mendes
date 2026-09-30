@@ -1,8 +1,9 @@
 /**
- * Shopify `orders/paid` payload → Prodigi order payload for every signed
- * personalised line (star map or birth poster, told apart by `_kind`).
- * Pure apart from HMAC verification; the webhook route and the replay
- * script both call this.
+ * Shopify `orders/paid` payload → Prodigi order payload for every line
+ * Prodigi's Shopify app does not fulfil: signed personalised lines (star map
+ * or birth poster, told apart by `_kind`) and Art Tough Phone Case lines
+ * (mapped by SKU, see toughCase.ts). Pure apart from HMAC verification; the
+ * webhook route and the replay script both call this.
  */
 import {
   canonicalNatalParams,
@@ -11,6 +12,7 @@ import {
 } from '../natal/params.ts';
 import {natalVariantForSku} from '../natal/products.ts';
 import type {ProdigiOrderPayload} from '../prodigi.server.ts';
+import {toughCasePrintUrl, toughCaseVariantForSku} from '../toughCase.ts';
 import {
   giftNoteCanonical,
   giftNoteFromAttributes,
@@ -85,8 +87,11 @@ export async function buildProdigiOrderFromShopify(
       kind: 'problem',
       reason: `Line ${unsigned.id}: personalised SKU ${unsigned.sku} was bought without its personalisation.`,
     };
-  if (personalisedLines.length === 0)
-    return {kind: 'skip', reason: 'No personalised lines.'};
+  const caseLines = order.line_items.filter(
+    (l) => !personalisedLines.includes(l) && toughCaseVariantForSku(l.sku),
+  );
+  if (personalisedLines.length === 0 && caseLines.length === 0)
+    return {kind: 'skip', reason: 'No personalised or phone case lines.'};
 
   const items: ProdigiOrderPayload['items'] = [];
   const giftNotes: string[] = [];
@@ -159,6 +164,22 @@ export async function buildProdigiOrderFromShopify(
       sizing: 'fillPrintArea',
       attributes: variant.attributes,
       assets: [{printArea: 'default', url: skyPrintUrl(origin, token, variant.size)}],
+    });
+  }
+
+  for (const line of caseLines) {
+    const variant = toughCaseVariantForSku(line.sku)!;
+    items.push({
+      merchantReference: `line:${line.id}`,
+      sku: variant.phone.prodigiSku,
+      copies: Math.max(1, line.quantity),
+      // One 4:5 print file per artwork; Prodigi centre-crops it to the
+      // device's print area, matching the product previews.
+      sizing: 'fillPrintArea',
+      attributes: variant.phone.prodigiAttributes,
+      assets: [
+        {printArea: 'default', url: toughCasePrintUrl(origin, variant.design)},
+      ],
     });
   }
 

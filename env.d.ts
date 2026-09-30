@@ -30,5 +30,7 @@ declare global {
     PRODIGI_API_BASE?: string;
     /** 'true' only on the Oxygen preview environment: lets a staged personalised PDP render for the end-to-end test. */
     SKY_PREVIEW_UNLOCK?: string;
+    /** 'true' only on a preview environment: renders the staged Art Tough Phone Case page before its release flag flips. */
+    CASE_PREVIEW_UNLOCK?: string;
   }
 }

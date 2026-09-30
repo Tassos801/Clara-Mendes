@@ -38,9 +38,15 @@ import {
   filterDemoProducts,
   isDemoProduct,
   isReleasedExtensionHandle,
+  isReleasedProductHandle,
   isStagedPersonalisedHandle,
   PHONE_CASE_HANDLE,
 } from '~/lib/catalogFilters';
+import {
+  TOUGH_CASE_ARTWORK_OPTION,
+  TOUGH_CASE_DESIGNS,
+  TOUGH_CASE_HANDLE,
+} from '~/lib/toughCase';
 import {
   buildClassicFrameUrl,
   CLASSIC_FRAME_HANDLE,
@@ -177,6 +183,25 @@ type PhoneCaseCrossSell = {
   image: ProductImage | null;
   price: MoneyAmount | null;
   url: string;
+};
+
+type ToughCaseCrossSell = {
+  artworkTitle: string;
+  image: ProductImage | null;
+  price: MoneyAmount | null;
+  url: string;
+};
+
+type ToughCaseOptionNode = {
+  name: string;
+  optionValues: Array<{
+    name: string;
+    firstSelectableVariant?: {
+      availableForSale: boolean;
+      image?: ProductImage | null;
+      price?: MoneyAmount | null;
+    } | null;
+  }>;
 };
 
 type ClassicFrameCrossSell = {
@@ -346,6 +371,13 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     Boolean(capsule) && isReleasedExtensionHandle(PHONE_CASE_HANDLE);
   const classicFrameEligible =
     Boolean(capsule) && isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE);
+  // Every released print is also an artwork on the tough phone case; the
+  // cross-sell stays dormant until the case's release flag flips.
+  const toughCaseDesign = TOUGH_CASE_DESIGNS.find(
+    (design) => design.sourceHandle === handle,
+  );
+  const toughCaseEligible =
+    Boolean(toughCaseDesign) && isReleasedProductHandle(TOUGH_CASE_HANDLE);
 
   const data = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
@@ -364,6 +396,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
         ? PHONE_CASE_HANDLE
         : '__phone-case-staged__',
       selectedOptions,
+      toughCaseHandle: toughCaseEligible
+        ? TOUGH_CASE_HANDLE
+        : '__tough-case-staged__',
     },
   });
 
@@ -456,6 +491,30 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     }
   }
 
+  const toughCaseProduct = data.toughCase as
+    | (ClaraCardProduct & {caseOptions?: ToughCaseOptionNode[]})
+    | null;
+  let toughCaseCrossSell: ToughCaseCrossSell | null = null;
+  if (toughCaseDesign && toughCaseProduct && !isDemoProduct(toughCaseProduct)) {
+    const artworkValue = toughCaseProduct.caseOptions
+      ?.find((option) => option.name === TOUGH_CASE_ARTWORK_OPTION)
+      ?.optionValues.find((value) => value.name === toughCaseDesign.title);
+    const caseVariant = artworkValue?.firstSelectableVariant;
+    if (caseVariant?.availableForSale) {
+      toughCaseCrossSell = {
+        artworkTitle: toughCaseDesign.title,
+        image: caseVariant.image ?? null,
+        price:
+          caseVariant.price ??
+          toughCaseProduct.priceRange?.minVariantPrice ??
+          null,
+        url: `/products/${TOUGH_CASE_HANDLE}?${new URLSearchParams({
+          [TOUGH_CASE_ARTWORK_OPTION]: toughCaseDesign.title,
+        }).toString()}`,
+      };
+    }
+  }
+
   const classicFrameProduct = data.classicFrame as
     | (ClaraCardProduct & {frameVariants?: {nodes?: PhoneCaseVariantNode[]}})
     | null;
@@ -502,6 +561,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       : null,
     phoneCaseCrossSell,
     classicFrameCrossSell,
+    toughCaseCrossSell,
     product,
     relatedFromCapsule: capsuleSiblings.length > 0,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
@@ -532,6 +592,7 @@ function ProductPage() {
     seoUrl,
     skyTheme,
     storeDomain,
+    toughCaseCrossSell,
   } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const [quantity, setQuantity] = useState(1);
@@ -1321,6 +1382,41 @@ function ProductPage() {
               </div>
             </aside>
           ) : null}
+
+          {toughCaseCrossSell ? (
+            <aside
+              className="product-cross-sell"
+              aria-label="Also available as a phone case"
+            >
+              {toughCaseCrossSell.image ? (
+                <img
+                  src={toughCaseCrossSell.image.url}
+                  alt={
+                    toughCaseCrossSell.image.altText ||
+                    `${toughCaseCrossSell.artworkTitle} on a tough phone case`
+                  }
+                  loading="lazy"
+                />
+              ) : null}
+              <div className="product-cross-sell-copy">
+                <p className="eyebrow">Also available</p>
+                <p className="product-cross-sell-title">
+                  {toughCaseCrossSell.artworkTitle} on a matte tough phone case
+                  for iPhone, Galaxy and Pixel
+                  {toughCaseCrossSell.price
+                    ? ` — ${formatMoney(toughCaseCrossSell.price)}`
+                    : ''}
+                </p>
+                <Link
+                  className="text-link"
+                  to={toughCaseCrossSell.url}
+                  prefetch="intent"
+                >
+                  View the case
+                </Link>
+              </div>
+            </aside>
+          ) : null}
         </div>
       </section>
 
@@ -1913,6 +2009,7 @@ const PRODUCT_QUERY = `#graphql
     $language: LanguageCode
     $phoneCaseHandle: String!
     $selectedOptions: [SelectedOptionInput!]!
+    $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
     product(handle: $handle) {
       ...ClaraProductCard
@@ -2001,6 +2098,28 @@ const PRODUCT_QUERY = `#graphql
           selectedOptions {
             name
             value
+          }
+        }
+      }
+    }
+    toughCase: product(handle: $toughCaseHandle) {
+      ...ClaraProductCard
+      caseOptions: options {
+        name
+        optionValues {
+          name
+          firstSelectableVariant {
+            availableForSale
+            image {
+              url
+              altText
+              width
+              height
+            }
+            price {
+              amount
+              currencyCode
+            }
           }
         }
       }

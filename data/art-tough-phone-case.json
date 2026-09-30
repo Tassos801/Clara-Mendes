@@ -19,10 +19,14 @@
     },
     "providerCatalog": "https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/",
     "modelSelection": "Recent supplier-template-listed Apple iPhone, Samsung Galaxy S and Google Pixel devices",
-    "providerSkuConfirmedModels": 2,
-    "productionFilesReady": false,
-    "phoneCaseMockupsReady": false,
-    "deliveredCostsVerified": false
+    "providerSkuConfirmedModels": 40,
+    "productionFilesReady": true,
+    "phoneCaseMockupsReady": true,
+    "deliveredCostsVerified": false,
+    "providerCatalogData": "https://product-api-app-live.azurewebsites.net/api/catalogue/tough-phone-case?convertTo=EUR",
+    "providerPriceSheet": "https://prodigipricingpublic.blob.core.windows.net/public/live/prodigi-device-cases-phone-case-european_economic_area.csv",
+    "providerSkuVerifiedOn": "2026-09-30",
+    "providerApiReadback": "2026-09-30 GET /v4.0/products/{sku} (live)"
   },
   "designs": [
     {
@@ -36,7 +40,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076937257294"
     },
     {
       "title": "Patina Blue II",
@@ -49,7 +54,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076937290062"
     },
     {
       "title": "Quiet Form I",
@@ -62,7 +68,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076937322830"
     },
     {
       "title": "Quiet Form II",
@@ -75,7 +82,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076937355598"
     },
     {
       "title": "Quiet Form III",
@@ -88,7 +96,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076937388366"
     },
     {
       "title": "Patina Blue I",
@@ -101,7 +110,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076937421134"
     },
     {
       "title": "Patina Blue III",
@@ -114,7 +124,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076938404174"
     },
     {
       "title": "Neo Deco I",
@@ -127,7 +138,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076938436942"
     },
     {
       "title": "Neo Deco II",
@@ -140,7 +152,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076938469710"
     },
     {
       "title": "Neo Deco III",
@@ -153,7 +166,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076938502478"
     },
     {
       "title": "Midnight Garden I",
@@ -166,7 +180,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076938535246"
     },
     {
       "title": "Midnight Garden III",
@@ -179,7 +194,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076938568014"
     },
     {
       "title": "Sunlit Mosaic I",
@@ -192,7 +208,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076939583822"
     },
     {
       "title": "Sunlit Mosaic II",
@@ -205,7 +222,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076939616590"
     },
     {
       "title": "Sunlit Mosaic III",
@@ -218,7 +236,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076939649358"
     },
     {
       "title": "Orbital Silence",
@@ -231,7 +250,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076939682126"
     },
     {
       "title": "Neon After Rain",
@@ -244,7 +264,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076939714894"
     },
     {
       "title": "Desert Signal",
@@ -257,7 +278,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076939747662"
     },
     {
       "title": "The Fold",
@@ -270,7 +292,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076941025614"
     },
     {
       "title": "Veil of Stone",
@@ -283,7 +306,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076941058382"
     },
     {
       "title": "Tidal Mirror",
@@ -296,7 +320,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076941091150"
     },
     {
       "title": "Winter Script",
@@ -309,7 +334,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076941123918"
     },
     {
       "title": "Fern in Shadow",
@@ -322,7 +348,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076941156686"
     },
     {
       "title": "Where Mist Rests",
@@ -335,7 +362,8 @@
       "sourceImageDimensions": {
         "width": 1120,
         "height": 1400
-      }
+      },
+      "previewMediaId": "gid://shopify/MediaImage/74076941189454"
     }
   ],
   "phones": [
@@ -343,8 +371,8 @@
       "label": "iPhone 13",
       "code": "IPHONE-13",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP13-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1240,
         "height": 2043,
@@ -355,14 +383,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 13 (6.1 Inches) Tough Case (Black TPU) in Matte",
+      "printArea": {
+        "width": 1238,
+        "height": 2042,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 13",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 13 Mini",
       "code": "IPHONE-13-MINI",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-mini-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP13MN-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1122,
         "height": 1831,
@@ -373,14 +413,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-mini-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 13 Mini (5.4 Inches) Tough Case (Black TPU) in Matte",
+      "printArea": {
+        "width": 1122,
+        "height": 1830,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 13 mini",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 13 Pro",
       "code": "IPHONE-13-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP13P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1240,
         "height": 2043,
@@ -391,14 +443,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 13 Pro (6.1 Inches) Tough Case (Black TPU) in Matte",
+      "printArea": {
+        "width": 1238,
+        "height": 2042,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 13 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 13 Pro Max",
       "code": "IPHONE-13-PRO-MAX",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-13-pro-max-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP13PM-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1323,
         "height": 2220,
@@ -409,14 +473,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-13-pro-max-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 13 Pro Max  (6.7 Inches) Tough Case (Black TPU) in Matte",
+      "printArea": {
+        "width": 1322,
+        "height": 2219,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 13 pro max",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 14 Pro Max",
       "code": "IPHONE-14-PRO-MAX",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-pro-max-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP14PM-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2245,
@@ -427,14 +503,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-pro-max-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 14 Pro Max Tough Case in Matte",
+      "printArea": {
+        "width": 1350,
+        "height": 2250,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 14 pro max",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 14 Pro",
       "code": "IPHONE-14-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP14PR-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1245,
         "height": 2084,
@@ -445,14 +533,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 14 Pro Tough Case in Matte",
+      "printArea": {
+        "width": 1260,
+        "height": 2100,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 14 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 14",
       "code": "IPHONE-14",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP14-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1246,
         "height": 2085,
@@ -463,14 +563,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 14 Tough Case in Matte",
+      "printArea": {
+        "width": 1260,
+        "height": 2100,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 14",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 14 Plus",
       "code": "IPHONE-14-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-14-plus-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP14PL-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2245,
@@ -481,14 +593,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-14-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 14 Plus Tough Case in Matte",
+      "printArea": {
+        "width": 1350,
+        "height": 2250,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 14 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 15",
       "code": "IPHONE-15",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP15-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1246,
         "height": 2085,
@@ -499,14 +623,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 15 Tough Case in Matte",
+      "printArea": {
+        "width": 1260,
+        "height": 2100,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 15",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 15 Plus",
       "code": "IPHONE-15-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-plus-tough-phone-case.png",
       "providerSku": "GLOBAL-TECH-IP15PL-TCB-CS-M",
-      "providerSkuEvidence": "https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2245,
@@ -517,14 +653,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 15 Plus Tough Case in Matte",
+      "printArea": {
+        "width": 1350,
+        "height": 2250,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 15 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 15 Pro",
       "code": "IPHONE-15-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP15PR-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1246,
         "height": 2085,
@@ -535,14 +683,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 15 ProTough Case in Matte",
+      "printArea": {
+        "width": 1260,
+        "height": 2100,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 15 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 15 Pro Max",
       "code": "IPHONE-15-PRO-MAX",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-15-pro-max-tough-phone-case.png",
       "providerSku": "GLOBAL-TECH-IP15PM-TCB-CS-M",
-      "providerSkuEvidence": "https://www.prodigi.com/products/technology/phone-cases/tough-phone-case/",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2245,
@@ -553,14 +713,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-15-pro-max-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 15 Pro Max Tough Case in Matte",
+      "printArea": {
+        "width": 1350,
+        "height": 2250,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 15 pro max",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 16",
       "code": "IPHONE-16",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP16-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1246,
         "height": 2085,
@@ -571,14 +743,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 16 Tough Case in Matte",
+      "printArea": {
+        "width": 1245,
+        "height": 2085,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 16",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 16 Pro",
       "code": "IPHONE-16-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP16PR-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1246,
         "height": 2085,
@@ -589,14 +773,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 16 Pro Tough Case in Matte",
+      "printArea": {
+        "width": 1245,
+        "height": 2085,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 16 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 16 Pro Max",
       "code": "IPHONE-16-PRO-MAX",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-pro-max-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP16PM-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2245,
@@ -607,14 +803,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-pro-max-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 16 Pro Max Tough Case in Matte",
+      "printArea": {
+        "width": 1359,
+        "height": 2244,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 16 pro max",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 16 Plus",
       "code": "IPHONE-16-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16-plus-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP16PL-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2245,
@@ -625,14 +833,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 16 Plus Tough Case in Matte",
+      "printArea": {
+        "width": 1359,
+        "height": 2244,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 16 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 17",
       "code": "IPHONE-17",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-17-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP17-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1267,
         "height": 2122,
@@ -643,14 +863,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-17-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 17 Tough Case in Matte",
+      "printArea": {
+        "width": 1266,
+        "height": 2121,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 17",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 17 Pro",
       "code": "IPHONE-17-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-17-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP17PR-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1267,
         "height": 2116,
@@ -661,14 +893,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-17-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 17 Pro Tough Case in Matte",
+      "printArea": {
+        "width": 1266,
+        "height": 2115,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 17 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 17 Pro Max",
       "code": "IPHONE-17-PRO-MAX",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-17-pro-max-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP17PM-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1339,
         "height": 2275,
@@ -679,14 +923,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-17-pro-max-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 17 Pro Max Tough Case in Matte",
+      "printArea": {
+        "width": 1338,
+        "height": 2274,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 17 pro max",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 16e",
       "code": "IPHONE-16E",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-16e-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP16E-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1255,
         "height": 2070,
@@ -697,14 +953,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-16e-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 16e Tough Case in Matte",
+      "printArea": {
+        "width": 1254,
+        "height": 2069,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 16e",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 18 Pro",
       "code": "IPHONE-18-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-18-pro-tough-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP18PR-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1267,
         "height": 2116,
@@ -715,14 +983,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-18-pro-tough-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 18 Pro Tough Case in Matte",
+      "printArea": {
+        "width": 1266,
+        "height": 2115,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 18 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "iPhone 18 Pro Max",
       "code": "IPHONE-18-PRO-MAX",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-iphone-18-pro-max-tough-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-IP18PM-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1339,
         "height": 2275,
@@ -733,14 +1013,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-iphone-18-pro-max-tough-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "iPhone 18 Pro Max Tough Case in Matte",
+      "printArea": {
+        "width": 1338,
+        "height": 2274,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Apple",
+        "finish": "matte",
+        "size": "iphone 18 pro max",
+        "style": "Tough"
+      }
     },
     {
       "label": "Google Pixel 8",
       "code": "GOOGLE-PIXEL-8",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-8-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-GP8-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1244,
         "height": 2126,
@@ -748,14 +1040,26 @@
         "embeddedDpi": null,
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-8-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Google Pixel 8 Tough Case In Matte",
+      "printArea": {
+        "width": 1230,
+        "height": 2130,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Google",
+        "finish": "matte",
+        "size": "pixel 8",
+        "style": "Tough"
+      }
     },
     {
       "label": "Google Pixel 8 Pro",
       "code": "GOOGLE-PIXEL-8-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-8-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-GP8P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1312,
         "height": 2244,
@@ -763,14 +1067,26 @@
         "embeddedDpi": null,
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-8-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Google Pixel 8 Pro Tough Case In Matte",
+      "printArea": {
+        "width": 1320,
+        "height": 2250,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Google",
+        "finish": "matte",
+        "size": "pixel 8 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "Google Pixel 9",
       "code": "GOOGLE-PIXEL-9",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-9-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-GP9-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1329,
         "height": 2126,
@@ -778,14 +1094,26 @@
         "embeddedDpi": null,
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-9-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Google Pixel 9 Tough Case in Matte",
+      "printArea": {
+        "width": 1329,
+        "height": 2124,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Google",
+        "finish": "matte",
+        "size": "pixel 9",
+        "style": "Tough"
+      }
     },
     {
       "label": "Google Pixel 9 Pro",
       "code": "GOOGLE-PIXEL-9-PRO",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-9-pro-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-GP9P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1329,
         "height": 2126,
@@ -793,14 +1121,26 @@
         "embeddedDpi": null,
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-9-pro-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Google Pixel 9 Pro Tough Case in Matte",
+      "printArea": {
+        "width": 1329,
+        "height": 2124,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Google",
+        "finish": "matte",
+        "size": "pixel 9 pro",
+        "style": "Tough"
+      }
     },
     {
       "label": "Google Pixel 9 Pro XL",
       "code": "GOOGLE-PIXEL-9-PRO-XL",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-google-pixel-9-pro-xl-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-GP9PXL-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2244,
@@ -808,14 +1148,26 @@
         "embeddedDpi": null,
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-google-pixel-9-pro-xl-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Google Pixel 9 Pro XL Tough Case in Matte",
+      "printArea": {
+        "width": 1359,
+        "height": 2244,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Google",
+        "finish": "matte",
+        "size": "pixel 9 xl",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S23",
       "code": "SAMSUNG-GALAXY-S23",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS23-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1252,
         "height": 2066,
@@ -826,14 +1178,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S23 Tough Case In Matte",
+      "printArea": {
+        "width": 1260,
+        "height": 2070,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s23",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S23 Plus",
       "code": "SAMSUNG-GALAXY-S23-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-plus-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS23P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1335,
         "height": 2220,
@@ -844,14 +1208,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S23 Plus Tough Case In Matte",
+      "printArea": {
+        "width": 1350,
+        "height": 2220,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s23 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S23 Ultra",
       "code": "SAMSUNG-GALAXY-S23-ULTRA",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-ultra-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS23U-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1370,
         "height": 2304,
@@ -862,14 +1238,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-ultra-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S23 Ultra Tough Case In Matte",
+      "printArea": {
+        "width": 1380,
+        "height": 2310,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s23 ultra",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S24",
       "code": "SAMSUNG-GALAXY-S24",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s24-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS24-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1251,
         "height": 2097,
@@ -880,14 +1268,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s24-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S24 Tough Case In Matte",
+      "printArea": {
+        "width": 1251,
+        "height": 2097,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s24",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S24 Plus",
       "code": "SAMSUNG-GALAXY-S24-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s24-plus-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS24P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1314,
         "height": 2231,
@@ -898,14 +1298,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s24-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S24 Plus Tough Case In Matte",
+      "printArea": {
+        "width": 1314,
+        "height": 2229,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s24 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S24 Ultra",
       "code": "SAMSUNG-GALAXY-S24-ULTRA",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s24-ultra-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS24U-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1364,
         "height": 2296,
@@ -916,14 +1328,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s24-ultra-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S24 Ultra Tough Case In Matte",
+      "printArea": {
+        "width": 1362,
+        "height": 2295,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s24 ultra",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S23 FE",
       "code": "SAMSUNG-GALAXY-S23-FE",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s23-fe-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS23FE-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2244,
@@ -931,14 +1355,26 @@
         "embeddedDpi": null,
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s23-fe-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S23 Fan Edition Tough Case In Matte",
+      "printArea": {
+        "width": 1356,
+        "height": 2244,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s23 fan edition",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S25",
       "code": "SAMSUNG-GALAXY-S25",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s25-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS25-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1251,
         "height": 2097,
@@ -949,14 +1385,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s25-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S25 Tough Case In Matte",
+      "printArea": {
+        "width": 1251,
+        "height": 2097,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s25",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S25 Plus",
       "code": "SAMSUNG-GALAXY-S25-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s25-plus-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS25P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1314,
         "height": 2231,
@@ -967,14 +1415,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s25-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S25 Plus Tough Case In Matte",
+      "printArea": {
+        "width": 1314,
+        "height": 2229,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s25 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S25 Ultra",
       "code": "SAMSUNG-GALAXY-S25-ULTRA",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s25-ultra-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS25U-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1359,
         "height": 2244,
@@ -985,14 +1445,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s25-ultra-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S25 Ultra Tough Case In Matte",
+      "printArea": {
+        "width": 1359,
+        "height": 2244,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s25 ultra",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S26",
       "code": "SAMSUNG-GALAXY-S26",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s26-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS26-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1270,
         "height": 2122,
@@ -1003,14 +1475,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s26-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S26 Tough Case In Matte",
+      "printArea": {
+        "width": 1269,
+        "height": 2121,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s26",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S26 Plus",
       "code": "SAMSUNG-GALAXY-S26-PLUS",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s26-plus-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS26P-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1318,
         "height": 2227,
@@ -1021,14 +1505,26 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s26-plus-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S26 Plus Tough Case In Matte",
+      "printArea": {
+        "width": 1316,
+        "height": 2226,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s26 plus",
+        "style": "Tough"
+      }
     },
     {
       "label": "Samsung Galaxy S26 Ultra",
       "code": "SAMSUNG-GALAXY-S26-ULTRA",
       "templateUrl": "https://www.prodigi.com/download/templates/prodigi-samsung-galaxy-s26-ultra-tough-phone-case.png",
-      "providerSku": null,
-      "providerSkuEvidence": null,
+      "providerSku": "GLOBAL-TECH-SGS26U-TCB-CS-M",
+      "providerSkuEvidence": "https://dashboard.prodigi.com/product-catalogue/technology/phone-cases/tough-phone-case",
       "template": {
         "width": 1345,
         "height": 2286,
@@ -1039,7 +1535,19 @@
         },
         "localFile": "output/prodigi-assets/tough-phone-case/prodigi-samsung-galaxy-s26-ultra-tough-phone-case.png"
       },
-      "fulfillmentVerified": false
+      "fulfillmentVerified": false,
+      "providerDescription": "Samsung Galaxy S26 Ultra Tough Case In Matte",
+      "printArea": {
+        "width": 1344,
+        "height": 2285,
+        "dpi": 300
+      },
+      "providerAttributes": {
+        "brand": "Samsung",
+        "finish": "matte",
+        "size": "galaxy s26 ultra",
+        "style": "Tough"
+      }
     }
   ],
   "excludedPhones": [

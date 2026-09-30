@@ -7,6 +7,7 @@ ${generalDisallowRules({sitemapUrl})}
 
 User-agent: Googlebot-Image
 Allow: /
+Disallow: /print-files/
 ${sitemapUrl ? `Sitemap: ${sitemapUrl}` : ''}
 
 User-agent: *
@@ -44,8 +45,10 @@ Crawl-delay: 1
  * defaults while leaving public policy pages indexable.
  */
 function generalDisallowRules({sitemapUrl}: {sitemapUrl?: string}) {
+  // Print files are fetched by the print lab, not meant for search.
   return `Disallow: /cart
 Disallow: /account
+Disallow: /print-files/
 Disallow: /collections/*sort_by*
 Disallow: /*/collections/*sort_by*
 Disallow: /collections/*+*

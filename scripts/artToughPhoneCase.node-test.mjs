@@ -702,3 +702,19 @@ test('handoff distinguishes artwork previews from missing production files and c
   assert.equal(first[columns.indexOf('mockup_status')], 'pending');
   assert.equal(first[columns.indexOf('provider_sku')], '');
 });
+
+test('case previews lead the files and front each variant while the shared print images stay attached', () => {
+  const {manifest} = fixture();
+  manifest.designs.forEach((design, i) => {
+    design.previewMediaId = `gid://shopify/MediaImage/${900 + i}`;
+  });
+  const input = buildProductInput(manifest, null);
+  assert.equal(input.files.length, 48);
+  assert.deepEqual(input.files[0], {id: 'gid://shopify/MediaImage/900'});
+  assert.deepEqual(input.files[24], {id: manifest.designs[0].mediaId});
+  assert.deepEqual(input.variants[0].file, {id: 'gid://shopify/MediaImage/900'});
+
+  const partial = fixture().manifest;
+  partial.designs[0].previewMediaId = 'gid://shopify/MediaImage/900';
+  assert.throws(() => validateManifest(partial), /every artwork or none/);
+});
