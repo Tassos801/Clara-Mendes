@@ -174,11 +174,13 @@ export const EXTENSION_COLLECTION_POPULATED = true;
  * so it is not an extension family. Flip only via docs/art-tough-phone-case.md.
  */
 export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
-  // Pastel Forms previews are public; these unmapped Shopify Drafts are not.
-  'blush-arc-pastel-plant-pot': false,
-  'sage-stem-pastel-plant-pot': false,
-  'blue-drift-pastel-plant-pot': false,
-  'butter-sun-pastel-plant-pot': false,
+  // Released 2026-10-02: saved automatic PLANT-POT mappings, EU-27 quotes
+  // and carts, EUR 29.99 + 6.99 shipping. Owner approved first-order QC
+  // and disclosed recipient import charges; no physical sample is claimed.
+  'blush-arc-pastel-plant-pot': true,
+  'sage-stem-pastel-plant-pot': true,
+  'blue-drift-pastel-plant-pot': true,
+  'butter-sun-pastel-plant-pot': true,
   // Released 2026-09-30: 40 SKUs + attributes read back from Prodigi's live
   // API, webhook fulfilment unit-tested, previews on all 960 variants, owner
   // approved €39.99 with €4.95 EU / €3.99 CY shipping ("Phone cases"
@@ -189,6 +191,10 @@ export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
 /** Shop type-filter value for each standalone product. */
 const PRODUCT_RELEASE_TYPES: Record<string, string> = {
   [TOUGH_CASE_HANDLE]: 'Phone Cases',
+  'blush-arc-pastel-plant-pot': 'Plant Pots',
+  'sage-stem-pastel-plant-pot': 'Plant Pots',
+  'blue-drift-pastel-plant-pot': 'Plant Pots',
+  'butter-sun-pastel-plant-pot': 'Plant Pots',
 };
 
 export function isReleasedProductHandle(

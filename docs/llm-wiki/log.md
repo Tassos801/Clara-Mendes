@@ -1160,3 +1160,22 @@ the actual product handles remain unreleased. Account mapping, delivered
 costs, shipping setup and sample review/waiver remain purchase-release gates.
 
 Source: [Pastel Forms Plant Pots](../pastel-plant-pots.md).
+
+## 2026-10-02 - Pastel Forms purchase launch
+
+Saved and reloaded all four exact automatic `PLANT-POT` mappings with matching
+Excellent production files and Standard shipping. Verified EU-27 supplier
+quotes, existing billing and the unchanged 24-hour hold. The owner approved
+EUR 29.99 + EUR 6.99, first-paid-order physical QC instead of a sample, and
+possible recipient import charges. Physical and landed-cost verification
+remain false in the manifest rather than being implied by approval flags.
+
+Created the pot-only EU-27 shipping profile, activated and published only the
+four pots to the two Clara Mendes Headless channels, and updated Shopify's
+shipping policy. All 108 four-design/country cart checks passed; a browser
+checkout showed the exact Blush line and EUR 36.98 including shipping without
+an email, payment or order submission. Released only the four pot flags,
+added Plant Pots to the type map and made the series link matching live PDPs
+with localized prices and honest untracked/import copy.
+
+Source: [Pastel Forms Plant Pots](../pastel-plant-pots.md).

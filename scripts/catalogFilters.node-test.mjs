@@ -16,6 +16,7 @@ import {
   isStoreThemeProduct,
   isUnreleasedExtensionHandle,
   PHONE_CASE_HANDLE,
+  PRODUCT_RELEASE_FLAGS,
   releasedExtensionProductTypes,
   SKY_PRODUCT_HANDLE,
 } from '../app/lib/catalogFilters.ts';
@@ -106,9 +107,17 @@ assert.deepEqual(releasedExtensionProductTypes(), [
   'Postcards',
   'Canvas Art',
   'Phone Cases',
+  'Plant Pots',
 ]);
 assert.deepEqual(releasedExtensionProductTypes({}, {}), []);
-assert.equal(isStoreThemeProduct({...print, handle: 'art-tough-phone-case', productType: 'Phone Cases'}), true);
+assert.equal(
+  isStoreThemeProduct({
+    ...print,
+    handle: 'art-tough-phone-case',
+    productType: 'Phone Cases',
+  }),
+  true,
+);
 assert.equal(isUnreleasedExtensionHandle('art-tough-phone-case'), false);
 assert.equal(hasReleasedExtensions({}), false);
 
@@ -136,13 +145,16 @@ assert.equal(releasedCount, 3);
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
 // 15 prints + released extensions + the released Your Sky star map + the
-// released Art Tough Phone Case + every released print-catalog entry. The
+// released standalone products + every released print-catalog entry. The
 // count is read from the catalog so adding a print never needs an edit here;
 // printCatalog.node-test.mjs owns the gate.
 const releasedCatalogCount = releasedPrintHandles().length;
+const releasedProductCount = Object.values(PRODUCT_RELEASE_FLAGS).filter(
+  Boolean,
+).length;
 assert.equal(
   sellableToday.size,
-  15 + releasedCount + 1 + 1 + releasedCatalogCount,
+  15 + releasedCount + 1 + releasedProductCount + releasedCatalogCount,
 );
 assert.ok(sellableToday.has('art-tough-phone-case'));
 assert.ok(!sellableToday.has(FRAME_HANDLE));
@@ -152,7 +164,10 @@ assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 // Flipping a flag adds exactly that handle and keeps all 15 prints — the
 // one-line storefront release described in docs/phone-case-release.md.
 const sellableReleased = computeSellableHandles({[PHONE_CASE_HANDLE]: true});
-assert.equal(sellableReleased.size, 18 + releasedCatalogCount);
+assert.equal(
+  sellableReleased.size,
+  17 + releasedProductCount + releasedCatalogCount,
+);
 assert.ok(sellableReleased.has(PHONE_CASE_HANDLE));
 assert.ok(sellableReleased.has('quiet-form-i-art-print'));
 assert.ok(!sellableReleased.has(BLANKET_HANDLE));

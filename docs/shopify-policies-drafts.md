@@ -13,20 +13,24 @@ Paste into: **Shipping policy**
 
 ```html
 <h2>Processing time</h2>
-<p>Every piece is printed to order and dispatched within 2–4 business days. You will receive a confirmation email once your order has been placed and a second email with tracking information once it ships.</p>
+<p>Every piece is printed to order and dispatched within 2–4 business days. You will receive a confirmation email once your order has been placed and a second email with dispatch details once it ships.</p>
 
 <h2>Delivery times</h2>
 <p>After dispatch, delivery is estimated at 5–10 business days across the European Union. Delivery estimates are calculated from the ship date, not the order date.</p>
 <p>Please note that shipping times may vary during holidays or periods of high demand.</p>
 
 <h2>Shipping methods</h2>
-<p>We ship via standard tracked delivery. Tracking details are sent by email once your order leaves our fulfillment center. You can check your order status at any time using the tracking link provided.</p>
+<p>Unless a product-specific untracked method is stated below, we ship via standard tracked delivery. Tracking details are sent by email once your order leaves our fulfillment center. You can check your order status using the tracking link when provided.</p>
 
 <h2>Shipping destinations</h2>
 <p>We ship to most European Union countries, including Cyprus. The full list of available countries is shown at checkout. We do not currently ship outside the European Union.</p>
 
 <h2>Shipping costs</h2>
 <p>Shipping costs are calculated at checkout based on your delivery address and order weight. Any applicable taxes are also shown before payment.</p>
+
+<h2>Pastel Forms ceramic plant pots</h2>
+<p>Pot-only orders have EUR 6.99 shipping across the European Union. They are printed in the United Kingdom and sent by Royal Mail Airmail Untracked, without a tracking number. Mixed orders may combine shipping charges for other products at checkout.</p>
+<p>Import taxes, duties and carrier handling fees may be payable by the recipient on delivery. These charges are not included in the product price or shipping rate. Delivery estimates exclude customs delays.</p>
 
 <h2>Lost or delayed shipments</h2>
 <p>If your order has not arrived within 15 business days of the ship date, please contact us at <a href="mailto:hello@shopclaramendes.com">hello@shopclaramendes.com</a> with your order number and we will investigate promptly.</p>
