@@ -1334,6 +1334,51 @@ export type PageQuery = {
   >;
 };
 
+export type PastelProductFragment = Pick<
+  StorefrontAPI.Product,
+  'handle' | 'availableForSale'
+> & {
+  priceRange: {
+    minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
+};
+
+export type PastelProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type PastelProductsQuery = {
+  blush?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Product, 'handle' | 'availableForSale'> & {
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+    }
+  >;
+  sage?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Product, 'handle' | 'availableForSale'> & {
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+    }
+  >;
+  blue?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Product, 'handle' | 'availableForSale'> & {
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+    }
+  >;
+  butter?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Product, 'handle' | 'availableForSale'> & {
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+    }
+  >;
+};
+
 export type PolicyFragment = Pick<
   StorefrontAPI.ShopPolicy,
   'body' | 'handle' | 'id' | 'title' | 'url'
@@ -2383,6 +2428,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query Page(\n    $language: LanguageCode,\n    $country: CountryCode,\n    $handle: String!\n  )\n  @inContext(language: $language, country: $country) {\n    page(handle: $handle) {\n      handle\n      id\n      title\n      body\n      seo {\n        description\n        title\n      }\n    }\n  }\n': {
     return: PageQuery;
     variables: PageQueryVariables;
+  };
+  '#graphql\n  fragment PastelProduct on Product {\n    handle\n    availableForSale\n    priceRange { minVariantPrice { amount currencyCode } }\n  }\n  query PastelProducts($country: CountryCode, $language: LanguageCode)\n    @inContext(country: $country, language: $language) {\n    blush: product(handle: "blush-arc-pastel-plant-pot") { ...PastelProduct }\n    sage: product(handle: "sage-stem-pastel-plant-pot") { ...PastelProduct }\n    blue: product(handle: "blue-drift-pastel-plant-pot") { ...PastelProduct }\n    butter: product(handle: "butter-sun-pastel-plant-pot") { ...PastelProduct }\n  }\n': {
+    return: PastelProductsQuery;
+    variables: PastelProductsQueryVariables;
   };
   '#graphql\n  fragment Policy on ShopPolicy {\n    body\n    handle\n    id\n    title\n    url\n  }\n  query Policy(\n    $country: CountryCode\n    $language: LanguageCode\n    $privacyPolicy: Boolean!\n    $refundPolicy: Boolean!\n    $shippingPolicy: Boolean!\n    $termsOfService: Boolean!\n  ) @inContext(language: $language, country: $country) {\n    shop {\n      privacyPolicy @include(if: $privacyPolicy) {\n        ...Policy\n      }\n      shippingPolicy @include(if: $shippingPolicy) {\n        ...Policy\n      }\n      termsOfService @include(if: $termsOfService) {\n        ...Policy\n      }\n      refundPolicy @include(if: $refundPolicy) {\n        ...Policy\n      }\n    }\n  }\n': {
     return: PolicyQuery;

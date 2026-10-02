@@ -3,7 +3,9 @@ import {readFileSync} from 'node:fs';
 import test from 'node:test';
 import {
   PRODUCT_RELEASE_FLAGS,
+  computeSellableHandles,
   isDemoProduct,
+  isReleasedProductHandle,
   isUnreleasedExtensionHandle,
 } from '../app/lib/catalogFilters.ts';
 import {potInput, stagePot, verifyPot} from './stage-pastel-plant-pots.mjs';
@@ -19,21 +21,55 @@ const manifest = JSON.parse(
   ),
 );
 
-test('the preview is discoverable, while Draft product URLs stay out of the sitemap', () => {
+test('the series and its released product URLs are discoverable', () => {
   assert.ok(CUSTOM_SITEMAP_PATHS.includes('/pastel-forms'));
   const xml = `<urlset>${manifest.designs.map((d) => `<url><loc>https://shopclaramendes.com/products/${d.handle}</loc></url>`).join('')}</urlset>`;
-  assert.equal(removeExcludedSitemapEntries(xml), '<urlset></urlset>');
+  assert.equal(removeExcludedSitemapEntries(xml), xml);
 });
 
-test('every pastel pot is explicitly unreleased and excluded from purchase surfaces', () => {
+test('only the four approved mapped pots are released, with honest quality and import exceptions', () => {
+  assert.equal(manifest.release.mappingVerified, true);
+  assert.equal(manifest.release.supplierQuotesVerified, true);
+  assert.equal(manifest.release.ownerApproved, true);
+  assert.equal(manifest.release.sampleReviewed, false);
+  assert.ok(manifest.release.sampleWaiver);
+  assert.equal(manifest.release.deliveredCostsVerified, false);
+  assert.ok(manifest.release.importCostException);
+  assert.equal(manifest.shipping.tracked, false);
+  assert.equal(manifest.shipping.importChargesIncluded, false);
+  assert.equal(manifest.retailPrice, '29.99');
+  assert.equal(manifest.shipping.retailRate, '6.99');
+  assert.equal(manifest.shipping.countriesQuoted.length, 27);
   for (const design of manifest.designs) {
-    assert.equal(PRODUCT_RELEASE_FLAGS[design.handle], false, design.handle);
-    assert.equal(isUnreleasedExtensionHandle(design.handle), true);
+    assert.ok(
+      design.shopifyProductId &&
+        design.shopifyVariantId &&
+        design.prodigiListingId,
+    );
+    assert.equal(PRODUCT_RELEASE_FLAGS[design.handle], true, design.handle);
+    assert.equal(isUnreleasedExtensionHandle(design.handle), false);
     assert.equal(
       isDemoProduct({handle: design.handle, vendor: 'Clara Mendes'}),
-      true,
+      false,
     );
   }
+});
+
+test('a disabled pot flag fails closed even if Shopify has published the product', () => {
+  const disabled = Object.fromEntries(
+    manifest.designs.map((d) => [d.handle, false]),
+  );
+  const sellable = computeSellableHandles(
+    undefined,
+    undefined,
+    undefined,
+    disabled,
+  );
+  for (const design of manifest.designs) {
+    assert.equal(isReleasedProductHandle(design.handle, disabled), false);
+    assert.equal(sellable.has(design.handle), false);
+  }
+  assert.equal(isReleasedProductHandle('unknown-plant-pot'), false);
 });
 
 test('staging input cannot enable checkout or claim verified fulfillment', () => {

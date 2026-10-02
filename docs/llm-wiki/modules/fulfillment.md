@@ -1,6 +1,23 @@
 # Fulfillment And Delivery Promises
 
-Snapshot: 2026-09-29
+Snapshot: 2026-10-02
+
+## Pastel Forms Pot Exception
+
+The four pots use saved automatic Prodigi `PLANT-POT` mappings with Standard
+shipping from GB by **Royal Mail Airmail Untracked**. Shopify profile
+`147873595726` covers exactly these four products and all EU-27 at EUR 6.99
+for pot-only orders; mixed profiles may combine charges. The series, PDPs
+and Shopify shipping policy disclose untracked delivery and possible
+recipient import taxes, duties and handling fees. Do not promise tracking.
+
+Supplier quotes and all 108 one-pot EU-27 carts were checked on 2026-10-02.
+The connected account's primary billing method is present and its existing
+24-hour edit hold is unchanged; IOSS is blank. The owner waived a physical
+sample in favour of reviewing the first paid order and explicitly accepted
+uncertain import charges. No order or physical delivery is verified yet.
+Use the [pot-specific first-order review](../../pastel-plant-pots.md#first-paid-order-review),
+not the wall-art tracking checklist, for these lines.
 
 ## Facts
 

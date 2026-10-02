@@ -1,12 +1,21 @@
 # Catalog And Products
 
-## Pastel Forms Preview (2026-09-30)
+## Pastel Forms Launch (2026-10-02)
 
-Four original pastel plant-pot designs are staged as Shopify Drafts with zero
-tracked inventory, DENY policy and false approvals. `/pastel-forms` previews
-the series without checkout; the four product handles remain false in
-`PRODUCT_RELEASE_FLAGS`. Public template geometry is verified, but automatic
-Prodigi mapping, delivered costs and sample quality are not. See
+Four pastel plant-pot products are Active at EUR 29.99, with untracked
+made-to-order inventory, true approvals and publication to both Clara Mendes
+Headless channels. Each exact Prodigi mapping was saved and reloaded as
+automatic `PLANT-POT`, Excellent image quality, Standard shipping and the
+matching production JPEG. The four release flags and Plant Pots type expose
+the PDPs; `/pastel-forms` uses channel-visible localized prices and matching
+links, failing closed for missing or unreleased products.
+
+The pot-only EU-27 profile charges EUR 6.99. All 108 four-design/country
+Storefront cart checks passed. Supplier quotes were EUR 19.60-19.61 per pot
+including UK untracked shipping, but excluding possible recipient import
+charges. The owner explicitly approved these costs and a first-paid-order
+physical quality review instead of a sample. Neither a physical sample nor
+a completed paid-order fulfillment is verified. See
 [Pastel Forms Plant Pots](../../pastel-plant-pots.md).
 
 ## 2026-09-30 - Art Tough Phone Case Draft

@@ -110,6 +110,17 @@
 .pastel-forms__note {
   margin: 18px 0 24px;
 }
+.pastel-forms__price {
+  font-size: 22px;
+  margin: 20px 0;
+}
+.pastel-forms__delivery {
+  color: var(--color-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  max-width: 42ch;
+  margin-top: 18px;
+}
 .pastel-forms__series {
   padding-top: 80px;
 }

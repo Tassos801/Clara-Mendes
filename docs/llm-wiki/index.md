@@ -30,7 +30,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Original Art Size Expansion](../original-art-size-expansion.md) - Safe 16 × 20 and 20 × 24 asset preparation, Shopify variant staging, Prodigi mapping, activation, and pause workflow.
 - [Art for Everyday Living](../art-product-extensions.md) - Draft product-extension architecture, generated assets, sync workflow, and release gates.
 - [Art Tough Phone Case](../art-tough-phone-case.md) - All 24 released artworks across 40 device models, Shopify Draft staging and provider release gates.
-- [Pastel Forms Plant Pots](../pastel-plant-pots.md) - Four minimal pastel pot designs, a public preview, Shopify Drafts and outstanding Prodigi purchase-release gates.
+- [Pastel Forms Plant Pots](../pastel-plant-pots.md) - Four mapped pastel pots, EUR 29.99 + EUR 6.99 EU shipping, purchase-path evidence and the owner-approved first-order quality review.
 
 - [Adding prints runbook](../add-products-runbook.md) - One catalog file and `npm run product` steps for artwork, room images, Draft staging, supplier handoff, release, and live verification.
 - [Sci-fi & Cinema Print Staging](../scifi-cinema-prints.md) - Four Draft designs, disabled storefront release flags, export candidates and remaining provider work.

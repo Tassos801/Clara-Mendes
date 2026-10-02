@@ -58,6 +58,7 @@ import {
   selectedClassicFrameSize,
 } from '~/lib/classicFrame';
 import {NatalConfigurator} from '~/components/NatalConfigurator';
+import pastelPots from '../../data/pastel-plant-pots.json';
 import {
   SkyConfigurator,
   type SkyConfiguratorStatus,
@@ -492,8 +493,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   }
 
   const toughCaseProduct = data.toughCase as
-    | (ClaraCardProduct & {caseOptions?: ToughCaseOptionNode[]})
-    | null;
+    (ClaraCardProduct & {caseOptions?: ToughCaseOptionNode[]}) | null;
   let toughCaseCrossSell: ToughCaseCrossSell | null = null;
   if (toughCaseDesign && toughCaseProduct && !isDemoProduct(toughCaseProduct)) {
     const artworkValue = toughCaseProduct.caseOptions
@@ -654,7 +654,6 @@ function ProductPage() {
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
   const productDescription = getProductDescription(product);
-  const productLede = getProductLede(product);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
   // Cards and postcards ship on Prodigi's Budget (untracked letter-post)
   // service, so their reassurance copy must not promise a tracking email.
@@ -668,6 +667,11 @@ function ProductPage() {
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
   const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
+  const potDesign = pastelPots.designs.find(
+    (design) => design.handle === product.handle,
+  );
+  const isPlantPot = Boolean(potDesign);
+  const productLede = potDesign?.story ?? getProductLede(product);
   const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
   const selectedFrameSize = isClassicFrame
     ? selectedClassicFrameSize(selectedVariant?.selectedOptions)
@@ -1142,7 +1146,9 @@ function ProductPage() {
               <span aria-hidden />
               {isLetterPost
                 ? 'Sent by letter post — untracked, typically 5–8 business days.'
-                : 'Tracking details are emailed after dispatch.'}
+                : isPlantPot
+                  ? 'Sent from the UK by untracked post.'
+                  : 'Tracking details are emailed after dispatch.'}
             </li>
             <li>
               <span aria-hidden />
@@ -1151,6 +1157,24 @@ function ProductPage() {
           </ul>
 
           <dl className="product-details-list">
+            {isPlantPot ? (
+              <>
+                <div>
+                  <dt>Pot</dt>
+                  <dd>
+                    Glossy ceramic, 9 cm diameter x 10.2 cm high, with a
+                    drainage hole and white rim and interior.
+                  </dd>
+                </div>
+                <div>
+                  <dt>Included</dt>
+                  <dd>
+                    One pot. Plant and saucer not included. Images are design
+                    mockups; printed colours may vary.
+                  </dd>
+                </div>
+              </>
+            ) : null}
             {isArtPrint ? (
               <div>
                 <dt>Print</dt>
@@ -1320,6 +1344,15 @@ function ProductPage() {
             <div>
               <dt>Shipping</dt>
               <dd>
+                {isPlantPot ? (
+                  <>
+                    Pot-only orders: EUR 6.99 shipping across the EU, by
+                    untracked post from the UK. Mixed orders may combine
+                    shipping charges at checkout. Import taxes, duties and
+                    carrier fees may be payable on delivery and are not
+                    included.{' '}
+                  </>
+                ) : null}
                 Printed to order and dispatched within{' '}
                 {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
                 delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
