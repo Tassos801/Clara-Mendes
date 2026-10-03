@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {releasedPrintCollections} from '../app/lib/printCatalog.ts';
+import {releasedBookNooks} from '../app/lib/bookNooks.ts';
 import {
   buildCustomRoutesSitemapXml,
   CUSTOM_SITEMAP_PATHS,
@@ -87,6 +88,8 @@ assert.deepEqual(
     '/',
     '/collections/all',
     '/pastel-forms',
+    // The book nook page exists only while a nook is released.
+    ...(releasedBookNooks().length ? ['/book-nooks'] : []),
     '/collections/quiet-form',
     '/collections/patina-blue',
     '/collections/neo-deco',

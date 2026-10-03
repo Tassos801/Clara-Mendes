@@ -12,6 +12,11 @@ import {StructuredData} from '~/components/StructuredData';
 import {BrandFilm} from '~/components/BrandFilm';
 import {YourSkyTeaser} from '~/components/YourSkyTeaser';
 import {
+  BookNookShelf,
+  type BookNookShelfItem,
+} from '~/components/BookNookShelf';
+import type {BookNookStorefrontProduct} from '~/components/BookNookCard';
+import {
   ToughCaseTeaser,
   type ToughCaseTeaserCase,
 } from '~/components/ToughCaseTeaser';
@@ -46,6 +51,14 @@ import {
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
+import {
+  BOOK_NOOK_PRODUCT_TYPE,
+  BOOK_NOOKS_PATH,
+  bookNookDeliveryCountries,
+  buildBookNookShelf,
+  releasedBookNooks,
+} from '~/lib/bookNooks';
+import {formatDeliveryCountries} from '~/lib/curatedProducts';
 
 // Read from the catalog data so a new collection release updates the copy.
 const CATALOG = catalogCounts();
@@ -97,6 +110,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
         // decide which prints exist.
         artFirst: ORIGINAL_ART_QUERY_FIRST,
         artQuery: buildOriginalArtQuery(),
+        // The sentinel tag matches nothing until a nook is released.
+        bookNookQuery: releasedBookNooks().length
+          ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
+          : 'tag:"__no-book-nooks__"',
         frameHandle: isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
           ? CLASSIC_FRAME_HANDLE
           : '__frame-not-released__',
@@ -110,6 +127,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
     });
 
     return {
+      bookNookShelf: buildBookNookShelf(
+        (data.bookNooks?.nodes ?? []) as BookNookStorefrontProduct[],
+      ) as BookNookShelfItem[],
+      bookNookDelivery: formatDeliveryCountries(bookNookDeliveryCountries()),
       collections: filterDemoCollections(
         data.collections.nodes as HomeCollection[],
       ),
@@ -133,6 +154,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
     };
   } catch {
     return {
+      bookNookShelf: [] as BookNookShelfItem[],
+      bookNookDelivery: '',
       caseTeaser: null as CaseTeaser | null,
       collections: [] as HomeCollection[],
       frameProduct: null as ClaraCardProduct | null,
@@ -206,6 +229,8 @@ function pickFeaturedPrints(products: ClaraCardProduct[]): ClaraCardProduct[] {
 
 export default function Homepage() {
   const {
+    bookNookDelivery,
+    bookNookShelf,
     caseTeaser,
     collections,
     featuredPrints,
@@ -397,6 +422,11 @@ export default function Homepage() {
               <Link to="/collections/all" className="hm-nav-text">
                 Shop
               </Link>
+              {bookNookShelf.length ? (
+                <Link to={BOOK_NOOKS_PATH} className="hm-nav-text">
+                  Book Nooks
+                </Link>
+              ) : null}
               <Link to="/our-story" className="hm-nav-text">
                 Our Story
               </Link>
@@ -511,6 +541,11 @@ export default function Homepage() {
           </div>
         </section>
       ) : null}
+
+      <BookNookShelf
+        deliveryCountries={bookNookDelivery}
+        items={bookNookShelf}
+      />
 
       <section
         className="collection-intro home-commerce-intro"
@@ -739,6 +774,7 @@ const HOMEPAGE_QUERY = `#graphql
   query Homepage(
     $artFirst: Int!
     $artQuery: String!
+    $bookNookQuery: String!
     $country: CountryCode
     $first: Int!
     $frameHandle: String!
@@ -757,6 +793,19 @@ const HOMEPAGE_QUERY = `#graphql
     }
     frameProduct: product(handle: $frameHandle) {
       ...ClaraProductCard
+    }
+    bookNooks: products(first: 50, query: $bookNookQuery) {
+      nodes {
+        handle
+        title
+        availableForSale
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
     }
     toughCase: product(handle: $toughCaseHandle) {
       handle
@@ -1651,7 +1700,7 @@ html:has(.home-root) main {
     text-align: center;
   }
 
-  .hm-nav-group .hm-nav-text:nth-last-child(-n + 2) {
+  .hm-nav-group .hm-nav-text:first-child:nth-last-child(5) ~ .hm-nav-text:nth-last-child(-n + 2) {
     grid-column: span 3;
   }
 }

@@ -353,3 +353,17 @@ See [CJ book nook launch](../../book-nooks-launch.md) for the exact SKU,
 Shopify ids, €69 CY/DE delivery profile, IOSS configuration, margin assumptions
 and first-order payment checks. A supplier payment and physical sample remain
 unverified; automatic CJ payment was not enabled.
+
+## 2026-10-03 - Book nook themes, page and branded images
+
+Curated entries now carry presentation fields: `name`, `theme`, `tagline`,
+`specs`, `processing`, `images` (with generation recipes) and `cutout`.
+`app/lib/bookNooks.ts` holds the five themes, shelf ordering, spec rows, build
+level and the delivery promise shared by every released nook. Book nooks have
+a `/book-nooks` page and a homepage shelf; the product page shows the short
+name, theme, a kit spec grid and other nooks as related products.
+
+`withCuratedImages` swaps Shopify's supplier photos for the branded set on
+cards, the product gallery, search, cart lines and recommendations; Shopify
+media itself is unchanged. See [Book nook catalogue](../../book-nooks-catalog.md)
+for the image pipeline and the add-a-kit steps.

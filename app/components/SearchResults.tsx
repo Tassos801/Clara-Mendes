@@ -5,6 +5,7 @@ import {
   formatCardPriceLabel,
 } from '~/lib/productCardPricing';
 import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
+import {curatedDisplayTitle, curatedImages} from '~/lib/curatedProducts';
 
 type SearchItems = RegularSearchReturn['result']['items'];
 type PartialSearchResult<ItemType extends keyof SearchItems> = Pick<
@@ -150,7 +151,10 @@ function SearchResultsProducts({
                 const priceLabel = formatCardPriceLabel(
                   deriveCardPricing(product),
                 );
-                const image = product?.selectedOrFirstAvailableVariant?.image;
+                const image =
+                  curatedImages(product.handle)[0] ??
+                  product?.selectedOrFirstAvailableVariant?.image;
+                const title = curatedDisplayTitle(product);
 
                 return (
                   <Link
@@ -163,15 +167,13 @@ function SearchResultsProducts({
                       {image ? (
                         <Image
                           data={image}
-                          alt={product.title}
+                          alt={title}
                           aspectRatio="1/1"
                           sizes="(min-width: 720px) 240px, 44vw"
                         />
                       ) : null}
                     </span>
-                    <span className="search-product-title">
-                      {product.title}
-                    </span>
+                    <span className="search-product-title">{title}</span>
                     {priceLabel ? (
                       <span className="search-product-price">{priceLabel}</span>
                     ) : null}

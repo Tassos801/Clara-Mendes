@@ -11,6 +11,7 @@ import {
   isUnreleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
 } from './catalogFilters.ts';
+import {BOOK_NOOKS_PATH, releasedBookNooks} from './bookNooks.ts';
 import {shopCapsulePath} from './capsules.ts';
 import {listGalleryPages} from './galleryPages.ts';
 import {releasedPrintCollections} from './printCatalog.ts';
@@ -27,6 +28,7 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/',
   '/collections/all',
   '/pastel-forms',
+  ...(releasedBookNooks().length ? [BOOK_NOOKS_PATH] : []),
   ...ORIGINAL_ART_COLLECTIONS.map(
     (collection) => `/collections/${collection.handle}`,
   ),
