@@ -115,6 +115,8 @@ import {
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
+import {getCuratedProduct} from '~/lib/curatedProducts';
+import {ProductShippingText} from '~/components/ProductShippingText';
 import {ReviewsSection} from '~/components/reviews/ReviewsSection';
 import {
   parseReviewsMetafield,
@@ -654,6 +656,7 @@ function ProductPage() {
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
   const productDescription = getProductDescription(product);
+  const curatedProduct = getCuratedProduct(product.handle);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
   // Cards and postcards ship on Prodigi's Budget (untracked letter-post)
   // service, so their reassurance copy must not promise a tracking email.
@@ -919,12 +922,19 @@ function ProductPage() {
                 }`}
               >
                 {selectedVariant?.availableForSale
-                  ? 'Made to order'
+                  ? curatedProduct
+                    ? 'DIY assembly kit'
+                    : 'Made to order'
                   : 'Unavailable'}
               </span>
               <span>
-                Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days
+                {curatedProduct
+                  ? 'Processing estimate: 1–3 days'
+                  : `Processes in ${PRODUCTION_WINDOW_BUSINESS_DAYS} business days`}
               </span>
+              {curatedProduct ? (
+                <span>Delivery included to Cyprus & Germany</span>
+              ) : null}
               <span>{RETURN_WINDOW_DAYS}-day returns</span>
             </div>
           </div>
@@ -1175,6 +1185,12 @@ function ProductPage() {
                 </div>
               </>
             ) : null}
+            {curatedProduct ? (
+              <div>
+                <dt>Kit</dt>
+                <dd>{curatedProduct.details}</dd>
+              </div>
+            ) : null}
             {isArtPrint ? (
               <div>
                 <dt>Print</dt>
@@ -1344,19 +1360,12 @@ function ProductPage() {
             <div>
               <dt>Shipping</dt>
               <dd>
-                {isPlantPot ? (
-                  <>
-                    Pot-only orders: EUR 6.99 shipping across the EU, by
-                    untracked post from the UK. Mixed orders may combine
-                    shipping charges at checkout. Import taxes, duties and
-                    carrier fees may be payable on delivery and are not
-                    included.{' '}
-                  </>
-                ) : null}
-                Printed to order and dispatched within{' '}
-                {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
-                delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
-                days across the EU. Delivery updates are emailed when available.
+                <ProductShippingText
+                  curatedShipping={curatedProduct?.shipping}
+                  isPlantPot={isPlantPot}
+                  dispatchWindow={DISPATCH_WINDOW_BUSINESS_DAYS}
+                  deliveryWindow={DELIVERY_EU_BUSINESS_DAYS}
+                />
               </dd>
             </div>
             <div>

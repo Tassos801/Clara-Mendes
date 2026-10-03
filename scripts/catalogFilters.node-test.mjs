@@ -21,6 +21,7 @@ import {
   SKY_PRODUCT_HANDLE,
 } from '../app/lib/catalogFilters.ts';
 import {releasedPrintHandles} from '../app/lib/printCatalog.ts';
+import {releasedCuratedProducts} from '../app/lib/curatedProducts.ts';
 
 /**
  * Runs `fn` with the module's release flags temporarily replaced by
@@ -149,12 +150,18 @@ const sellableToday = computeSellableHandles();
 // count is read from the catalog so adding a print never needs an edit here;
 // printCatalog.node-test.mjs owns the gate.
 const releasedCatalogCount = releasedPrintHandles().length;
+const releasedCuratedCount = releasedCuratedProducts().length;
 const releasedProductCount = Object.values(PRODUCT_RELEASE_FLAGS).filter(
   Boolean,
 ).length;
 assert.equal(
   sellableToday.size,
-  15 + releasedCount + 1 + releasedProductCount + releasedCatalogCount,
+  15 +
+    releasedCount +
+    1 +
+    releasedProductCount +
+    releasedCatalogCount +
+    releasedCuratedCount,
 );
 assert.ok(sellableToday.has('art-tough-phone-case'));
 assert.ok(!sellableToday.has(FRAME_HANDLE));
@@ -166,7 +173,7 @@ assert.ok(!sellableToday.has(PHONE_CASE_HANDLE));
 const sellableReleased = computeSellableHandles({[PHONE_CASE_HANDLE]: true});
 assert.equal(
   sellableReleased.size,
-  17 + releasedProductCount + releasedCatalogCount,
+  17 + releasedProductCount + releasedCatalogCount + releasedCuratedCount,
 );
 assert.ok(sellableReleased.has(PHONE_CASE_HANDLE));
 assert.ok(sellableReleased.has('quiet-form-i-art-print'));

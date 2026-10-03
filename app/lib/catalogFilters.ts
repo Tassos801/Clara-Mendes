@@ -1,5 +1,11 @@
 import extensionCatalog from '../../data/art-product-extensions.json' with {type: 'json'};
 import {
+  CURATED_PRODUCTS,
+  isUnreleasedCuratedHandle,
+  releasedCuratedProducts,
+  type CuratedProduct,
+} from './curatedProducts.ts';
+import {
   isUnreleasedPrintHandle,
   PRINT_CATALOG,
   releasedPrintHandles,
@@ -273,6 +279,7 @@ export function isUnreleasedExtensionHandle(handle?: string | null) {
   if (!key) return false;
   if (RETIRED_EXTENSION_HANDLES.has(key)) return true;
   if (isUnreleasedPrintHandle(key)) return true;
+  if (isUnreleasedCuratedHandle(key)) return true;
   if (key in EXTENSION_RELEASE_FLAGS) return !EXTENSION_RELEASE_FLAGS[key];
   if (key in PERSONALISED_RELEASE_FLAGS)
     return !PERSONALISED_RELEASE_FLAGS[key];
@@ -290,6 +297,7 @@ export function computeSellableHandles(
   personalisedFlags: Record<string, boolean> = PERSONALISED_RELEASE_FLAGS,
   printCatalog: PrintCatalog = PRINT_CATALOG,
   productFlags: Record<string, boolean> = PRODUCT_RELEASE_FLAGS,
+  curatedProducts: readonly CuratedProduct[] = CURATED_PRODUCTS,
 ): ReadonlySet<string> {
   const handles = new Set(LAUNCH_PRODUCT_HANDLES);
   for (const flags of [extensionFlags, personalisedFlags, productFlags]) {
@@ -298,6 +306,9 @@ export function computeSellableHandles(
     }
   }
   for (const handle of releasedPrintHandles(printCatalog)) handles.add(handle);
+  for (const product of releasedCuratedProducts(curatedProducts)) {
+    handles.add(product.handle);
+  }
   return handles;
 }
 

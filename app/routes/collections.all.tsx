@@ -44,6 +44,7 @@ import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {releasedPrintHandles} from '~/lib/printCatalog';
+import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
 
 export type CollectionLink = {
   id: string;
@@ -61,13 +62,14 @@ export type CollectionLink = {
 };
 
 /**
- * The prints plus the product type of every released extension family, so
+ * The prints plus the product type of every released catalog family, so
  * a family becomes filterable (and its `?type=` deep links valid) the day
  * its flag flips.
  */
 export const SHOP_PRODUCT_TYPES: readonly string[] = [
   'Art Prints',
   ...releasedExtensionProductTypes(),
+  ...releasedCuratedProductTypes(),
 ];
 
 export type CollectionProductConnection = {
@@ -100,11 +102,11 @@ export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
       data?.description ??
-      'Shop original Clara Mendes wall art in three unframed sizes.',
+      'Original art and considered objects for a collected home, selected by Clara Mendes.',
     image: `${STOREFRONT_ORIGIN}${data?.shareImage || '/images/product-art/quiet-form/quiet-form-01.webp'}`,
     title: isCapsule
       ? `${heading} Capsule`
-      : 'Shop All Original Art Prints & Wall Art',
+      : 'Shop Original Art & Considered Objects',
     // Other facets canonicalize to the unfiltered page. Launch capsules use
     // their landing pages; print-catalog collections keep their shop filter
     // URL because they have no separate landing page.
@@ -120,6 +122,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
   const capsule = getShopCapsuleBySlug(searchParams.get('capsule'));
+  const isBookNooks =
+    facetSelection.productTypes.length === 1 &&
+    facetSelection.productTypes[0] === 'Book Nooks' &&
+    SHOP_PRODUCT_TYPES.includes('Book Nooks');
   const normalizedProductTypes = normalizeSingleProductTypeSearch(
     searchParams,
     SHOP_PRODUCT_TYPES,
@@ -155,14 +161,18 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ),
     description: capsule
       ? shopCapsuleDescription(capsule)
-      : releasedPrintHandles().length > 0
-        ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
-        : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
+      : isBookNooks
+        ? 'Miniature worlds for your bookshelf. Explore DIY book nook kits curated by Clara Mendes, with delivery included to Cyprus and Germany.'
+        : releasedCuratedProductTypes().length > 0
+          ? 'Original art and considered objects for a collected home, selected by Clara Mendes.'
+          : releasedPrintHandles().length > 0
+            ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
+            : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
     facets: {
       productTypes: SHOP_PRODUCT_TYPES.map((label) => ({label})),
       vendors: [] as Array<{label: string}>,
     },
-    heading: capsule ? capsule.title : 'Shop All',
+    heading: capsule ? capsule.title : isBookNooks ? 'Book Nooks' : 'Shop All',
     shareImage: capsule?.image ?? null,
     products: filterProductConnection(
       data.products as CollectionProductConnection,

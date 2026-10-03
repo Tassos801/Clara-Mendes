@@ -1,4 +1,5 @@
 import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
+import {getCuratedProduct} from './curatedProducts.ts';
 
 type ProductCopyInput = {
   description?: string | null;
@@ -65,6 +66,7 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
 const SPEC_SHEET_PRODUCT_TYPES = new Set([
   'art prints',
   'blankets',
+  'book nooks',
   'cards',
   'framed art',
   'frames',
@@ -84,6 +86,8 @@ export function getProductLede(product: ProductCopyInput) {
 }
 
 export function getProductDescription(product: ProductCopyInput) {
+  const curated = getCuratedProduct(product.handle);
+  if (curated) return curated.description;
   const handle = product.handle?.toLowerCase();
   if (handle && CURATED_PRODUCT_DESCRIPTIONS[handle]) {
     return CURATED_PRODUCT_DESCRIPTIONS[handle];

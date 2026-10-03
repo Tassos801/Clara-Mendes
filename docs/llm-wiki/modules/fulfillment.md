@@ -45,7 +45,7 @@ not the wall-art tracking checklist, for these lines.
   fails quietly: membership in an active market (without it the Storefront
   API returns `MERCHANDISE_OUT_OF_STOCK` and a €0 cart), plus a zone in the
   General profile (prints, €16 International) and in the `Letter post -
-  cards & postcards` profile (€2.90). Shopify only lets a zone include a
+cards & postcards` profile (€2.90). Shopify only lets a zone include a
   country after it is in a market. Until 2026-09-29, 12 EU members (BG EE
   GR HR HU LT LU LV MT RO SI SK) failed the first two checks.
 
@@ -88,3 +88,16 @@ not update from code.
   and `stateOrCounty` is `null` when blank; Prodigi rejects empty strings.
 - `parseCoordinate` (`app/lib/sky/params.ts`) rejects blank or malformed
   `_lat`/`_lon` values instead of reading them as 0°, 0°.
+
+## 2026-10-03 - Book nook fulfilment
+
+The CJ book nook uses a separate profile with delivery included only to Cyprus
+and Germany. It ships from China separately from prints, with 1–3 day estimated
+processing and longer destination-specific estimates; the print constants do
+not apply. CJ IOSS and store-order-value declarations are configured. Supplier
+payment is still required for each imported paid order. See the
+[CJ launch record](../../book-nooks-launch.md) for cost and VAT limitations.
+
+A fresh Storefront API localization readback on this date lists all 27 EU
+countries; the older 15-country observation above is historical. A product's
+dedicated delivery profile can restrict checkout to fewer destinations.

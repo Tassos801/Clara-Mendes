@@ -39,3 +39,5 @@ Source: local Shopify Hydrogen storefront repository at
 ## Source Notes
 
 - [Source Map](source-notes/source-map.md) - Main repo files used to build this wiki and what each source contributes.
+
+- [CJ Book Nook Launch](../book-nooks-launch.md) - Verified supplier kit, scoped delivery profile, retail price, IOSS and first-order checks.
