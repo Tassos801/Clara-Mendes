@@ -11,13 +11,13 @@ import {
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
-import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
+import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
+
+const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
-  ...(releasedCuratedProductTypes().includes('Book Nooks')
-    ? [{to: '/collections/all?type=Book+Nooks', label: 'Book Nooks'}]
-    : []),
+  ...(HAS_BOOK_NOOKS ? [{to: BOOK_NOOKS_PATH, label: 'Book Nooks'}] : []),
   // Each personalised product gets its own entry once its flag flips.
   // Your Sky is a feature page, not a product URL.
   ...(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]
@@ -188,6 +188,7 @@ function ClaraFooter() {
       </nav>
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
+        {HAS_BOOK_NOOKS ? <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link> : null}
         <Link to="/pastel-forms">Pastel Forms</Link>
         <Link to="/our-story">Our Story</Link>
         <Link to="/blogs/karina-of-time">Karina of Time</Link>

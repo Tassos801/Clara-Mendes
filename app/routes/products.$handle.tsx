@@ -115,7 +115,19 @@ import {
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
-import {getCuratedProduct} from '~/lib/curatedProducts';
+import {
+  curatedDisplayTitle,
+  formatDeliveryCountries,
+  getCuratedProduct,
+  withCuratedImages,
+} from '~/lib/curatedProducts';
+import {
+  BOOK_NOOK_PRODUCT_TYPE,
+  BOOK_NOOKS_PATH,
+  bookNookSpecRows,
+  getBookNookTheme,
+  isBookNook,
+} from '~/lib/bookNooks';
 import {ProductShippingText} from '~/components/ProductShippingText';
 import {ReviewsSection} from '~/components/reviews/ReviewsSection';
 import {
@@ -322,6 +334,11 @@ function sanitizeClassicFrameProduct(product: ProductDetail): ProductDetail {
   };
 }
 
+/** Branded curated images are storefront files; share tags need full URLs. */
+function absoluteImageUrl(url?: string | null) {
+  return url?.startsWith('/') ? `${STOREFRONT_ORIGIN}${url}` : url;
+}
+
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
   const description = product ? getProductDescription(product) : null;
@@ -330,7 +347,7 @@ export const meta: Route.MetaFunction = ({data}) => {
     description:
       description ||
       'Shop this Clara Mendes product through secure Shopify checkout.',
-    image: product?.featuredImage?.url,
+    image: absoluteImageUrl(product?.featuredImage?.url),
     title: product?.title ?? 'Product',
     type: 'product',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/products`,
@@ -381,6 +398,8 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   );
   const toughCaseEligible =
     Boolean(toughCaseDesign) && isReleasedProductHandle(TOUGH_CASE_HANDLE);
+  // Book nooks pair with the other nooks on the shelf before best sellers.
+  const isNookPage = isBookNook(getCuratedProduct(handle));
 
   const data = await context.storefront.query(PRODUCT_QUERY, {
     variables: {
@@ -389,7 +408,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       // unsupported field would be silently ignored and match everything).
       capsuleQuery: shopCapsule
         ? buildCapsuleTagQuery(shopCapsule)
-        : 'tag:"__no-capsule__"',
+        : isNookPage
+          ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
+          : 'tag:"__no-capsule__"',
       first: 4,
       classicFrameHandle: classicFrameEligible
         ? CLASSIC_FRAME_HANDLE
@@ -423,11 +444,13 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     data.product as ProductDetail,
     selectedOptions,
   );
-  const product = capsule
-    ? sanitizeOriginalArtProduct(rawProduct)
-    : handle === CLASSIC_FRAME_HANDLE
-      ? sanitizeClassicFrameProduct(rawProduct)
-      : rawProduct;
+  const product = withCuratedImages(
+    capsule
+      ? sanitizeOriginalArtProduct(rawProduct)
+      : handle === CLASSIC_FRAME_HANDLE
+        ? sanitizeClassicFrameProduct(rawProduct)
+        : rawProduct,
+  );
   const matchingFrameSize = capsule
     ? selectedClassicFrameSize(
         product.selectedOrFirstAvailableVariant?.selectedOptions,
@@ -566,6 +589,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     toughCaseCrossSell,
     product,
     relatedFromCapsule: capsuleSiblings.length > 0,
+    relatedFromBookNooks: isNookPage && capsuleSiblings.length > 0,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
@@ -588,6 +612,7 @@ function ProductPage() {
     classicFrameCrossSell,
     phoneCaseCrossSell,
     product,
+    relatedFromBookNooks,
     relatedFromCapsule,
     relatedProducts,
     reviews,
@@ -657,6 +682,10 @@ function ProductPage() {
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
   const productDescription = getProductDescription(product);
   const curatedProduct = getCuratedProduct(product.handle);
+  const displayTitle = curatedDisplayTitle(product);
+  const bookNook = isBookNook(curatedProduct) ? curatedProduct : null;
+  const bookNookTheme = getBookNookTheme(bookNook?.theme);
+  const kitSpecRows = bookNookSpecRows(curatedProduct?.specs);
   const isArtPrint = (product.productType || '').toLowerCase() === 'art prints';
   // Cards and postcards ship on Prodigi's Budget (untracked letter-post)
   // service, so their reassurance copy must not promise a tracking email.
@@ -674,7 +703,8 @@ function ProductPage() {
     (design) => design.handle === product.handle,
   );
   const isPlantPot = Boolean(potDesign);
-  const productLede = potDesign?.story ?? getProductLede(product);
+  const productLede =
+    potDesign?.story ?? curatedProduct?.tagline ?? getProductLede(product);
   const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
   const selectedFrameSize = isClassicFrame
     ? selectedClassicFrameSize(selectedVariant?.selectedOptions)
@@ -816,7 +846,7 @@ function ProductPage() {
             availableForSale: productAvailableForSale,
             description: productDescription,
             gtin: selectedVariant?.barcode,
-            image: primaryImage?.url,
+            image: absoluteImageUrl(primaryImage?.url),
             priceRange: product.priceRange,
             productId: product.id,
             productType: product.productType,
@@ -844,7 +874,15 @@ function ProductPage() {
                     },
                   ]
                 : []),
-              {name: product.title, url: seoUrl},
+              ...(bookNook
+                ? [
+                    {
+                      name: BOOK_NOOK_PRODUCT_TYPE,
+                      url: new URL(BOOK_NOOKS_PATH, seoUrl).toString(),
+                    },
+                  ]
+                : []),
+              {name: displayTitle, url: seoUrl},
             ],
           }),
         ]}
@@ -863,7 +901,15 @@ function ProductPage() {
             <span aria-hidden="true">›</span>
           </>
         ) : null}
-        <span>{product.title}</span>
+        {bookNook ? (
+          <>
+            <Link to={BOOK_NOOKS_PATH} prefetch="intent">
+              {BOOK_NOOK_PRODUCT_TYPE}
+            </Link>
+            <span aria-hidden="true">›</span>
+          </>
+        ) : null}
+        <span>{displayTitle}</span>
       </nav>
 
       <section
@@ -890,18 +936,20 @@ function ProductPage() {
             images={galleryImages}
             isArtPrint={isArtPrint}
             printSize={printSize}
-            productTitle={product.title}
+            productTitle={displayTitle}
           />
         )}
 
         <div className="product-purchase-panel">
           <div className="product-purchase-intro" ref={skyIntroRef}>
             <p className="eyebrow">
-              {product.productType ||
-                getVendorLabel(product.vendor) ||
-                'Curated object'}
+              {bookNook
+                ? `Book nook${bookNookTheme ? ` · ${bookNookTheme.title}` : ''}`
+                : product.productType ||
+                  getVendorLabel(product.vendor) ||
+                  'Curated object'}
             </p>
-            <h1>{product.title}</h1>
+            <h1>{displayTitle}</h1>
             <p className="product-lede">{productLede}</p>
             {selectedVariant ? (
               <ProductPrice
@@ -923,20 +971,38 @@ function ProductPage() {
               >
                 {selectedVariant?.availableForSale
                   ? curatedProduct
-                    ? 'DIY assembly kit'
+                    ? 'DIY kit'
                     : 'Made to order'
                   : 'Unavailable'}
               </span>
               <span>
                 {curatedProduct
-                  ? 'Processing estimate: 1–3 days'
+                  ? curatedProduct.processing
+                    ? `Processing ${curatedProduct.processing}`
+                    : 'Processing estimate at checkout'
                   : `Processes in ${PRODUCTION_WINDOW_BUSINESS_DAYS} business days`}
               </span>
               {curatedProduct ? (
-                <span>Delivery included to Cyprus & Germany</span>
+                <span>
+                  Delivery included to{' '}
+                  {formatDeliveryCountries(
+                    curatedProduct.verifiedDeliveryCountries,
+                  )}
+                </span>
               ) : null}
               <span>{RETURN_WINDOW_DAYS}-day returns</span>
             </div>
+
+            {kitSpecRows.length > 0 ? (
+              <dl className="product-kit-specs" aria-label="Kit at a glance">
+                {kitSpecRows.map((row) => (
+                  <div key={row.label}>
+                    <dt>{row.label}</dt>
+                    <dd>{row.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
           </div>
 
           {isSkyMap ? (
@@ -1464,7 +1530,7 @@ function ProductPage() {
 
       <ReviewsSection
         productGid={product.id}
-        productTitle={product.title}
+        productTitle={displayTitle}
         data={reviews}
       />
 
@@ -1473,11 +1539,15 @@ function ProductPage() {
           <div className="section-heading-row">
             <div>
               <p className="eyebrow">
-                {relatedFromCapsule
-                  ? 'From the same capsule'
-                  : 'Also in the catalog'}
+                {relatedFromBookNooks
+                  ? 'Book nooks'
+                  : relatedFromCapsule
+                    ? 'From the same capsule'
+                    : 'Also in the catalog'}
               </p>
-              <h2 id="related">Pair with</h2>
+              <h2 id="related">
+                {relatedFromBookNooks ? 'More small worlds' : 'Pair with'}
+              </h2>
             </div>
             {capsuleSummary ? (
               <Link
@@ -1486,6 +1556,14 @@ function ProductPage() {
                 prefetch="intent"
               >
                 View {capsuleSummary.title}
+              </Link>
+            ) : bookNook ? (
+              <Link
+                className="text-link"
+                to={BOOK_NOOKS_PATH}
+                prefetch="intent"
+              >
+                All book nooks
               </Link>
             ) : null}
           </div>
@@ -1513,7 +1591,7 @@ function ProductPage() {
             />
           ) : null}
           <div>
-            <p className="sticky-atc-title">{product.title}</p>
+            <p className="sticky-atc-title">{displayTitle}</p>
             {selectedVariant ? (
               <p className="sticky-atc-price">
                 {formatMoney(selectedVariant.price)}

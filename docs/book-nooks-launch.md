@@ -33,7 +33,9 @@ been checked through a sample order.
 
 The generic registry in [curated-products.json](../data/curated-products.json)
 feeds the existing catalog allowlist, type tabs, navigation, product copy and
-sitemap gate. It requires a release flag, Shopify product and variant ids,
+sitemap gate. Storefront presentation (themes, `/book-nooks`, the homepage
+shelf and branded images) is described in the
+[book nook catalogue](book-nooks-catalog.md). It requires a release flag, Shopify product and variant ids,
 a shipping-profile id, verified fulfilment, supplier SKU, shipping copy and
 verified destinations. Unknown supplier imports remain hidden.
 

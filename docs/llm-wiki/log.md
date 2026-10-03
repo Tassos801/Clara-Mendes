@@ -1189,3 +1189,16 @@ book-nook-specific merchandising and delivery copy. Updated the Shopify
 shipping policy and documented IOSS, retail-value VAT uncertainty, conservative
 margin planning and the required supplier-payment step. Refreshed the local
 base to current main before validating; unrelated releases are preserved.
+
+## 2026-10-03 - Book nook catalogue
+
+Added five book nook themes, a `/book-nooks` landing page with theme filters,
+a homepage shelf of cut-out nooks between titled spines, and a cleaner kit
+product page (short name, theme, spec grid, data-driven processing and
+delivery chips, related nooks). Built `npm run curated:images` to crop, mask
+and grade supplier photos into a consistent 4:5 linen/lamplit set plus a
+transparent shelf cut-out; the storefront now serves that set everywhere it
+renders the kit. Shopify product media and the supplier variant label remain
+to be updated in Admin.
+
+Source: [Book nook catalogue](../book-nooks-catalog.md).

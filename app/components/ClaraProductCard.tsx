@@ -14,6 +14,7 @@ import {
   isAccurateClassicFrameImage,
   selectAccurateClassicFrameImage,
 } from '~/lib/classicFrame';
+import {curatedDisplayTitle, withCuratedImages} from '~/lib/curatedProducts';
 
 const CARD_IMAGE_SIZES =
   '(min-width: 1100px) 25vw, (min-width: 781px) 33vw, 50vw';
@@ -80,7 +81,7 @@ export type ClaraCardProduct = {
 };
 
 export function ClaraProductCard({
-  product,
+  product: storefrontProduct,
   loading = 'lazy',
   showStory = false,
   pricing,
@@ -91,6 +92,10 @@ export function ClaraProductCard({
   /** Precomputed pricing for cards fed from snapshots (recently viewed). */
   pricing?: CardPricing;
 }) {
+  // Curated kits show their branded image set instead of supplier photos.
+  const product = withCuratedImages(storefrontProduct);
+  const title = curatedDisplayTitle(product);
+  const titleWords = title.split(' ');
   const images = product.images?.nodes ?? [];
   const candidateVariant =
     product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
@@ -135,7 +140,7 @@ export function ClaraProductCard({
           to={`/products/${product.handle}`}
           prefetch="intent"
           className="cm-card-media-link"
-          aria-label={product.title}
+          aria-label={title}
         >
           <div className="product-card-media cm-card-media">
             {baseImage ? (
@@ -143,7 +148,7 @@ export function ClaraProductCard({
                 <Image
                   className="cm-card-img cm-card-img--base"
                   data={baseImage}
-                  alt={baseImage.altText || product.title}
+                  alt={baseImage.altText || title}
                   aspectRatio="4/5"
                   sizes={CARD_IMAGE_SIZES}
                   loading={loading}
@@ -179,10 +184,8 @@ export function ClaraProductCard({
         <div className="product-card-copy cm-card-copy">
           <div className="cm-card-heading">
             <h3 className="cm-card-title">
-              <i>{product.title.split(' ')[0]}</i>
-              {product.title.split(' ').slice(1).length
-                ? ' ' + product.title.split(' ').slice(1).join(' ')
-                : ''}
+              <i>{titleWords[0]}</i>
+              {titleWords.length > 1 ? ' ' + titleWords.slice(1).join(' ') : ''}
             </h3>
             {priceLabel ? (
               <strong className="cm-card-price">{priceLabel}</strong>

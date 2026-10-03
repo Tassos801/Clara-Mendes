@@ -10,6 +10,7 @@
     "preview": "shopify hydrogen preview --build",
     "lint": "eslint --no-error-on-unmatched-pattern .",
     "product": "node ./scripts/product.mjs",
+    "curated:images": "node ./scripts/prepare-curated-product-images.mjs",
     "test": "node --test \"scripts/*.node-test.mjs\"",
     "typecheck": "react-router typegen && tsc --noEmit",
     "codegen": "shopify hydrogen codegen && react-router typegen",

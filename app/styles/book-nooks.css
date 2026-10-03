@@ -1,0 +1,499 @@
+/* ── Book nooks ──
+   A lamplit hero, theme filters, and kits that switch their lights on. */
+.nook-page {
+  --nook-night: #1c1712;
+  --nook-walnut: #2c2219;
+  --nook-glow: rgba(255, 186, 112, 0.34);
+  --nook-linen: #f2ece1;
+  padding-bottom: clamp(56px, 8vw, 104px);
+  padding-top: calc(var(--header-height) + 16px);
+}
+
+.nook-hero {
+  align-items: center;
+  background:
+    radial-gradient(
+      ellipse 60% 70% at 72% 52%,
+      rgba(255, 176, 98, 0.16),
+      transparent 70%
+    ),
+    linear-gradient(160deg, var(--nook-night) 0%, var(--nook-walnut) 100%);
+  border-radius: 28px;
+  color: var(--nook-linen);
+  display: grid;
+  gap: clamp(32px, 5vw, 72px);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  margin: 0 clamp(16px, 4vw, 56px);
+  overflow: hidden;
+  padding: clamp(40px, 6vw, 88px) clamp(24px, 5vw, 80px);
+  position: relative;
+}
+
+.nook-hero__copy {
+  display: grid;
+  gap: 22px;
+  max-width: 560px;
+}
+
+.nook-hero .eyebrow {
+  color: rgba(242, 236, 225, 0.62);
+  margin: 0;
+}
+
+.nook-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 6vw, 5.4rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.nook-hero h1 i {
+  color: #e9c79d;
+  display: block;
+}
+
+.nook-hero__sub {
+  color: rgba(242, 236, 225, 0.78);
+  font-size: 1.04rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 44ch;
+}
+
+.nook-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0 0;
+}
+
+.nook-hero__meta span {
+  border: 1px solid rgba(242, 236, 225, 0.22);
+  border-radius: 999px;
+  color: rgba(242, 236, 225, 0.82);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  padding: 9px 14px;
+  text-transform: uppercase;
+}
+
+.nook-hero__figure {
+  color: inherit;
+  display: block;
+  justify-self: center;
+  max-width: 420px;
+  position: relative;
+  text-decoration: none;
+  width: 100%;
+}
+
+/* The lamp behind the nook. */
+.nook-hero__figure::before {
+  background: radial-gradient(circle, var(--nook-glow), transparent 68%);
+  content: '';
+  filter: blur(18px);
+  inset: -18% -22%;
+  position: absolute;
+  z-index: 0;
+}
+
+.nook-hero__figure img {
+  aspect-ratio: 4 / 5;
+  border-radius: 4px;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.45);
+  display: block;
+  height: auto;
+  position: relative;
+  transition: transform 900ms cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+  z-index: 1;
+}
+
+.nook-hero__figure:hover img {
+  transform: translateY(-6px);
+}
+
+.nook-hero__caption {
+  bottom: -30px;
+  color: rgba(242, 236, 225, 0.6);
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  left: 0;
+  position: absolute;
+}
+
+/* ── Theme filters ── */
+.nook-themes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: clamp(40px, 6vw, 72px) auto 0;
+  max-width: 1280px;
+  padding: 0 clamp(16px, 4vw, 56px);
+}
+
+.nook-themes a {
+  align-items: center;
+  border: 1px solid rgba(38, 35, 31, 0.16);
+  border-radius: 999px;
+  color: var(--color-ink);
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 600;
+  gap: 8px;
+  letter-spacing: 0.12em;
+  min-height: 40px;
+  padding: 0 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition:
+    background 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease;
+}
+
+.nook-themes a span {
+  color: var(--color-muted);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+.nook-themes a:hover {
+  border-color: rgba(38, 35, 31, 0.42);
+}
+
+.nook-themes a[aria-current='page'] {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.nook-themes a[aria-current='page'] span {
+  color: rgba(251, 250, 246, 0.6);
+}
+
+/* ── Collection ── */
+.nook-collection {
+  margin: 28px auto 0;
+  max-width: 1280px;
+  padding: 0 clamp(16px, 4vw, 56px);
+}
+
+.nook-collection__note,
+.nook-collection__empty {
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-style: italic;
+  margin: 0 0 24px;
+}
+
+.nook-grid {
+  display: grid;
+  gap: clamp(28px, 3vw, 44px) clamp(16px, 2vw, 28px);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+}
+
+.nook-card {
+  --nook-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  min-width: 0;
+}
+
+.nook-card__link {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
+.nook-card__media {
+  aspect-ratio: 4 / 5;
+  background: #efeae0;
+  isolation: isolate;
+  overflow: hidden;
+  position: relative;
+}
+
+.nook-card__img {
+  display: block;
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  transition:
+    opacity 700ms var(--nook-ease),
+    transform 900ms var(--nook-ease);
+  width: 100%;
+}
+
+.nook-card__img--lit {
+  opacity: 0;
+}
+
+.nook-card__switch {
+  align-items: center;
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  background: rgba(30, 28, 24, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.36);
+  border-radius: 999px;
+  bottom: 14px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 0.6rem;
+  font-weight: 600;
+  gap: 7px;
+  left: 14px;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  padding: 6px 11px;
+  position: absolute;
+  text-transform: uppercase;
+  transform: translateY(6px);
+  transition:
+    opacity 500ms var(--nook-ease),
+    transform 500ms var(--nook-ease);
+  z-index: 2;
+}
+
+.nook-card__switch span {
+  background: #ffcf8a;
+  border-radius: 50%;
+  box-shadow: 0 0 10px 2px rgba(255, 196, 120, 0.8);
+  height: 6px;
+  width: 6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .nook-card__link:hover .nook-card__img--lit,
+  .nook-card__link:focus-visible .nook-card__img--lit {
+    opacity: 1;
+  }
+
+  .nook-card__link:hover .nook-card__img,
+  .nook-card__link:focus-visible .nook-card__img {
+    transform: scale(1.03);
+  }
+
+  .nook-card__link:hover .nook-card__switch,
+  .nook-card__link:focus-visible .nook-card__switch {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.nook-card__copy {
+  display: grid;
+  gap: 6px;
+  padding-top: 16px;
+}
+
+.nook-card__eyebrow {
+  color: var(--color-muted);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.nook-card h3 {
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: 1.55rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.nook-card__facts {
+  color: var(--color-muted);
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+.nook-card__foot {
+  align-items: baseline;
+  border-top: 1px solid rgba(38, 35, 31, 0.12);
+  display: flex;
+  justify-content: space-between;
+  margin: 8px 0 0;
+  padding-top: 10px;
+}
+
+.nook-card__foot span {
+  color: var(--color-moss);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.nook-card__foot strong {
+  color: var(--color-ink);
+  font-size: 0.92rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* An empty slot on a young shelf: honest about more kits to come. */
+.nook-slot {
+  align-content: center;
+  aspect-ratio: 4 / 5;
+  border: 1px dashed rgba(38, 35, 31, 0.24);
+  color: var(--color-muted);
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.nook-slot p {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 30ch;
+}
+
+.nook-slot strong {
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/* ── How it comes together ── */
+.nook-ritual {
+  border-top: 1px solid rgba(38, 35, 31, 0.12);
+  margin: clamp(56px, 8vw, 104px) auto 0;
+  max-width: 1280px;
+  padding: clamp(40px, 5vw, 64px) clamp(16px, 4vw, 56px) 0;
+}
+
+.nook-ritual h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0 0 clamp(28px, 4vw, 48px);
+  max-width: 16ch;
+}
+
+.nook-ritual ol {
+  display: grid;
+  gap: clamp(24px, 3vw, 48px);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nook-ritual li {
+  display: grid;
+  gap: 10px;
+}
+
+.nook-ritual li > span {
+  color: var(--color-clay);
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.nook-ritual h3 {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.nook-ritual p {
+  color: var(--color-muted);
+  font-size: 0.96rem;
+  line-height: 1.65;
+  margin: 0;
+  max-width: 36ch;
+}
+
+.nook-delivery {
+  align-items: baseline;
+  background: var(--color-soft);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  justify-content: space-between;
+  margin: clamp(48px, 6vw, 80px) auto 0;
+  max-width: calc(1280px - 2 * clamp(16px, 4vw, 56px));
+  padding: 22px clamp(18px, 3vw, 32px);
+  width: calc(100% - 2 * clamp(16px, 4vw, 56px));
+}
+
+.nook-delivery p {
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+  max-width: 72ch;
+}
+
+@media (max-width: 860px) {
+  .nook-hero {
+    border-radius: 20px;
+    grid-template-columns: 1fr;
+    padding-bottom: 64px;
+  }
+
+  .nook-hero__figure {
+    max-width: 340px;
+  }
+
+  .nook-ritual ol {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .nook-themes {
+    flex-wrap: nowrap;
+    margin-left: 0;
+    margin-right: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nook-themes::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nook-themes a {
+    flex: 0 0 auto;
+  }
+
+  .nook-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .nook-card h3 {
+    font-size: 1.15rem;
+  }
+
+  .nook-card__facts {
+    font-size: 0.76rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nook-card__img,
+  .nook-card__switch,
+  .nook-hero__figure img {
+    transition: none;
+  }
+}

@@ -10,6 +10,11 @@ import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
 import {GIFT_NOTE_KEY} from '~/lib/sky/gift';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
+import {
+  curatedDisplayTitle,
+  curatedImages,
+  getCuratedProduct,
+} from '~/lib/curatedProducts';
 
 export type CartLine = OptimisticCartLine<CartApiQueryFragment>;
 
@@ -32,7 +37,16 @@ export function CartLineItem({
   childrenMap: LineItemChildrenMap;
 }) {
   const {id, merchandise} = line;
-  const {product, title, image, selectedOptions} = merchandise;
+  const {product, title, selectedOptions} = merchandise;
+  // Curated kits keep their branded image and short name in the cart too.
+  const image = curatedImages(product.handle)[0] ?? merchandise.image;
+  const productTitle = curatedDisplayTitle(product);
+  // Curated kits are single-variant (one registry variant id); the option
+  // left by the supplier import (e.g. "Style: Glimmer Book Pavilion") only
+  // contradicts the kit's name.
+  const visibleOptions = getCuratedProduct(product.handle)
+    ? []
+    : selectedOptions;
   const giftNote = line.attributes?.find(
     (attribute) => attribute.key === GIFT_NOTE_KEY,
   )?.value;
@@ -201,7 +215,7 @@ export function CartLineItem({
               }}
             >
               <p>
-                <strong>{product.title}</strong>
+                <strong>{productTitle}</strong>
               </p>
             </Link>
             {line.attributes?.some(
@@ -229,7 +243,7 @@ export function CartLineItem({
             ) : null}
             <ProductPrice price={line?.cost?.totalAmount} />
             <ul>
-              {selectedOptions.map((option) => (
+              {visibleOptions.map((option) => (
                 <li key={option.name}>
                   <small>
                     {option.name}: {option.value}
@@ -244,7 +258,7 @@ export function CartLineItem({
         {lineItemChildren ? (
           <div>
             <p id={childrenLabelId} className="sr-only">
-              Line items with {product.title}
+              Line items with {productTitle}
             </p>
             <ul
               aria-labelledby={childrenLabelId}

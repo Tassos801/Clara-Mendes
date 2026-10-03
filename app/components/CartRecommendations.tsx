@@ -11,6 +11,7 @@ import {
   formatCardPriceLabel,
 } from '~/lib/productCardPricing';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
+import {curatedDisplayTitle, withCuratedImages} from '~/lib/curatedProducts';
 
 const VISIBLE_RECOMMENDATIONS = 3;
 
@@ -82,11 +83,12 @@ export function CartRecommendations({
 
 function CartRecommendationRow({
   onNavigate,
-  product,
+  product: storefrontProduct,
 }: {
   onNavigate?: () => void;
   product: ClaraCardProduct;
 }) {
+  const product = withCuratedImages(storefrontProduct);
   const candidateVariant = product.cardVariant?.nodes?.[0];
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
   const variant = candidateVariant;
@@ -122,7 +124,7 @@ function CartRecommendationRow({
           prefetch="intent"
           to={`/products/${product.handle}`}
         >
-          {product.title}
+          {curatedDisplayTitle(product)}
         </Link>
         {priceLabel ? (
           <span className="cart-recs-price">{priceLabel}</span>

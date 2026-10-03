@@ -9,9 +9,89 @@
     "fulfillmentVerified": true,
     "supplier": "CJdropshipping",
     "supplierSku": "CJYZ280136101AZ",
+    "name": "Twilight Library",
+    "theme": "libraries",
+    "tagline": "A candlelit reading room, small enough to live between your books.",
     "description": "Make a little room for imagination. Build a miniature library to sit between your favourite books: a quiet project for slow afternoons and a thoughtful detail for a collected home. This wooden DIY kit has 194 pieces and battery-powered lighting with a touch switch. Assembly is required; the supplier recommends ages 14 and over and estimates 2–3 hours to build. The assembled scene measures 12 cm wide × 10.5 cm deep × 17.5 cm high. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
-    "details": "194-piece wooden DIY kit with battery-powered lighting and a touch switch. Assembly required. Recommended for ages 14+. Supplier-estimated build time: 2–3 hours. Assembled size: 12 × 10.5 × 17.5 cm (width × depth × height). Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. Build time is the supplier's estimate. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "pieces": 194,
+      "buildHours": [2, 3],
+      "minAge": 14,
+      "sizeCm": [12, 10.5, 17.5],
+      "lighting": "Battery-powered, with a touch switch"
+    },
+    "processing": "1–3 days",
     "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
-    "verifiedDeliveryCountries": ["CY", "DE"]
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/twilight-library-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/01-studio.webp",
+        "alt": "Twilight Library book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "outline": [
+            [452, 197],
+            [577, 197],
+            [577, 187],
+            [615, 185],
+            [620, 170],
+            [638, 157],
+            [662, 157],
+            [680, 170],
+            [686, 185],
+            [723, 187],
+            [724, 197],
+            [784, 197],
+            [784, 600],
+            [516, 611],
+            [453, 584]
+          ]
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Twilight Library book nook lit up on a desk in front of a bookshelf",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [80, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/03-front.webp",
+        "alt": "Front view of the lit Twilight Library: tall bookshelves, a fireplace and a red reading chair",
+        "from": {
+          "layout": "extend",
+          "source": "supplier-6.jpg",
+          "crop": [0, 0, 498, 800]
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/04-details.webp",
+        "alt": "Four close-up details of the Twilight Library interior: shelves and a mantel clock, the fireplace, a grandfather clock and the reading table",
+        "from": {
+          "layout": "grid",
+          "source": "supplier-4.jpg",
+          "tiles": [
+            [30, 30, 218, 300],
+            [292, 30, 218, 300],
+            [294, 472, 218, 300],
+            [554, 472, 218, 300]
+          ]
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/05-pieces.webp",
+        "alt": "The kit's miniature furniture and fittings laid out on a wooden table",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-5.jpg",
+          "crop": [80, 0, 640, 800]
+        }
+      }
+    ]
   }
 ]
