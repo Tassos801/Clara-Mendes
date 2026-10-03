@@ -1179,3 +1179,13 @@ added Plant Pots to the type map and made the series link matching live PDPs
 with localized prices and honest untracked/import copy.
 
 Source: [Pastel Forms Plant Pots](../pastel-plant-pots.md).
+
+## 2026-10-03 - CJ book nook pilot
+
+Imported and mapped Twilight Library at €69, restricted it to the two Clara
+Mendes storefront publications, and verified the dedicated CJ-only CY/DE
+delivery profile. Added a generic verified curated-product registry and
+book-nook-specific merchandising and delivery copy. Updated the Shopify
+shipping policy and documented IOSS, retail-value VAT uncertainty, conservative
+margin planning and the required supplier-payment step. Refreshed the local
+base to current main before validating; unrelated releases are preserved.

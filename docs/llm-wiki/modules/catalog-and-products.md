@@ -338,3 +338,18 @@ five-image gallery (flat artwork first, then four tailored room scenes from
 `release` refuses to run until every catalog size is mapped in Prodigi and the
 gallery reads back complete. Sci-fi & Cinema is the first collection with
 16×20 (€39.99) and 20×24 (€49.99) staged this way.
+
+## 2026-10-03 - CJ book nook pilot
+
+Twilight Library is the first curated supplier kit. `data/curated-products.json`
+and `app/lib/curatedProducts.ts` add verified curated handles to the existing
+allowlist and derive category navigation. Shopify Active/publication remains
+the second gate. Release needs product, variant and delivery-profile ids, a
+verified supplier connection, shipping copy and checked destinations. Unknown
+supplier imports are still hidden. Kit copy and processing differ from prints;
+`ProductShippingText` keeps existing printed-product and plant-pot terms.
+
+See [CJ book nook launch](../../book-nooks-launch.md) for the exact SKU,
+Shopify ids, €69 CY/DE delivery profile, IOSS configuration, margin assumptions
+and first-order payment checks. A supplier payment and physical sample remain
+unverified; automatic CJ payment was not enabled.

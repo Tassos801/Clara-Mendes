@@ -11,9 +11,13 @@ import {
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
+import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
+  ...(releasedCuratedProductTypes().includes('Book Nooks')
+    ? [{to: '/collections/all?type=Book+Nooks', label: 'Book Nooks'}]
+    : []),
   // Each personalised product gets its own entry once its flag flips.
   // Your Sky is a feature page, not a product URL.
   ...(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]
