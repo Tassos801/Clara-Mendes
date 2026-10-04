@@ -101,6 +101,71 @@ shipping copy. Storefront API test carts returned free tracked delivery and
 option. All three isolated test carts were emptied. The shipping policy was
 read back from Shopify with the kit section present.
 
+## Ten-kit lineup, 2026-10-04
+
+The owner approved nine more kits at €69. Each is set up like the pilot:
+type `Book Nooks`, vendor `Clara Mendes`, taxable, only the Clara Mendes and
+Clara Mendes Headless publications, delivery profile `Book Nooks — CJ`, and
+connected in CJ to the China warehouse with CJPacket Liquid Line as the
+default. Variant ids are in the registry; the number is the shelf order.
+
+| No. | Kit               | Theme       | Supplier SKU    | Shopify product  | Cyprus quote               |
+| --- | ----------------- | ----------- | --------------- | ---------------- | -------------------------- |
+| 01  | Twilight Library  | `libraries` | CJYZ280136101AZ | `16116237140302` | $9.62 + $21.17 = $30.79    |
+| 02  | Alley After Rain  | `streets`   | CJYZ200795802BY | `16116510359886` | $7.32 + $21.17 = $28.49    |
+| 03  | Firefly Forest    | `gardens`   | CJYZ200666309IR | `16116525662542` | $7.96 + $21.55 = $29.51    |
+| 04  | Sorcerer's Shop   | `magic`     | CJYZ239182902BY | `16118275965262` | $7.96 + $17.16 = $25.12    |
+| 05  | Sea Breeze        | `streets`   | CJYZ176390802BY | `16118279373134` | $8.60 + $23.89 = $32.49    |
+| 06  | Christmas Fantasy | `gardens`   | CJYZ188445602BY | `16118272393550` | $7.96 + $21.35 = $29.31    |
+| 07  | Magic Meal        | `magic`     | CJYZ231633101AZ | `16118274687310` | $8.13 + $20.21 = $28.34    |
+| 08  | Colmar Town       | `streets`   | CJYZ211860402BY | `16118277570894` | $9.29 + $20.59 = $29.88    |
+| 09  | Eternal Fragrance | `gardens`   | CJYZ239788601AZ | `16118273868110` | $8.13 + $20.97 = $29.10    |
+| 10  | Underwater World  | `magic`     | CJYZ200666313MN | `16118281306446` | $7.96 + freight not quoted |
+
+The Cyprus quote is the CJ list price plus Liquid Line freight and $3.50
+duty, before VAT, as CJ showed it on 2026-10-04. Underwater World shares Firefly
+Forest's CJ listing; its freight was not quoted separately. Every quoted kit
+except Sea Breeze is at or below the pilot's $30.79, so the pilot's margin
+table is the conservative case. Sea Breeze is $1.70 higher: about €1.56
+less, roughly €19.53 contribution before the merchant VAT reserve and €8.51
+after it. Germany was quoted for one of the new kits (CJPacket
+Ordinary, $11.76, 8–18 days; the pilot's lane was $11.58). The actual payment
+quote governs each order.
+
+The suppliers publish no piece counts or build times for these nine, so the
+storefront shows the finished size instead and claims neither. The details
+say the lights run on button-cell batteries and that batteries and glue may
+not be included. Age 15+ is stated only where the manufacturer shows it.
+Physical quality has not been checked for any of them.
+
+Storefront API test carts for all ten kits returned a €69.00 total with
+`Tracked delivery — included` at €0 and the expected SKU for Cyprus and
+Germany; France returned no delivery option. All test carts were emptied.
+
+## Listing a kit through CJ
+
+What the nine kits showed, in the order it matters:
+
+1. **CJ List publishes everywhere.** The product is created Active on every
+   Shopify sales channel. Straight after listing, restrict it to Clara Mendes
+   and Clara Mendes Headless. The Shopify Catalog (agentic) channel cannot
+   be switched off there.
+2. **Pick the lane and profile in the list form.** Choose the
+   `Book Nooks — CJ` delivery profile, and set Cyprus to CJPacket Liquid
+   Line. CJ may default to CJPacket Eub (12–50 days, partly untracked).
+   Set product type and vendor through the form too.
+3. **One Shopify listing per CJ product.** CJ refuses a second listing
+   ("This item has already been listed"), even for another design in a
+   multi-design listing. Either find the design's own CJ listing (Sea
+   Breeze) or duplicate an existing kit in Shopify as a draft without media.
+   Then change the title, description, option value and SKU, and in CJ open
+   Store Products → Unconnected → Specific Sync, match the design and connect
+   it with Liquid Line and the profile (Underwater World). Set it Active only
+   after CJ reads the connection back.
+4. **Read back.** Check the publications (two), the profile, the CJ
+   connection and SKU, and run a test cart per destination before setting
+   `released: true`.
+
 ## First paid order
 
 1. Confirm the Shopify order imports to CJ with this exact variant/SKU and

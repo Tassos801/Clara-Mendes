@@ -118,14 +118,17 @@ export function bookNookSpecRows(specs?: CuratedSpecs | null) {
   return rows;
 }
 
-/** The lowest-friction fact line for a card: "194 pieces · 2–3 hours". */
+/**
+ * The lowest-friction fact line for a card: "194 pieces · 2–3 hours", or
+ * the finished size when the supplier publishes neither.
+ */
 export function bookNookFactLine(specs?: CuratedSpecs | null) {
-  return [
+  const facts = [
     specs?.pieces ? `${specs.pieces} pieces` : null,
     formatRange(specs?.buildHours, 'hour'),
-  ]
-    .filter(Boolean)
-    .join(' · ');
+  ].filter(Boolean);
+  if (facts.length) return facts.join(' · ');
+  return specs?.sizeCm?.length === 3 ? `${specs.sizeCm.join(' × ')} cm` : '';
 }
 
 type ShelfProduct = {handle: string};

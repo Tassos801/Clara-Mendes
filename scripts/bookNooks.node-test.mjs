@@ -45,8 +45,9 @@ test('every released book nook is ready for the shelf', async () => {
       product.processing,
       `${product.handle} needs a processing estimate`,
     );
-    assert.ok(product.specs?.pieces, `${product.handle} needs a piece count`);
+    // Pieces and build time are optional: many suppliers publish neither.
     assert.ok(product.specs?.sizeCm?.length === 3, `${product.handle} size`);
+    assert.ok(product.specs?.lighting, `${product.handle} lighting`);
     assert.ok(
       (product.images?.length ?? 0) >= 2,
       `${product.handle} needs a studio and a lamplit image`,
@@ -191,6 +192,11 @@ test('kit facts read the same on every card and product page', () => {
     {label: 'Light', value: 'Battery-powered, with a touch switch'},
   ]);
   assert.equal(bookNookFactLine(nook.specs), '194 pieces · 2–3 hours');
+  assert.equal(
+    bookNookFactLine({sizeCm: [16.5, 9.2, 22]}),
+    '16.5 × 9.2 × 22 cm',
+  );
+  assert.equal(bookNookFactLine({}), '');
   assert.deepEqual(buildLevel({buildHours: [1, 2]}), {
     label: 'Quick build',
     time: '1–2 hours',

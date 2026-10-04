@@ -18,9 +18,10 @@
  *   photo   crop [x, y, w, h] -> cover 4:5 -> grade + vignette
  *   extend  crop a clean strip, widen it to 4:5 over a blurred copy of
  *           itself (for shots with infographic panels beside the object)
- *   studio  polygon `outline` around an object shot on white -> placed on
- *           linen with a soft floor shadow
- *   grid    2-column grid of detail `tiles` on linen
+ *   studio  polygon `outline` (or a `crop` rectangle) around an object shot
+ *           on white -> placed on linen with a soft floor shadow
+ *   grid    2-column grid of detail `tiles` on linen; a tile is a crop of
+ *           the source or {source, crop} from another photo
  *
  * A product's optional `cutout` is derived from its studio image: the
  * object on a transparent 600 x 750 canvas, for the homepage shelf.
@@ -84,13 +85,24 @@ export function recipeProblems(product) {
       if (!rect(from.crop))
         problems.push(`${label}: crop must be [x, y, w, h]`);
     } else if (from.layout === 'studio') {
-      if (!Array.isArray(from.outline) || from.outline.length < 3)
-        problems.push(`${label}: outline needs at least three [x, y] points`);
+      if (
+        !rect(from.crop) &&
+        (!Array.isArray(from.outline) || from.outline.length < 3)
+      )
+        problems.push(
+          `${label}: studio needs an outline of three or more [x, y] points, or a crop`,
+        );
     } else if (from.layout === 'grid') {
       if (!Array.isArray(from.tiles) || from.tiles.length < 2)
         problems.push(`${label}: grid needs at least two tiles`);
-      else if (!from.tiles.every(rect))
-        problems.push(`${label}: every tile must be [x, y, w, h]`);
+      else if (
+        !from.tiles.every(
+          (tile) => rect(tile) || (tile?.source && rect(tile.crop)),
+        )
+      )
+        problems.push(
+          `${label}: every tile must be [x, y, w, h] or {source, crop}`,
+        );
     } else {
       problems.push(`${label}: unknown layout "${from.layout}"`);
     }
@@ -242,6 +254,18 @@ function linenBackdrop(shadow) {
   );
 }
 
+/** A studio recipe's outline; a plain crop rectangle stands in for one. */
+export function studioOutline(from) {
+  if (from.outline) return from.outline;
+  const [x, y, w, h] = from.crop;
+  return [
+    [x, y],
+    [x + w, y],
+    [x + w, y + h],
+    [x, y + h],
+  ];
+}
+
 /**
  * An object shot on white, isolated by a hand-drawn outline (everything
  * outside turns white), then multiplied onto linen so the white ground
@@ -249,7 +273,7 @@ function linenBackdrop(shadow) {
  */
 async function studioLayout(sharp, file, from) {
   const {width, height} = await sharp(file).metadata();
-  const points = from.outline;
+  const points = studioOutline(from);
   const xs = points.map(([x]) => x);
   const ys = points.map(([, y]) => y);
   const pad = 4;
@@ -431,7 +455,12 @@ async function gridLayout(sharp, file, from) {
   );
   const layers = [];
   for (const [index, tile] of from.tiles.entries()) {
-    const cropped = await extract(sharp, file, tile)
+    // A tile is a crop of the recipe's source, or {source, crop} of another.
+    const cropped = await extract(
+      sharp,
+      Array.isArray(tile) ? file : path.join(path.dirname(file), tile.source),
+      Array.isArray(tile) ? tile : tile.crop,
+    )
       .resize(cellWidth, cellHeight, {fit: 'cover', kernel: 'lanczos3'})
       .toBuffer();
     layers.push({
@@ -485,7 +514,7 @@ async function generate(products) {
       const file = path.join(sourceDir(product.handle), from.source);
       await writeFile(
         publicPath(product.cutout),
-        await cutoutImage(sharp, file, from.outline),
+        await cutoutImage(sharp, file, studioOutline(from)),
       );
       console.log(`${product.cutout}  (cutout from ${from.source})`);
     }

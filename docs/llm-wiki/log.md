@@ -1202,3 +1202,18 @@ renders the kit. Shopify product media and the supplier variant label remain
 to be updated in Admin.
 
 Source: [Book nook catalogue](../book-nooks-catalog.md).
+
+## 2026-10-04 - Ten book nooks
+
+Released nine more CJ book nooks at €69 beside Twilight Library: Alley After
+Rain, Firefly Forest, Sorcerer's Shop, Sea Breeze, Christmas Fantasy, Magic
+Meal, Colmar Town, Eternal Fragrance and Underwater World. Each is restricted
+to the two storefront publications, uses the `Book Nooks — CJ` profile and
+CJPacket Liquid Line, and passed €69 test carts for Cyprus and Germany.
+Branded image sets and shelf cut-outs were generated with the existing
+pipeline (studio crops and cross-photo grid tiles were added). Cards show the
+finished size when a supplier publishes no piece count or build time.
+Twilight Library's checkout option now reads `Style: Twilight Library`.
+Shopify product media is still the supplier photography.
+
+Source: [CJ book nook launch](../book-nooks-launch.md).

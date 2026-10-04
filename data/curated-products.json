@@ -93,5 +93,566 @@
         }
       }
     ]
+  },
+  {
+    "handle": "alley-after-rain-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16116510359886",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61053681533262",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ200795802BY",
+    "name": "Alley After Rain",
+    "theme": "streets",
+    "tagline": "A quiet lane just after the rain, lamplit and dusted with blossom.",
+    "description": "A quiet lane just after the rain: a lamplit shopfront, potted flowers and cherry blossom, small enough to stand between your books. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 16.5 cm wide × 9.2 cm deep × 22 cm high and recommends it for ages 15 and over. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "minAge": 15,
+      "sizeCm": [16.5, 9.2, 22],
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/alley-after-rain-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/alley-after-rain-diy-book-nook-kit/01-studio.webp",
+        "alt": "Alley After Rain book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-5.jpg",
+          "crop": [232, 35, 334, 714]
+        }
+      },
+      {
+        "src": "/images/curated/alley-after-rain-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Alley After Rain book nook lit up between books on a shelf",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-6.jpg",
+          "crop": [80, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/alley-after-rain-diy-book-nook-kit/03-angle.webp",
+        "alt": "Alley After Rain seen from the side, with its paper-lantern light glowing",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [0, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/alley-after-rain-diy-book-nook-kit/04-detail.webp",
+        "alt": "Close-up of the flower stall and open sign inside Alley After Rain",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-4.jpg",
+          "crop": [80, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/alley-after-rain-diy-book-nook-kit/05-street.webp",
+        "alt": "The lamplit lane inside Alley After Rain, beside a stack of books",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-3.jpg",
+          "crop": [5, 0, 640, 800]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "firefly-forest-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16116525662542",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61053713318222",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ200666309IR",
+    "name": "Firefly Forest",
+    "theme": "gardens",
+    "tagline": "A hidden tree house in a green wood, with fireflies in the leaves.",
+    "description": "A tree house hidden in a green wood, with mushrooms, ferns, butterflies and tiny firefly lights under a clear curved roof. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 15.9 cm wide × 9.2 cm deep × 22.5 cm high. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [15.9, 9.2, 22.5],
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/firefly-forest-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/firefly-forest-diy-book-nook-kit/01-studio.webp",
+        "alt": "Firefly Forest book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "crop": [136, 0, 532, 800]
+        }
+      },
+      {
+        "src": "/images/curated/firefly-forest-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Firefly Forest book nook glowing between books",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [0, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/firefly-forest-diy-book-nook-kit/03-tree-house.webp",
+        "alt": "Close-up of the brick tree house and round door inside Firefly Forest",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-3.jpg",
+          "crop": [140, 255, 516, 645]
+        }
+      },
+      {
+        "src": "/images/curated/firefly-forest-diy-book-nook-kit/04-mushrooms.webp",
+        "alt": "Red mushrooms, ferns and a butterfly from the Firefly Forest roof garden",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-6.jpg",
+          "crop": [170, 615, 456, 570]
+        }
+      },
+      {
+        "src": "/images/curated/firefly-forest-diy-book-nook-kit/05-shelf.webp",
+        "alt": "Firefly Forest lit at night on a bookshelf",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-8.jpg",
+          "crop": [60, 220, 664, 830]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "sorcerer-s-shop-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118275965262",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058598666574",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ239182902BY",
+    "name": "Sorcerer's Shop",
+    "theme": "magic",
+    "tagline": "A green-fronted magic shop with a lamp in the window.",
+    "description": "A green-fronted sorcerer's shop with a lamp in the window, notices pinned by the door and a counter full of curious things. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 13.5 cm wide × 9 cm deep × 15 cm high. It is one of the smaller kits on the shelf. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [13.5, 9, 15],
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/sorcerer-s-shop-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/sorcerer-s-shop-diy-book-nook-kit/01-studio.webp",
+        "alt": "Sorcerer's Shop book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-5.jpg",
+          "crop": [171, 12, 457, 776]
+        }
+      },
+      {
+        "src": "/images/curated/sorcerer-s-shop-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Sorcerer's Shop book nook lit up on a desk among books and newspapers",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-3.jpg",
+          "crop": [65, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/sorcerer-s-shop-diy-book-nook-kit/03-evening.webp",
+        "alt": "The Sorcerer's Shop window glowing in the evening",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-4.jpg",
+          "crop": [70, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/sorcerer-s-shop-diy-book-nook-kit/04-side.webp",
+        "alt": "Sorcerer's Shop from the side, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-6.jpg",
+          "crop": [117, 11, 605, 778]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "sea-breeze-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118279373134",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058630582606",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ176390802BY",
+    "name": "Sea Breeze",
+    "theme": "streets",
+    "tagline": "A whitewashed seaside alley in blue and white, lit for a summer evening.",
+    "description": "A whitewashed alley by the sea, with blue shutters, balconies and a lantern for a summer evening, built to stand between your books. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 15.9 cm wide × 9.2 cm deep × 20.5 cm high and recommends it for ages 15 and over. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [15.9, 9.2, 20.5],
+      "minAge": 15,
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/sea-breeze-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/sea-breeze-diy-book-nook-kit/01-studio.webp",
+        "alt": "Sea Breeze book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "crop": [139, 40, 523, 721]
+        }
+      },
+      {
+        "src": "/images/curated/sea-breeze-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Sea Breeze book nook lit up between books on a shelf",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [150, 0, 640, 800]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "christmas-fantasy-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118272393550",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058579988814",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ188445602BY",
+    "name": "Christmas Fantasy",
+    "theme": "gardens",
+    "tagline": "A snowy street on Christmas Eve, wrapped like a present.",
+    "description": "A snowy street on Christmas Eve, with a red-brick cottage, a decorated tree and a shop window full of gifts, all inside a box tied with a golden bow. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 15 cm wide × 9.8 cm deep × 18 cm high and recommends it for ages 15 and over. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "minAge": 15,
+      "sizeCm": [15, 9.8, 18],
+      "lighting": "Warm and blue LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/christmas-fantasy-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/christmas-fantasy-diy-book-nook-kit/01-studio.webp",
+        "alt": "Christmas Fantasy book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "crop": [108, 0, 584, 800]
+        }
+      },
+      {
+        "src": "/images/curated/christmas-fantasy-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Christmas Fantasy book nook glowing beside a stack of books",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [110, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/christmas-fantasy-diy-book-nook-kit/03-details.webp",
+        "alt": "Four close-ups of Christmas Fantasy: the clock-front cottage, a wreathed door, the gift shop and Santa's cottage",
+        "from": {
+          "layout": "grid",
+          "source": "supplier-3.jpg",
+          "tiles": [
+            {
+              "source": "supplier-3.jpg",
+              "crop": [35, 0, 415, 535]
+            },
+            {
+              "source": "supplier-5.jpg",
+              "crop": [37, 0, 419, 540]
+            },
+            {
+              "source": "supplier-6.jpg",
+              "crop": [30, 0, 432, 557]
+            },
+            {
+              "source": "supplier-8.jpg",
+              "crop": [66, 0, 361, 465]
+            }
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "magic-meal-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118274687310",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058594144590",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ231633101AZ",
+    "name": "Magic Meal",
+    "theme": "magic",
+    "tagline": "A slate-roofed wizard's kitchen of potions, candles and spellbooks.",
+    "description": "A slate-roofed kitchen for a wizard's supper, with potion jars, candles, hanging spellbooks and a table laid under a lantern. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 16.5 cm wide × 10.7 cm deep × 24 cm high. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [16.5, 10.7, 24],
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/magic-meal-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/magic-meal-diy-book-nook-kit/01-studio.webp",
+        "alt": "Magic Meal book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-5.jpg",
+          "crop": [221, 0, 380, 796]
+        }
+      },
+      {
+        "src": "/images/curated/magic-meal-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Magic Meal book nook lit up between books",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-2.jpg",
+          "crop": [40, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/magic-meal-diy-book-nook-kit/03-details.webp",
+        "alt": "Four close-ups of Magic Meal: a wand on a scroll, potion jars, a balcony and hanging spellbooks",
+        "from": {
+          "layout": "grid",
+          "source": "supplier-4.jpg",
+          "tiles": [
+            [66, 20, 283, 365],
+            [452, 20, 283, 365],
+            [66, 400, 283, 365],
+            [452, 400, 283, 365]
+          ]
+        }
+      },
+      {
+        "src": "/images/curated/magic-meal-diy-book-nook-kit/04-side.webp",
+        "alt": "Magic Meal from the side, showing its slate roof and arched windows",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-3.jpg",
+          "crop": [127, 0, 673, 800]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "colmar-town-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118277570894",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058607251790",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ211860402BY",
+    "name": "Colmar Town",
+    "theme": "streets",
+    "tagline": "A half-timbered canal street, with flowers on every sill.",
+    "description": "A canal street in the half-timbered style of Colmar, with flower boxes, a café sign and lamplit windows, set inside a storybook cover for your shelf. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 15.9 cm wide × 9.2 cm deep × 20.5 cm high. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [15.9, 9.2, 20.5],
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/colmar-town-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/colmar-town-diy-book-nook-kit/01-studio.webp",
+        "alt": "Colmar Town book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "crop": [132, 0, 536, 800]
+        }
+      },
+      {
+        "src": "/images/curated/colmar-town-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Colmar Town book nook lit up between books",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [0, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/colmar-town-diy-book-nook-kit/03-front.webp",
+        "alt": "Colmar Town from the front, its canal street lit between books",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-3.jpg",
+          "crop": [46, 300, 698, 873]
+        }
+      },
+      {
+        "src": "/images/curated/colmar-town-diy-book-nook-kit/04-detail.webp",
+        "alt": "Close-up of the flower-filled balconies and café inside Colmar Town",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-4.jpg",
+          "crop": [22, 250, 748, 935]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "eternal-fragrance-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118273868110",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058589032782",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ239788601AZ",
+    "name": "Eternal Fragrance",
+    "theme": "gardens",
+    "tagline": "A white glasshouse full of lavender, lace and chandelier light.",
+    "description": "A white glasshouse full of lavender, with a lace gown, a little piano and a chandelier glowing at its heart. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 16.7 cm wide × 10.7 cm deep × 25 cm high. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [16.7, 10.7, 25],
+      "lighting": "LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/eternal-fragrance-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/eternal-fragrance-diy-book-nook-kit/01-studio.webp",
+        "alt": "Eternal Fragrance book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-4.jpg",
+          "crop": [233, 14, 342, 762]
+        }
+      },
+      {
+        "src": "/images/curated/eternal-fragrance-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Eternal Fragrance book nook lit among blue hydrangeas and draped tulle",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-2.jpg",
+          "crop": [80, 0, 640, 800]
+        }
+      },
+      {
+        "src": "/images/curated/eternal-fragrance-diy-book-nook-kit/03-details.webp",
+        "alt": "Four close-ups of Eternal Fragrance: lavender, the piano, a pearl column and a flower cake",
+        "from": {
+          "layout": "grid",
+          "source": "supplier-3.jpg",
+          "tiles": [
+            [44, 0, 307, 394],
+            [449, 0, 307, 394],
+            [44, 406, 307, 394],
+            [449, 406, 307, 394]
+          ]
+        }
+      },
+      {
+        "src": "/images/curated/eternal-fragrance-diy-book-nook-kit/04-side.webp",
+        "alt": "Eternal Fragrance from the side, showing its glass roof",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-5.jpg",
+          "crop": [193, 15, 430, 769]
+        }
+      }
+    ]
+  },
+  {
+    "handle": "underwater-world-diy-book-nook-kit",
+    "productType": "Book Nooks",
+    "released": true,
+    "shopifyProductId": "gid://shopify/Product/16118281306446",
+    "shopifyVariantId": "gid://shopify/ProductVariant/61058675310926",
+    "shippingProfileId": "gid://shopify/DeliveryProfile/147927040334",
+    "fulfillmentVerified": true,
+    "supplier": "CJdropshipping",
+    "supplierSku": "CJYZ200666313MN",
+    "name": "Underwater World",
+    "theme": "magic",
+    "tagline": "A little train under the sea, lit blue among coral and shells.",
+    "description": "A little train travelling under the sea, past coral, shells and sea grass, lit in deep blue. This wooden DIY kit has built-in LED lighting; assembly is required. The supplier lists the finished size as 15.9 cm wide × 9.2 cm deep × 22.5 cm high. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "details": "Wooden DIY kit; assembly required. The lights run on button-cell batteries; batteries and glue may not be included. Curated by Clara Mendes and supplied in the manufacturer's packaging.",
+    "specs": {
+      "sizeCm": [15.9, 9.2, 22.5],
+      "lighting": "Blue and warm LED, battery-powered"
+    },
+    "processing": "1–3 days",
+    "shipping": "This kit ships separately from art prints, directly from our fulfilment partner in China. Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. These are estimates, and customs or carrier delays can extend them. Delivery is initially available to Cyprus and Germany. We arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on delivery, contact us before paying so we can check the shipment.",
+    "verifiedDeliveryCountries": ["CY", "DE"],
+    "cutout": "/images/curated/underwater-world-diy-book-nook-kit/cutout.webp",
+    "images": [
+      {
+        "src": "/images/curated/underwater-world-diy-book-nook-kit/01-studio.webp",
+        "alt": "Underwater World book nook, assembled, on a linen backdrop",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "crop": [155, 109, 490, 615]
+        }
+      },
+      {
+        "src": "/images/curated/underwater-world-diy-book-nook-kit/02-lamplight.webp",
+        "alt": "Underwater World book nook glowing blue among coral and shells",
+        "from": {
+          "layout": "photo",
+          "source": "supplier-1.jpg",
+          "crop": [0, 0, 640, 800]
+        }
+      }
+    ]
   }
 ]
