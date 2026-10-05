@@ -42,3 +42,5 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [CJ Book Nook Launch](../book-nooks-launch.md) - Verified supplier kit, scoped delivery profile, retail price, IOSS and first-order checks.
 - [Book Nook Catalogue](../book-nooks-catalog.md) - Themes, `/book-nooks`, the homepage shelf, branded image pipeline and the steps for adding a kit.
+
+- [Book Nook Social Campaign](../social/book-nooks-launch-2026-10.md) - Four refined Twilight Library images scheduled to Facebook and Instagram in October, with exact captions and queue evidence.

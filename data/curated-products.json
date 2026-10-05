@@ -27,8 +27,8 @@
     "cutout": "/images/curated/twilight-library-diy-book-nook-kit/cutout.webp",
     "images": [
       {
-        "src": "/images/curated/twilight-library-diy-book-nook-kit/01-studio.webp",
-        "alt": "Twilight Library book nook, assembled, on a linen backdrop",
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/01-linen-studio-v2.webp",
+        "alt": "Twilight Library, photographed kit on a generated linen studio setting",
         "from": {
           "layout": "studio",
           "source": "supplier-2.jpg",
@@ -48,7 +48,106 @@
             [784, 600],
             [516, 611],
             [453, 584]
-          ]
+          ],
+          "background": "brand-scenes/01-linen-studio.png",
+          "placement": {
+            "height": 850,
+            "centerX": 500,
+            "baseY": 1090
+          }
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/02-reading-shelf-v2.webp",
+        "alt": "Twilight Library, photographed kit between books in a generated oak shelf setting",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "outline": [
+            [452, 197],
+            [577, 197],
+            [577, 187],
+            [615, 185],
+            [620, 170],
+            [638, 157],
+            [662, 157],
+            [680, 170],
+            [686, 185],
+            [723, 187],
+            [724, 197],
+            [784, 197],
+            [784, 600],
+            [516, 611],
+            [453, 584]
+          ],
+          "background": "brand-scenes/02-reading-shelf.png",
+          "placement": {
+            "height": 770,
+            "centerX": 500,
+            "baseY": 1030
+          }
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/03-sage-reading-corner-v2.webp",
+        "alt": "Twilight Library, photographed kit on an oak console in a generated sage reading corner",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "outline": [
+            [452, 197],
+            [577, 197],
+            [577, 187],
+            [615, 185],
+            [620, 170],
+            [638, 157],
+            [662, 157],
+            [680, 170],
+            [686, 185],
+            [723, 187],
+            [724, 197],
+            [784, 197],
+            [784, 600],
+            [516, 611],
+            [453, 584]
+          ],
+          "background": "brand-scenes/03-sage-reading-corner.png",
+          "placement": {
+            "height": 760,
+            "centerX": 500,
+            "baseY": 1005
+          }
+        }
+      },
+      {
+        "src": "/images/curated/twilight-library-diy-book-nook-kit/04-evening-oak-v2.webp",
+        "alt": "Twilight Library, photographed kit on a generated evening reading desk",
+        "from": {
+          "layout": "studio",
+          "source": "supplier-2.jpg",
+          "outline": [
+            [452, 197],
+            [577, 197],
+            [577, 187],
+            [615, 185],
+            [620, 170],
+            [638, 157],
+            [662, 157],
+            [680, 170],
+            [686, 185],
+            [723, 187],
+            [724, 197],
+            [784, 197],
+            [784, 600],
+            [516, 611],
+            [453, 584]
+          ],
+          "background": "brand-scenes/04-evening-oak.png",
+          "placement": {
+            "height": 750,
+            "centerX": 500,
+            "baseY": 955
+          }
         }
       },
       {
