@@ -1254,3 +1254,13 @@ curated image presence and Git whitespace. Used an isolated checkout based on
 current main so unrelated local catalogue work remains intact.
 
 Source: [Book nook catalogue](../book-nooks-catalog.md).
+
+## 2026-10-05 - Book nook Admin tidy
+
+Renamed the supplier `Color` and `Please Input` options on the nine new book
+nooks to `Style` and `Language` and replaced their CJ-typed Admin descriptions
+with the registry copy, battery note and shipping paragraph. Storefront API
+readback confirmed unchanged variant ids and SKUs; CJ still shows all ten
+connected on Liquid Line. Underwater World still has no Shopify media.
+
+Source: [Book nook catalogue](../book-nooks-catalog.md).
