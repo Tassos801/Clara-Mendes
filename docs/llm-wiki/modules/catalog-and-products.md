@@ -367,3 +367,14 @@ name, theme, a kit spec grid and other nooks as related products.
 cards, the product gallery, search, cart lines and recommendations; Shopify
 media itself is unchanged. See [Book nook catalogue](../../book-nooks-catalog.md)
 for the image pipeline and the add-a-kit steps.
+
+## 2026-10-04 - Ten book nooks
+
+Ten released nooks across four themes (Libraries & Studies 1, Streets &
+Shops 3, Magic & Myth 3, Gardens & Seasons 3); registry order is the shelf
+number. Pieces, build time and age are optional specs; size and lighting are
+required, and `bookNookFactLine` falls back to the size. Studio image recipes
+accept a `crop` rectangle in place of an outline, and grid tiles may be
+`{source, crop}` from another supplier photo. CJ listing pitfalls (all
+channels on list, Cyprus lane, one listing per CJ product) are recorded in
+the [CJ book nook launch](../../book-nooks-launch.md#listing-a-kit-through-cj).
