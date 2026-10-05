@@ -1,6 +1,6 @@
 # Book nook catalogue
 
-Prepared 2026-10-03. How book nooks are presented on the storefront, and the
+Prepared 2026-10-03; image refinement added 2026-10-04 and Shopify media applied 2026-10-05. How book nooks are presented on the storefront, and the
 steps for adding the next kit. Supplier, delivery-profile, VAT and first-order
 checks for each kit follow the [CJ book nook launch](book-nooks-launch.md).
 
@@ -44,29 +44,58 @@ turns them into one consistent set per kit:
 
 - 1000 × 1250 (4:5) WebP in `public/images/curated/<handle>/`
 - supplier text, dimension lines and inset panels cropped or masked away
-- one shared grade: orange cast pulled toward the brand neutrals, saturation
+- one shared grade for the original crop layouts: orange cast pulled toward the brand neutrals, saturation
   0.86, slightly lifted shadows, soft vignette on photographs, fixed-seed grain
 - linen (`#f4f0e8`) backdrop for studio and detail layouts
 - a transparent 600 × 750 `cutout.webp` for the homepage shelf, derived from
   the studio image (white ground flood-filled from outside the outline, edge
   eroded and feathered)
 
-These are cropped and graded manufacturer photographs, not new photography or
-a sample. Nothing is added to the object itself.
+The original image layouts use cropped and graded manufacturer photographs.
+The scene layouts below place the photographed object in generated settings.
+Neither treatment is new sample photography. Nothing is added to the object itself.
 
 | Layout   | Recipe                         | Use                                               |
 | -------- | ------------------------------ | ------------------------------------------------- |
-| `studio` | `outline: [[x, y], …]`         | Object shot on white → on linen. **Image 1.**     |
+| `studio` | `outline: [[x, y], …]`; optional `background` and `placement` | Object shot on white → on linen or a generated setting. **Image 1.** |
 | `photo`  | `crop: [x, y, w, h]`           | Clean lifestyle shot. Image 2 is the lamplit one. |
 | `extend` | `crop` of a narrow clean strip | Front shots with infographic panels beside them   |
 | `grid`   | `tiles: [[x, y, w, h], …]`     | 2-column detail grid from a supplier collage      |
 
-Image 1 (studio) is the card image; image 2 shows on hover ("lights on") and
+Image 1 (studio) is the card image; image 2 shows on hover and
 is the `/book-nooks` hero. Coordinates are in source-image pixels.
 
-The storefront serves this set; **Shopify product media is unchanged.**
-Checkout, order emails, CJ and Google Merchant still use the supplier photos
-until the branded files are uploaded to the product in Shopify Admin.
+### Twilight Library: four scenes, photographed product preserved
+
+The first four local gallery images are linen studio, reading shelf, sage
+reading corner and evening oak desk, all 1000 × 1250 lossless WebP files with
+`-v2` filenames. The previous supplier angle, front, detail and parts images
+remain in the gallery; all previous files and supplier originals are retained.
+
+Only the empty backgrounds were generated with the built-in image generator.
+Every scene uses the same actual object from `supplier-2.jpg`, isolated using
+the existing outline and uniformly resized. The scene compositor applies no
+colour grade, sharpening, grain, generated detail or new lighting to the kit.
+The lighting already visible on the kit comes from the supplier photograph.
+After encoding, it checks every fully opaque product pixel against the resized
+source; any changed pixel aborts generation. Soft contact shadows are separate
+layers behind the object. Alt text identifies the generated settings.
+
+Recipes use `layout: studio`, a relative `background` path and
+`placement: {height, centerX, baseY}` in final-image pixels. Scene plates,
+exact prompts, original source hashes and previous gallery recipes are saved
+under `assets/curated-products/twilight-library-diy-book-nook-kit/brand-scenes/`.
+Regenerate with `npm run curated:images -- --handle twilight-library-diy-book-nook-kit`.
+The storefront release serves these four scenes first, followed by the four
+existing supplier angle, front, detail and parts views.
+
+On 2026-10-05, the four WebPs were also uploaded to Shopify product
+`16116237140302`. Their alt text identifies the generated settings. The six
+original supplier media remain, making ten Shopify media items. The linen
+scene is assigned to variant `61052466069838` for checkout and order media.
+The original Shopify media order is retained. Price, SKU, copy, publications
+and fulfilment settings were not changed. The other nine kits' media were not
+changed by this refinement. Google Merchant feed refresh timing was not tested.
 
 ## Adding a book nook
 

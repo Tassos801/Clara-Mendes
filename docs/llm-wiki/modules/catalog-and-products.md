@@ -378,3 +378,37 @@ accept a `crop` rectangle in place of an outline, and grid tiles may be
 `{source, crop}` from another supplier photo. CJ listing pitfalls (all
 channels on list, Cyprus lane, one listing per CJ product) are recorded in
 the [CJ book nook launch](../../book-nooks-launch.md#listing-a-kit-through-cj).
+
+## 2026-10-04 - Twilight Library image refinement
+
+The local gallery begins with four generated settings containing the original
+photographed Twilight Library kit: linen studio, reading shelf, sage corner
+and evening desk. Only backgrounds are generated. The existing image pipeline
+supports a studio `background` and pixel placement, uniformly resizes the
+supplier object without colour changes or reconstructed details, and verifies
+every fully opaque product pixel after lossless WebP encoding. The supplier
+angle, front, detail and parts views remain in the gallery. Original files,
+source hashes and generation prompts are retained. These are styled composites,
+not sample photographs. See [Book nook catalogue](../../book-nooks-catalog.md)
+for regeneration and provenance. Shopify media and deployment are separate.
+
+## 2026-10-04 - Twilight Library social campaign
+
+Four organic photo posts using the refined Twilight Library scenes were
+scheduled through Meta Business Suite to Facebook Clara Mendes and Instagram
+@shopclaramendes on 11, 17, 22 and 27 October, each at 19:30 Europe/Nicosia.
+The Scheduled queue readback confirmed eight Public photo rows with the correct
+dates, platform-specific captions and attached media. Each caption identifies
+the DIY kit and discloses that the original kit photograph is in a generated
+setting. Unrelated scheduled content was preserved and no boost was bought.
+See [Book nook social campaign](../../social/book-nooks-launch-2026-10.md)
+for exact captions, media exports and verification evidence.
+
+
+## 2026-10-05 - Twilight Library image application
+
+The four brand scenes are uploaded to Shopify with generated-setting alt
+text. The linen scene is assigned to the existing Twilight Library variant;
+all six supplier media remain. The storefront gallery has eight images,
+starting with the four scenes. Price, SKU and fulfilment fields are unchanged.
+See [Book nook catalogue](../../book-nooks-catalog.md) for the current scope.

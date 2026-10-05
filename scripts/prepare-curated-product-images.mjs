@@ -20,6 +20,8 @@
  *           itself (for shots with infographic panels beside the object)
  *   studio  polygon `outline` (or a `crop` rectangle) around an object shot
  *           on white -> placed on linen with a soft floor shadow
+ *           optional `background` + `placement` uses the ungraded source
+ *           object on a generated scene; product pixels are verified
  *   grid    2-column grid of detail `tiles` on linen; a tile is a crop of
  *           the source or {source, crop} from another photo
  *
@@ -92,6 +94,25 @@ export function recipeProblems(product) {
         problems.push(
           `${label}: studio needs an outline of three or more [x, y] points, or a crop`,
         );
+      if (from.background) {
+        const placement = from.placement;
+        if (
+          typeof from.background !== 'string' ||
+          path.isAbsolute(from.background) ||
+          from.background.split(/[\\/]/).includes('..')
+        )
+          problems.push(`${label}: background must be a relative source path`);
+        if (
+          !placement ||
+          !['height', 'centerX', 'baseY'].every(
+            (key) => Number.isInteger(placement[key]) && placement[key] > 0,
+          ) ||
+          placement.height > placement.baseY ||
+          placement.baseY > IMAGE_HEIGHT ||
+          placement.centerX >= IMAGE_WIDTH
+        )
+          problems.push(`${label}: scene placement must fit the image`);
+      }
     } else if (from.layout === 'grid') {
       if (!Array.isArray(from.tiles) || from.tiles.length < 2)
         problems.push(`${label}: grid needs at least two tiles`);
@@ -272,6 +293,7 @@ export function studioOutline(from) {
  * disappears and only the object and its floor shadow remain.
  */
 async function studioLayout(sharp, file, from) {
+  if (from.background) return productSceneLayout(sharp, file, from);
   const {width, height} = await sharp(file).metadata();
   const points = studioOutline(from);
   const xs = points.map(([x]) => x);
@@ -328,8 +350,10 @@ export const CUTOUT_HEIGHT = 750;
  * light details enclosed by the object (lamps, paper) stay opaque; the
  * edge is eroded a pixel and feathered to lose the white fringe.
  */
-async function cutoutImage(sharp, file, outline) {
-  const graded = await gradeColour(sharp, file, {lift: false});
+async function cutoutImage(sharp, file, outline, options = {}) {
+  const graded = options.preserveColour
+    ? file
+    : await gradeColour(sharp, file, {lift: false});
   const {data, info} = await sharp(graded)
     .removeAlpha()
     .raw()
@@ -411,6 +435,7 @@ async function cutoutImage(sharp, file, outline) {
     })
     .png()
     .toBuffer();
+  if (options.objectOnly) return object;
   const fitted = await sharp(object)
     .resize(Math.round(CUTOUT_WIDTH * 0.96), Math.round(CUTOUT_HEIGHT * 0.97), {
       fit: 'inside',
@@ -436,6 +461,59 @@ async function cutoutImage(sharp, file, outline) {
     .sharpen({sigma: 0.5})
     .webp({quality: 86, alphaQuality: 90, effort: 6})
     .toBuffer();
+}
+
+/**
+ * Generate the setting separately, then composite the photographed object.
+ * Only background removal and uniform resizing touch the source object:
+ * no AI reconstruction, colour grade, sharpening, grain or added lighting.
+ * Lossless WebP retains every fully opaque resampled product pixel exactly.
+ */
+async function productSceneLayout(sharp, file, from) {
+  const sourceObject = await cutoutImage(sharp, file, studioOutline(from), {
+    preserveColour: true,
+    objectOnly: true,
+  });
+  const object = await sharp(sourceObject)
+    .resize({height: from.placement.height, kernel: 'lanczos3'})
+    .png()
+    .toBuffer({resolveWithObject: true});
+  const left = Math.round(from.placement.centerX - object.info.width / 2);
+  const top = from.placement.baseY - object.info.height;
+  if (left < 0 || left + object.info.width > IMAGE_WIDTH)
+    throw new Error(`${file}: scene placement clips the product`);
+  const shadow = Buffer.from(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${IMAGE_WIDTH}" height="${IMAGE_HEIGHT}"><defs><filter id="s" x="-50%" y="-300%" width="200%" height="700%"><feGaussianBlur stdDeviation="12"/></filter></defs><ellipse cx="${from.placement.centerX + 12}" cy="${from.placement.baseY - 9}" rx="${object.info.width * 0.48}" ry="12" fill="#302419" fill-opacity="0.28" filter="url(#s)"/></svg>`,
+  );
+  // Compress the setting before compositing; the product remains lossless.
+  const background = await sharp(path.join(path.dirname(file), from.background))
+    .resize(IMAGE_WIDTH, IMAGE_HEIGHT, {fit: 'cover'})
+    .webp({quality: 78, effort: 6})
+    .toBuffer();
+  const output = await sharp(background)
+    .composite([
+      {input: shadow},
+      {input: object.data, left, top},
+    ])
+    .webp({lossless: true, effort: 6})
+    .toBuffer();
+  const originalPixels = await sharp(object.data).ensureAlpha().raw().toBuffer();
+  const finalPixels = await sharp(output).removeAlpha().raw().toBuffer();
+  for (let y = 0; y < object.info.height; y += 1) {
+    for (let x = 0; x < object.info.width; x += 1) {
+      const sourceIndex = (y * object.info.width + x) * 4;
+      if (originalPixels[sourceIndex + 3] !== 255) continue;
+      const targetIndex = ((y + top) * IMAGE_WIDTH + x + left) * 3;
+      for (let channel = 0; channel < 3; channel += 1) {
+        if (
+          originalPixels[sourceIndex + channel] !==
+          finalPixels[targetIndex + channel]
+        )
+          throw new Error(`${file}: compositing changed a product pixel`);
+      }
+    }
+  }
+  return output;
 }
 
 /** The studio recipe a cut-out is derived from. */

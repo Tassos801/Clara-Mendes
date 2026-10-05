@@ -1217,3 +1217,40 @@ Twilight Library's checkout option now reads `Style: Twilight Library`.
 Shopify product media is still the supplier photography.
 
 Source: [CJ book nook launch](../book-nooks-launch.md).
+
+## 2026-10-04 - Twilight Library image refinement
+
+Added four local brand scenes using generated backgrounds and the unchanged
+supplier-photographed kit. Extended the shared studio recipe with background
+plates and placement; lossless outputs verify opaque product pixels against
+the uniformly resized source. Kept the original angle, front, detail and parts
+views and all original files. Stored prompts, hashes and gallery provenance.
+The other nine curated catalogue entries and all non-image product fields
+remain unchanged. No Shopify upload or storefront deployment was performed.
+
+Source: [Book nook catalogue](../book-nooks-catalog.md).
+
+## 2026-10-04 - Twilight Library social scheduling
+
+Scheduled four organic photo posts to both Facebook Clara Mendes and Instagram
+@shopclaramendes for 11, 17, 22 and 27 October at 19:30 Europe/Nicosia. Confirmed
+eight Public photo entries in Meta's Scheduled queue, using the four new brand
+scenes and captions explaining the DIY kit and generated settings. Saved
+1080 × 1350 uploads, exact captions, readback and screenshot evidence locally.
+Preserved the existing queue and made no advertising purchase.
+
+Source: [Book nook social campaign](../social/book-nooks-launch-2026-10.md).
+
+
+## 2026-10-05 - Apply Twilight Library refined images to the shop
+
+Uploaded all four refined WebPs to Shopify product `16116237140302`, saved
+alt text disclosing the generated settings and assigned the linen scene to
+variant `61052466069838`. Preserved the six original supplier media. The
+storefront release serves the four scenes first with four original supplier
+views after them. No non-image catalogue fields or other kits were changed.
+Validated lint, typecheck, tests, production build, standard Shopify routes,
+curated image presence and Git whitespace. Used an isolated checkout based on
+current main so unrelated local catalogue work remains intact.
+
+Source: [Book nook catalogue](../book-nooks-catalog.md).
