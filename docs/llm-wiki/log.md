@@ -1217,3 +1217,13 @@ Twilight Library's checkout option now reads `Style: Twilight Library`.
 Shopify product media is still the supplier photography.
 
 Source: [CJ book nook launch](../book-nooks-launch.md).
+
+## 2026-10-05 - Book nook Admin tidy
+
+Renamed the supplier `Color` and `Please Input` options on the nine new book
+nooks to `Style` and `Language` and replaced their CJ-typed Admin descriptions
+with the registry copy, battery note and shipping paragraph. Storefront API
+readback confirmed unchanged variant ids and SKUs; CJ still shows all ten
+connected on Liquid Line. Underwater World still has no Shopify media.
+
+Source: [Book nook catalogue](../book-nooks-catalog.md).

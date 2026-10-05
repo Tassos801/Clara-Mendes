@@ -114,13 +114,13 @@ the right size.
 ## Shopify follow-ups
 
 - Upload the branded set to the Shopify product media (Admin) so checkout,
-  emails and feeds match the storefront.
-- CJ imports leave supplier variant options (`Style`, `Color`,
-  `Please Input: English`). The storefront hides them on cart lines; checkout
-  still shows them. Twilight Library's now reads
-  `Style: Twilight Library` (was `Glimmer Book Pavilion`; variant id
-  unchanged). Rename the others in Shopify Admin the same way, then confirm
-  the CJ mapping (by variant and SKU) still reads back.
-- Shopify descriptions for the nine 2026-10-04 kits are the plain text typed
-  in CJ's list form. The storefront uses the registry copy; tidy the Admin
-  text before feeds or emails rely on it.
+  emails and feeds match the storefront. Underwater World has no Shopify
+  media at all (it was duplicated without media), so checkout, emails and
+  feeds show no image for it until then.
+- Done 2026-10-05: every kit's options read `Style: <kit name>`, and Firefly
+  Forest and Underwater World also read `Language: English`. These replace the
+  supplier's `Color` and `Please Input` names, which feeds could read as a
+  colour. Variant ids and SKUs are unchanged and CJ still shows every kit
+  connected on Liquid Line. The nine 2026-10-04 Admin descriptions now carry
+  the registry copy, the battery note and a shipping paragraph, like Twilight
+  Library's. Rename any option a future CJ import leaves the same way.
