@@ -1296,3 +1296,16 @@ invalidated previously saved recently viewed prices. Customer-facing prices
 remain plain, with no added promotion labels or announcements.
 
 Source: [Catalog and products](modules/catalog-and-products.md).
+
+## 2026-10-06 - Align llms.txt and the print pipeline with the new prices
+
+After the catalog price refresh, `public/llms.txt` still advertised prints
+from EUR 29.99, and `data/print-catalog.json` still recorded 29.99 / 39.99 /
+49.99, so `npm run product -- verify` reported every pipeline print as
+wrong-priced and `stage`/`expand` would have created sizes at the old prices.
+Both now carry the live 26.99 / 35.99 / 44.99; `verify` passes for Sci-fi &
+Cinema (37/37) and Light & Silence (46/46). The extension, phone case, pot and
+launch-original manifests remain launch records that the storefront does not
+read; their staging scripts must not be re-run against live products.
+
+Source: [Catalog and products](modules/catalog-and-products.md).
