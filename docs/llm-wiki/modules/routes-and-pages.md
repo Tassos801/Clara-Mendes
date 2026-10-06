@@ -96,7 +96,21 @@ The product route:
 - Supports variant option URLs.
 - Supports add-to-cart and Shop Pay when the selected variant is available.
 
-Source: `app/routes/products.$handle.tsx`.
+Phone layout (2026-10-06 mobile pass): a one-line breadcrumb; the
+availability badge plus a short text line instead of three pills; option
+legends repeat the current choice, and option values show their price when
+the values cost different amounts (`describeOptionValues` in
+`app/lib/variantOptions.ts`); a sold-out value stays selectable, says "Sold
+out" and the purchase button disables. Product details are native
+disclosures (`ProductDetail`); the main specification, "Fit" and "Included"
+open by default. The sticky purchase bar names the selected options and the
+flat artwork, and is `inert` while hidden. The phone case page shows its 24
+artworks five across on phones and its "Choose your phone" actions focus
+(and where supported open) the model select instead of acting as a label.
+
+Source: `app/routes/products.$handle.tsx`,
+`app/routes/products.art-tough-phone-case.tsx`,
+`app/components/VariantOptions.tsx`, `app/components/ProductDetail.tsx`.
 
 ## Collection Pages
 
@@ -108,8 +122,24 @@ Collection pages support:
 - Removal of empty legacy categories from the previous catalog.
 - Infinite loading with an `IntersectionObserver` helper.
 
+At 980 px and below the toolbar scrolls away instead of staying pinned (on
+a phone it covered up to a third of the screen); categories are a row of
+one-tap chips that scroll sideways, and a "Filter & sort" control appears at
+the bottom once the toolbar is out of view and returns to it with filters
+open. Grids stay two columns down to 320 px. Coming back from a product
+restores every loaded page and the scroll position (Hydrogen `Pagination`
+state plus `ScrollRestoration`); cards skip the staggered fade on phones so
+the grid never blinks empty on return.
+
+Card quick-add (`cardQuickAddMode`, `app/lib/productCardPricing.ts`) adds the
+first variant only for single-variant products and art prints (whose
+variants are sizes of the artwork shown); for phone cases, canvases, cards
+and a sold-out first variant it links to the product page, so a phone model
+or artwork is never chosen for the shopper.
+
 Sources: `app/routes/collections.all.tsx`,
-`app/routes/collections.$handle.tsx`, `app/lib/collectionSort.ts`.
+`app/routes/collections.$handle.tsx`, `app/lib/collectionSort.ts`,
+`app/components/ClaraProductCard.tsx`.
 
 ## Wall Sets
 

@@ -5,6 +5,7 @@ import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {useMarketingCheckoutUrl} from '~/hooks/useMarketingCheckoutUrl';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
+import {CHECKOUT_PENDING_TIMEOUT_MS} from '~/lib/cartPresentation';
 import {
   getCartFormErrorMessages,
   getInapplicableDiscountMessages,
@@ -16,62 +17,156 @@ type CartSummaryProps = {
   layout: CartLayout;
 };
 
+/**
+ * The page summary holds totals, checkout and codes. In the drawer the
+ * totals and checkout are pinned in `CartCheckoutBar`, so this renders only
+ * the codes, which scroll with the lines.
+ */
 export function CartSummary({cart, layout}: CartSummaryProps) {
-  const className =
-    layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
   const summaryId = useId();
-  const discountsHeadingId = useId();
-  const discountCodeInputId = useId();
-  const giftCardHeadingId = useId();
-  const giftCardInputId = useId();
+
+  if (layout === 'aside') {
+    return (
+      <div className="cart-summary-aside">
+        <CartCodes cart={cart} />
+      </div>
+    );
+  }
 
   return (
-    <div aria-labelledby={summaryId} className={className}>
-      <h4 id={summaryId}>Totals</h4>
-      <dl role="group" className="cart-subtotal">
+    <div aria-labelledby={summaryId} className="cart-summary-page">
+      <h2 id={summaryId}>Order summary</h2>
+      <CartTotals cart={cart} />
+      <CartCheckoutActions cart={cart} />
+      <CartCodes cart={cart} />
+    </div>
+  );
+}
+
+/** Subtotal and checkout, pinned to the bottom of the cart drawer. */
+export function CartCheckoutBar({cart}: CartSummaryProps) {
+  return (
+    <div className="cart-checkout-bar">
+      <CartTotals cart={cart} />
+      <CartCheckoutActions cart={cart} />
+    </div>
+  );
+}
+
+function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
+  const updating = Boolean(cart?.isOptimistic);
+  return (
+    <div className="cart-totals" aria-busy={updating || undefined}>
+      <dl className="cart-subtotal">
         <dt>Subtotal</dt>
         <dd>
           {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart?.cost?.subtotalAmount} />
+            <Money data={cart.cost.subtotalAmount} />
           ) : (
             '-'
           )}
         </dd>
       </dl>
-      <CartDiscounts
-        discountCodes={cart?.discountCodes}
-        discountsHeadingId={discountsHeadingId}
-        discountCodeInputId={discountCodeInputId}
-      />
-      <CartGiftCard
-        giftCardCodes={cart?.appliedGiftCards}
-        giftCardHeadingId={giftCardHeadingId}
-        giftCardInputId={giftCardInputId}
-      />
-      <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
+      <p className="cart-totals-note">
+        {updating
+          ? 'Updating your cart…'
+          : 'Shipping is calculated at checkout.'}
+      </p>
     </div>
   );
 }
 
-function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
+function CartCheckoutActions({cart}: {cart: CartSummaryProps['cart']}) {
+  const checkoutUrl = cart?.checkoutUrl;
   const marketingConsent = useMarketingConsent();
   const attributedCheckoutUrl = useMarketingCheckoutUrl({
     checkoutUrl,
     consent: marketingConsent,
   });
+  const [opening, setOpening] = useState(false);
+  // A pending quantity or remove must reach Shopify before checkout reads
+  // the cart, or checkout could open with the previous quantities.
+  const updating = Boolean(cart?.isOptimistic);
+  const busy = opening || updating;
+
+  useEffect(() => {
+    if (!opening) return;
+    // Returning from checkout with the back button can restore this page
+    // from the back/forward cache with the action still busy.
+    const reset = () => setOpening(false);
+    const timer = window.setTimeout(reset, CHECKOUT_PENDING_TIMEOUT_MS);
+    window.addEventListener('pageshow', reset);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('pageshow', reset);
+    };
+  }, [opening]);
 
   if (!checkoutUrl) return null;
 
   return (
     <div className="cart-checkout-actions">
       <a
-        className="primary-button full-width"
+        aria-busy={opening || undefined}
+        aria-disabled={busy || undefined}
+        className="primary-button full-width cart-checkout-button"
         href={attributedCheckoutUrl || checkoutUrl}
+        onClick={(event) => {
+          // A second tap while the first is still loading would start a
+          // second navigation; a pending cart update must finish first.
+          if (busy) {
+            event.preventDefault();
+            return;
+          }
+          setOpening(true);
+        }}
         target="_self"
       >
-        Continue to checkout
+        {opening
+          ? 'Opening secure checkout…'
+          : updating
+            ? 'Updating cart…'
+            : 'Continue to checkout'}
       </a>
     </div>
+  );
+}
+
+/**
+ * Discount and gift-card codes sit behind one disclosure: most shoppers do
+ * not have one, and on a phone two open forms push checkout off-screen. It
+ * starts open when a code is applied or was refused, so neither is hidden.
+ */
+function CartCodes({cart}: {cart: CartSummaryProps['cart']}) {
+  const discountsHeadingId = useId();
+  const discountCodeInputId = useId();
+  const giftCardHeadingId = useId();
+  const giftCardInputId = useId();
+  const discountCodes = cart?.discountCodes;
+  const giftCards = cart?.appliedGiftCards;
+  const hasCodes = Boolean(discountCodes?.length || giftCards?.length);
+
+  return (
+    <details className="cart-codes" open={hasCodes || undefined}>
+      <summary>
+        <span>Discount or gift card</span>
+        <svg aria-hidden="true" viewBox="0 0 12 12">
+          <path d="M2.5 4.5 6 8l3.5-3.5" />
+        </svg>
+      </summary>
+      <div className="cart-codes-body">
+        <CartDiscounts
+          discountCodes={discountCodes}
+          discountsHeadingId={discountsHeadingId}
+          discountCodeInputId={discountCodeInputId}
+        />
+        <CartGiftCard
+          giftCardCodes={giftCards}
+          giftCardHeadingId={giftCardHeadingId}
+          giftCardInputId={giftCardInputId}
+        />
+      </div>
+    </details>
   );
 }
 
@@ -94,7 +189,7 @@ function CartDiscounts({
   const [inapplicableMessage] = getInapplicableDiscountMessages(discountCodes);
 
   return (
-    <section aria-label="Discounts">
+    <section aria-label="Discounts" className="cart-code-section">
       {/* Have existing discount, display it with a remove option */}
       <dl hidden={!codes.length}>
         <div>
@@ -106,7 +201,6 @@ function CartDiscounts({
               aria-labelledby={discountsHeadingId}
             >
               <code>{codes?.join(', ')}</code>
-              &nbsp;
               <button type="submit" aria-label="Remove discount">
                 Remove
               </button>
@@ -117,17 +211,20 @@ function CartDiscounts({
 
       {/* Show an input to apply a discount */}
       <UpdateDiscountForm discountCodes={codes}>
-        <div>
+        <div className="cart-code-row">
           <label htmlFor={discountCodeInputId} className="sr-only">
             Discount code
           </label>
           <input
+            autoCapitalize="characters"
+            autoComplete="off"
+            enterKeyHint="go"
             id={discountCodeInputId}
             type="text"
             name="discountCode"
             placeholder="Discount code"
+            spellCheck={false}
           />
-          &nbsp;
           <button type="submit" aria-label="Apply discount code">
             Apply
           </button>
@@ -228,10 +325,10 @@ function CartGiftCard({
   };
 
   return (
-    <section aria-label="Gift cards">
+    <section aria-label="Gift cards" className="cart-code-section">
       {giftCardCodes && giftCardCodes.length > 0 && (
         <dl>
-          <dt id={giftCardHeadingId}>Applied Gift Card(s)</dt>
+          <dt id={giftCardHeadingId}>Applied gift cards</dt>
           {giftCardCodes.map((giftCard) => (
             <dd key={giftCard.id} className="cart-discount">
               <RemoveGiftCardForm
@@ -247,7 +344,6 @@ function CartGiftCard({
                 }}
               >
                 <code>***{giftCard.lastCharacters}</code>
-                &nbsp;
                 <Money data={giftCard.amountUsed} />
               </RemoveGiftCardForm>
             </dd>
@@ -256,24 +352,27 @@ function CartGiftCard({
       )}
 
       <AddGiftCardForm fetcherKey="gift-card-add">
-        <div>
+        <div className="cart-code-row">
           <label htmlFor={giftCardInputId} className="sr-only">
             Gift card code
           </label>
           <input
+            autoCapitalize="characters"
+            autoComplete="off"
+            enterKeyHint="go"
             id={giftCardInputId}
             type="text"
             name="giftCardCode"
             placeholder="Gift card code"
             ref={giftCardCodeInput}
+            spellCheck={false}
           />
-          &nbsp;
           <button
             type="submit"
             disabled={giftCardAddFetcher.state !== 'idle'}
             aria-label="Apply gift card code"
           >
-            Apply
+            {giftCardAddFetcher.state !== 'idle' ? 'Applying…' : 'Apply'}
           </button>
         </div>
         <CartFormError data={giftCardAddFetcher.data} />
@@ -322,7 +421,6 @@ function RemoveGiftCardForm({
       }}
     >
       {children}
-      &nbsp;
       <button
         type="submit"
         aria-label={`Remove gift card ending in ${lastCharacters}`}

@@ -405,6 +405,17 @@ See [Book nook social campaign](../../social/book-nooks-launch-2026-10.md)
 for exact captions, media exports and verification evidence.
 
 
+## 2026-10-06 - Storefront copies of the scene composites
+
+The four Twilight Library scene composites are lossless WebP (about 0.85 to
+1 MB each) so every supplier product pixel is provably unchanged, and
+`/public` files have no resizer: a 160 px shop card downloaded the full file.
+`curatedDisplaySrc` now serves a lossy `<name>.display.webp` (quality 84,
+same 1000 × 1250, 122 to 157 KB) for any image whose recipe has a generated
+`background`; the lossless file stays the record. `npm run curated:images`
+writes both and `--check` requires both. `scripts/bookNooks.node-test.mjs`
+guards size and presence.
+
 ## 2026-10-05 - Twilight Library image application
 
 The four brand scenes are uploaded to Shopify with generated-setting alt

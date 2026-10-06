@@ -18,6 +18,7 @@ import {
   type VariantOptionsProduct,
 } from '~/components/VariantOptions';
 import {formatMoney, type MoneyAmount} from '~/lib/money';
+import {selectedOptionsSummary} from '~/lib/variantOptions';
 import {GIFT_NOTE_KEY, GIFT_NOTE_MAX, normaliseGiftNote} from '~/lib/sky/gift';
 import {
   formatSkyDate,
@@ -116,6 +117,9 @@ export function SkyStudio({
   const available = Boolean(selectedVariant?.availableForSale && price);
   const buttonLabel = available ? `Add to cart · ${price}` : 'Unavailable';
   const stickyLabel = available ? `Add · ${price}` : 'Unavailable';
+  const stickyOptions = selectedOptionsSummary(
+    selectedVariant?.selectedOptions,
+  );
   // Until the preview is ready the primary action walks the customer to the
   // next required field instead of offering a disabled button.
   const pendingAction =
@@ -376,11 +380,24 @@ export function SkyStudio({
         </div>
       </div>
 
-      <div className={`sticky-atc-bar ${showSticky ? 'is-visible' : ''}`}>
+      <div
+        aria-hidden={showSticky ? undefined : true}
+        aria-label="Quick purchase"
+        className={`sticky-atc-bar ${showSticky ? 'is-visible' : ''}`}
+        role="region"
+        {...(showSticky ? {} : {inert: ''})}
+      >
         <div className="sticky-atc-info">
           <div>
             <p className="sticky-atc-title">{product.title}</p>
-            {price ? <p className="sticky-atc-price">{price}</p> : null}
+            {price ? (
+              <p className="sticky-atc-price">
+                {stickyOptions ? (
+                  <span className="sticky-atc-options">{stickyOptions}</span>
+                ) : null}
+                {price}
+              </p>
+            ) : null}
           </div>
         </div>
         {!skyParams ? (
@@ -398,6 +415,7 @@ export function SkyStudio({
             disabled={purchaseBlocked}
             lines={lines}
             onSuccess={openCart}
+            pendingChildren="Adding…"
           >
             {stickyLabel}
           </AddToCartButton>

@@ -77,6 +77,33 @@ Sources: `app/components/CartMain.tsx`,
 `app/components/CartLineItem.tsx`, `app/components/CartRecommendations.tsx`,
 `app/components/CartSummary.tsx`.
 
+Since the 2026-10-06 mobile pass:
+
+- The drawer is a column: header (title and item count, icon close),
+  scrolling lines, suggestions and codes, then `CartCheckoutBar` pinned at the
+  bottom with subtotal, "Shipping is calculated at checkout." and the
+  checkout button, so checkout never sits below the fold on a phone.
+- On the page the summary follows the lines on narrow screens (grid areas
+  `lines` / `summary` / `recs`) and sits beside them on wide ones.
+- Discount and gift-card forms share one `<details>` that opens by itself
+  when a code is applied or was refused.
+- Checkout is an `<a>` that refuses a second tap while it opens checkout,
+  waits while a quantity or remove change is still pending
+  (`cart.isOptimistic`), and resets on `pageshow` when the shopper comes back
+  from checkout.
+- Lines show the flat artwork for art prints (the variant image is a room
+  scene), option name/value pairs, the unit price when the quantity is above
+  one, a 44 px stepper, and a notice when Shopify reports the merchandise as
+  no longer available. Rules live in `app/lib/cartPresentation.ts`.
+- `CartConnectionGuard` (mounted in `ClaraShell`) holds cart submissions and
+  checkout taps while the device is offline and shows a notice; otherwise
+  React Router reloads the page or shows the error page and the shopper
+  loses their place. It also modulepreloads the `routes/cart` module once
+  the page is idle so the first add to cart does not wait on code.
+
+Sources: `app/components/CartConnectionGuard.tsx`, `app/lib/cartFormErrors.ts`,
+`scripts/mobileShopping.node-test.mjs`.
+
 ## Checkout Handoff
 
 Checkout is still Shopify checkout. Launch readiness requires production

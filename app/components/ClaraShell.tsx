@@ -3,6 +3,7 @@ import {Await, Link, NavLink, useAsyncValue} from 'react-router';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
+import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
@@ -12,6 +13,7 @@ import {
 } from '~/lib/catalogFilters';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
+import {cartItemCountLabel} from '~/lib/cartPresentation';
 
 const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
 
@@ -47,6 +49,7 @@ export function ClaraShell({
         <ClaraFooter />
         <ClaraCartDrawer cart={cart} />
         <ClaraMobileNav />
+        <CartConnectionGuard />
       </CinematicProvider>
     </Aside.Provider>
   );
@@ -143,8 +146,30 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
           type="button"
           onClick={() => open('cart')}
         >
-          Cart{' '}
-          <span>
+          {/* Narrow phones swap the word for a bag; the name stays "Cart". */}
+          <svg
+            className="cart-button-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M4 6.5h12l-1 11H5l-1-11Z"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M7 8V5.5a3 3 0 0 1 6 0V8"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+            />
+          </svg>
+          <span className="cart-button-label">Cart</span>{' '}
+          <span className="cart-button-count">
             <Suspense fallback="0">
               <Await resolve={cart}>
                 <CartCount />
@@ -161,6 +186,13 @@ function CartCount() {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
   return <>{cart?.totalQuantity ?? 0}</>;
+}
+
+function CartItemCount() {
+  const originalCart = useAsyncValue() as CartApiQueryFragment | null;
+  const cart = useOptimisticCart(originalCart);
+  const count = cart?.totalQuantity ?? 0;
+  return count > 0 ? <> · {cartItemCountLabel(count)}</> : null;
 }
 
 function ClaraFooter() {
@@ -310,19 +342,48 @@ function ClaraCartDrawer({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
       <aside
         className="cart-drawer"
         data-aside-panel="cart"
-        aria-label="Shopping cart"
+        aria-labelledby="cart-drawer-title"
         aria-modal={isOpen}
         role="dialog"
         data-lenis-prevent
         tabIndex={-1}
       >
         <header className="cart-drawer-header">
-          <p className="eyebrow">Cart</p>
-          <button type="button" onClick={close} aria-label="Close cart">
-            x
+          <h2 className="cart-drawer-title" id="cart-drawer-title">
+            Your cart
+            <span className="cart-drawer-count">
+              <Suspense fallback={null}>
+                <Await resolve={cart}>
+                  <CartItemCount />
+                </Await>
+              </Suspense>
+            </span>
+          </h2>
+          <button
+            className="drawer-close"
+            type="button"
+            onClick={close}
+            aria-label="Close cart"
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 18 18"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2 2l14 14M16 2 2 16"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+              />
+            </svg>
           </button>
         </header>
-        <Suspense fallback={<p className="small-muted">Loading cart...</p>}>
+        <Suspense
+          fallback={<p className="cart-drawer-loading">Loading your cart…</p>}
+        >
           <Await resolve={cart}>
             {(cart) => <CartMain cart={cart} layout="aside" />}
           </Await>

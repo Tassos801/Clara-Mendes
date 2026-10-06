@@ -151,8 +151,11 @@ function SearchResultsProducts({
                 const priceLabel = formatCardPriceLabel(
                   deriveCardPricing(product),
                 );
+                // The featured image is the artwork itself; a print
+                // variant's image is a room scene where it is a speck.
                 const image =
                   curatedImages(product.handle)[0] ??
+                  product?.featuredImage ??
                   product?.selectedOrFirstAvailableVariant?.image;
                 const title = curatedDisplayTitle(product);
 

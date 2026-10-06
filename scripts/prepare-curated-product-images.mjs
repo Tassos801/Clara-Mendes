@@ -45,6 +45,7 @@ import path from 'node:path';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {parseArgs} from 'node:util';
+import {curatedDisplaySrc} from '../app/lib/curatedProducts.ts';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -52,6 +53,8 @@ const require = createRequire(import.meta.url);
 
 export const IMAGE_WIDTH = 1000;
 export const IMAGE_HEIGHT = 1250;
+/** Lossy storefront copy of a lossless scene composite (see curatedDisplaySrc). */
+export const DISPLAY_QUALITY = 84;
 const LINEN = '#f4f0e8';
 const GRID_MARGIN = 56;
 const GRID_GUTTER = 20;
@@ -579,13 +582,21 @@ async function generate(products) {
       }
       const output = publicPath(image.src);
       await mkdir(path.dirname(output), {recursive: true});
-      await writeFile(
-        output,
-        await LAYOUTS[image.from.layout](sharp, file, image.from),
-      );
+      const encoded = await LAYOUTS[image.from.layout](sharp, file, image.from);
+      await writeFile(output, encoded);
       console.log(
         `${image.src}  (${image.from.layout} from ${image.from.source})`,
       );
+      const display = curatedDisplaySrc(image);
+      if (display !== image.src) {
+        await writeFile(
+          publicPath(display),
+          await sharp(encoded)
+            .webp({quality: DISPLAY_QUALITY, effort: 6})
+            .toBuffer(),
+        );
+        console.log(`${display}  (storefront copy)`);
+      }
     }
     if (product.cutout) {
       const from = cutoutSource(product);
@@ -614,6 +625,9 @@ async function check(products) {
         missing.push(
           `${image.src}: ${width} x ${height}, expected 1000 x 1250`,
         );
+      const display = curatedDisplaySrc(image);
+      if (display !== image.src && !existsSync(publicPath(display)))
+        missing.push(`${display}: storefront copy not generated`);
     }
     if (product.cutout) {
       const output = publicPath(product.cutout);

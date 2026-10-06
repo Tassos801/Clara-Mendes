@@ -132,6 +132,12 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     vendor
     productType
     tags
+    featuredImage {
+      url
+      altText
+      width
+      height
+    }
     priceRange {
       minVariantPrice {
         amount

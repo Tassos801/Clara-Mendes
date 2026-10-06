@@ -60,6 +60,8 @@ import {
 } from '~/lib/bookNooks';
 import {formatDeliveryCountries} from '~/lib/curatedProducts';
 
+const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
+
 // Read from the catalog data so a new collection release updates the copy.
 const CATALOG = catalogCounts();
 const CAPSULE_COUNT_WORD = countWord(CATALOG.capsules);
@@ -91,12 +93,22 @@ export const meta: Route.MetaFunction = ({data}) => {
 };
 
 // The hero background is a CSS image, which browsers discover only after
-// the stylesheet parses — preloading it moves LCP earlier.
+// the stylesheet parses — preloading it moves LCP earlier. Phones get a
+// 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
+// the media queries match the stylesheet so only one file is fetched.
 export const links: Route.LinksFunction = () => [
   {
     as: 'image',
     href: '/images/backdrops/hero-interior.jpg',
+    media: '(min-width: 721px)',
     rel: 'preload',
+  },
+  {
+    as: 'image',
+    href: HERO_INTERIOR_MOBILE,
+    media: '(max-width: 720px)',
+    rel: 'preload',
+    type: 'image/webp',
   },
 ];
 
@@ -922,6 +934,13 @@ html:has(.home-root) main {
   -webkit-mask-image: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
 }
 
+@media (max-width: 720px) {
+  .hm-layer-sharp,
+  .hm-layer-blur {
+    background-image: url(/images/backdrops/hero-interior-mobile.webp);
+  }
+}
+
 .hm-noise-overlay {
   position: absolute;
   top: 0; left: 0;
@@ -1345,9 +1364,9 @@ html:has(.home-root) main {
   border-color: rgba(38, 35, 31, 0.22);
   border-radius: 999px;
   color: rgba(38, 35, 31, 0.55);
-  height: 36px;
+  height: 44px;
   transition: border-color 0.3s ease, color 0.3s ease;
-  width: 36px;
+  width: 44px;
 }
 
 .featured-collections--carousel .category-carousel-button:hover {

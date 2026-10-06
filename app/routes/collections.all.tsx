@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Link,
   redirect,
@@ -205,6 +205,57 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   const [filtersOpen, setFiltersOpen] = useState(activeFacetCount > 0);
   const {ref: loadMoreRef, inView} = useInView();
   const activeCapsule = data.activeCapsule ?? null;
+  const toolbarRef = useRef<HTMLDivElement>(null);
+  const typeTabsRef = useRef<HTMLElement>(null);
+  const filterToggleRef = useRef<HTMLButtonElement>(null);
+  const [toolbarOutOfView, setToolbarOutOfView] = useState(false);
+
+  // Phones scroll the category chips sideways; keep the active one in view
+  // without moving the page.
+  useEffect(() => {
+    const tabs = typeTabsRef.current;
+    const active = tabs?.querySelector<HTMLElement>('.cv-type-link.is-active');
+    if (!tabs || !active || tabs.scrollWidth <= tabs.clientWidth) return;
+    tabs.scrollLeft = Math.max(
+      0,
+      active.offsetLeft - (tabs.clientWidth - active.offsetWidth) / 2,
+    );
+  }, [activeProductType]);
+
+  // Once the toolbar has scrolled away, a thumb-height "Filter & sort"
+  // control brings it back (phones only; desktop keeps a sticky toolbar).
+  useEffect(() => {
+    const toolbar = toolbarRef.current;
+    if (!toolbar || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(
+      ([entry]) =>
+        setToolbarOutOfView(
+          !entry.isIntersecting && entry.boundingClientRect.top < 0,
+        ),
+      {threshold: 0},
+    );
+    observer.observe(toolbar);
+    return () => observer.disconnect();
+  }, []);
+
+  const returnToFilters = () => {
+    const toolbar = toolbarRef.current;
+    if (!toolbar) return;
+    setFiltersOpen(true);
+    const reduceMotion = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches;
+    const top =
+      toolbar.getBoundingClientRect().top +
+      window.scrollY -
+      (parseFloat(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          '--header-height',
+        ),
+      ) || 68);
+    window.scrollTo({behavior: reduceMotion ? 'auto' : 'smooth', top});
+    filterToggleRef.current?.focus({preventScroll: true});
+  };
 
   // Capsule filtering lives in the URL (?capsule=slug) so selections are
   // shareable and survive sort, facet, and back/forward navigation. A real
@@ -327,13 +378,22 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         <div className="cv-hero-rule" aria-hidden />
       </section>
 
-      <div className="cv-toolbar" aria-label="Collection toolbar">
+      <div
+        className="cv-toolbar"
+        aria-label="Collection toolbar"
+        ref={toolbarRef}
+        role="region"
+      >
         <div className="cv-browse-controls">
           <div className="cv-browse-group cv-browse-group--category">
             <span className="cv-browse-label" id="cv-category-label">
               Product
             </span>
-            <nav aria-labelledby="cv-category-label" className="cv-type-tabs">
+            <nav
+              aria-labelledby="cv-category-label"
+              className="cv-type-tabs"
+              ref={typeTabsRef}
+            >
               {productCategories.map((category) => (
                 <Link
                   aria-current={category.active ? 'page' : undefined}
@@ -415,8 +475,10 @@ export function CollectionView({data}: {data: CollectionViewData}) {
               filtersOpen || activeFacetCount > 0 ? ' is-active' : ''
             }`}
             type="button"
+            aria-controls="cv-filter-panel"
             aria-expanded={filtersOpen}
             onClick={() => setFiltersOpen((open) => !open)}
+            ref={filterToggleRef}
           >
             Filters{activeFacetCount > 0 ? ` · ${activeFacetCount}` : ''}
           </button>
@@ -442,9 +504,37 @@ export function CollectionView({data}: {data: CollectionViewData}) {
 
       <CatalogFilterPanel
         facets={data.facets}
+        id="cv-filter-panel"
         open={filtersOpen}
         showProductTypes={false}
       />
+
+      <button
+        aria-hidden={toolbarOutOfView ? undefined : true}
+        className={`cv-jump${toolbarOutOfView ? ' is-visible' : ''}`}
+        onClick={returnToFilters}
+        tabIndex={toolbarOutOfView ? 0 : -1}
+        type="button"
+      >
+        <svg
+          aria-hidden="true"
+          fill="none"
+          height="16"
+          viewBox="0 0 16 16"
+          width="16"
+        >
+          <path
+            d="M2 4h12M4.5 8h7M7 12h2"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeWidth="1.4"
+          />
+        </svg>
+        Filter &amp; sort
+        {activeFacetCount > 0 ? (
+          <span className="cv-jump-count">{activeFacetCount}</span>
+        ) : null}
+      </button>
 
       <Pagination connection={data.products}>
         {({
@@ -1227,6 +1317,23 @@ const collectionCss = `
   .cv-toolbar-actions {
     justify-content: flex-end;
   }
+
+  /* Tablets: the category tabs and the collection picker no longer fit on
+     one row (the page scrolled sideways at 768 px); wrap them, and let the
+     tabs scroll on their own. */
+  .cv-browse-controls {
+    flex-wrap: wrap;
+  }
+
+  .cv-browse-group--category {
+    max-width: 100%;
+  }
+
+  .cv-type-tabs {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
 }
 
 @media (max-width: 780px) {
@@ -1234,39 +1341,104 @@ const collectionCss = `
   .cv-hero { min-height: 50vh; }
 }
 
-/* ── Mobile: compact hero, selectors, 2-col grid ── */
+/* Thumb-height shortcut back to the toolbar, shown on phones only. */
+.cv-jump {
+  display: none;
+}
+
+/* ── Mobile: compact hero, scrolling category chips, toolbar that scrolls
+   away (a sticky one covered a third of a phone screen), 2-col grid ── */
 @media (max-width: 720px) {
   .cv-hero {
+    background-image:
+      linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
+      url(/images/backdrops/hero-interior-mobile.webp);
     min-height: auto;
-    padding: calc(var(--header-height) + 32px) 18px 32px;
+    padding: calc(var(--header-height) + 28px) 18px 26px;
   }
 
-  .cv-eyebrow { margin-bottom: 14px; }
+  .cv-eyebrow { margin-bottom: 12px; }
   .cv-title { font-size: clamp(2rem, 9vw, 3rem); margin: 0; }
 
   .cv-toolbar {
-    top: var(--header-height, 68px);
+    position: relative;
+    top: auto;
     align-items: stretch;
-    gap: 12px;
-    padding: 12px 14px;
+    gap: 10px;
+    padding: 12px 0 12px;
   }
 
   .cv-browse-controls {
     display: grid;
     gap: 10px;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 
+  .cv-browse-group--category .cv-browse-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+  }
+
+  /* Categories: one tap each, swiped sideways with the thumb. */
   .cv-type-tabs {
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    display: flex;
+    gap: 8px;
+    margin: 0;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 2px 16px 4px;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cv-type-tabs::-webkit-scrollbar {
     display: none;
   }
 
+  .cv-type-link {
+    background: rgba(255,255,255,0.5);
+    border: 1px solid rgba(38,35,31,0.14);
+    border-radius: 999px;
+    flex: none;
+    font-size: 0.8rem;
+    min-height: 44px;
+    padding: 0 16px;
+  }
+
+  .cv-type-link.is-active {
+    border-color: var(--cv-ink);
+  }
+
   .cv-category-select {
-    display: block;
+    display: none;
+  }
+
+  .cv-browse-group--collection {
+    padding: 0 16px;
+  }
+
+  .cv-browse-group--collection .cv-browse-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
 
   .cv-category-select,
-  .cv-collection-select {
+  .cv-collection-select,
+  .cv-sort-select {
+    font-size: 16px;
     min-width: 0;
     width: 100%;
   }
@@ -1275,33 +1447,126 @@ const collectionCss = `
     display: grid;
     gap: 10px;
     grid-template-columns: auto minmax(0, 1fr);
-    justify-content: space-between;
+    padding: 0 16px;
+  }
+
+  .cv-filter-toggle {
+    font-size: 0.74rem;
+    letter-spacing: 0.14em;
   }
 
   .cv-sort {
     display: grid;
+    gap: 8px;
     grid-template-columns: auto minmax(0, 1fr);
   }
 
-  .cv-sort-select {
-    min-width: 0;
-    width: 100%;
-  }
-
   .cv-facets {
-    padding: 14px 18px 18px;
+    padding: 14px 16px 18px;
     gap: 18px;
   }
 
+  .cv-facet-check {
+    font-size: 0.92rem;
+    min-height: 44px;
+  }
+
+  .cv-facet-check input {
+    height: 20px;
+    width: 20px;
+  }
+
+  .cv-facet-input {
+    font-size: 16px;
+    min-height: 44px;
+    width: 96px;
+  }
+
+  .cv-facet-apply,
+  .cv-facet-chip,
+  .cv-facet-clear {
+    min-height: 44px;
+  }
+
   .cv-count {
-    padding: 12px 18px 0;
-    font-size: 0.66rem;
+    padding: 12px 16px 0;
+    font-size: 0.72rem;
   }
 
   .cv-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px 12px;
-    padding: 16px 14px 36px;
+    gap: 22px 12px;
+    padding: 14px 14px 36px;
+  }
+
+  /* Cards appear at once on phones: a staggered fade made the grid blink
+     empty when a shopper came back from a product. */
+  .cv-card-wrap {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .cv-load {
+    min-height: 48px;
+  }
+}
+
+/* Phones and tablets: the stacked toolbar would cover a quarter of the
+   screen if it stayed pinned, so it scrolls away and the shortcut below
+   brings it back. */
+@media (max-width: 980px) {
+  .cv-toolbar {
+    position: relative;
+    top: auto;
+  }
+
+  .cv-jump {
+    align-items: center;
+    background: var(--cv-ink);
+    border: 0;
+    border-radius: 999px;
+    bottom: max(16px, env(safe-area-inset-bottom, 0px));
+    box-shadow: 0 12px 28px rgba(38,35,31,0.28);
+    color: #fbfaf6;
+    display: inline-flex;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    font-weight: 600;
+    gap: 8px;
+    left: 50%;
+    letter-spacing: 0.12em;
+    min-height: 48px;
+    opacity: 0;
+    padding: 0 20px;
+    pointer-events: none;
+    position: fixed;
+    text-transform: uppercase;
+    transform: translate(-50%, 16px);
+    transition: opacity 220ms ease, transform 220ms ease, visibility 0s linear 220ms;
+    visibility: hidden;
+    z-index: 25;
+  }
+
+  .cv-jump.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+    transition-delay: 0s;
+    visibility: visible;
+  }
+
+  .cv-jump-count {
+    align-items: center;
+    background: #fbfaf6;
+    border-radius: 999px;
+    color: var(--cv-ink);
+    display: inline-flex;
+    font-size: 0.7rem;
+    height: 20px;
+    justify-content: center;
+    letter-spacing: 0;
+    min-width: 20px;
   }
 }
 
@@ -1313,18 +1578,14 @@ const collectionCss = `
 
   .cv-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px 10px;
+    gap: 20px 10px;
     padding: 14px 12px 32px;
   }
 }
 
-@media (max-width: 360px) {
-  .cv-browse-controls {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .cv-grid {
-    grid-template-columns: 1fr;
+@media (prefers-reduced-motion: reduce) {
+  .cv-jump {
+    transition: none;
   }
 }
 

@@ -49,6 +49,13 @@ export const CART_QUERY_FRAGMENT = `#graphql
           id
           vendor
           productType
+          featuredImage {
+            id
+            url
+            altText
+            width
+            height
+          }
         }
         selectedOptions {
           name

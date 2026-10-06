@@ -96,6 +96,19 @@ type StorefrontImage = {
   width?: number | null;
 };
 
+/**
+ * Scene composites (a studio recipe with a generated `background`) are
+ * written as lossless WebP so every supplier product pixel is provably
+ * unchanged — about 1 MB each. The image script writes a lossy copy beside
+ * each one for the storefront to serve; the lossless file stays the record.
+ */
+export function curatedDisplaySrc(image: CuratedImage) {
+  const from = image.from as {background?: unknown} | undefined;
+  return from?.background
+    ? image.src.replace(/\.webp$/, '.display.webp')
+    : image.src;
+}
+
 /** The branded image set in Storefront API image shape, or [] if none. */
 export function curatedImages(
   handle?: string | null,
@@ -104,7 +117,7 @@ export function curatedImages(
   return (getCuratedProduct(handle, products)?.images ?? []).map((image) => ({
     altText: image.alt,
     height: CURATED_IMAGE_SIZE.height,
-    url: image.src,
+    url: curatedDisplaySrc(image),
     width: CURATED_IMAGE_SIZE.width,
   }));
 }
