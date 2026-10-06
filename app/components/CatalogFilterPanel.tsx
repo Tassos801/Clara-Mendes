@@ -13,10 +13,12 @@ import {
  */
 export function CatalogFilterPanel({
   facets,
+  id,
   open,
   showProductTypes = true,
 }: {
   facets: CatalogFacetOptions;
+  id?: string;
   open: boolean;
   showProductTypes?: boolean;
 }) {
@@ -102,7 +104,12 @@ export function CatalogFilterPanel({
   if (!open) return null;
 
   return (
-    <div className="cv-facets" aria-label="Product filters">
+    <div
+      className="cv-facets"
+      aria-label="Product filters"
+      id={id}
+      role="group"
+    >
       <div className="cv-facet-group">
         <p className="cv-facet-title">Availability</p>
         <label className="cv-facet-check">
@@ -127,6 +134,7 @@ export function CatalogFilterPanel({
           <input
             aria-label="Minimum price"
             className="cv-facet-input"
+            enterKeyHint="next"
             inputMode="decimal"
             min="0"
             placeholder="Min"
@@ -140,6 +148,7 @@ export function CatalogFilterPanel({
           <input
             aria-label="Maximum price"
             className="cv-facet-input"
+            enterKeyHint="done"
             inputMode="decimal"
             min="0"
             placeholder="Max"

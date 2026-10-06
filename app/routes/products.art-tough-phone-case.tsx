@@ -3,6 +3,8 @@ import {Form, Link, redirect, useLoaderData, useNavigate} from 'react-router';
 import {Analytics, getSelectedProductOptions, ShopPayButton} from '@shopify/hydrogen';
 import type {Route} from './+types/products.art-tough-phone-case';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {ProductDetail} from '~/components/ProductDetail';
+import {sizedImageUrl} from '~/lib/cartPresentation';
 import {useAside} from '~/components/Aside';
 import {ProductPrice} from '~/components/ProductPrice';
 import {RecentlyViewed} from '~/components/RecentlyViewed';
@@ -195,6 +197,27 @@ export default function ToughCasePage() {
   }, [artworkImage?.altText, artworkImage?.url, product]);
 
   const openCart = useCallback(() => open('cart'), [open]);
+  // A <label> only focuses the select; on a phone the customer still has to
+  // find and tap it. Bring it into view, focus it and, where the browser
+  // allows, open the native picker straight away.
+  const choosePhone = useCallback(() => {
+    const select = document.getElementById(
+      'tough-case-phone',
+    ) as HTMLSelectElement | null;
+    if (!select) return;
+    select.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? 'auto'
+        : 'smooth',
+      block: 'center',
+    });
+    select.focus({preventScroll: true});
+    try {
+      select.showPicker?.();
+    } catch {
+      // Not supported for selects in this browser; focus is enough.
+    }
+  }, []);
   const analyticsProduct = useMemo(
     () =>
       variant
@@ -397,16 +420,20 @@ export default function ToughCasePage() {
                   type="button"
                   onClick={() => setQuantity((value) => Math.max(1, value - 1))}
                   aria-label="Decrease quantity"
+                  disabled={quantity <= 1}
                 >
-                  -
+                  <span aria-hidden>&#8722;</span>
                 </button>
-                <span>{quantity}</span>
+                <output aria-live="polite" aria-label={`Quantity ${quantity}`}>
+                  {quantity}
+                </output>
                 <button
                   type="button"
                   onClick={() => setQuantity((value) => Math.min(99, value + 1))}
                   aria-label="Increase quantity"
+                  disabled={quantity >= 99}
                 >
-                  +
+                  <span aria-hidden>&#43;</span>
                 </button>
               </div>
             </div>
@@ -422,14 +449,18 @@ export default function ToughCasePage() {
                   disabled={!canBuy}
                   lines={lines}
                   onSuccess={openCart}
-                  pendingChildren="Adding..."
+                  pendingChildren="Adding…"
                 >
                   {buttonLabel}
                 </AddToCartButton>
               ) : (
-                <label className="primary-button full-width" htmlFor="tough-case-phone">
+                <button
+                  className="primary-button full-width"
+                  onClick={choosePhone}
+                  type="button"
+                >
                   {buttonLabel}
-                </label>
+                </button>
               )}
             </div>
             {canBuy && variant && storeDomain ? (
@@ -458,65 +489,71 @@ export default function ToughCasePage() {
             </li>
           </ul>
 
-          <dl className="product-details-list">
-            <div>
-              <dt>Case</dt>
-              <dd>
+          <div className="product-details-list">
+            <ProductDetail label="Case" defaultOpen>
                 Dual-layer tough case: an impact-resistant polycarbonate shell
                 over a shock-absorbing black silicone liner, with a matte
                 finish. The print wraps the back, sides and edges. Buttons and
                 ports stay open; wireless charging works through the case.
-              </dd>
-            </div>
-            <div>
-              <dt>Fit</dt>
-              <dd>
+              </ProductDetail>
+            <ProductDetail label="Fit" defaultOpen>
                 Made to order for the model you choose: iPhone 13 to iPhone 18
                 Pro Max, Samsung Galaxy S23 to S26 and Google Pixel 8 to 9 Pro
                 XL. Similar model names are not interchangeable, so check your
                 phone before ordering.
-              </dd>
-            </div>
-            <div>
-              <dt>Print</dt>
-              <dd>
+              </ProductDetail>
+            <ProductDetail label="Print">
                 Dye-sublimation print of the original artwork. Screen and print
                 colours can vary slightly.
-              </dd>
-            </div>
-            <div>
-              <dt>Shipping</dt>
-              <dd>
+              </ProductDetail>
+            <ProductDetail label="Shipping">
                 Printed to order and dispatched within{' '}
                 {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
                 delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
                 days across the EU.
-              </dd>
-            </div>
-            <div>
-              <dt>Returns</dt>
-              <dd>
+              </ProductDetail>
+            <ProductDetail label="Returns">
                 {RETURN_WINDOW_DAYS}-day return window from delivery. Items must
                 be unused and in original packaging.{' '}
                 <Link to="/policies/refund-policy" className="text-link">
                   Full policy
                 </Link>
-              </dd>
-            </div>
-          </dl>
+              </ProductDetail>
+          </div>
         </div>
       </section>
 
       <RecentlyViewed excludeHandles={[product.handle]} />
 
-      <div className={`sticky-atc-bar ${showStickyATC ? 'is-visible' : ''}`}>
+      <div
+        aria-hidden={showStickyATC ? undefined : true}
+        aria-label="Quick purchase"
+        className={`sticky-atc-bar ${showStickyATC ? 'is-visible' : ''}`}
+        role="region"
+        {...(showStickyATC ? {} : {inert: ''})}
+      >
         <div className="sticky-atc-info">
           {artworkImage ? (
-            <img className="sticky-atc-thumb" src={artworkImage.url} alt="" aria-hidden="true" />
+            <img
+              className="sticky-atc-thumb"
+              src={sizedImageUrl(artworkImage.url, 96)}
+              alt=""
+              aria-hidden="true"
+              decoding="async"
+              height={88}
+              width={88}
+            />
           ) : null}
           <div>
             <p className="sticky-atc-title">{product.title}</p>
-            <p className="sticky-atc-price">{formatMoney(price)}</p>
+            <p className="sticky-atc-price">
+              <span className="sticky-atc-options">
+                {[artwork, phone ?? 'No phone chosen yet']
+                  .filter(Boolean)
+                  .join(' · ')}
+              </span>
+              {formatMoney(price)}
+            </p>
           </div>
         </div>
         {phone ? (
@@ -525,13 +562,18 @@ export default function ToughCasePage() {
             disabled={!canBuy}
             lines={lines}
             onSuccess={openCart}
+            pendingChildren="Adding…"
           >
             {stickyLabel}
           </AddToCartButton>
         ) : (
-          <a className="primary-button sticky-atc-button" href="#tough-case-phone">
+          <button
+            className="primary-button sticky-atc-button"
+            onClick={choosePhone}
+            type="button"
+          >
             {stickyLabel}
-          </a>
+          </button>
         )}
       </div>
     </div>

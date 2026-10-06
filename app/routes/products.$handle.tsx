@@ -81,7 +81,10 @@ import {DEFAULT_SKY_THEME} from '~/lib/sky/themes';
 import {featurePageRedirect} from '~/lib/featurePages';
 import {formatMoney, type MoneyAmount} from '~/lib/money';
 import {ProductPrice} from '~/components/ProductPrice';
+import {ProductDetail} from '~/components/ProductDetail';
 import {VariantOptions} from '~/components/VariantOptions';
+import {sizedImageUrl} from '~/lib/cartPresentation';
+import {selectedOptionsSummary} from '~/lib/variantOptions';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {deriveCardPricing} from '~/lib/productCardPricing';
@@ -588,7 +591,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     classicFrameCrossSell,
     toughCaseCrossSell,
     product,
-    relatedFromCapsule: capsuleSiblings.length > 0,
+    // The section shows three cards; it is "from the same capsule" only
+    // when no best-selling fill is among them.
+    relatedFromCapsule: capsuleSiblings.length >= 3,
     relatedFromBookNooks: isNookPage && capsuleSiblings.length > 0,
     relatedProducts: [...capsuleSiblings, ...bestSellingFill],
     reviews,
@@ -680,6 +685,20 @@ function ProductPage() {
         : {href: '#sky-preview', label: 'Check your preview'};
   const primaryImage =
     selectedVariant?.image ?? product.featuredImage ?? product.images?.nodes[0];
+  // The sticky bar names what will be added: the chosen options beside the
+  // price, and the flat artwork (a print variant's own image is a room
+  // scene, unreadable at 44 px).
+  const stickyThumb =
+    (product.productType || '').toLowerCase() === 'art prints'
+      ? (product.featuredImage ?? primaryImage)
+      : primaryImage;
+  const stickyThumbUrl = stickyThumb ? sizedImageUrl(stickyThumb.url, 96) : '';
+  const stickyOptions = selectedOptionsSummary(
+    selectedVariant?.selectedOptions,
+    (product.productType || '').toLowerCase() === 'art prints'
+      ? ['Presentation']
+      : [],
+  );
   const productDescription = getProductDescription(product);
   const curatedProduct = getCuratedProduct(product.handle);
   const displayTitle = curatedDisplayTitle(product);
@@ -1149,18 +1168,22 @@ function ProductPage() {
                   type="button"
                   onClick={() => setQuantity((value) => Math.max(1, value - 1))}
                   aria-label="Decrease quantity"
+                  disabled={quantity <= 1}
                 >
-                  -
+                  <span aria-hidden>&#8722;</span>
                 </button>
-                <span>{quantity}</span>
+                <output aria-live="polite" aria-label={`Quantity ${quantity}`}>
+                  {quantity}
+                </output>
                 <button
                   type="button"
                   onClick={() =>
                     setQuantity((value) => Math.min(99, value + 1))
                   }
                   aria-label="Increase quantity"
+                  disabled={quantity >= 99}
                 >
-                  +
+                  <span aria-hidden>&#43;</span>
                 </button>
               </div>
             </div>
@@ -1232,229 +1255,168 @@ function ProductPage() {
             </li>
           </ul>
 
-          <dl className="product-details-list">
+          <div className="product-details-list">
             {isPlantPot ? (
               <>
-                <div>
-                  <dt>Pot</dt>
-                  <dd>
-                    Glossy ceramic, 9 cm diameter x 10.2 cm high, with a
-                    drainage hole and white rim and interior.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Included</dt>
-                  <dd>
-                    One pot. Plant and saucer not included. Images are design
-                    mockups; printed colours may vary.
-                  </dd>
-                </div>
+                <ProductDetail label="Pot" defaultOpen>
+                  Glossy ceramic, 9 cm diameter x 10.2 cm high, with a drainage
+                  hole and white rim and interior.
+                </ProductDetail>
+                <ProductDetail label="Included" defaultOpen>
+                  One pot. Plant and saucer not included. Images are design
+                  mockups; printed colours may vary.
+                </ProductDetail>
               </>
             ) : null}
             {curatedProduct ? (
-              <div>
-                <dt>Kit</dt>
-                <dd>{curatedProduct.details}</dd>
-              </div>
+              <ProductDetail label="Kit" defaultOpen>
+                {curatedProduct.details}
+              </ProductDetail>
             ) : null}
             {isArtPrint ? (
-              <div>
-                <dt>Print</dt>
-                <dd>
-                  Giclée print in archival pigment inks on 200gsm Enhanced Matte
-                  Art paper. {printSizeAvailabilityCopy(product.variants.nodes)}{' '}
-                  Ships unframed in the selected size; frame not included.
-                  Screen and print colours can vary slightly.
-                </dd>
-              </div>
+              <ProductDetail label="Print" defaultOpen>
+                Giclée print in archival pigment inks on 200gsm Enhanced Matte
+                Art paper. {printSizeAvailabilityCopy(product.variants.nodes)}{' '}
+                Ships unframed in the selected size; frame not included. Screen
+                and print colours can vary slightly.
+              </ProductDetail>
             ) : null}
             {isClassicFrame ? (
               <>
-                <div>
-                  <dt>Frame</dt>
-                  <dd>
-                    Natural classic picture frame in satin-laminated solid wood,
-                    with a 20 mm face, shatterproof clear Perspex glazing, and a
-                    removable flat backloader.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Size</dt>
-                  <dd>
-                    Choose {CLASSIC_FRAME_SIZE_LABELS.join(', ')} to match the
-                    three available print sizes. The selected size is the
-                    artwork opening.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Included</dt>
-                  <dd>
-                    Frame, Perspex glazing, backing, and wall hanger only.
-                    Print, artwork, and decorative mat are not included.
-                  </dd>
-                </div>
+                <ProductDetail label="Frame" defaultOpen>
+                  Natural classic picture frame in satin-laminated solid wood,
+                  with a 20 mm face, shatterproof clear Perspex glazing, and a
+                  removable flat backloader.
+                </ProductDetail>
+                <ProductDetail label="Size">
+                  Choose {CLASSIC_FRAME_SIZE_LABELS.join(', ')} to match the
+                  three available print sizes. The selected size is the artwork
+                  opening.
+                </ProductDetail>
+                <ProductDetail label="Included" defaultOpen>
+                  Frame, Perspex glazing, backing, and wall hanger only. Print,
+                  artwork, and decorative mat are not included.
+                </ProductDetail>
               </>
             ) : null}
             {capsuleSummary?.blurb ? (
-              <div>
-                <dt>Capsule</dt>
-                <dd>
-                  {capsuleSummary.blurb}{' '}
-                  <Link
-                    className="text-link"
-                    to={capsuleSummary.path}
-                    prefetch="intent"
-                  >
-                    Explore {capsuleSummary.title}
-                  </Link>
-                </dd>
-              </div>
+              <ProductDetail label="Capsule">
+                {capsuleSummary.blurb}{' '}
+                <Link
+                  className="text-link"
+                  to={capsuleSummary.path}
+                  prefetch="intent"
+                >
+                  Explore {capsuleSummary.title}
+                </Link>
+              </ProductDetail>
             ) : null}
             {memberWallSets.length > 0 ? (
-              <div>
-                <dt>Gallery wall</dt>
-                <dd>
-                  This print hangs in{' '}
-                  {memberWallSets.map((wallSet, index) => (
-                    <span key={wallSet.slug}>
-                      {index > 0 ? ' and ' : ''}
-                      <Link
-                        className="text-link"
-                        to={`/collections/${wallSet.slug}`}
-                        prefetch="intent"
-                      >
-                        {wallSet.name}
-                      </Link>
-                    </span>
-                  ))}
-                  {' — buy the complete three-print wall in one size.'}
-                </dd>
-              </div>
+              <ProductDetail label="Gallery wall">
+                This print hangs in{' '}
+                {memberWallSets.map((wallSet, index) => (
+                  <span key={wallSet.slug}>
+                    {index > 0 ? ' and ' : ''}
+                    <Link
+                      className="text-link"
+                      to={`/collections/${wallSet.slug}`}
+                      prefetch="intent"
+                    >
+                      {wallSet.name}
+                    </Link>
+                  </span>
+                ))}
+                {' — buy the complete three-print wall in one size.'}
+              </ProductDetail>
             ) : null}
             {isPhoneCase ? (
               <>
-                <div>
-                  <dt>Case</dt>
-                  <dd>
-                    Slim snap case in impact-resistant polycarbonate with an
-                    all-over matte print of the original artwork. Printed to
-                    order; screen and print colours can vary slightly.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Fit</dt>
-                  <dd>
-                    Made for {formatPhoneCaseDeviceList()} only. Cases are cut
-                    per device and printed to order, so check your exact model
-                    before ordering.
-                  </dd>
-                </div>
+                <ProductDetail label="Case" defaultOpen>
+                  Slim snap case in impact-resistant polycarbonate with an
+                  all-over matte print of the original artwork. Printed to
+                  order; screen and print colours can vary slightly.
+                </ProductDetail>
+                <ProductDetail label="Fit" defaultOpen>
+                  Made for {formatPhoneCaseDeviceList()} only. Cases are cut per
+                  device and printed to order, so check your exact model before
+                  ordering.
+                </ProductDetail>
               </>
             ) : null}
             {isSkyMap ? (
               <>
-                <div>
-                  <dt>Print</dt>
-                  <dd>
-                    Giclée print in archival pigment inks on 200gsm Enhanced
-                    Matte Art paper, made to order at {SKY_SIZES[skySize].label}
-                    . Framed editions come in a solid wood classic frame with
-                    clear acrylic glazing, delivered ready to hang.
-                  </dd>
-                </div>
-                <div>
-                  <dt>Accuracy</dt>
-                  <dd>
-                    Every star brighter than the naked-eye limit, the Moon at
-                    its true phase and place, and the visible planets —
-                    calculated for your exact place and moment. Star data: Yale
-                    Bright Star Catalogue; places: GeoNames (CC BY 4.0).
-                  </dd>
-                </div>
-                <div>
-                  <dt>Personalisation</dt>
-                  <dd>
-                    Your title, the place, the date and its coordinates are set
-                    in the lower band. We print exactly what the preview shows,
-                    so check the spelling before you add to cart.
-                  </dd>
-                </div>
+                <ProductDetail label="Print" defaultOpen>
+                  Giclée print in archival pigment inks on 200gsm Enhanced Matte
+                  Art paper, made to order at {SKY_SIZES[skySize].label}. Framed
+                  editions come in a solid wood classic frame with clear acrylic
+                  glazing, delivered ready to hang.
+                </ProductDetail>
+                <ProductDetail label="Accuracy">
+                  Every star brighter than the naked-eye limit, the Moon at its
+                  true phase and place, and the visible planets — calculated for
+                  your exact place and moment. Star data: Yale Bright Star
+                  Catalogue; places: GeoNames (CC BY 4.0).
+                </ProductDetail>
+                <ProductDetail label="Personalisation">
+                  Your title, the place, the date and its coordinates are set in
+                  the lower band. We print exactly what the preview shows, so
+                  check the spelling before you add to cart.
+                </ProductDetail>
               </>
             ) : null}
             {isNatal ? (
               <>
-                <div>
-                  <dt>Print</dt>
-                  <dd>
-                    Giclée print in archival pigment inks on 200gsm Enhanced
-                    Matte Art paper, made to order at {SKY_SIZES[skySize].label}
-                    . Framed editions come in a solid wood classic frame with
-                    clear acrylic glazing, delivered ready to hang.
-                  </dd>
-                </div>
-                <div>
-                  <dt>The medallion</dt>
-                  <dd>
-                    A star chart of the sky over the birthplace at the moment of
-                    birth — every naked-eye star, the Moon at its true phase and
-                    the visible planets. Leave the time blank and the chart is
-                    drawn for midday, with no time printed. Star data: Yale
-                    Bright Star Catalogue; places: GeoNames (CC BY 4.0).
-                  </dd>
-                </div>
-                <div>
-                  <dt>Personalisation</dt>
-                  <dd>
-                    The name, the birth date, the place with its coordinates,
-                    and an optional line in your words — weight, length, a
-                    welcome. We print exactly what the preview shows, so check
-                    the spelling before you add to cart.
-                  </dd>
-                </div>
+                <ProductDetail label="Print" defaultOpen>
+                  Giclée print in archival pigment inks on 200gsm Enhanced Matte
+                  Art paper, made to order at {SKY_SIZES[skySize].label}. Framed
+                  editions come in a solid wood classic frame with clear acrylic
+                  glazing, delivered ready to hang.
+                </ProductDetail>
+                <ProductDetail label="The medallion">
+                  A star chart of the sky over the birthplace at the moment of
+                  birth — every naked-eye star, the Moon at its true phase and
+                  the visible planets. Leave the time blank and the chart is
+                  drawn for midday, with no time printed. Star data: Yale Bright
+                  Star Catalogue; places: GeoNames (CC BY 4.0).
+                </ProductDetail>
+                <ProductDetail label="Personalisation">
+                  The name, the birth date, the place with its coordinates, and
+                  an optional line in your words — weight, length, a welcome. We
+                  print exactly what the preview shows, so check the spelling
+                  before you add to cart.
+                </ProductDetail>
               </>
             ) : null}
             {isBlanket ? (
-              <div>
-                <dt>Blanket</dt>
-                <dd>
-                  Single-sided premium polyester fleece, hemmed at 30 × 40 in
-                  with the artwork printed across the full face. Printed to
-                  order; screen and print colours can vary slightly.
-                </dd>
-              </div>
+              <ProductDetail label="Blanket" defaultOpen>
+                Single-sided premium polyester fleece, hemmed at 30 × 40 in with
+                the artwork printed across the full face. Printed to order;
+                screen and print colours can vary slightly.
+              </ProductDetail>
             ) : null}
-            <div>
-              <dt>Shipping</dt>
-              <dd>
-                <ProductShippingText
-                  curatedShipping={curatedProduct?.shipping}
-                  isPlantPot={isPlantPot}
-                  dispatchWindow={DISPATCH_WINDOW_BUSINESS_DAYS}
-                  deliveryWindow={DELIVERY_EU_BUSINESS_DAYS}
-                />
-              </dd>
-            </div>
-            <div>
-              <dt>Returns</dt>
-              <dd>
-                {RETURN_WINDOW_DAYS}-day return window from delivery. Items must
-                be unused and in original packaging.{' '}
-                <Link to="/policies/refund-policy" className="text-link">
-                  Full policy
-                </Link>
-              </dd>
-            </div>
-            <div>
-              <dt>Support</dt>
-              <dd>
-                Questions before or after your purchase? We respond within one
-                business day.{' '}
-                <Link to="/contact" className="text-link">
-                  Get in touch
-                </Link>
-              </dd>
-            </div>
-          </dl>
+            <ProductDetail label="Shipping">
+              <ProductShippingText
+                curatedShipping={curatedProduct?.shipping}
+                isPlantPot={isPlantPot}
+                dispatchWindow={DISPATCH_WINDOW_BUSINESS_DAYS}
+                deliveryWindow={DELIVERY_EU_BUSINESS_DAYS}
+              />
+            </ProductDetail>
+            <ProductDetail label="Returns">
+              {RETURN_WINDOW_DAYS}-day return window from delivery. Items must
+              be unused and in original packaging.{' '}
+              <Link to="/policies/refund-policy" className="text-link">
+                Full policy
+              </Link>
+            </ProductDetail>
+            <ProductDetail label="Support">
+              Questions before or after your purchase? We respond within one
+              business day.{' '}
+              <Link to="/contact" className="text-link">
+                Get in touch
+              </Link>
+            </ProductDetail>
+          </div>
 
           {phoneCaseCrossSell ? (
             <aside
@@ -1580,20 +1542,34 @@ function ProductPage() {
 
       <RecentlyViewed excludeHandles={[product.handle]} />
 
-      <div className={`sticky-atc-bar ${showStickyATC ? 'is-visible' : ''}`}>
+      {/* While hidden the bar is inert, so keyboard and screen-reader users
+          never land on an invisible purchase button. */}
+      <div
+        aria-hidden={showStickyATC ? undefined : true}
+        aria-label="Quick purchase"
+        className={`sticky-atc-bar ${showStickyATC ? 'is-visible' : ''}`}
+        role="region"
+        {...(showStickyATC ? {} : {inert: ''})}
+      >
         <div className="sticky-atc-info">
-          {primaryImage ? (
+          {stickyThumb ? (
             <img
               className="sticky-atc-thumb"
-              src={primaryImage.url}
+              src={stickyThumbUrl}
               alt=""
               aria-hidden="true"
+              decoding="async"
+              height={88}
+              width={88}
             />
           ) : null}
           <div>
             <p className="sticky-atc-title">{displayTitle}</p>
             {selectedVariant ? (
               <p className="sticky-atc-price">
+                {stickyOptions ? (
+                  <span className="sticky-atc-options">{stickyOptions}</span>
+                ) : null}
                 {formatMoney(selectedVariant.price)}
               </p>
             ) : null}
@@ -1624,6 +1600,7 @@ function ProductPage() {
                 : []
             }
             onSuccess={openCart}
+            pendingChildren="Adding…"
           >
             {stickyButtonLabel}
           </AddToCartButton>
@@ -1861,7 +1838,7 @@ function ProductGalleryCarousel({
                   type="button"
                   tabIndex={index === activeIndex ? 0 : -1}
                   aria-haspopup="dialog"
-                  aria-label={`Open image ${index + 1} of ${slideCount} in an enlarged view`}
+                  aria-label={`View detail: image ${index + 1} of ${slideCount}, enlarged`}
                   onKeyDown={handleGalleryKeyDown}
                   onClick={(event) => {
                     zoomTriggerRef.current = event.currentTarget;
@@ -1928,8 +1905,10 @@ function ProductGalleryCarousel({
               className="product-gallery-counter"
               aria-live="polite"
               aria-atomic="true"
-              aria-label={`Slide ${activeIndex + 1} of ${slideCount}`}
             >
+              <span className="sr-only">
+                Slide {activeIndex + 1} of {slideCount}
+              </span>
               <span aria-hidden="true">
                 {String(activeIndex + 1).padStart(2, '0')}
                 <i>/</i>
@@ -2012,8 +1991,10 @@ function ProductGalleryCarousel({
                 className="product-zoom-counter"
                 aria-live="polite"
                 aria-atomic="true"
-                aria-label={`Photo ${(zoomIndex ?? 0) + 1} of ${zoomCount}`}
               >
+                <span className="sr-only">
+                  Photo {(zoomIndex ?? 0) + 1} of {zoomCount}
+                </span>
                 <span aria-hidden="true">
                   {String((zoomIndex ?? 0) + 1).padStart(2, '0')}
                   <i>/</i>

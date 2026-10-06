@@ -5,6 +5,7 @@ import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
 import {getProductStory} from '~/lib/productCopy';
 import {
+  cardQuickAddMode,
   deriveCardPricing,
   formatCardPriceLabel,
   type CardPricing,
@@ -140,7 +141,7 @@ export function ClaraProductCard({
           to={`/products/${product.handle}`}
           prefetch="intent"
           className="cm-card-media-link"
-          aria-label={title}
+          aria-label={`${title} · ${chip}`}
         >
           <div className="product-card-media cm-card-media">
             {baseImage ? (
@@ -208,9 +209,37 @@ function QuickAddButton({
   variant: ProductVariant;
 }) {
   const {open} = useAside();
-  const available = variant.availableForSale !== false;
+  const mode = cardQuickAddMode(product, variant);
+  const title = curatedDisplayTitle(product);
 
-  if (!available) {
+  if (mode === 'choose') {
+    return (
+      <Link
+        aria-label={`Choose options for ${title}`}
+        className="cm-quick-add cm-quick-add--choose"
+        prefetch="intent"
+        to={`/products/${product.handle}`}
+      >
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M3 8h9.5M8.5 4l4 4-4 4"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </Link>
+    );
+  }
+
+  if (mode === 'unavailable') {
     return (
       <button
         type="button"
@@ -240,7 +269,7 @@ function QuickAddButton({
 
   return (
     <AddToCartButton
-      ariaLabel="Quick add to cart"
+      ariaLabel={`Add ${title} to cart`}
       analytics={{
         products: [
           {
@@ -485,41 +514,62 @@ const cardCss = `
   background: rgba(38,35,31,0.35) !important;
   cursor: not-allowed;
 }
+.cm-quick-add--choose {
+  text-decoration: none;
+}
+.cm-quick-add--choose:hover {
+  text-decoration: none;
+}
 
 @keyframes cmQuickAddSpin {
   to { transform: rotate(360deg); }
 }
 
-/* ── Mobile compact layout ── */
+/* ── Mobile compact layout ──
+   Two columns leave a card about 160 px wide, so the title takes the full
+   width (two lines) with the price beneath it instead of being truncated
+   beside it, and the quick-add control keeps a 44 px touch target. */
 @media (max-width: 720px) {
   .cm-card-chip {
     opacity: 1;
     transform: translateY(0);
-    font-size: 0.56rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
     padding: 4px 8px;
-    top: 10px;
-    left: 10px;
+    top: 8px;
+    left: 8px;
   }
 
   .cm-card-title {
-    font-size: 1rem;
+    font-size: 1.02rem;
     line-height: 1.2;
   }
 
   .cm-card-price {
-    font-size: 0.8rem;
+    font-size: 0.84rem;
   }
 
   .cm-card-copy {
     padding-top: 10px;
   }
 
+  .cm-card-copy-link {
+    min-height: 44px;
+  }
+
   .cm-card-heading {
-    gap: 6px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .cm-card-title {
+    flex: none;
+    width: 100%;
   }
 
   .cm-card-story {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     line-height: 1.45;
     margin-top: 6px;
   }
@@ -527,11 +577,31 @@ const cardCss = `
   .cm-quick-add {
     opacity: 1;
     transform: translateY(0);
-    width: 34px;
-    height: 34px;
-    font-size: 1.15rem;
-    bottom: 8px;
-    right: 8px;
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    bottom: 6px;
+    right: 6px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-card-img,
+  .cm-card-veil,
+  .cm-card-chip,
+  .cm-quick-add {
+    transition: none;
+  }
+
+  .cm-card:hover .cm-card-img--base,
+  .cm-card:focus-within .cm-card-img--base,
+  .cm-card:hover .cm-card-img--hover,
+  .cm-card:focus-within .cm-card-img--hover {
+    transform: none;
+  }
+
+  .cm-quick-add[aria-busy="true"]::after {
+    animation-duration: 2s;
   }
 }
 `;

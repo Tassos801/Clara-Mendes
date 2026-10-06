@@ -789,8 +789,12 @@ export function SkyConfigurator({
             }
             aria-expanded={placesOpen && placeResults.length > 0}
             aria-invalid={Boolean(placeError)}
+            autoCapitalize="words"
             autoComplete="off"
+            autoCorrect="off"
+            enterKeyHint="search"
             id="sky-place"
+            spellCheck={false}
             onBlur={() => {
               window.setTimeout(() => setPlacesOpen(false), 150);
               setPlaceBlurred(true);
@@ -915,6 +919,8 @@ export function SkyConfigurator({
           <input
             aria-describedby={titleError ? 'sky-title-error' : undefined}
             aria-invalid={Boolean(titleError)}
+            autoCapitalize="sentences"
+            enterKeyHint="done"
             id="sky-title"
             maxLength={SKY_TITLE_MAX}
             onChange={(event) => {

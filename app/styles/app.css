@@ -654,6 +654,16 @@ button {
   position: relative;
 }
 
+/* Phones show this as a short band: a 760 px WebP (about 110 KB) instead
+   of the 2000 × 3556 JPEG (about 925 KB). */
+@media (max-width: 720px) {
+  .story-image {
+    background-image:
+      linear-gradient(rgba(61, 56, 48, 0.02), rgba(61, 56, 48, 0.1)),
+      url('/images/backdrops/story-shelf-mobile.webp');
+  }
+}
+
 .story-copy {
   align-content: center;
   display: grid;
@@ -1476,27 +1486,55 @@ button {
   margin: 12px 0 0;
 }
 
-.product-details-list div {
+/* Each row is a native disclosure (ProductDetail): label, chevron, body. */
+.product-detail {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
-  display: grid;
-  gap: 18px;
-  grid-template-columns: 120px 1fr;
-  padding: 18px 0;
 }
 
-.product-details-list dt {
+.product-detail summary {
+  align-items: center;
   color: var(--color-muted);
-  font-size: 0.72rem;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.74rem;
   font-weight: 700;
+  gap: 12px;
+  justify-content: space-between;
   letter-spacing: 0.16em;
+  list-style: none;
+  min-height: 52px;
   text-transform: uppercase;
 }
 
-.product-details-list dd {
+.product-detail summary::-webkit-details-marker {
+  display: none;
+}
+
+.product-detail summary:hover {
+  color: var(--color-ink);
+}
+
+.product-detail summary svg {
+  fill: none;
+  flex: none;
+  height: 12px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  transition: transform 180ms ease;
+  width: 12px;
+}
+
+.product-detail[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.product-detail-body {
   color: var(--color-ink);
   font-size: 0.96rem;
   line-height: 1.6;
-  margin: 0;
+  padding: 0 0 18px;
 }
 
 .product-format-choice {
@@ -1689,7 +1727,20 @@ button {
   text-align: center;
 }
 
+/* Five across on phones keeps all 24 artworks in about five rows, so the
+   phone model, which every order needs, follows without a long scroll. */
 @media (max-width: 520px) {
+  .tough-case-artworks {
+    gap: 6px;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .tough-case-artworks a {
+    border-radius: 9px;
+  }
+}
+
+@media (max-width: 340px) {
   .tough-case-artworks {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
@@ -2659,10 +2710,6 @@ button {
 
   .cart-line-item {
     grid-template-columns: 82px 1fr;
-  }
-
-  .product-details-list div {
-    grid-template-columns: 1fr;
   }
 
   .product-page {
@@ -5386,4 +5433,981 @@ html.lenis body {
   .case-teaser__cases li:nth-child(even) {
     margin-top: 18px;
   }
+}
+
+/* ════════════════════════════════════════════════════════════════════
+   Mobile shopping pass (2026-10)
+   One-handed browsing, buying and checkout on phones. Placed last so it
+   wins the cascade over the earlier responsive blocks it refines; desktop
+   keeps its layout unless a rule says otherwise.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* Visible keyboard focus everywhere a component has not styled its own. */
+:where(a, button, summary, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.primary-button[aria-disabled='true'] {
+  cursor: progress;
+  opacity: 0.72;
+  transform: none;
+}
+
+/* ── Cart drawer: header, scrolling body, pinned checkout ── */
+.cart-drawer {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+}
+
+.cart-drawer-header {
+  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  flex: none;
+  gap: 12px;
+  padding: 14px 14px 14px 22px;
+}
+
+.cart-drawer-title {
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.cart-drawer-count {
+  color: var(--color-muted);
+  font-family: var(--sans);
+  font-size: 0.86rem;
+  letter-spacing: 0;
+}
+
+.cart-drawer-header .drawer-close {
+  align-items: center;
+  color: var(--color-ink);
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 44px;
+}
+
+.cart-drawer-loading {
+  color: var(--color-muted);
+  padding: 22px;
+}
+
+.cart-main--aside {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  min-height: 0;
+}
+
+.cart-main--aside .cart-details {
+  -webkit-overflow-scrolling: touch;
+  align-content: start;
+  display: grid;
+  flex: 1;
+  gap: 22px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 22px 24px;
+}
+
+.cart-main--aside .cart-details[hidden],
+.cart-main--page .cart-details[hidden] {
+  display: none;
+}
+
+.cart-checkout-bar {
+  background: rgba(251, 250, 246, 0.97);
+  border-top: 1px solid rgba(38, 35, 31, 0.12);
+  box-shadow: 0 -12px 28px rgba(55, 48, 39, 0.08);
+  display: grid;
+  flex: none;
+  gap: 10px;
+  padding: 14px 22px calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ── Totals and checkout (drawer bar and page summary) ── */
+.cart-totals {
+  display: grid;
+  gap: 2px;
+}
+
+.cart-totals .cart-subtotal {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+}
+
+.cart-totals .cart-subtotal dt {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cart-totals .cart-subtotal dd {
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  font-variant-numeric: lining-nums tabular-nums;
+  margin: 0;
+}
+
+.cart-totals[aria-busy='true'] .cart-subtotal dd {
+  opacity: 0.5;
+}
+
+.cart-totals-note {
+  color: var(--color-muted);
+  font-size: 0.86rem;
+  margin: 0;
+}
+
+.cart-checkout-actions {
+  margin: 0;
+}
+
+.cart-checkout-button {
+  font-size: 0.8rem;
+  min-height: 52px;
+}
+
+/* ── Cart lines ── */
+.cart-main .cart-lines > ul {
+  display: grid;
+}
+
+.cart-line {
+  padding: 18px 0;
+}
+
+.cart-main--aside .cart-line:first-child {
+  border-top: 0;
+}
+
+.cart-line-inner {
+  align-items: start;
+  gap: 16px;
+  grid-template-columns: 88px minmax(0, 1fr);
+}
+
+.cart-line-inner .cart-line-image {
+  aspect-ratio: 4 / 5;
+  background: var(--color-soft);
+  border-radius: 12px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 88px;
+}
+
+.cart-line-body {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cart-line-title {
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.cart-line-title:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cart-main ul.cart-line-options {
+  color: var(--color-muted);
+  display: grid;
+  font-size: 0.88rem;
+  gap: 1px;
+  line-height: 1.4;
+}
+
+.cart-line-options span {
+  color: var(--color-ink);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-right: 4px;
+  text-transform: uppercase;
+}
+
+.cart-line-price {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.cart-line-price .product-price {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.cart-line-unit {
+  color: var(--color-muted);
+  font-size: 0.84rem;
+}
+
+.cart-line-unavailable {
+  background: rgba(156, 111, 93, 0.1);
+  border-radius: 10px;
+  color: #7e5141;
+  font-size: 0.86rem;
+  line-height: 1.45;
+  margin: 2px 0;
+  padding: 8px 10px;
+}
+
+.cart-line.is-unavailable .cart-line-image {
+  opacity: 0.55;
+}
+
+.cart-line-quantity {
+  gap: 8px 12px;
+  margin-top: 4px;
+}
+
+.cart-line-stepper {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(38, 35, 31, 0.18);
+  border-radius: 999px;
+  display: inline-grid;
+  grid-template-columns: 44px minmax(28px, auto) 44px;
+  min-height: 44px;
+}
+
+.cart-line-stepper form {
+  display: contents;
+}
+
+.cart-line-quantity .cart-line-stepper button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--color-ink);
+  display: inline-flex;
+  font-size: 1.1rem;
+  height: 44px;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0;
+  width: 44px;
+}
+
+.cart-line-stepper output {
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.cart-line-quantity .cart-line-remove {
+  min-height: 44px;
+  padding: 0 10px;
+}
+
+/* ── Codes disclosure ── */
+.cart-codes {
+  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  border-top: 1px solid rgba(38, 35, 31, 0.12);
+}
+
+.cart-codes summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: 0.92rem;
+  justify-content: space-between;
+  list-style: none;
+  min-height: 48px;
+}
+
+.cart-codes summary::-webkit-details-marker {
+  display: none;
+}
+
+.cart-codes summary svg {
+  fill: none;
+  height: 12px;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  transition: transform 180ms ease;
+  width: 12px;
+}
+
+.cart-codes[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.cart-codes-body {
+  display: grid;
+  gap: 14px;
+  padding: 2px 0 16px;
+}
+
+.cart-code-section dl,
+.cart-code-section dd {
+  margin: 0 0 10px;
+}
+
+.cart-code-section dt {
+  color: var(--color-muted);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.cart-code-row,
+.cart-discount,
+.cart-code-section dd form {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.cart-summary-page .cart-code-row input,
+.cart-summary-aside .cart-code-row input {
+  flex: 1;
+  font-size: 16px;
+  min-height: 44px;
+  min-width: 0;
+  padding: 0 16px;
+  width: auto;
+}
+
+.cart-summary-page .cart-codes form button,
+.cart-summary-aside .cart-codes form button {
+  flex: none;
+  min-height: 44px;
+  padding: 0 16px;
+  width: auto;
+}
+
+/* ── Empty cart ── */
+.cart-empty {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  padding: 28px 22px;
+}
+
+.cart-empty[hidden] {
+  display: none;
+}
+
+.cart-empty .eyebrow {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.cart-empty-title {
+  font-family: var(--serif);
+  font-size: 2rem;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin: 0;
+}
+
+.cart-empty-copy {
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0 0 8px;
+  max-width: 34ch;
+}
+
+.cart-empty-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+}
+
+.cart-main--page .cart-empty {
+  padding: 8px 0 40px;
+}
+
+/* ── Cart page: summary right after the lines on narrow screens ── */
+.cart-page .cart-main--page .cart-details {
+  align-items: start;
+  grid-template-areas:
+    "lines summary"
+    "recs summary";
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 0.42fr);
+}
+
+.cart-main--page .cart-lines {
+  grid-area: lines;
+}
+
+.cart-main--page .cart-summary-page {
+  grid-area: summary;
+}
+
+.cart-main--page .cart-recs-slot {
+  grid-area: recs;
+}
+
+.cart-summary-page h2 {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .cart-page .cart-main--page .cart-details {
+    grid-template-areas:
+      "lines"
+      "summary"
+      "recs";
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .cart-drawer {
+    padding: 0;
+  }
+
+  .cart-drawer-header {
+    padding-left: 18px;
+  }
+
+  .cart-main--aside .cart-details {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .cart-checkout-bar {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .cart-line-inner {
+    gap: 14px;
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+
+  .cart-line-inner .cart-line-image {
+    height: auto;
+    width: 76px;
+  }
+
+  .cart-summary-page {
+    padding: 18px;
+  }
+}
+
+/* Phones: the drawer is the whole screen, so it drops its side radius. */
+@media (max-width: 440px) {
+  .cart-drawer {
+    border-radius: 0;
+    width: 100%;
+  }
+}
+
+/* The codes disclosure in the drawer is part of the list, not a card. */
+.cart-summary-aside {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+/* ── Header: the count bubble is the only pill; narrow phones show a bag ── */
+.cart-button span.cart-button-label {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  display: inline;
+  height: auto;
+  min-width: 0;
+  padding: 0;
+}
+
+.cart-button-icon {
+  display: none;
+  flex: none;
+}
+
+@media (max-width: 720px) {
+  .header-left {
+    gap: 6px;
+  }
+
+  .cart-button {
+    justify-content: center;
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+@media (max-width: 400px) {
+  .site-header {
+    padding: 0 10px 0 6px;
+  }
+
+  .header-right {
+    gap: 0;
+  }
+
+  .cart-button {
+    gap: 2px;
+    padding: 0 4px;
+  }
+
+  .cart-button-icon {
+    display: block;
+  }
+
+  .cart-button span.cart-button-label {
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+  .cart-button span.cart-button-count {
+    font-size: 0.72rem;
+    height: 22px;
+    min-width: 22px;
+    padding: 0 5px;
+  }
+}
+
+/* ── Product page ── */
+.variant-legend-value {
+  color: var(--color-ink);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.variant-options a {
+  gap: 2px;
+}
+
+.variant-options--priced a {
+  flex-direction: column;
+  line-height: 1.15;
+  min-height: 54px;
+  padding: 6px 18px;
+}
+
+.variant-option-price,
+.variant-option-status {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+  text-decoration: none;
+}
+
+.variant-options a.is-selected .variant-option-price,
+.variant-options a.is-selected .variant-option-status {
+  color: rgba(251, 250, 246, 0.78);
+}
+
+.variant-option-status {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.variant-options a.is-unavailable .variant-option-name {
+  text-decoration: line-through;
+}
+
+.variant-options a.is-unavailable {
+  text-decoration: none;
+}
+
+.quantity-control {
+  grid-template-columns: 44px minmax(40px, auto) 44px;
+}
+
+.quantity-control button {
+  align-items: center;
+  display: inline-flex;
+  font-size: 1.1rem;
+  height: 44px;
+  justify-content: center;
+}
+
+.quantity-control button:disabled {
+  color: var(--color-muted);
+  cursor: default;
+  opacity: 0.45;
+}
+
+.quantity-control output {
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.product-zoom-hint {
+  font-size: 0.68rem;
+}
+
+.sticky-atc-options {
+  color: var(--color-ink);
+  display: block;
+  font-size: 0.78rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sticky-atc-info > div {
+  min-width: 0;
+}
+
+.sticky-atc-bar .cart-form-error {
+  flex-basis: 100%;
+  font-size: 0.8rem;
+  margin: 6px 0 0;
+}
+
+.sticky-atc-bar form {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  max-width: 50%;
+}
+
+@media (max-width: 720px) {
+  /* One quiet line: a crumb trail that never wraps into a grid. */
+  .breadcrumb {
+    flex-wrap: nowrap;
+    gap: 8px;
+    letter-spacing: 0.12em;
+    min-width: 0;
+    overflow: hidden;
+    padding-top: calc(var(--header-height) + 10px);
+    white-space: nowrap;
+  }
+
+  .breadcrumb > * {
+    flex: none;
+  }
+
+  .breadcrumb > span:last-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .breadcrumb a {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+  }
+
+  .product-detail-layout {
+    margin-top: 2px;
+  }
+
+  .product-gallery-navigation {
+    margin-top: 8px;
+  }
+
+  .product-gallery-dot {
+    height: 44px;
+    width: 28px;
+  }
+
+  .product-gallery-arrow {
+    height: 44px;
+    width: 44px;
+  }
+
+  .product-purchase-panel {
+    gap: 18px;
+    padding: 22px 18px;
+  }
+
+  .product-purchase-panel h1 {
+    font-size: clamp(2.05rem, 8.6vw, 2.6rem);
+    line-height: 1.04;
+  }
+
+  .product-purchase-intro {
+    display: grid;
+    gap: 10px;
+  }
+
+  .product-purchase-intro .eyebrow,
+  .product-purchase-intro h1,
+  .product-purchase-intro .product-lede,
+  .product-purchase-intro .product-price {
+    margin: 0;
+  }
+
+  /* Availability stays a badge; the delivery and returns facts become a
+     single line of text instead of three stacked pills. */
+  .product-availability-row {
+    gap: 6px 14px;
+  }
+
+  .product-availability-row span:not(.product-availability-chip) {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    color: var(--color-muted);
+    font-size: 0.84rem;
+    font-weight: 500;
+    gap: 7px;
+    letter-spacing: 0;
+    min-height: 0;
+    padding: 0;
+    text-transform: none;
+  }
+
+  .product-availability-row span:not(.product-availability-chip)::before {
+    background: var(--color-moss);
+    border-radius: 999px;
+    content: '';
+    flex: none;
+    height: 4px;
+    opacity: 0.7;
+    width: 4px;
+  }
+
+  .product-availability-row .product-availability-chip {
+    font-size: 0.66rem;
+    min-height: 28px;
+  }
+
+  .variant-options--priced {
+    display: grid;
+    gap: 6px;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  }
+
+  .variant-options--priced a {
+    font-size: 0.88rem;
+    padding: 6px;
+  }
+
+  .product-assurance-list li {
+    font-size: 0.88rem;
+  }
+
+  .sticky-atc-bar {
+    bottom: max(10px, env(safe-area-inset-bottom, 0px));
+    gap: 10px;
+    left: max(10px, env(safe-area-inset-left, 0px));
+    padding: 8px 8px 8px 10px;
+    right: max(10px, env(safe-area-inset-right, 0px));
+  }
+
+  .sticky-atc-title {
+    font-size: 0.9rem;
+  }
+
+  .sticky-atc-price {
+    font-size: 0.8rem;
+  }
+
+  .sticky-atc-button {
+    min-height: 46px;
+    padding: 0 16px;
+  }
+
+  /* The bar is out of reach for keyboard and assistive tech while hidden
+     (inert); visibility follows the slide-out so it never intercepts taps. */
+  .sticky-atc-bar {
+    transition:
+      opacity 220ms ease,
+      transform 220ms ease,
+      visibility 0s linear 220ms;
+    visibility: hidden;
+  }
+
+  .sticky-atc-bar.is-visible {
+    transition-delay: 0s;
+    visibility: visible;
+  }
+}
+
+@media (max-width: 360px) {
+  .sticky-atc-thumb {
+    display: none;
+  }
+
+  .sticky-atc-button {
+    padding: 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-atc-bar {
+    transition: none;
+  }
+}
+
+/* ── Touch targets that do not change the look ── */
+@media (max-width: 720px) {
+  .site-header .brand-mark,
+  .site-footer .brand-mark {
+    align-items: center;
+    display: inline-flex;
+    min-height: 44px;
+  }
+
+  .product-kit-specs dt {
+    font-size: 0.7rem;
+  }
+
+  .rv-btn {
+    min-height: 44px;
+  }
+}
+
+/* A text link standing on its own grows an invisible hit area to about
+   44 px tall on touch screens; the underline and spacing stay as drawn. */
+@media (pointer: coarse) {
+  .text-link::before {
+    bottom: -10px;
+    content: '';
+    left: -4px;
+    position: absolute;
+    right: -4px;
+    top: -10px;
+  }
+}
+
+/* ── Your Sky on phones: one frame, not three ──
+   The night band, the linen stage and each step card all padded the form,
+   leaving inputs about 230 px wide on a 390 px phone. */
+@media (max-width: 767px) {
+  .your-sky-studio {
+    padding: 22px 8px;
+  }
+
+  .your-sky-studio-stage {
+    border-radius: 22px;
+    padding: 10px;
+  }
+
+  .product-detail-layout--sky .product-purchase-intro,
+  .product-detail-layout--sky .sky-form,
+  .product-detail-layout--sky .sky-theme-picker,
+  .product-detail-layout--sky .sky-product-options-stage,
+  .product-detail-layout--sky .sky-review,
+  .product-detail-layout--sky .product-buy-box {
+    padding: 16px;
+  }
+
+  .sky-view-toggle button {
+    font-size: 0.7rem;
+    min-height: 40px;
+    padding: 0 14px;
+  }
+
+  .your-sky-faq summary {
+    align-items: center;
+    display: flex;
+    min-height: 44px;
+  }
+}
+
+/* ── On-screen keyboard: floating bars step aside while a field is in use,
+   so a pinned control can never sit over the text being typed. ── */
+@media (max-width: 720px) {
+  body:has(:is(input:not([type='checkbox'], [type='radio'], [type='range']), textarea, select):focus)
+    .sticky-atc-bar.is-visible,
+  body:has(:is(input:not([type='checkbox'], [type='radio'], [type='range']), textarea, select):focus)
+    .cv-jump.is-visible {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(100%);
+  }
+}
+
+/* ── Tablets: seven navigation links do not fit beside the brand and the
+   cart below about 1024 px (at 768 px the cart sat off-screen and the page
+   scrolled sideways), so the menu button takes over there too. ── */
+@media (min-width: 721px) and (max-width: 1023px) {
+  .site-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  .site-nav {
+    display: none;
+  }
+
+  .mobile-menu-button,
+  .mobile-search-button {
+    display: flex;
+  }
+
+  .cart-button {
+    min-height: 44px;
+  }
+}
+
+/* ── Contrast on the purchase path (WCAG AA for small text) ── */
+.product-availability-chip.is-available {
+  color: #4f5a4b;
+}
+
+.cart-line-remove {
+  color: #7e5141;
+}
+
+/* ── Connection notice: above drawers and pinned bars, clear of the home
+   indicator. Empty while there is nothing to say. ── */
+.cart-connection-notice {
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  max-width: min(420px, calc(100vw - 32px));
+  pointer-events: none;
+  position: fixed;
+  transform: translateX(-50%);
+  width: max-content;
+  z-index: 70;
+}
+
+.cart-connection-notice p {
+  background: var(--color-ink);
+  border-radius: 14px;
+  box-shadow: 0 14px 34px rgba(38, 35, 31, 0.3);
+  color: var(--color-paper);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  margin: 0;
+  padding: 12px 16px;
 }

@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {existsSync} from 'node:fs';
+import {stat} from 'node:fs/promises';
 import {createRequire} from 'node:module';
 import path from 'node:path';
 import {test} from 'node:test';
@@ -17,6 +18,7 @@ import {
 } from '../app/lib/bookNooks.ts';
 import {
   CURATED_PRODUCTS,
+  curatedDisplaySrc,
   curatedDisplayTitle,
   curatedImages,
   formatDeliveryCountries,
@@ -73,6 +75,37 @@ test('every released book nook is ready for the shelf', async () => {
       [CUTOUT_WIDTH, CUTOUT_HEIGHT, true],
     );
   }
+});
+
+test('lossless scene composites are served from a light storefront copy', async () => {
+  // A phone on a cellular connection should never download the ~1 MB
+  // lossless provenance file for a 160 px card or a 44 px thumbnail.
+  let scenes = 0;
+  for (const product of CURATED_PRODUCTS) {
+    const served = curatedImages(product.handle);
+    for (const [index, image] of (product.images ?? []).entries()) {
+      const display = curatedDisplaySrc(image);
+      assert.equal(served[index].url, display);
+      if (!image.from?.background) {
+        assert.equal(display, image.src, `${image.src} is already lossy`);
+        continue;
+      }
+      scenes += 1;
+      assert.match(display, /\.display\.webp$/);
+      const file = path.join(root, 'public', display);
+      assert.ok(existsSync(file), `${display} — run npm run curated:images`);
+      const meta = await sharp(file).metadata();
+      assert.deepEqual([meta.width, meta.height], [IMAGE_WIDTH, IMAGE_HEIGHT]);
+      const {size} = await stat(file);
+      const {size: master} = await stat(path.join(root, 'public', image.src));
+      assert.ok(
+        size < 250 * 1024,
+        `${display} is ${Math.round(size / 1024)} KB`,
+      );
+      assert.ok(size < master / 3, `${display} should be far lighter`);
+    }
+  }
+  assert.ok(scenes > 0, 'expected at least one scene composite');
 });
 
 test('image recipes are validated before anything is generated', () => {

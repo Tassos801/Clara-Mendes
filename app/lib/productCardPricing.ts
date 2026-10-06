@@ -72,6 +72,45 @@ export function formatCardPrice(price?: MoneyAmount | null): string | null {
   }).format(amount);
 }
 
+export type CardQuickAdd = 'add' | 'choose' | 'unavailable';
+
+/**
+ * What a card's quick-add control may do with its first variant.
+ *
+ * - `add`: one purchasable variant, or an art print, whose variants are
+ *   sizes of the artwork on the card; the first is the "From" size and the
+ *   cart names it.
+ * - `choose`: the variants are different things (an artwork, a phone model)
+ *   or the first one is sold out while others are not, so adding the first
+ *   would put something the shopper never chose in the cart; the control
+ *   opens the product page instead.
+ * - `unavailable`: nothing on the card can be bought.
+ */
+export function cardQuickAddMode(
+  product: {
+    productType?: string | null;
+    sizeVariants?: {nodes?: Array<PricedVariant | null> | null} | null;
+    variants?: {nodes?: Array<PricedVariant | null> | null} | null;
+  },
+  firstVariant?: PricedVariant | null,
+): CardQuickAdd {
+  const sample = product.sizeVariants?.nodes ?? product.variants?.nodes ?? [];
+  const purchasable = sample.filter(
+    (variant) => variant?.availableForSale === true,
+  ).length;
+  const firstBuyable = Boolean(
+    firstVariant && firstVariant.availableForSale !== false,
+  );
+
+  if (purchasable === 0)
+    return firstBuyable && !sample.length ? 'add' : 'unavailable';
+  if (!firstBuyable) return 'choose';
+  if (purchasable === 1) return 'add';
+  return product.productType?.trim().toLowerCase() === 'art prints'
+    ? 'add'
+    : 'choose';
+}
+
 /** Full card label: "From €29.99" when a purchasable range exists. */
 export function formatCardPriceLabel(pricing: CardPricing): string | null {
   const formatted = formatCardPrice(pricing.price);

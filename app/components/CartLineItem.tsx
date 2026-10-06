@@ -4,6 +4,13 @@ import {CartForm, Image, type OptimisticCartLine} from '@shopify/hydrogen';
 import {useEffect, useRef, useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {getSwipeIntent} from '~/lib/cartSwipe';
+import {formatMoney} from '~/lib/money';
+import {
+  cartLineThumbnail,
+  cartQuantitySteps,
+  isCartLineUnavailable,
+  visibleCartOptions,
+} from '~/lib/cartPresentation';
 import {Link, useFetcher} from 'react-router';
 import {CartFormError} from './CartFormError';
 import {ProductPrice} from './ProductPrice';
@@ -37,16 +44,28 @@ export function CartLineItem({
   childrenMap: LineItemChildrenMap;
 }) {
   const {id, merchandise} = line;
-  const {product, title, selectedOptions} = merchandise;
-  // Curated kits keep their branded image and short name in the cart too.
-  const image = curatedImages(product.handle)[0] ?? merchandise.image;
+  const {product, selectedOptions} = merchandise;
+  // Curated kits keep their branded image and short name in the cart too;
+  // art prints show the flat artwork rather than their size's room scene.
+  const image = cartLineThumbnail({
+    curatedImage: curatedImages(product.handle)[0],
+    featuredImage:
+      'featuredImage' in product ? product.featuredImage : undefined,
+    productType: 'productType' in product ? product.productType : undefined,
+    variantImage: merchandise.image,
+  });
   const productTitle = curatedDisplayTitle(product);
   // Curated kits are single-variant (one registry variant id); the option
   // left by the supplier import (e.g. "Style: Glimmer Book Pavilion") only
   // contradicts the kit's name.
   const visibleOptions = getCuratedProduct(product.handle)
     ? []
-    : selectedOptions;
+    : visibleCartOptions(selectedOptions);
+  const unavailable = isCartLineUnavailable(line);
+  const unitPrice =
+    line.quantity > 1 && line.cost?.amountPerQuantity
+      ? formatMoney(line.cost.amountPerQuantity)
+      : null;
   const giftNote = line.attributes?.find(
     (attribute) => attribute.key === GIFT_NOTE_KEY,
   )?.value;
@@ -172,7 +191,9 @@ export function CartLineItem({
       key={id}
       className={`cart-line ${isSwipeRevealed ? 'is-swipe-revealed' : ''} ${
         isSwipeOpen ? 'is-swipe-open' : ''
-      } ${isDragging ? 'is-dragging' : ''}`}
+      } ${isDragging ? 'is-dragging' : ''} ${
+        unavailable ? 'is-unavailable' : ''
+      }`}
     >
       {canSwipeRemove ? (
         <div className="cart-line-swipe-action" aria-hidden={!isSwipeRevealed}>
@@ -193,19 +214,23 @@ export function CartLineItem({
         style={{transform: `translateX(${swipeOffset}px)`}}
       >
         <div className="cart-line-inner">
-          {image && (
+          {image ? (
             <Image
-              alt={title}
-              aspectRatio="1/1"
+              alt=""
+              aspectRatio="4/5"
+              className="cart-line-image"
               data={image}
-              height={100}
               loading="lazy"
-              width={100}
+              sizes="88px"
+              width={176}
             />
+          ) : (
+            <span className="cart-line-image" aria-hidden />
           )}
 
-          <div>
+          <div className="cart-line-body">
             <Link
+              className="cart-line-title"
               prefetch="intent"
               to={lineItemUrl}
               onClick={() => {
@@ -214,10 +239,17 @@ export function CartLineItem({
                 }
               }}
             >
-              <p>
-                <strong>{productTitle}</strong>
-              </p>
+              {productTitle}
             </Link>
+            {visibleOptions.length > 0 ? (
+              <ul className="cart-line-options" aria-label="Selected options">
+                {visibleOptions.map((option) => (
+                  <li key={option.name}>
+                    <span>{option.name}</span> {option.value}
+                  </li>
+                ))}
+              </ul>
+            ) : null}
             {line.attributes?.some(
               (attribute) =>
                 !attribute.key.startsWith('_') &&
@@ -241,17 +273,18 @@ export function CartLineItem({
                 <span>Gift note</span> {giftNote}
               </p>
             ) : null}
-            <ProductPrice price={line?.cost?.totalAmount} />
-            <ul>
-              {visibleOptions.map((option) => (
-                <li key={option.name}>
-                  <small>
-                    {option.name}: {option.value}
-                  </small>
-                </li>
-              ))}
-            </ul>
-            <CartLineQuantity line={line} />
+            <div className="cart-line-price">
+              <ProductPrice price={line?.cost?.totalAmount} />
+              {unitPrice ? (
+                <span className="cart-line-unit">{unitPrice} each</span>
+              ) : null}
+            </div>
+            {unavailable ? (
+              <p className="cart-line-unavailable" role="status">
+                No longer available. Remove it to continue to checkout.
+              </p>
+            ) : null}
+            <CartLineQuantity line={line} title={productTitle} />
           </div>
         </div>
 
@@ -285,7 +318,7 @@ export function CartLineItem({
  * These controls are disabled when the line item is new, and the server
  * hasn't yet responded that it was successfully added to the cart.
  */
-function CartLineQuantity({line}: {line: CartLine}) {
+function CartLineQuantity({line, title}: {line: CartLine; title: string}) {
   const lineId = line?.id ?? '';
   // The quantity and remove forms below submit through keyed fetchers; reading
   // the same keys here surfaces a refused update (for example a quantity above
@@ -299,35 +332,42 @@ function CartLineQuantity({line}: {line: CartLine}) {
 
   if (!line || typeof line?.quantity === 'undefined') return null;
   const {quantity, isOptimistic} = line;
-  const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
-  const nextQuantity = Number((quantity + 1).toFixed(0));
+  const steps = cartQuantitySteps(quantity);
+  const unavailable = isCartLineUnavailable(line);
 
   return (
     <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
-      <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
-        <button
-          aria-label="Decrease quantity"
-          disabled={quantity <= 1 || !!isOptimistic}
-          name="decrease-quantity"
-          value={prevQuantity}
-        >
-          <span>&#8722; </span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
-      <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
-        <button
-          aria-label="Increase quantity"
-          name="increase-quantity"
-          value={nextQuantity}
-          disabled={!!isOptimistic}
-        >
-          <span>&#43;</span>
-        </button>
-      </CartLineUpdateButton>
-      &nbsp;
+      <div
+        className="cart-line-stepper"
+        role="group"
+        aria-label={`Quantity of ${title}`}
+      >
+        <CartLineUpdateButton lines={[{id: lineId, quantity: steps.decrease}]}>
+          <button
+            aria-label={`Decrease quantity of ${title}`}
+            disabled={!steps.canDecrease || !!isOptimistic}
+            name="decrease-quantity"
+            value={steps.decrease}
+          >
+            <span aria-hidden>&#8722;</span>
+          </button>
+        </CartLineUpdateButton>
+        <output aria-live="polite" aria-label={`Quantity ${quantity}`}>
+          {quantity}
+        </output>
+        <CartLineUpdateButton lines={[{id: lineId, quantity: steps.increase}]}>
+          <button
+            aria-label={`Increase quantity of ${title}`}
+            name="increase-quantity"
+            value={steps.increase}
+            disabled={!steps.canIncrease || !!isOptimistic || unavailable}
+          >
+            <span aria-hidden>&#43;</span>
+          </button>
+        </CartLineUpdateButton>
+      </div>
       <CartLineRemoveButton
+        ariaLabel={`Remove ${title}`}
         className="cart-line-remove"
         lineIds={[lineId]}
         disabled={!!isOptimistic}
@@ -344,10 +384,12 @@ function CartLineQuantity({line}: {line: CartLine}) {
  * that it was successfully added to the cart.
  */
 function CartLineRemoveButton({
+  ariaLabel,
   className,
   lineIds,
   disabled,
 }: {
+  ariaLabel?: string;
   className?: string;
   lineIds: string[];
   disabled: boolean;
@@ -361,11 +403,12 @@ function CartLineRemoveButton({
     >
       {(fetcher) => (
         <button
+          aria-label={ariaLabel}
           className={className}
           disabled={disabled || fetcher.state !== 'idle'}
           type="submit"
         >
-          {fetcher.state === 'idle' ? 'Remove' : 'Removing...'}
+          {fetcher.state === 'idle' ? 'Remove' : 'Removing…'}
         </button>
       )}
     </CartForm>

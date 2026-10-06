@@ -1264,3 +1264,25 @@ readback confirmed unchanged variant ids and SKUs; CJ still shows all ten
 connected on Liquid Line. Underwater World still has no Shopify media.
 
 Source: [Book nook catalogue](../book-nooks-catalog.md).
+
+## 2026-10-06 - Mobile shopping pass
+
+Audited the live store at 320/360/390/430 px with touch emulation, then
+reworked the phone journey without touching catalogue data, prices, flags,
+variant ids or the cart and checkout contracts. Cart drawer: pinned subtotal
+and checkout, codes in one disclosure, guarded checkout tap, artwork
+thumbnails, 44 px stepper, unavailable-line notice, branded empty state.
+Product pages: compact status and crumbs, priced size chips, details as
+disclosures, sticky bar naming the options and inert while hidden; phone
+case model picker reachable without a long scroll. Shop: non-sticky toolbar
+with category chips and a bottom "Filter & sort" control at 980 px and
+below, two-column grid to 320 px, quick-add limited to products whose
+variant the card can name. Tablet header switches to the menu button below
+1024 px (the cart was off-screen at 768 px). Offline cart submissions are
+held with a notice. Phones get lighter hero, story and book nook images.
+Tests 340/340, lint, typecheck, production build and route check passed;
+throttled lab LCP fell on the home, shop and book nook pages.
+
+Sources: [Cart and checkout](modules/cart-and-checkout.md),
+[Routes and pages](modules/routes-and-pages.md),
+[Catalog and products](modules/catalog-and-products.md).

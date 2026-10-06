@@ -1,5 +1,29 @@
 const DEFAULT_CART_ERROR = 'We could not update the cart. Please try again.';
 
+export const CART_OFFLINE_MESSAGE =
+  'You’re offline. Check your connection, then try again — your cart is unchanged.';
+
+/**
+ * Whether a cart submission should be held back because the device has no
+ * connection. Submitting anyway would fail mid-flight: React Router then
+ * reloads the page to fetch route code, or shows the error page when
+ * revalidation fails, and the shopper loses their place.
+ */
+export function shouldHoldCartSubmission({
+  action,
+  online,
+}: {
+  action?: string | null;
+  online: boolean;
+}) {
+  if (online || !action) return false;
+  try {
+    return new URL(action, 'https://shop.invalid').pathname === '/cart';
+  } catch {
+    return false;
+  }
+}
+
 type DiscountCodeLike = {code: string; applicable: boolean};
 
 /**
