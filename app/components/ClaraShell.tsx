@@ -204,7 +204,8 @@ function ClaraFooter() {
         </Link>
         <p>
           Original art and considered products with secure checkout. Wall art
-          ships tracked; cards and postcards travel by letter post.
+          ships tracked worldwide; cards and postcards travel by letter post
+          within the EU.
         </p>
       </div>
       <nav className="footer-style-nav" aria-label="Shop by style">

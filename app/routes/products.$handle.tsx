@@ -113,6 +113,7 @@ import {wallSetsContainingHandle} from '~/lib/wallSets';
 import {keepTabInside} from '~/lib/focusTrap';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
   PRODUCTION_WINDOW_BUSINESS_DAYS,
   RETURN_WINDOW_DAYS,
@@ -120,7 +121,7 @@ import {
 } from '~/lib/storefrontBasics';
 import {
   curatedDisplayTitle,
-  formatDeliveryCountries,
+  deliveryIncludedPhrase,
   getCuratedProduct,
   withCuratedImages,
 } from '~/lib/curatedProducts';
@@ -131,7 +132,10 @@ import {
   getBookNookTheme,
   isBookNook,
 } from '~/lib/bookNooks';
-import {ProductShippingText} from '~/components/ProductShippingText';
+import {
+  ProductShippingText,
+  type ShippingReach,
+} from '~/components/ProductShippingText';
 import {ReviewsSection} from '~/components/reviews/ReviewsSection';
 import {
   parseReviewsMetafield,
@@ -722,6 +726,24 @@ function ProductPage() {
     (design) => design.handle === product.handle,
   );
   const isPlantPot = Boolean(potDesign);
+  // Mirrors the Shopify shipping profiles: letter-post cards stay in the EU;
+  // canvas and framed pieces leave the EU only where shipping stays within
+  // the rate (docs/llm-wiki/modules/fulfillment.md).
+  const isFramedSelection = Boolean(
+    selectedVariant?.selectedOptions.some(
+      (option) =>
+        option.name.trim().toLowerCase() === 'finish' &&
+        /frame/i.test(option.value) &&
+        !/unframed/i.test(option.value),
+    ),
+  );
+  const shippingReach: ShippingReach = isLetterPost
+    ? 'eu'
+    : (product.productType || '').toLowerCase() === 'canvas art' ||
+        isClassicFrame ||
+        (isPersonalisedType && isFramedSelection)
+      ? 'selected'
+      : 'worldwide';
   const productLede =
     potDesign?.story ?? curatedProduct?.tagline ?? getProductLede(product);
   const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
@@ -1003,9 +1025,10 @@ function ProductPage() {
               </span>
               {curatedProduct ? (
                 <span>
-                  Delivery included to{' '}
-                  {formatDeliveryCountries(
+                  Delivery included{' '}
+                  {deliveryIncludedPhrase(
                     curatedProduct.verifiedDeliveryCountries,
+                    curatedProduct.deliversWorldwide,
                   )}
                 </span>
               ) : null}
@@ -1398,8 +1421,12 @@ function ProductPage() {
               <ProductShippingText
                 curatedShipping={curatedProduct?.shipping}
                 isPlantPot={isPlantPot}
+                reach={shippingReach}
                 dispatchWindow={DISPATCH_WINDOW_BUSINESS_DAYS}
                 deliveryWindow={DELIVERY_EU_BUSINESS_DAYS}
+                internationalDeliveryWindow={
+                  DELIVERY_INTERNATIONAL_BUSINESS_DAYS
+                }
               />
             </ProductDetail>
             <ProductDetail label="Returns">

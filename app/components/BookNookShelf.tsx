@@ -73,10 +73,10 @@ function arrangeShelf(items: BookNookShelfItem[]): ShelfSlot[] {
 }
 
 export function BookNookShelf({
-  deliveryCountries,
+  delivery,
   items,
 }: {
-  deliveryCountries: string;
+  delivery: string;
   items: BookNookShelfItem[];
 }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
@@ -118,9 +118,7 @@ export function BookNookShelf({
         <p className="nook-shelf__meta">
           {hasRange ? 'From ' : ''}
           {formatMoney(lowest)}
-          {deliveryCountries
-            ? ` · Delivery included to ${deliveryCountries}`
-            : ''}
+          {delivery ? ` · Delivery included ${delivery}` : ''}
         </p>
         <div className="nook-shelf__actions">
           <Link

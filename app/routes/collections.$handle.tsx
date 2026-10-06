@@ -61,6 +61,7 @@ import {
 } from '~/lib/seo';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
@@ -529,8 +530,11 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
               <dd>{DISPATCH_WINDOW_BUSINESS_DAYS} business days</dd>
             </div>
             <div>
-              <dt>EU delivery</dt>
-              <dd>{DELIVERY_EU_BUSINESS_DAYS} days after dispatch</dd>
+              <dt>Delivery</dt>
+              <dd>
+                EU {DELIVERY_EU_BUSINESS_DAYS} · worldwide{' '}
+                {DELIVERY_INTERNATIONAL_BUSINESS_DAYS} days after dispatch
+              </dd>
             </div>
             <div>
               <dt>Returns</dt>

@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 import {
   BOOK_NOOK_THEMES,
   bookNookDeliveryCountries,
+  bookNookDeliveryPhrase,
   bookNookFactLine,
   bookNookSpecRows,
   bookNookThemesInUse,
@@ -21,6 +22,7 @@ import {
   curatedDisplaySrc,
   curatedDisplayTitle,
   curatedImages,
+  deliveryIncludedPhrase,
   formatDeliveryCountries,
   withCuratedImages,
 } from '../app/lib/curatedProducts.ts';
@@ -260,4 +262,24 @@ test('delivery promises name only countries every kit reaches', () => {
   assert.deepEqual(bookNookDeliveryCountries([nook]), ['CY', 'DE']);
   assert.deepEqual(bookNookDeliveryCountries([nook, germanyOnly]), ['DE']);
   assert.deepEqual(bookNookDeliveryCountries([]), []);
+});
+
+test('worldwide kits say so; verified lanes stay the fallback', () => {
+  assert.equal(deliveryIncludedPhrase(['CY', 'DE']), 'to Cyprus and Germany');
+  assert.equal(deliveryIncludedPhrase([]), '');
+  assert.equal(
+    deliveryIncludedPhrase(['CY', 'DE'], true),
+    'worldwide, UK excepted',
+  );
+  const lanesOnly = {...nook, handle: 'lanes-only', deliversWorldwide: false};
+  const worldwide = {...nook, deliversWorldwide: true};
+  assert.equal(bookNookDeliveryPhrase([worldwide]), 'worldwide, UK excepted');
+  // One kit still limited to its verified lanes limits the range promise.
+  assert.equal(
+    bookNookDeliveryPhrase([worldwide, lanesOnly]),
+    'to Cyprus and Germany',
+  );
+  assert.equal(bookNookDeliveryPhrase([]), '');
+  // Every live kit opened worldwide on 2026-10-06 (owner decision).
+  assert.equal(bookNookDeliveryPhrase(), 'worldwide, UK excepted');
 });

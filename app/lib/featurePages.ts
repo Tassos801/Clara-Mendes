@@ -38,12 +38,12 @@ export const YOUR_SKY_PAGE: FeaturePage = {
   navLabel: 'Your Sky',
   title: 'Your Sky — a personalised star map',
   description:
-    'The real night sky over a place and a moment that matter, drawn as a fine-art print by Clara Mendes. Choose the place, date and title; printed to order in the EU.',
+    'The real night sky over a place and a moment that matter, drawn as a fine-art print by Clara Mendes. Choose the place, date and title; printed to order and shipped worldwide.',
   hero: {
     eyebrow: 'A personalised star map',
     headline: 'The sky above you, the night it mattered.',
     sub: 'Every star as it truly stood over the place and the minute you choose — drawn as a Clara Mendes print, with your own title beneath it.',
-    priceLine: 'From €35.99 · made to order in the EU · unframed or framed',
+    priceLine: 'From €35.99 · made to order · unframed or framed',
     cta: 'Design yours',
     image: {
       src: '/images/your-sky/hero-print.webp',
@@ -87,8 +87,8 @@ export const YOUR_SKY_PAGE: FeaturePage = {
       body: 'Giclée on 200gsm Enhanced Matte Art paper, unframed or in a natural or black classic frame — the same materials as every Clara Mendes print.',
     },
     {
-      title: 'Made to order in the EU',
-      body: 'Each map is printed for you after checkout, dispatched in 2–4 business days and delivered across the EU in 5–10.',
+      title: 'Made to order, shipped worldwide',
+      body: 'Each map is printed for you after checkout, dispatched in 2–4 business days and delivered across the EU in 5–10, elsewhere in 7–20. Framed maps ship outside the EU to selected countries; checkout confirms yours.',
     },
   ],
   faq: [

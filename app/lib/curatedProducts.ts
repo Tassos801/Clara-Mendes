@@ -39,7 +39,14 @@ export type CuratedProduct = {
   /** Supplier processing estimate shown beside the price. */
   processing?: string;
   shipping: string;
+  /** Lanes checked against real supplier quotes; the release gate needs one. */
   verifiedDeliveryCountries: string[];
+  /**
+   * Owner-approved worldwide delivery (every country the store ships to,
+   * UK excepted) beyond the verified lanes — the Shopify profile, not this
+   * flag, decides where checkout delivers.
+   */
+  deliversWorldwide?: boolean;
   images?: CuratedImage[];
   /** Transparent 600 × 750 cut-out of the studio image (the homepage shelf). */
   cutout?: string;
@@ -203,4 +210,16 @@ export function formatDeliveryCountries(codes: readonly string[]) {
   const names = [...new Set(codes)].map((code) => COUNTRY_NAMES[code] ?? code);
   if (names.length <= 1) return names.join('');
   return `${names.slice(0, -1).join(', ')} and ${names.at(-1)}`;
+}
+
+export const WORLDWIDE_DELIVERY = 'worldwide, UK excepted';
+
+/** Reads after "Delivery included": "to Cyprus and Germany" or "worldwide, UK excepted". */
+export function deliveryIncludedPhrase(
+  codes: readonly string[],
+  worldwide = false,
+) {
+  if (worldwide) return WORLDWIDE_DELIVERY;
+  const names = formatDeliveryCountries(codes);
+  return names ? `to ${names}` : '';
 }
