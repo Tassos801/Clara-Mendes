@@ -1,10 +1,7 @@
 import {isFeaturePageHandle} from './catalogFilters.ts';
-// v3: `amount` is the lowest RELEASED price (the "From" floor), no longer
-// the variant the shopper happened to have selected, and `hasPriceRange`
-// records whether more than one released price exists. Bumping the key
-// orphans v2 snapshots (which may hold a 16 × 20/20 × 24 selected price)
-// exactly as the v1→v2 bump did for the 29.00→29.99 repricing.
-export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v3';
+// v4 starts fresh after the catalog repricing so previously saved prices
+// cannot appear in the recently viewed rail.
+export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v4';
 const MAX_ENTRIES = 12;
 
 export type RecentlyViewedEntry = {

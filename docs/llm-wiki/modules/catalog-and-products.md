@@ -423,3 +423,19 @@ text. The linen scene is assigned to the existing Twilight Library variant;
 all six supplier media remain. The storefront gallery has eight images,
 starting with the four scenes. Price, SKU and fulfilment fields are unchanged.
 See [Book nook catalogue](../../book-nooks-catalog.md) for the current scope.
+
+## Catalog Price Refresh (2026-10-06)
+
+Shopify Admin readback verified all 57 products and 1,276 variants at their
+previous selling price multiplied by 0.90, rounded to two decimals using
+integer-cent arithmetic. This includes Draft products without publishing them.
+All comparison prices are null and the store has no separate price lists.
+Statuses, handles, descriptions, SKUs and variant options were preserved.
+Historical launch prices elsewhere on this page are snapshots, not the current selling prices.
+
+Product cards, variants, search, cart and structured data read Shopify prices.
+The shared Your Sky headline price is EUR 35.99. Recently viewed storage uses
+v4 to discard earlier price snapshots. No customer-facing promotion copy or
+sale styling was added.
+
+Sources: `app/lib/featurePages.ts`, `app/lib/recentlyViewed.ts`.

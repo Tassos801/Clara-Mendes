@@ -38,16 +38,16 @@ test('ignores entries from the unversioned price snapshot cache', () => {
     ]),
   });
 
-  assert.equal(RECENTLY_VIEWED_STORAGE_KEY, 'cm:recently-viewed:v3');
+  assert.equal(RECENTLY_VIEWED_STORAGE_KEY, 'cm:recently-viewed:v4');
   assert.deepEqual(getRecentlyViewed(), []);
 });
 
-test('ignores v2 entries whose amount was the selected variant price', () => {
-  // A v2 snapshot taken while a shopper had the 20 × 24 selected holds
-  // €49.99 — rendering that as a "From" floor would be wrong, so the v2
-  // cache is orphaned exactly as v1 was for the 29.00→29.99 repricing.
+test('ignores v3 entries whose floor price predates the catalog repricing', () => {
+  // A previous catalog snapshot must not keep its old amount after
+  // repricing. The v3 key is orphaned so returning shoppers see fresh
+  // prices after recording a new product visit.
   installLocalStorage({
-    'cm:recently-viewed:v2': JSON.stringify([
+    'cm:recently-viewed:v3': JSON.stringify([
       {
         amount: '49.99',
         currencyCode: 'EUR',
@@ -80,7 +80,7 @@ test('ages out the price-range flag so a paused size cannot keep "From" alive', 
   );
 });
 
-test('records and reads released-floor snapshots under the v3 key', () => {
+test('records and reads released-floor snapshots under the v4 key', () => {
   const values = installLocalStorage();
   recordRecentlyViewed({
     amount: '29.99',
