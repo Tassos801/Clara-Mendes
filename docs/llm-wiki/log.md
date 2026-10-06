@@ -1286,3 +1286,13 @@ throttled lab LCP fell on the home, shop and book nook pages.
 Sources: [Cart and checkout](modules/cart-and-checkout.md),
 [Routes and pages](modules/routes-and-pages.md),
 [Catalog and products](modules/catalog-and-products.md).
+
+## 2026-10-06 - Catalog price refresh
+
+Updated all 1,276 variant prices across 57 Shopify products and verified each
+against the original snapshot, with product state and comparison prices
+preserved. Updated the shared Your Sky starting price to EUR 35.99 and
+invalidated previously saved recently viewed prices. Customer-facing prices
+remain plain, with no added promotion labels or announcements.
+
+Source: [Catalog and products](modules/catalog-and-products.md).

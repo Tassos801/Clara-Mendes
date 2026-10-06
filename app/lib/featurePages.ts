@@ -43,7 +43,7 @@ export const YOUR_SKY_PAGE: FeaturePage = {
     eyebrow: 'A personalised star map',
     headline: 'The sky above you, the night it mattered.',
     sub: 'Every star as it truly stood over the place and the minute you choose — drawn as a Clara Mendes print, with your own title beneath it.',
-    priceLine: 'From €39.99 · made to order in the EU · unframed or framed',
+    priceLine: 'From €35.99 · made to order in the EU · unframed or framed',
     cta: 'Design yours',
     image: {
       src: '/images/your-sky/hero-print.webp',
