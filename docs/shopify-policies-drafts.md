@@ -30,9 +30,9 @@ the UK; rates mirror the Shopify shipping profiles, see
 <h2>Shipping costs</h2>
 <p>Shipping is calculated at checkout from your delivery address and the items in your order:</p>
 <ul>
-<li>Art prints and unframed Your Sky maps: Cyprus EUR 3.99; other EU countries EUR 16.00; Switzerland, Norway, Iceland and nearby non-EU European countries EUR 9.99; most other countries EUR 17.99; a few remote destinations EUR 39.99.</li>
+<li>Art prints and unframed Your Sky maps: Cyprus EUR 3.99; other EU countries EUR 16.00; Switzerland, Norway, Iceland and several other non-EU European countries EUR 9.99; most other countries EUR 17.99; a few remote destinations EUR 39.99.</li>
 <li>Stretched canvas and framed Your Sky maps: Cyprus EUR 3.99; other EU countries EUR 16.00; selected countries outside the EU EUR 29.99.</li>
-<li>Phone cases: Cyprus EUR 3.99; other EU countries EUR 4.95; Switzerland and nearby non-EU European countries EUR 6.99; other countries EUR 12.99.</li>
+<li>Phone cases: Cyprus EUR 3.99; other EU countries EUR 4.95; Switzerland, Norway and a few other non-EU European countries EUR 6.99; other countries EUR 12.99.</li>
 <li>Greeting cards and postcards: EUR 2.90 by letter post, EU only.</li>
 <li>Pastel Forms plant pots: EUR 6.99 across the EU; EUR 11.99 to most other countries (not the United States).</li>
 <li>DIY book nook kits: delivery included.</li>

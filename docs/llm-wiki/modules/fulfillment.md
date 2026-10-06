@@ -122,9 +122,9 @@ International Tracked from GB. It publishes no non-EU window, so the
 storefront promises 7–20 business days after dispatch.
 
 Excluded everywhere: GB and IM (UK VAT area); sanctioned RU BY IR KP SY CU;
-conflict zones on hold AF IQ LY SD SS SO YE VE MM HT CF ML; and countries
+conflict zones on hold AF IQ LY SD SS SO YE VE MM HT CF ML PS; and countries
 Prodigi cannot quote prints to. The Shopify market "International" (EUR, no
-local currencies) holds the remaining 179 countries, mirrored by
+local currencies) holds the remaining 178 countries, mirrored by
 `INTERNATIONAL_MARKET_COUNTRIES` in `app/lib/markets.ts`.
 
 Rate card, applied as zones in each Shopify shipping profile (EU zones are
@@ -133,7 +133,7 @@ cards EUR 2.90):
 
 - Prints and unframed Your Sky (General profile): non-EU Europe EUR 9.99
   where Prodigi charges at most ~EUR 11 (AD AL AX BA CH GG IS JE MD ME MK NO TR VA);
-  EUR 17.99 where it charges at most EUR 20 (162 countries); EUR 39.99
+  EUR 17.99 where it charges at most EUR 20 (161 countries); EUR 39.99
   up to EUR 40 (ID IL MY).
 - Stretched canvas 16 × 20 (own profile): EUR 29.99 where the canvas costs at
   most EUR 30 (AU AX CA CH CN HK IN JP MC NO NZ PH SG TH TW US VA VN).

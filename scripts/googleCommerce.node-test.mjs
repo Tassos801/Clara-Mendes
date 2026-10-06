@@ -43,7 +43,7 @@ assert.equal(resolveMarketCountry({oxygenCountry: 'de'}), 'DE');
 assert.equal(resolveMarketCountry({oxygenCountry: 'CA'}), 'CA');
 assert.equal(resolveMarketCountry({oxygenCountry: 'us'}), 'US');
 // Countries outside every market (sanctioned, on hold) fall back to Cyprus.
-for (const country of ['RU', 'BY', 'IR', 'KP', 'SY', 'CU', 'IM', 'AF']) {
+for (const country of ['RU', 'BY', 'IR', 'KP', 'SY', 'CU', 'IM', 'AF', 'PS']) {
   assert.equal(resolveMarketCountry({oxygenCountry: country}), 'CY', country);
 }
 assert.equal(resolveMarketCountry({}), 'CY');

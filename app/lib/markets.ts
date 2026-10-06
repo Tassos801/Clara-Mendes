@@ -19,7 +19,7 @@ export const AVAILABLE_MARKET_COUNTRIES_QUERY = `#graphql
 // currencies): every country Prodigi quotes prints to, except the UK (UK VAT
 // registration comes first), UK-VAT Isle of Man, sanctioned destinations
 // (RU BY IR KP SY CU) and conflict zones on hold (AF IQ LY SD SS SO YE VE MM
-// HT CF ML). Canvas, framed pieces, cases and pots reach subsets of these
+// HT CF ML PS). Canvas, framed pieces, cases and pots reach subsets of these
 // through their shipping profiles — docs/llm-wiki/modules/fulfillment.md.
 const INTERNATIONAL_MARKET_COUNTRIES = [
   {code: 'AD', currency: 'EUR', name: 'Andorra'},
@@ -153,7 +153,6 @@ const INTERNATIONAL_MARKET_COUNTRIES = [
   {code: 'PH', currency: 'EUR', name: 'Philippines'},
   {code: 'PK', currency: 'EUR', name: 'Pakistan'},
   {code: 'PM', currency: 'EUR', name: 'St. Pierre & Miquelon'},
-  {code: 'PS', currency: 'EUR', name: 'Palestinian Territories'},
   {code: 'PY', currency: 'EUR', name: 'Paraguay'},
   {code: 'QA', currency: 'EUR', name: 'Qatar'},
   {code: 'RE', currency: 'EUR', name: 'Réunion'},
