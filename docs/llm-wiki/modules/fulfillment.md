@@ -53,9 +53,11 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
 
 - Constants: `app/lib/storefrontBasics.ts` — PRODUCTION_WINDOW_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS, DELIVERY_EU_BUSINESS_DAYS,
-  DELIVERY_US_BUSINESS_DAYS.
+  DELIVERY_INTERNATIONAL_BUSINESS_DAYS (7–20, every non-EU country).
 - PDP: the availability chip and the Shipping details row in
-  `app/routes/products.$handle.tsx` interpolate those constants.
+  `app/routes/products.$handle.tsx` interpolate those constants;
+  `ProductShippingText` takes a `reach` (`worldwide` / `selected` for canvas
+  and framed Your Sky / `eu` for cards) that mirrors the shipping profiles.
 - Shipping policy: `docs/shopify-policies-drafts.md` is the paste source for
   Shopify Admin > Settings > Policies; the site footer links
   `/policies/shipping-policy`, which renders the admin-hosted content.
@@ -101,3 +103,55 @@ payment is still required for each imported paid order. See the
 A fresh Storefront API localization readback on this date lists all 27 EU
 countries; the older 15-country observation above is historical. A product's
 dedicated delivery profile can restrict checkout to fewer destinations.
+
+## 2026-10-06 - Worldwide except the UK
+
+Owner decisions (2026-10-06): sell worldwide minus the UK (a non-UK seller
+must register for UK VAT before the first UK sale), a region rate card per
+product line, canvas and framed Your Sky only where Prodigi's shipping cost
+is at most EUR 30, and book nooks worldwide with delivery included before
+per-country CJ quotes (CJ has no API key; the owner accepted the risk).
+
+Costs come from a read-only Prodigi quote sweep (`POST /v4.0/quotes`,
+Standard, EUR, never an order) over every Shopify country for
+ART-FAP-EMA-8X10, GLOBAL-FAP-20X24, GLOBAL-CAN-16X20 (MirrorWrap),
+GLOBAL-CFP-20X24 (natural), the iPhone 16 Pro tough case and PLANT-POT.
+Prodigi routes to its nearest lab: US orders ship USPS from the US lab,
+AU/NZ and parts of Asia from the AU lab, most others Royal Mail
+International Tracked from GB. It publishes no non-EU window, so the
+storefront promises 7–20 business days after dispatch.
+
+Excluded everywhere: GB and IM (UK VAT area); sanctioned RU BY IR KP SY CU;
+conflict zones on hold AF IQ LY SD SS SO YE VE MM HT CF ML PS; and countries
+Prodigi cannot quote prints to. The Shopify market "International" (EUR, no
+local currencies) holds the remaining 178 countries, mirrored by
+`INTERNATIONAL_MARKET_COUNTRIES` in `app/lib/markets.ts`.
+
+Rate card, applied as zones in each Shopify shipping profile (EU zones are
+unchanged: Cyprus EUR 3.99, other EU EUR 16, cases EUR 4.95, pots EUR 6.99,
+cards EUR 2.90):
+
+- Prints and unframed Your Sky (General profile): non-EU Europe EUR 9.99
+  where Prodigi charges at most ~EUR 11 (AD AL AX BA CH GG IS JE MD ME MK NO TR VA);
+  EUR 17.99 where it charges at most EUR 20 (161 countries); EUR 39.99
+  up to EUR 40 (ID IL MY).
+- Stretched canvas 16 × 20 (own profile): EUR 29.99 where the canvas costs at
+  most EUR 30 (AU AX CA CH CN HK IN JP MC NO NZ PH SG TH TW US VA VN).
+- Framed Your Sky variants (own profile): EUR 29.99 where GLOBAL-CFP-20X24
+  costs at most EUR 30 (AU CN HK IN JP MC NZ PH SG TH TW VN); US framed costs about EUR 67.
+- Phone cases: EUR 6.99 (CH FO GG JE NO RS TR); EUR 12.99 where the case costs
+  at most EUR 21 (118 countries, including JP and SG at EUR 20.32).
+- Plant pots: EUR 11.99 where the pot costs at most EUR 21 (173
+  countries), never the US (Prodigi cannot quote it).
+- Cards and postcards: EU only (letter post).
+- Book nooks: delivery included in every market country
+  (`deliversWorldwide` in `data/curated-products.json`; the CY/DE
+  `verifiedDeliveryCountries` stay the verified lanes).
+
+Outside the EU, import taxes and duties are payable by the recipient (DDU);
+the shipping policy, PDP shipping text and llms.txt say so. Structured data
+keeps `SHIPPING_COUNTRY_CODES` to the EU-27: repeating ~180 regions on every
+variant offer would bloat each product page. The paid-order webhook needs a
+postcode (`app/lib/sky/fulfilment.ts`), so a Your Sky or phone-case order to
+a country without postcodes (for example Hong Kong or the UAE) lands as
+"needs attention" for a manual Prodigi order.

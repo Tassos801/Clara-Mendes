@@ -1,6 +1,7 @@
 // Relative imports keep this module loadable by the plain-Node test runner.
 import {
   CURATED_PRODUCTS,
+  deliveryIncludedPhrase,
   releasedCuratedProducts,
   type CuratedProduct,
   type CuratedSpecs,
@@ -161,4 +162,15 @@ export function bookNookDeliveryCountries(
     .reduce((shared, countries) =>
       shared.filter((country) => countries.includes(country)),
     );
+}
+
+/** "worldwide, UK excepted" once every released nook opens worldwide. */
+export function bookNookDeliveryPhrase(
+  products: readonly CuratedProduct[] = CURATED_PRODUCTS,
+) {
+  const nooks = releasedBookNooks(products);
+  return deliveryIncludedPhrase(
+    bookNookDeliveryCountries(products),
+    nooks.length > 0 && nooks.every((nook) => nook.deliversWorldwide),
+  );
 }

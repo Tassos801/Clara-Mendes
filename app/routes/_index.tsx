@@ -54,11 +54,10 @@ import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
 import {
   BOOK_NOOK_PRODUCT_TYPE,
   BOOK_NOOKS_PATH,
-  bookNookDeliveryCountries,
+  bookNookDeliveryPhrase,
   buildBookNookShelf,
   releasedBookNooks,
 } from '~/lib/bookNooks';
-import {formatDeliveryCountries} from '~/lib/curatedProducts';
 
 const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
 
@@ -142,7 +141,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       bookNookShelf: buildBookNookShelf(
         (data.bookNooks?.nodes ?? []) as BookNookStorefrontProduct[],
       ) as BookNookShelfItem[],
-      bookNookDelivery: formatDeliveryCountries(bookNookDeliveryCountries()),
+      bookNookDelivery: bookNookDeliveryPhrase(),
       collections: filterDemoCollections(
         data.collections.nodes as HomeCollection[],
       ),
@@ -526,7 +525,7 @@ export default function Homepage() {
             </h2>
             <p>
               One work from each temperament — calm, cool, and night. Giclée on
-              200 gsm matte paper, printed to order and shipped across the EU.
+              200 gsm matte paper, printed to order and shipped worldwide.
             </p>
             <div className="home-shop-accelerator-actions">
               <Link className="primary-button" to="/collections/all">
@@ -555,7 +554,7 @@ export default function Homepage() {
       ) : null}
 
       <BookNookShelf
-        deliveryCountries={bookNookDelivery}
+        delivery={bookNookDelivery}
         items={bookNookShelf}
       />
 

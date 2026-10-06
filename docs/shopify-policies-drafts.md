@@ -9,31 +9,49 @@ Each policy is written in HTML so Shopify's rich text editor preserves formattin
 
 ## Shipping Policy
 
-Paste into: **Shipping policy**
+Paste into: **Shipping policy** (live version 2026-10-06: worldwide except
+the UK; rates mirror the Shopify shipping profiles, see
+`docs/llm-wiki/modules/fulfillment.md`)
 
 ```html
-<h2>Processing time</h2>
-<p>Every piece is printed to order and dispatched within 2–4 business days. You will receive a confirmation email once your order has been placed and a second email with dispatch details once it ships.</p>
+<h2>Printed products: processing time</h2>
+<p>Our printed products are made to order and dispatched within 2–4 business days. You will receive a confirmation email once your order has been placed and a second email with dispatch details once it ships.</p>
 
-<h2>Delivery times</h2>
-<p>After dispatch, delivery is estimated at 5–10 business days across the European Union. Delivery estimates are calculated from the ship date, not the order date.</p>
+<h2>Printed products: delivery times</h2>
+<p>After dispatch, delivery is estimated at 5–10 business days across the European Union and 7–20 business days to other countries. Delivery estimates are calculated from the ship date, not the order date.</p>
 <p>Please note that shipping times may vary during holidays or periods of high demand.</p>
 
 <h2>Shipping methods</h2>
 <p>Unless a product-specific untracked method is stated below, we ship via standard tracked delivery. Tracking details are sent by email once your order leaves our fulfillment center. You can check your order status using the tracking link when provided.</p>
 
 <h2>Shipping destinations</h2>
-<p>We ship to most European Union countries, including Cyprus. The full list of available countries is shown at checkout. We do not currently ship outside the European Union.</p>
+<p>We ship to every European Union country and to most countries worldwide. We do not currently ship to the United Kingdom. Greeting cards and postcards ship within the European Union only, and stretched canvas and framed pieces ship outside the European Union to selected countries. Checkout shows whether each item can be delivered to your address.</p>
 
 <h2>Shipping costs</h2>
-<p>Shipping costs are calculated at checkout based on your delivery address and order weight. Any applicable taxes are also shown before payment.</p>
+<p>Shipping is calculated at checkout from your delivery address and the items in your order:</p>
+<ul>
+<li>Art prints and unframed Your Sky maps: Cyprus EUR 3.99; other EU countries EUR 16.00; Switzerland, Norway, Iceland and several other non-EU European countries EUR 9.99; most other countries EUR 17.99; a few remote destinations EUR 39.99.</li>
+<li>Stretched canvas and framed Your Sky maps: Cyprus EUR 3.99; other EU countries EUR 16.00; selected countries outside the EU EUR 29.99.</li>
+<li>Phone cases: Cyprus EUR 3.99; other EU countries EUR 4.95; Switzerland, Norway and a few other non-EU European countries EUR 6.99; other countries EUR 12.99.</li>
+<li>Greeting cards and postcards: EUR 2.90 by letter post, EU only.</li>
+<li>Pastel Forms plant pots: EUR 6.99 across the EU; EUR 11.99 to most other countries (not the United States).</li>
+<li>DIY book nook kits: delivery included.</li>
+</ul>
+<p>Mixed orders may combine shipping charges for different products at checkout. Any applicable taxes are shown before payment.</p>
+
+<h2>Import taxes and duties</h2>
+<p>Orders delivered outside the European Union may be subject to import taxes, duties and carrier handling fees. These are payable by the recipient on delivery and are not included in the product price or shipping rate. Delivery estimates exclude customs delays.</p>
 
 <h2>Pastel Forms ceramic plant pots</h2>
-<p>Pot-only orders have EUR 6.99 shipping across the European Union. They are printed in the United Kingdom and sent by Royal Mail Airmail Untracked, without a tracking number. Mixed orders may combine shipping charges for other products at checkout.</p>
-<p>Import taxes, duties and carrier handling fees may be payable by the recipient on delivery. These charges are not included in the product price or shipping rate. Delivery estimates exclude customs delays.</p>
+<p>Plant pots are printed in the United Kingdom and sent by Royal Mail Airmail Untracked, without a tracking number. Because they ship from the United Kingdom, import taxes, duties and carrier handling fees may also be payable on delivery within the European Union.</p>
+
+<h2>DIY book nook kits</h2>
+<p>Book nook kits are supplied in the manufacturer's packaging and ship separately from our printed products, directly from our fulfilment partner in China. Delivery is included in the kit price to every country we ship to; other products in a mixed order may have separate shipping charges at checkout.</p>
+<p>Allow an estimated 1–3 days for processing. Germany: estimated 8–18 days after dispatch. Cyprus: most quoted deliveries take 8–21 days after dispatch; some take 24 days or longer. Other countries: delivery times are not yet confirmed; most parcels arrive within 10–25 days after dispatch, and remote areas can take longer. These are estimates, and customs, holidays or carrier delays can extend them. Tracking details are sent when available.</p>
+<p>For EU orders we arrange import VAT through our fulfilment partner. If a customs or carrier charge is requested on an EU delivery, contact hello@shopclaramendes.com before paying so we can check the shipment. Outside the EU, import taxes and duties may be payable on delivery.</p>
 
 <h2>Lost or delayed shipments</h2>
-<p>If your order has not arrived within 15 business days of the ship date, please contact us at <a href="mailto:hello@shopclaramendes.com">hello@shopclaramendes.com</a> with your order number and we will investigate promptly.</p>
+<p>If your order has not arrived within 15 business days of the ship date (25 business days outside the European Union), please contact us at <a href="mailto:hello@shopclaramendes.com">hello@shopclaramendes.com</a> with your order number and we will investigate promptly.</p>
 ```
 
 ---

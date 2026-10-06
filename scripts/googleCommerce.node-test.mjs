@@ -40,7 +40,12 @@ assert.equal(
   'GB',
 );
 assert.equal(resolveMarketCountry({oxygenCountry: 'de'}), 'DE');
-assert.equal(resolveMarketCountry({oxygenCountry: 'CA'}), 'CY');
+assert.equal(resolveMarketCountry({oxygenCountry: 'CA'}), 'CA');
+assert.equal(resolveMarketCountry({oxygenCountry: 'us'}), 'US');
+// Countries outside every market (sanctioned, on hold) fall back to Cyprus.
+for (const country of ['RU', 'BY', 'IR', 'KP', 'SY', 'CU', 'IM', 'AF', 'PS']) {
+  assert.equal(resolveMarketCountry({oxygenCountry: country}), 'CY', country);
+}
 assert.equal(resolveMarketCountry({}), 'CY');
 assert.equal(getLocaleFromRequest(request('US'), 'FR').country, 'FR');
 assert.equal(getLocaleFromRequest(request('GB')).country, 'GB');
@@ -51,6 +56,15 @@ assert.ok(
   ),
   'United Kingdom market missing',
 );
+// Worldwide (2026-10-06): one entry per country, the EU-27 plus the
+// International market in EUR — the UK stays out of every market.
+const marketCodes = MARKET_COUNTRIES.map(({code}) => code);
+assert.equal(new Set(marketCodes).size, marketCodes.length, 'duplicate market');
+for (const code of ['US', 'CA', 'AU', 'CH', 'NO', 'JP', 'NZ', 'SG'])
+  assert.ok(
+    MARKET_COUNTRIES.some((c) => c.code === code && c.currency === 'EUR'),
+    `${code} should sell in EUR`,
+  );
 assert.equal(
   getMarketVaryHeader('Accept-Encoding'),
   'Accept-Encoding, Cookie, oxygen-buyer-country',
@@ -138,7 +152,7 @@ const invalidSelection = await applyMarketSelection({
       return {cart: null};
     },
   },
-  country: 'CA',
+  country: 'RU',
   session: {set: () => assert.fail('invalid market must not be persisted')},
 });
 assert.equal(invalidSelection.ok, false);
@@ -238,7 +252,7 @@ const failedMarketAction = await processMarketSelectionRequest({
     },
   },
   request: new Request('https://shopclaramendes.com/locale', {
-    body: new URLSearchParams({country: 'CA', redirectTo: '//evil.example'}),
+    body: new URLSearchParams({country: 'RU', redirectTo: '//evil.example'}),
     method: 'POST',
   }),
   session: {

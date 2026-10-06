@@ -17,6 +17,7 @@ import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {breadcrumbSchema, buildSeoMeta, getCanonicalUrl, productSchema} from '~/lib/seo';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
   RETURN_WINDOW_DAYS,
 } from '~/lib/storefrontBasics';
@@ -510,7 +511,10 @@ export default function ToughCasePage() {
                 Printed to order and dispatched within{' '}
                 {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
                 delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
-                days across the EU.
+                days across the EU and{' '}
+                {DELIVERY_INTERNATIONAL_BUSINESS_DAYS} business days
+                elsewhere. Outside the EU, import taxes, duties and carrier
+                fees may be payable on delivery and are not included.
               </ProductDetail>
             <ProductDetail label="Returns">
                 {RETURN_WINDOW_DAYS}-day return window from delivery. Items must

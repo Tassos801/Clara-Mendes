@@ -45,6 +45,7 @@ import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {releasedPrintHandles} from '~/lib/printCatalog';
 import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
+import {bookNookDeliveryPhrase} from '~/lib/bookNooks';
 
 export type CollectionLink = {
   id: string;
@@ -162,7 +163,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     description: capsule
       ? shopCapsuleDescription(capsule)
       : isBookNooks
-        ? 'Miniature worlds for your bookshelf. Explore DIY book nook kits curated by Clara Mendes, with delivery included to Cyprus and Germany.'
+        ? `Miniature worlds for your bookshelf. Explore DIY book nook kits curated by Clara Mendes, with delivery included ${bookNookDeliveryPhrase()}.`
         : releasedCuratedProductTypes().length > 0
           ? 'Original art and considered objects for a collected home, selected by Clara Mendes.'
           : releasedPrintHandles().length > 0

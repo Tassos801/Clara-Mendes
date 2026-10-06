@@ -7,14 +7,14 @@ import {
 import {
   BOOK_NOOK_PRODUCT_TYPE,
   BOOK_NOOKS_PATH,
-  bookNookDeliveryCountries,
+  bookNookDeliveryPhrase,
   bookNookThemePath,
   bookNookThemesInUse,
   buildBookNookShelf,
   getBookNookTheme,
   releasedBookNooks,
 } from '~/lib/bookNooks';
-import {curatedImages, formatDeliveryCountries} from '~/lib/curatedProducts';
+import {curatedImages} from '~/lib/curatedProducts';
 import {formatMoney} from '~/lib/money';
 import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
@@ -66,7 +66,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const leadImages = curatedImages(lead.nook.handle);
 
   return {
-    deliveryCountries: formatDeliveryCountries(bookNookDeliveryCountries()),
+    delivery: bookNookDeliveryPhrase(),
     fromPrice: formatMoney(lowest),
     hasPriceRange: prices.some((price) => price.amount !== lowest.amount),
     hero: {
@@ -99,7 +99,7 @@ const RITUAL = [
 
 export default function BookNooks() {
   const {
-    deliveryCountries,
+    delivery,
     fromPrice,
     hasPriceRange,
     hero,
@@ -129,9 +129,7 @@ export default function BookNooks() {
               {hasPriceRange ? 'From ' : ''}
               {fromPrice}
             </span>
-            {deliveryCountries ? (
-              <span>Delivery included to {deliveryCountries}</span>
-            ) : null}
+            {delivery ? <span>Delivery included {delivery}</span> : null}
           </p>
         </div>
         {hero.image ? (
@@ -225,8 +223,8 @@ export default function BookNooks() {
       <aside className="nook-delivery" aria-label="Book nook delivery">
         <p>
           Kits ship from our fulfilment partner, separately from art prints.
-          {deliveryCountries
-            ? ` Delivery is included to ${deliveryCountries}.`
+          {delivery
+            ? ` Delivery is included ${delivery}.`
             : ''}{' '}
           Each listing shows its own processing and delivery estimates.
         </p>

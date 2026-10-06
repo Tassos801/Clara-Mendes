@@ -1309,3 +1309,18 @@ launch-original manifests remain launch records that the storefront does not
 read; their staging scripts must not be re-run against live products.
 
 Source: [Catalog and products](modules/catalog-and-products.md).
+
+## 2026-10-06 - Sell worldwide except the UK
+
+Opened every country Prodigi can deliver prints to, except the UK (UK VAT
+registration first), sanctioned destinations and conflict zones on hold,
+as a Shopify "International" market in EUR with per-line zones from a
+read-only Prodigi quote sweep (rate card in the fulfillment page). Storefront
+copy now promises EU 5–10 and elsewhere 7–20 business days after dispatch,
+discloses recipient-paid import charges outside the EU, keeps cards EU-only
+and flags canvas and framed Your Sky as selected-countries outside the EU.
+Book nooks deliver worldwide (owner decision, CJ lanes beyond CY/DE
+unverified). `MARKET_COUNTRIES` gained the International countries so a
+buyer's country prices and checks out in their own market.
+
+Source: [Fulfillment and delivery promises](modules/fulfillment.md).
