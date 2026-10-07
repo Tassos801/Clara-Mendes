@@ -440,18 +440,23 @@ sale styling was added.
 
 Sources: `app/lib/featurePages.ts`, `app/lib/recentlyViewed.ts`.
 
-## 2026-10-07 - Quiet Current activewear (Printful)
+## 2026-10-08 - Quiet Current activewear released (Printful)
 
 Four Printful all-over-print products, each in Clay / Oat and Moss / Mist,
 XS–XL (40 variants): `quiet-current-high-waist-leggings`,
 `quiet-current-studio-bra`, `quiet-current-high-waist-biker-shorts` and
 `quiet-current-studio-tank`. The owner authorized launch on 7 October 2026,
-and all four release flags are true in the launch change
-(`app/lib/catalogFilters.ts`); deployment and publication are in progress.
+and all four release flags are true in #114
+(`app/lib/catalogFilters.ts`), which deployed successfully. The four products
+and collection are now published only to `Clara Mendes`; Shop All and all
+four PDPs are visible. #115's collection admission fix also deployed; the
+dedicated collection returns 200 and lists all four products. Live PDP,
+cart and representative checkout checks for all nine shipping zones passed
+on 8 October 2026. Each PDP showed ten variant choices; four sampled variants
+were exercised in the browser cart.
 A true flag adds the product's type (Yoga Leggings, Sports Bra, Biker Shorts,
-Studio Top) to the shop's type tabs
-whether or not the product is visible, so the flags flip in the same step as
-publishing the products and the `quiet-current` collection.
+Studio Top) to the shop's type tabs. All four published products now appear
+in Shop All and their matching types.
 
 The collection route's handle-only guard admits `quiet-current` when any
 member product is released; its post-query guard still hides an empty
@@ -461,7 +466,15 @@ Shopify sitemap after release.
 All 40 variants are synced in Printful to the v2 review templates and verified
 per size and colourway, and the Printful billing method is set. The EUR
 profile is complete, and all four descriptions carry the US fabric
-disclosure. Publish after the flag deployment and verify the live purchase
-path. Store-wide automated checkout delivery dates remain unchanged; the
-launch authorization did not separately approve changing that setting. See
-[Quiet Current release gate](../../quiet-current-release.md).
+disclosure. The four-line cart totals EUR 262.00; Cyprus checkout shows
+Standard EUR 3.99 and total EUR 265.99; Germany shows Standard EUR 4.95 and
+total EUR 266.95. On 8 October the owner separately approved turning
+store-wide delivery estimates Off. Admin saved the change, and a fresh
+Germany checkout retained its rate while removing "Ships next business day". See
+[Quiet Current launch record](../../quiet-current-release.md).
+
+The four-line cart used one flat same-profile shipping rate in each of the
+nine zones. No payment details were entered or order placed, and Cart 0
+persisted after final cleanup and a collection-page reload. The first paid
+Printful order still needs manual confirmation and the owner-approved first
+physical quality review.

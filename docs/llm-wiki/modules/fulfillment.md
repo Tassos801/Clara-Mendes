@@ -156,7 +156,7 @@ postcode (`app/lib/sky/fulfilment.ts`), so a Your Sky or phone-case order to
 a country without postcodes (for example Hong Kong or the UAE) lands as
 "needs attention" for a manual Prodigi order.
 
-## 2026-10-07 - Quiet Current on Printful
+## 2026-10-08 - Quiet Current on Printful
 
 The Quiet Current activewear is the store's first Printful line. Printful's
 Shopify app imports the orders, manual order confirmation is on, and the
@@ -170,12 +170,23 @@ after reload; the existing Shopify Markets exclusions remain in effect.
 
 All four Shopify descriptions now disclose the heavier US shell (78%
 polyester, 22% elastane; 290 g/m²); the bra also discloses its US mesh lining
-(92% polyester, 8% elastane). Automated checkout delivery dates are still on,
-with a Next business day fallback, and the Oct 13 rate preview can conflict
-with the activewear dispatch promise. The owner authorized the product launch
-on 7 October 2026 without separately approving a change to this store-wide
-setting. It remains unchanged; verify actual checkout estimates during launch
-and record any separately approved setting change in the release runbook.
+(92% polyester, 8% elastane). Automated checkout delivery dates were on,
+with a Next business day fallback, and the Oct 13 rate preview could conflict
+with the activewear dispatch promise. Live Cyprus checkout initially said
+"Ships next business day", with no predicted arrival date.
+
+On 8 October 2026, the owner separately approved switching the store-wide
+delivery estimates Off. Admin saved Off and confirmed "Delivery date settings
+updated". A fresh Germany checkout kept Standard EUR 4.95 while removing
+"Ships next business day". Shipping rates and the product dispatch windows
+remain unchanged.
+
+The four-item browser cart (EUR 262.00 subtotal) verified one flat Standard
+rate in each zone: CY 3.99, DE 4.95, RS 6.99, CH 9.99, US 4.95, JP 4.95,
+CA 6.99, AU 6.99 and BR 12.99. No extra per-item shipping was added for
+these same-profile lines. The tests stopped before payment; the test cart
+was emptied and Cart 0 persisted after reload. The first paid order remains
+the first physical QC and requires manual Printful confirmation.
 
 Printful makes these garments on its own clock: 2–5 business days in-house,
 3–7 at partner facilities, plus the manual confirmation. `fulfilmentWindows`
@@ -183,4 +194,4 @@ Printful makes these garments on its own clock: 2–5 business days in-house,
 Sports Bra, Biker Shorts, Studio Top) production 2–7 and dispatch 3–8 on the
 PDP and in the Offer `handlingTime`. Printful's transit (EU 3–7 business
 days) fits the shared delivery windows. See
-[Quiet Current release gate](../../quiet-current-release.md#timings-and-fabric).
+[Quiet Current launch record](../../quiet-current-release.md#timings-and-fabric).
