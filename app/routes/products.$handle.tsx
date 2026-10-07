@@ -114,8 +114,7 @@ import {keepTabInside} from '~/lib/focusTrap';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
-  DISPATCH_WINDOW_BUSINESS_DAYS,
-  PRODUCTION_WINDOW_BUSINESS_DAYS,
+  fulfilmentWindows,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
@@ -721,6 +720,8 @@ function ProductPage() {
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
+  // Printful activewear runs on its own production clock, not Prodigi's.
+  const windows = fulfilmentWindows(product.productType);
   const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
   const potDesign = pastelPots.designs.find(
     (design) => design.handle === product.handle,
@@ -1021,7 +1022,7 @@ function ProductPage() {
                   ? curatedProduct.processing
                     ? `Processing ${curatedProduct.processing}`
                     : 'Processing estimate at checkout'
-                  : `Processes in ${PRODUCTION_WINDOW_BUSINESS_DAYS} business days`}
+                  : `Processes in ${windows.production} business days`}
               </span>
               {curatedProduct ? (
                 <span>
@@ -1422,7 +1423,7 @@ function ProductPage() {
                 curatedShipping={curatedProduct?.shipping}
                 isPlantPot={isPlantPot}
                 reach={shippingReach}
-                dispatchWindow={DISPATCH_WINDOW_BUSINESS_DAYS}
+                dispatchWindow={windows.dispatch}
                 deliveryWindow={DELIVERY_EU_BUSINESS_DAYS}
                 internationalDeliveryWindow={
                   DELIVERY_INTERNATIONAL_BUSINESS_DAYS

@@ -57,3 +57,44 @@ test('staged sizes stay out; one offered size is a plain Product', () => {
   assert.equal(schema.productGroupID, undefined);
   assert.equal(schema.offers.price, '29.99');
 });
+
+test('offer handling time follows the product type dispatch window', () => {
+  const handling = (productType) =>
+    productSchema({
+      ...base,
+      productType,
+      variants: [variant(1, '8 × 10 in', '29.99')],
+    }).offers.shippingDetails.deliveryTime;
+
+  const print = handling('Art Prints');
+  assert.deepEqual(
+    [print.handlingTime.minValue, print.handlingTime.maxValue],
+    [2, 4],
+  );
+  assert.deepEqual(
+    [print.transitTime.minValue, print.transitTime.maxValue],
+    [5, 10],
+  );
+
+  const leggings = handling('Yoga Leggings');
+  assert.deepEqual(
+    [leggings.handlingTime.minValue, leggings.handlingTime.maxValue],
+    [3, 8],
+  );
+  assert.deepEqual(
+    [leggings.transitTime.minValue, leggings.transitTime.maxValue],
+    [5, 10],
+  );
+});
+
+test('every variant offer of a garment carries the Printful window', () => {
+  const schema = productSchema({
+    ...base,
+    productType: 'Sports Bra',
+    variants: [variant(1, 'S', '69.00'), variant(2, 'M', '69.00')],
+  });
+  for (const node of schema.hasVariant) {
+    const {handlingTime} = node.offers.shippingDetails.deliveryTime;
+    assert.deepEqual([handlingTime.minValue, handlingTime.maxValue], [3, 8]);
+  }
+});
