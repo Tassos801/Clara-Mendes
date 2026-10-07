@@ -1373,3 +1373,20 @@ changing that setting; actual checkout estimates must be checked during launch.
 Sources: [Quiet Current release gate](../quiet-current-release.md),
 [Catalog and products](modules/catalog-and-products.md),
 [Fulfillment](modules/fulfillment.md).
+
+## 2026-10-07 - Quiet Current collection route admission
+
+The collection route's pre-query guard rejected `quiet-current` even when
+all four member product flags were enabled. Added scoped admission when any
+Quiet Current member releases, retaining the post-query empty collection
+guard. Regression coverage exercises the route's handle-only check, an
+empty Shopify result, a published member and unrelated product flags.
+
+Corrected the inventory runbook statement after live Admin showed 9,999
+per variant (99,990 per product), rather than untracked inventory; no
+inventory configuration changed. Publication and live checkout checks
+remain in progress.
+
+Sources: [Quiet Current release gate](../quiet-current-release.md),
+[Catalog and products](modules/catalog-and-products.md),
+`app/lib/catalogFilters.ts`, `scripts/catalogFilters.node-test.mjs`.

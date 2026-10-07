@@ -477,6 +477,19 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
     return hasProductSample;
   }
 
+  // Quiet Current is a real Shopify collection, not an art capsule. Let
+  // the route fetch it when a member releases, then keep the same empty
+  // collection guard after Shopify returns the published product sample.
+  if (
+    handle === 'quiet-current' &&
+    Object.entries(PRODUCT_RELEASE_FLAGS).some(
+      ([productHandle, released]) =>
+        released && productHandle.startsWith('quiet-current-'),
+    )
+  ) {
+    return hasProductSample;
+  }
+
   return !handle || !ORIGINAL_ART_COLLECTION_HANDLES.has(handle);
 }
 

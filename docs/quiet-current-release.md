@@ -9,7 +9,7 @@ The storefront shows a product only when both gates are open: its handle is `tru
 | Step | State |
 |---|---|
 | v2 images (10 per product, per-colour variant images), copy, XS–XL size guides | Done |
-| Shopify status Active; inventory untracked + continue selling (made to order) | Done, still unpublished |
+| Shopify status Active; mapped variant availability | 10 mapped variants per product (40 total). Shopify Admin shows 9,999 inventory per variant; configuration unchanged. Storefront publication is in progress |
 | Printful: import + map 40 variants to the v2 templates | Done: 40/40 synced, fulfillment enabled on every variant |
 | Printful billing method | Done: a card is the account's primary method and the Clara Mendes store uses it (EUR) |
 | PDP timings | #113: Printful windows (processes in 2–7, dispatched within 3–8 business days) on these four product types |
@@ -73,6 +73,8 @@ The setting is store-wide and remains unchanged. The owner authorized the produc
 ## Launch
 
 The owner explicitly authorized launch on 7 October 2026: "make the new products sellable at the site". The four flags and expected shop type list are enabled in the launch change; deployment, Shopify publication and the following checks are in progress. The store-wide delivery-date setting remains unchanged pending a separate owner decision.
+
+The `quiet-current` collection must also pass the collection route's handle-only guard. The launch follow-up admits that handle when any Quiet Current product flag is enabled, while still hiding an empty Shopify result. Its regression test covers the published member, empty result and unrelated product-release cases.
 
 1. Merge the launch PR that sets the four `quiet-current-*` flags in `PRODUCT_RELEASE_FLAGS` to `true` and updates the expected type list in `scripts/catalogFilters.node-test.mjs`, then wait for the Oxygen deploy.
 2. Publish the 4 products and the `quiet-current` collection to the storefront channel.

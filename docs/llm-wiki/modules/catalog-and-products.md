@@ -453,6 +453,11 @@ Studio Top) to the shop's type tabs
 whether or not the product is visible, so the flags flip in the same step as
 publishing the products and the `quiet-current` collection.
 
+The collection route's handle-only guard admits `quiet-current` when any
+member product is released; its post-query guard still hides an empty
+Shopify collection. This also lets the real collection URL remain in the
+Shopify sitemap after release.
+
 All 40 variants are synced in Printful to the v2 review templates and verified
 per size and colourway, and the Printful billing method is set. The EUR
 profile is complete, and all four descriptions carry the US fabric
