@@ -1,6 +1,8 @@
 import type {ClaraCardProduct} from '../components/ClaraProductCard.tsx';
 import {deriveCardPricing} from './productCardPricing.ts';
 import {
+  DELIVERY_EU_BUSINESS_DAYS,
+  fulfilmentWindows,
   RETURN_WINDOW_DAYS,
   SHIPPING_COUNTRY_CODES,
   STOREFRONT_ORIGIN,
@@ -271,12 +273,18 @@ export function productSchema({
             url,
           }
         : minPrice
-          ? offerFromPrice({availableForSale, price: minPrice, url})
+          ? offerFromPrice({
+              availableForSale,
+              price: minPrice,
+              productType,
+              url,
+            })
           : undefined,
     hasVariant: isGroup
       ? listedVariants.map((variant) =>
           productVariantSchema({
             parentTitle: title,
+            productType,
             url,
             variant,
             vendor,
@@ -299,14 +307,21 @@ export function breadcrumbSchema({items}: BreadcrumbInput) {
   };
 }
 
+/** `'2–4'` → `{minValue: 2, maxValue: 4}` for a schema.org QuantitativeValue. */
+function dayRange(window: string) {
+  const [minValue, maxValue] = window.split('–').map(Number);
+  return {minValue, maxValue};
+}
+
 /**
  * Shipping and return enrichments for Offer nodes, mirroring the published
- * promises: dispatch 2–4 business days, EU delivery 5–10 after dispatch
+ * promises: the product type's dispatch window (prints 2–4 business days,
+ * Printful activewear 3–8), EU delivery 5–10 after dispatch
  * (storefrontBasics constants), 30-day returns with buyer-paid return
  * shipping (docs/shopify-policies-drafts.md). Google reads these for
  * shipping/returns annotations on product results.
  */
-function offerShippingDetails() {
+function offerShippingDetails(productType?: string | null) {
   return {
     '@type': 'OfferShippingDetails',
     shippingDestination: SHIPPING_COUNTRY_CODES.map((country) => ({
@@ -317,14 +332,12 @@ function offerShippingDetails() {
       '@type': 'ShippingDeliveryTime',
       handlingTime: {
         '@type': 'QuantitativeValue',
-        minValue: 2,
-        maxValue: 4,
+        ...dayRange(fulfilmentWindows(productType).dispatch),
         unitCode: 'DAY',
       },
       transitTime: {
         '@type': 'QuantitativeValue',
-        minValue: 5,
-        maxValue: 10,
+        ...dayRange(DELIVERY_EU_BUSINESS_DAYS),
         unitCode: 'DAY',
       },
     },
@@ -349,11 +362,13 @@ function offerFromPrice({
   // from the product page anyway.
   includeCommerceDetails = true,
   price,
+  productType,
   url,
 }: {
   availableForSale?: boolean;
   includeCommerceDetails?: boolean;
   price: MoneyAmount;
+  productType?: string | null;
   url: string;
 }) {
   return {
@@ -363,7 +378,7 @@ function offerFromPrice({
     availability: schemaAvailability(availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
     shippingDetails: includeCommerceDetails
-      ? offerShippingDetails()
+      ? offerShippingDetails(productType)
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
       ? merchantReturnPolicy()
@@ -374,11 +389,13 @@ function offerFromPrice({
 
 function productVariantSchema({
   parentTitle,
+  productType,
   url,
   variant,
   vendor,
 }: {
   parentTitle: string;
+  productType?: string | null;
   url: string;
   variant: NonNullable<ProductSchemaInput['variants']>[number];
   vendor?: string | null;
@@ -410,6 +427,7 @@ function productVariantSchema({
     offers: offerFromPrice({
       availableForSale: variant.availableForSale,
       price: variant.price,
+      productType,
       url: variantUrl.toString(),
     }),
   };
