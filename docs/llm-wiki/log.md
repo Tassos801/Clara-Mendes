@@ -1331,8 +1331,11 @@ All 40 Quiet Current variants (leggings, studio bra, biker shorts, studio tank
 in Clay / Oat and Moss / Mist, XS–XL) are synced in Printful to the v2 review
 templates, with fulfillment enabled. The tank uses the qc2f3 body files at the
 owner's choice. Each variant's size and print files were checked against the
-File library. The products stay unpublished until a Printful billing method is
-added and the owner decides on the app-created USD shipping profile.
+File library. The Printful billing method is set. The release flags go back to
+false until launch: while true, they add four empty type tabs to the shop.
+Activewear PDPs promise Printful's timings (processes in 2–7, dispatched
+within 3–8 business days). The products stay unpublished until the owner
+decides on the app-created USD shipping profile.
 
 Sources: [Quiet Current release gate](../quiet-current-release.md),
 [Catalog and products](modules/catalog-and-products.md),

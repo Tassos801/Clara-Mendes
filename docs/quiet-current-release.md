@@ -11,12 +11,21 @@ The storefront shows a product only when both gates are open: its handle is `tru
 | v2 images (10 per product, per-colour variant images), copy, XS–XL size guides | Done |
 | Shopify status Active; inventory untracked + continue selling (made to order) | Done, still unpublished |
 | Printful: import + map 40 variants to the v2 templates | Done: 40/40 synced, fulfillment enabled on every variant |
-| Printful billing method | Missing: the account and the Clara Mendes store have no billing method. Owner to add |
-| Release flags | Merged in #111 (before mapping finished; harmless while the products are unpublished) |
+| Printful billing method | Done: a card is the account's primary method and the Clara Mendes store uses it (EUR) |
+| PDP timings | #113: Printful windows (processes in 2–7, dispatched within 3–8 business days) on these four product types |
+| Release flags | Set back to `false` in #113 until launch. #111 set them `true`, but its deploy failed a test, so they never went live |
 | Shipping rates for these products | Owner decision: see [Shipping](#shipping) |
-| Publish the 4 products + `quiet-current` collection to the storefront channel | Pending; the last switch, after billing and shipping |
+| Publish the 4 products + `quiet-current` collection, and flip the 4 flags to `true` | Pending; do both in the same step, after the shipping decision |
 
-Printful manual order confirmation is on. The owner declined samples, so the first order is the first physical QC.
+Printful manual order confirmation is on: confirm each order in Printful on the day it arrives, because the 3–8 business-day dispatch promise allows only one business day for it. The owner declined samples, so the first order is the first physical QC.
+
+While the flags are `true`, the shop's type tabs list Yoga Leggings, Sports Bra, Biker Shorts and Studio Top, and those tabs stay empty until the products are published. That is why the flags flip together with publishing.
+
+## Timings and fabric
+
+Printful's published fulfillment time for all-over synthetic garments is 2–5 business days in-house and 3–7 at partner facilities. It is counted from the business day after the order ([Printful help centre](https://help.printful.com/hc/en-us/articles/360014007980-How-long-does-fulfillment-take)). Printful's catalog estimates 10–12 business days from order to delivery in Cyprus for all four garments. Transit for all-over-print clothing (printful.com/shipping, checked 7 October 2026): Cyprus 3–7, Germany 3, US 3–6, Australia 2–5, Brazil 3–5 business days. That fits within the storefront's shared EU 5–10 and elsewhere 7–20 windows.
+
+All four Shopify descriptions state Printful's EU fabric: shell 84% polyester / 16% elastane at 230 g/m², and the bra's mesh lining at 90% polyester / 10% elastane. Printful makes US orders in Mexico from a different fabric: 78% polyester / 22% elastane at 290 g/m² (since 14 September 2026), and the bra lining at 92% polyester / 8% spandex. The descriptions do not mention this yet. The owner decides whether to add a US line.
 
 ## Printful mapping
 
@@ -53,6 +62,8 @@ The 40 variants sit in the Shopify profile Printful created, `Printful: Hats, Ba
 
 Printful's own shipping charge for these products is EUR 3.89–10.99. Before publishing, decide whether to keep this profile or move the four products into a EUR profile in line with the rest of the catalog.
 
-## After publishing
+## Launch
 
-Publish the 4 products and the `quiet-current` collection to the storefront channel, then check live: PDP for each product, per-colour variant images, size guide, add to cart, and shipping at checkout for Cyprus and one other EU country.
+1. Merge a PR that sets the four `quiet-current-*` flags in `PRODUCT_RELEASE_FLAGS` to `true`. Update the expected type list in `scripts/catalogFilters.node-test.mjs` in the same PR, and wait for the Oxygen deploy.
+2. Publish the 4 products and the `quiet-current` collection to the storefront channel.
+3. Check live: the PDP for each product (chip "Processes in 2–7 business days", Shipping row "dispatched within 3–8"), per-colour variant images, size guide, the four shop type tabs, add to cart, and shipping at checkout for Cyprus and one other EU country.

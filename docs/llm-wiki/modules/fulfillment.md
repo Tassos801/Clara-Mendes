@@ -160,11 +160,16 @@ a country without postcodes (for example Hong Kong or the UAE) lands as
 
 The Quiet Current activewear is the store's first Printful line. Printful's
 Shopify app imports the orders, manual order confirmation is on, and the
-Printful account has no billing method yet, so no order can be produced.
-The 40 variants sit in the app-created Shopify profile `#PF-FRG42` (Printful
-location), whose nine flat-rate zones display in USD (Europe $4.99, rest of
-world $12.49) rather than the EUR rate card above. Whether to keep it or move
-the products to a EUR profile is open. The print production and delivery
-windows on this page are Prodigi's; no Printful window has been checked against
-the storefront copy. See
-[Quiet Current release gate](../../quiet-current-release.md#shipping).
+account's primary billing method is set (2026-10-07). The 40 variants sit in
+the app-created Shopify profile `#PF-FRG42` (Printful location), whose nine
+flat-rate zones display in USD (Europe $4.99, rest of world $12.49) rather
+than the EUR rate card above. Whether to keep it or move the products to a
+EUR profile is open.
+
+Printful makes these garments on its own clock: 2–5 business days in-house,
+3–7 at partner facilities, plus the manual confirmation. `fulfilmentWindows`
+(`app/lib/storefrontBasics.ts`) gives the four product types (Yoga Leggings,
+Sports Bra, Biker Shorts, Studio Top) production 2–7 and dispatch 3–8 on the
+PDP and in the Offer `handlingTime`. Printful's transit (EU 3–7 business
+days) fits the shared delivery windows. See
+[Quiet Current release gate](../../quiet-current-release.md#timings-and-fabric).
