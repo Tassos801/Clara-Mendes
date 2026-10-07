@@ -1324,3 +1324,16 @@ unverified). `MARKET_COUNTRIES` gained the International countries so a
 buyer's country prices and checks out in their own market.
 
 Source: [Fulfillment and delivery promises](modules/fulfillment.md).
+
+## 2026-10-07 - Quiet Current Printful mapping
+
+All 40 Quiet Current variants (leggings, studio bra, biker shorts, studio tank
+in Clay / Oat and Moss / Mist, XS–XL) are synced in Printful to the v2 review
+templates, with fulfillment enabled. The tank uses the qc2f3 body files at the
+owner's choice. Each variant's size and print files were checked against the
+File library. The products stay unpublished until a Printful billing method is
+added and the owner decides on the app-created USD shipping profile.
+
+Sources: [Quiet Current release gate](../quiet-current-release.md),
+[Catalog and products](modules/catalog-and-products.md),
+[Fulfillment](modules/fulfillment.md).

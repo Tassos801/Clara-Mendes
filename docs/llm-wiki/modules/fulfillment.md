@@ -155,3 +155,16 @@ variant offer would bloat each product page. The paid-order webhook needs a
 postcode (`app/lib/sky/fulfilment.ts`), so a Your Sky or phone-case order to
 a country without postcodes (for example Hong Kong or the UAE) lands as
 "needs attention" for a manual Prodigi order.
+
+## 2026-10-07 - Quiet Current on Printful
+
+The Quiet Current activewear is the store's first Printful line. Printful's
+Shopify app imports the orders, manual order confirmation is on, and the
+Printful account has no billing method yet, so no order can be produced.
+The 40 variants sit in the app-created Shopify profile `#PF-FRG42` (Printful
+location), whose nine flat-rate zones display in USD (Europe $4.99, rest of
+world $12.49) rather than the EUR rate card above. Whether to keep it or move
+the products to a EUR profile is open. The print production and delivery
+windows on this page are Prodigi's; no Printful window has been checked against
+the storefront copy. See
+[Quiet Current release gate](../../quiet-current-release.md#shipping).
