@@ -31,15 +31,15 @@ import {releasedCuratedProducts} from '../app/lib/curatedProducts.ts';
  * affected; only the live-read helpers (hasReleasedExtensions,
  * isDemoCollection, isReleasedExtensionHandle) see the override.
  */
-function withFlags(overrides, fn) {
-  const saved = {...EXTENSION_RELEASE_FLAGS};
-  for (const key of Object.keys(EXTENSION_RELEASE_FLAGS)) {
-    EXTENSION_RELEASE_FLAGS[key] = Boolean(overrides[key]);
+function withFlags(overrides, fn, flags = EXTENSION_RELEASE_FLAGS) {
+  const saved = {...flags};
+  for (const key of Object.keys(flags)) {
+    flags[key] = Boolean(overrides[key]);
   }
   try {
     return fn();
   } finally {
-    Object.assign(EXTENSION_RELEASE_FLAGS, saved);
+    Object.assign(flags, saved);
   }
 }
 
@@ -220,6 +220,41 @@ withFlags({[BLANKET_HANDLE]: true}, () => {
 // The helper restored the real state.
 assert.equal(isReleasedExtensionHandle('fine-art-greeting-card'), true);
 assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
+
+// The collection route calls this handle-only guard before querying Shopify.
+// Quiet Current must be reachable after its release, while an unpublished
+// empty result and unrelated releases must not open the collection.
+assert.equal(isDemoCollection({handle: 'quiet-current'}), false);
+assert.equal(
+  isDemoCollection({handle: 'quiet-current', products: {nodes: []}}),
+  true,
+);
+assert.equal(
+  isDemoCollection({
+    handle: 'quiet-current',
+    products: {
+      nodes: [
+        {
+          handle: 'quiet-current-high-waist-leggings',
+          productType: 'Yoga Leggings',
+          vendor: 'Clara Mendes',
+        },
+      ],
+    },
+  }),
+  false,
+);
+withFlags(
+  {'art-tough-phone-case': true},
+  () => assert.equal(isDemoCollection({handle: 'quiet-current'}), true),
+  PRODUCT_RELEASE_FLAGS,
+);
+withFlags(
+  {'quiet-current-studio-tank': true},
+  () => assert.equal(isDemoCollection({handle: 'quiet-current'}), false),
+  PRODUCT_RELEASE_FLAGS,
+);
+
 assert.equal(
   isDemoCollection({
     handle: EXTENSION_COLLECTION_HANDLE,
