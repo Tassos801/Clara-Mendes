@@ -453,5 +453,7 @@ publishing the products and the `quiet-current` collection.
 
 All 40 variants are synced in Printful to the v2 review templates and verified
 per size and colourway, and the Printful billing method is set. Publishing
-waits on the owner's shipping-rate decision. See
+waits on explicit owner approval and resolution of the automated checkout
+delivery dates. The EUR profile is complete, and all four descriptions carry
+the US fabric disclosure. See
 [Quiet Current release gate](../../quiet-current-release.md).

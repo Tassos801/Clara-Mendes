@@ -1340,3 +1340,19 @@ decides on the app-created USD shipping profile.
 Sources: [Quiet Current release gate](../quiet-current-release.md),
 [Catalog and products](modules/catalog-and-products.md),
 [Fulfillment](modules/fulfillment.md).
+
+## 2026-10-07 - Quiet Current EUR shipping and US fabric disclosures
+
+Moved all 40 variants to `Quiet Current activewear`, completed its nine EUR
+Standard zones across all 205 currently enabled market countries/regions,
+and verified the saved profile after reload. The old Printful USD profile
+remains with 0 products. All four descriptions include the heavier US shell;
+the bra also includes the US mesh lining, as verified in the owner handoff.
+The store-wide Automated delivery estimates and Next business day fallback
+were inspected and left unchanged. The Oct 13 preview may contradict the
+3–8 business-day dispatch window and needs an owner decision before launch.
+#113 merged first; release flags remain false and products remain unpublished.
+
+Sources: [Quiet Current release gate](../quiet-current-release.md),
+[Catalog and products](modules/catalog-and-products.md),
+[Fulfillment](modules/fulfillment.md).

@@ -160,11 +160,20 @@ a country without postcodes (for example Hong Kong or the UAE) lands as
 
 The Quiet Current activewear is the store's first Printful line. Printful's
 Shopify app imports the orders, manual order confirmation is on, and the
-account's primary billing method is set (2026-10-07). The 40 variants sit in
-the app-created Shopify profile `#PF-FRG42` (Printful location), whose nine
-flat-rate zones display in USD (Europe $4.99, rest of world $12.49) rather
-than the EUR rate card above. Whether to keep it or move the products to a
-EUR profile is open.
+account's primary billing method is set (2026-10-07). All 40 variants now use
+`Quiet Current activewear`, a custom EUR shipping profile with nine Standard
+zones and no transit times: Cyprus 3.99, other EU 4.95, non-EU Europe 6.99,
+EFTA 9.99, US/Japan 4.95, Canada/Australia/New Zealand 6.99, and the remaining
+158 enabled market countries (including Brazil) 12.99. The app-created USD
+profile `#PF-FRG42` remains with 0 products. The saved rates were checked
+after reload; the existing Shopify Markets exclusions remain in effect.
+
+All four Shopify descriptions now disclose the heavier US shell (78%
+polyester, 22% elastane; 290 g/m²); the bra also discloses its US mesh lining
+(92% polyester, 8% elastane). Automated checkout delivery dates are still on,
+with a Next business day fallback, and the Oct 13 rate preview can conflict
+with the activewear dispatch promise. This store-wide setting needs an owner
+decision before launch; it was not changed during the profile update.
 
 Printful makes these garments on its own clock: 2–5 business days in-house,
 3–7 at partner facilities, plus the manual confirmation. `fulfilmentWindows`
