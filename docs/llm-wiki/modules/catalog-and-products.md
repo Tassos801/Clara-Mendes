@@ -439,3 +439,21 @@ v4 to discard earlier price snapshots. No customer-facing promotion copy or
 sale styling was added.
 
 Sources: `app/lib/featurePages.ts`, `app/lib/recentlyViewed.ts`.
+
+## 2026-10-07 - Quiet Current activewear (Printful)
+
+Four Printful all-over-print products, each in Clay / Oat and Moss / Mist,
+XS–XL (40 variants): `quiet-current-high-waist-leggings`,
+`quiet-current-studio-bra`, `quiet-current-high-waist-biker-shorts` and
+`quiet-current-studio-tank`. Their release flags are false until launch
+(`app/lib/catalogFilters.ts`). A true flag adds the product's type (Yoga
+Leggings, Sports Bra, Biker Shorts, Studio Top) to the shop's type tabs
+whether or not the product is visible, so the flags flip in the same step as
+publishing the products and the `quiet-current` collection.
+
+All 40 variants are synced in Printful to the v2 review templates and verified
+per size and colourway, and the Printful billing method is set. Publishing
+waits on explicit owner approval and resolution of the automated checkout
+delivery dates. The EUR profile is complete, and all four descriptions carry
+the US fabric disclosure. See
+[Quiet Current release gate](../../quiet-current-release.md).

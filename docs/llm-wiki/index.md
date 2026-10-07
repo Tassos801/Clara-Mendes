@@ -31,6 +31,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Art for Everyday Living](../art-product-extensions.md) - Draft product-extension architecture, generated assets, sync workflow, and release gates.
 - [Art Tough Phone Case](../art-tough-phone-case.md) - All 24 released artworks across 40 device models, Shopify Draft staging and provider release gates.
 - [Pastel Forms Plant Pots](../pastel-plant-pots.md) - Four mapped pastel pots, EUR 29.99 + EUR 6.99 EU shipping, purchase-path evidence and the owner-approved first-order quality review.
+- [Quiet Current Release Gate](../quiet-current-release.md) - Four Printful all-over-print activewear products, 40 mapped variants, template and print-file map, verified EUR shipping and US fabric disclosure, delivery-date review and owner approval before publishing.
 
 - [Adding prints runbook](../add-products-runbook.md) - One catalog file and `npm run product` steps for artwork, room images, Draft staging, supplier handoff, release, and live verification.
 - [Sci-fi & Cinema Print Staging](../scifi-cinema-prints.md) - Four Draft designs, disabled storefront release flags, export candidates and remaining provider work.

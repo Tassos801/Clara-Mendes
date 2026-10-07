@@ -155,3 +155,30 @@ variant offer would bloat each product page. The paid-order webhook needs a
 postcode (`app/lib/sky/fulfilment.ts`), so a Your Sky or phone-case order to
 a country without postcodes (for example Hong Kong or the UAE) lands as
 "needs attention" for a manual Prodigi order.
+
+## 2026-10-07 - Quiet Current on Printful
+
+The Quiet Current activewear is the store's first Printful line. Printful's
+Shopify app imports the orders, manual order confirmation is on, and the
+account's primary billing method is set (2026-10-07). All 40 variants now use
+`Quiet Current activewear`, a custom EUR shipping profile with nine Standard
+zones and no transit times: Cyprus 3.99, other EU 4.95, non-EU Europe 6.99,
+EFTA 9.99, US/Japan 4.95, Canada/Australia/New Zealand 6.99, and the remaining
+158 enabled market countries (including Brazil) 12.99. The app-created USD
+profile `#PF-FRG42` remains with 0 products. The saved rates were checked
+after reload; the existing Shopify Markets exclusions remain in effect.
+
+All four Shopify descriptions now disclose the heavier US shell (78%
+polyester, 22% elastane; 290 g/m²); the bra also discloses its US mesh lining
+(92% polyester, 8% elastane). Automated checkout delivery dates are still on,
+with a Next business day fallback, and the Oct 13 rate preview can conflict
+with the activewear dispatch promise. This store-wide setting needs an owner
+decision before launch; it was not changed during the profile update.
+
+Printful makes these garments on its own clock: 2–5 business days in-house,
+3–7 at partner facilities, plus the manual confirmation. `fulfilmentWindows`
+(`app/lib/storefrontBasics.ts`) gives the four product types (Yoga Leggings,
+Sports Bra, Biker Shorts, Studio Top) production 2–7 and dispatch 3–8 on the
+PDP and in the Offer `handlingTime`. Printful's transit (EU 3–7 business
+days) fits the shared delivery windows. See
+[Quiet Current release gate](../../quiet-current-release.md#timings-and-fabric).
