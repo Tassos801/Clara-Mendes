@@ -445,15 +445,18 @@ Sources: `app/lib/featurePages.ts`, `app/lib/recentlyViewed.ts`.
 Four Printful all-over-print products, each in Clay / Oat and Moss / Mist,
 XS–XL (40 variants): `quiet-current-high-waist-leggings`,
 `quiet-current-studio-bra`, `quiet-current-high-waist-biker-shorts` and
-`quiet-current-studio-tank`. Their release flags are false until launch
-(`app/lib/catalogFilters.ts`). A true flag adds the product's type (Yoga
-Leggings, Sports Bra, Biker Shorts, Studio Top) to the shop's type tabs
+`quiet-current-studio-tank`. The owner authorized launch on 7 October 2026,
+and all four release flags are true in the launch change
+(`app/lib/catalogFilters.ts`); deployment and publication are in progress.
+A true flag adds the product's type (Yoga Leggings, Sports Bra, Biker Shorts,
+Studio Top) to the shop's type tabs
 whether or not the product is visible, so the flags flip in the same step as
 publishing the products and the `quiet-current` collection.
 
 All 40 variants are synced in Printful to the v2 review templates and verified
-per size and colourway, and the Printful billing method is set. Publishing
-waits on explicit owner approval and resolution of the automated checkout
-delivery dates. The EUR profile is complete, and all four descriptions carry
-the US fabric disclosure. See
+per size and colourway, and the Printful billing method is set. The EUR
+profile is complete, and all four descriptions carry the US fabric
+disclosure. Publish after the flag deployment and verify the live purchase
+path. Store-wide automated checkout delivery dates remain unchanged; the
+launch authorization did not separately approve changing that setting. See
 [Quiet Current release gate](../../quiet-current-release.md).

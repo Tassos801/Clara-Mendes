@@ -172,8 +172,10 @@ All four Shopify descriptions now disclose the heavier US shell (78%
 polyester, 22% elastane; 290 g/m²); the bra also discloses its US mesh lining
 (92% polyester, 8% elastane). Automated checkout delivery dates are still on,
 with a Next business day fallback, and the Oct 13 rate preview can conflict
-with the activewear dispatch promise. This store-wide setting needs an owner
-decision before launch; it was not changed during the profile update.
+with the activewear dispatch promise. The owner authorized the product launch
+on 7 October 2026 without separately approving a change to this store-wide
+setting. It remains unchanged; verify actual checkout estimates during launch
+and record any separately approved setting change in the release runbook.
 
 Printful makes these garments on its own clock: 2–5 business days in-house,
 3–7 at partner facilities, plus the manual confirmation. `fulfilmentWindows`

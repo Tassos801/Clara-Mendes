@@ -1356,3 +1356,20 @@ were inspected and left unchanged. The Oct 13 preview may contradict the
 Sources: [Quiet Current release gate](../quiet-current-release.md),
 [Catalog and products](modules/catalog-and-products.md),
 [Fulfillment](modules/fulfillment.md).
+
+## 2026-10-07 - Quiet Current owner-authorized launch
+
+The owner explicitly requested "make the new products sellable at the site".
+Enabled the four Quiet Current product release flags and the expected shop
+filter types after #113 and #112 merged. The 40 Printful mappings, billing
+method, nine EUR shipping zones and US fabric disclosures are prepared.
+Oxygen deployment, scoped Shopify product/collection publication and live
+PDP, cart and checkout verification are in progress.
+
+The store-wide Automated delivery dates and Next business day fallback
+remain unchanged. The product launch authorization did not separately approve
+changing that setting; actual checkout estimates must be checked during launch.
+
+Sources: [Quiet Current release gate](../quiet-current-release.md),
+[Catalog and products](modules/catalog-and-products.md),
+[Fulfillment](modules/fulfillment.md).
