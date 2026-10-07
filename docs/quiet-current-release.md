@@ -13,11 +13,11 @@ The storefront shows a product only when both gates are open: its handle is `tru
 | Printful: import + map 40 variants to the v2 templates | Done: 40/40 synced, fulfillment enabled on every variant |
 | Printful billing method | Done: a card is the account's primary method and the Clara Mendes store uses it (EUR) |
 | PDP timings | #113: Printful windows (processes in 2–7, dispatched within 3–8 business days) on these four product types |
-| Release flags | Set back to `false` in #113 until launch. #111 set them `true`, but its deploy failed a test, so they never went live |
+| Release flags | All four set to `true` in the owner-authorized launch change; merge and Oxygen deployment in progress. #113 restored them to `false` after #111's failed deploy |
 | US fabric disclosure | Done: all four Shopify descriptions include the US shell; the bra also includes its US mesh lining, checked after reload |
 | Shipping rates for these products | Done: all 40 variants in the EUR `Quiet Current activewear` profile; nine zones saved and checked after reload |
-| Checkout delivery dates | Review before launch: store-wide Automated is on, with Next business day fallback; rate preview shows an Oct 13 arrival that can conflict with the activewear dispatch window |
-| Publish the 4 products + `quiet-current` collection, and flip the 4 flags to `true` | Pending owner approval; deploy the flags before publishing |
+| Checkout delivery dates | Store-wide Automated remains on, with Next business day fallback; owner has authorized the product launch, but has not separately approved changing this setting. Verify the real checkout during launch |
+| Publish the 4 products + `quiet-current` collection | Owner authorized launch on 7 October 2026: "make the new products sellable at the site". Publication and live purchase-path verification in progress after the flag deployment |
 
 Printful manual order confirmation is on: confirm each order in Printful on the day it arrives, because the 3–8 business-day dispatch promise allows only one business day for it. The owner declined samples, so the first order is the first physical QC.
 
@@ -68,10 +68,12 @@ These zones cover all 205 countries/regions currently offered by Shopify Markets
 
 Live Shopify Admin > Settings > Shipping and delivery > Estimated delivery dates was checked on 7 October 2026: **Automated** is selected, and its manual fallback fulfillment time is **Next business day**. With Standard and transit time None, the rate preview still shows “Estimated delivery Tue, Oct 13” based on fulfillment history. This can promise arrival before the full 3–8 business-day activewear dispatch window has elapsed.
 
-The setting is store-wide and was left unchanged. Before launch, resolve it with the owner; turning delivery estimates Off removes predicted dates while keeping custom rate descriptions/transit times ([Shopify help](https://help.shopify.com/en/manual/fulfillment/setup/delivery-expectations/automated-delivery-dates)). A store-wide Next business day fallback does not represent made-to-order activewear. Record any approved change here and verify the real checkout during launch.
+The setting is store-wide and remains unchanged. The owner authorized the product launch on 7 October 2026, without separately approving a change to delivery estimates. Turning delivery estimates Off would remove predicted dates while keeping custom rate descriptions/transit times ([Shopify help](https://help.shopify.com/en/manual/fulfillment/setup/delivery-expectations/automated-delivery-dates)). A store-wide Next business day fallback does not represent made-to-order activewear. Verify the real checkout during launch and record any separately approved setting change here.
 
 ## Launch
 
-1. After explicit owner approval and resolution of the checkout delivery-date setting, merge a PR that sets the four `quiet-current-*` flags in `PRODUCT_RELEASE_FLAGS` to `true`. Update the expected type list in `scripts/catalogFilters.node-test.mjs` in the same PR, and wait for the Oxygen deploy.
+The owner explicitly authorized launch on 7 October 2026: "make the new products sellable at the site". The four flags and expected shop type list are enabled in the launch change; deployment, Shopify publication and the following checks are in progress. The store-wide delivery-date setting remains unchanged pending a separate owner decision.
+
+1. Merge the launch PR that sets the four `quiet-current-*` flags in `PRODUCT_RELEASE_FLAGS` to `true` and updates the expected type list in `scripts/catalogFilters.node-test.mjs`, then wait for the Oxygen deploy.
 2. Publish the 4 products and the `quiet-current` collection to the storefront channel.
 3. Check live: the PDP for each product (chip "Processes in 2–7 business days", Shipping row "dispatched within 3–8"), per-colour variant images, size guide, the four shop type tabs, add to cart, and shipping at checkout for Cyprus, one other EU country and representative international destinations (US, Switzerland and Brazil). Use synthetic details, stop before payment, and remove the test cart items.

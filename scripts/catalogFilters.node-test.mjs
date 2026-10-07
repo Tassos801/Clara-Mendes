@@ -109,6 +109,10 @@ assert.deepEqual(releasedExtensionProductTypes(), [
   'Canvas Art',
   'Phone Cases',
   'Plant Pots',
+  'Yoga Leggings',
+  'Sports Bra',
+  'Biker Shorts',
+  'Studio Top',
 ]);
 assert.deepEqual(releasedExtensionProductTypes({}, {}), []);
 assert.equal(
