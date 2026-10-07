@@ -1390,3 +1390,36 @@ remain in progress.
 Sources: [Quiet Current release gate](../quiet-current-release.md),
 [Catalog and products](modules/catalog-and-products.md),
 `app/lib/catalogFilters.ts`, `scripts/catalogFilters.node-test.mjs`.
+
+## 2026-10-08 - Quiet Current live launch verified
+
+Following the owner's 7 October launch authorization, #114 enabled the four
+release flags and expected shop types, and production workflow `37685065415`
+validated and deployed successfully. Published only the four products and
+`quiet-current` collection to `Clara Mendes`. #115's scoped collection guard
+fix also validated and deployed (workflow `37685612489`); the dedicated
+collection returns 200 and displays all four products.
+
+Shop All and the PDPs show leggings EUR 79, bra EUR 69, shorts EUR 59 and tank
+EUR 55, both colourways, XS–XL guides, the US fabric disclosures, 2–7 business-day
+processing and 3–8 business-day dispatch. Each PDP displays ten variant
+choices; the purchase-path test used one sampled variant per product, giving
+four cart lines and a EUR 262.00 subtotal. Representative synthetic checkouts
+verified all nine flat Standard zones: CY 3.99, DE 4.95, RS 6.99, CH 9.99,
+US 4.95, JP 4.95, CA 6.99, AU 6.99 and BR 12.99, with no extra per-item
+shipping for the four same-profile lines.
+
+The owner separately approved delivery estimates Off on 8 October. Admin
+saved Off, and fresh checkout retained the rates while removing the premature
+"Ships next business day" message. No payment details were entered or order
+placed. After removing all test lines, a final collection-page reload
+confirmed persisted Cart 0 and all four product links. Physical QC remains
+the first paid order; Printful manual confirmation is still required.
+
+The launch code and collection fix passed 345 tests, lint, typecheck, build
+and Hydrogen route checks. Screenshots are in the parent Shopify workspace's
+`artifacts/quiet-current-2026-10-07` folder.
+
+Sources: [Quiet Current launch record](../quiet-current-release.md),
+[Catalog and products](modules/catalog-and-products.md),
+[Fulfillment](modules/fulfillment.md).

@@ -1,27 +1,28 @@
-# Quiet Current activewear — release gate
+# Quiet Current activewear — launch record
 
 Four Printful all-over-print products (leggings #302, studio bra #001A, biker shorts #308, studio tank #121), each in Moss / Mist and Clay / Oat, XS–XL (40 variants). The v2 "Mineral Wash" artwork and review live outside the repo in `Desktop/Clara-Mendes-Movement-Review-2026-10-07/v2`; the print files themselves are in the Printful File library as `qc2f*-{clay|moss}-{302|001A|308|121}-*.png`.
 
 The storefront shows a product only when both gates are open: its handle is `true` in `PRODUCT_RELEASE_FLAGS` (`app/lib/catalogFilters.ts`), and it is Active and published to the storefront channel in Shopify.
 
-## Status (7 October 2026)
+## Status (8 October 2026)
 
 | Step | State |
 |---|---|
 | v2 images (10 per product, per-colour variant images), copy, XS–XL size guides | Done |
-| Shopify status Active; mapped variant availability | 10 mapped variants per product (40 total). Shopify Admin shows 9,999 inventory per variant; configuration unchanged. Storefront publication is in progress |
+| Shopify status Active; mapped variant availability | 10 mapped variants per product (40 total), now published to `Clara Mendes`. Shopify Admin shows 9,999 inventory per variant; configuration unchanged |
 | Printful: import + map 40 variants to the v2 templates | Done: 40/40 synced, fulfillment enabled on every variant |
 | Printful billing method | Done: a card is the account's primary method and the Clara Mendes store uses it (EUR) |
 | PDP timings | #113: Printful windows (processes in 2–7, dispatched within 3–8 business days) on these four product types |
-| Release flags | All four set to `true` in the owner-authorized launch change; merge and Oxygen deployment in progress. #113 restored them to `false` after #111's failed deploy |
+| Release flags | All four `true`: #114 merged and production validation/deployment succeeded (workflow `37685065415`). #115's collection admission fix also validated and deployed (workflow `37685612489`) |
 | US fabric disclosure | Done: all four Shopify descriptions include the US shell; the bra also includes its US mesh lining, checked after reload |
 | Shipping rates for these products | Done: all 40 variants in the EUR `Quiet Current activewear` profile; nine zones saved and checked after reload |
-| Checkout delivery dates | Store-wide Automated remains on, with Next business day fallback; owner has authorized the product launch, but has not separately approved changing this setting. Verify the real checkout during launch |
-| Publish the 4 products + `quiet-current` collection | Owner authorized launch on 7 October 2026: "make the new products sellable at the site". Publication and live purchase-path verification in progress after the flag deployment |
+| Checkout delivery dates | Off, separately approved by the owner on 8 October 2026 and saved in Admin. Fresh Germany checkout keeps Standard €4.95 and removes "Ships next business day" |
+| Publish the 4 products + `quiet-current` collection | Done: published only to `Clara Mendes` after the #114 deployment; all four appear in Shop All. The dedicated collection returns 200 and displays the four products after #115 |
+| Live purchase path | Done: four PDPs, ten variant choices per PDP, four sampled cart variants and representative checkouts for all nine shipping zones. Test cart removed; Cart 0 persisted after reload |
 
 Printful manual order confirmation is on: confirm each order in Printful on the day it arrives, because the 3–8 business-day dispatch promise allows only one business day for it. The owner declined samples, so the first order is the first physical QC.
 
-While the flags are `true`, the shop's type tabs list Yoga Leggings, Sports Bra, Biker Shorts and Studio Top, and those tabs stay empty until the products are published. That is why the flags flip together with publishing.
+The shop's type tabs now list Yoga Leggings, Sports Bra, Biker Shorts and Studio Top, and each published product is visible in Shop All and its matching type.
 
 ## Timings and fabric
 
@@ -66,16 +67,45 @@ These zones cover all 205 countries/regions currently offered by Shopify Markets
 
 ### Checkout delivery dates
 
-Live Shopify Admin > Settings > Shipping and delivery > Estimated delivery dates was checked on 7 October 2026: **Automated** is selected, and its manual fallback fulfillment time is **Next business day**. With Standard and transit time None, the rate preview still shows “Estimated delivery Tue, Oct 13” based on fulfillment history. This can promise arrival before the full 3–8 business-day activewear dispatch window has elapsed.
+Shopify Admin > Settings > Shipping and delivery > Estimated delivery dates was checked on 7 October 2026: **Automated** was selected, with **Next business day** as its manual fallback fulfillment time. With Standard and transit time None, the rate preview showed “Estimated delivery Tue, Oct 13” based on fulfillment history, which could promise arrival before the activewear dispatch window had elapsed.
 
-The setting is store-wide and remains unchanged. The owner authorized the product launch on 7 October 2026, without separately approving a change to delivery estimates. Turning delivery estimates Off would remove predicted dates while keeping custom rate descriptions/transit times ([Shopify help](https://help.shopify.com/en/manual/fulfillment/setup/delivery-expectations/automated-delivery-dates)). A store-wide Next business day fallback does not represent made-to-order activewear. Verify the real checkout during launch and record any separately approved setting change here.
+The live Cyprus checkout initially displayed "Ships next business day", with no predicted arrival date, despite the activewear's 3–8 business-day dispatch promise. The owner separately approved **Turn estimates off** on 8 October 2026. Shopify Admin saved **Off** and confirmed "Delivery date settings updated". A fresh Germany checkout retained Standard €4.95 and no longer displayed "Ships next business day". This store-wide change removes automated delivery estimates while preserving the saved shipping rates ([Shopify help](https://help.shopify.com/en/manual/fulfillment/setup/delivery-expectations/automated-delivery-dates)).
 
 ## Launch
 
-The owner explicitly authorized launch on 7 October 2026: "make the new products sellable at the site". The four flags and expected shop type list are enabled in the launch change; deployment, Shopify publication and the following checks are in progress. The store-wide delivery-date setting remains unchanged pending a separate owner decision.
+The owner explicitly authorized launch on 7 October 2026: "make the new products sellable at the site". [#114](https://github.com/Tassos801/Clara-Mendes/pull/114) enabled the four flags and expected shop type list; its [production validation and deploy](https://github.com/Tassos801/Clara-Mendes/actions/runs/37685065415) succeeded. The four products and their collection were then published only to `Clara Mendes`. [#115](https://github.com/Tassos801/Clara-Mendes/pull/115) fixed collection route admission and also [validated and deployed](https://github.com/Tassos801/Clara-Mendes/actions/runs/37685612489) successfully; the dedicated collection now returns 200 and displays all four products. All nine shipping zones have a representative checkout check, and test cart cleanup is confirmed after reload. The owner separately approved switching the store-wide delivery-date setting Off on 8 October; it is saved and verified in fresh checkout.
 
 The `quiet-current` collection must also pass the collection route's handle-only guard. The launch follow-up admits that handle when any Quiet Current product flag is enabled, while still hiding an empty Shopify result. Its regression test covers the published member, empty result and unrelated product-release cases.
 
-1. Merge the launch PR that sets the four `quiet-current-*` flags in `PRODUCT_RELEASE_FLAGS` to `true` and updates the expected type list in `scripts/catalogFilters.node-test.mjs`, then wait for the Oxygen deploy.
-2. Publish the 4 products and the `quiet-current` collection to the storefront channel.
-3. Check live: the PDP for each product (chip "Processes in 2–7 business days", Shipping row "dispatched within 3–8"), per-colour variant images, size guide, the four shop type tabs, add to cart, and shipping at checkout for Cyprus, one other EU country and representative international destinations (US, Switzerland and Brazil). Use synthetic details, stop before payment, and remove the test cart items.
+The completed sequence was: deploy the release flags, publish the scoped products and collection, deploy the collection admission fix, verify the live PDP/cart/checkout path, and remove the test lines. Local code checks passed 345 tests, lint, typecheck, build and the Hydrogen route check.
+
+## Live verification (8 October 2026)
+
+All four products appear in Shop All with their expected product types. Each live PDP shows the US fabric disclosure (including the bra's mesh lining), XS–XL size guide, 2–7 business-day processing and 3–8 business-day dispatch. Each PDP displays ten variant choices: two colourways × five sizes. The browser purchase-path test exercised one sampled variant per product.
+
+The [Quiet Current collection](https://shopclaramendes.com/collections/quiet-current) returns 200, shows the Quiet Current title and lists all four products at the same prices as their PDPs.
+
+| Product | Retail price | Sample cart variant |
+|---|---|---|
+| [High-Waist Leggings](https://shopclaramendes.com/products/quiet-current-high-waist-leggings) | €79.00 | Clay / Oat, XL |
+| [Studio Bra](https://shopclaramendes.com/products/quiet-current-studio-bra) | €69.00 | Moss / Mist, M |
+| [High-Waist Biker Shorts](https://shopclaramendes.com/products/quiet-current-high-waist-biker-shorts) | €59.00 | Clay / Oat, S |
+| [Studio Tank](https://shopclaramendes.com/products/quiet-current-studio-tank) | €55.00 | Moss / Mist, L |
+
+The browser cart held one correctly selected variant of each product: four lines, subtotal €262.00. Synthetic checkouts covered one destination in each of the nine saved zones:
+
+| Destination | Standard shipping | Four-product total |
+|---|---|---|
+| Cyprus | €3.99 | €265.99 |
+| Germany | €4.95 | €266.95 |
+| Serbia | €6.99 | €268.99 |
+| Switzerland | €9.99 | €271.99 |
+| United States | €4.95 | €266.95 |
+| Japan | €4.95 | €266.95 |
+| Canada | €6.99 | €268.99 |
+| Australia | €6.99 | €268.99 |
+| Brazil | €12.99 | €274.99 |
+
+The four same-profile items shared one flat shipping rate at each destination, with no extra per-item shipping. Fresh checkout checks after the owner-approved Off setting displayed no "Ships next business day" text. No order was placed or payment details entered.
+
+All four test lines were removed. A final collection-page reload confirmed Cart 0 persisted and all four product links remained visible. Local screenshots are saved in `/Users/tassosdimitriou/Desktop/shopify/artifacts/quiet-current-2026-10-07`, including `live-products.jpg` (four cards and persisted Cart 0), `live-shop.jpg`, `live-collection.jpg`, `live-cart.jpg`, representative checkout captures and `delivery-estimates-off.jpg`. The local `verification.md` records the completed evidence.
