@@ -193,14 +193,16 @@ export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
   // profile); the first live order is the first physical QC.
   [TOUGH_CASE_HANDLE]: true,
   // Quiet Current activewear (Printful AOP #302 / #001A / #308 / #121), v2
-  // "Mineral Wash" artwork. Flip only after: Printful billing method added,
-  // all 40 variants mapped to the v2 templates, products Active + published,
-  // shipping profile checked. Owner declined samples; the first order is the
-  // first physical QC.
-  'quiet-current-high-waist-leggings': true,
-  'quiet-current-studio-bra': true,
-  'quiet-current-high-waist-biker-shorts': true,
-  'quiet-current-studio-tank': true,
+  // "Mineral Wash" artwork. All 40 variants are mapped (2026-10-07). Flip
+  // only in the same step as publishing the products, after the Printful
+  // billing method is added and the shipping profile is checked: a true
+  // flag adds the four product types to the shop's type tabs, which stay
+  // empty while the products are unpublished. Owner declined samples; the
+  // first order is the first physical QC. See docs/quiet-current-release.md.
+  'quiet-current-high-waist-leggings': false,
+  'quiet-current-studio-bra': false,
+  'quiet-current-high-waist-biker-shorts': false,
+  'quiet-current-studio-tank': false,
 };
 
 /** Shop type-filter value for each standalone product. */
