@@ -1618,7 +1618,7 @@ const collectionCss = `
    left-side shade for the title instead of the interior's multiply wash. */
 .cv-hero.cv-hero--custom {
   background-image:
-    linear-gradient(90deg, rgba(24,22,19,0.62) 0%, rgba(24,22,19,0.4) 34%, rgba(24,22,19,0) 60%),
+    linear-gradient(90deg, rgba(24,22,19,0.42) 0%, rgba(24,22,19,0.24) 38%, rgba(24,22,19,0) 56%),
     var(--cv-hero-image);
   background-position: center;
 }
@@ -1647,7 +1647,7 @@ const collectionCss = `
     background-image:
       linear-gradient(180deg, rgba(24,22,19,0.6) 0%, rgba(24,22,19,0.42) 55%, rgba(24,22,19,0.2) 100%),
       var(--cv-hero-image-mobile);
-    background-position: right center;
+    background-position: center;
   }
 
   .cv-hero-subtitle {

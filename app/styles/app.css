@@ -1546,6 +1546,10 @@ button {
 }
 
 /* Quiet Current activewear: shipping line by the price, rate and size tables */
+.product-detail[id] {
+  scroll-margin-top: calc(var(--header-height, 76px) + 24px);
+}
+
 .apparel-shipping-line {
   color: var(--color-muted);
   font-size: 0.9rem;
