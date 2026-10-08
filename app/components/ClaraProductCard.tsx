@@ -119,6 +119,9 @@ export function ClaraProductCard({
   // touch devices skip the second image's download and decode entirely.
   // SSR renders without it; hover-capable browsers mount it after hydration
   // (it sits at opacity 0 until :hover, so the late mount is invisible).
+  // The crossfade CSS is keyed to `cm-card--hoverable`: touch browsers still
+  // apply a sticky :hover to the card under the finger, and without the
+  // second image that fade would leave the card blank.
   const [hoverCapable, setHoverCapable] = useState(false);
   useEffect(() => {
     setHoverCapable(
@@ -135,7 +138,9 @@ export function ClaraProductCard({
   const story = showStory ? getProductStory(product) : null;
 
   return (
-    <article className="product-card cm-card">
+    <article
+      className={`product-card cm-card${hoverCapable ? ' cm-card--hoverable' : ''}`}
+    >
       <div className="cm-card-media-wrap">
         <Link
           to={`/products/${product.handle}`}
@@ -345,14 +350,14 @@ const cardCss = `
     var(--color-soft);
 }
 
-.cm-card:hover .cm-card-img--base,
-.cm-card:focus-within .cm-card-img--base {
+.cm-card--hoverable:hover .cm-card-img--base,
+.cm-card--hoverable:focus-within .cm-card-img--base {
   transform: scale(1.04);
   opacity: 0;
 }
 
-.cm-card:hover .cm-card-img--hover,
-.cm-card:focus-within .cm-card-img--hover {
+.cm-card--hoverable:hover .cm-card-img--hover,
+.cm-card--hoverable:focus-within .cm-card-img--hover {
   opacity: 1;
   transform: scale(1.04);
 }
@@ -367,8 +372,8 @@ const cardCss = `
   transition: opacity 600ms var(--cm-ease);
 }
 
-.cm-card:hover .cm-card-veil,
-.cm-card:focus-within .cm-card-veil { opacity: 1; }
+.cm-card--hoverable:hover .cm-card-veil,
+.cm-card--hoverable:focus-within .cm-card-veil { opacity: 1; }
 
 .cm-card-chip {
   position: absolute;
@@ -593,10 +598,10 @@ const cardCss = `
     transition: none;
   }
 
-  .cm-card:hover .cm-card-img--base,
-  .cm-card:focus-within .cm-card-img--base,
-  .cm-card:hover .cm-card-img--hover,
-  .cm-card:focus-within .cm-card-img--hover {
+  .cm-card--hoverable:hover .cm-card-img--base,
+  .cm-card--hoverable:focus-within .cm-card-img--base,
+  .cm-card--hoverable:hover .cm-card-img--hover,
+  .cm-card--hoverable:focus-within .cm-card-img--hover {
     transform: none;
   }
 
