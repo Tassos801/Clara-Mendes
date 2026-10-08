@@ -43,6 +43,7 @@ import {
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import type {CollectionHero} from '~/lib/collectionHeroes';
 import {releasedPrintHandles} from '~/lib/printCatalog';
 import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
 import {bookNookDeliveryPhrase} from '~/lib/bookNooks';
@@ -91,6 +92,8 @@ export type CollectionViewData = {
   description?: string | null;
   facets: CatalogFacetOptions;
   heading: string;
+  /** Collection-specific hero replacing the shared interior backdrop. */
+  hero?: CollectionHero | null;
   products: CollectionProductConnection;
   seoUrl?: string;
   shareImage?: string | null;
@@ -363,18 +366,39 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         />
       ) : null}
 
-      <section className="cv-hero" aria-labelledby="cv-hero-title">
+      <section
+        className={`cv-hero${data.hero ? ' cv-hero--custom' : ''}`}
+        aria-labelledby="cv-hero-title"
+        style={
+          data.hero
+            ? ({
+                '--cv-hero-image': `url(${data.hero.image})`,
+                '--cv-hero-image-mobile': `url(${data.hero.imageMobile})`,
+              } as React.CSSProperties)
+            : undefined
+        }
+      >
+        {data.hero ? (
+          <span role="img" aria-label={data.hero.alt} className="sr-only" />
+        ) : null}
         <div className="cv-hero-noise" />
         <div className="cv-hero-vignette" />
 
         <div className="cv-hero-inner">
-          <p className="cv-eyebrow">Original art &amp; considered products</p>
+          <p className="cv-eyebrow">
+            {data.hero
+              ? data.hero.eyebrow
+              : 'Original art & considered products'}
+          </p>
           <h1 id="cv-hero-title" className="cv-title">
             <i>{splitTitle(data.heading).italic}</i>
             {splitTitle(data.heading).rest
               ? ' ' + splitTitle(data.heading).rest
               : ''}
           </h1>
+          {data.hero?.subtitle ? (
+            <p className="cv-hero-subtitle">{data.hero.subtitle}</p>
+          ) : null}
         </div>
         <div className="cv-hero-rule" aria-hidden />
       </section>
@@ -1590,8 +1614,50 @@ const collectionCss = `
   }
 }
 
+/* Collection-specific hero (app/lib/collectionHeroes.ts): its own image, a
+   left-side shade for the title instead of the interior's multiply wash. */
+.cv-hero.cv-hero--custom {
+  background-image:
+    linear-gradient(90deg, rgba(24,22,19,0.42) 0%, rgba(24,22,19,0.24) 38%, rgba(24,22,19,0) 56%),
+    var(--cv-hero-image);
+  background-position: center;
+}
+
+.cv-hero.cv-hero--custom::before {
+  display: none;
+}
+
+.cv-hero.cv-hero--custom .cv-hero-vignette {
+  opacity: 0.45;
+}
+
+.cv-hero-subtitle {
+  animation: cvFade 2.4s var(--cv-ease) forwards 0.8s;
+  color: rgba(255,255,255,0.88);
+  font-size: clamp(0.98rem, 1.25vw, 1.12rem);
+  line-height: 1.6;
+  margin: 24px 0 0;
+  max-width: 34em;
+  opacity: 0;
+  text-wrap: pretty;
+}
+
+@media (max-width: 720px) {
+  .cv-hero.cv-hero--custom {
+    background-image:
+      linear-gradient(180deg, rgba(24,22,19,0.6) 0%, rgba(24,22,19,0.42) 55%, rgba(24,22,19,0.2) 100%),
+      var(--cv-hero-image-mobile);
+    background-position: center;
+  }
+
+  .cv-hero-subtitle {
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .cv-eyebrow, .cv-title, .cv-tagline, .cv-coords,
+  .cv-eyebrow, .cv-title, .cv-tagline, .cv-coords, .cv-hero-subtitle,
   .cv-hero-rule, .cv-browse-controls, .cv-card-wrap {
     animation: none !important;
     opacity: 1 !important;

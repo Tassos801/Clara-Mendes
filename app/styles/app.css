@@ -1537,6 +1537,103 @@ button {
   padding: 0 0 18px;
 }
 
+.product-detail-body > p {
+  margin: 0 0 10px;
+}
+
+.product-detail-body > p:last-child {
+  margin-bottom: 0;
+}
+
+/* Quiet Current activewear: shipping line by the price, rate and size tables */
+.product-detail[id] {
+  scroll-margin-top: calc(var(--header-height, 76px) + 24px);
+}
+
+.apparel-shipping-line {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 2px 0 0;
+  max-width: 46ch;
+}
+
+.apparel-features {
+  display: grid;
+  gap: 4px;
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.apparel-features li {
+  padding-left: 16px;
+  position: relative;
+}
+
+.apparel-features li::before {
+  background: var(--color-moss);
+  border-radius: 999px;
+  content: '';
+  height: 5px;
+  left: 2px;
+  position: absolute;
+  top: 0.62em;
+  width: 5px;
+}
+
+.apparel-table {
+  border-collapse: collapse;
+  font-feature-settings:
+    'tnum' 1,
+    'lnum' 1;
+  font-size: 0.9rem;
+  margin: 0 0 12px;
+  width: 100%;
+}
+
+.apparel-table th,
+.apparel-table td {
+  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
+  padding: 8px 10px 8px 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+.apparel-table thead th {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.apparel-table tbody th {
+  font-weight: 500;
+}
+
+.apparel-table tbody th small {
+  color: var(--color-muted);
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 400;
+  line-height: 1.45;
+  margin-top: 2px;
+}
+
+.apparel-table--rates td:last-child,
+.apparel-table--rates thead th:last-child {
+  padding-right: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.apparel-shipping p {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  margin: 0 0 12px;
+}
+
 .product-format-choice {
   align-items: center;
   border-bottom: 1px solid rgba(38, 35, 31, 0.14);

@@ -473,6 +473,14 @@ store-wide delivery estimates Off. Admin saved the change, and a fresh
 Germany checkout retained its rate while removing "Ships next business day". See
 [Quiet Current launch record](../../quiet-current-release.md).
 
+Activewear PDPs read `descriptionHtml` through `parseApparelDescription`
+(`app/lib/apparelCopy.ts`, plain text only) and show Details, Fabric & care,
+a Size guide table and a Shipping rate table, with a one-line shipping
+statement beside the price from `APPAREL_SHIPPING_RATES`
+(`app/lib/storefrontBasics.ts`). `app/lib/collectionHeroes.ts` gives
+`quiet-current` its own collection hero. See
+[PDP layout and collection hero](../../quiet-current-release.md#pdp-layout-and-collection-hero-8-october-2026).
+
 The four-line cart used one flat same-profile shipping rate in each of the
 nine zones. No payment details were entered or order placed, and Cart 0
 persisted after final cleanup and a collection-page reload. The first paid

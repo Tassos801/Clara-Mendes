@@ -40,6 +40,7 @@ import {
   filterDemoProducts,
   isDemoCollection,
 } from '~/lib/catalogFilters';
+import {collectionHero} from '~/lib/collectionHeroes';
 import {
   buildCollectionProductFilters,
   extractFacetOptions,
@@ -271,6 +272,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       'A focused Clara Mendes collection of original art and considered products.',
     facets,
     heading: data.collection.title,
+    hero: collectionHero(data.collection.handle),
     products: {
       ...products,
       nodes: filterDemoProducts(products.nodes),
