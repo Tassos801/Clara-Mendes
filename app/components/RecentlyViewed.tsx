@@ -1,38 +1,58 @@
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useState} from 'react';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
-import type {CardPricing} from '~/lib/productCardPricing';
 import {
   getRecentlyViewed,
-  isPriceRangeFlagFresh,
-  type RecentlyViewedEntry,
+  recentlyViewedProductIds,
 } from '~/lib/recentlyViewed';
 
 /**
  * "Recently viewed" rail rendered from the browsing history kept in
- * localStorage. Client-only: renders nothing on the server and on the
- * first client pass, then fills in after hydration.
+ * localStorage. Each render revalidates publication, approval and current
+ * price with Storefront; a revoked product cannot survive as a saved snapshot.
  */
 export function RecentlyViewed({
   excludeHandles = [],
 }: {
   excludeHandles?: string[];
 }) {
-  const [entries, setEntries] = useState<RecentlyViewedEntry[]>([]);
+  const [products, setProducts] = useState<ClaraCardProduct[]>([]);
   const serializedExcludes = excludeHandles.join(',');
 
   useEffect(() => {
-    setEntries(
-      getRecentlyViewed({
-        excludeHandles: serializedExcludes.split(',').filter(Boolean),
-        limit: 3,
-      }),
-    );
+    const entries = getRecentlyViewed({
+      excludeHandles: serializedExcludes.split(',').filter(Boolean),
+      limit: 12,
+    });
+    const ids = recentlyViewedProductIds(entries.map(({id}) => id));
+    const controller = new AbortController();
+    setProducts([]);
+    if (ids.length) {
+      const params = new URLSearchParams(ids.map((id) => ['id', id]));
+      void fetch(`/api/recently-viewed?${params}`, {signal: controller.signal})
+        .then(async (response) =>
+          response.ok
+            ? (response.json() as Promise<{products: ClaraCardProduct[]}>)
+            : null,
+        )
+        .then((result) => {
+          if (!result || controller.signal.aborted) return;
+          setProducts(
+            ids
+              .flatMap((id) =>
+                result.products.filter((product) => product.id === id),
+              )
+              .slice(0, 3),
+          );
+        })
+        .catch(() => {
+          /* History is optional; network failures keep it hidden. */
+        });
+    }
+    return () => controller.abort();
   }, [serializedExcludes]);
-
-  const products = useMemo(() => entries.map(toCardProduct), [entries]);
 
   if (products.length === 0) return null;
 
@@ -48,38 +68,10 @@ export function RecentlyViewed({
         </div>
       </div>
       <div className="product-grid compact-grid">
-        {products.map(({card, pricing}) => (
-          <ClaraProductCard key={card.id} product={card} pricing={pricing} />
+        {products.map((product) => (
+          <ClaraProductCard key={product.id} product={product} />
         ))}
       </div>
     </section>
   );
-}
-
-function toCardProduct(entry: RecentlyViewedEntry): {
-  card: ClaraCardProduct;
-  pricing: CardPricing;
-} {
-  const price =
-    entry.amount && entry.currencyCode
-      ? {amount: entry.amount, currencyCode: entry.currencyCode}
-      : null;
-
-  return {
-    card: {
-      id: entry.id,
-      handle: entry.handle,
-      title: entry.title,
-      productType: entry.productType,
-      featuredImage: entry.imageUrl
-        ? {url: entry.imageUrl, altText: entry.imageAlt ?? entry.title}
-        : null,
-      priceRange: price ? {minVariantPrice: price} : undefined,
-    },
-    // Snapshots already store the released "From" floor (v3 semantics), so
-    // the card must not re-derive pricing from the synthesized product. The
-    // range flag ages out so a size paused after the visit cannot keep the
-    // "From" prefix alive indefinitely.
-    pricing: {price, hasRange: isPriceRangeFlagFresh(entry)},
-  };
 }

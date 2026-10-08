@@ -1438,3 +1438,30 @@ unchanged.
 
 Sources: [Quiet Current launch record](../quiet-current-release.md#pdp-layout-and-collection-hero-8-october-2026),
 [Catalog and products](modules/catalog-and-products.md).
+
+## 2026-10-08 - Clothing destination documented (code and Shopify unchanged)
+
+Wrote the operator guide `docs/clothing-destination.md`, the read-only catalogue
+audit `docs/audits/clothing-catalog-2026-10-08.md` (from the saved snapshot of
+61 Admin products and 17 collections), and the wiki page
+[Clothing](modules/clothing.md). The guide gives the exact inclusion rule
+(clothing type or tag, plus both approval metafields for future garments, or the
+released-handle path for the four Quiet Current products; missing or false
+means hidden), the Admin steps to add a garment or a capsule with no code
+change, and what still needs code (a delivery estimate: `fulfilmentWindows`
+returns `null` for every garment except the four Quiet Current handles).
+
+The audit records that all four garments are "Uncategorized" in Shopify, that
+`custom.collection_kind` is empty on all 17 collections, that 15 collections are
+empty (13 legacy handles and two duplicates of `clara-mendes-art-living`), and
+that the code already hides all 15 from navigation, menus, search and the
+sitemap. It prepares, but does not apply, product categories for the four
+garments, the `custom.collection_kind` definition, and removing the empty
+collections from the sales channels. No Shopify call was made and no live state
+changed. The Clothing page itself was uncommitted work on branch
+`codex/clothing-destination-2026-10-08`.
+
+Sources: [Clothing](modules/clothing.md),
+[Clothing destination guide](../clothing-destination.md),
+[Catalogue audit](../audits/clothing-catalog-2026-10-08.md),
+`docs/audits/clothing-catalog-2026-10-08.json`.

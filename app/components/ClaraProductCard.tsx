@@ -16,6 +16,7 @@ import {
   selectAccurateClassicFrameImage,
 } from '~/lib/classicFrame';
 import {curatedDisplayTitle, withCuratedImages} from '~/lib/curatedProducts';
+import type {ClothingProductLike} from '~/lib/clothing';
 
 const CARD_IMAGE_SIZES =
   '(min-width: 1100px) 25vw, (min-width: 781px) 33vw, 50vw';
@@ -52,7 +53,7 @@ type ProductVariant = {
   title: string;
 };
 
-export type ClaraCardProduct = {
+export type ClaraCardProduct = ClothingProductLike & {
   id: string;
   handle: string;
   title: string;

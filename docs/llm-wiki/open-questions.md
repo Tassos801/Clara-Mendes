@@ -57,3 +57,42 @@ Sources: [Art for Everyday Living](../art-product-extensions.md).
 
 Sources: [Launch readiness](../launch-readiness.md),
 `app/lib/marketingAttribution.ts`, `app/components/AdPlatformAnalytics.tsx`.
+
+## Clothing Destination
+
+- Does the collection metafield definition `custom.collection_kind` (Single
+  line text, Storefront access read) exist? The 8 October 2026 snapshot shows no
+  value on any of the 17 collections but cannot show definitions. Until it
+  exists, a new capsule cannot be marked `capsule`.
+- Are the 13 empty legacy collections and the two empty "Art for Everyday
+  Living" duplicates (`art-for-everyday-living`, `art-for-everyday-living-1`)
+  still published to the `Clara Mendes` channels? The snapshot has no
+  collection publication data. The code hides them either way.
+- Should the four Quiet Current garments get the prepared Shopify categories
+  (Activewear leggings, sports bras, activewear shorts, tank tops)? The shorts
+  choice (`aa-1-1-1-3` against `aa-1-14-8`) is a judgment call.
+- After the empty duplicates are unpublished, their URLs return 404 because
+  they are not on `LEGACY_COLLECTION_HANDLES`. Is a redirect wanted?
+- Should the four Quiet Current garments get both approval metafields set to
+  `true`? Today they show through the released-handle path and both are `false`.
+  The first paid order is their first quality check.
+- Does Shopify's Storefront API still return an unpublished capsule collection
+  in `product.collections`? Not tested. The guide tells operators to publish the
+  collection, as Quiet Current was.
+- What delivery estimate, shipping profile and supplier source will the first
+  new garment use? `fulfilmentWindows` returns `null` for every garment except
+  the four Quiet Current handles, so a new garment has no delivery window until
+  code adds one.
+- Shop All hides garment types from its type tabs by the type list, so a garment
+  admitted only by the tag `clara-mendes-clothing` with an unlisted type still
+  shows its type as a tab. Is that wanted?
+- Predictive search suggestions cannot judge a new capsule collection without a
+  product list, so a new capsule collection is not suggested there. Is that
+  acceptable?
+- Is the `/clothing` branch (`codex/clothing-destination-2026-10-08`) merged and
+  deployed? These notes describe the uncommitted work of 8 October 2026.
+
+Sources: [Clothing](modules/clothing.md),
+[Clothing destination guide](../clothing-destination.md),
+[Catalogue audit](../audits/clothing-catalog-2026-10-08.md),
+`app/lib/catalogFilters.ts`, `app/lib/storefrontBasics.ts`.

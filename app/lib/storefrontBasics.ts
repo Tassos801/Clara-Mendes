@@ -1,3 +1,5 @@
+import {isClothingProduct} from './clothing.ts';
+
 export const SUPPORT_EMAIL = 'hello@shopclaramendes.com';
 export const STOREFRONT_ORIGIN = 'https://shopclaramendes.com';
 export const RETURN_WINDOW_DAYS = 30;
@@ -17,7 +19,7 @@ export const DELIVERY_EU_BUSINESS_DAYS = '5–10';
 export const DELIVERY_INTERNATIONAL_BUSINESS_DAYS = '7–20';
 
 // Printful all-over synthetic garments (Quiet Current activewear, matched by
-// Shopify product type). Printful publishes 2–5 business days in-house and
+// exact released product handles). Printful publishes 2–5 business days in-house and
 // 3–7 at partner facilities for the technique, counted from the business day
 // after the order (help.printful.com, "How long does fulfillment take?").
 // Orders wait for manual confirmation in Printful, which can add a business
@@ -38,6 +40,16 @@ export function isApparelProductType(productType?: string | null) {
   return Boolean(
     type && APPAREL_PRODUCT_TYPES.some((t) => t.toLowerCase() === type),
   );
+}
+
+/** Verified shipping belongs to these existing products, never a future type. */
+export function isQuietCurrentProduct(handle?: string | null) {
+  return [
+    'quiet-current-high-waist-leggings',
+    'quiet-current-studio-bra',
+    'quiet-current-high-waist-biker-shorts',
+    'quiet-current-studio-tank',
+  ].includes(handle?.toLowerCase() ?? '');
 }
 
 // Quiet Current activewear ships on its own Shopify profile, "Quiet Current
@@ -70,9 +82,15 @@ export const APPAREL_SHIPPING_FROM_EUR = APPAREL_SHIPPING_RATES.reduce(
   APPAREL_SHIPPING_RATES[0].eur as string,
 );
 
-/** The production and dispatch windows a product type's PDP promises. */
-export function fulfilmentWindows(productType?: string | null) {
-  return isApparelProductType(productType)
+/** Future garments have no supplier estimate until their merchant copy states it. */
+export function fulfilmentWindows(
+  productType?: string | null,
+  handle?: string | null,
+  tags?: string[] | null,
+) {
+  if (isClothingProduct({productType, tags}) && !isQuietCurrentProduct(handle))
+    return null;
+  return isQuietCurrentProduct(handle)
     ? {
         production: APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
         dispatch: APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,

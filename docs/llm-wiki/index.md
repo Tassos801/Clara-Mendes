@@ -19,6 +19,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Catalog And Products](modules/catalog-and-products.md) - Product filtering, live catalog status, collections, and product page behavior.
 - [Cart And Checkout](modules/cart-and-checkout.md) - Add-to-cart, cart actions, drawer/page cart, checkout handoff, and attribution persistence.
 - [Fulfillment And Delivery Promises](modules/fulfillment.md) - Prodigi windows, delivery estimates, and every surface that states them.
+- [Clothing](modules/clothing.md) - The `/clothing` destination: what counts as clothing, categories vs capsules, the approval rule, 8 Oct 2026 catalogue state, and prepared Shopify changes.
 - [Analytics And Attribution](modules/analytics-and-attribution.md) - Shopify analytics, ad platform events, UTM/click ID capture, and cart attributes.
 - [Brand Film](modules/brand-film.md) - The silent 45-second launch film: Remotion package, render check, Shopify Files upload, Our Story embed.
 
@@ -32,6 +33,8 @@ Source: local Shopify Hydrogen storefront repository at
 - [Art Tough Phone Case](../art-tough-phone-case.md) - All 24 released artworks across 40 device models, Shopify Draft staging and provider release gates.
 - [Pastel Forms Plant Pots](../pastel-plant-pots.md) - Four mapped pastel pots, EUR 29.99 + EUR 6.99 EU shipping, purchase-path evidence and the owner-approved first-order quality review.
 - [Quiet Current Launch Record](../quiet-current-release.md) - Four released Printful activewear products, 40 mapped variants, US fabric disclosure, verified flat EUR checkout rates in all nine zones, owner-approved delivery estimates Off and first-order manual confirmation/QC.
+- [Clothing Destination Guide](../clothing-destination.md) - Operator steps to add a garment or capsule in Shopify Admin without code, the exact inclusion rule, and what still needs code.
+- [Clothing Catalogue Audit](../audits/clothing-catalog-2026-10-08.md) - 8 Oct 2026 read-only snapshot: product types, uncategorised garments, empty and duplicate collections, and prepared (not applied) Shopify changes.
 
 - [Adding prints runbook](../add-products-runbook.md) - One catalog file and `npm run product` steps for artwork, room images, Draft staging, supplier handoff, release, and live verification.
 - [Sci-fi & Cinema Print Staging](../scifi-cinema-prints.md) - Four Draft designs, disabled storefront release flags, export candidates and remaining provider work.

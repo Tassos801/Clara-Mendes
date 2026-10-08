@@ -115,11 +115,12 @@ import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   fulfilmentWindows,
-  isApparelProductType,
+  isQuietCurrentProduct,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
 import {parseApparelDescription} from '~/lib/apparelCopy';
+import {isClothingProduct} from '~/lib/clothing';
 import {
   APPAREL_SHIPPING_DETAIL_ID,
   ApparelShippingLine,
@@ -728,10 +729,12 @@ function ProductPage() {
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
   // Printful activewear runs on its own production clock, not Prodigi's.
-  const windows = fulfilmentWindows(product.productType);
+  const windows = fulfilmentWindows(product.productType, product.handle, product.tags);
   // Activewear copy is structured HTML (intro, features, fabric, size table);
   // the plain-text description would run those blocks together.
-  const isApparel = isApparelProductType(product.productType);
+  const isApparel = isClothingProduct(product);
+  const isQuietCurrent = isQuietCurrentProduct(product.handle);
+  const isFutureClothing = isApparel && !isQuietCurrent;
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
@@ -907,7 +910,9 @@ function ProductPage() {
             image: absoluteImageUrl(primaryImage?.url),
             priceRange: product.priceRange,
             productId: product.id,
+            productHandle: product.handle,
             productType: product.productType,
+            tags: product.tags,
             reviewSummary:
               reviews.summary.total > 0
                 ? {
@@ -1015,7 +1020,7 @@ function ProductPage() {
                 compareAtPrice={selectedVariant.compareAtPrice}
               />
             ) : null}
-            {isApparel ? <ApparelShippingLine /> : null}
+            {isQuietCurrent ? <ApparelShippingLine /> : null}
 
             <div
               className="product-availability-row"
@@ -1031,7 +1036,7 @@ function ProductPage() {
                 {selectedVariant?.availableForSale
                   ? curatedProduct
                     ? 'DIY kit'
-                    : 'Made to order'
+                    : isFutureClothing ? 'Available' : 'Made to order'
                   : 'Unavailable'}
               </span>
               <span>
@@ -1039,7 +1044,9 @@ function ProductPage() {
                   ? curatedProduct.processing
                     ? `Processing ${curatedProduct.processing}`
                     : 'Processing estimate at checkout'
-                  : `Processes in ${windows.production} business days`}
+                  : windows
+                    ? `Processes in ${windows.production} business days`
+                    : 'Shipping calculated at checkout'}
               </span>
               {curatedProduct ? (
                 <span>
@@ -1284,7 +1291,9 @@ function ProductPage() {
           <ul className="product-assurance-list" aria-label="Order reassurance">
             <li>
               <span aria-hidden />
-              {isLetterPost
+              {isFutureClothing
+                ? 'Available destinations and shipping fees are confirmed at checkout.'
+                : isLetterPost
                 ? 'Sent by letter post — untracked, typically 5–8 business days.'
                 : isPlantPot
                   ? 'Sent from the UK by untracked post.'
@@ -1495,10 +1504,10 @@ function ProductPage() {
             ) : null}
             <ProductDetail
               label="Shipping"
-              id={isApparel ? APPAREL_SHIPPING_DETAIL_ID : undefined}
+              id={isQuietCurrent ? APPAREL_SHIPPING_DETAIL_ID : undefined}
             >
-              {isApparel ? <ApparelShippingRates /> : null}
-              <ProductShippingText
+              {isQuietCurrent ? <ApparelShippingRates /> : null}
+              {windows ? <ProductShippingText
                 curatedShipping={curatedProduct?.shipping}
                 isPlantPot={isPlantPot}
                 reach={shippingReach}
@@ -1507,7 +1516,12 @@ function ProductPage() {
                 internationalDeliveryWindow={
                   DELIVERY_INTERNATIONAL_BUSINESS_DAYS
                 }
-              />
+              /> : (
+                <>
+                  Available destinations and shipping fees are confirmed at checkout.
+                  See the product details for any item-specific processing and delivery information.
+                </>
+              )}
             </ProductDetail>
             <ProductDetail label="Returns">
               {RETURN_WINDOW_DAYS}-day return window from delivery. Items must

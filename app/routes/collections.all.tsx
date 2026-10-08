@@ -25,6 +25,7 @@ import {
 import {
   filterDemoCollections,
   filterDemoProducts,
+  isOffThemeCollectionHandle,
   releasedExtensionProductTypes,
 } from '~/lib/catalogFilters';
 import {
@@ -47,6 +48,15 @@ import type {CollectionHero} from '~/lib/collectionHeroes';
 import {releasedPrintHandles} from '~/lib/printCatalog';
 import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
 import {bookNookDeliveryPhrase} from '~/lib/bookNooks';
+import {loadClothingProducts} from '~/lib/clothing.server';
+import {
+  clothingCategories,
+  clothingCapsules,
+  isClothingProductType,
+  isClothingCategoryCollection,
+  type ClothingCategoryCount,
+  type ClothingCapsule,
+} from '~/lib/clothing';
 
 export type CollectionLink = {
   id: string;
@@ -85,6 +95,11 @@ export type CollectionProductConnection = {
 };
 
 export type CollectionViewData = {
+  clothingNavigation?: {
+    categories: ClothingCategoryCount[];
+    capsules: ClothingCapsule[];
+  };
+  clothingOnly?: boolean;
   activeCapsule?: string | null;
   activeHandle: string;
   activeId: string;
@@ -126,13 +141,22 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
   const capsule = getShopCapsuleBySlug(searchParams.get('capsule'));
+  const clothing = await loadClothingProducts(context.storefront);
+  const productTypes = [
+    ...new Set([
+      ...SHOP_PRODUCT_TYPES,
+      ...clothing
+        .map((product) => product.productType)
+        .filter((type): type is string => Boolean(type)),
+    ]),
+  ];
   const isBookNooks =
     facetSelection.productTypes.length === 1 &&
     facetSelection.productTypes[0] === 'Book Nooks' &&
     SHOP_PRODUCT_TYPES.includes('Book Nooks');
   const normalizedProductTypes = normalizeSingleProductTypeSearch(
     searchParams,
-    SHOP_PRODUCT_TYPES,
+    productTypes,
   );
 
   if (normalizedProductTypes) {
@@ -157,6 +181,12 @@ export async function loader({context, request}: Route.LoaderArgs) {
   ensurePaginatedData(request, data);
 
   return {
+    clothingNavigation: {
+      categories: clothingCategories(clothing),
+      capsules: clothingCapsules(clothing).filter(
+        (capsule) => !isOffThemeCollectionHandle(capsule.handle),
+      ),
+    },
     activeCapsule: capsule?.slug ?? null,
     activeHandle: 'all',
     activeId: capsule ? `capsule:${capsule.slug}` : 'all',
@@ -173,7 +203,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
             ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
             : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
     facets: {
-      productTypes: SHOP_PRODUCT_TYPES.map((label) => ({label})),
+      productTypes: productTypes.map((label) => ({label})),
       vendors: [] as Array<{label: string}>,
     },
     heading: capsule ? capsule.title : isBookNooks ? 'Book Nooks' : 'Shop All',
@@ -264,9 +294,17 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   // Capsule filtering lives in the URL (?capsule=slug) so selections are
   // shareable and survive sort, facet, and back/forward navigation. A real
   // Shopify collection with the same handle takes precedence when it exists.
-  const shadowedSlugs = new Set(data.collections.map((c) => c.handle));
+  const namedCollections = data.collections.filter(
+    (collection) => !isClothingCategoryCollection(collection),
+  );
+  const shadowedSlugs = new Set(namedCollections.map((c) => c.handle));
+  const shadowedTitles = new Set(
+    namedCollections.map((c) => c.title.trim().toLowerCase()),
+  );
   const capsuleLinks = listShopCapsules().filter(
-    (capsule) => !shadowedSlugs.has(capsule.slug),
+    (capsule) =>
+      !shadowedSlugs.has(capsule.slug) &&
+      !shadowedTitles.has(capsule.title.trim().toLowerCase()),
   );
 
   const capsuleSearch = (slug: string | null) => {
@@ -300,6 +338,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
     next.delete('capsule');
     next.delete('cursor');
     next.delete('direction');
+    next.delete('type');
     const queryString = next.toString();
     return `/collections/${handle}${queryString ? `?${queryString}` : ''}`;
   };
@@ -311,14 +350,31 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   const productCategories = [
     {
       active: !activeProductType,
-      label: 'All products',
-      path: `/collections/all${categorySearch(null)}`,
+      label: data.clothingOnly ? 'All clothing' : 'All products',
+      path: data.clothingOnly
+        ? '/clothing'
+        : `/collections/all${categorySearch(null)}`,
     },
-    ...data.facets.productTypes.map((option) => ({
-      active: activeProductType === option.label,
-      label: option.label,
-      path: `/collections/all${categorySearch(option.label)}`,
-    })),
+    ...(data.clothingOnly
+      ? (data.clothingNavigation?.categories ?? []).map((category) => ({
+          active: false,
+          label: category.label,
+          path: `/clothing?category=${category.slug}#pieces`,
+        }))
+      : data.facets.productTypes
+          .filter(
+            (option) =>
+              !isClothingProductType(option.label) ||
+              activeProductType === option.label,
+          )
+          .map((option) => ({
+            active: activeProductType === option.label,
+            label: option.label,
+            path: `/collections/all${categorySearch(option.label)}`,
+          }))),
+    ...(!data.clothingOnly && data.clothingNavigation?.categories.length
+      ? [{active: false, label: 'Clothing', path: '/clothing'}]
+      : []),
   ];
 
   const onSortChange = (value: string) => {
@@ -353,6 +409,15 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         }}
       />
       <style suppressHydrationWarning>{collectionCss}</style>
+      {data.clothingOnly ? (
+        <nav className="cv-departments" aria-label="Breadcrumb">
+          <Link to="/">Home</Link>
+          <span aria-hidden="true">/</span>
+          <Link to="/clothing">Clothing</Link>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">{data.heading}</span>
+        </nav>
+      ) : null}
       {data.seoUrl ? (
         <StructuredData
           data={[
@@ -388,7 +453,9 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           <p className="cv-eyebrow">
             {data.hero
               ? data.hero.eyebrow
-              : 'Original art & considered products'}
+              : data.clothingOnly
+                ? 'Clara Mendes Clothing'
+                : 'Original art & considered products'}
           </p>
           <h1 id="cv-hero-title" className="cv-title">
             <i>{splitTitle(data.heading).italic}</i>
@@ -467,19 +534,27 @@ export function CollectionView({data}: {data: CollectionViewData}) {
               <option value={`/collections/all${capsuleSearch(null)}`}>
                 All collections
               </option>
-              {data.collections.length > 0 ? (
+              {namedCollections.length > 0 ? (
                 <optgroup label="Collections">
-                  {data.collections.map((collection) => (
-                    <option
-                      key={collection.id}
-                      value={collectionPath(collection.handle)}
-                    >
-                      {collection.title}
-                    </option>
-                  ))}
+                  {namedCollections
+                    .filter(
+                      (collection) =>
+                        !data.clothingOnly ||
+                        data.clothingNavigation?.capsules.some(
+                          (capsule) => capsule.handle === collection.handle,
+                        ),
+                    )
+                    .map((collection) => (
+                      <option
+                        key={collection.id}
+                        value={collectionPath(collection.handle)}
+                      >
+                        {collection.title}
+                      </option>
+                    ))}
                 </optgroup>
               ) : null}
-              {capsuleLinks.length > 0 ? (
+              {!data.clothingOnly && capsuleLinks.length > 0 ? (
                 <optgroup label="Art capsules">
                   {capsuleLinks.map((capsule) => (
                     <option
@@ -628,6 +703,11 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                 >
                   Clear filters
                 </button>
+              </section>
+            ) : data.clothingOnly ? (
+              <section className="empty-state collection-empty">
+                <h2>No pieces available in this collection.</h2>
+                <Link to="/clothing">Explore all clothing</Link>
               </section>
             ) : (
               <OriginalArtPreview />
@@ -788,11 +868,7 @@ const ALL_COLLECTION_QUERY = `#graphql
         title
         products(first: 4) {
           nodes {
-            handle
-            productType
-            tags
-            title
-            vendor
+            ...ClaraProductCard
           }
         }
       }

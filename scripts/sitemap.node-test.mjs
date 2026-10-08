@@ -87,6 +87,7 @@ assert.deepEqual(
   [
     '/',
     '/collections/all',
+    '/clothing',
     '/pastel-forms',
     // The book nook page exists only while a nook is released.
     ...(releasedBookNooks().length ? ['/book-nooks'] : []),
