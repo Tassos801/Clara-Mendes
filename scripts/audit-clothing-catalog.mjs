@@ -198,3 +198,5 @@ async function readPages(load) {
   } while (cursor);
   return products;
 }
+
+/* eslint-enable no-console */
