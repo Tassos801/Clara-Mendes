@@ -7,14 +7,17 @@
 export function ProductDetail({
   children,
   defaultOpen = false,
+  id,
   label,
 }: {
   children: React.ReactNode;
   defaultOpen?: boolean;
+  /** Anchor target, e.g. for a "see all rates" link elsewhere on the page. */
+  id?: string;
   label: string;
 }) {
   return (
-    <details className="product-detail" open={defaultOpen || undefined}>
+    <details className="product-detail" id={id} open={defaultOpen || undefined}>
       <summary>
         <span>{label}</span>
         <svg aria-hidden="true" viewBox="0 0 12 12">

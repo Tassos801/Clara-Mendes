@@ -1423,3 +1423,18 @@ and Hydrogen route checks. Screenshots are in the parent Shopify workspace's
 Sources: [Quiet Current launch record](../quiet-current-release.md),
 [Catalog and products](modules/catalog-and-products.md),
 [Fulfillment](modules/fulfillment.md).
+
+## 2026-10-08 - Quiet Current PDP layout, shipping fees and collection hero
+
+The activewear PDPs printed Shopify's plain-text description, so the feature
+list and XS–XL size table ran together into one paragraph. They now parse
+`descriptionHtml` into a lede plus Details, Fabric & care, Size guide (table)
+and Shipping rows; no merchant HTML is rendered. Shipping fees are stated
+beside the price and as a nine-zone table, from `APPAREL_SHIPPING_RATES`,
+which mirrors Shopify profile `148183646542` and must be updated with it.
+`/collections/quiet-current` gets its own hero image and a subtitle that
+includes "Shipping from €3.99, one fee per order". Art and other products are
+unchanged.
+
+Sources: [Quiet Current launch record](../quiet-current-release.md#pdp-layout-and-collection-hero-8-october-2026),
+[Catalog and products](modules/catalog-and-products.md).

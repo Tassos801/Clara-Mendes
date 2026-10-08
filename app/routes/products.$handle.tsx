@@ -115,9 +115,16 @@ import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   fulfilmentWindows,
+  isApparelProductType,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
+import {parseApparelDescription} from '~/lib/apparelCopy';
+import {
+  APPAREL_SHIPPING_DETAIL_ID,
+  ApparelShippingLine,
+  ApparelShippingRates,
+} from '~/components/ApparelShipping';
 import {
   curatedDisplayTitle,
   deliveryIncludedPhrase,
@@ -722,6 +729,12 @@ function ProductPage() {
     (product.productType || '').toLowerCase() === 'phone cases';
   // Printful activewear runs on its own production clock, not Prodigi's.
   const windows = fulfilmentWindows(product.productType);
+  // Activewear copy is structured HTML (intro, features, fabric, size table);
+  // the plain-text description would run those blocks together.
+  const isApparel = isApparelProductType(product.productType);
+  const apparelCopy = isApparel
+    ? parseApparelDescription(product.descriptionHtml)
+    : null;
   const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
   const potDesign = pastelPots.designs.find(
     (design) => design.handle === product.handle,
@@ -746,7 +759,10 @@ function ProductPage() {
       ? 'selected'
       : 'worldwide';
   const productLede =
-    potDesign?.story ?? curatedProduct?.tagline ?? getProductLede(product);
+    potDesign?.story ??
+    curatedProduct?.tagline ??
+    apparelCopy?.lede ??
+    getProductLede(product);
   const printSize = selectedPrintSize(selectedVariant?.selectedOptions);
   const selectedFrameSize = isClassicFrame
     ? selectedClassicFrameSize(selectedVariant?.selectedOptions)
@@ -999,6 +1015,7 @@ function ProductPage() {
                 compareAtPrice={selectedVariant.compareAtPrice}
               />
             ) : null}
+            {isApparel ? <ApparelShippingLine /> : null}
 
             <div
               className="product-availability-row"
@@ -1280,6 +1297,64 @@ function ProductPage() {
           </ul>
 
           <div className="product-details-list">
+            {apparelCopy ? (
+              <>
+                {apparelCopy.features.length || apparelCopy.madeToOrder ? (
+                  <ProductDetail label="Details" defaultOpen>
+                    {apparelCopy.features.length ? (
+                      <ul className="apparel-features">
+                        {apparelCopy.features.map((feature) => (
+                          <li key={feature}>{feature}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+                    {apparelCopy.madeToOrder ? (
+                      <p>{apparelCopy.madeToOrder}</p>
+                    ) : null}
+                  </ProductDetail>
+                ) : null}
+                {apparelCopy.fabricAndCare.length ? (
+                  <ProductDetail label="Fabric & care">
+                    {apparelCopy.fabricAndCare.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </ProductDetail>
+                ) : null}
+                {apparelCopy.sizeGuide ? (
+                  <ProductDetail label="Size guide">
+                    <table className="apparel-table">
+                      <caption className="sr-only">Body size guide</caption>
+                      {apparelCopy.sizeGuide.headers.length ? (
+                        <thead>
+                          <tr>
+                            {apparelCopy.sizeGuide.headers.map((header) => (
+                              <th key={header} scope="col">
+                                {header}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                      ) : null}
+                      <tbody>
+                        {apparelCopy.sizeGuide.rows.map(([size, ...values]) => (
+                          <tr key={size}>
+                            <th scope="row">{size}</th>
+                            {values.map((cell, column) => (
+                              // Cells are positional under the column headers.
+                              // eslint-disable-next-line react/no-array-index-key
+                              <td key={column}>{cell}</td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {apparelCopy.fitNotes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                  </ProductDetail>
+                ) : null}
+              </>
+            ) : null}
             {isPlantPot ? (
               <>
                 <ProductDetail label="Pot" defaultOpen>
@@ -1418,7 +1493,11 @@ function ProductPage() {
                 screen and print colours can vary slightly.
               </ProductDetail>
             ) : null}
-            <ProductDetail label="Shipping">
+            <ProductDetail
+              label="Shipping"
+              id={isApparel ? APPAREL_SHIPPING_DETAIL_ID : undefined}
+            >
+              {isApparel ? <ApparelShippingRates /> : null}
               <ProductShippingText
                 curatedShipping={curatedProduct?.shipping}
                 isPlantPot={isPlantPot}

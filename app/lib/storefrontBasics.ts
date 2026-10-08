@@ -40,6 +40,36 @@ export function isApparelProductType(productType?: string | null) {
   );
 }
 
+// Quiet Current activewear ships on its own Shopify profile, "Quiet Current
+// activewear" (148183646542): one flat Standard rate per zone, charged once
+// per order however many activewear pieces it holds
+// (docs/quiet-current-release.md#shipping). The PDP and the collection hero
+// quote these figures, so change them here in the same step as the profile.
+export const APPAREL_SHIPPING_RATES = [
+  {zone: 'Cyprus', eur: '3.99'},
+  {zone: 'Rest of the EU', eur: '4.95'},
+  {zone: 'United States', eur: '4.95'},
+  {zone: 'Japan', eur: '4.95'},
+  {
+    zone: 'Other European countries',
+    eur: '6.99',
+    note: 'Albania, Andorra, Bosnia & Herzegovina, Moldova, Monaco, Montenegro, North Macedonia, San Marino, Serbia, Ukraine, Vatican City',
+  },
+  {zone: 'Canada', eur: '6.99'},
+  {zone: 'Australia & New Zealand', eur: '6.99'},
+  {
+    zone: 'Switzerland, Norway, Iceland & Liechtenstein',
+    eur: '9.99',
+  },
+  {zone: 'Everywhere else we ship', eur: '12.99'},
+] as const satisfies ReadonlyArray<{zone: string; eur: string; note?: string}>;
+
+/** Lowest activewear shipping rate, for "from" lines. */
+export const APPAREL_SHIPPING_FROM_EUR = APPAREL_SHIPPING_RATES.reduce(
+  (low, rate) => (Number(rate.eur) < Number(low) ? rate.eur : low),
+  APPAREL_SHIPPING_RATES[0].eur as string,
+);
+
 /** The production and dispatch windows a product type's PDP promises. */
 export function fulfilmentWindows(productType?: string | null) {
   return isApparelProductType(productType)
