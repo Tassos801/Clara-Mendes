@@ -12,8 +12,13 @@ import {
   type PrintCatalog,
 } from './printCatalog.ts';
 import {TOUGH_CASE_HANDLE} from './toughCase.ts';
+import {
+  hasClothingApprovals,
+  isClothingProduct,
+  type ClothingProductLike,
+} from './clothing.ts';
 
-export type CatalogProductLike = {
+export type CatalogProductLike = ClothingProductLike & {
   handle?: string | null;
   productType?: string | null;
   tags?: string[] | null;
@@ -417,11 +422,20 @@ export function isOffThemeProduct(product: CatalogProductLike) {
 
 export function isStoreThemeProduct(product: CatalogProductLike) {
   const handle = product.handle?.toLowerCase();
+  if (
+    !handle ||
+    isOffThemeProduct(product) ||
+    isUnfulfillableProductHandle(handle) ||
+    isUnreleasedExtensionHandle(handle)
+  )
+    return false;
 
+  // Existing releases retain their signed-off release path. Future clothing
+  // is merchant-managed, but both explicit approvals and clothing membership
+  // are mandatory. Storefront supplies Active + channel publication visibility.
   return (
-    Boolean(handle && SELLABLE_PRODUCT_HANDLES.has(handle)) &&
-    !isOffThemeProduct(product) &&
-    !isUnfulfillableProductHandle(product.handle)
+    SELLABLE_PRODUCT_HANDLES.has(handle) ||
+    (isClothingProduct(product) && hasClothingApprovals(product))
   );
 }
 
@@ -466,7 +480,7 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
   // appear before Shopify products are assigned.
   const hasProductSample = Array.isArray(collection.products?.nodes);
   const products = collection.products?.nodes?.filter(Boolean) ?? [];
-  if (products.some((product) => !isDemoProduct(product))) return false;
+  if (products.some(isListedProduct)) return false;
   if (products.length > 0) return true;
 
   // With no product sample to judge by (the collection route's pre-query

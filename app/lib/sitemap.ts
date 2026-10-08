@@ -7,9 +7,13 @@ import {
   hasReleasedExtensions,
   isFeaturePageHandle,
   isDemoCollection,
+  isListedProduct,
   isOffThemeProductHandle,
+  isOffThemeCollectionHandle,
   isUnreleasedExtensionHandle,
   ORIGINAL_ART_COLLECTIONS,
+  type CatalogProductLike,
+  type CatalogCollectionLike,
 } from './catalogFilters.ts';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from './bookNooks.ts';
 import {shopCapsulePath} from './capsules.ts';
@@ -27,6 +31,7 @@ import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/',
   '/collections/all',
+  '/clothing',
   '/pastel-forms',
   ...(releasedBookNooks().length ? [BOOK_NOOKS_PATH] : []),
   ...ORIGINAL_ART_COLLECTIONS.map(
@@ -57,7 +62,11 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
  */
 const EXCLUDED_RESOURCE_PATHS = new Set(['pages/contact', 'blogs/news']);
 
-export function removeExcludedSitemapEntries(xml: string) {
+export function removeExcludedSitemapEntries(
+  xml: string,
+  products?: ReadonlyMap<string, CatalogProductLike>,
+  collections?: ReadonlyMap<string, CatalogCollectionLike>,
+) {
   return xml.replace(/<url>[\s\S]*?<\/url>/g, (entry) => {
     const loc = entry.match(/<loc>(.*?)<\/loc>/)?.[1] ?? '';
     const match = loc.match(/\/(products|collections|pages|blogs)\/([^/<]+)$/);
@@ -68,6 +77,13 @@ export function removeExcludedSitemapEntries(xml: string) {
     if (type === 'products' && isOffThemeProductHandle(handle)) return '';
     if (type === 'products' && isUnreleasedExtensionHandle(handle)) return '';
     if (type === 'products' && isFeaturePageHandle(handle)) return '';
+    // With resolved metadata, missing/unpublished products fail closed. The
+    // standalone helper's fallback admits only existing released handles.
+    if (
+      type === 'products' &&
+      !isListedProduct(products ? (products.get(handle) ?? {}) : {handle})
+    )
+      return '';
     // The Everyday collection URL is only worth indexing once a family is
     // released AND the collection actually holds products (it is a manual
     // collection; an empty one redirects, and a redirecting sitemap entry
@@ -82,10 +98,100 @@ export function removeExcludedSitemapEntries(xml: string) {
     // Every other collection must pass the guard the collection route
     // applies before it queries Shopify: anything the route would send to
     // /collections/all (empty manual collections included) stays out.
-    if (type === 'collections' && isDemoCollection({handle})) return '';
+    if (
+      type === 'collections' &&
+      isDemoCollection(collections ? (collections.get(handle) ?? {handle, products: {nodes: []}}) : {handle})
+    ) return '';
 
     return entry;
   });
+}
+
+/** Actual published members admit future merchant collections without a code list. */
+export async function filterSitemapCollectionEntries(
+  xml: string,
+  loadCollection: (handle: string) => Promise<CatalogCollectionLike | null>,
+) {
+  const handles = [...new Set(
+    [...xml.matchAll(/<loc>[^<]*\/collections\/([^/<]+)<\/loc>/g)].map((match) => match[1]),
+  )];
+  const collections = new Map<string, CatalogCollectionLike>();
+  for (const handle of handles) {
+    if (isOffThemeCollectionHandle(handle)) continue;
+    // The original art landing pages are intentionally code-backed previews.
+    if (ORIGINAL_ART_COLLECTIONS.some((collection) => collection.handle === handle)) {
+      collections.set(handle, {handle});
+      continue;
+    }
+    const collection = await loadCollection(handle);
+    if (collection) collections.set(handle, collection);
+  }
+  return removeExcludedSitemapEntries(xml, undefined, collections);
+}
+
+export const SITEMAP_COLLECTION_ELIGIBILITY_QUERY = `#graphql
+  query SitemapCollectionEligibility($handle: String!, $after: String) {
+    collection(handle: $handle) {
+      handle
+      products(first: 100, after: $after) {
+        nodes {
+          handle productType tags vendor
+          storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }
+          fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }
+        }
+        pageInfo { hasNextPage endCursor }
+      }
+    }
+  }
+` as const;
+
+/** Resolve actual channel-visible metadata before emitting product URLs. */
+export async function filterSitemapProductEntries(
+  xml: string,
+  loadProducts: (
+    handles: string[],
+  ) => Promise<Array<CatalogProductLike | null>>,
+) {
+  const handles = [
+    ...new Set(
+      [...xml.matchAll(/<loc>[^<]*\/products\/([^/<]+)<\/loc>/g)].map(
+        (match) => match[1],
+      ),
+    ),
+  ];
+  if (!handles.length) return removeExcludedSitemapEntries(xml);
+  const products = new Map<string, CatalogProductLike>();
+  // Bounded aliases keep request cost predictable even for a large sitemap.
+  for (let offset = 0; offset < handles.length; offset += 40) {
+    const batch = await loadProducts(handles.slice(offset, offset + 40));
+    for (const product of batch) {
+      if (product?.handle) products.set(product.handle, product);
+    }
+  }
+  return removeExcludedSitemapEntries(xml, products);
+}
+
+/** Handles travel only as GraphQL variables; aliases are generated integers. */
+export function sitemapProductEligibilityQuery(handles: string[]) {
+  const variables = Object.fromEntries(
+    handles.map((handle, index) => [`handle${index}`, handle]),
+  );
+  const definitions = handles
+    .map((_, index) => `$handle${index}: String!`)
+    .join(', ');
+  const selections = handles
+    .map(
+      (_, index) => `product${index}: product(handle: $handle${index}) {
+    handle productType tags vendor
+    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }
+    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }
+  }`,
+    )
+    .join('\n');
+  return {
+    query: `query SitemapProductEligibility(${definitions}) { ${selections} }`,
+    variables,
+  };
 }
 
 export function buildCustomRoutesSitemapXml() {
@@ -154,5 +260,9 @@ export function isValidSitemapRequest(
   type: string | undefined,
   page: string | undefined,
 ) {
-  return Boolean(type) && SITEMAP_TYPES.has(type as string) && /^[1-9][0-9]*$/.test(page ?? '');
+  return (
+    Boolean(type) &&
+    SITEMAP_TYPES.has(type as string) &&
+    /^[1-9][0-9]*$/.test(page ?? '')
+  );
 }

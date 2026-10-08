@@ -58,11 +58,12 @@ test('staged sizes stay out; one offered size is a plain Product', () => {
   assert.equal(schema.offers.price, '29.99');
 });
 
-test('offer handling time follows the product type dispatch window', () => {
-  const handling = (productType) =>
+test('offer handling time follows the exact released product dispatch window', () => {
+  const handling = (productType, productHandle) =>
     productSchema({
       ...base,
       productType,
+      productHandle,
       variants: [variant(1, '8 × 10 in', '29.99')],
     }).offers.shippingDetails.deliveryTime;
 
@@ -76,7 +77,7 @@ test('offer handling time follows the product type dispatch window', () => {
     [5, 10],
   );
 
-  const leggings = handling('Yoga Leggings');
+  const leggings = handling('Yoga Leggings', 'quiet-current-high-waist-leggings');
   assert.deepEqual(
     [leggings.handlingTime.minValue, leggings.handlingTime.maxValue],
     [3, 8],
@@ -91,10 +92,23 @@ test('every variant offer of a garment carries the Printful window', () => {
   const schema = productSchema({
     ...base,
     productType: 'Sports Bra',
+    productHandle: 'quiet-current-studio-bra',
     variants: [variant(1, 'S', '69.00'), variant(2, 'M', '69.00')],
   });
   for (const node of schema.hasVariant) {
     const {handlingTime} = node.offers.shippingDetails.deliveryTime;
     assert.deepEqual([handlingTime.minValue, handlingTime.maxValue], [3, 8]);
+  }
+});
+
+test('future garment product and variant offers omit unsupported shipping promises', () => {
+  for (const fields of [
+    {productType: 'Dresses'},
+    {productType: 'Sports Bra'},
+    {productType: 'New garment', tags: ['clara-mendes-clothing']},
+  ]) {
+    const schema = productSchema({...base, ...fields, productHandle: 'future-garment', variants: [variant(1, 'S', '69.00'), variant(2, 'M', '69.00')]});
+    assert.equal(schema.offers.shippingDetails, undefined);
+    for (const node of schema.hasVariant) assert.equal(node.offers.shippingDetails, undefined);
   }
 });

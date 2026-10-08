@@ -39,7 +39,15 @@ import {
   filterDemoCollections,
   filterDemoProducts,
   isDemoCollection,
+  isOffThemeCollectionHandle,
 } from '~/lib/catalogFilters';
+import {
+  clothingCategories,
+  clothingCapsules,
+  isClothingProduct,
+  isClothingProductType,
+} from '~/lib/clothing';
+import {loadClothingProducts} from '~/lib/clothing.server';
 import {collectionHero} from '~/lib/collectionHeroes';
 import {
   buildCollectionProductFilters,
@@ -128,7 +136,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   if (
     !handle ||
     handle === 'all' ||
-    (isDemoCollection({handle}) && !getGalleryPage(handle))
+    (isOffThemeCollectionHandle(handle) && !getGalleryPage(handle))
   ) {
     throw redirect('/collections/all');
   }
@@ -221,9 +229,18 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   const searchParams = new URL(request.url).searchParams;
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
+  const clothing = await loadClothingProducts(context.storefront);
+  const supportedTypes = [
+    ...new Set([
+      ...SHOP_PRODUCT_TYPES,
+      ...clothing
+        .map((product) => product.productType)
+        .filter((type): type is string => Boolean(type)),
+    ]),
+  ];
   const normalizedProductTypes = normalizeSingleProductTypeSearch(
     searchParams,
-    SHOP_PRODUCT_TYPES,
+    supportedTypes,
   );
 
   if (normalizedProductTypes) {
@@ -258,10 +275,28 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   };
   const facets = extractFacetOptions(products.filters);
   facets.productTypes = facets.productTypes.filter((option) =>
-    SHOP_PRODUCT_TYPES.some((productType) => productType === option.label),
+    supportedTypes.some((productType) => productType === option.label),
   );
+  const classification = filterDemoProducts(
+    data.collection.classification.nodes,
+  );
+  const clothingOnly =
+    classification.length > 0 &&
+    classification.every(isClothingProduct) &&
+    (!data.collection.classification.pageInfo.hasNextPage ||
+      (facets.productTypes.length > 0 &&
+        facets.productTypes.every((option) =>
+          isClothingProductType(option.label),
+        )));
 
   return {
+    clothingOnly,
+    clothingNavigation: {
+      categories: clothingCategories(clothing),
+      capsules: clothingCapsules(clothing).filter(
+        (capsule) => !isOffThemeCollectionHandle(capsule.handle),
+      ),
+    },
     activeHandle: data.collection.handle,
     activeId: data.collection.id,
     collections: filterDemoCollections(
@@ -910,6 +945,10 @@ const COLLECTION_QUERY = `#graphql
       handle
       title
       description
+      classification: products(first: 50) {
+        nodes { ...ClaraProductCard }
+        pageInfo { hasNextPage }
+      }
       products(
         after: $endCursor
         before: $startCursor
@@ -945,11 +984,7 @@ const COLLECTION_QUERY = `#graphql
         title
         products(first: 4) {
           nodes {
-            handle
-            productType
-            tags
-            title
-            vendor
+            ...ClaraProductCard
           }
         }
       }

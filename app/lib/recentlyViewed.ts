@@ -4,6 +4,15 @@ import {isFeaturePageHandle} from './catalogFilters.ts';
 export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v4';
 const MAX_ENTRIES = 12;
 
+/** Bounds untrusted local-history ids before the Storefront nodes request. */
+export function recentlyViewedProductIds(ids: string[]) {
+  return [
+    ...new Set(
+      ids.filter((id) => /^gid:\/\/shopify\/Product\/[0-9]+$/.test(id)),
+    ),
+  ].slice(0, MAX_ENTRIES);
+}
+
 export type RecentlyViewedEntry = {
   amount?: string;
   currencyCode?: string;
@@ -18,11 +27,9 @@ export type RecentlyViewedEntry = {
 };
 
 /**
- * How long a snapshot's `hasPriceRange` flag stays trustworthy. The rail
- * renders from localStorage without live data, so if a larger size is
- * paused after the visit the stored flag would keep claiming a "From"
- * range; bounding its age caps that window. The floor amount itself stays
- * shown — it is always a genuinely released price.
+ * Legacy snapshot helper retained for storage consumers. The rendered rail
+ * now revalidates current prices and eligibility through Storefront instead
+ * of displaying any stored amount or range flag.
  */
 export const PRICE_RANGE_FLAG_TTL_MS = 14 * 24 * 60 * 60 * 1000;
 

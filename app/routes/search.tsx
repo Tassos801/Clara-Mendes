@@ -132,6 +132,8 @@ const SEARCH_PRODUCT_FRAGMENT = `#graphql
     vendor
     productType
     tags
+    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }
+    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }
     featuredImage {
       url
       altText
@@ -401,6 +403,8 @@ const PREDICTIVE_SEARCH_PRODUCT_FRAGMENT = `#graphql
     handle
     productType
     tags
+    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }
+    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }
     vendor
     trackingParameters
     selectedOrFirstAvailableVariant(

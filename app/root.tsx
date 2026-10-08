@@ -23,6 +23,7 @@ import {getCartOrNull} from '~/lib/cart';
 import {normalizeGtmContainerId} from '~/lib/googleCommerce';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
+import clothingStyles from '~/styles/clothing.css?url';
 
 export function links() {
   return [{rel: 'icon', type: 'image/svg+xml', href: favicon}];
@@ -38,6 +39,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <link rel="stylesheet" href={clothingStyles}></link>
         <Meta />
         <Links nonce="" />
       </head>

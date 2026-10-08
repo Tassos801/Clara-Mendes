@@ -195,3 +195,15 @@ Sports Bra, Biker Shorts, Studio Top) production 2–7 and dispatch 3–8 on the
 PDP and in the Offer `handlingTime`. Printful's transit (EU 3–7 business
 days) fits the shared delivery windows. See
 [Quiet Current launch record](../../quiet-current-release.md#timings-and-fabric).
+
+## 2026-10-08 - Future garments have no delivery window
+
+`fulfilmentWindows` (`app/lib/storefrontBasics.ts`) returns the Printful windows
+only for the four Quiet Current handles. For any other garment (a clothing type
+or the tag `clara-mendes-clothing`) it returns `null`, so the product page shows
+"Available", "Shipping calculated at checkout" and a generic Shipping row, and
+the Offer in structured data has no `shippingDetails`. The Quiet Current rate
+table and "Shipping from" line are also tied to those four handles. A new
+garment needs its own verified estimate and a code change. See
+[Clothing](clothing.md) and
+[the operator guide](../../clothing-destination.md#what-still-needs-code).

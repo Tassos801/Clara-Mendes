@@ -1,0 +1,3086 @@
+{
+  "capturedAt": "2026-10-08T09:54:44.471Z",
+  "readOnly": true,
+  "liveMutations": 0,
+  "counts": {
+    "adminProducts": 61,
+    "storefrontProducts": 47,
+    "classifiedClothing": 4,
+    "eligibleClothing": 4,
+    "adminCollections": 17
+  },
+  "categories": [
+    {
+      "slug": "leggings",
+      "label": "Leggings",
+      "count": 1
+    },
+    {
+      "slug": "bras",
+      "label": "Bras",
+      "count": 1
+    },
+    {
+      "slug": "shorts",
+      "label": "Shorts",
+      "count": 1
+    },
+    {
+      "slug": "tops",
+      "label": "Tops",
+      "count": 1
+    }
+  ],
+  "capsules": [
+    {
+      "handle": "quiet-current",
+      "title": "Quiet Current",
+      "count": 4
+    }
+  ],
+  "clothing": [
+    {
+      "id": "gid://shopify/Product/16125355786574",
+      "handle": "quiet-current-high-waist-leggings",
+      "title": "Quiet Current High-Waist Leggings",
+      "vendor": "Clara Mendes",
+      "productType": "Yoga Leggings",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true,
+      "strictApprovalsReadable": false,
+      "storefrontApprovalFields": {
+        "storefrontApproved": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "fulfillmentVerified": {
+          "type": "boolean",
+          "value": "false"
+        }
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "79.0",
+          "currencyCode": "EUR"
+        },
+        "maxVariantPrice": {
+          "amount": "79.0",
+          "currencyCode": "EUR"
+        }
+      },
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            "Moss / Mist",
+            "Clay / Oat"
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ],
+      "proposedCategory": "Leggings"
+    },
+    {
+      "id": "gid://shopify/Product/16125355819342",
+      "handle": "quiet-current-studio-bra",
+      "title": "Quiet Current Studio Bra",
+      "vendor": "Clara Mendes",
+      "productType": "Sports Bra",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true,
+      "strictApprovalsReadable": false,
+      "storefrontApprovalFields": {
+        "storefrontApproved": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "fulfillmentVerified": {
+          "type": "boolean",
+          "value": "false"
+        }
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "69.0",
+          "currencyCode": "EUR"
+        },
+        "maxVariantPrice": {
+          "amount": "69.0",
+          "currencyCode": "EUR"
+        }
+      },
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            "Moss / Mist",
+            "Clay / Oat"
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ],
+      "proposedCategory": "Bras"
+    },
+    {
+      "id": "gid://shopify/Product/16125355884878",
+      "handle": "quiet-current-high-waist-biker-shorts",
+      "title": "Quiet Current High-Waist Biker Shorts",
+      "vendor": "Clara Mendes",
+      "productType": "Biker Shorts",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true,
+      "strictApprovalsReadable": false,
+      "storefrontApprovalFields": {
+        "storefrontApproved": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "fulfillmentVerified": {
+          "type": "boolean",
+          "value": "false"
+        }
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "59.0",
+          "currencyCode": "EUR"
+        },
+        "maxVariantPrice": {
+          "amount": "59.0",
+          "currencyCode": "EUR"
+        }
+      },
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            "Moss / Mist",
+            "Clay / Oat"
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ],
+      "proposedCategory": "Shorts"
+    },
+    {
+      "id": "gid://shopify/Product/16125355950414",
+      "handle": "quiet-current-studio-tank",
+      "title": "Quiet Current Studio Tank",
+      "vendor": "Clara Mendes",
+      "productType": "Studio Top",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true,
+      "strictApprovalsReadable": false,
+      "storefrontApprovalFields": {
+        "storefrontApproved": {
+          "type": "boolean",
+          "value": "false"
+        },
+        "fulfillmentVerified": {
+          "type": "boolean",
+          "value": "false"
+        }
+      },
+      "priceRange": {
+        "minVariantPrice": {
+          "amount": "55.0",
+          "currencyCode": "EUR"
+        },
+        "maxVariantPrice": {
+          "amount": "55.0",
+          "currencyCode": "EUR"
+        }
+      },
+      "options": [
+        {
+          "name": "Colour",
+          "values": [
+            "Moss / Mist",
+            "Clay / Oat"
+          ]
+        },
+        {
+          "name": "Size",
+          "values": [
+            "XS",
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ],
+      "proposedCategory": "Tops"
+    }
+  ],
+  "adminProducts": [
+    {
+      "id": "gid://shopify/Product/15948433097038",
+      "handle": "quiet-form-i-art-print",
+      "title": "Quiet Form I Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Quiet Form",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433129806",
+      "handle": "quiet-form-ii-art-print",
+      "title": "Quiet Form II Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Quiet Form",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433195342",
+      "handle": "quiet-form-iii-art-print",
+      "title": "Quiet Form III Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Quiet Form",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433260878",
+      "handle": "patina-blue-i-art-print",
+      "title": "Patina Blue I Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Patina Blue",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433326414",
+      "handle": "patina-blue-ii-art-print",
+      "title": "Patina Blue II Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Patina Blue",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433359182",
+      "handle": "patina-blue-iii-art-print",
+      "title": "Patina Blue III Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Patina Blue",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433391950",
+      "handle": "neo-deco-i-art-print",
+      "title": "Neo Deco I Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Neo Deco",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433424718",
+      "handle": "neo-deco-ii-art-print",
+      "title": "Neo Deco II Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Neo Deco",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15948433457486",
+      "handle": "neo-deco-iii-art-print",
+      "title": "Neo Deco III Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Neo Deco",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949020889422",
+      "handle": "midnight-garden-i-art-print",
+      "title": "Midnight Garden I Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Midnight Garden",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949020922190",
+      "handle": "midnight-garden-ii-art-print",
+      "title": "Midnight Garden II Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Midnight Garden",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949020954958",
+      "handle": "midnight-garden-iii-art-print",
+      "title": "Midnight Garden III Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Midnight Garden",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949020987726",
+      "handle": "sunlit-mosaic-i-art-print",
+      "title": "Sunlit Mosaic I Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sunlit Mosaic",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949021020494",
+      "handle": "sunlit-mosaic-ii-art-print",
+      "title": "Sunlit Mosaic II Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sunlit Mosaic",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949021053262",
+      "handle": "sunlit-mosaic-iii-art-print",
+      "title": "Sunlit Mosaic III Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sunlit Mosaic",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2",
+        "name": "Posters, Prints, & Visual Artwork",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949165363534",
+      "handle": "large-fine-art-print-16x20",
+      "title": "Large Fine Art Print — 16 × 20 in",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "Art for Everyday Living",
+        "Art Prints",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165396302",
+      "handle": "classic-framed-art-print-16x20",
+      "title": "Classic Framed Art Print — 16 × 20 in",
+      "vendor": "Clara Mendes",
+      "productType": "Framed Art",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Framed Art",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165429070",
+      "handle": "fine-art-greeting-card",
+      "title": "Fine Art Greeting Card",
+      "vendor": "Clara Mendes",
+      "productType": "Cards",
+      "tags": [
+        "Art for Everyday Living",
+        "Cards",
+        "Clara Mendes Original"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949165461838",
+      "handle": "fine-art-postcard",
+      "title": "Fine Art Postcard",
+      "vendor": "Clara Mendes",
+      "productType": "Postcards",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Postcards"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949165494606",
+      "handle": "art-cover-spiral-notebook",
+      "title": "Art-Cover Spiral Notebook",
+      "vendor": "Clara Mendes",
+      "productType": "Notebooks",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Notebooks",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165527374",
+      "handle": "art-cover-gratitude-journal",
+      "title": "Art-Cover Gratitude Journal",
+      "vendor": "Clara Mendes",
+      "productType": "Journals",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Journals",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165560142",
+      "handle": "clara-mendes-art-calendar-2026",
+      "title": "Clara Mendes Art Calendar 2026",
+      "vendor": "Clara Mendes",
+      "productType": "Calendars",
+      "tags": [
+        "Art for Everyday Living",
+        "Calendars",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165592910",
+      "handle": "stretched-canvas-art-16x20",
+      "title": "Stretched Canvas Art — 16 × 20 in",
+      "vendor": "Clara Mendes",
+      "productType": "Canvas Art",
+      "tags": [
+        "Art for Everyday Living",
+        "Canvas Art",
+        "Clara Mendes Original"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/15949165625678",
+      "handle": "art-canvas-tote",
+      "title": "Art Canvas Tote",
+      "vendor": "Clara Mendes",
+      "productType": "Bags",
+      "tags": [
+        "Art for Everyday Living",
+        "Bags",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165658446",
+      "handle": "art-linen-cushion-24x24",
+      "title": "Art Linen Cushion — 24 × 24 in",
+      "vendor": "Clara Mendes",
+      "productType": "Cushions",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Cushions",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165691214",
+      "handle": "art-premium-fleece-blanket-30x40",
+      "title": "Art Premium Fleece Blanket — 30 × 40 in",
+      "vendor": "Clara Mendes",
+      "productType": "Blankets",
+      "tags": [
+        "Art for Everyday Living",
+        "Blankets",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/15949165723982",
+      "handle": "art-snap-phone-case",
+      "title": "Art Snap Phone Case",
+      "vendor": "Clara Mendes",
+      "productType": "Phone Cases",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Cost Gate Pending",
+        "Phone Cases",
+        "Prodigi Mapping Pending",
+        "Sample Gate Pending"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16034145829198",
+      "handle": "your-sky-star-map",
+      "title": "Your Sky — a personalised star map",
+      "vendor": "Clara Mendes",
+      "productType": "Personalised Art",
+      "tags": [
+        "Clara Mendes Original",
+        "gift",
+        "personalised"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2-2",
+        "name": "Prints",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork > Prints"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16034145861966",
+      "handle": "first-light-birth-poster",
+      "title": "First Light — a personalised birth poster",
+      "vendor": "Clara Mendes",
+      "productType": "Personalised Art",
+      "tags": [
+        "Clara Mendes Original",
+        "gift",
+        "personalised"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/hg-3-4-2-1",
+        "name": "Posters",
+        "fullName": "Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork > Posters"
+      },
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16078105313614",
+      "handle": "orbital-silence-art-print",
+      "title": "Orbital Silence Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sci-fi & Cinema",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16078105477454",
+      "handle": "neon-after-rain-art-print",
+      "title": "Neon After Rain Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sci-fi & Cinema",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16078105510222",
+      "handle": "desert-signal-art-print",
+      "title": "Desert Signal Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sci-fi & Cinema",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16078105575758",
+      "handle": "the-fold-art-print",
+      "title": "The Fold Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Sci-fi & Cinema",
+        "Wall Art"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16088536449358",
+      "handle": "veil-of-stone-art-print",
+      "title": "Veil of Stone Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16088536482126",
+      "handle": "tidal-mirror-art-print",
+      "title": "Tidal Mirror Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16088536514894",
+      "handle": "winter-script-art-print",
+      "title": "Winter Script Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16088536547662",
+      "handle": "fern-in-shadow-art-print",
+      "title": "Fern in Shadow Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16088536645966",
+      "handle": "where-mist-rests-art-print",
+      "title": "Where Mist Rests Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16092026044750",
+      "handle": "wind-in-sand-art-print",
+      "title": "Wind in Sand Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Print File Review Pending",
+        "Prodigi Mapping Pending",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16092026175822",
+      "handle": "shell-at-low-tide-art-print",
+      "title": "Shell at Low Tide Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Print File Review Pending",
+        "Prodigi Mapping Pending",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16092026241358",
+      "handle": "river-in-motion-art-print",
+      "title": "River in Motion Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Print File Review Pending",
+        "Prodigi Mapping Pending",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16092026306894",
+      "handle": "cloud-at-rest-art-print",
+      "title": "Cloud at Rest Art Print",
+      "vendor": "Clara Mendes",
+      "productType": "Art Prints",
+      "tags": [
+        "4:5 Ratio",
+        "Art Print",
+        "Clara Mendes Original",
+        "Light & Silence",
+        "Print File Review Pending",
+        "Prodigi Mapping Pending",
+        "Wall Art"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "DRAFT",
+      "category": null,
+      "storefrontVisible": false,
+      "destinationEligible": false
+    },
+    {
+      "id": "gid://shopify/Product/16107883462990",
+      "handle": "art-tough-phone-case",
+      "title": "Art Tough Phone Case",
+      "vendor": "Clara Mendes",
+      "productType": "Phone Cases",
+      "tags": [
+        "Art for Everyday Living",
+        "Clara Mendes Original",
+        "Matte",
+        "Phone Cases",
+        "Sample Gate Pending",
+        "Tough Case"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "clara-mendes-art-living",
+            "title": "Art for Everyday Living",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16109127205198",
+      "handle": "blush-arc-pastel-plant-pot",
+      "title": "Blush Arc Ceramic Plant Pot",
+      "vendor": "Clara Mendes",
+      "productType": "Plant Pots",
+      "tags": [
+        "Clara Mendes Original",
+        "First Order Quality Review Pending",
+        "Pastel Forms",
+        "Plant Pots",
+        "Prodigi Mapping Verified"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16109129204046",
+      "handle": "sage-stem-pastel-plant-pot",
+      "title": "Sage Stem Ceramic Plant Pot",
+      "vendor": "Clara Mendes",
+      "productType": "Plant Pots",
+      "tags": [
+        "Clara Mendes Original",
+        "First Order Quality Review Pending",
+        "Pastel Forms",
+        "Plant Pots",
+        "Prodigi Mapping Verified"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16109129498958",
+      "handle": "blue-drift-pastel-plant-pot",
+      "title": "Blue Drift Ceramic Plant Pot",
+      "vendor": "Clara Mendes",
+      "productType": "Plant Pots",
+      "tags": [
+        "Clara Mendes Original",
+        "First Order Quality Review Pending",
+        "Pastel Forms",
+        "Plant Pots",
+        "Prodigi Mapping Verified"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16109129793870",
+      "handle": "butter-sun-pastel-plant-pot",
+      "title": "Butter Sun Ceramic Plant Pot",
+      "vendor": "Clara Mendes",
+      "productType": "Plant Pots",
+      "tags": [
+        "Clara Mendes Original",
+        "First Order Quality Review Pending",
+        "Pastel Forms",
+        "Plant Pots",
+        "Prodigi Mapping Verified"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "true"
+      },
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": null,
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16116237140302",
+      "handle": "twilight-library-diy-book-nook-kit",
+      "title": "Twilight Library — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [
+        "Book Nooks"
+      ],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16116510359886",
+      "handle": "alley-after-rain-diy-book-nook-kit",
+      "title": "Alley After Rain — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16116525662542",
+      "handle": "firefly-forest-diy-book-nook-kit",
+      "title": "Firefly Forest — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118272393550",
+      "handle": "christmas-fantasy-diy-book-nook-kit",
+      "title": "Christmas Fantasy — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118273868110",
+      "handle": "eternal-fragrance-diy-book-nook-kit",
+      "title": "Eternal Fragrance — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118274687310",
+      "handle": "magic-meal-diy-book-nook-kit",
+      "title": "Magic Meal — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118275965262",
+      "handle": "sorcerer-s-shop-diy-book-nook-kit",
+      "title": "Sorcerer’s Shop — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118277570894",
+      "handle": "colmar-town-diy-book-nook-kit",
+      "title": "Colmar Town — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118279373134",
+      "handle": "sea-breeze-diy-book-nook-kit",
+      "title": "Sea Breeze — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16118281306446",
+      "handle": "underwater-world-diy-book-nook-kit",
+      "title": "Underwater World — DIY Book Nook Kit",
+      "vendor": "Clara Mendes",
+      "productType": "Book Nooks",
+      "tags": [],
+      "storefrontApproved": null,
+      "fulfillmentVerified": null,
+      "collections": {
+        "nodes": [],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16125355786574",
+      "handle": "quiet-current-high-waist-leggings",
+      "title": "Quiet Current High-Waist Leggings",
+      "vendor": "Clara Mendes",
+      "productType": "Yoga Leggings",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16125355819342",
+      "handle": "quiet-current-studio-bra",
+      "title": "Quiet Current Studio Bra",
+      "vendor": "Clara Mendes",
+      "productType": "Sports Bra",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16125355884878",
+      "handle": "quiet-current-high-waist-biker-shorts",
+      "title": "Quiet Current High-Waist Biker Shorts",
+      "vendor": "Clara Mendes",
+      "productType": "Biker Shorts",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    },
+    {
+      "id": "gid://shopify/Product/16125355950414",
+      "handle": "quiet-current-studio-tank",
+      "title": "Quiet Current Studio Tank",
+      "vendor": "Clara Mendes",
+      "productType": "Studio Top",
+      "tags": [
+        "Activewear",
+        "Made to order",
+        "Quiet Current"
+      ],
+      "storefrontApproved": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "fulfillmentVerified": {
+        "type": "boolean",
+        "value": "false"
+      },
+      "collections": {
+        "nodes": [
+          {
+            "handle": "quiet-current",
+            "title": "Quiet Current",
+            "clothingKind": null
+          }
+        ],
+        "pageInfo": {
+          "hasNextPage": false
+        }
+      },
+      "status": "ACTIVE",
+      "category": {
+        "id": "gid://shopify/TaxonomyCategory/na",
+        "name": "Uncategorized",
+        "fullName": "Uncategorized"
+      },
+      "storefrontVisible": true,
+      "destinationEligible": true
+    }
+  ],
+  "adminCollections": [
+    {
+      "id": "gid://shopify/Collection/687656042830",
+      "handle": "frontpage",
+      "title": "Home page",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687657353550",
+      "handle": "evening-gowns-formal-dresses",
+      "title": "Evening Gowns & Formal Dresses",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687657484622",
+      "handle": "health-wellness",
+      "title": "Health & Wellness",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687703163214",
+      "handle": "daily-carry",
+      "title": "Daily Carry",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687703228750",
+      "handle": "home-rituals",
+      "title": "Home Rituals",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687703294286",
+      "handle": "glow-tools",
+      "title": "Glow Tools",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687703327054",
+      "handle": "wellness-reset",
+      "title": "Wellness Reset",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/687703392590",
+      "handle": "gift-sets",
+      "title": "Gift Sets",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/688224567630",
+      "handle": "lighting",
+      "title": "Lighting",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/688224600398",
+      "handle": "textiles",
+      "title": "Textiles",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/688224633166",
+      "handle": "ceramics",
+      "title": "Ceramics",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/688224665934",
+      "handle": "storage",
+      "title": "Storage",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/688224698702",
+      "handle": "accents",
+      "title": "Accents",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/697170952526",
+      "handle": "art-for-everyday-living",
+      "title": "Art for Everyday Living",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/697171018062",
+      "handle": "art-for-everyday-living-1",
+      "title": "Art for Everyday Living",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": []
+    },
+    {
+      "id": "gid://shopify/Collection/697171050830",
+      "handle": "clara-mendes-art-living",
+      "title": "Art for Everyday Living",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": [
+        {
+          "id": "gid://shopify/Product/16107883462990",
+          "handle": "art-tough-phone-case"
+        },
+        {
+          "id": "gid://shopify/Product/15949165691214",
+          "handle": "art-premium-fleece-blanket-30x40"
+        },
+        {
+          "id": "gid://shopify/Product/15949165592910",
+          "handle": "stretched-canvas-art-16x20"
+        },
+        {
+          "id": "gid://shopify/Product/15949165461838",
+          "handle": "fine-art-postcard"
+        },
+        {
+          "id": "gid://shopify/Product/15949165429070",
+          "handle": "fine-art-greeting-card"
+        },
+        {
+          "id": "gid://shopify/Product/15949165396302",
+          "handle": "classic-framed-art-print-16x20"
+        },
+        {
+          "id": "gid://shopify/Product/15949165363534",
+          "handle": "large-fine-art-print-16x20"
+        }
+      ]
+    },
+    {
+      "id": "gid://shopify/Collection/705300431182",
+      "handle": "quiet-current",
+      "title": "Quiet Current",
+      "clothingKind": null,
+      "ruleSet": null,
+      "products": [
+        {
+          "id": "gid://shopify/Product/16125355786574",
+          "handle": "quiet-current-high-waist-leggings"
+        },
+        {
+          "id": "gid://shopify/Product/16125355819342",
+          "handle": "quiet-current-studio-bra"
+        },
+        {
+          "id": "gid://shopify/Product/16125355884878",
+          "handle": "quiet-current-high-waist-biker-shorts"
+        },
+        {
+          "id": "gid://shopify/Product/16125355950414",
+          "handle": "quiet-current-studio-tank"
+        }
+      ]
+    }
+  ],
+  "taxonomyCandidates": {
+    "leggings": [
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-25-1-8",
+        "name": "Leggings",
+        "fullName": "Apparel & Accessories > Clothing > Baby & Children's Clothing > Baby & Children's Bottoms > Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-17-2-1-3",
+        "name": "Leggings",
+        "fullName": "Apparel & Accessories > Clothing > Sleepwear & Loungewear > Loungewear > Loungewear Bottoms > Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-7-4-8",
+        "name": "Leggings",
+        "fullName": "Apparel & Accessories > Clothing > Maternity Clothing > Maternity Pants > Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-12-8",
+        "name": "Leggings",
+        "fullName": "Apparel & Accessories > Clothing > Pants > Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-1-1-2",
+        "name": "Leggings",
+        "fullName": "Apparel & Accessories > Clothing > Activewear > Activewear Pants > Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-20-29",
+        "name": "Swim Leggings",
+        "fullName": "Apparel & Accessories > Clothing > Swimwear > Swim Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-4-5-5-4-1",
+        "name": "Riding Tights & Leggings",
+        "fullName": "Sporting Goods > Outdoor Recreation > Equestrian > Riding Apparel & Accessories > Riding Pants > Riding Tights & Leggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-25-1-5",
+        "name": "Jeggings",
+        "fullName": "Apparel & Accessories > Clothing > Baby & Children's Clothing > Baby & Children's Bottoms > Jeggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-7-4-5",
+        "name": "Jeggings",
+        "fullName": "Apparel & Accessories > Clothing > Maternity Clothing > Maternity Pants > Jeggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-12-5",
+        "name": "Jeggings",
+        "fullName": "Apparel & Accessories > Clothing > Pants > Jeggings",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-8",
+        "name": "Legging Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Legging Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/hg-11-8-40-4",
+        "name": "Egg Rings",
+        "fullName": "Home & Garden > Kitchen & Dining > Kitchen Tools & Utensils > Kitchen Molds > Egg Rings",
+        "isLeaf": true,
+        "isArchived": false
+      }
+    ],
+    "sports bras": [
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-1-6",
+        "name": "Sports Bras",
+        "fullName": "Apparel & Accessories > Clothing > Activewear > Sports Bras",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/fb-1-13-2",
+        "name": "Sports Drinks",
+        "fullName": "Food, Beverages & Tobacco > Beverages > Sports & Energy Drinks > Sports Drinks",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/hb-1-24",
+        "name": "Supports & Braces",
+        "fullName": "Health & Beauty > Health Care > Supports & Braces",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-1-13-20",
+        "name": "Sports Water Bottles",
+        "fullName": "Sporting Goods > Athletics > General Purpose Athletic Equipment > Sports Water Bottles",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/tg-5-23",
+        "name": "Sports Toys",
+        "fullName": "Toys & Games > Toys > Sports Toys",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-24-7",
+        "name": "Sports Uniforms",
+        "fullName": "Apparel & Accessories > Clothing > Uniforms & Workwear > Sports Uniforms",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-2-3-4",
+        "name": "Sports Trading Cards",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Collectibles > Collectible Trading Cards > Sports Trading Cards",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-4-5-3-4",
+        "name": "Spur Straps",
+        "fullName": "Sporting Goods > Outdoor Recreation > Equestrian > Horse Tack Accessories > Spur Straps",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-1-13-14",
+        "name": "Sports Mouthguards",
+        "fullName": "Sporting Goods > Athletics > General Purpose Athletic Equipment > Sports Mouthguards",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/vp-2-2-9-1-6",
+        "name": "Sports Prototypes",
+        "fullName": "Vehicles & Parts > Vehicles > Motor Vehicles > Motor Sports Vehicles > Race Cars > Sports Prototypes",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-1-13-13",
+        "name": "Sports Megaphones",
+        "fullName": "Sporting Goods > Athletics > General Purpose Athletic Equipment > Sports Megaphones",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-25-4-17-11",
+        "name": "Sport Jackets",
+        "fullName": "Apparel & Accessories > Clothing > Baby & Children's Clothing > Baby & Children's Outerwear > Baby & Children's Coats & Jackets > Sport Jackets",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-10-2-11",
+        "name": "Sport Jackets",
+        "fullName": "Apparel & Accessories > Clothing > Outerwear > Coats & Jackets > Sport Jackets",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/fb-1-11-2",
+        "name": "Sports Drink Mixes",
+        "fullName": "Food, Beverages & Tobacco > Beverages > Powdered Beverage Mixes > Sports Drink Mixes",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-2-10",
+        "name": "Sports Collectibles",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Collectibles > Sports Collectibles",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/hg-11-10-6-8",
+        "name": "Sporks",
+        "fullName": "Home & Garden > Kitchen & Dining > Tableware > Flatware > Sporks",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/tg-5-22",
+        "name": "Sports Toy Accessories",
+        "fullName": "Toys & Games > Toys > Sports Toy Accessories",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-2-10-1",
+        "name": "Sports Fan Accessories",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Collectibles > Sports Collectibles > Sports Fan Accessories",
+        "isLeaf": false,
+        "isArchived": false
+      }
+    ],
+    "bras": [
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-6-3",
+        "name": "Bras",
+        "fullName": "Apparel & Accessories > Clothing > Lingerie > Bras",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ma-2-2-1",
+        "name": "Brass Knuckles",
+        "fullName": "Mature > Weapons & Weapon Accessories > Weapons > Brass Knuckles",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/os-4-1",
+        "name": "Brass Fasteners",
+        "fullName": "Office Supplies > General Office Supplies > Brass Fasteners",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-8-3",
+        "name": "Brass Instruments",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instruments > Brass Instruments",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-4",
+        "name": "Brass Instrument Mutes",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Mutes",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-6-2",
+        "name": "Brass Instrument Stands",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Straps & Stands > Brass Instrument Stands",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1-4",
+        "name": "Brass Instrument Guards",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning > Brass Instrument Guards",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-6-1",
+        "name": "Brass Instrument Harnesses",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Straps & Stands > Brass Instrument Harnesses",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1-1",
+        "name": "Brass Instrument Care Kits",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning > Brass Instrument Care Kits",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1-5",
+        "name": "Brass Instrument Lubricants",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning > Brass Instrument Lubricants",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-3",
+        "name": "Brass Instrument Mouthpieces",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Mouthpieces",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1",
+        "name": "Brass Instrument Accessories",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1-3",
+        "name": "Brass Instrument Cleaning Tools",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning > Brass Instrument Cleaning Tools",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-6",
+        "name": "Brass Instrument Straps & Stands",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Straps & Stands",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-2",
+        "name": "Brass Instrument Cases & Gigbags",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Cases & Gigbags",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1",
+        "name": "Brass Instrument Care & Cleaning",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1-6",
+        "name": "Brass Instrument Polishing Cloths",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning > Brass Instrument Polishing Cloths",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-5",
+        "name": "Brass Instrument Replacement Parts",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Replacement Parts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/ae-2-7-1-1-2",
+        "name": "Brass Instrument Cleaners & Sanitizers",
+        "fullName": "Arts & Entertainment > Hobbies & Creative Arts > Musical Instrument & Orchestra Accessories > Brass Instrument Accessories > Brass Instrument Care & Cleaning > Brass Instrument Cleaners & Sanitizers",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-25-11-2-3-2",
+        "name": "First Bras",
+        "fullName": "Apparel & Accessories > Clothing > Baby & Children's Clothing > Baby & Children's Underwear > Girls' Underwear > Girls' Undershirts > First Bras",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-7-1",
+        "name": "Nursing Bras",
+        "fullName": "Apparel & Accessories > Clothing > Maternity Clothing > Nursing Bras",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/bt-10-8-5",
+        "name": "Hands Free Pumping Bras",
+        "fullName": "Baby & Toddler > Nursing & Feeding > Breast Pump Accessories > Hands Free Pumping Bras",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-6-2-2-2",
+        "name": "Bra Straps",
+        "fullName": "Apparel & Accessories > Clothing > Lingerie > Bra Accessories > Bra Straps & Extenders > Bra Straps",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/vp-1-4-1-11",
+        "name": "Brake Shoes",
+        "fullName": "Vehicles & Parts > Vehicle Parts & Accessories > Motor Vehicle Parts > Motor Vehicle Braking > Brake Shoes",
+        "isLeaf": true,
+        "isArchived": false
+      }
+    ],
+    "shorts": [
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-7-4-13",
+        "name": "Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Maternity Clothing > Maternity Pants > Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-17-2-1-4",
+        "name": "Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Sleepwear & Loungewear > Loungewear > Loungewear Bottoms > Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-1-1-3",
+        "name": "Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Activewear > Activewear Pants > Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14",
+        "name": "Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-4-4-4-16",
+        "name": "Cycling Shorts & Bib Shorts",
+        "fullName": "Sporting Goods > Outdoor Recreation > Cycling > Cycling Apparel & Accessories > Cycling Shorts & Bib Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-1-17-4-4",
+        "name": "Rugby Protective Shorts & Thigh Guards",
+        "fullName": "Sporting Goods > Athletics > Rugby > Rugby Protective Gear > Rugby Protective Shorts & Thigh Guards",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-24-5-3",
+        "name": "School Uniform Pants & Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Uniforms & Workwear > School Uniforms > School Uniform Pants & Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-25-11-3-2-2",
+        "name": "Boxer Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Baby & Children's Clothing > Baby & Children's Underwear > Boys' Underwear > Boys' Underpants > Boxer Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-3",
+        "name": "Chino Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Chino Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-8-3-3",
+        "name": "Boxer Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Men's Undergarments > Men's Underwear > Boxer Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-7",
+        "name": "Jogger Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Jogger Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-4-12-1-3",
+        "name": "Protective Shorts",
+        "fullName": "Sporting Goods > Outdoor Recreation > Inline & Roller Skating > Inline & Roller Skating Protective Gear > Protective Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-1-22-2-6",
+        "name": "Volleyball Protective Shorts",
+        "fullName": "Sporting Goods > Athletics > Volleyball > Volleyball Protective Gear > Volleyball Protective Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-4-16-5-5",
+        "name": "Skateboarding Protective Shorts",
+        "fullName": "Sporting Goods > Outdoor Recreation > Skateboarding > Skateboarding Protective Gear > Skateboarding Protective Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/sg-1-11-1-8",
+        "name": "Field Hockey & Lacrosse Goalie Pants & Shorts",
+        "fullName": "Sporting Goods > Athletics > Field Hockey & Lacrosse > Field Hockey & Lacrosse Protective Gear > Field Hockey & Lacrosse Goalie Pants & Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-20-30",
+        "name": "Swim Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Swimwear > Swim Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-1-4",
+        "name": "Boxing Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Activewear > Boxing Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-2",
+        "name": "Cargo Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Cargo Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/vp-1-6-7-14",
+        "name": "Racing Protective Shorts",
+        "fullName": "Vehicles & Parts > Vehicle Parts & Accessories > Vehicle Safety & Security > Off-Road & Motor Sports Vehicle Protective Gear > Racing Protective Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-5",
+        "name": "Denim Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Denim Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-8",
+        "name": "Legging Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Legging Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-14-6",
+        "name": "Jegging Shorts",
+        "fullName": "Apparel & Accessories > Clothing > Shorts > Jegging Shorts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-25-9-6",
+        "name": "Shirts",
+        "fullName": "Apparel & Accessories > Clothing > Baby & Children's Clothing > Baby & Children's Tops > Shirts",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-13-7",
+        "name": "Shirts",
+        "fullName": "Apparel & Accessories > Clothing > Clothing Tops > Shirts",
+        "isLeaf": false,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-7-8-7",
+        "name": "Shirts",
+        "fullName": "Apparel & Accessories > Clothing > Maternity Clothing > Maternity Tops > Shirts",
+        "isLeaf": true,
+        "isArchived": false
+      }
+    ],
+    "tank tops": [
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-13-9",
+        "name": "Tank Tops",
+        "fullName": "Apparel & Accessories > Clothing > Clothing Tops > Tank Tops",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-1-2-3",
+        "name": "Tank Tops",
+        "fullName": "Apparel & Accessories > Clothing > Activewear > Activewear Tops > Tank Tops",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-7-8-4-3",
+        "name": "Nursing Tank Tops",
+        "fullName": "Apparel & Accessories > Clothing > Maternity Clothing > Maternity Tops > Nursing Shirts > Nursing Tank Tops",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/aa-1-6-10-6",
+        "name": "Shaping Camisoles & Tank Tops",
+        "fullName": "Apparel & Accessories > Clothing > Lingerie > Shapewear > Shaping Camisoles & Tank Tops",
+        "isLeaf": true,
+        "isArchived": false
+      },
+      {
+        "id": "gid://shopify/TaxonomyCategory/fr-23-2",
+        "name": "Table Tops",
+        "fullName": "Furniture > Table Accessories > Table Tops",
+        "isLeaf": true,
+        "isArchived": false
+      }
+    ]
+  },
+  "notes": [
+    "Eligibility uses channel-visible Storefront metadata. Admin values alone do not prove Storefront read access.",
+    "Existing released handles retain their release path; future garments need both boolean approvals readable in Storefront.",
+    "No supplier mapping, billing, shipping, physical quality or publication configuration was changed or reverified by this audit."
+  ]
+}

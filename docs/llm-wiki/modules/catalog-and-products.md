@@ -486,3 +486,17 @@ nine zones. No payment details were entered or order placed, and Cart 0
 persisted after final cleanup and a collection-page reload. The first paid
 Printful order still needs manual confirmation and the owner-approved first
 physical quality review.
+
+## 2026-10-08 - Clothing destination
+
+Garments now have their own destination, `/clothing`, with categories (from
+product type) and capsules (from collections) kept apart. A future garment
+appears only when it is clothing (exact type or the tag `clara-mendes-clothing`)
+and both `custom.storefront_approved` and `custom.fulfillment_verified` are
+Boolean `true`; the four Quiet Current products keep their released-handle path.
+Shop All lists one "Clothing" tab instead of the four garment types. The
+8 October 2026 snapshot shows 61 Admin products, 4 clothing, 17 collections (15
+empty, all hidden by the code) and all four garments "Uncategorized" in
+Shopify. See [Clothing](clothing.md),
+[the operator guide](../../clothing-destination.md) and
+[the audit](../../audits/clothing-catalog-2026-10-08.md).

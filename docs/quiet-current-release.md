@@ -4,6 +4,8 @@ Four Printful all-over-print products (leggings #302, studio bra #001A, biker sh
 
 The storefront shows a product only when both gates are open: its handle is `true` in `PRODUCT_RELEASE_FLAGS` (`app/lib/catalogFilters.ts`), and it is Active and published to the storefront channel in Shopify.
 
+These four products also appear on the Clothing page. To add more garments without a code change, see the [Clothing destination guide](clothing-destination.md).
+
 ## Status (8 October 2026)
 
 | Step | State |

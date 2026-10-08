@@ -33,6 +33,8 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/`                                             | `app/routes/_index.tsx`              | Home page, featured products, collection previews, trust band, structured data. |
 | `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
 | `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all.          |
+| `/clothing`                                     | `app/routes/clothing.tsx`            | Clothing destination: eligible garments; category links and sort above 8 pieces, capsule filter from 2 capsules, "Show more" past 12, colourway looks. See [Clothing](clothing.md). |
+| `/collections/clothing`                         | `app/routes/collections.clothing.tsx`| Permanent (301) redirect to `/clothing`, query string kept.                     |
 | `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
 | `/cart`                                         | `app/routes/cart.tsx`                | Cart page loader/action and cart mutation endpoint for `CartForm`.              |
 | `/search`                                       | `app/routes/search.tsx`              | Regular and predictive search for products, pages, articles, and suggestions.   |

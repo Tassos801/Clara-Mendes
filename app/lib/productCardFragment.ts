@@ -6,6 +6,14 @@ export const PRODUCT_CARD_FRAGMENT = `#graphql
     vendor
     productType
     tags
+    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {
+      type
+      value
+    }
+    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {
+      type
+      value
+    }
     featuredImage {
       id
       url

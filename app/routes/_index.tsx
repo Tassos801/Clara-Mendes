@@ -6,6 +6,12 @@ import {
   type ClaraCardProduct,
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
+import {ClothingFeature} from '~/components/ClothingFeature';
+import {
+  loadClothingProducts,
+  type ClothingProduct,
+} from '~/lib/clothing.server';
+import {clothingFeaturePicks} from '~/lib/clothingPresentation';
 import {FramedArtFeature} from '~/components/FramedArtFeature';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
@@ -112,6 +118,10 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({context, request}: Route.LoaderArgs) {
+  // The homepage never fails because clothing could not load.
+  const clothing = loadClothingProducts(context.storefront)
+    .catch(() => [] as ClothingProduct[])
+    .then(clothingFeaturePicks);
   try {
     const data = await context.storefront.query(HOMEPAGE_QUERY, {
       variables: {
@@ -138,6 +148,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     });
 
     return {
+      clothingPicks: await clothing,
       bookNookShelf: buildBookNookShelf(
         (data.bookNooks?.nodes ?? []) as BookNookStorefrontProduct[],
       ) as BookNookShelfItem[],
@@ -165,6 +176,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     };
   } catch {
     return {
+      clothingPicks: await clothing,
       bookNookShelf: [] as BookNookShelfItem[],
       bookNookDelivery: '',
       caseTeaser: null as CaseTeaser | null,
@@ -243,6 +255,7 @@ export default function Homepage() {
     bookNookDelivery,
     bookNookShelf,
     caseTeaser,
+    clothingPicks,
     collections,
     featuredPrints,
     frameProduct,
@@ -433,6 +446,11 @@ export default function Homepage() {
               <Link to="/collections/all" className="hm-nav-text">
                 Shop
               </Link>
+              {clothingPicks.length ? (
+                <Link to="/clothing" className="hm-nav-text">
+                  Clothing
+                </Link>
+              ) : null}
               {bookNookShelf.length ? (
                 <Link to={BOOK_NOOKS_PATH} className="hm-nav-text">
                   Book Nooks
@@ -510,6 +528,8 @@ export default function Homepage() {
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
 
+      <ClothingFeature picks={clothingPicks} />
+
       <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
 
       {quickShopProducts.length > 0 ? (
@@ -553,10 +573,7 @@ export default function Homepage() {
         </section>
       ) : null}
 
-      <BookNookShelf
-        delivery={bookNookDelivery}
-        items={bookNookShelf}
-      />
+      <BookNookShelf delivery={bookNookDelivery} items={bookNookShelf} />
 
       <section
         className="collection-intro home-commerce-intro"

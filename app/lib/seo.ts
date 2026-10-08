@@ -32,7 +32,9 @@ type ProductSchemaInput = {
     maxVariantPrice?: MoneyAmount;
   };
   productId?: string | null;
+  productHandle?: string | null;
   productType?: string | null;
+  tags?: string[] | null;
   reviewSummary?: {
     count: number;
     averageRating: number | null;
@@ -195,7 +197,9 @@ export function productSchema({
   image,
   priceRange,
   productId,
+  productHandle,
   productType,
+  tags,
   reviewSummary,
   sku,
   title,
@@ -277,6 +281,8 @@ export function productSchema({
               availableForSale,
               price: minPrice,
               productType,
+              productHandle,
+              tags,
               url,
             })
           : undefined,
@@ -285,6 +291,8 @@ export function productSchema({
           productVariantSchema({
             parentTitle: title,
             productType,
+            productHandle,
+            tags,
             url,
             variant,
             vendor,
@@ -321,7 +329,13 @@ function dayRange(window: string) {
  * shipping (docs/shopify-policies-drafts.md). Google reads these for
  * shipping/returns annotations on product results.
  */
-function offerShippingDetails(productType?: string | null) {
+function offerShippingDetails(
+  productType?: string | null,
+  productHandle?: string | null,
+  tags?: string[] | null,
+) {
+  const windows = fulfilmentWindows(productType, productHandle, tags);
+  if (!windows) return undefined;
   return {
     '@type': 'OfferShippingDetails',
     shippingDestination: SHIPPING_COUNTRY_CODES.map((country) => ({
@@ -332,7 +346,7 @@ function offerShippingDetails(productType?: string | null) {
       '@type': 'ShippingDeliveryTime',
       handlingTime: {
         '@type': 'QuantitativeValue',
-        ...dayRange(fulfilmentWindows(productType).dispatch),
+        ...dayRange(windows.dispatch),
         unitCode: 'DAY',
       },
       transitTime: {
@@ -363,12 +377,16 @@ function offerFromPrice({
   includeCommerceDetails = true,
   price,
   productType,
+  productHandle,
+  tags,
   url,
 }: {
   availableForSale?: boolean;
   includeCommerceDetails?: boolean;
   price: MoneyAmount;
   productType?: string | null;
+  productHandle?: string | null;
+  tags?: string[] | null;
   url: string;
 }) {
   return {
@@ -378,7 +396,7 @@ function offerFromPrice({
     availability: schemaAvailability(availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
     shippingDetails: includeCommerceDetails
-      ? offerShippingDetails(productType)
+      ? offerShippingDetails(productType, productHandle, tags)
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
       ? merchantReturnPolicy()
@@ -390,12 +408,16 @@ function offerFromPrice({
 function productVariantSchema({
   parentTitle,
   productType,
+  productHandle,
+  tags,
   url,
   variant,
   vendor,
 }: {
   parentTitle: string;
   productType?: string | null;
+  productHandle?: string | null;
+  tags?: string[] | null;
   url: string;
   variant: NonNullable<ProductSchemaInput['variants']>[number];
   vendor?: string | null;
@@ -428,6 +450,8 @@ function productVariantSchema({
       availableForSale: variant.availableForSale,
       price: variant.price,
       productType,
+      productHandle,
+      tags,
       url: variantUrl.toString(),
     }),
   };

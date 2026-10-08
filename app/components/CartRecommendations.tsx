@@ -12,6 +12,7 @@ import {
 } from '~/lib/productCardPricing';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {curatedDisplayTitle, withCuratedImages} from '~/lib/curatedProducts';
+import {isClothingProduct} from '~/lib/clothing';
 
 const VISIBLE_RECOMMENDATIONS = 3;
 
@@ -20,7 +21,8 @@ type CartRecommendationsResponse = {
 };
 
 /**
- * "Complete the room" cross-sell row shown inside the cart. Loads
+ * "Complete the room" ("Complete the set" for clothing) cross-sell row
+ * shown inside the cart. Loads
  * related products for the items currently in the cart and lets the
  * customer add one without leaving the drawer.
  */
@@ -66,7 +68,11 @@ export function CartRecommendations({
       className={`cart-recs cart-recs--${layout}`}
       aria-label="Recommended additions"
     >
-      <p className="cart-recs-heading">Complete the room</p>
+      <p className="cart-recs-heading">
+        {products.every((product) => isClothingProduct(product))
+          ? 'Complete the set'
+          : 'Complete the room'}
+      </p>
       <ul className="cart-recs-list">
         {products.map((product) => (
           <CartRecommendationRow
