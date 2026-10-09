@@ -1,5 +1,18 @@
 # Clara Mendes Storefront Knowledge Contract
 
+## Active artist-shop workstream (2026-10-09)
+
+The public-domain art / dedicated artist-shop pilot is being built on
+`codex/artist-shops-pilot`, separately from production `main`.
+Before continuing that work on any PC, read
+[`docs/artist-shops/HANDOFF.md`](docs/artist-shops/HANDOFF.md),
+[`status.md`](docs/artist-shops/status.md) and
+[`brief.md`](docs/artist-shops/brief.md).
+Verify the branch and working tree before editing. Codex (Sol) and Claude Code
+both work on this branch, one active writer at a time (named in status.md).
+Push coherent checkpoints and update the handoff before changing machines. Never merge this work into main or publish products merely to share it.
+This branch notice does not redirect unrelated maintenance work.
+
 This repository has a maintained Karpathy-style LLM wiki at:
 
 `docs/llm-wiki/index.md`

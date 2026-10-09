@@ -1200,6 +1200,25 @@ button {
   max-width: 46ch;
 }
 
+/* "by Katsushika Hokusai (1760–1849)" under museum and artist products. */
+.product-artist-line {
+  font-family: var(--serif);
+  font-size: 1.12rem;
+  font-style: italic;
+  margin: -4px 0 0;
+}
+
+.product-artist-line__dates {
+  white-space: nowrap;
+}
+
+.product-artist-line a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
 .product-price {
   font-feature-settings:
     'tnum' 1,
@@ -2296,6 +2315,57 @@ button {
 .search-page-results {
   display: grid;
   gap: clamp(44px, 7vw, 84px);
+}
+
+/* Artist matches lead to the artist's shop, above product results. */
+.search-artists {
+  margin: 0 0 clamp(36px, 5vw, 60px);
+}
+
+.search-artists h2 {
+  font-family: var(--serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  margin: 0 0 14px;
+}
+
+.search-artists ul {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-artists a {
+  align-items: baseline;
+  border: 1px solid rgba(38, 35, 31, 0.14);
+  border-radius: 18px;
+  color: inherit;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  padding: 16px 20px;
+  text-decoration: none;
+}
+
+.search-artists a:hover,
+.search-artists a:focus-visible {
+  border-color: var(--color-ink);
+}
+
+.search-artists strong {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.search-artists span {
+  color: var(--color-muted);
+}
+
+.search-artists span[aria-hidden] {
+  margin-left: auto;
 }
 
 .search-product-grid {

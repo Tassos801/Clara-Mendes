@@ -1,0 +1,322 @@
+/* ── Artists ──
+   The artists index and each artist's shop: who they were, then every
+   product we sell of their work, then where each work comes from. */
+.artists-page {
+  --artists-line: rgba(38, 35, 31, 0.14);
+  padding: calc(var(--header-height) + clamp(48px, 7vw, 104px))
+    clamp(18px, 4vw, 70px) clamp(64px, 9vw, 128px);
+}
+
+.artists-intro {
+  display: grid;
+  gap: 18px;
+  max-width: 760px;
+}
+
+.artists-intro .eyebrow {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.artists-intro h1,
+.artist-hero h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.8rem, 6vw, 5.2rem);
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.artists-intro p:not(.eyebrow) {
+  color: var(--color-muted);
+  font-size: 1.04rem;
+  line-height: 1.7;
+  margin: 0;
+  max-width: 56ch;
+}
+
+/* ── Index ── */
+.artists-letter {
+  border-top: 1px solid var(--artists-line);
+  margin-top: clamp(40px, 6vw, 72px);
+  padding-top: 18px;
+}
+
+.artists-letter h2 {
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-size: 1.4rem;
+  font-style: italic;
+  font-weight: 400;
+  margin: 0 0 22px;
+}
+
+.artists-grid {
+  display: grid;
+  gap: clamp(22px, 3vw, 40px);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.artist-card {
+  color: inherit;
+  display: grid;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.artist-card__media {
+  aspect-ratio: 4 / 5;
+  background: var(--color-soft);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.artist-card__media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+}
+
+.artist-card:hover .artist-card__media img,
+.artist-card:focus-visible .artist-card__media img {
+  transform: scale(1.025);
+}
+
+.artist-card:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 6px;
+}
+
+.artist-card__name {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.artist-card__meta,
+.artist-hero__meta {
+  color: var(--color-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.6;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* ── Artist shop ── */
+.artist-hero {
+  align-items: center;
+  display: grid;
+  gap: clamp(32px, 5vw, 80px);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+
+.artist-hero__copy {
+  display: grid;
+  gap: 20px;
+}
+
+.artist-hero__copy .eyebrow {
+  margin: 0;
+}
+
+.artist-hero__copy .eyebrow a {
+  color: inherit;
+}
+
+.artist-hero__bio {
+  font-size: 1.06rem;
+  line-height: 1.75;
+  margin: 0;
+  max-width: 60ch;
+}
+
+.artist-hero__note {
+  background: var(--color-soft);
+  border-radius: 18px;
+  margin: 4px 0 0;
+  max-width: 60ch;
+  padding: 22px 24px;
+}
+
+.artist-hero__note p {
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  font-style: italic;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.artist-hero__note figcaption {
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  margin-top: 12px;
+  text-transform: uppercase;
+}
+
+.artist-hero__label {
+  border: 1px solid var(--artists-line);
+  border-radius: 999px;
+  color: var(--color-muted);
+  font-size: 0.68rem;
+  font-weight: 700;
+  justify-self: start;
+  letter-spacing: 0.15em;
+  padding: 8px 14px;
+  text-transform: uppercase;
+}
+
+.artist-hero__figure {
+  justify-self: center;
+  margin: 0;
+  max-width: 440px;
+  width: 100%;
+}
+
+.artist-hero__figure img {
+  aspect-ratio: 4 / 5;
+  border-radius: 6px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.artist-hero__figure figcaption {
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-style: italic;
+  margin-top: 12px;
+}
+
+.artist-products,
+.artist-works {
+  margin-top: clamp(56px, 8vw, 112px);
+}
+
+.artist-products .section-heading-row h2,
+.artist-works h2 {
+  font-family: var(--serif);
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.artist-products .section-heading-row p {
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.artist-families {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 28px;
+}
+
+.artist-families a {
+  border: 1px solid var(--artists-line);
+  border-radius: 999px;
+  color: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 10px 16px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.artist-families a[aria-current='page'] {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: #fff;
+}
+
+.artist-works ol {
+  display: grid;
+  gap: 0;
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+}
+
+.artist-works li {
+  border-top: 1px solid var(--artists-line);
+  display: grid;
+  gap: 6px;
+  padding: 20px 0;
+}
+
+.artist-works li:last-child {
+  border-bottom: 1px solid var(--artists-line);
+}
+
+.artist-works h3 {
+  font-family: var(--serif);
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.artist-works p {
+  color: var(--color-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.artist-works .text-link {
+  justify-self: start;
+  margin-top: 6px;
+}
+
+.artist-works__disclaimer {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 18px 0 0;
+  max-width: 60ch;
+}
+
+.artists-back {
+  margin-top: clamp(40px, 6vw, 72px);
+}
+
+@media (max-width: 900px) {
+  .artist-hero {
+    grid-template-columns: 1fr;
+  }
+
+  /* The name leads on phones; the artwork follows the biography. */
+  .artist-hero__figure {
+    justify-self: start;
+    max-width: 360px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artist-card__media img {
+    transition: none;
+  }
+
+  .artist-card:hover .artist-card__media img,
+  .artist-card:focus-visible .artist-card__media img {
+    transform: none;
+  }
+}

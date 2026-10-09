@@ -10,8 +10,17 @@ import {homedir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {
+  ART_REGISTRY,
+  findArtist,
+  findArtwork,
+  lifeDatesLabel,
+  MUSEUMS,
+} from '../../app/lib/artRegistry.ts';
+import {
+  collectionKind,
   PRINT_SIZES,
   printHandle,
+  printOrientation,
   printProductTitle,
   printSku,
 } from '../../app/lib/printCatalog.ts';
@@ -35,6 +44,8 @@ const BASE_TAGS = [
   'Art Print',
   '4:5 Ratio',
 ];
+/** Museum reproductions are never tagged as Clara Mendes originals. */
+export const MUSEUM_TAG = 'Museum Reproduction';
 
 /** Below this native resolution the owner must accept the softness explicitly. */
 export const MIN_NATIVE_PPI = 150;
@@ -71,14 +82,31 @@ function bareSize(size) {
   return sizeLabel(size).replace(/ in$/, '');
 }
 
-export function sizeBullet(collection) {
+export function sizeBullet(collection, print = {}) {
   const sizes = collection.variants.map((variant) => bareSize(variant.size));
-  if (sizes.length === 1) return `Unframed ${sizes[0]} inch portrait print`;
+  const orientation = printOrientation(print);
+  const whole =
+    collectionKind(collection) === 'museum'
+      ? ', the full composition on a white border'
+      : '';
+  if (sizes.length === 1)
+    return `Unframed ${sizes[0]} inch ${orientation} print${whole}`;
   const list =
     sizes.length === 2
       ? sizes.join(' and ')
       : `${sizes.slice(0, -1).join(', ')}, and ${sizes.at(-1)}`;
-  return `Unframed portrait print in ${list} inch sizes`;
+  return `Unframed ${orientation} print in ${list} inch sizes${whole}`;
+}
+
+/** The registry artist and artwork a museum print reproduces. */
+export function museumSource(print, registry = ART_REGISTRY) {
+  const artwork = findArtwork(print.artworkId ?? '', registry);
+  const artist = artwork && findArtist(artwork.artistId, registry);
+  if (!artwork || !artist)
+    throw new Error(
+      `${print.slug}: artwork ${print.artworkId} or its artist is not in data/art-registry.json`,
+    );
+  return {artist, artwork};
 }
 
 const escapeHtml = (text) =>
@@ -165,16 +193,43 @@ export function buildStagedVariantInput(row) {
   };
 }
 
+/**
+ * Museum copy names the artist and the work, credits the institution with
+ * its rights designation, links the museum record and disclaims endorsement
+ * (brief §5, §10). It never calls the work a Clara Mendes original.
+ */
+function museumDescription(collection, print, registry) {
+  const {artist, artwork} = museumSource(print, registry);
+  const {source} = artwork;
+  const dates = lifeDatesLabel(artist);
+  return [
+    `<p>${escapeHtml(print.description)}</p>`,
+    `<p>${escapeHtml(artist.name)}${dates ? ` (${escapeHtml(dates)})` : ''}, <em>${escapeHtml(artwork.title)}</em>, ${escapeHtml(artwork.date)}. ${escapeHtml(artwork.medium)}.</p>`,
+    `<p>${escapeHtml(collection.collectionCopy)}</p>`,
+    `<ul><li>200gsm enhanced matte fine-art paper</li><li>Giclée printed with archival pigment inks</li><li>${sizeBullet(collection, print)}</li></ul>`,
+    `<p>Reproduced from a public-domain image: ${escapeHtml(source.institution)}, ${escapeHtml(source.creditLine)}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
+    '<p>Printed to order. Frame not included. Screen and print colours can vary slightly.</p>',
+  ].join('\n');
+}
+
 /** The ProductSetInput for a new Draft, minus the uploaded image file. */
-export function buildProductSetInput(collection, print) {
+export function buildProductSetInput(
+  collection,
+  print,
+  {registry = ART_REGISTRY} = {},
+) {
   const finishes = [...new Set(collection.variants.map((v) => v.finish))];
+  const museum = collectionKind(collection) === 'museum';
+  const artist = museum ? museumSource(print, registry).artist : null;
   return {
-    descriptionHtml: [
-      `<p>${escapeHtml(print.description)}</p>`,
-      `<p>${escapeHtml(collection.collectionCopy)}</p>`,
-      `<ul><li>200gsm enhanced matte fine-art paper</li><li>Giclée printed with archival pigment inks</li><li>${sizeBullet(collection)}</li></ul>`,
-      '<p>Printed to order. Frame not included. Screen and print colours can vary slightly.</p>',
-    ].join('\n'),
+    descriptionHtml: museum
+      ? museumDescription(collection, print, registry)
+      : [
+          `<p>${escapeHtml(print.description)}</p>`,
+          `<p>${escapeHtml(collection.collectionCopy)}</p>`,
+          `<ul><li>200gsm enhanced matte fine-art paper</li><li>Giclée printed with archival pigment inks</li><li>${sizeBullet(collection, print)}</li></ul>`,
+          '<p>Printed to order. Frame not included. Screen and print colours can vary slightly.</p>',
+        ].join('\n'),
     handle: printHandle(print),
     productOptions: [
       {
@@ -187,15 +242,25 @@ export function buildProductSetInput(collection, print) {
     productType: PRODUCT_TYPE,
     seo: {
       description: `${print.description} ${collection.seoSuffix}`,
-      title: `${printProductTitle(print)} | ${VENDOR}`,
+      title: artist
+        ? `${printProductTitle(print)} by ${artist.name} | ${VENDOR}`
+        : `${printProductTitle(print)} | ${VENDOR}`,
     },
     status: 'DRAFT',
-    tags: [
-      ...BASE_TAGS.slice(0, 3),
-      collection.title,
-      BASE_TAGS[3],
-      ...PENDING_TAGS,
-    ],
+    tags: artist
+      ? [
+          MUSEUM_TAG,
+          ...BASE_TAGS.slice(1, 3),
+          collection.title,
+          artist.name,
+          ...PENDING_TAGS,
+        ]
+      : [
+          ...BASE_TAGS.slice(0, 3),
+          collection.title,
+          BASE_TAGS[3],
+          ...PENDING_TAGS,
+        ],
     title: printProductTitle(print),
     variants: collection.variants.map((variant) => ({
       // Tracked at zero with DENY keeps a Draft unbuyable even if it is
@@ -214,8 +279,13 @@ export function buildProductSetInput(collection, print) {
   };
 }
 
-export function buildReleasedProductUpdateInput(collection, print, id) {
-  const staged = buildProductSetInput(collection, print);
+export function buildReleasedProductUpdateInput(
+  collection,
+  print,
+  id,
+  options,
+) {
+  const staged = buildProductSetInput(collection, print, options);
   return {
     descriptionHtml: staged.descriptionHtml,
     id,

@@ -26,6 +26,7 @@ import {createHash} from 'node:crypto';
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import path from 'node:path';
 import {
+  collectionKind,
   PRINT_SIZES,
   printHandle,
   printImagePath,
@@ -33,6 +34,7 @@ import {
   printSku,
   validatePrintCatalog,
 } from '../app/lib/printCatalog.ts';
+import {validateArtistLinks} from '../app/lib/artistShops.ts';
 import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 import {
@@ -44,6 +46,7 @@ import {
   findCollection,
   handoffRows,
   MIN_NATIVE_PPI,
+  museumSource,
   parseMappings,
   PENDING_TAGS,
   printFileName,
@@ -62,8 +65,11 @@ import {
   resolvePrintRoomMediaPlan,
   roomMediaPlan,
 } from './lib/print-room-scenes.mjs';
+import {borderedLayout, PILOT_TARGET_PPI} from './lib/museum-layout.mjs';
 
 const DEFAULT_ORIGIN = 'https://shopclaramendes.com';
+/** --color-soft in app/styles/app.css, behind museum prints' paper. */
+const WEB_PAPER_BACKGROUND = '#f4f0e8';
 
 const [step = 'status', ...rest] = process.argv.slice(2);
 const flags = new Set(
@@ -104,10 +110,13 @@ if (!steps[step]) {
 }
 
 const catalog = JSON.parse(readFileSync(CATALOG_PATH, 'utf8'));
-const problems = validatePrintCatalog(catalog);
+const problems = [
+  ...validatePrintCatalog(catalog),
+  ...validateArtistLinks({catalog}),
+];
 if (problems.length) {
   console.error(
-    `data/print-catalog.json is invalid:\n- ${problems.join('\n- ')}`,
+    `data/print-catalog.json (or its links into data/art-registry.json) is invalid:\n- ${problems.join('\n- ')}`,
   );
   process.exit(1);
 }
@@ -157,20 +166,25 @@ function status() {
 
 function prepare() {
   const {collection, prints, launchDir} = context();
+  const museum = collectionKind(collection) === 'museum';
   const plan = {
     collection: collection.slug,
     sourceDir: path.join(launchDir, 'source'),
     printDir: path.join(launchDir, 'print'),
     webDir: path.dirname(webImage(collection, prints[0])),
     reportPath: path.join(launchDir, 'asset-validation.json'),
-    prints: prints.map((print) => ({
-      slug: print.slug,
-      sizes: collection.variants.map((variant) => ({
-        key: variant.size,
-        fileName: printFileName(print, variant.size),
-        ...PRINT_SIZES[variant.size],
-      })),
-    })),
+    prints: prints.map((print) =>
+      museum
+        ? museumPreparePlan(collection, print)
+        : {
+            slug: print.slug,
+            sizes: collection.variants.map((variant) => ({
+              key: variant.size,
+              fileName: printFileName(print, variant.size),
+              ...PRINT_SIZES[variant.size],
+            })),
+          },
+    ),
   };
   mkdirSync(plan.sourceDir, {recursive: true});
   const planPath = path.join(launchDir, 'prepare-plan.json');
@@ -196,7 +210,11 @@ function prepare() {
       sourceSha256: file.sourceSha256,
     };
     for (const size of file.sizes) {
-      if (size.nativePpi < MIN_NATIVE_PPI)
+      if (museum && size.nativePpi < PILOT_TARGET_PPI)
+        soft.push(
+          `${file.slug} ${size.size}: ${size.nativePpi} PPI native (museum target ${PILOT_TARGET_PPI})`,
+        );
+      else if (size.nativePpi < MIN_NATIVE_PPI)
         soft.push(`${file.slug} ${size.size}: ${size.nativePpi} PPI native`);
       if (size.croppedFraction > 0.01)
         soft.push(
@@ -751,6 +769,26 @@ async function release() {
       `${print.slug}: every size needs a verified Prodigi mapping before release`,
     );
   }
+  // Prove museum prints would pass the catalog validator once released,
+  // before anything in Shopify changes.
+  const releasedCollection = {
+    ...collection,
+    prints: collection.prints.map((print) =>
+      prints.includes(print) ? {...print, released: true} : print,
+    ),
+  };
+  const blocked = validateArtistLinks({
+    catalog: {
+      collections: catalog.collections.map((entry) =>
+        entry === collection ? releasedCollection : entry,
+      ),
+    },
+  });
+  assert.equal(
+    blocked.length,
+    0,
+    `owner reviews are missing:\n- ${blocked.join('\n- ')}`,
+  );
   const admin = await adminClient();
   const read = async () =>
     (
@@ -1104,6 +1142,51 @@ function context({needsLaunchDir = true} = {}) {
   const launchDir = path.join(local.launchRoot, collection.slug);
   if (needsLaunchDir) mkdirSync(launchDir, {recursive: true});
   return {collection, launchDir, prints: selectPrints(collection, only)};
+}
+
+/**
+ * A museum print is prepared from its registry original, checked against the
+ * recorded checksum and size, and laid out whole on white paper per size.
+ */
+function museumPreparePlan(collection, print) {
+  const {artwork} = museumSource(print);
+  if (!artwork.original)
+    throw new Error(
+      `${print.slug}: run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId} first`,
+    );
+  const source = path.join(
+    local.launchRoot,
+    'museum',
+    'originals',
+    artwork.original.fileName,
+  );
+  if (!existsSync(source))
+    throw new Error(
+      `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId}`,
+    );
+  const layouts = collection.variants.map((variant) =>
+    borderedLayout(artwork.original, variant.size),
+  );
+  return {
+    slug: print.slug,
+    layout: 'bordered',
+    source,
+    expectedSha256: artwork.original.sha256,
+    nativeSize: [artwork.original.width, artwork.original.height],
+    web: {
+      background: WEB_PAPER_BACKGROUND,
+      image: layouts[0].image,
+      paper: layouts[0].paper,
+    },
+    sizes: layouts.map((layout) => ({
+      key: layout.size,
+      fileName: printFileName(print, layout.size),
+      height: layout.paper.height,
+      image: layout.image,
+      paper: layout.paper,
+      width: layout.paper.width,
+    })),
+  };
 }
 
 function describeVariants(collection) {

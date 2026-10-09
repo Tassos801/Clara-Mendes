@@ -13,12 +13,15 @@ import {
 } from '~/lib/catalogFilters';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
+import {publicArtists} from '~/lib/artistShops';
 import {cartItemCountLabel} from '~/lib/cartPresentation';
 
 const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
+const HAS_ARTISTS = publicArtists().length > 0;
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
+  ...(HAS_ARTISTS ? [{to: '/artists', label: 'Artists'}] : []),
   {to: '/clothing', label: 'Clothing'},
   ...(HAS_BOOK_NOOKS ? [{to: BOOK_NOOKS_PATH, label: 'Book Nooks'}] : []),
   // Each personalised product gets its own entry once its flag flips.
@@ -222,6 +225,7 @@ function ClaraFooter() {
       </nav>
       <nav aria-label="Footer navigation">
         <Link to="/collections/all">Shop</Link>
+        {HAS_ARTISTS ? <Link to="/artists">Artists</Link> : null}
         <Link to="/clothing">Clothing</Link>
         {HAS_BOOK_NOOKS ? <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link> : null}
         <Link to="/pastel-forms">Pastel Forms</Link>

@@ -7,6 +7,9 @@ Source: local Shopify Hydrogen storefront repository at
 
 ## Start Here
 
+- [Artist-shop pilot handoff](../artist-shops/HANDOFF.md) - Active work on
+  `codex/artist-shops-pilot`; cross-PC setup, agreed scope and current status.
+
 - [Overview](overview.md) - Current synthesized picture of the Clara Mendes store.
 - [Architecture](architecture.md) - Runtime, routing, data flow, and integration map.
 - [Open Questions](open-questions.md) - Pending setup, launch, and operational gaps.
