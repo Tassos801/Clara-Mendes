@@ -303,8 +303,8 @@
     grid-template-columns: 1fr;
   }
 
+  /* The name leads on phones; the artwork follows the biography. */
   .artist-hero__figure {
-    grid-row: 1;
     justify-self: start;
     max-width: 360px;
   }

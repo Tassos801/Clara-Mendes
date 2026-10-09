@@ -7,11 +7,18 @@ import {catalogCounts} from '../app/lib/catalogSummary.ts';
 import {computeSellableHandles} from '../app/lib/catalogFilters.ts';
 import * as prints from '../app/lib/printCatalog.ts';
 import {CUSTOM_SITEMAP_PATHS} from '../app/lib/sitemap.ts';
+import sharp from 'sharp';
+import path from 'node:path';
 import {
   buildProductSetInput,
   MUSEUM_TAG,
   PENDING_TAGS,
+  REPO_ROOT,
 } from './lib/product-pipeline.mjs';
+import {
+  roomArtworkRelativePath,
+  roomMediaPlan,
+} from './lib/print-room-scenes.mjs';
 
 const WAVE_HANDLE = 'the-great-wave-off-kanagawa-art-print';
 const REVIEWED = {at: '2026-10-09T12:00:00.000Z', by: 'Owner', status: 'cleared'};
@@ -189,6 +196,30 @@ test('the print catalog enforces museum fields and paper-shaped room boxes', () 
   assert.match(problems, /floating-world\/the-great-wave-off-kanagawa: museum prints need an artworkId/);
   assert.match(problems, /scifi-cinema\/orbital-silence: only museum collections reproduce registry artworks/);
   assert.match(problems, /living-room: placement must be 5:4 landscape/);
+});
+
+test('museum rooms frame the bordered paper sheet in its own orientation', async () => {
+  const collection = floatingWorld(prints.PRINT_CATALOG);
+  const [wave] = collection.prints;
+  assert.equal(roomMediaPlan(collection, wave).length, 4);
+  const sheet = roomArtworkRelativePath(collection, wave);
+  assert.equal(
+    sheet,
+    'images/product-art/floating-world/the-great-wave-off-kanagawa.sheet.webp',
+  );
+  const {height, width} = await sharp(path.join(REPO_ROOT, 'public', sheet)).metadata();
+  assert.equal(width / height, 1.25);
+  for (const room of wave.rooms)
+    assert.ok(Math.abs(room.placement.width / room.placement.height - 1.25) < 0.016);
+
+  const studio = prints.PRINT_CATALOG.collections[0];
+  assert.equal(
+    roomArtworkRelativePath(studio, studio.prints[0]),
+    `images/product-art/${studio.slug}/${studio.prints[0].slug}.webp`,
+  );
+  const portraitRooms = structuredClone(wave);
+  portraitRooms.orientation = 'portrait';
+  assert.throws(() => roomMediaPlan(collection, portraitRooms), /placement must be 4:5 portrait/);
 });
 
 test('museum collections are never described or counted as Clara Mendes originals', () => {

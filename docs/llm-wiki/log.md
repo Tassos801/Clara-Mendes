@@ -1514,3 +1514,16 @@ the ICO with `sizes="32x32"` so Chrome keeps the SVG.
 
 The owner requested GitHub handoff and Sol-led implementation on a separate branch. See [handoff](../artist-shops/HANDOFF.md) and [status](../artist-shops/status.md). Work starts from f4ac0f2 on codex/artist-shops-pilot. This records development only; no Shopify mutation or production release.
 
+
+## 2026-10-09 - Artist shops and museum sourcing (branch only)
+
+On `codex/artist-shops-pilot`, not main. `data/art-registry.json` holds artists
+and museum artworks with stable ids, rights evidence and owner reviews;
+`npm run museum` sources from The Met (v1.1 search). Print-catalog collections
+gain `kind: "museum"` with per-print `artworkId`/`orientation`; museum prints
+are laid out whole on white paper and get museum copy and tags. `/artists`,
+`/artists/<slug>`, the product-page credit, search matches and sitemap entries
+derive from that data and stay hidden until an approved artist has a released
+print. Floating World (The Great Wave, 8 × 10) is unreleased. See
+[status](../artist-shops/status.md) and the
+[runbook](../add-products-runbook.md#museum-prints-and-artist-shops).

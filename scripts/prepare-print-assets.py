@@ -21,6 +21,8 @@ WEB_SIZE = (1120, 1400)
 SOURCE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".tif", ".tiff", ".webp")
 PAPER_WHITE = (255, 255, 255)
 WEB_PAPER_MARGIN = 0.1
+# The bare bordered sheet that room mockups composite (museum prints only).
+SHEET_LONG_SIDE = 1600
 
 
 def sha256(path: Path) -> str:
@@ -131,6 +133,14 @@ def main() -> None:
             web_image = (web_paper(rgb, item["web"]) if is_bordered
                          else ImageOps.fit(rgb, WEB_SIZE, method=Image.Resampling.LANCZOS))
             web_image.save(web, "WEBP", quality=90, method=6, icc_profile=icc)
+            sheet_path = None
+            if is_bordered:
+                sheet = bordered(rgb, item["web"]["paper"], item["web"]["image"])
+                scale = SHEET_LONG_SIDE / max(sheet.size)
+                sheet_path = web_dir / (item["slug"] + ".sheet.webp")
+                sheet.resize((round(sheet.width * scale), round(sheet.height * scale)),
+                             Image.Resampling.LANCZOS).save(
+                    sheet_path, "WEBP", quality=90, method=6, icc_profile=icc)
 
             sizes = []
             for size in item["sizes"]:
@@ -171,6 +181,7 @@ def main() -> None:
             "sourceSha256": digest,
             "iccProfile": profile_name(icc),
             "web": str(web).replace("\\", "/"),
+            **({"sheet": str(sheet_path).replace("\\", "/")} if sheet_path else {}),
             "sizes": sizes,
             "physicalQualityVerified": False,
         })

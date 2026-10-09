@@ -1026,9 +1026,14 @@ function ProductPage() {
                 ) : (
                   artworkCredit.artist.name
                 )}
-                {artworkCredit.artist.dates
-                  ? ` (${artworkCredit.artist.dates})`
-                  : ''}
+                {artworkCredit.artist.dates ? (
+                  <>
+                    {' '}
+                    <span className="product-artist-line__dates">
+                      ({artworkCredit.artist.dates})
+                    </span>
+                  </>
+                ) : null}
               </p>
             ) : null}
             <p className="product-lede">{productLede}</p>

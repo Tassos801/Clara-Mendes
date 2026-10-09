@@ -4,7 +4,9 @@
 **Branch:** `codex/artist-shops-pilot`  
 **State:** In progress; no production release  
 **Current writer:** Claude Code (owner's primary PC), from 2026-10-09 ~16:00.
-The Codex/Sol session hit its usage limit after the docs commit; none of its
+At each checkpoint the branch is pushed and this file is current. The next
+writer may take over after checking the branch matches GitHub. The
+Codex/Sol session hit its usage limit after the docs commit; none of its
 in-progress build work was saved.
 
 ## Completed
@@ -57,22 +59,74 @@ in-progress build work was saved.
   (403) to scripts, so AIC is not used for images and the challenge must not
   be bypassed.
 
-## Current work
+- **Milestone 2: artist shops and the museum print pipeline (code only).**
+  - Decision: artist and artwork identity lives in repo data
+    (`data/art-registry.json`), not Shopify metaobjects. Why: the print
+    release gate is already repo data plus a deploy, Phase 0/1 forbids Admin
+    writes, and provenance evidence needs version control. A metaobject mirror
+    can come later for families released from Admin.
+  - `app/lib/artistShops.ts`: membership comes from data (museum print →
+    artwork → artist; a studio collection's `artistId`). An artist is public
+    only when owner-approved with a released product, and listings still pass
+    `filterDemoProducts` plus Shopify Active/publication. `validateArtistLinks`
+    blocks a released museum print without cleared rights and master reviews,
+    a wrong orientation, or a second listing of the same artwork.
+  - Routes: `/artists` and `/artists/<slug>` (collection-tag query, then the
+    artist's exact handles; 404 when nothing is live). They add a "by …" line
+    and "The artwork" credit on the product page, an Artists block in search,
+    sitemap entries and an Artists nav/footer link. All of it stays dormant
+    until an artist is public, so main would render exactly as today.
+  - Print catalog: `kind` (studio|museum), studio `artistId`, print
+    `artworkId` and `orientation`; landscape room boxes are 5:4.
+  - Pipeline: museum Drafts get the museum copy, a credit and museum link, a
+    no-endorsement line, the tags `Museum Reproduction` + artist name, and
+    never `Clara Mendes Original` or `4:5 Ratio`. `prepare` places the whole
+    artwork on white paper in its orientation and writes the card image plus
+    `<print>.sheet.webp`, which room mockups composite. `release` refuses
+    museum prints without both reviews. Museum collections are excluded from
+    the "N original works" counts and capsule copy.
+  - **Floating World** (working title, `kind: museum`, unreleased): The Great
+    Wave at 8×10 only, €26.99, `ART-FAP-EMA-8X10`. Prepared print file is
+    3000×2400 at 300 dpi; the original is untagged (no ICC profile).
+  - Runbook: "Museum prints and artist shops" in `docs/add-products-runbook.md`.
+  - Tests: `scripts/artistShops.node-test.mjs` (12). The full suite is
+    404/404, and typecheck and lint are clean.
+  - Local check on 2026-10-09 against live Storefront data, using temporary
+    uncommitted data edits that were then restored from git. Studio and Hokusai
+    were approved, and one live Light & Silence print was mapped to the Great
+    Wave record. Results:
+    - `/artists`, both artist shops (desktop and 390 px), the product-page
+      byline and credit, and search for "hokusai" all rendered.
+    - `/artists/hiroshige` returned 404.
+    - The Great Wave, released in the data but absent from Shopify, appeared
+      nowhere.
+    - Screenshots were taken with headless Chrome over CDP; the hidden pane is
+      265 px wide.
 
-- Link print-catalog entries to artworks/artists (museum collections) with
-  bordered full-composition print files and museum-appropriate copy and tags.
-- Artist browsing (`/artists`, `/artists/<slug>`) derived from the same
-  print-catalog records and release gate.
+## Next steps
 
-## Next checkpoint
-
-Record exact implementation, tests, open issues and the next task here before
-ending this session.
+1. **Owner:** choose the ~10 pilot works. `npm run museum -- search
+   Thirty-six Views of Mount Fuji --title` (135 Met objects) and
+   `npm run museum -- search One Hundred Famous Views of Edo --title` are the
+   starting pool; fetch each chosen candidate, then `qualify`.
+2. **Owner:** confirm the collection name (working title "Floating World"),
+   sizes (8×10 only unless a work qualifies larger or an exception is
+   accepted) and the €26.99 price.
+3. **Owner:** review and approve Hokusai/Hiroshige bios and curator's notes,
+   then record the rights and master reviews.
+4. Room backgrounds: four blank interiors per print under
+   `scripts/assets/print-room-mockups/floating-world/` (5:4 placements), then
+   `npm run product -- rooms floating-world`.
+5. Only with owner approval: `stage --apply` (Shopify Drafts), Prodigi mapping
+   (check landscape 3000×2400 files and colour on untagged originals), `media`,
+   `release`, then a PR to main after review.
 
 ## Not done
 
-- No museum collection has been selected or cleared for sale.
-- No artist metaobjects or new products have been created in Shopify.
-- Artist browsing, production files, galleries, supplier mapping and pilot
-  launch remain to be implemented/verified.
+- No museum collection has been selected or cleared for sale; all artists
+  are unapproved and all reviews are pending.
+- Nothing has been created or changed in Shopify or Prodigi.
+- No room backgrounds or room mockups exist for Floating World.
+- Physical print quality, delivered cost and landscape-file handling in
+  Prodigi are unverified.
 - No production deploy, supplier order, payment or public marketing action.

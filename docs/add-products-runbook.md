@@ -105,6 +105,43 @@ Known sizes and their verified Prodigi SKUs (current prices for the originals):
 | `16x20` | 4800×6000 | `ART-FAP-EMA-16X20` | €39.99 |
 | `20x24` | 6000×7200 | `GLOBAL-FAP-20X24` (metric 50×60 cm; 5:6, so a 4:5 source is cropped ~4%) | €49.99 |
 
+## Museum prints and artist shops
+
+Public-domain museum works use the same catalog and steps, plus a sourcing
+step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md).
+
+1. **Source:** `npm run museum -- search <artist> [--title|--anywhere]` lists
+   Met candidates (same-title rows may be different impressions; compare them).
+   `npm run museum -- fetch <object id> --artist <artist id> [--short-title "…"]`
+   records the work in [data/art-registry.json](../data/art-registry.json),
+   commits the raw Met record under `data/museum-evidence/` and caches the
+   original under `<launch folder>/museum/originals/` (re-fetchable on any PC,
+   checked by sha256). `qualify` prints each size's bordered layout: ≥300 ppi
+   qualifies; 150–299 needs an owner exception; <150 is omitted.
+2. **Owner reviews (the owner runs these or explicitly asks for them):**
+   `npm run museum -- review <artwork id> --rights cleared --by "<name>"`,
+   the same with `--master` after the prepared files are checked, and
+   `npm run museum -- approve-artist <artist id> --by "<name>"` once the
+   biography, dates and curator's note are right.
+3. **Catalog:** a collection with `"kind": "museum"`; each print names its
+   `artworkId` and `orientation` (the artwork's), and its four room
+   placements are 5:4 for landscape paper. Choose collection sizes every work
+   qualifies for. Museum collections never set `artistId`; studio collections
+   may (their artist's shop then lists them).
+4. **Then the usual steps.** `prepare` lays the whole artwork on white paper in
+   its own orientation (no crop, no stretch) and writes the card image (the
+   sheet on the soft background) plus `<print>.sheet.webp`, which `rooms`
+   composites. `stage` writes museum copy (artist, full museum title, date,
+   medium, credit, museum link, no-endorsement line) and tags
+   `Museum Reproduction` + the artist's name, never `Clara Mendes Original`.
+   `release` refuses a museum print until both owner reviews are cleared.
+
+The artist shop (`/artists/<slug>`), the artists index, the Artists nav link,
+search matches and sitemap entries appear automatically once an approved
+artist has a released print that is Active and published. Nothing else is
+edited by hand. Prodigi must still be checked for landscape files (the
+museum sheet for 8 × 10 is 3000 × 2400) when mapping.
+
 ## Gates that need a person
 
 - **Owner:** accepts any print `prepare` flags (below 150 PPI native, or cropped); approves prices; merges the release PR.

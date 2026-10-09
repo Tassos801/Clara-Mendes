@@ -500,3 +500,18 @@ empty, all hidden by the code) and all four garments "Uncategorized" in
 Shopify. See [Clothing](clothing.md),
 [the operator guide](../../clothing-destination.md) and
 [the audit](../../audits/clothing-catalog-2026-10-08.md).
+
+## 2026-10-09 - Artist shops and museum prints (branch `codex/artist-shops-pilot`)
+
+Not on main. Artists and museum artworks live in `data/art-registry.json`
+(`app/lib/artRegistry.ts`: stable ids, owner approval, rights and master
+reviews, a life + 70 rights screen). `app/lib/artistShops.ts` derives each
+artist's products from the print catalog: a museum print's `artworkId` → its
+artist, or a studio collection's `artistId`. An artist is public only when
+approved with a released print, and every listing still passes
+`filterDemoProducts` and Shopify Active/publication. Museum collections
+(`kind: "museum"`) are excluded from the "original works" counts and capsule
+copy. Their Drafts never carry `Clara Mendes Original`, and `release` refuses
+them without both reviews. Routes: `app/routes/artists._index.tsx`,
+`app/routes/artists.$slug.tsx`. See the
+[status](../../artist-shops/status.md).

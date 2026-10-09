@@ -9,7 +9,10 @@ import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
 
 import {PRINT_CATALOG} from '../app/lib/printCatalog.ts';
-import {roomMediaPlan} from './lib/print-room-scenes.mjs';
+import {
+  roomArtworkRelativePath,
+  roomMediaPlan,
+} from './lib/print-room-scenes.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
@@ -59,14 +62,8 @@ function sha256(buffer) {
 
 async function buildRoomMockup(print, scene) {
   const backgroundPath = path.join(sourceRoot, scene.backgroundFile);
-  const artPath = path.join(
-    repoRoot,
-    'public',
-    'images',
-    'product-art',
-    collectionSlug,
-    `${print.slug}.webp`,
-  );
+  const artRelativePath = roomArtworkRelativePath(collection, print);
+  const artPath = path.join(repoRoot, 'public', artRelativePath);
   const outputPath = path.join(outputRoot, `${print.slug}-${scene.key}.jpg`);
   const [backgroundSource, artSource] = await Promise.all([
     readFile(backgroundPath),
@@ -107,12 +104,7 @@ async function buildRoomMockup(print, scene) {
       sha256: sha256(backgroundSource),
     },
     artwork: {
-      file: path.posix.join(
-        'images',
-        'product-art',
-        collectionSlug,
-        `${print.slug}.webp`,
-      ),
+      file: artRelativePath,
       sha256: sha256(artSource),
     },
     output: {
