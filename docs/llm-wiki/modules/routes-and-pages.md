@@ -44,6 +44,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/pages/:handle`                                | `app/routes/pages.$handle.tsx`       | Shopify pages.                                                                  |
 | `/blogs` and blog/article routes                | `app/routes/blogs.*.tsx`             | Journal. `/blogs/karina-of-time` ("Karina of Time"; καρίνα = keel) renders the designed index: revolving cover ring (flat scroll row on mobile/reduced-motion/no-JS), issue ledger, mailto issue-request foot. Empty state shows capsule plates; noindex until articles exist. Other handles get a plain fallback. |
 | `/robots.txt`, `/sitemap.xml`, sitemap children | bracketed route files                | SEO crawler routes.                                                             |
+| `/manifest.webmanifest`              | `app/routes/[manifest.webmanifest].tsx` | "Add to Home Screen" manifest (`app/lib/webManifest.ts`); icons in `public/icons/` from `scripts/build-app-icons.mjs`. |
 
 ## Home Page
 
