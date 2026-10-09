@@ -1,13 +1,68 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-09  
+**Updated:** 2026-10-09, end of session  
 **Branch:** `codex/artist-shops-pilot`  
-**State:** In progress; no production release  
-**Current writer:** Claude Code (owner's primary PC), from 2026-10-09 ~16:00.
-At each checkpoint the branch is pushed and this file is current. The next
-writer may take over after checking the branch matches GitHub. The
-Codex/Sol session hit its usage limit after the docs commit; none of its
-in-progress build work was saved.
+**State:** Paused by the owner; no production release  
+**Current writer:** none. The writer slot is free: Codex (Sol) or Claude Code
+may take over on any PC after the checks in "Resume here".
+
+## Where we stopped (2026-10-09)
+
+The last Claude Code session ended at commit `058c996` (the owner's ten
+Floating World prints) plus this status update. Everything is pushed and the
+working tree was clean.
+
+**Done:**
+- The artist/artwork registry and Met sourcing.
+- The artist shop routes, all dormant.
+- The museum print pipeline.
+- The owner's ten works: fetched, catalogued in Floating World (unreleased)
+  and prepared at 8×10.
+
+Nothing has been created or changed in Shopify or Prodigi.
+
+**Waiting on the owner (do not decide these for them):**
+1. The collection name ("Floating World" is a working title), 8×10 only, and
+   €26.99.
+2. Minowa, Kanasugi at Mikawashima (met-36542) is 213 ppi at 8×10: accept the
+   exception or swap the work.
+3. Approval of the Hokusai and Hiroshige biographies and curator's notes
+   (`npm run museum -- approve-artist`).
+4. Rights and master reviews for all ten (`npm run museum -- review`),
+   including whether to trim the museum labels on the margins of 55458,
+   55993, 37093 and 56689.
+5. Room backgrounds, then `stage --apply`, Prodigi mapping, `media` and
+   `release`, and any merge or PR to main.
+
+**Next task for an agent, once the owner answers:** apply the decisions in
+data. Then generate the room backgrounds with the owner and run `npm run
+product -- rooms floating-world`. Stop before any Shopify write unless the
+owner explicitly approves `stage --apply`.
+
+## Resume here (any PC)
+
+1. `git fetch origin && git switch codex/artist-shops-pilot && git pull
+   --ff-only`. Confirm HEAD matches `origin/codex/artist-shops-pilot`, then
+   name yourself as the current writer above.
+2. `npm ci`. Copy the gitignored `.env` from the machine's main checkout for
+   the dev server (variable names are in README; never commit it).
+3. The originals live only in the primary PC's launch folder
+   (`<launchDir>/museum/originals/`). On any other PC, re-download them before
+   `prepare`, for each of the ten: `npm run museum -- fetch <object id>
+   --artist <artist id>`, with `--short-title "The Great Wave off Kanagawa"`
+   for 39799 and `--short-title "Nissaka, Sayo no Nakayama"` for 55993.
+   Check the sha256 still matches. A refetch keeps the reviews unless the
+   Met changed the record or image.
+4. Run `npm test` (405 pass), `npm run typecheck` and `npm run lint` before
+   changing anything. Run `npm run museum -- status` and `npm run product --
+   status floating-world` to see the state.
+5. Don't run a blanket `git checkout` on `data/*.json` to drop
+   line-ending noise from `prepare`: it reverts real uncommitted catalog
+   edits. Check `git diff --ignore-cr-at-eol` first.
+
+History: the Codex/Sol session hit its usage limit after the docs commit; none
+of its in-progress build work was saved. Claude Code was the writer from
+2026-10-09 ~16:00 to the end of that day.
 
 ## Completed
 
@@ -85,12 +140,14 @@ in-progress build work was saved.
     `<print>.sheet.webp`, which room mockups composite. `release` refuses
     museum prints without both reviews. Museum collections are excluded from
     the "N original works" counts and capsule copy.
-  - **Floating World** (working title, `kind: museum`, unreleased): The Great
-    Wave at 8×10 only, €26.99, `ART-FAP-EMA-8X10`. Prepared print file is
-    3000×2400 at 300 dpi; the original is untagged (no ICC profile).
+  - **Floating World** (working title, `kind: museum`, unreleased): 8×10
+    only, €26.99, `ART-FAP-EMA-8X10`; now holds the owner's ten works (below).
+    Landscape print files are 3000×2400 and portrait 2400×3000, at 300 dpi.
+    The Met originals are untagged (no ICC profile), so check colour at
+    Prodigi mapping.
   - Runbook: "Museum prints and artist shops" in `docs/add-products-runbook.md`.
   - Tests: `scripts/artistShops.node-test.mjs` (12). The full suite is
-    404/404, and typecheck and lint are clean.
+    405/405 at `058c996`, and typecheck and lint are clean.
   - Local check on 2026-10-09 against live Storefront data, using temporary
     uncommitted data edits that were then restored from git. Studio and Hokusai
     were approved, and one live Light & Silence print was mapped to the Great
@@ -144,17 +201,19 @@ in-progress build work was saved.
    Minowa (accept 213 ppi or swap it).
 3. **Owner:** review and approve Hokusai/Hiroshige bios and curator's notes,
    then record the rights and master reviews.
-4. Room backgrounds: four blank interiors per print under
-   `scripts/assets/print-room-mockups/floating-world/` (5:4 placements), then
-   `npm run product -- rooms floating-world`.
+4. Room backgrounds: four blank interiors per print (40 in total), named as
+   in each print's `rooms[].backgroundFile`, under
+   `scripts/assets/print-room-mockups/floating-world/`. Placements are 5:4
+   for the seven landscape prints and 4:5 for the three portrait ones. Then
+   run `npm run product -- rooms floating-world`.
 5. Only with owner approval: `stage --apply` (Shopify Drafts), Prodigi mapping
    (check landscape 3000×2400 files and colour on untagged originals), `media`,
    `release`, then a PR to main after review.
 
 ## Not done
 
-- No museum collection has been selected or cleared for sale; all artists
-  are unapproved and all reviews are pending.
+- The ten works are selected but not cleared for sale: all artists are
+  unapproved and all rights and master reviews are pending.
 - Nothing has been created or changed in Shopify or Prodigi.
 - No room backgrounds or room mockups exist for Floating World.
 - Physical print quality, delivered cost and landscape-file handling in
