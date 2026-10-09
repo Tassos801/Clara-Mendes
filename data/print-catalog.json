@@ -910,7 +910,7 @@
       "slug": "floating-world",
       "title": "Floating World",
       "kind": "museum",
-      "note": "Edo-period Japanese woodblock landscapes by Hokusai and Hiroshige",
+      "note": "Edo-period Japanese woodblock views by Hokusai and Hiroshige",
       "skuCode": "FW",
       "collectionCopy": "Part of Floating World, a Clara Mendes selection of Edo-period Japanese woodblock prints from museum open-access collections, each reproduced whole on archival fine-art paper.",
       "seoSuffix": "A Japanese woodblock art print reproduced whole from a public-domain museum original.",
@@ -931,7 +931,7 @@
           "slug": "the-great-wave-off-kanagawa",
           "title": "The Great Wave off Kanagawa",
           "sequence": 1,
-          "artworkId": "met-45434",
+          "artworkId": "met-39799",
           "orientation": "landscape",
           "description": "Hokusai’s towering wave curls over three fishing boats while Mount Fuji sits small and still in the distance.",
           "alt": "Hokusai’s Great Wave woodblock print: a towering blue wave with a clawing white crest over three boats, Mount Fuji in the distance, printed whole on a white border.",
@@ -984,9 +984,567 @@
           ],
           "released": false,
           "source": {
-            "nativeHeight": 2594,
-            "nativeWidth": 3859,
-            "sourceSha256": "cbb9988f2f18b9180a1cc0cf5dbb0e3bbf8f2e85d17930cf6ca9ab36fac36303"
+            "nativeHeight": 2644,
+            "nativeWidth": 3867,
+            "sourceSha256": "b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c"
+          }
+        },
+        {
+          "slug": "hodogaya-on-the-tokaido",
+          "title": "Hodogaya on the Tōkaidō",
+          "sequence": 2,
+          "artworkId": "met-55458",
+          "orientation": "landscape",
+          "description": "Travellers, a packhorse and a palanquin pass beneath a row of tall pines on the Tōkaidō road, with Mount Fuji framed between the trunks.",
+          "alt": "Hokusai woodblock print: travellers, a horse and a palanquin on the Tōkaidō road beneath a row of tall pines, Mount Fuji seen between the trunks, printed whole on a white border.",
+          "palette": "Prussian blue, pine green, rust, pale cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Hodogaya on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "hodogaya-on-the-tokaido-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Hodogaya on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "hodogaya-on-the-tokaido-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Hodogaya on the Tōkaidō print above a walnut desk in a pared-back study.",
+              "backgroundFile": "hodogaya-on-the-tokaido-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Hodogaya on the Tōkaidō print shown at scale in a wide, airy interior.",
+              "backgroundFile": "hodogaya-on-the-tokaido-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2701,
+            "nativeWidth": 3932,
+            "sourceSha256": "b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851"
+          }
+        },
+        {
+          "slug": "sekiya-village-on-the-sumida-river",
+          "title": "Sekiya Village on the Sumida River",
+          "sequence": 3,
+          "artworkId": "met-55291",
+          "orientation": "landscape",
+          "description": "Three riders gallop along a winding embankment by the Sumida River, past a twisted pine, with a small red Mount Fuji on the horizon.",
+          "alt": "Hokusai woodblock print: three horsemen galloping along a river embankment past a gnarled pine, a small red Mount Fuji on the horizon, printed whole on a white border.",
+          "palette": "Teal, sage green, red, cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Sekiya Village on the Sumida River print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "sekiya-village-on-the-sumida-river-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Sekiya Village on the Sumida River print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "sekiya-village-on-the-sumida-river-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Sekiya Village on the Sumida River print above a walnut desk in a pared-back study.",
+              "backgroundFile": "sekiya-village-on-the-sumida-river-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Sekiya Village on the Sumida River print shown at scale in a wide, airy interior.",
+              "backgroundFile": "sekiya-village-on-the-sumida-river-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2634,
+            "nativeWidth": 3912,
+            "sourceSha256": "d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f"
+          }
+        },
+        {
+          "slug": "tago-bay-near-ejiri-on-the-tokaido",
+          "title": "Tago Bay near Ejiri on the Tōkaidō",
+          "sequence": 4,
+          "artworkId": "met-57000",
+          "orientation": "landscape",
+          "description": "Two boats are rowed through choppy blue water off Tago Bay, below the long shore and a broad, snow-capped Mount Fuji.",
+          "alt": "Hokusai woodblock print: two boats rowed through choppy blue water below a long shoreline and a large snow-capped Mount Fuji, printed whole on a white border.",
+          "palette": "Prussian blue, ochre, green, white",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Tago Bay near Ejiri on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "tago-bay-near-ejiri-on-the-tokaido-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Tago Bay near Ejiri on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "tago-bay-near-ejiri-on-the-tokaido-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Tago Bay near Ejiri on the Tōkaidō print above a walnut desk in a pared-back study.",
+              "backgroundFile": "tago-bay-near-ejiri-on-the-tokaido-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Tago Bay near Ejiri on the Tōkaidō print shown at scale in a wide, airy interior.",
+              "backgroundFile": "tago-bay-near-ejiri-on-the-tokaido-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2669,
+            "nativeWidth": 3907,
+            "sourceSha256": "5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37"
+          }
+        },
+        {
+          "slug": "ushibori-in-hitachi-province",
+          "title": "Ushibori in Hitachi Province",
+          "sequence": 5,
+          "artworkId": "met-56239",
+          "orientation": "landscape",
+          "description": "A covered boat lies moored among the reeds; a figure pours water over its side as two herons rise, and Mount Fuji shows white in the distance.",
+          "alt": "Hokusai woodblock print: a covered boat moored among reeds, a figure pouring water over the side and herons rising, with white Mount Fuji beyond, printed whole on a white border.",
+          "palette": "Indigo, pale blue, straw, cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Ushibori in Hitachi Province print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "ushibori-in-hitachi-province-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Ushibori in Hitachi Province print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "ushibori-in-hitachi-province-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Ushibori in Hitachi Province print above a walnut desk in a pared-back study.",
+              "backgroundFile": "ushibori-in-hitachi-province-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Ushibori in Hitachi Province print shown at scale in a wide, airy interior.",
+              "backgroundFile": "ushibori-in-hitachi-province-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2682,
+            "nativeWidth": 3875,
+            "sourceSha256": "578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92"
+          }
+        },
+        {
+          "slug": "yoshida-on-the-tokaido",
+          "title": "Yoshida on the Tōkaidō",
+          "sequence": 6,
+          "artworkId": "met-56360",
+          "orientation": "landscape",
+          "description": "Travellers rest in a roadside teahouse on the Tōkaidō and look out through its open front towards Mount Fuji.",
+          "alt": "Hokusai woodblock print: travellers and attendants in a roadside teahouse looking out through its open front at a small Mount Fuji, printed whole on a white border.",
+          "palette": "Indigo, straw yellow, sky blue, cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Yoshida on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "yoshida-on-the-tokaido-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Yoshida on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "yoshida-on-the-tokaido-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Yoshida on the Tōkaidō print above a walnut desk in a pared-back study.",
+              "backgroundFile": "yoshida-on-the-tokaido-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Yoshida on the Tōkaidō print shown at scale in a wide, airy interior.",
+              "backgroundFile": "yoshida-on-the-tokaido-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2655,
+            "nativeWidth": 3860,
+            "sourceSha256": "c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342"
+          }
+        },
+        {
+          "slug": "nissaka-sayo-no-nakayama",
+          "title": "Nissaka, Sayo no Nakayama",
+          "sequence": 7,
+          "artworkId": "met-55993",
+          "orientation": "landscape",
+          "description": "Travellers make their way up the steep pass at Nissaka on the Tōkaidō, past a large round stone in the road, with blue hills in the distance.",
+          "alt": "Hiroshige woodblock print: travellers on a steep, dark mountain pass with tall bare trees, a large round stone in the road and blue hills in the distance, printed whole on a white border.",
+          "palette": "Charcoal, indigo, ochre, pale cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Nissaka, Sayo no Nakayama print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "nissaka-sayo-no-nakayama-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Nissaka, Sayo no Nakayama print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "nissaka-sayo-no-nakayama-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Nissaka, Sayo no Nakayama print above a walnut desk in a pared-back study.",
+              "backgroundFile": "nissaka-sayo-no-nakayama-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Nissaka, Sayo no Nakayama print shown at scale in a wide, airy interior.",
+              "backgroundFile": "nissaka-sayo-no-nakayama-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2552,
+            "nativeWidth": 3909,
+            "sourceSha256": "553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c"
+          }
+        },
+        {
+          "slug": "fireworks-at-ryogoku-bridge",
+          "title": "Fireworks at Ryōgoku Bridge",
+          "sequence": 8,
+          "artworkId": "met-37093",
+          "orientation": "portrait",
+          "description": "A single rocket trails up into the night over Ryōgoku Bridge and bursts into stars above pleasure boats crowding the river.",
+          "alt": "Hiroshige woodblock print: a firework rising and bursting into stars in a dark night sky over a long wooden bridge and boats on a blue river, printed whole on a white border.",
+          "palette": "Night grey, deep blue, gold, red",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Fireworks at Ryōgoku Bridge print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "fireworks-at-ryogoku-bridge-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 230,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Fireworks at Ryōgoku Bridge print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "fireworks-at-ryogoku-bridge-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 180,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Fireworks at Ryōgoku Bridge print above a walnut desk in a pared-back study.",
+              "backgroundFile": "fireworks-at-ryogoku-bridge-study.png",
+              "placement": {
+                "left": 440,
+                "top": 230,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Fireworks at Ryōgoku Bridge print shown at scale in a wide, airy interior.",
+              "backgroundFile": "fireworks-at-ryogoku-bridge-wide-interior.png",
+              "placement": {
+                "left": 470,
+                "top": 320,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3921,
+            "nativeWidth": 2617,
+            "sourceSha256": "84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773"
+          }
+        },
+        {
+          "slug": "kinryusan-temple-at-asakusa",
+          "title": "Kinryūsan Temple at Asakusa",
+          "sequence": 9,
+          "artworkId": "met-56689",
+          "orientation": "portrait",
+          "description": "Framed by the temple gate and a giant red lantern, snow falls on the approach to Kinryūsan Temple, its gate and pagoda white with snow.",
+          "alt": "Hiroshige woodblock print: a giant red lantern framing a snowy temple approach at Asakusa, with a red gate, a pagoda and people walking under umbrellas, printed whole on a white border.",
+          "palette": "Vermilion, snow white, grey, green",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Kinryūsan Temple at Asakusa print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "kinryusan-temple-at-asakusa-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 230,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Kinryūsan Temple at Asakusa print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "kinryusan-temple-at-asakusa-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 180,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Kinryūsan Temple at Asakusa print above a walnut desk in a pared-back study.",
+              "backgroundFile": "kinryusan-temple-at-asakusa-study.png",
+              "placement": {
+                "left": 440,
+                "top": 230,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Kinryūsan Temple at Asakusa print shown at scale in a wide, airy interior.",
+              "backgroundFile": "kinryusan-temple-at-asakusa-wide-interior.png",
+              "placement": {
+                "left": 470,
+                "top": 320,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3840,
+            "nativeWidth": 2624,
+            "sourceSha256": "6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641"
+          }
+        },
+        {
+          "slug": "minowa-kanasugi-at-mikawashima",
+          "title": "Minowa, Kanasugi at Mikawashima",
+          "sequence": 10,
+          "artworkId": "met-36542",
+          "orientation": "portrait",
+          "description": "A crane swoops low over the marshes at Mikawashima while another stands in the grass, beneath a rose-tinted sky.",
+          "alt": "Hiroshige woodblock print: a white crane swooping down from above while another stands in the marsh grass, flat fields and a rose-tinted sky behind, printed whole on a white border.",
+          "palette": "Pale blue, white, rose, green",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Minowa, Kanasugi at Mikawashima print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "minowa-kanasugi-at-mikawashima-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 230,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Minowa, Kanasugi at Mikawashima print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "minowa-kanasugi-at-mikawashima-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 180,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Minowa, Kanasugi at Mikawashima print above a walnut desk in a pared-back study.",
+              "backgroundFile": "minowa-kanasugi-at-mikawashima-study.png",
+              "placement": {
+                "left": 440,
+                "top": 230,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Minowa, Kanasugi at Mikawashima print shown at scale in a wide, airy interior.",
+              "backgroundFile": "minowa-kanasugi-at-mikawashima-wide-interior.png",
+              "placement": {
+                "left": 470,
+                "top": 320,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 1928,
+            "nativeWidth": 1274,
+            "sourceSha256": "08adb08715d05f56d7c564015f9b6ac76403e26eb36964c59ac97e28b4523004"
           }
         }
       ]

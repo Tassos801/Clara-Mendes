@@ -54,7 +54,9 @@ export function seriesFromTitle(title) {
 export function proposeShortTitle(title) {
   let short = text(title)
     .replace(/,? from the series .+$/i, '')
-    .replace(/,? also known as .+$/i, '');
+    .replace(/,? also known as .+$/i, '')
+    // "… (Kanagawa oki nami ura), or The Great Wave": an alternate title.
+    .replace(/(\)),? or .+$/i, '$1');
   short = short
     .replace(/\s*\([^)]*\)\s*$/, '')
     // The Met quotes series titles: “Umezawa Manor in Sagami Province,”

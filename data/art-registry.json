@@ -139,6 +139,465 @@
           "status": "pending"
         }
       }
+    },
+    {
+      "id": "met-55458",
+      "artistId": "katsushika-hokusai",
+      "title": "Hodogaya on the Tōkaidō (Tōkaidō Hodogaya), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "Hodogaya on the Tōkaidō",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "H. 9 15/16 in. (25.2 cm); W. 14 3/4 in. (37.5 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "55458",
+        "accessionNumber": "JP1427",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/55458",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/55458",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP141025.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "Rogers Fund, 1922",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-55458.json",
+        "fetchedAt": "2026-10-09T13:53:10.219Z",
+        "metadataSha256": "c18a285b146c68e90999b386e6453029b657ecda73f0f14cefbfdb3db1f311c9"
+      },
+      "original": {
+        "fileName": "met-55458.jpg",
+        "sha256": "b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851",
+        "bytes": 3120010,
+        "contentType": "image/jpeg",
+        "width": 3932,
+        "height": 2701
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-55291",
+      "artistId": "katsushika-hokusai",
+      "title": "Sekiya Village on the Sumida River (Sumidagawa Sekiya no sato), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "Sekiya Village on the Sumida River",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "H. 10 in. (25.4 cm); W. 15 1/4 in. (38.7 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "55291",
+        "accessionNumber": "JP1338",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/55291",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/55291",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP141023.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "Rogers Fund, 1922",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-55291.json",
+        "fetchedAt": "2026-10-09T13:53:14.246Z",
+        "metadataSha256": "ce82ff053f3294691c3bb020cad8f0fbe84de1fe8f9e8d64e63183df1d64ee5f"
+      },
+      "original": {
+        "fileName": "met-55291.jpg",
+        "sha256": "d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f",
+        "bytes": 2930562,
+        "contentType": "image/jpeg",
+        "width": 3912,
+        "height": 2634
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-57000",
+      "artistId": "katsushika-hokusai",
+      "title": "Tago Bay near Ejiri on the Tōkaidō (Tōkaidō Ejiri Tago no ura ryaku zu), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "Tago Bay near Ejiri on the Tōkaidō",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "9 7/8 x 14 5/8 in. (25.1 x 37.1 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "57000",
+        "accessionNumber": "JP2561",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/57000",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/57000",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP141037.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "The Howard Mansfield Collection, Purchase, Rogers Fund, 1936",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-57000.json",
+        "fetchedAt": "2026-10-09T13:53:15.963Z",
+        "metadataSha256": "c8ecf38cb9675244d3bb153c0ece6b5ef938d2e9b6ec09ab3b21d099847bf990"
+      },
+      "original": {
+        "fileName": "met-57000.jpg",
+        "sha256": "5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37",
+        "bytes": 3261726,
+        "contentType": "image/jpeg",
+        "width": 3907,
+        "height": 2669
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-39799",
+      "artistId": "katsushika-hokusai",
+      "title": "Under the Wave off Kanagawa (Kanagawa oki nami ura), or The Great Wave, from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "The Great Wave off Kanagawa",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "10 x 15 in. (25.4 x 38.1 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "39799",
+        "accessionNumber": "JP2569",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/39799",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/39799",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP141042.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "The Howard Mansfield Collection, Purchase, Rogers Fund, 1936",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-39799.json",
+        "fetchedAt": "2026-10-09T13:53:19.548Z",
+        "metadataSha256": "b481c0d366b3b5644ef55d54edefbeb55103671ef25bc1d93e8ce54f7ee389da"
+      },
+      "original": {
+        "fileName": "met-39799.jpg",
+        "sha256": "b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c",
+        "bytes": 1077827,
+        "contentType": "image/jpeg",
+        "width": 3867,
+        "height": 2644
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-56239",
+      "artistId": "katsushika-hokusai",
+      "title": "Ushibori in Hitachi Province (Jōshū Ushibori), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "Ushibori in Hitachi Province",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "10 1/4 x 14 7/8 in. (26 x 37.8 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "56239",
+        "accessionNumber": "JP2964",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/56239",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/56239",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP141057.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "Henry L. Phillips Collection, Bequest of Henry L. Phillips, 1939",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-56239.json",
+        "fetchedAt": "2026-10-09T13:53:20.951Z",
+        "metadataSha256": "a5b91addcdc88a0f7d53c5429d9ba2dabf7f4ac72552f9d00a1c561923799157"
+      },
+      "original": {
+        "fileName": "met-56239.jpg",
+        "sha256": "578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92",
+        "bytes": 3064167,
+        "contentType": "image/jpeg",
+        "width": 3875,
+        "height": 2682
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-56360",
+      "artistId": "katsushika-hokusai",
+      "title": "Yoshida on the Tōkaidō (Tōkaidō Yoshida), from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "Yoshida on the Tōkaidō",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "10 3/8 x 15 1/8 in. (26.4 x 38.4 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "56360",
+        "accessionNumber": "JP2974",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/56360",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/56360",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP141069.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "Henry L. Phillips Collection, Bequest of Henry L. Phillips, 1939",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-56360.json",
+        "fetchedAt": "2026-10-09T13:53:24.519Z",
+        "metadataSha256": "330c5440538ca92282cc5c9b372520265fff1612a0d81e6a0e73886cf0e338d8"
+      },
+      "original": {
+        "fileName": "met-56360.jpg",
+        "sha256": "c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342",
+        "bytes": 3082359,
+        "contentType": "image/jpeg",
+        "width": 3860,
+        "height": 2655
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-55993",
+      "artistId": "utagawa-hiroshige",
+      "title": "Station Twenty-six: Nissaka, Sayo no Nakayama, from the Fifty-three Stations of the Tokaido",
+      "shortTitle": "Nissaka, Sayo no Nakayama",
+      "date": "ca. 1833–34",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "9 3/8 x 14 3/8 in. (23.8 x 36.5 cm)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "55993",
+        "accessionNumber": "JP2878",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/55993",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/55993",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP123234.jpg",
+        "artistDisplayName": "Utagawa Hiroshige",
+        "artistPrefix": "",
+        "creditLine": "Henry L. Phillips Collection, Bequest of Henry L. Phillips, 1939",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-55993.json",
+        "fetchedAt": "2026-10-09T13:53:28.680Z",
+        "metadataSha256": "be8850b5911d2bb40ed96eec8e231db3f4c1dca39475e71f4a1e36c81ff63812"
+      },
+      "original": {
+        "fileName": "met-55993.jpg",
+        "sha256": "553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c",
+        "bytes": 2639408,
+        "contentType": "image/jpeg",
+        "width": 3909,
+        "height": 2552
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-37093",
+      "artistId": "utagawa-hiroshige",
+      "title": "Fireworks at Ryōgoku Bridge, from the series One Hundred Famous Views of Edo",
+      "shortTitle": "Fireworks at Ryōgoku Bridge",
+      "date": "1858",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "Image: 13 1/4 × 8 3/4 in. (33.7 × 22.2 cm)",
+      "series": "One Hundred Famous Views of Edo",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "37093",
+        "accessionNumber": "JP642",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/37093",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/37093",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP121524.jpg",
+        "artistDisplayName": "Utagawa Hiroshige",
+        "artistPrefix": "",
+        "creditLine": "Purchase, Joseph Pulitzer Bequest, 1918",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-37093.json",
+        "fetchedAt": "2026-10-09T13:53:35.719Z",
+        "metadataSha256": "640b2999fc7183f1b049313dd4b9c99e5862d1346c9d33385b56deacb4dabdac"
+      },
+      "original": {
+        "fileName": "met-37093.jpg",
+        "sha256": "84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773",
+        "bytes": 2990431,
+        "contentType": "image/jpeg",
+        "width": 2617,
+        "height": 3921
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-56689",
+      "artistId": "utagawa-hiroshige",
+      "title": "Kinryūsan Temple at Asakusa, from the series \"One Hundred Famous Views of Edo\"",
+      "shortTitle": "Kinryūsan Temple at Asakusa",
+      "date": "1856",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "H. 14 1/16 in. (35.7 cm); W. 9 1/2 in. (24.1 cm)",
+      "series": "\"One Hundred Famous Views of Edo\"",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "56689",
+        "accessionNumber": "JP2519",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/56689",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/56689",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP121552.jpg",
+        "artistDisplayName": "Utagawa Hiroshige",
+        "artistPrefix": "",
+        "creditLine": "The Howard Mansfield Collection, Purchase, Rogers Fund, 1936",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-56689.json",
+        "fetchedAt": "2026-10-09T13:53:42.386Z",
+        "metadataSha256": "85491c1d5f602553ec2b3fb5a98436837d99bcc4fca7b75041e8c5ce29c51a16"
+      },
+      "original": {
+        "fileName": "met-56689.jpg",
+        "sha256": "6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641",
+        "bytes": 2769699,
+        "contentType": "image/jpeg",
+        "width": 2624,
+        "height": 3840
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-36542",
+      "artistId": "utagawa-hiroshige",
+      "title": "“Minowa, Kanasugi at Mikawashima,” from the series One Hundred Famous Views of Edo (Meisho Edo hyakkei, Minowa Kanasugi, Mikawashima)",
+      "shortTitle": "Minowa, Kanasugi at Mikawashima",
+      "date": "snake year 1857",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "13 1/4 x 8 17/32 in. (33.7 x 21.7 cm)",
+      "series": "One Hundred Famous Views of Edo (Meisho Edo hyakkei, Minowa Kanasugi, Mikawashima)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "36542",
+        "accessionNumber": "JP63",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/36542",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/36542",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP121662.jpg",
+        "artistDisplayName": "Utagawa Hiroshige",
+        "artistPrefix": "",
+        "creditLine": "Rogers Fund, 1914",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-36542.json",
+        "fetchedAt": "2026-10-09T13:53:45.738Z",
+        "metadataSha256": "f7300793d9f35698a4ee38ee736cf6431f52a1903edcd894a9cd8a3d0d259c3d"
+      },
+      "original": {
+        "fileName": "met-36542.jpg",
+        "sha256": "08adb08715d05f56d7c564015f9b6ac76403e26eb36964c59ac97e28b4523004",
+        "bytes": 2199789,
+        "contentType": "image/jpeg",
+        "width": 1274,
+        "height": 1928
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
     }
   ]
 }

@@ -21,6 +21,11 @@ import {
 } from './lib/print-room-scenes.mjs';
 
 const WAVE_HANDLE = 'the-great-wave-off-kanagawa-art-print';
+/** The Great Wave impression the catalog sells (the owner's pick). */
+const WAVE_ID = prints.PRINT_CATALOG.collections
+  .find((c) => c.slug === 'floating-world')
+  .prints.find((p) => p.slug === 'the-great-wave-off-kanagawa').artworkId;
+const WAVE = registryModule.findArtwork(WAVE_ID);
 const REVIEWED = {at: '2026-10-09T12:00:00.000Z', by: 'Owner', status: 'cleared'};
 
 /**
@@ -32,7 +37,7 @@ function releasedFixture({approve = true, clear = true, release = true} = {}) {
   const catalog = structuredClone(prints.PRINT_CATALOG);
   const hokusai = registry.artists.find((a) => a.id === 'katsushika-hokusai');
   if (approve) hokusai.approval = {approved: true, at: REVIEWED.at, by: 'Owner'};
-  const wave = registry.artworks.find((a) => a.id === 'met-45434');
+  const wave = registry.artworks.find((a) => a.id === WAVE_ID);
   if (clear) wave.reviews = {master: {...REVIEWED}, rights: {...REVIEWED}};
   const print = floatingWorld(catalog).prints[0];
   if (release) {
@@ -73,7 +78,7 @@ test('a released print appears on its approved artist shop automatically', () =>
     entry.products.map((product) => product.handle),
     [WAVE_HANDLE],
   );
-  assert.equal(entry.products[0].artworkId, 'met-45434');
+  assert.equal(entry.products[0].artworkId, WAVE_ID);
   assert.equal(shops.publicArtistBySlug('HOKUSAI', sources)?.artist.slug, 'hokusai');
   assert.equal(shops.publicArtistBySlug('hiroshige', sources), null);
   assert.equal(
@@ -83,7 +88,7 @@ test('a released print appears on its approved artist shop automatically', () =>
   assert.deepEqual(shops.artistFamilies(entry.products), ['Prints']);
   assert.deepEqual(
     shops.artistArtworks(entry.products, sources.registry).map((a) => a.id),
-    ['met-45434'],
+    [WAVE_ID],
   );
   assert.ok(computeSellableHandles(undefined, undefined, sources.catalog).has(WAVE_HANDLE));
 });
@@ -109,13 +114,13 @@ test('a product page credits the museum work and links a public artist', () => {
   assert.equal(credit.artist.dates, '1760–1849');
   assert.equal(credit.artist.path, '/artists/hokusai');
   assert.equal(credit.artwork.date, 'ca. 1830–32');
-  assert.match(
+  assert.equal(
     credit.artwork.credit,
-    /^Source: The Metropolitan Museum of Art, H\. O\. Havemeyer Collection.*Public domain: The Met Open Access \(CC0\)\. Object 45434\.$/,
+    `Source: The Metropolitan Museum of Art, ${WAVE.source.creditLine}. Public domain: The Met Open Access (CC0). Object ${WAVE.source.objectId}.`,
   );
   assert.equal(
     credit.artwork.objectUrl,
-    'https://www.metmuseum.org/art/collection/search/45434',
+    `https://www.metmuseum.org/art/collection/search/${WAVE.source.objectId}`,
   );
 
   // A museum print keeps its credit before its artist is approved.
@@ -141,7 +146,7 @@ test('museum prints keep the artwork whole, once per artwork', () => {
   collection.prints[0].orientation = 'portrait';
   assert.match(
     shops.validateArtistLinks(sources).join('\n'),
-    /orientation must be landscape to keep met-45434 whole/,
+    new RegExp(`orientation must be landscape to keep ${WAVE_ID} whole`),
   );
 
   const twice = releasedFixture({release: false});
@@ -149,7 +154,7 @@ test('museum prints keep the artwork whole, once per artwork', () => {
   floatingWorld(twice.catalog).prints.push({...copy, sequence: 2, slug: 'wave-again'});
   assert.match(
     shops.validateArtistLinks(twice).join('\n'),
-    /met-45434 is already sold as floating-world\/the-great-wave-off-kanagawa/,
+    new RegExp(`${WAVE_ID} is already sold as floating-world/the-great-wave-off-kanagawa`),
   );
 
   const unknown = releasedFixture({release: false});
@@ -190,7 +195,7 @@ test('the print catalog enforces museum fields and paper-shaped room boxes', () 
   const catalog = structuredClone(prints.PRINT_CATALOG);
   const museum = floatingWorld(catalog);
   delete museum.prints[0].artworkId;
-  catalog.collections[0].prints[0].artworkId = 'met-45434';
+  catalog.collections[0].prints[0].artworkId = WAVE_ID;
   museum.prints[0].rooms[0].placement = {height: 300, left: 1, top: 1, width: 240};
   const problems = prints.validatePrintCatalog(catalog).join('\n');
   assert.match(problems, /floating-world\/the-great-wave-off-kanagawa: museum prints need an artworkId/);
@@ -259,7 +264,11 @@ test('a museum Draft carries museum copy, credit and tags, never "original"', ()
   );
   assert.match(input.descriptionHtml, /Katsushika Hokusai \(1760–1849\), <em>Under the Wave off Kanagawa/);
   assert.match(input.descriptionHtml, /Unframed 8 × 10 inch landscape print, the full composition on a white border/);
-  assert.match(input.descriptionHtml, /href="https:\/\/www\.metmuseum\.org\/art\/collection\/search\/45434"/);
+  assert.ok(
+    input.descriptionHtml.includes(
+      `href="https://www.metmuseum.org/art/collection/search/${WAVE.source.objectId}"`,
+    ),
+  );
   assert.match(input.descriptionHtml, /not affiliated with or endorsed by the museum/);
   assert.doesNotMatch(input.descriptionHtml, /Clara Mendes composition|original/i);
   assert.ok(!input.tags.includes('Clara Mendes Original'));

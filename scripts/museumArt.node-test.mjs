@@ -211,6 +211,13 @@ test('other impressions of one design share a flag key, other designs do not', (
     met.impressionKey(storm('Storm below Mount Fuji')),
     met.impressionKey(storm('Noboto Bay (Noboto no ura)')),
   );
+  // The Met titles one Great Wave impression "…, or The Great Wave".
+  assert.equal(
+    met.impressionKey(
+      storm('Under the Wave off Kanagawa (Kanagawa oki nami ura), or The Great Wave, from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)'),
+    ),
+    met.impressionKey(storm(GREAT_WAVE.title)),
+  );
 });
 
 test('a refetch keeps decisions unless the evidence behind them changed', () => {

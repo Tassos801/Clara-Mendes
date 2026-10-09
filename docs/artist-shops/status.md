@@ -103,9 +103,33 @@ in-progress build work was saved.
     - Screenshots were taken with headless Chrome over CDP; the hidden pane is
       265 px wide.
 
+- **The ten pilot works (owner's picks, 2026-10-09)** are read from the shortlist
+  database `selection/current` (version 10). All are fetched, registered,
+  pass the rights screen (owner reviews pending), are in Floating World
+  (unreleased) and are prepared at 8×10:
+  - Hokusai, Thirty-six Views of Mount Fuji: The Great Wave (Met 39799),
+    Hodogaya on the Tōkaidō (55458), Sekiya Village on the Sumida River
+    (55291), Tago Bay near Ejiri (57000), Ushibori in Hitachi Province
+    (56239), Yoshida on the Tōkaidō (56360).
+  - Hiroshige: Nissaka, Sayo no Nakayama (55993, Fifty-three Stations), and
+    from One Hundred Famous Views of Edo, Fireworks at Ryōgoku Bridge (37093),
+    Kinryūsan Temple at Asakusa (56689) and Minowa, Kanasugi at Mikawashima
+    (36542).
+  - Seven landscape, three portrait. Nine are 425–435 ppi at 8×10.
+    **Minowa is 213 ppi (original 1274×1928): it needs an owner exception or
+    a swap.**
+  - The draft previously used Great Wave impression met-45434; the owner
+    picked met-39799 (the full sheet with paper edges, warmer), so the print
+    now points at 39799. 45434 stays registered and unused. The shortlist
+    showed both cards because the Met titles 39799 "…, or The Great Wave";
+    `proposeShortTitle` now strips that, so impressions group together.
+  - **Master review:** museum labels and pencil numbers sit on the paper
+    margins of 55458, 55993, 37093 and 56689. A conservative trim to the sheet
+    edge is the owner's call; nothing was removed.
+
 ## Next steps
 
-1. **Owner:** choose the ~10 pilot works on the private shortlist page
+1. ~~**Owner:** choose the ~10 pilot works~~ (done, see above). Shortlist page:
    https://claude.ai/artifact/UCVVkru81UTnd1575k9M24. Picks save to its
    database document `selection/current` (ids are Met object ids), which an
    agent reads with ArtifactData. The pool comes from `npm run museum --
@@ -116,8 +140,8 @@ in-progress build work was saved.
    300 ppi; none reach 300 ppi at 16×20.** Then `npm run museum -- fetch <id>
    --artist <artist id>` for each pick, and add the prints to Floating World.
 2. **Owner:** confirm the collection name (working title "Floating World"),
-   sizes (8×10 only unless a work qualifies larger or an exception is
-   accepted) and the €26.99 price.
+   sizes (8×10 only unless an exception is accepted), the €26.99 price, and
+   Minowa (accept 213 ppi or swap it).
 3. **Owner:** review and approve Hokusai/Hiroshige bios and curator's notes,
    then record the rights and master reviews.
 4. Room backgrounds: four blank interiors per print under
