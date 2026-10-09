@@ -1487,3 +1487,15 @@ Sources: `app/routes/clothing.tsx`, `app/lib/clothingEditorial.ts`,
 `app/components/ClothingProductCard.tsx`, `app/styles/clothing.css`,
 [Clothing destination guide](../clothing-destination.md).
 
+## 2026-10-09 - Add to Home Screen
+
+The shop can be added to a phone's home screen and opens full-screen like an
+app. `/manifest.webmanifest` (route `app/routes/[manifest.webmanifest].tsx`,
+data in `app/lib/webManifest.ts`) sets the name, standalone display, ivory
+launch colour and icons. `app/root.tsx` links the manifest and
+`/icons/apple-touch-icon.png` and adds the Apple and theme-colour meta tags.
+The icons are the favicon's clay vessel on oat, made by
+`node scripts/build-app-icons.mjs`. There is no service worker: nothing is
+cached offline, so prices, stock and the cart always load live. Checkout opens
+on the Shopify checkout domain, which the phone shows in its own browser sheet.
+
