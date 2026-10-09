@@ -3,7 +3,7 @@
  * the home screen icon; no service worker, so nothing is cached offline and
  * prices, stock and the cart always come live from Shopify. Checkout opens on
  * the Shopify checkout domain, which the phone shows in its own browser sheet.
- * Icons: node scripts/build-app-icons.mjs
+ * Icons (and /favicon.ico): node scripts/build-app-icons.mjs
  */
 
 /** Warm ivory, the page background, so the launch screen matches the site. */
@@ -11,6 +11,7 @@ export const APP_BACKGROUND_COLOR = '#FBFAF6';
 export const APP_THEME_COLOR = '#FBFAF6';
 export const APP_NAME = 'Clara Mendes';
 export const APPLE_TOUCH_ICON = '/icons/apple-touch-icon.png';
+export const FAVICON_ICO = '/favicon.ico';
 export const MANIFEST_PATH = '/manifest.webmanifest';
 
 export function webManifest() {

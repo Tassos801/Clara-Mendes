@@ -1499,3 +1499,13 @@ The icons are the favicon's clay vessel on oat, made by
 cached offline, so prices, stock and the cart always load live. Checkout opens
 on the Shopify checkout domain, which the phone shows in its own browser sheet.
 
+## 2026-10-09 - Favicon is the logo
+
+The favicon is now the header wordmark's initials: "CM" in Georgia Italic, ink
+on an oat rounded square (`app/assets/favicon.svg`, glyphs outlined so it does
+not depend on installed fonts). It replaces the clay vessel. The home-screen
+icons are redrawn from it, and `node scripts/build-app-icons.mjs` also writes
+`public/favicon.ico` (16, 32, 48 px) for browsers without SVG favicons and for
+crawlers that request `/favicon.ico`, which used to 404. `app/root.tsx` links
+the ICO with `sizes="32x32"` so Chrome keeps the SVG.
+

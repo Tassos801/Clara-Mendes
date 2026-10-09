@@ -6,6 +6,7 @@ import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
 import {
   APPLE_TOUCH_ICON,
+  FAVICON_ICO,
   MANIFEST_PATH,
   webManifest,
 } from '../app/lib/webManifest.ts';
@@ -47,4 +48,25 @@ test('the root document links the manifest and the touch icon', () => {
     'utf8',
   );
   assert.match(route, /application\/manifest\+json/);
+});
+
+test('favicon.ico holds the monogram at 16, 32 and 48 px', async () => {
+  const ico = readFileSync(path.join(ROOT, 'public', FAVICON_ICO));
+  assert.equal(ico.readUInt16LE(2), 1, 'ICO type');
+  const sizes = [];
+  for (let i = 0; i < ico.readUInt16LE(4); i++) {
+    const entry = 6 + 16 * i;
+    const png = ico.subarray(
+      ico.readUInt32LE(entry + 12),
+      ico.readUInt32LE(entry + 12) + ico.readUInt32LE(entry + 8),
+    );
+    const meta = await sharp(png).metadata();
+    assert.equal(meta.format, 'png');
+    assert.equal(meta.width, ico[entry]);
+    sizes.push(meta.width);
+  }
+  assert.deepEqual(sizes, [16, 32, 48]);
+  const root = readFileSync(path.join(ROOT, 'app/root.tsx'), 'utf8');
+  assert.match(root, /rel: 'icon', href: FAVICON_ICO, sizes: '32x32'/);
+  assert.match(root, /rel: 'icon', type: 'image\/svg\+xml', href: favicon/);
 });
