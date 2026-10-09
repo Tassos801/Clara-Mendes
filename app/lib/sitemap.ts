@@ -15,6 +15,7 @@ import {
   type CatalogProductLike,
   type CatalogCollectionLike,
 } from './catalogFilters.ts';
+import {artistPath, publicArtists} from './artistShops.ts';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from './bookNooks.ts';
 import {shopCapsulePath} from './capsules.ts';
 import {listGalleryPages} from './galleryPages.ts';
@@ -34,6 +35,10 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/clothing',
   '/pastel-forms',
   ...(releasedBookNooks().length ? [BOOK_NOOKS_PATH] : []),
+  // Artist shops exist only for approved artists with a released product.
+  ...(publicArtists().length
+    ? ['/artists', ...publicArtists().map(({artist}) => artistPath(artist))]
+    : []),
   ...ORIGINAL_ART_COLLECTIONS.map(
     (collection) => `/collections/${collection.handle}`,
   ),

@@ -219,6 +219,19 @@ export function artworkId(museum: MuseumKey, objectId: string | number) {
   return `${museum}-${objectId}`;
 }
 
+export type Orientation = 'landscape' | 'portrait';
+
+/** Paper orientation for a work; near-square works use portrait paper. */
+export function orientationOf({
+  height,
+  width,
+}: {
+  height: number;
+  width: number;
+}): Orientation {
+  return width > height * 1.02 ? 'landscape' : 'portrait';
+}
+
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SHA256 = /^[a-f0-9]{64}$/;
 

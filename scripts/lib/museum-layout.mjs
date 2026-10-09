@@ -11,17 +11,15 @@
  * why the verdict uses native pixels, not the exported file.
  */
 
+import {orientationOf} from '../../app/lib/artRegistry.ts';
 import {PRINT_SIZES} from '../../app/lib/printCatalog.ts';
 import {MIN_NATIVE_PPI} from './product-pipeline.mjs';
+
+export {orientationOf};
 
 export const PILOT_TARGET_PPI = 300;
 export const BORDER_FRACTION = 0.06;
 const FILE_PPI = 300;
-
-/** Near-square works use portrait paper. */
-export function orientationOf({height, width}) {
-  return width > height * 1.02 ? 'landscape' : 'portrait';
-}
 
 export function paperPixels(size, orientation) {
   const portrait = PRINT_SIZES[size];

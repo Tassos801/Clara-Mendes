@@ -34,6 +34,7 @@ import {
   shopCapsulePath,
 } from '~/lib/capsules';
 import {getCapsulePage} from '~/lib/capsulePages';
+import {productArtworkCredit} from '~/lib/artistShops';
 import {
   filterDemoProducts,
   isDemoProduct,
@@ -591,6 +592,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   }
 
   return {
+    artworkCredit: productArtworkCredit(product.handle),
     capsuleSummary: shopCapsule
       ? {
           blurb: capsulePage?.pdpBlurb ?? null,
@@ -624,6 +626,7 @@ export default function Product() {
 
 function ProductPage() {
   const {
+    artworkCredit,
     capsuleSummary,
     classicFrameCrossSell,
     phoneCaseCrossSell,
@@ -1013,6 +1016,21 @@ function ProductPage() {
                   'Curated object'}
             </p>
             <h1>{displayTitle}</h1>
+            {artworkCredit ? (
+              <p className="product-artist-line">
+                by{' '}
+                {artworkCredit.artist.path ? (
+                  <Link to={artworkCredit.artist.path} prefetch="intent">
+                    {artworkCredit.artist.name}
+                  </Link>
+                ) : (
+                  artworkCredit.artist.name
+                )}
+                {artworkCredit.artist.dates
+                  ? ` (${artworkCredit.artist.dates})`
+                  : ''}
+              </p>
+            ) : null}
             <p className="product-lede">{productLede}</p>
             {selectedVariant ? (
               <ProductPrice
@@ -1387,6 +1405,35 @@ function ProductPage() {
                 Art paper. {printSizeAvailabilityCopy(product.variants.nodes)}{' '}
                 Ships unframed in the selected size; frame not included. Screen
                 and print colours can vary slightly.
+              </ProductDetail>
+            ) : null}
+            {artworkCredit?.artwork ? (
+              <ProductDetail label="The artwork" defaultOpen>
+                {artworkCredit.artist.name}, <i>{artworkCredit.artwork.title}</i>
+                , {artworkCredit.artwork.date}. {artworkCredit.artwork.medium}.
+                Printed whole on a white border from a public-domain museum
+                image. {artworkCredit.artwork.credit}{' '}
+                <a
+                  className="text-link"
+                  href={artworkCredit.artwork.objectUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Museum record
+                </a>{' '}
+                Clara Mendes is not affiliated with or endorsed by the museum.
+                {artworkCredit.artist.path ? (
+                  <>
+                    {' '}
+                    <Link
+                      className="text-link"
+                      prefetch="intent"
+                      to={artworkCredit.artist.path}
+                    >
+                      More by {artworkCredit.artist.name}
+                    </Link>
+                  </>
+                ) : null}
               </ProductDetail>
             ) : null}
             {isClassicFrame ? (

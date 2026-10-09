@@ -905,6 +905,91 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "floating-world",
+      "title": "Floating World",
+      "kind": "museum",
+      "note": "Edo-period Japanese woodblock landscapes by Hokusai and Hiroshige",
+      "skuCode": "FW",
+      "collectionCopy": "Part of Floating World, a Clara Mendes selection of Edo-period Japanese woodblock prints from museum open-access collections, each reproduced whole on archival fine-art paper.",
+      "seoSuffix": "A Japanese woodblock art print reproduced whole from a public-domain museum original.",
+      "publications": [
+        "Clara Mendes",
+        "Clara Mendes Headless"
+      ],
+      "variants": [
+        {
+          "size": "8x10",
+          "finish": "Unframed",
+          "priceEUR": "26.99",
+          "providerSku": "ART-FAP-EMA-8X10"
+        }
+      ],
+      "prints": [
+        {
+          "slug": "the-great-wave-off-kanagawa",
+          "title": "The Great Wave off Kanagawa",
+          "sequence": 1,
+          "artworkId": "met-45434",
+          "orientation": "landscape",
+          "description": "Hokusai’s towering wave curls over three fishing boats while Mount Fuji sits small and still in the distance.",
+          "alt": "Hokusai’s Great Wave woodblock print: a towering blue wave with a clawing white crest over three boats, Mount Fuji in the distance, printed whole on a white border.",
+          "palette": "Prussian blue, indigo, cream, pale grey",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "The Great Wave off Kanagawa print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "great-wave-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 250,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "The Great Wave off Kanagawa print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "great-wave-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 200,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "The Great Wave off Kanagawa print above a walnut desk in a pared-back study.",
+              "backgroundFile": "great-wave-study.png",
+              "placement": {
+                "left": 420,
+                "top": 240,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "The Great Wave off Kanagawa print shown at scale in a wide, airy interior.",
+              "backgroundFile": "great-wave-wide-interior.png",
+              "placement": {
+                "left": 450,
+                "top": 330,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2594,
+            "nativeWidth": 3859,
+            "sourceSha256": "cbb9988f2f18b9180a1cc0cf5dbb0e3bbf8f2e85d17930cf6ca9ab36fac36303"
+          }
+        }
+      ]
     }
   ]
 }

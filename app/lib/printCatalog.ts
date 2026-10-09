@@ -50,7 +50,11 @@ export type PrintCatalogVariant = {
 
 export type PrintCatalogPrint = {
   alt: string;
+  /** Museum prints: the data/art-registry.json artwork reproduced. */
+  artworkId?: string;
   description: string;
+  /** Paper orientation; museum prints follow the artwork. Default portrait. */
+  orientation?: 'landscape' | 'portrait';
   palette?: string;
   /** Per size: the Prodigi channel product, recorded once mapping is verified. */
   prodigi?: Record<string, {channelProductId?: string; verified?: boolean}>;
@@ -66,8 +70,18 @@ export type PrintCatalogPrint = {
   title: string;
 };
 
+/**
+ * "studio" (the default) holds Clara Mendes compositions; "museum" holds
+ * reproductions of registered public-domain artworks, printed whole on a
+ * white border, with their own copy and tags.
+ */
+export type PrintCollectionKind = 'museum' | 'studio';
+
 export type PrintCatalogCollection = {
+  /** Studio collections: the registry artist whose shop lists them. */
+  artistId?: string;
   collectionCopy: string;
+  kind?: PrintCollectionKind;
   note: string;
   prints: PrintCatalogPrint[];
   /** Sales channels `product release` publishes to, by publication name. */
@@ -86,6 +100,18 @@ export const PRINT_CATALOG = printCatalog as unknown as PrintCatalog;
 
 export function printHandle(print: Pick<PrintCatalogPrint, 'slug'>) {
   return `${print.slug}-art-print`;
+}
+
+export function collectionKind(
+  collection: Pick<PrintCatalogCollection, 'kind'>,
+): PrintCollectionKind {
+  return collection.kind ?? 'studio';
+}
+
+export function printOrientation(
+  print: Pick<PrintCatalogPrint, 'orientation'>,
+) {
+  return print.orientation ?? 'portrait';
 }
 
 export function printProductTitle(print: Pick<PrintCatalogPrint, 'title'>) {
@@ -137,6 +163,7 @@ export type ReleasedPrintCollection = {
   handles: string[];
   /** Web artwork of the first released print, for share cards. */
   image: string;
+  kind: PrintCollectionKind;
   note: string;
   sizeLabels: string[];
   slug: string;
@@ -162,6 +189,7 @@ export function releasedPrintCollections(
       return {
         handles: released.map(printHandle),
         image: released[0] ? printImagePath(collection, released[0]) : '',
+        kind: collectionKind(collection),
         note: collection.note,
         sizeLabels: commonSizes.map(
           (variant) =>
@@ -207,6 +235,13 @@ export function validatePrintCatalog(
         problems.push(`${where}: missing ${field}`);
     if (!collection.publications?.length)
       problems.push(`${where}: publications must name at least one channel`);
+    if (collection.kind !== undefined && !['museum', 'studio'].includes(collection.kind))
+      problems.push(`${where}: kind must be museum or studio`);
+    const museum = collectionKind(collection) === 'museum';
+    if (museum && collection.artistId)
+      problems.push(
+        `${where}: museum collections take each artist from the print's artwork, not artistId`,
+      );
     if (!collection.variants?.length)
       problems.push(`${where}: needs at least one variant`);
 
@@ -241,6 +276,17 @@ export function validatePrintCatalog(
         if (!print[field]?.trim()) problems.push(`${at}: missing ${field}`);
       if (typeof print.released !== 'boolean')
         problems.push(`${at}: released must be true or false`);
+      if (museum && !print.artworkId?.trim())
+        problems.push(`${at}: museum prints need an artworkId`);
+      if (!museum && print.artworkId)
+        problems.push(`${at}: only museum collections reproduce registry artworks`);
+      if (
+        print.orientation !== undefined &&
+        !['landscape', 'portrait'].includes(print.orientation)
+      )
+        problems.push(`${at}: orientation must be portrait or landscape`);
+      // Room placements frame the paper, so they follow its orientation.
+      const paperRatio = printOrientation(print) === 'landscape' ? 1.25 : 0.8;
       const rooms = print.rooms ?? [];
       if (rooms.length !== PRINT_ROOM_KEYS.length)
         problems.push(`${at}: needs exactly four room scenes`);
@@ -272,8 +318,13 @@ export function validatePrintCatalog(
           )
         ) {
           problems.push(`${at}/${room.key}: invalid placement`);
-        } else if (Math.abs(placement.width / placement.height - 0.8) > 0.01) {
-          problems.push(`${at}/${room.key}: placement must be 4:5 portrait`);
+        } else if (
+          Math.abs(placement.width / placement.height - paperRatio) >
+          0.01 * paperRatio * 1.25
+        ) {
+          problems.push(
+            `${at}/${room.key}: placement must be ${paperRatio === 0.8 ? '4:5 portrait' : '5:4 landscape'}`,
+          );
         }
       }
       const releasedSizes = print.releasedSizes ?? [];

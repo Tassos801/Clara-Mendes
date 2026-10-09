@@ -1,5 +1,7 @@
-import {useLoaderData} from 'react-router';
+import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/search';
+import {artistPath, searchArtists} from '~/lib/artistShops';
+import {lifeDatesLabel} from '~/lib/artRegistry';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {SearchForm} from '~/components/SearchForm';
 import {SearchResults} from '~/components/SearchResults';
@@ -51,14 +53,22 @@ export async function loader({request, context}: Route.LoaderArgs) {
           search: () => regularSearch({request, context}),
         });
 
-  return {...search, seoUrl};
+  // Artist names and aliases come from the registry, so "Hokusai" leads to
+  // his shop even before Shopify search has indexed a product.
+  const artists = searchArtists(term).map((artist) => ({
+    dates: lifeDatesLabel(artist),
+    name: artist.name,
+    path: artistPath(artist),
+  }));
+
+  return {...search, artists, seoUrl};
 }
 
 /**
  * Renders the /search route
  */
 export default function SearchPage() {
-  const {type, term, result, error} = useLoaderData<typeof loader>();
+  const {artists, type, term, result, error} = useLoaderData<typeof loader>();
   if (type === 'predictive') return null;
 
   return (
@@ -99,6 +109,22 @@ export default function SearchPage() {
           {error}
         </p>
       )}
+      {artists.length > 0 ? (
+        <section className="search-artists" aria-labelledby="search-artists">
+          <h2 id="search-artists">Artists</h2>
+          <ul>
+            {artists.map((artist) => (
+              <li key={artist.path}>
+                <Link prefetch="intent" to={artist.path}>
+                  <strong>{artist.name}</strong>
+                  {artist.dates ? <span>{artist.dates}</span> : null}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
       {result.total > 0 ? (
         <SearchResults result={result} term={term}>
           {({articles, pages, products, term}) => (
@@ -109,7 +135,7 @@ export default function SearchPage() {
             </div>
           )}
         </SearchResults>
-      ) : error ? null : (
+      ) : error || artists.length > 0 ? null : (
         <SearchResults.Empty term={term} />
       )}
       <Analytics.SearchView data={{searchTerm: term, searchResults: result}} />

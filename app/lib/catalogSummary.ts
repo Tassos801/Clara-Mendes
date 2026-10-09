@@ -1,7 +1,12 @@
 // Relative imports keep this module loadable by the plain-Node test runner.
 import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
 import {listShopCapsules} from './capsules.ts';
-import {releasedPrintHandles} from './printCatalog.ts';
+import {
+  collectionKind,
+  PRINT_CATALOG,
+  releasedPrintHandles,
+  type PrintCatalog,
+} from './printCatalog.ts';
 
 const NUMBER_WORDS = [
   'no',
@@ -44,10 +49,17 @@ export function capitalize(text: string) {
 /**
  * Catalogue-wide counts for storefront copy, derived from the data files so
  * a released print-catalog collection updates every "N works" line at once.
+ * The copy calls these Clara Mendes originals, so museum reproductions are
+ * not counted.
  */
-export function catalogCounts() {
+export function catalogCounts(printCatalog: PrintCatalog = PRINT_CATALOG) {
+  const studio = {
+    collections: printCatalog.collections.filter(
+      (collection) => collectionKind(collection) === 'studio',
+    ),
+  };
   return {
-    capsules: listShopCapsules().length,
-    works: artCatalog.length + releasedPrintHandles().length,
+    capsules: listShopCapsules(studio).length,
+    works: artCatalog.length + releasedPrintHandles(studio).length,
   };
 }
