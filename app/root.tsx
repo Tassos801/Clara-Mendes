@@ -24,9 +24,20 @@ import {normalizeGtmContainerId} from '~/lib/googleCommerce';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import clothingStyles from '~/styles/clothing.css?url';
+import {
+  APP_NAME,
+  APP_THEME_COLOR,
+  APPLE_TOUCH_ICON,
+  MANIFEST_PATH,
+} from '~/lib/webManifest';
 
 export function links() {
-  return [{rel: 'icon', type: 'image/svg+xml', href: favicon}];
+  return [
+    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    // "Add to Home Screen": manifest for Android/Chrome, touch icon for iOS.
+    {rel: 'manifest', href: MANIFEST_PATH},
+    {rel: 'apple-touch-icon', href: APPLE_TOUCH_ICON},
+  ];
 }
 
 export function Layout({children}: {children?: React.ReactNode}) {
@@ -37,6 +48,12 @@ export function Layout({children}: {children?: React.ReactNode}) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="theme-color" content={APP_THEME_COLOR} />
+        <meta name="application-name" content={APP_NAME} />
+        <meta name="apple-mobile-web-app-title" content={APP_NAME} />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <link rel="stylesheet" href={clothingStyles}></link>
