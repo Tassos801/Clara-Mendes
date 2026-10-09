@@ -5,7 +5,8 @@
 **Production branch:** `main`  
 **Initial base:** `f4ac0f2f6bd29f7493418636cf98ce79924c8200`  
 **Owner:** Tassos  
-**Model preference:** use Sol for implementation and bounded review tasks.
+**Agents:** Codex (Sol) or Claude Code. Either may be the single active writer;
+the writer is named in [status.md](status.md).
 
 ## Read first
 
