@@ -1509,3 +1509,8 @@ icons are redrawn from it, and `node scripts/build-app-icons.mjs` also writes
 crawlers that request `/favicon.ico`, which used to 404. `app/root.tsx` links
 the ICO with `sizes="32x32"` so Chrome keeps the SVG.
 
+
+## 2026-10-09 - Isolated artist-shop pilot started
+
+The owner requested GitHub handoff and Sol-led implementation on a separate branch. See [handoff](../artist-shops/HANDOFF.md) and [status](../artist-shops/status.md). Work starts from f4ac0f2 on codex/artist-shops-pilot. This records development only; no Shopify mutation or production release.
+
