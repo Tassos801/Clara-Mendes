@@ -28,11 +28,14 @@ import {
   APP_NAME,
   APP_THEME_COLOR,
   APPLE_TOUCH_ICON,
+  FAVICON_ICO,
   MANIFEST_PATH,
 } from '~/lib/webManifest';
 
 export function links() {
   return [
+    // ICO for browsers without SVG favicons; sizes keeps Chrome on the SVG.
+    {rel: 'icon', href: FAVICON_ICO, sizes: '32x32'},
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
     // "Add to Home Screen": manifest for Android/Chrome, touch icon for iOS.
     {rel: 'manifest', href: MANIFEST_PATH},
