@@ -1,0 +1,142 @@
+{
+  "$comment": "Artists and artworks behind the artist shops. Stable ids are the relationship keys: print-catalog prints reference an artwork id (museum) or their collection an artist id (studio). Museum artworks are written by `npm run museum -- fetch`; rights and master reviews are recorded by people with `npm run museum -- review`. Types and validation: app/lib/artRegistry.ts. Brief: docs/artist-shops/brief.md.",
+  "artists": [
+    {
+      "id": "katsushika-hokusai",
+      "slug": "hokusai",
+      "name": "Katsushika Hokusai",
+      "sortName": "Hokusai, Katsushika",
+      "aliases": [
+        "Hokusai",
+        "葛飾北斎",
+        "Katsushika Hokusai"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1760",
+        "year": 1760
+      },
+      "died": {
+        "display": "1849",
+        "year": 1849
+      },
+      "nationality": "Japanese",
+      "lifeDatesSource": "https://collectionapi.metmuseum.org/public/collection/v1/objects/45434",
+      "bio": "Katsushika Hokusai (1760–1849) was a Japanese painter and printmaker of the Edo period who worked in the ukiyo-e tradition for some seven decades. His woodblock series Thirty-six Views of Mount Fuji (c. 1830–32), which includes Under the Wave off Kanagawa, made landscape a central subject of Japanese prints.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500060426",
+        "https://www.wikidata.org/wiki/Q5586",
+        "https://collectionapi.metmuseum.org/public/collection/v1/objects/45434"
+      ],
+      "curatorNote": "We start with Hokusai's landscapes because they hold a room the way they hold the sheet: a decisive line, a few flat colours and a great deal of air. Every print keeps the full composition as the museum photographed it, set on a white border.",
+      "approval": {
+        "approved": false
+      },
+      "tags": {
+        "country": "Japan",
+        "era": "Edo period",
+        "movement": "Ukiyo-e"
+      }
+    },
+    {
+      "id": "utagawa-hiroshige",
+      "slug": "hiroshige",
+      "name": "Utagawa Hiroshige",
+      "sortName": "Hiroshige, Utagawa",
+      "aliases": [
+        "Hiroshige",
+        "Ando Hiroshige",
+        "歌川広重",
+        "Utagawa Hiroshige"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1797",
+        "year": 1797
+      },
+      "died": {
+        "display": "1858",
+        "year": 1858
+      },
+      "nationality": "Japanese",
+      "lifeDatesSource": "https://collectionapi.metmuseum.org/public/collection/v1/objects/36461",
+      "bio": "Utagawa Hiroshige (1797–1858) was a Japanese ukiyo-e printmaker of the Edo period, known above all for landscape series such as The Fifty-three Stations of the Tōkaidō and One Hundred Famous Views of Edo, the last of which he worked on until his death.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500019641",
+        "https://www.wikidata.org/wiki/Q200798",
+        "https://collectionapi.metmuseum.org/public/collection/v1/objects/36461"
+      ],
+      "curatorNote": "Hiroshige's views are quieter than Hokusai's: weather, distance and the small figures who move through them. Every print keeps the full composition as the museum photographed it, set on a white border.",
+      "approval": {
+        "approved": false
+      },
+      "tags": {
+        "country": "Japan",
+        "era": "Edo period",
+        "movement": "Ukiyo-e"
+      }
+    },
+    {
+      "id": "clara-mendes-studio",
+      "slug": "clara-mendes-studio",
+      "name": "Clara Mendes Studio",
+      "sortName": "Clara Mendes Studio",
+      "aliases": [],
+      "kind": "studio",
+      "bio": "Studio works are made with generative image tools from Clara Mendes briefs, then selected and prepared for print by the studio. They are labelled as generated wherever they appear.",
+      "bioSources": [],
+      "curatorNote": "",
+      "approval": {
+        "approved": false
+      }
+    }
+  ],
+  "artworks": [
+    {
+      "id": "met-45434",
+      "artistId": "katsushika-hokusai",
+      "title": "Under the Wave off Kanagawa (Kanagawa oki nami ura), also known as The Great Wave, from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "shortTitle": "The Great Wave off Kanagawa",
+      "date": "ca. 1830–32",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "10 1/8 x 14 15/16 in. (25.7 x 37.9 cm)",
+      "series": "Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "45434",
+        "accessionNumber": "JP1847",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/45434",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/45434",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP130155.jpg",
+        "artistDisplayName": "Katsushika Hokusai",
+        "artistPrefix": "",
+        "creditLine": "H. O. Havemeyer Collection, Bequest of Mrs. H. O. Havemeyer, 1929",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-45434.json",
+        "fetchedAt": "2026-10-09T13:03:16.400Z",
+        "metadataSha256": "eddd9f43c0d80b176c53a895ef2776f8d77010ce5ac945a3bdeb043a2bc8d72e"
+      },
+      "original": {
+        "fileName": "met-45434.jpg",
+        "sha256": "cbb9988f2f18b9180a1cc0cf5dbb0e3bbf8f2e85d17930cf6ca9ab36fac36303",
+        "bytes": 2342637,
+        "contentType": "image/jpeg",
+        "width": 3859,
+        "height": 2594
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    }
+  ]
+}

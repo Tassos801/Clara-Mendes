@@ -29,11 +29,38 @@ in-progress build work was saved.
   - Met and AIC open-access APIs are reachable from this PC (checked with
     Hokusai's Great Wave, Met 45434 / AIC 24645).
 
+- **Milestone 1: registry and Met sourcing (local only, no Shopify).**
+  - `data/art-registry.json` plus `app/lib/artRegistry.ts`: artists and
+    artworks with stable ids, owner approval for artists, separate
+    rights/master reviews with who and when, a rights screen (object-level
+    public-domain flag, life + 70 by year, attribution match, no qualified
+    attributions) and a validator.
+  - `npm run museum -- status | search | fetch | qualify`
+    (`scripts/museum.mjs`, `scripts/lib/museum-met.mjs`). Raw Met records
+    are committed under `data/museum-evidence/` with their sha256; originals
+    are cached under `<launchDir>/museum/originals/` and re-fetchable.
+    `review` and `approve-artist` record owner decisions only.
+  - `scripts/lib/museum-layout.mjs`: full-composition layouts on white paper
+    in the artwork's orientation. Verdicts: ≥300 ppi qualified, 150–299 needs
+    an owner exception, <150 unsupported.
+  - Artists registered (all unapproved): Katsushika Hokusai, Utagawa
+    Hiroshige, Clara Mendes Studio.
+  - First artwork end to end: `met-45434` The Great Wave. The original is
+    3859×2594. The rights screen passes, and the owner rights and master
+    reviews are pending. It qualifies for 8×10 only (427 ppi); 16×20 is
+    213 ppi and 20×24 is 179 ppi, so both need an exception.
+  - Tests: `scripts/museumArt.node-test.mjs` (13).
+- API facts (2026-10-09): Met `/v1/search` was retired 2026-10-01; use
+  `/v1.1/search` (offset/limit, max 500 per page, first 10,000 results only).
+  The Met website returns 429 to scripts, but its API does not. AIC's API
+  JSON works, but its IIIF image server serves a Cloudflare bot challenge
+  (403) to scripts, so AIC is not used for images and the challenge must not
+  be bypassed.
+
 ## Current work
 
-- Artist/artwork registry with stable IDs, plus museum sourcing (Met first)
-  that records provenance, rights evidence and checksums. Local only.
-- Size qualification for bordered full-composition layouts at 300 ppi.
+- Link print-catalog entries to artworks/artists (museum collections) with
+  bordered full-composition print files and museum-appropriate copy and tags.
 - Artist browsing (`/artists`, `/artists/<slug>`) derived from the same
   print-catalog records and release gate.
 
