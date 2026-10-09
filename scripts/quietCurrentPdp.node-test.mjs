@@ -85,7 +85,9 @@ test('activewear shipping lists every zone once, from €3.99 to Cyprus', () => 
 test('only Quiet Current carries its own collection hero', () => {
   const hero = collectionHero('quiet-current');
   assert.ok(hero);
-  assert.match(hero.subtitle ?? '', /Shipping from €3\.99, one fee per order/);
+  assert.match(hero.subtitle ?? '', /Clothing shipping from €3\.99, one fee per order/);
+  // The print is a digital watercolour-style design, never a painting.
+  assert.doesNotMatch(hero.subtitle ?? '', /painted|painting/i);
   assert.equal(collectionHero('Quiet-Current'), hero);
   assert.equal(collectionHero('all'), null);
   assert.equal(collectionHero(undefined), null);

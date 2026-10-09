@@ -14,22 +14,21 @@ import {clothingCategories, clothingCapsules} from '~/lib/clothing';
 import {
   CLOTHING_SORTS,
   allMadeToOrder,
-  clothingDisplayImage,
-  clothingDisplayTitle,
   clothingFilterUrl,
   clothingLooks,
-  clothingProductUrl,
-  clothingSizeRange,
+  clothingSwatchBackground,
   selectClothing,
   showClothingTools,
 } from '~/lib/clothingPresentation';
 import {
-  CLOTHING_HERO_ACCENT,
+  CLOTHING_PAGE_ACCENT,
+  CLOTHING_PAGE_HERO,
   capsuleStory,
   lookAccent,
 } from '~/lib/clothingEditorial';
 import {isOffThemeCollectionHandle} from '~/lib/catalogFilters';
 import {
+  APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
   APPAREL_SHIPPING_FROM_EUR,
   isQuietCurrentProduct,
   RETURN_WINDOW_DAYS,
@@ -42,14 +41,14 @@ import {
 } from '~/lib/seo';
 
 const DESCRIPTION =
-  'Clara Mendes Clothing: watercolour paintings printed on clothing for movement and everyday wear.';
+  'Clara Mendes Clothing: leggings, a sports bra, biker shorts and a tank top with a watercolour-style print, made to order in Moss / Mist and Clay / Oat.';
 
 export const meta: Route.MetaFunction = ({data}) =>
   buildSeoMeta({
     title: 'Clothing | Clara Mendes',
     description: DESCRIPTION,
     url: data?.seoUrl || 'https://shopclaramendes.com/clothing',
-    image: data?.heroProduct?.featuredImage?.url,
+    image: data?.products?.[0]?.featuredImage?.url,
     noIndex: !data?.catalogTotal,
   });
 
@@ -76,11 +75,11 @@ export async function loader({context, request}: Route.LoaderArgs) {
     capsules[0] ??
     null;
   const featuredProducts = featured ? inCapsule(featured.handle) : [];
-  const story = capsuleStory(featured?.handle);
-  // Verified shipping fees exist only for the released Quiet Current pieces.
-  const knownShipping = products.every((product) =>
-    isQuietCurrentProduct(product.handle),
-  );
+  // Verified processing times and shipping fees exist only for the released
+  // Quiet Current pieces; anything else defers to the product page.
+  const knownTerms =
+    products.length > 0 &&
+    products.every((product) => isQuietCurrentProduct(product.handle));
   return {
     ...selection,
     categories: clothingCategories(
@@ -89,13 +88,17 @@ export async function loader({context, request}: Route.LoaderArgs) {
     capsules,
     catalogTotal: products.length,
     featured,
-    story,
-    heroProduct: featuredProducts[0] ?? products[0] ?? null,
-    looks: clothingLooks(featuredProducts.length ? featuredProducts : products),
+    story: capsuleStory(featured?.handle),
+    colourways: clothingLooks(featuredProducts),
+    everyPieceInEveryColourway:
+      featuredProducts.length > 0 &&
+      clothingLooks(featuredProducts).every(
+        (look) => look.pieces.length === featuredProducts.length,
+      ),
     showTools: showClothingTools(products.length) || Boolean(selection.category),
-    sizeRange: clothingSizeRange(products),
     madeToOrder: allMadeToOrder(products),
-    shippingFrom: knownShipping ? APPAREL_SHIPPING_FROM_EUR : null,
+    processing: knownTerms ? APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS : null,
+    shippingFrom: knownTerms ? APPAREL_SHIPPING_FROM_EUR : null,
     seoUrl: getCanonicalUrl(request, '/clothing'),
   };
 }
@@ -106,17 +109,9 @@ export default function Clothing() {
   const submit = useSubmit();
   const href = (key: 'category' | 'capsule', value: string) =>
     clothingFilterUrl(params, key, value);
-  const heroImage = data.heroProduct
-    ? clothingDisplayImage(data.heroProduct)
-    : null;
   const looksImage = data.story?.looksImage;
   const more = new URLSearchParams(params);
   more.set('page', String(data.page + 1));
-  const summary = [
-    `${data.catalogTotal} ${data.catalogTotal === 1 ? 'piece' : 'pieces'}`,
-    data.sizeRange ? `Sizes ${data.sizeRange}` : null,
-    data.madeToOrder ? 'Made to order' : null,
-  ].filter(Boolean);
   return (
     <div className="clothing-page">
       <StructuredData
@@ -135,93 +130,44 @@ export default function Clothing() {
           }),
         ]}
       />
-      <section className="clothing-hero" aria-labelledby="clothing-title">
+
+      <section
+        className={`clothing-hero${looksImage ? '' : ' clothing-hero--text'}`}
+        aria-labelledby="clothing-title"
+      >
         <div className="clothing-hero-copy">
           <nav className="clothing-breadcrumb" aria-label="Breadcrumb">
             <Link to="/">Home</Link>
             <span aria-hidden="true">/</span>
             <span aria-current="page">Clothing</span>
           </nav>
-          <p className="clothing-eyebrow">Clara Mendes Clothing</p>
-          <h1 id="clothing-title">
-            Watercolour,
-            <br />
-            <em>worn.</em>
-          </h1>
-          <p className="clothing-hero-description">
-            Clara Mendes paintings, printed on clothing for movement and
-            everyday wear.
-          </p>
-          <a className="clothing-link" href="#pieces">
-            Explore the collection <span aria-hidden="true">↘</span>
-          </a>
+          <h1 id="clothing-title">{CLOTHING_PAGE_HERO.title}</h1>
+          <p className="clothing-hero-text">{CLOTHING_PAGE_HERO.text}</p>
+          {data.catalogTotal ? (
+            <a className="primary-button clothing-hero-cta" href="#pieces">
+              Shop clothing
+            </a>
+          ) : null}
           <img
-            className="clothing-hero-botanical"
-            src={CLOTHING_HERO_ACCENT}
+            className="clothing-hero-art"
+            src={CLOTHING_PAGE_ACCENT.src}
+            width={CLOTHING_PAGE_ACCENT.width}
+            height={CLOTHING_PAGE_ACCENT.height}
             alt=""
-            width="1536"
-            height="1024"
           />
         </div>
-        <div className="clothing-hero-visual">
-          {looksImage && data.featured ? (
-            <Link
-              to={`/collections/${data.featured.handle}`}
-              className="clothing-hero-photo"
-              prefetch="intent"
-            >
-              <img
-                src={looksImage.src}
-                alt={looksImage.alt}
-                width={looksImage.width}
-                height={looksImage.height}
-                fetchPriority="high"
-              />
-              <span>
-                {data.featured.title} <span aria-hidden="true">↗</span>
-              </span>
-            </Link>
-          ) : heroImage && data.heroProduct ? (
-            <Link
-              to={clothingProductUrl(data.heroProduct)}
-              className="clothing-hero-photo"
-              prefetch="intent"
-            >
-              <Image
-                data={heroImage}
-                alt={heroImage.altText || data.heroProduct.title}
-                sizes="(min-width: 600px) 50vw, 100vw"
-                loading="eager"
-              />
-              <span>
-                {clothingDisplayTitle(data.heroProduct)}{' '}
-                <span aria-hidden="true">↗</span>
-              </span>
-            </Link>
-          ) : (
-            <div className="clothing-hero-art">
-              <img
-                src={CLOTHING_HERO_ACCENT}
-                alt="An olive branch painted in moss green and soft mineral washes"
-                width="1536"
-                height="1024"
-              />
-            </div>
-          )}
-          <div className="clothing-hero-caption">
-            <span>
-              {data.featured
-                ? [
-                    data.story ? `Collection ${data.story.number}` : null,
-                    data.featured.title,
-                  ]
-                    .filter(Boolean)
-                    .join(' / ')
-                : 'The clothing collection'}
-            </span>
-            {heroImage || looksImage ? <span>Digital mockups</span> : null}
-          </div>
-        </div>
+        {looksImage ? (
+          <figure className="clothing-hero-media">
+            <img
+              src={looksImage.src}
+              alt={looksImage.alt}
+              width={looksImage.width}
+              height={looksImage.height}
+              fetchPriority="high"
+            />
+            <figcaption>{looksImage.caption}</figcaption>
+          </figure>
+        ) : null}
       </section>
 
       <section
@@ -229,14 +175,11 @@ export default function Clothing() {
         className="clothing-shop"
         aria-labelledby="clothing-pieces-title"
       >
-        <div className="clothing-section-heading">
-          <div>
-            <p className="clothing-eyebrow">All clothing</p>
-            <h2 id="clothing-pieces-title">
-              The <em>pieces.</em>
-            </h2>
-          </div>
-          <p>{summary.join(' · ')}</p>
+        <div className="clothing-shop-heading">
+          <h2 id="clothing-pieces-title">All clothing</h2>
+          <p>
+            {data.total} {data.total === 1 ? 'piece' : 'pieces'}
+          </p>
         </div>
         {data.showTools ? (
           <div className="clothing-toolbar">
@@ -250,7 +193,7 @@ export default function Clothing() {
                   !data.category && !data.capsule ? 'page' : undefined
                 }
               >
-                All clothing <span>{data.catalogTotal}</span>
+                All <span>{data.catalogTotal}</span>
               </Link>
               {data.categories.map((category) => (
                 <Link
@@ -302,12 +245,11 @@ export default function Clothing() {
             className="clothing-capsule-filter"
             aria-label="Clothing collections"
           >
-            <span>Collection</span>
             <Link
               to={href('capsule', '')}
               aria-current={!data.capsule ? 'page' : undefined}
             >
-              All
+              All collections
             </Link>
             {data.capsules.map((capsule) => (
               <Link
@@ -333,9 +275,8 @@ export default function Clothing() {
                 />
               ))}
             </div>
-            <p className="clothing-product-note">
-              Images are supplier digital mockups, not photographs. Each
-              product page has more views, the size guide, and fabric and care.
+            <p className="clothing-note">
+              Product images are digital mockups of the print, not photographs.
             </p>
             {data.hasMore ? (
               <Link
@@ -343,8 +284,7 @@ export default function Clothing() {
                 to={`/clothing?${more}#pieces`}
                 preventScrollReset
               >
-                Show more pieces ({data.products.length} of {data.total}){' '}
-                <span aria-hidden="true">↓</span>
+                Show more ({data.products.length} of {data.total})
               </Link>
             ) : null}
           </>
@@ -361,11 +301,10 @@ export default function Clothing() {
                 : 'New pieces will appear here when they are ready.'}
             </p>
             <Link
-              className="clothing-link"
+              className="clothing-text-link"
               to={data.catalogTotal ? '/clothing#pieces' : '/collections/all'}
             >
-              {data.catalogTotal ? 'See all clothing' : 'Explore the shop'}{' '}
-              <span aria-hidden="true">↗</span>
+              {data.catalogTotal ? 'See all clothing' : 'Explore the shop'}
             </Link>
           </div>
         )}
@@ -373,138 +312,145 @@ export default function Clothing() {
 
       {data.featured ? (
         <section
-          className="clothing-capsule"
-          aria-labelledby="clothing-capsule-title"
+          className={`clothing-collection${data.story?.band ? ' clothing-collection--band' : ''}`}
+          aria-labelledby="clothing-collection-title"
         >
-          <div className="clothing-capsule-art">
-            {data.story ? (
-              <>
-                <img
-                  src={data.story.art.src}
-                  alt={data.story.art.alt}
-                  width={data.story.art.width}
-                  height={data.story.art.height}
-                  loading="lazy"
-                />
-                <span className="clothing-art-caption">
-                  {data.story.art.caption}
-                </span>
-              </>
-            ) : null}
-          </div>
-          <div className="clothing-capsule-copy">
-            <p className="clothing-eyebrow">
-              {data.story ? `Collection ${data.story.number} · ` : ''}
-              {data.featured.count}{' '}
-              {data.featured.count === 1 ? 'piece' : 'pieces'}
-            </p>
-            <h2 id="clothing-capsule-title">
-              {data.featured.title.split(' ').slice(0, -1).join(' ')}
-              {data.featured.title.includes(' ') ? <br /> : null}
-              <em>{data.featured.title.split(' ').at(-1)}.</em>
-            </h2>
-            {data.story?.paragraphs.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
+          {data.story?.band ? (
+            <img
+              className="clothing-collection-band"
+              src={data.story.band.src}
+              width={data.story.band.width}
+              height={data.story.band.height}
+              alt=""
+              loading="lazy"
+            />
+          ) : null}
+          <div className="clothing-collection-copy">
+            <p className="clothing-eyebrow">The collection</p>
+            <h2 id="clothing-collection-title">{data.featured.title}</h2>
+            {data.story ? <p>{data.story.intro}</p> : null}
             <Link
-              className="clothing-link"
+              className="clothing-text-link"
               to={`/collections/${data.featured.handle}`}
               prefetch="intent"
             >
-              Shop {data.featured.title} <span aria-hidden="true">↗</span>
+              View the {data.featured.title} collection
             </Link>
           </div>
-        </section>
-      ) : null}
-
-      {data.looks.length ? (
-        <section
-          className="clothing-looks"
-          aria-labelledby="clothing-looks-title"
-        >
-          <div className="clothing-section-heading">
-            <div>
-              <p className="clothing-eyebrow">Coordinated looks</p>
-              <h2 id="clothing-looks-title">
-                Wear it <em>together.</em>
-              </h2>
+          {data.colourways.length > 1 ? (
+            <div className="clothing-colourways">
+              <h3>Choose a colourway</h3>
+              <p className="clothing-colourways-note">
+                {data.everyPieceInEveryColourway
+                  ? `Every piece comes in ${data.colourways.length === 2 ? 'both' : 'each'} colourway${data.colourways.length === 2 ? 's' : ''} and is sold separately.`
+                  : 'Pieces are sold separately.'}
+              </p>
+              {data.colourways.map((look) => {
+                const tone = clothingSwatchBackground(look.colour);
+                const accent = lookAccent(look.colour);
+                return (
+                  <div className="clothing-colourway" key={look.colour}>
+                    {accent ? (
+                      <img
+                        className="clothing-colourway-fern"
+                        src={accent}
+                        width="391"
+                        height="900"
+                        alt=""
+                        loading="lazy"
+                      />
+                    ) : null}
+                    <p className="clothing-colourway-name">
+                      {tone ? (
+                        <span
+                          className="clothing-colourway-dot"
+                          style={{background: tone}}
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      {look.colour}
+                    </p>
+                    <ul>
+                      {look.pieces.map((piece) => (
+                        <li key={piece.id}>
+                          <Link
+                            to={piece.url}
+                            prefetch="intent"
+                            aria-label={`${piece.title} in ${look.colour}`}
+                            title={piece.title}
+                          >
+                            {piece.image ? (
+                              <Image
+                                data={piece.image}
+                                alt=""
+                                aspectRatio="4/5"
+                                sizes="(min-width: 800px) 9vw, 22vw"
+                                loading="lazy"
+                              />
+                            ) : (
+                              <span className="clothing-image-pending">
+                                {piece.title}
+                              </span>
+                            )}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                );
+              })}
             </div>
-            <p>Choose a colourway and build the set.</p>
-          </div>
-          {data.looks.map((look) => {
-            const accent = lookAccent(look.colour);
-            const id = `look-${look.colour.replace(/[^a-z0-9]+/gi, '-').toLowerCase()}`;
-            return (
-              <article className="clothing-look" key={look.colour} aria-labelledby={id}>
-                <header className="clothing-look-header">
-                  {accent ? (
-                    <img src={accent} alt="" loading="lazy" />
-                  ) : null}
-                  <h3 id={id}>{look.colour}</h3>
-                  <span>
-                    {look.pieces.length}{' '}
-                    {look.pieces.length === 1 ? 'piece' : 'pieces'}
-                  </span>
-                </header>
-                <ul className="clothing-look-pieces">
-                  {look.pieces.map((piece) => (
-                    <li key={piece.id}>
-                      <Link to={piece.url} prefetch="intent">
-                        {piece.image ? (
-                          <Image
-                            data={piece.image}
-                            alt={`${piece.title} in ${look.colour}`}
-                            sizes="(min-width: 800px) 18vw, 45vw"
-                            loading="lazy"
-                          />
-                        ) : (
-                          <span className="clothing-image-pending">
-                            Image coming soon
-                          </span>
-                        )}
-                        <span>
-                          {piece.title} <span aria-hidden="true">↗</span>
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            );
-          })}
+          ) : null}
         </section>
       ) : null}
 
-      <aside className="clothing-help" aria-label="Sizing, care and delivery">
-        <div>
-          <span>01</span>
-          <h3>{data.sizeRange ? `Sizes ${data.sizeRange}` : 'Sizing'}</h3>
-          <p>A size guide on each product page.</p>
-        </div>
-        <div>
-          <span>02</span>
-          <h3>{data.madeToOrder ? 'Made to order' : 'Fabric and care'}</h3>
-          <p>
-            {data.madeToOrder
-              ? 'Printed, cut and sewn for you after you order. Fabric and care are listed on each piece.'
-              : 'Fabric and care are listed on each product page.'}
-          </p>
-        </div>
-        <div>
-          <span>03</span>
-          <h3>Shipping and returns</h3>
-          <p>
-            {data.shippingFrom
-              ? `Shipping from €${data.shippingFrom}, one fee per order. `
-              : 'Shipping is calculated at checkout. '}
-            {RETURN_WINDOW_DAYS}-day returns.
-          </p>
-          <div className="clothing-help-links">
-            <Link to="/policies/shipping-policy">Shipping</Link>
-            <Link to="/policies/refund-policy">Returns</Link>
-          </div>
-        </div>
-      </aside>
+      {data.catalogTotal ? (
+        <section
+          className="clothing-help"
+          aria-labelledby="clothing-help-title"
+        >
+          <h2 id="clothing-help-title">Before you order</h2>
+          <dl>
+            <div>
+              <dt>Size and fit</dt>
+              <dd>
+                Each product page lists the sizes for that piece and has a
+                size guide.
+              </dd>
+            </div>
+            <div>
+              <dt>{data.madeToOrder ? 'Made to order' : 'Fabric and care'}</dt>
+              <dd>
+                {data.madeToOrder
+                  ? `Printed, cut and sewn after you order${
+                      data.processing
+                        ? `; processing takes ${data.processing} business days`
+                        : ''
+                    }. Fabric and care are on each product page.`
+                  : 'Fabric and care are on each product page.'}
+              </dd>
+            </div>
+            <div>
+              <dt>Shipping</dt>
+              <dd>
+                {data.shippingFrom
+                  ? `One clothing shipping fee per order, from €${data.shippingFrom}. Other items ship at their own rates. Checkout confirms the fee for your address.`
+                  : 'Checkout confirms the shipping fee for your address.'}{' '}
+                <Link to="/policies/shipping-policy">Shipping policy</Link>
+              </dd>
+            </div>
+            <div>
+              <dt>Returns</dt>
+              <dd>
+                Within {RETURN_WINDOW_DAYS} days of delivery, for unused items in
+                their original packaging. Return postage is yours unless the
+                item is faulty, damaged or wrong.{' '}
+                <Link to="/policies/refund-policy">Returns policy</Link>
+              </dd>
+            </div>
+          </dl>
+        </section>
+      ) : null}
     </div>
   );
 }
@@ -512,13 +458,11 @@ export default function Clothing() {
 export function ErrorBoundary() {
   return (
     <div className="clothing-page clothing-empty clothing-error">
-      <p className="clothing-eyebrow">Clara Mendes Clothing</p>
       <h1>The clothing page did not load.</h1>
       <p>Please try again in a moment.</p>
-      <a className="clothing-link" href="/clothing">
-        Try again ↗
+      <a className="clothing-text-link" href="/clothing">
+        Try again
       </a>
-      <Link to="/collections/all">Explore the shop</Link>
     </div>
   );
 }

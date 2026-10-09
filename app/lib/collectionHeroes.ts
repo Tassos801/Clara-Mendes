@@ -16,7 +16,7 @@ export type CollectionHero = {
 const HEROES: Record<string, CollectionHero> = {
   'quiet-current': {
     eyebrow: 'Activewear · the movement edit',
-    subtitle: `Leggings, studio bra, biker shorts and tank, painted with mist after Clara Mendes. Moss / Mist and Clay / Oat, XS–XL. Shipping from €${APPAREL_SHIPPING_FROM_EUR}, one fee per order.`,
+    subtitle: `Leggings, studio bra, biker shorts and tank with a watercolour-style mist print. Moss / Mist and Clay / Oat, XS–XL. Clothing shipping from €${APPAREL_SHIPPING_FROM_EUR}, one fee per order.`,
     image: '/images/quiet-current/collection-hero.jpg',
     imageMobile: '/images/quiet-current/collection-hero-mobile.jpg',
     alt: 'Quiet Current studio bra and leggings in Moss / Mist, and tank and leggings in Clay / Oat, laid on the collection’s mist-and-fern print',

@@ -51,3 +51,8 @@ Masters are written as RGBA PNG (ferns at most 2400 px on the long edge, strata 
 - `../../public/images/clothing/quiet-current-looks.webp`: 1360 × 1000 px, WebP quality 84.
 - Cropped (x 1200–2560, full height) from `public/images/quiet-current/collection-hero.jpg`, the `/collections/quiet-current` hero made in PR #117. That image places the actual Printful flat-front mockups (Moss studio bra and leggings, Clay studio tank and leggings) on a Mineral Wash backdrop.
 - The garments are supplier digital mockups, not photographs. The clothing page labels the image "Digital mockups".
+
+## Smaller olive for the clothing page
+
+- `../../public/images/clothing/olive-mineral-720.webp`: 720 × 480 px, WebP quality 80, made from `olive-mineral-master.png` (78 KB instead of 288 KB). Used as the hero accent on `/clothing`; the homepage keeps the full-size file.
+

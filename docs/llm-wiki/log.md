@@ -1465,3 +1465,25 @@ Sources: [Clothing](modules/clothing.md),
 [Clothing destination guide](../clothing-destination.md),
 [Catalogue audit](../audits/clothing-catalog-2026-10-08.md),
 `docs/audits/clothing-catalog-2026-10-08.json`.
+
+## 2026-10-09 - Clothing page refined (branch claude/clothing-refine-2026-10-09)
+
+Made `/clothing` calmer and more accurate. It now has a compact hero with one
+"Shop clothing" action, the grid next, one Quiet Current section with a small
+colourway chooser, and a short "Before you order" list. The watercolour art
+stays but is placed with restraint: a smaller olive under the hero button, a
+mineral-wash band over the collection section, and a fern beside each
+colourway. The "Wear it together" repeat of all four pieces was removed. Cards show the name, price in euros, colour dots with the
+selected colour name, that piece's sizes and a visible "Choose size" link.
+
+Copy corrections: the print is a code-generated watercolour-style design
+inspired by *Where Mist Rests* (an AI-generated print), not a painting. Returns
+now state the policy conditions, and shipping says the one fee covers the
+clothing only. The Quiet Current collection subtitle no longer says "painted".
+See [Copy evidence](../clothing-destination.md#copy-evidence). No Shopify data
+changed.
+
+Sources: `app/routes/clothing.tsx`, `app/lib/clothingEditorial.ts`,
+`app/components/ClothingProductCard.tsx`, `app/styles/clothing.css`,
+[Clothing destination guide](../clothing-destination.md).
+
