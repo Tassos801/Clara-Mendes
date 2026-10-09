@@ -100,6 +100,18 @@
 .clothing-hero-cta {
   margin-top: 28px;
 }
+/* Watercolour accents sit in space the text never uses, never behind it. */
+.clothing-hero-copy {
+  isolation: isolate;
+  position: relative;
+}
+.clothing-hero-art {
+  display: block;
+  height: auto;
+  margin: 24px 0 0 auto;
+  pointer-events: none;
+  width: clamp(200px, 20vw, 280px);
+}
 .clothing-hero-media {
   margin: 0;
 }
@@ -361,6 +373,20 @@
   padding-bottom: clamp(40px, 5vw, 64px);
   padding-top: clamp(40px, 5vw, 64px);
 }
+.clothing-collection--band {
+  padding-top: clamp(20px, 3vw, 32px);
+}
+.clothing-collection-band {
+  display: block;
+  grid-column: 1 / -1;
+  height: clamp(72px, 10vw, 140px);
+  margin-bottom: clamp(-8px, -1vw, 0px);
+  mix-blend-mode: multiply;
+  object-fit: cover;
+  object-position: center 78%;
+  pointer-events: none;
+  width: 100%;
+}
 /* Full-bleed background while the content keeps the page width. */
 .clothing-page > .clothing-collection {
   max-width: none;
@@ -398,6 +424,17 @@
 }
 .clothing-colourway {
   margin-top: 20px;
+  max-width: 600px;
+  position: relative;
+}
+.clothing-colourway-fern {
+  height: 64px;
+  opacity: 0.8;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  top: -12px;
+  width: auto;
 }
 .clothing-colourway-name {
   align-items: center;
@@ -425,7 +462,7 @@
   background: var(--color-paper);
   display: block;
 }
-.clothing-colourway img {
+.clothing-colourway li img {
   aspect-ratio: 4 / 5;
   display: block;
   height: auto;
@@ -530,6 +567,29 @@
   }
   .clothing-hero-cta {
     margin-top: 20px;
+  }
+  .clothing-hero {
+    padding-bottom: 40px;
+  }
+  /* app.css makes buttons full width on phones; keep this one compact so
+     the olive can sit beside it. */
+  .clothing-page .clothing-hero-cta {
+    padding: 0 28px;
+    width: auto;
+  }
+  /* Beside the button, below the text, clear of both. */
+  .clothing-hero-art {
+    bottom: -36px;
+    margin: 0;
+    position: absolute;
+    right: -8px;
+    width: 150px;
+    /* On the narrowest phones the sprig tucks behind the solid button. */
+    z-index: -1;
+  }
+  .clothing-colourway-fern {
+    height: 52px;
+    top: -10px;
   }
   .clothing-shop-heading {
     margin-bottom: 18px;

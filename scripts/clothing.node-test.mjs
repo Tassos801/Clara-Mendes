@@ -208,7 +208,7 @@ const {
   allMadeToOrder, clothingFeaturePicks, clothingLooks, clothingSizeRange,
   clothingSwatchBackground, showClothingTools, CLOTHING_TOOLS_MIN_PRODUCTS,
 } = await import('../app/lib/clothingPresentation.ts');
-const {capsuleStory, CLOTHING_PAGE_HERO} = await import('../app/lib/clothingEditorial.ts');
+const {capsuleStory, CLOTHING_PAGE_HERO, CLOTHING_PAGE_ACCENT, lookAccent} = await import('../app/lib/clothingEditorial.ts');
 
 const variantFor = (handle, colour, size = 'XS') => ({
   id: `gid://shopify/ProductVariant/${handle}-${colour}`,
@@ -292,7 +292,14 @@ test('editorial copy is optional per capsule and never calls the print hand-pain
 test('every page image the editorial config names exists in public/', async () => {
   const {existsSync} = await import('node:fs');
   const story = capsuleStory('quiet-current');
-  for (const src of [story.looksImage.src, '/images/clothing/olive-mineral.webp']) {
+  for (const src of [story.looksImage.src, story.band.src, CLOTHING_PAGE_ACCENT.src, lookAccent('Moss / Mist'), lookAccent('Clay / Oat'), '/images/clothing/olive-mineral.webp']) {
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
 });
+
+test('colourway ferns match the colourway name and unknown colours get none', () => {
+  assert.equal(lookAccent('Moss / Mist'), '/images/clothing/fern-moss.webp');
+  assert.equal(lookAccent('Clay / Oat'), '/images/clothing/fern-clay.webp');
+  assert.equal(lookAccent('Ink'), null);
+});
+

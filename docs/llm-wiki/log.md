@@ -1470,9 +1470,10 @@ Sources: [Clothing](modules/clothing.md),
 
 Made `/clothing` calmer and more accurate. It now has a compact hero with one
 "Shop clothing" action, the grid next, one Quiet Current section with a small
-colourway chooser, and a short "Before you order" list. The decorative olive,
-fern and strata art and the "Wear it together" repeat of all four pieces were
-removed from the page. Cards show the name, price in euros, colour dots with the
+colourway chooser, and a short "Before you order" list. The watercolour art
+stays but is placed with restraint: a smaller olive under the hero button, a
+mineral-wash band over the collection section, and a fern beside each
+colourway. The "Wear it together" repeat of all four pieces was removed. Cards show the name, price in euros, colour dots with the
 selected colour name, that piece's sizes and a visible "Choose size" link.
 
 Copy corrections: the print is a code-generated watercolour-style design

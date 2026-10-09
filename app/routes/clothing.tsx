@@ -20,7 +20,12 @@ import {
   selectClothing,
   showClothingTools,
 } from '~/lib/clothingPresentation';
-import {CLOTHING_PAGE_HERO, capsuleStory} from '~/lib/clothingEditorial';
+import {
+  CLOTHING_PAGE_ACCENT,
+  CLOTHING_PAGE_HERO,
+  capsuleStory,
+  lookAccent,
+} from '~/lib/clothingEditorial';
 import {isOffThemeCollectionHandle} from '~/lib/catalogFilters';
 import {
   APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
@@ -143,6 +148,13 @@ export default function Clothing() {
               Shop clothing
             </a>
           ) : null}
+          <img
+            className="clothing-hero-art"
+            src={CLOTHING_PAGE_ACCENT.src}
+            width={CLOTHING_PAGE_ACCENT.width}
+            height={CLOTHING_PAGE_ACCENT.height}
+            alt=""
+          />
         </div>
         {looksImage ? (
           <figure className="clothing-hero-media">
@@ -300,9 +312,19 @@ export default function Clothing() {
 
       {data.featured ? (
         <section
-          className="clothing-collection"
+          className={`clothing-collection${data.story?.band ? ' clothing-collection--band' : ''}`}
           aria-labelledby="clothing-collection-title"
         >
+          {data.story?.band ? (
+            <img
+              className="clothing-collection-band"
+              src={data.story.band.src}
+              width={data.story.band.width}
+              height={data.story.band.height}
+              alt=""
+              loading="lazy"
+            />
+          ) : null}
           <div className="clothing-collection-copy">
             <p className="clothing-eyebrow">The collection</p>
             <h2 id="clothing-collection-title">{data.featured.title}</h2>
@@ -325,8 +347,19 @@ export default function Clothing() {
               </p>
               {data.colourways.map((look) => {
                 const tone = clothingSwatchBackground(look.colour);
+                const accent = lookAccent(look.colour);
                 return (
                   <div className="clothing-colourway" key={look.colour}>
+                    {accent ? (
+                      <img
+                        className="clothing-colourway-fern"
+                        src={accent}
+                        width="391"
+                        height="900"
+                        alt=""
+                        loading="lazy"
+                      />
+                    ) : null}
                     <p className="clothing-colourway-name">
                       {tone ? (
                         <span

@@ -270,8 +270,13 @@ Nothing in this section has been done.
   only when every piece has the tag `Made to order`. Processing time and the
   clothing shipping fee show only while every piece is a released Quiet
   Current product; otherwise the page defers to checkout.
-- **The hero image** shows on screens 700 px and wider. On phones the hero is
-  text only so the grid starts sooner.
+- **The hero image** shows on screens 700 px and wider. On phones the hero has
+  no outfit image so the grid starts sooner.
+- **Watercolour accents** are decorative (empty alt text) and never sit behind
+  body text: a small olive watercolour under the hero button (beside it on
+  phones), a mineral-wash band across the top of the collection section (from
+  `CapsuleStory.band`), and a fern sprig beside each Moss or Clay colourway
+  (`lookAccent`). Sources and sizes: `assets/clothing/README.md`.
 - **An empty catalogue.** The page stays up with "Clothing is coming soon.",
   and it is marked noindex. The homepage section is not shown.
 - **Non-clothing.** Nothing outside the clothing rule can appear.
