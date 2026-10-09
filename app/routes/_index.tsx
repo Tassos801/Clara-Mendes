@@ -263,7 +263,7 @@ export default function Homepage() {
     products,
     seoUrl,
   } = useLoaderData<typeof loader>();
-  const {open} = useAside();
+  const {open, type: asideType} = useAside();
   const navigate = useNavigate();
   const quickShopProducts =
     featuredPrints.length === FEATURED_PRINT_HANDLES.length
@@ -439,6 +439,22 @@ export default function Homepage() {
 
         <div className="hm-ui-layer">
           <header className="hm-header-top">
+            {/* Phones get one calm row (menu, name, search, cart); the
+                site's own mobile menu lists every page. */}
+            <button
+              className="hm-icon-button hm-menu-button"
+              type="button"
+              onClick={() => open('mobile')}
+              aria-label="Open menu"
+              aria-expanded={asideType === 'mobile'}
+              aria-haspopup="dialog"
+            >
+              <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
+                <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" strokeWidth="1.3" />
+                <line x1="0" y1="6" x2="20" y2="6" stroke="currentColor" strokeWidth="1.3" />
+                <line x1="0" y1="11" x2="20" y2="11" stroke="currentColor" strokeWidth="1.3" />
+              </svg>
+            </button>
             <Link to="/" className="hm-nav-text hm-brand">
               Clara Mendes
             </Link>
@@ -473,6 +489,26 @@ export default function Homepage() {
                 Cart
               </button>
             </nav>
+            <div className="hm-header-icons">
+              <Link className="hm-icon-button" to="/search" aria-label="Search">
+                <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.3" />
+                  <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" strokeWidth="1.3" />
+                </svg>
+              </Link>
+              <button
+                className="hm-icon-button"
+                type="button"
+                onClick={() => open('cart')}
+                aria-label="Cart"
+                aria-haspopup="dialog"
+              >
+                <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 6.5h12l-1 11H5l-1-11Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                  <path d="M7 8V5.5a3 3 0 0 1 6 0V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
           </header>
 
           <div className="hm-hero-text">
@@ -1051,6 +1087,37 @@ html:has(.home-root) main {
   padding: 0;
 }
 
+.hm-icon-button {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--hm-text-main);
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  padding: 0;
+  pointer-events: auto;
+  transition: background 0.3s ease;
+  width: 44px;
+}
+
+.hm-icon-button:hover,
+.hm-icon-button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.hm-icon-button:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 1px;
+}
+
+/* Phone-only controls; the 768px query shows them. */
+.hm-menu-button,
+.hm-header-icons {
+  display: none;
+}
+
 .hm-brand {
   font-family: var(--hm-font-serif);
   font-size: 1.8rem;
@@ -1559,10 +1626,24 @@ html:has(.home-root) main {
   }
 
   .hm-header-top {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 14px;
+    border-radius: 999px;
+    gap: 2px;
+    justify-content: flex-start;
+    padding: 5px;
+  }
+
+  .hm-menu-button,
+  .hm-header-icons {
+    display: inline-flex;
+  }
+
+  .hm-header-icons {
+    margin-left: auto;
+  }
+
+  /* The text links move into the site's mobile menu. */
+  .hm-nav-group {
+    display: none;
   }
 
   .hm-brand {
@@ -1571,17 +1652,6 @@ html:has(.home-root) main {
     max-width: none;
   }
 
-  .hm-nav-group {
-    justify-content: space-between;
-    gap: 0.7rem;
-    width: 100%;
-  }
-
-  .hm-nav-group .hm-nav-text {
-    align-items: center;
-    display: inline-flex;
-    min-height: 44px;
-  }
 
   .hm-header-top .market-selector select {
     max-width: 74px;
@@ -1594,9 +1664,10 @@ html:has(.home-root) main {
   }
 
   .hm-brand.hm-nav-text {
-    font-size: 1.38rem;
-    line-height: 1.08;
+    font-size: 1.32rem;
+    line-height: 1;
     letter-spacing: -0.02em;
+    padding-left: 4px;
   }
 
   .hm-hero-text {
@@ -1615,9 +1686,17 @@ html:has(.home-root) main {
   }
 
   .hm-prompt-sub {
-    font-size: 0.64rem;
-    letter-spacing: 0.22em;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
     line-height: 1.8;
+    margin-inline: auto;
+    max-width: 30ch;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .hm-prompt-main {
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.18);
   }
 
   .hm-hero-actions {
@@ -1627,18 +1706,22 @@ html:has(.home-root) main {
   }
 
   .hm-hero-action {
-    min-height: 42px;
-    min-width: min(220px, 100%);
+    min-height: 46px;
+    width: min(240px, 100%);
   }
 
+  /* "Enter the shop" repeats "Shop the edit"; phones keep one action. */
   .hm-interaction-anchor {
-    bottom: 4.7rem;
-    gap: 1.35rem;
+    display: none;
   }
 
   .hm-coords {
     bottom: 1.8rem;
-    left: 2rem;
+    color: rgba(255, 255, 255, 0.72);
+    left: 0;
+    right: 0;
+    text-align: center;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   }
 
   .hm-cursor-dot,
@@ -1722,50 +1805,20 @@ html:has(.home-root) main {
 
 }
 
-@media (max-width: 480px) {
-  .hm-nav-group {
-    display: grid;
-    gap: 2px 8px;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .hm-nav-group .hm-nav-text {
-    grid-column: span 2;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .hm-nav-group .hm-nav-text:first-child:nth-last-child(5) ~ .hm-nav-text:nth-last-child(-n + 2) {
-    grid-column: span 3;
-  }
-}
-
 @media (max-width: 768px) and (max-height: 680px) {
   .hm-ui-layer {
     display: grid;
+    /* One full-width column; the flex layout's space-between would
+       otherwise shrink it to its content. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr) auto;
     padding: 1rem 1.25rem 2.2rem;
     row-gap: 8px;
   }
 
-  .hm-header-top {
-    border-radius: 20px;
-    gap: 0.65rem;
-    padding: 10px 12px;
-  }
-
   .hm-brand,
   .hm-brand.hm-nav-text {
     font-size: 1.25rem;
-  }
-
-  .hm-nav-group {
-    gap: 0.4rem;
-  }
-
-  .hm-nav-text {
-    font-size: 0.56rem;
-    letter-spacing: 0.13em;
   }
 
   .hm-hero-text {
@@ -1820,7 +1873,6 @@ html:has(.home-root) main {
   .hm-coords {
     bottom: 0.75rem;
     font-size: 0.62rem;
-    left: 1.25rem;
   }
 }
 

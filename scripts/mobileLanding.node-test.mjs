@@ -41,7 +41,23 @@ test('short mobile landing pages use a collision-free grid composition', () => {
 test('short mobile landing pages compact the hero without hiding its actions', () => {
   const css = getShortMobileCss();
 
-  assert.match(css, /\.hm-header-top\s*\{[^}]*gap:\s*0\.65rem;/s);
+  // One full-width column (the flex layout's space-between would shrink it).
+  assert.match(css, /\.hm-ui-layer\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
+  // The one-row phone header from the 768px rules is not overridden here.
+  assert.doesNotMatch(css, /\.hm-header-top\s*\{/);
   assert.match(css, /\.hm-hero-actions\s*\{[^}]*margin-top:\s*14px;/s);
   assert.match(css, /\.hm-hero-action\s*\{[^}]*min-height:\s*38px;/s);
 });
+
+test('phones get one calm header row that opens the site menu', () => {
+  const start = homepageSource.indexOf('@media (max-width: 768px) {');
+  assert.notEqual(start, -1);
+  const css = homepageSource.slice(start, homepageSource.indexOf('@media', start + 10));
+  assert.match(css, /\.hm-nav-group\s*\{[^}]*display:\s*none;/s);
+  assert.match(css, /\.hm-menu-button,\s*\.hm-header-icons\s*\{[^}]*display:\s*inline-flex;/s);
+  // "Enter the shop" repeats "Shop the edit" on phones.
+  assert.match(css, /\.hm-interaction-anchor\s*\{[^}]*display:\s*none;/s);
+  assert.match(homepageSource, /onClick=\{\(\) => open\('mobile'\)\}/);
+  assert.match(homepageSource, /aria-label="Open menu"/);
+});
+
