@@ -46,9 +46,12 @@ Before/after map and prepared Shopify changes:
   menu show only when the catalogue has more than 8 pieces
   (`CLOTHING_TOOLS_MIN_PRODUCTS` = 9) or a category is already selected. The
   capsule filter shows only with 2 or more capsules, or a selected capsule.
-  "Wear it together" groups pieces that share a colourway, using real variant
-  images. Editorial copy per capsule is in `app/lib/clothingEditorial.ts`; a
-  capsule without an entry gets a generic block.
+  Page order: a compact hero (image from 700 px up), the product grid, one
+  collection section with a "Choose a colourway" thumbnail chooser, and
+  "Before you order" (sizing, made to order, shipping, returns). Editorial copy
+  per capsule is in `app/lib/clothingEditorial.ts`; a capsule without an entry
+  gets a generic block. Copy rules and evidence:
+  [Copy evidence](../../clothing-destination.md#copy-evidence).
 - `app/routes/collections.clothing.tsx` redirects `/collections/clothing` to
   `/clothing` (301, query string kept). The homepage section is
   `app/components/ClothingFeature.tsx`; header, mobile menu and footer links are

@@ -208,7 +208,7 @@ const {
   allMadeToOrder, clothingFeaturePicks, clothingLooks, clothingSizeRange,
   clothingSwatchBackground, showClothingTools, CLOTHING_TOOLS_MIN_PRODUCTS,
 } = await import('../app/lib/clothingPresentation.ts');
-const {capsuleStory, lookAccent} = await import('../app/lib/clothingEditorial.ts');
+const {capsuleStory, CLOTHING_PAGE_HERO} = await import('../app/lib/clothingEditorial.ts');
 
 const variantFor = (handle, colour, size = 'XS') => ({
   id: `gid://shopify/ProductVariant/${handle}-${colour}`,
@@ -280,18 +280,19 @@ test('palette colourways get split swatches; unknown names fall back to text', (
   assert.equal(clothingSwatchBackground('Anything', '#123456'), '#123456');
 });
 
-test('editorial copy is optional per capsule and accents match colour names', () => {
-  assert.equal(capsuleStory('quiet-current')?.number, '01');
+test('editorial copy is optional per capsule and never calls the print hand-painted', () => {
+  const story = capsuleStory('quiet-current');
+  assert.ok(story?.intro);
   assert.equal(capsuleStory('meadow'), null);
-  assert.equal(lookAccent('Moss / Mist'), '/images/clothing/fern-moss.webp');
-  assert.equal(lookAccent('Clay / Oat'), '/images/clothing/fern-clay.webp');
-  assert.equal(lookAccent('Ink'), null);
+  const copy = [CLOTHING_PAGE_HERO.title, CLOTHING_PAGE_HERO.text, story.intro, story.looksImage.alt, story.looksImage.caption].join(' ');
+  assert.doesNotMatch(copy, /hand-?painted|painted on|paintings? printed/i);
+  assert.match(story.looksImage.caption, /digital mockups/i);
 });
 
 test('every page image the editorial config names exists in public/', async () => {
   const {existsSync} = await import('node:fs');
   const story = capsuleStory('quiet-current');
-  for (const src of [story.art.src, story.looksImage.src, lookAccent('Moss'), lookAccent('Clay'), '/images/clothing/olive-mineral.webp']) {
+  for (const src of [story.looksImage.src, '/images/clothing/olive-mineral.webp']) {
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
 });

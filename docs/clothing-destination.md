@@ -257,15 +257,21 @@ Nothing in this section has been done.
   filter.
 - **"Show more"** appears only when the current selection has more than 12
   pieces.
-- **"Wear it together"** groups pieces by a colourway they share, such as
-  Moss / Mist or Clay / Oat, using each colour's real variant image. A
-  colourway used by only one piece makes no group, and the section is hidden
-  when there are no groups. Colourways match on the exact colour option value.
-- **The capsule block** shows the capsule that holds the newest piece (or the
-  first capsule by name), and is hidden when there is no capsule.
-- **Summary line.** "Sizes XS–XL" shows only when every size
-  option is a standard size. "Made to order" shows only when every piece has
-  the tag `Made to order`.
+- **"Choose a colourway"** (inside the collection section) shows each
+  colourway shared by two or more of the featured capsule's pieces, as small
+  thumbnails that link to that colour on the product page. It says "Every
+  piece comes in both colourways and is sold separately" only when that is
+  true in the data; otherwise "Pieces are sold separately". There are no
+  bundles.
+- **The collection section** shows the capsule that holds the newest piece (or
+  the first capsule by name), and is hidden when there is no capsule.
+- **Product cards** show the sizes of that piece only ("Sizes XS–XL" when its
+  size option is a standard run). "Made to order" in "Before you order" shows
+  only when every piece has the tag `Made to order`. Processing time and the
+  clothing shipping fee show only while every piece is a released Quiet
+  Current product; otherwise the page defers to checkout.
+- **The hero image** shows on screens 700 px and wider. On phones the hero is
+  text only so the grid starts sooner.
 - **An empty catalogue.** The page stays up with "Clothing is coming soon.",
   and it is marked noindex. The homepage section is not shown.
 - **Non-clothing.** Nothing outside the clothing rule can appear.
@@ -273,6 +279,29 @@ Nothing in this section has been done.
   "Clothing" tab links to `/clothing` while the catalogue has a garment. A
   garment admitted by the tag with an unlisted type still shows its type as a
   tab (see [open questions](llm-wiki/open-questions.md)).
+
+## Copy evidence
+
+Checked on 9 October 2026 for the page copy. Keep these facts in mind when you
+change `app/lib/clothingEditorial.ts` or `app/routes/clothing.tsx`.
+
+| Claim on the page | Evidence |
+| --- | --- |
+| "watercolour-style design", "inspired by … Where Mist Rests" | The garment print is made by a procedural wash engine ("Procedural watercolour wash engine (original; no third-party imagery)", `v2/scripts/watercolour.py` in the Quiet Current design folder). *Where Mist Rests* is an AI-generated monochrome print (`data/print-catalog.json`, `docs/light-and-silence-launch.md`). Do not write "painted", "paintings" or "adapted from". |
+| Print placement (sides or outer leg; fern on leggings and shorts only) | Product descriptions in Shopify and the design placement notes. Placement on a finished garment is not checked (no samples). |
+| "Every piece comes in both colourways" | Each product has 10 variants, XS–XL in Moss / Mist and Clay / Oat, all available for sale (Storefront data, 9 Oct 2026). |
+| "Printed, cut and sewn after you order; processing takes 2–7 business days" | Tag `Made to order`; Printful "made on demand"; `APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS` in `app/lib/storefrontBasics.ts`. |
+| "One clothing shipping fee per order, from €3.99. Other items ship at their own rates." | `APPAREL_SHIPPING_RATES` and the Shopify profile "Quiet Current activewear" ([launch record](quiet-current-release.md)); same wording as the product page rate table (`app/components/ApparelShipping.tsx`). A mixed basket of clothing and prints has not been tested. |
+| Returns: 30 days of delivery, unused, original packaging, return postage paid by the customer unless faulty, damaged or wrong | Live refund policy, `/policies/refund-policy` (read 9 Oct 2026). `docs/shopify-policies-drafts.md` is out of date on returns. |
+| "Digital mockups" | All product images are Printful-generated digital mockups; none are photographs. |
+
+Copy outside this page that still needs a fix (not changed here):
+
+- The leggings product description in Shopify says the washes are "painted
+  after Clara Mendes' Where Mist Rests". It is catalogue data, so change it in
+  Shopify Admin.
+- The live shipping policy says printed products are dispatched within 2–4
+  business days and has no clothing rates; clothing dispatches in 3–8.
 
 ## Related
 
