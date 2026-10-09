@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {readFileSync} from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
+import sharp from 'sharp';
 import * as registry from '../app/lib/artRegistry.ts';
 import * as layout from './lib/museum-layout.mjs';
 import * as met from './lib/museum-met.mjs';
@@ -116,6 +117,8 @@ test('artist names match across case, accents and aliases', () => {
   assert.ok(registry.matchesArtistName(artist, 'katsushika hokusai'));
   assert.ok(registry.matchesArtistName(artist, 'HOKUSAI'));
   assert.ok(registry.matchesArtistName(artist, '葛飾北斎'));
+  // The Met writes some records with the name in both scripts.
+  assert.ok(registry.matchesArtistName(artist, 'Katsushika Hokusai 葛飾北斎'));
   assert.ok(!registry.matchesArtistName(artist, 'Hokusai school'));
   assert.equal(registry.foldName('Tōkaidō'), 'tokaido');
 });
@@ -188,6 +191,12 @@ test('short titles drop series clauses, alternate titles and romanisation', () =
     'Sudden Shower over Shin-Ōhashi Bridge and Atake',
   );
   assert.equal(met.proposeShortTitle('Evening Cherries'), 'Evening Cherries');
+  assert.equal(
+    met.proposeShortTitle(
+      '“Umezawa Manor in Sagami Province,” from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei, Sōshū Umezawa zai)',
+    ),
+    'Umezawa Manor in Sagami Province',
+  );
 });
 
 test('other impressions of one design share a flag key, other designs do not', () => {
@@ -228,6 +237,23 @@ test('a refetch keeps decisions unless the evidence behind them changed', () => 
   });
   assert.equal(newRecord.reviews.rights.status, 'pending');
   assert.equal(newRecord.reviews.master.status, 'pending');
+});
+
+test('a JPEG header gives the pixel size without the whole file', async () => {
+  const jpeg = await sharp({
+    create: {background: '#335577', channels: 3, height: 210, width: 377},
+  })
+    .withIccProfile('srgb')
+    .jpeg()
+    .toBuffer();
+  const start = jpeg.indexOf(Buffer.from([0xff, 0xc0]));
+  assert.ok(start > 100, 'the ICC profile sits before the frame header');
+  assert.deepEqual(met.jpegDimensions(jpeg.subarray(0, start + 9)), {
+    height: 210,
+    width: 377,
+  });
+  assert.equal(met.jpegDimensions(jpeg.subarray(0, start)), null);
+  assert.equal(met.jpegDimensions(Buffer.from('not a jpeg')), null);
 });
 
 test('Met search uses the paginated v1.1 endpoint', () => {

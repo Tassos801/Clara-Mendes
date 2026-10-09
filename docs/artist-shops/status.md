@@ -105,10 +105,16 @@ in-progress build work was saved.
 
 ## Next steps
 
-1. **Owner:** choose the ~10 pilot works. `npm run museum -- search
-   Thirty-six Views of Mount Fuji --title` (135 Met objects) and
-   `npm run museum -- search One Hundred Famous Views of Edo --title` are the
-   starting pool; fetch each chosen candidate, then `qualify`.
+1. **Owner:** choose the ~10 pilot works on the private shortlist page
+   https://claude.ai/artifact/UCVVkru81UTnd1575k9M24. Picks save to its
+   database document `selection/current` (ids are Met object ids), which an
+   agent reads with ArtifactData. The pool comes from `npm run museum --
+   search <series> --title --sizes` over Thirty-six Views of Mount Fuji, One
+   Hundred Famous Views of Edo and Fifty-three Stations of the Tōkaidō: 211
+   objects, illustrated books dropped, 105 distinct single-sheet designs (52
+   Hokusai, 53 Hiroshige; best impression per design). **95 are 8×10-ready at
+   300 ppi; none reach 300 ppi at 16×20.** Then `npm run museum -- fetch <id>
+   --artist <artist id>` for each pick, and add the prints to Floating World.
 2. **Owner:** confirm the collection name (working title "Floating World"),
    sizes (8×10 only unless a work qualifies larger or an exception is
    accepted) and the €26.99 price.

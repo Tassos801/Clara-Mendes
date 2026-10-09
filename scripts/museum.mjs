@@ -9,8 +9,9 @@
  * here touches Shopify or Prodigi.
  *
  *   npm run museum -- status
- *   npm run museum -- search <query…> [--title|--anywhere] [--limit 20] [--offset 0]
- *     (matches artist names by default; --title matches titles)
+ *   npm run museum -- search <query…> [--title|--anywhere] [--sizes] [--limit 20] [--offset 0]
+ *     (matches artist names by default; --title matches titles; --sizes reads
+ *     each original's pixel size from its first 256 KB)
  *   npm run museum -- fetch <met object id> --artist <artist id> [--short-title "…"]
  *   npm run museum -- qualify [artwork id …]
  *
@@ -45,6 +46,7 @@ import {qualifySizes} from './lib/museum-layout.mjs';
 import {
   attributionIssues,
   impressionKey,
+  jpegDimensions,
   metArtworkRecord,
   metObjectUrl,
   metSearchUrl,
@@ -194,9 +196,25 @@ async function search() {
     `\nThe Met: ${found.total} objects match "${query}"; showing ${offset + 1}–${offset + ids.length}.`,
   );
   const candidates = [];
+  const skipped = [];
   for (const id of ids) {
-    const {json} = await getJson(metObjectUrl(id), {cache: true});
-    candidates.push(normalizeMetObject(json));
+    // One unreadable record or dead image link must not end the search.
+    let candidate;
+    try {
+      const {json} = await getJson(metObjectUrl(id), {cache: true});
+      candidate = normalizeMetObject(json);
+    } catch (error) {
+      skipped.push(`${id}: ${error.message}`);
+      continue;
+    }
+    if (flags.has('sizes') && candidate.imageUrl) {
+      try {
+        candidate.pixels = await headerDimensions(candidate.imageUrl);
+      } catch (error) {
+        candidate.imageError = error.message;
+      }
+    }
+    candidates.push(candidate);
   }
   const impressions = new Map();
   for (const candidate of candidates) {
@@ -219,6 +237,21 @@ async function search() {
         publicDomain: candidate.publicDomain,
         image: Boolean(candidate.imageUrl),
         attribution: attributionIssues(candidate).join('; ') || 'ok',
+        ...(flags.has('sizes')
+          ? {
+              pixels: candidate.pixels
+                ? `${candidate.pixels.width}×${candidate.pixels.height}`
+                : candidate.imageError
+                  ? 'image unavailable'
+                  : '?',
+              '300ppi': candidate.pixels
+                ? qualifySizes(candidate.pixels)
+                    .filter((layout) => layout.verdict === 'qualified')
+                    .map((layout) => layout.size)
+                    .join(' ') || 'none'
+                : '?',
+            }
+          : {}),
         impressions:
           [
             impressions.get(key) > 1 ? `${impressions.get(key)} here` : '',
@@ -233,6 +266,8 @@ async function search() {
   console.log(
     'Same-title rows may be different impressions: compare the images before choosing one.',
   );
+  if (skipped.length)
+    console.log(`Skipped (record unreadable):\n- ${skipped.join('\n- ')}`);
   const file = path.join(
     museumRoot,
     'candidates',
@@ -244,6 +279,7 @@ async function search() {
     fetchedAt: new Date().toISOString(),
     offset,
     query,
+    skipped,
     total: found.total,
   });
   console.log(`Candidates: ${file}`);
@@ -447,7 +483,10 @@ function catalogLinks() {
   return links;
 }
 
-async function request(url, {attempts = 4, timeoutMs = 60_000} = {}) {
+async function request(
+  url,
+  {attempts = 4, headers = {}, timeoutMs = 60_000} = {},
+) {
   for (let attempt = 1; ; attempt++) {
     const wait = lastRequestAt + MIN_REQUEST_GAP_MS - Date.now();
     if (wait > 0) await delay(wait);
@@ -455,7 +494,7 @@ async function request(url, {attempts = 4, timeoutMs = 60_000} = {}) {
     let response;
     try {
       response = await fetch(url, {
-        headers: {'User-Agent': USER_AGENT},
+        headers: {'User-Agent': USER_AGENT, ...headers},
         signal: AbortSignal.timeout(timeoutMs),
       });
     } catch (error) {
@@ -493,6 +532,31 @@ async function getJson(url, {cache = false} = {}) {
     writeFileSync(cacheFile, raw);
   }
   return {json, raw};
+}
+
+/** An original's pixel size from its first 256 KB (cached by URL). */
+async function headerDimensions(url) {
+  const cacheFile = path.join(
+    museumRoot,
+    'cache',
+    `${createHash('sha1').update(`dims:${url}`).digest('hex')}.json`,
+  );
+  if (existsSync(cacheFile)) return JSON.parse(readFileSync(cacheFile, 'utf8'));
+  const response = await request(url, {headers: {Range: 'bytes=0-262143'}});
+  const reader = response.body.getReader();
+  const chunks = [];
+  let size = 0;
+  while (size < 262144) {
+    const {done, value} = await reader.read();
+    if (done) break;
+    chunks.push(value);
+    size += value.length;
+  }
+  await reader.cancel();
+  const dimensions = jpegDimensions(Buffer.concat(chunks));
+  mkdirSync(path.dirname(cacheFile), {recursive: true});
+  writeFileSync(cacheFile, JSON.stringify(dimensions));
+  return dimensions;
 }
 
 async function downloadOriginal(url, id) {

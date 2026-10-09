@@ -55,7 +55,11 @@ export function proposeShortTitle(title) {
   let short = text(title)
     .replace(/,? from the series .+$/i, '')
     .replace(/,? also known as .+$/i, '');
-  short = short.replace(/\s*\([^)]*\)\s*$/, '').trim();
+  short = short
+    .replace(/\s*\([^)]*\)\s*$/, '')
+    // The Met quotes series titles: “Umezawa Manor in Sagami Province,”
+    .replace(/^[“"‘']+|[”"’',.;:\s]+$/g, '')
+    .trim();
   return short || text(title);
 }
 
@@ -89,6 +93,43 @@ export function normalizeMetObject(raw) {
     series: text(raw?.portfolio) || seriesFromTitle(raw?.title),
     title: text(raw?.title),
   };
+}
+
+const SOF_MARKERS = new Set([
+  0xc0, 0xc1, 0xc2, 0xc3, 0xc5, 0xc6, 0xc7, 0xc9, 0xca, 0xcb, 0xcd, 0xce, 0xcf,
+]);
+
+/**
+ * Pixel size from the start of a JPEG (its SOF segment), so search can show
+ * which print sizes a candidate supports from a small range request instead
+ * of downloading the original. Null when the bytes end before the SOF.
+ */
+export function jpegDimensions(bytes) {
+  const data = Buffer.from(bytes);
+  if (data[0] !== 0xff || data[1] !== 0xd8) return null;
+  let offset = 2;
+  while (offset + 4 <= data.length) {
+    if (data[offset] !== 0xff) return null;
+    const marker = data[offset + 1];
+    if (marker === 0xff) {
+      offset += 1;
+      continue;
+    }
+    if (marker === 0x01 || (marker >= 0xd0 && marker <= 0xd9)) {
+      offset += 2;
+      continue;
+    }
+    const length = data.readUInt16BE(offset + 2);
+    if (SOF_MARKERS.has(marker)) {
+      if (offset + 9 > data.length) return null;
+      return {
+        height: data.readUInt16BE(offset + 5),
+        width: data.readUInt16BE(offset + 7),
+      };
+    }
+    offset += 2 + length;
+  }
+  return null;
 }
 
 /**
