@@ -19,6 +19,9 @@
  *
  *   npm run museum -- review <artwork id> --rights|--master <cleared|blocked|pending> --by "<name>" [--note "…"]
  *   npm run museum -- approve-artist <artist id> --by "<name>" [--revoke]
+ *   npm run museum -- trim <artwork id> --top <px> [--right|--bottom|--left <px>] --by "<name>" [--note "…"] [--clear]
+ *     (edge insets in original pixels that take mount tabs or labels off the
+ *     photograph; recording or clearing one resets the master review)
  */
 
 import {createHash} from 'node:crypto';
@@ -38,6 +41,7 @@ import sharp from 'sharp';
 import {
   artworkId,
   findArtist,
+  masterSize,
   screenArtworkRights,
   validateArtRegistry,
 } from '../app/lib/artRegistry.ts';
@@ -67,6 +71,7 @@ const MIN_REQUEST_GAP_MS = 150;
 let lastRequestAt = 0;
 
 const [step = 'status', ...rest] = process.argv.slice(2);
+const TRIM_EDGES = ['top', 'right', 'bottom', 'left'];
 const VALUE_OPTIONS = [
   'artist',
   'by',
@@ -76,6 +81,7 @@ const VALUE_OPTIONS = [
   'offset',
   'rights',
   'short-title',
+  ...TRIM_EDGES,
 ];
 const options = {};
 const flags = new Set();
@@ -101,6 +107,7 @@ const steps = {
   review,
   search,
   status,
+  trim,
 };
 if (!steps[step]) {
   console.error(
@@ -155,7 +162,7 @@ function status() {
         findArtist(artwork.artistId, registry),
       );
       const qualified = artwork.original
-        ? qualifySizes(artwork.original)
+        ? qualifySizes(masterSize(artwork))
             .filter((layout) => layout.verdict === 'qualified')
             .map((layout) => layout.size)
             .join(' ')
@@ -165,7 +172,7 @@ function status() {
         artwork: artwork.id,
         title: truncate(artwork.shortTitle, 32),
         original: artwork.original
-          ? `${artwork.original.width}×${artwork.original.height}`
+          ? `${artwork.original.width}×${artwork.original.height}${artwork.trim ? ' (trimmed)' : ''}`
           : 'not fetched',
         screen: screen.pass ? 'pass' : `fail (${screen.reasons.length})`,
         rights: artwork.reviews.rights.status,
@@ -411,6 +418,44 @@ function review() {
   console.log(`${id}: ${kind} review ${decision}`);
 }
 
+function trim() {
+  const id = positional[0];
+  const artwork = registry.artworks.find((a) => a.id === id);
+  if (!artwork)
+    throw new Error(
+      'Usage: npm run museum -- trim <artwork id> --top <px> [--right|--bottom|--left <px>] --by "<name>"',
+    );
+  if (!artwork.original) throw new Error('fetch the original before trimming it');
+  if (flags.has('clear')) {
+    delete artwork.trim;
+  } else {
+    if (!options.by?.trim())
+      throw new Error('--by "<name>" records who decided the trim');
+    const insets = Object.fromEntries(
+      TRIM_EDGES.map((edge) => [edge, Number(options[edge] ?? 0)]),
+    );
+    if (Object.values(insets).every((inset) => inset === 0))
+      throw new Error('pass at least one of --top, --right, --bottom or --left');
+    artwork.trim = {
+      ...insets,
+      at: new Date().toISOString(),
+      by: options.by.trim(),
+      ...(options.note?.trim() ? {note: options.note.trim()} : {}),
+    };
+  }
+  // The master review covers the pixels that are printed, so a new trim
+  // needs a new look.
+  artwork.reviews.master = {status: 'pending', at: new Date().toISOString()};
+  const problems = validateArtRegistry(registry);
+  if (problems.length) throw new Error(problems.join('\n- '));
+  saveRegistry();
+  const size = masterSize(artwork);
+  console.log(
+    `${id}: ${artwork.trim ? `trimmed to ${size.width}×${size.height}` : 'trim cleared'}; master review reset to pending`,
+  );
+  printQualification([artwork]);
+}
+
 function approveArtist() {
   const artist = findArtist(positional[0] ?? '', registry);
   if (!artist)
@@ -437,14 +482,16 @@ function approveArtist() {
 function printQualification(artworks) {
   const rows = artworks.flatMap((artwork) =>
     artwork.original
-      ? qualifySizes(artwork.original, Object.keys(PRINT_SIZES)).map(
+      ? qualifySizes(masterSize(artwork), Object.keys(PRINT_SIZES)).map(
           (layout) => ({
             artwork: artwork.id,
             size: layout.size,
             paper: `${layout.paperInches.width}×${layout.paperInches.height} in ${layout.orientation}`,
             image: `${layout.imageInches.width}×${layout.imageInches.height} in`,
             needs: `${layout.image.width}×${layout.image.height}px`,
-            original: `${artwork.original.width}×${artwork.original.height}`,
+            original: artwork.trim
+              ? `${artwork.original.width}×${artwork.original.height} trimmed to ${masterSize(artwork).width}×${masterSize(artwork).height}`
+              : `${artwork.original.width}×${artwork.original.height}`,
             ppi: layout.nativePpi,
             verdict: layout.verdict,
           }),

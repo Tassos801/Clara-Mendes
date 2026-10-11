@@ -88,6 +88,24 @@ export type ArtworkOriginal = {
   width: number;
 };
 
+/**
+ * Edge insets, in original pixels, removed before layout: an owner decision
+ * that takes museum mount tabs and labels off the photograph. The artwork
+ * itself is never cropped beyond the sheet edge.
+ */
+export type ArtworkTrim = {
+  at: string;
+  bottom: number;
+  by: string;
+  left: number;
+  note?: string;
+  right: number;
+  top: number;
+};
+
+/** No inset may take more than this share of the original's side. */
+export const MAX_TRIM_FRACTION = 0.05;
+
 export type Artwork = {
   artistId: string;
   /** Source date text, never normalised into a false exact date. */
@@ -102,6 +120,7 @@ export type Artwork = {
   shortTitle: string;
   source: ArtworkSource;
   title: string;
+  trim?: ArtworkTrim;
 };
 
 export type ArtRegistry = {artists: Artist[]; artworks: Artwork[]};
@@ -219,6 +238,19 @@ export function artworkId(museum: MuseumKey, objectId: string | number) {
   return `${museum}-${objectId}`;
 }
 
+/** The pixels a print uses: the original less any recorded trim. */
+export function masterSize({
+  original,
+  trim,
+}: Pick<Artwork, 'original' | 'trim'>): {height: number; width: number} | null {
+  if (!original) return null;
+  if (!trim) return {height: original.height, width: original.width};
+  return {
+    height: original.height - trim.top - trim.bottom,
+    width: original.width - trim.left - trim.right,
+  };
+}
+
 export type Orientation = 'landscape' | 'portrait';
 
 /** Paper orientation for a work; near-square works use portrait paper. */
@@ -230,6 +262,30 @@ export function orientationOf({
   width: number;
 }): Orientation {
   return width > height * 1.02 ? 'landscape' : 'portrait';
+}
+
+function trimProblems(artwork: Artwork, at: string) {
+  const {original, trim} = artwork;
+  if (!trim) return [];
+  if (!original) return [`${at}: trim without a fetched original`];
+  const problems: string[] = [];
+  if (!trim.by?.trim() || !trim.at?.trim())
+    problems.push(`${at}: a trim records who decided it and when`);
+  for (const [edge, side] of [
+    ['top', original.height],
+    ['bottom', original.height],
+    ['left', original.width],
+    ['right', original.width],
+  ] as const) {
+    const inset = trim[edge];
+    if (!Number.isInteger(inset) || inset < 0)
+      problems.push(`${at}: trim.${edge} must be a whole number of pixels`);
+    else if (inset > side * MAX_TRIM_FRACTION)
+      problems.push(
+        `${at}: trim.${edge} ${inset}px is more than ${MAX_TRIM_FRACTION * 100}% of the original`,
+      );
+  }
+  return problems;
 }
 
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -350,6 +406,7 @@ export function validateArtRegistry(
     }
     if (artwork.reviews?.master?.status === 'cleared' && !artwork.original)
       problems.push(`${at}: master cleared without a fetched original`);
+    if (artwork.trim) problems.push(...trimProblems(artwork, at));
   }
 
   for (const artist of registry.artists) {

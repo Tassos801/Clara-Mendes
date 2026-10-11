@@ -122,7 +122,14 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    `npm run museum -- review <artwork id> --rights cleared --by "<name>"`,
    the same with `--master` after the prepared files are checked, and
    `npm run museum -- approve-artist <artist id> --by "<name>"` once the
-   biography, dates and curator's note are right.
+   biography, dates and curator's note are right. If the photograph shows
+   museum mount tabs or pencilled numbers outside the sheet, the owner can
+   have them trimmed off:
+   `npm run museum -- trim <artwork id> --top <px> [--right|--bottom|--left <px>] --by "<name>"`
+   (edge insets in original pixels, each at most 5% of the side; `--clear`
+   removes it). Layout, `qualify` and `prepare` use the trimmed size, and a
+   trim resets the master review. Measure the insets on full-resolution crops
+   and stop at the paper edge; seals and marks on the paper stay.
 3. **Catalog:** a collection with `"kind": "museum"`; each print names its
    `artworkId` and `orientation` (the artwork's), and its four room
    placements are 5:4 for landscape paper. Choose collection sizes every work

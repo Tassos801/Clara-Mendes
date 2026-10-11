@@ -30,15 +30,20 @@ const REVIEWED = {at: '2026-10-09T12:00:00.000Z', by: 'Owner', status: 'cleared'
 
 /**
  * The shipped data with Hokusai approved, the Great Wave's reviews cleared
- * and its print released — the state a real release would reach.
+ * and its print released — the state a real release would reach. Each part
+ * can be turned off whatever the shipped data currently records.
  */
 function releasedFixture({approve = true, clear = true, release = true} = {}) {
   const registry = structuredClone(registryModule.ART_REGISTRY);
   const catalog = structuredClone(prints.PRINT_CATALOG);
   const hokusai = registry.artists.find((a) => a.id === 'katsushika-hokusai');
-  if (approve) hokusai.approval = {approved: true, at: REVIEWED.at, by: 'Owner'};
+  hokusai.approval = approve
+    ? {approved: true, at: REVIEWED.at, by: 'Owner'}
+    : {approved: false};
   const wave = registry.artworks.find((a) => a.id === WAVE_ID);
-  if (clear) wave.reviews = {master: {...REVIEWED}, rights: {...REVIEWED}};
+  wave.reviews = clear
+    ? {master: {...REVIEWED}, rights: {...REVIEWED}}
+    : {master: {status: 'pending'}, rights: {status: 'pending'}};
   const print = floatingWorld(catalog).prints[0];
   if (release) {
     print.released = true;

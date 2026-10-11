@@ -275,6 +275,42 @@ test('Met search uses the paginated v1.1 endpoint', () => {
   assert.equal(titles.searchParams.has('artistOrCulture'), false);
 });
 
+test('a recorded trim takes mount tabs off before layout, within limits', () => {
+  const wave = waveRecord();
+  assert.deepEqual(registry.masterSize(wave), {height: 2594, width: 3859});
+  wave.trim = {
+    at: '2026-10-11T12:00:00.000Z',
+    bottom: 0,
+    by: 'Owner',
+    left: 0,
+    right: 0,
+    top: 98,
+  };
+  assert.deepEqual(registry.masterSize(wave), {height: 2496, width: 3859});
+  assert.deepEqual(registry.masterSize({}), null);
+  // The layout follows the trimmed size, so the paper box keeps its shape.
+  const trimmed = layout.borderedLayout(registry.masterSize(wave), '8x10');
+  assert.ok(
+    Math.abs(trimmed.image.height - (trimmed.image.width * 2496) / 3859) <= 1,
+  );
+
+  const checked = structuredClone(registry.ART_REGISTRY);
+  checked.artworks = [wave];
+  assert.deepEqual(registry.validateArtRegistry(checked), []);
+  wave.trim.top = 200; // 7.7% of 2594
+  wave.trim.left = -1;
+  delete wave.trim.by;
+  const problems = registry.validateArtRegistry(checked).join('\n');
+  assert.match(problems, /trim\.top 200px is more than 5% of the original/);
+  assert.match(problems, /trim\.left must be a whole number of pixels/);
+  assert.match(problems, /a trim records who decided it and when/);
+  delete wave.original;
+  assert.match(
+    registry.validateArtRegistry(checked).join('\n'),
+    /trim without a fetched original/,
+  );
+});
+
 test('a landscape woodblock print sits whole on landscape paper', () => {
   const original = {height: 2594, width: 3859};
   const small = layout.borderedLayout(original, '8x10');

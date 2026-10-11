@@ -8,6 +8,8 @@ Studio prints are 4:5 sources fitted to 4:5 paper. Museum prints arrive with
 `"layout": "bordered"`: the plan (scripts/lib/museum-layout.mjs) gives each
 size's paper and image box, the whole artwork is placed on white paper with
 no crop, and the web image shows that paper on the shop's soft background.
+An owner-recorded `trim` (edge insets in original pixels) first takes museum
+mount tabs off the photograph; the boxes are planned for the trimmed size.
 """
 import argparse
 import hashlib
@@ -128,6 +130,11 @@ def main() -> None:
                 raise SystemExit(f"{source.name}: source must be 4:5 portrait, got {native[0]}x{native[1]}")
             if is_bordered and list(native) != item["nativeSize"]:
                 raise SystemExit(f"{source.name}: {native[0]}x{native[1]} differs from the registry {item['nativeSize']}")
+            trim = item.get("trim")
+            if trim:
+                rgb = rgb.crop((trim["left"], trim["top"],
+                                native[0] - trim["right"], native[1] - trim["bottom"]))
+                native = rgb.size
 
             web = web_dir / (item["slug"] + ".webp")
             web_image = (web_paper(rgb, item["web"]) if is_bordered
@@ -178,6 +185,7 @@ def main() -> None:
             "source": str(source).replace("\\", "/"),
             "nativeWidth": native[0],
             "nativeHeight": native[1],
+            **({"trim": item["trim"]} if item.get("trim") else {}),
             "sourceSha256": digest,
             "iccProfile": profile_name(icc),
             "web": str(web).replace("\\", "/"),

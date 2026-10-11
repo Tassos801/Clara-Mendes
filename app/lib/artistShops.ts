@@ -8,6 +8,7 @@ import {
   findArtwork,
   foldName,
   lifeDatesLabel,
+  masterSize,
   orientationOf,
   screenArtworkRights,
   type ArtRegistry,
@@ -267,12 +268,10 @@ export function validateArtistLinks({
       if (previous)
         problems.push(`${at}: artwork ${artwork.id} is already sold as ${previous}`);
       used.set(artwork.id, at);
-      if (
-        artwork.original &&
-        orientationOf(artwork.original) !== printOrientation(print)
-      )
+      const master = masterSize(artwork);
+      if (master && orientationOf(master) !== printOrientation(print))
         problems.push(
-          `${at}: orientation must be ${orientationOf(artwork.original)} to keep ${artwork.id} whole`,
+          `${at}: orientation must be ${orientationOf(master)} to keep ${artwork.id} whole`,
         );
       if (print.released !== true) continue;
       const artist = findArtist(artwork.artistId, registry);

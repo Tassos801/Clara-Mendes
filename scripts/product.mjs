@@ -34,6 +34,7 @@ import {
   printSku,
   validatePrintCatalog,
 } from '../app/lib/printCatalog.ts';
+import {masterSize} from '../app/lib/artRegistry.ts';
 import {validateArtistLinks} from '../app/lib/artistShops.ts';
 import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
@@ -1164,8 +1165,9 @@ function museumPreparePlan(collection, print) {
     throw new Error(
       `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId}`,
     );
+  const master = masterSize(artwork);
   const layouts = collection.variants.map((variant) =>
-    borderedLayout(artwork.original, variant.size),
+    borderedLayout(master, variant.size),
   );
   return {
     slug: print.slug,
@@ -1173,6 +1175,16 @@ function museumPreparePlan(collection, print) {
     source,
     expectedSha256: artwork.original.sha256,
     nativeSize: [artwork.original.width, artwork.original.height],
+    ...(artwork.trim
+      ? {
+          trim: {
+            bottom: artwork.trim.bottom,
+            left: artwork.trim.left,
+            right: artwork.trim.right,
+            top: artwork.trim.top,
+          },
+        }
+      : {}),
     web: {
       background: WEB_PAPER_BACKGROUND,
       image: layouts[0].image,

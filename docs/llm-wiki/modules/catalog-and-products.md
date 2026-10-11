@@ -513,5 +513,8 @@ approved with a released print, and every listing still passes
 (`kind: "museum"`) are excluded from the "original works" counts and capsule
 copy. Their Drafts never carry `Clara Mendes Original`, and `release` refuses
 them without both reviews. Routes: `app/routes/artists._index.tsx`,
-`app/routes/artists.$slug.tsx`. See the
-[status](../../artist-shops/status.md).
+`app/routes/artists.$slug.tsx`. An artwork may carry an owner-recorded
+`trim` (edge insets in original pixels, ≤5% per side) that takes museum mount
+tabs off the photograph; `masterSize()` is the size layout, qualification,
+`prepare` and the orientation check use, and recording a trim resets the
+master review. See the [status](../../artist-shops/status.md).
