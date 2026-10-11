@@ -1,43 +1,44 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-09, end of session  
+**Updated:** 2026-10-11  
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Paused by the owner; no production release  
-**Current writer:** none. The writer slot is free: Codex (Sol) or Claude Code
-may take over on any PC after the checks in "Resume here".
+**State:** Owner decisions applied; room backgrounds in progress; no production release  
+**Current writer:** Claude Code (2026-10-11, owner's Mac). Codex (Sol) has been
+asked to make only the 40 room backgrounds into
+`scripts/assets/print-room-mockups/floating-world/`; Claude Code reviews and
+commits them.
 
-## Where we stopped (2026-10-09)
+## Where we are (2026-10-11)
 
-The last Claude Code session ended at commit `058c996` (the owner's ten
-Floating World prints) plus this status update. Everything is pushed and the
-working tree was clean.
+**Owner decisions (2026-10-11), now in data:**
+1. Collection: **Floating World**, 8×10 only, €26.99. Unchanged.
+2. Minowa (met-36542, 213 ppi) is **swapped** for *Sudden Shower over
+   Shin-Ōhashi Bridge and Atake* (met-55433, 2650×3860, 427 ppi). It was
+   picked from four 8×10-ready Edo views; 55433 is the crispest of the Met's
+   three impressions (the others are 37094 and 37386). Minowa stays
+   registered but unused, like 45434.
+3. Hokusai and Hiroshige are **approved** as written (bios and curator's notes).
+4. Rights are **cleared** for all ten (owner, after the automated screen).
+5. Margins: **trim the museum mount tabs only**. The paper, its borders and
+   the publisher/censor seals stay. New `npm run museum -- trim` records
+   edge insets per artwork. Measured on full-resolution crops, they stop at
+   the paper edge: top 98 px (55458 Hodogaya), 62 px (55993 Nissaka), 81 px
+   (37093 Fireworks) and 40 px (56689 Kinryūsan). On Hodogaya and Fireworks
+   the image runs to the paper edge, so the cut shaves up to ~15 px of sky
+   where the edge slopes. Re-prepared: the tabs are gone, and the other six
+   print files are byte-identical.
 
-**Done:**
-- The artist/artwork registry and Met sourcing.
-- The artist shop routes, all dormant.
-- The museum print pipeline.
-- The owner's ten works: fetched, catalogued in Floating World (unreleased)
-  and prepared at 8×10.
-
-Nothing has been created or changed in Shopify or Prodigi.
-
-**Waiting on the owner (do not decide these for them):**
-1. The collection name ("Floating World" is a working title), 8×10 only, and
-   €26.99.
-2. Minowa, Kanasugi at Mikawashima (met-36542) is 213 ppi at 8×10: accept the
-   exception or swap the work.
-3. Approval of the Hokusai and Hiroshige biographies and curator's notes
-   (`npm run museum -- approve-artist`).
-4. Rights and master reviews for all ten (`npm run museum -- review`),
-   including whether to trim the museum labels on the margins of 55458,
-   55993, 37093 and 56689.
-5. Room backgrounds, then `stage --apply`, Prodigi mapping, `media` and
-   `release`, and any merge or PR to main.
-
-**Next task for an agent, once the owner answers:** apply the decisions in
-data. Then generate the room backgrounds with the owner and run `npm run
-product -- rooms floating-world`. Stop before any Shopify write unless the
-owner explicitly approves `stage --apply`.
+**Still open:**
+- **Master reviews (owner):** pending for all ten. The prepared 8×10 files
+  are 420–435 ppi native; the owner may want a physical proof first.
+- **Room backgrounds:** delegated to Codex at the owner's request. Each
+  print's four `backgroundFile` names are in `data/print-catalog.json`. They
+  are blank 4:5 interiors that the compositor stretches to 1080×1350, with
+  empty wall at the `placement` box (5:4 for the seven landscape prints, 4:5
+  for the three portrait ones). Then `npm run product -- rooms floating-world`.
+- Only with explicit owner approval: `stage --apply` (Shopify Drafts), Prodigi
+  mapping (landscape 3000×2400 files; untagged originals, so check colour),
+  `media`, `release`, then a PR to main.
 
 ## Resume here (any PC)
 
@@ -51,9 +52,10 @@ owner explicitly approves `stage --apply`.
    `prepare`, for each of the ten: `npm run museum -- fetch <object id>
    --artist <artist id>`, with `--short-title "The Great Wave off Kanagawa"`
    for 39799 and `--short-title "Nissaka, Sayo no Nakayama"` for 55993.
+   `prepare` needs `PYTHON=python3` on a Mac without a `python` binary.
    Check the sha256 still matches. A refetch keeps the reviews unless the
    Met changed the record or image.
-4. Run `npm test` (405 pass), `npm run typecheck` and `npm run lint` before
+4. Run `npm test` (406 pass), `npm run typecheck` and `npm run lint` before
    changing anything. Run `npm run museum -- status` and `npm run product --
    status floating-world` to see the state.
 5. Don't run a blanket `git checkout` on `data/*.json` to drop
@@ -62,7 +64,9 @@ owner explicitly approves `stage --apply`.
 
 History: the Codex/Sol session hit its usage limit after the docs commit; none
 of its in-progress build work was saved. Claude Code was the writer from
-2026-10-09 ~16:00 to the end of that day.
+2026-10-09 ~16:00 to the end of that day, and again on 2026-10-11 on the
+owner's Mac (whose originals had to be re-fetched: all ten sha256 matched and
+the Met records were unchanged).
 
 ## Completed
 
@@ -171,18 +175,17 @@ of its in-progress build work was saved. Claude Code was the writer from
   - Hiroshige: Nissaka, Sayo no Nakayama (55993, Fifty-three Stations), and
     from One Hundred Famous Views of Edo, Fireworks at Ryōgoku Bridge (37093),
     Kinryūsan Temple at Asakusa (56689) and Minowa, Kanasugi at Mikawashima
-    (36542).
+    (36542), which on 2026-10-11 was swapped for Sudden Shower over
+    Shin-Ōhashi Bridge and Atake (55433).
   - Seven landscape, three portrait. Nine are 425–435 ppi at 8×10.
-    **Minowa is 213 ppi (original 1274×1928): it needs an owner exception or
-    a swap.**
+    Minowa was 213 ppi (original 1274×1928), hence the swap.
   - The draft previously used Great Wave impression met-45434; the owner
     picked met-39799 (the full sheet with paper edges, warmer), so the print
     now points at 39799. 45434 stays registered and unused. The shortlist
     showed both cards because the Met titles 39799 "…, or The Great Wave";
     `proposeShortTitle` now strips that, so impressions group together.
-  - **Master review:** museum labels and pencil numbers sit on the paper
-    margins of 55458, 55993, 37093 and 56689. A conservative trim to the sheet
-    edge is the owner's call; nothing was removed.
+  - Museum labels and pencil numbers sat on mount tabs above the sheets of
+    55458, 55993, 37093 and 56689; trimmed on 2026-10-11 (see the top).
 
 ## Next steps
 
@@ -196,12 +199,10 @@ of its in-progress build work was saved. Claude Code was the writer from
    Hokusai, 53 Hiroshige; best impression per design). **95 are 8×10-ready at
    300 ppi; none reach 300 ppi at 16×20.** Then `npm run museum -- fetch <id>
    --artist <artist id>` for each pick, and add the prints to Floating World.
-2. **Owner:** confirm the collection name (working title "Floating World"),
-   sizes (8×10 only unless an exception is accepted), the €26.99 price, and
-   Minowa (accept 213 ppi or swap it).
-3. **Owner:** review and approve Hokusai/Hiroshige bios and curator's notes,
-   then record the rights and master reviews.
-4. Room backgrounds: four blank interiors per print (40 in total), named as
+2. ~~**Owner:** name, sizes, price and Minowa~~ (done 2026-10-11).
+3. ~~**Owner:** bios, curator's notes and rights~~ (done 2026-10-11).
+   **Master reviews are still pending.**
+4. Room backgrounds (with Codex, 2026-10-11): four blank interiors per print (40 in total), named as
    in each print's `rooms[].backgroundFile`, under
    `scripts/assets/print-room-mockups/floating-world/`. Placements are 5:4
    for the seven landscape prints and 4:5 for the three portrait ones. Then
@@ -212,8 +213,8 @@ of its in-progress build work was saved. Claude Code was the writer from
 
 ## Not done
 
-- The ten works are selected but not cleared for sale: all artists are
-  unapproved and all rights and master reviews are pending.
+- The ten works are not yet cleared for sale: the master reviews are
+  pending (artists approved and rights cleared on 2026-10-11).
 - Nothing has been created or changed in Shopify or Prodigi.
 - No room backgrounds or room mockups exist for Floating World.
 - Physical print quality, delivered cost and landscape-file handling in

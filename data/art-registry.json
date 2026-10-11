@@ -31,7 +31,9 @@
       ],
       "curatorNote": "We start with Hokusai's landscapes because they hold a room the way they hold the sheet: a decisive line, a few flat colours and a great deal of air. Every print keeps the full composition as the museum photographed it, set on a white border.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-10-11T14:48:39.546Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Japan",
@@ -70,7 +72,9 @@
       ],
       "curatorNote": "Hiroshige's views are quieter than Hokusai's: weather, distance and the small figures who move through them. Every print keeps the full composition as the museum photographed it, set on a white border.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-10-11T14:48:39.735Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Japan",
@@ -179,11 +183,24 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:40.107Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
-          "status": "pending"
+          "status": "pending",
+          "at": "2026-10-11T14:48:38.794Z"
         }
+      },
+      "trim": {
+        "top": 98,
+        "right": 0,
+        "bottom": 0,
+        "left": 0,
+        "at": "2026-10-11T14:48:38.793Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-11: trim the museum mount tabs only; paper, borders and seals stay"
       }
     },
     {
@@ -225,7 +242,10 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:40.291Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
           "status": "pending"
@@ -271,7 +291,10 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:40.476Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
           "status": "pending"
@@ -317,7 +340,10 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:39.923Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
           "status": "pending"
@@ -363,7 +389,10 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:40.661Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
           "status": "pending"
@@ -409,7 +438,10 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:40.848Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
           "status": "pending"
@@ -454,11 +486,24 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:41.034Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
-          "status": "pending"
+          "status": "pending",
+          "at": "2026-10-11T14:48:38.984Z"
         }
+      },
+      "trim": {
+        "top": 62,
+        "right": 0,
+        "bottom": 0,
+        "left": 0,
+        "at": "2026-10-11T14:48:38.983Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-11: trim the museum mount tabs only; paper, borders and seals stay"
       }
     },
     {
@@ -500,11 +545,24 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:41.220Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
-          "status": "pending"
+          "status": "pending",
+          "at": "2026-10-11T14:48:39.172Z"
         }
+      },
+      "trim": {
+        "top": 81,
+        "right": 0,
+        "bottom": 0,
+        "left": 0,
+        "at": "2026-10-11T14:48:39.172Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-11: trim the museum mount tabs only; paper, borders and seals stay"
       }
     },
     {
@@ -546,11 +604,24 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:41.406Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
-          "status": "pending"
+          "status": "pending",
+          "at": "2026-10-11T14:48:39.357Z"
         }
+      },
+      "trim": {
+        "top": 40,
+        "right": 0,
+        "bottom": 0,
+        "left": 0,
+        "at": "2026-10-11T14:48:39.357Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-11: trim the museum mount tabs only; paper, borders and seals stay"
       }
     },
     {
@@ -593,6 +664,55 @@
       "reviews": {
         "rights": {
           "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "met-55433",
+      "artistId": "utagawa-hiroshige",
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake (Ōhashi Atake no yūdachi), from the series One Hundred Famous Views of Edo (Meisho Edo hyakkei)",
+      "shortTitle": "Sudden Shower over Shin-Ōhashi Bridge and Atake",
+      "date": "1857",
+      "medium": "Woodblock print; ink and color on paper",
+      "dimensions": "Oban 13 3/8 x 9 1/2 in. (34 x 24.1 cm)",
+      "series": "One Hundred Famous Views of Edo (Meisho Edo hyakkei)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "55433",
+        "accessionNumber": "JP2522",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/55433",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/55433",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/as/original/DP130156.jpg",
+        "artistDisplayName": "Utagawa Hiroshige",
+        "artistPrefix": "",
+        "creditLine": "The Howard Mansfield Collection, Purchase, Rogers Fund, 1936",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-55433.json",
+        "fetchedAt": "2026-10-11T14:47:54.168Z",
+        "metadataSha256": "d0fb0f3ab06383430783ee5349b6a3ef66804ddc34783185c112aeea3e5ef799"
+      },
+      "original": {
+        "fileName": "met-55433.jpg",
+        "sha256": "17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31",
+        "bytes": 3043911,
+        "contentType": "image/jpeg",
+        "width": 2650,
+        "height": 3860
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-11T14:48:41.594Z",
+          "note": "Owner approval 2026-10-11 after the automated screen passed"
         },
         "master": {
           "status": "pending"

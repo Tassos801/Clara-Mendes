@@ -1535,3 +1535,14 @@ catalogued in the unreleased Floating World collection and prepared at 8 × 10
 on `codex/artist-shops-pilot`. Work is paused pending owner decisions (name,
 price, one low-resolution work, artist approvals, rights and master reviews);
 see [status](../artist-shops/status.md) for the stop point and how to resume.
+
+## 2026-10-11 - Floating World owner decisions applied (branch only)
+
+On `codex/artist-shops-pilot`. The owner kept Floating World at 8 × 10 and
+€26.99, swapped the 213 ppi Minowa for Sudden Shower over Shin-Ōhashi Bridge
+(met-55433), had the museum mount tabs trimmed off four sheets (new
+`npm run museum -- trim`), approved the Hokusai and Hiroshige pages and
+cleared rights for all ten. Master reviews and room backgrounds are still
+open; nothing touched Shopify or Prodigi. See
+[status](../artist-shops/status.md).
+

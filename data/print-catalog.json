@@ -1046,7 +1046,7 @@
           ],
           "released": false,
           "source": {
-            "nativeHeight": 2701,
+            "nativeHeight": 2603,
             "nativeWidth": 3932,
             "sourceSha256": "b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851"
           }
@@ -1356,7 +1356,7 @@
           ],
           "released": false,
           "source": {
-            "nativeHeight": 2552,
+            "nativeHeight": 2490,
             "nativeWidth": 3909,
             "sourceSha256": "553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c"
           }
@@ -1418,7 +1418,7 @@
           ],
           "released": false,
           "source": {
-            "nativeHeight": 3921,
+            "nativeHeight": 3840,
             "nativeWidth": 2617,
             "sourceSha256": "84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773"
           }
@@ -1480,25 +1480,25 @@
           ],
           "released": false,
           "source": {
-            "nativeHeight": 3840,
+            "nativeHeight": 3800,
             "nativeWidth": 2624,
             "sourceSha256": "6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641"
           }
         },
         {
-          "slug": "minowa-kanasugi-at-mikawashima",
-          "title": "Minowa, Kanasugi at Mikawashima",
+          "slug": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+          "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake",
           "sequence": 10,
-          "artworkId": "met-36542",
+          "artworkId": "met-55433",
           "orientation": "portrait",
-          "description": "A crane swoops low over the marshes at Mikawashima while another stands in the grass, beneath a rose-tinted sky.",
-          "alt": "Hiroshige woodblock print: a white crane swooping down from above while another stands in the marsh grass, flat fields and a rose-tinted sky behind, printed whole on a white border.",
-          "palette": "Pale blue, white, rose, green",
+          "description": "Rain sweeps across Shin-Ōhashi Bridge in fine dark lines as people hurry over under an umbrella and straw hats, while a lone raftsman poles along the river below the misty far bank at Atake.",
+          "alt": "Hiroshige woodblock print: slanting rain over a wooden bridge where people hurry under an umbrella and straw hats, a raft on a grey-green river and a misty far shore beneath a dark sky, printed whole on a white border.",
+          "palette": "Slate grey, sea green, ochre, indigo",
           "rooms": [
             {
               "key": "living-room",
-              "alt": "Minowa, Kanasugi at Mikawashima print above a low oak sideboard in a calm, light living room.",
-              "backgroundFile": "minowa-kanasugi-at-mikawashima-living-room.png",
+              "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a low oak sideboard in a calm, light living room.",
+              "backgroundFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-living-room.png",
               "placement": {
                 "left": 420,
                 "top": 230,
@@ -1508,8 +1508,8 @@
             },
             {
               "key": "bedroom",
-              "alt": "Minowa, Kanasugi at Mikawashima print above a linen-covered bed in a quiet bedroom.",
-              "backgroundFile": "minowa-kanasugi-at-mikawashima-bedroom.png",
+              "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a linen-covered bed in a quiet bedroom.",
+              "backgroundFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-bedroom.png",
               "placement": {
                 "left": 430,
                 "top": 180,
@@ -1519,8 +1519,8 @@
             },
             {
               "key": "study",
-              "alt": "Minowa, Kanasugi at Mikawashima print above a walnut desk in a pared-back study.",
-              "backgroundFile": "minowa-kanasugi-at-mikawashima-study.png",
+              "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a walnut desk in a pared-back study.",
+              "backgroundFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-study.png",
               "placement": {
                 "left": 440,
                 "top": 230,
@@ -1530,8 +1530,8 @@
             },
             {
               "key": "wide-interior",
-              "alt": "Minowa, Kanasugi at Mikawashima print shown at scale in a wide, airy interior.",
-              "backgroundFile": "minowa-kanasugi-at-mikawashima-wide-interior.png",
+              "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print shown at scale in a wide, airy interior.",
+              "backgroundFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-wide-interior.png",
               "placement": {
                 "left": 470,
                 "top": 320,
@@ -1542,9 +1542,9 @@
           ],
           "released": false,
           "source": {
-            "nativeHeight": 1928,
-            "nativeWidth": 1274,
-            "sourceSha256": "08adb08715d05f56d7c564015f9b6ac76403e26eb36964c59ac97e28b4523004"
+            "nativeHeight": 3860,
+            "nativeWidth": 2650,
+            "sourceSha256": "17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31"
           }
         }
       ]
