@@ -98,6 +98,26 @@ export function sizeBullet(collection, print = {}) {
   return `Unframed ${orientation} print in ${list} inch sizes${whole}`;
 }
 
+/**
+ * Marks every verified Prodigi mapping of the prints that reproduce an artwork
+ * as unverified, because their print files are about to change. Returns the
+ * affected print slugs; the catalog is edited in place.
+ */
+export function unverifyArtworkMappings(catalog, artworkId, reason) {
+  const affected = [];
+  for (const collection of catalog.collections)
+    for (const print of collection.prints) {
+      if (print.artworkId !== artworkId || !print.prodigi) continue;
+      for (const mapping of Object.values(print.prodigi)) {
+        if (!mapping.verified) continue;
+        mapping.verified = false;
+        mapping.note = reason;
+        if (!affected.includes(print.slug)) affected.push(print.slug);
+      }
+    }
+  return affected;
+}
+
 /** The registry artist and artwork a museum print reproduces. */
 export function museumSource(print, registry = ART_REGISTRY) {
   const artwork = findArtwork(print.artworkId ?? '', registry);

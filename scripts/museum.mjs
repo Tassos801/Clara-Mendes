@@ -60,6 +60,7 @@ import {
   CATALOG_PATH,
   REPO_ROOT,
   resolveLocalPaths,
+  unverifyArtworkMappings,
 } from './lib/product-pipeline.mjs';
 
 const REGISTRY_PATH = path.join(REPO_ROOT, 'data/art-registry.json');
@@ -449,6 +450,19 @@ function trim() {
   const problems = validateArtRegistry(registry);
   if (problems.length) throw new Error(problems.join('\n- '));
   saveRegistry();
+  // Mapped prints were verified against the old print file.
+  const catalog = JSON.parse(readFileSync(CATALOG_PATH, 'utf8'));
+  const remap = unverifyArtworkMappings(
+    catalog,
+    id,
+    `trim changed ${new Date().toISOString().slice(0, 10)}; re-prepare, re-upload and re-map`,
+  );
+  if (remap.length) {
+    writeJson(CATALOG_PATH, catalog);
+    console.log(
+      `Prodigi mappings now unverified (re-prepare, upload and map again): ${remap.join(', ')}`,
+    );
+  }
   const size = masterSize(artwork);
   console.log(
     `${id}: ${artwork.trim ? `trimmed to ${size.width}×${size.height}` : 'trim cleared'}; master review reset to pending`,

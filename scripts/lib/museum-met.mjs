@@ -223,5 +223,7 @@ export function metArtworkRecord(
           ? reset(previous.reviews?.master, 'museum image or record changed')
           : (previous?.reviews?.master ?? {status: 'pending'}),
     },
+    // A trim is in the original's pixels, so it only survives an unchanged image.
+    ...(previous?.trim && !imageChanged ? {trim: previous.trim} : {}),
   };
 }

@@ -7,7 +7,7 @@ import sharp from 'sharp';
 import * as registry from '../app/lib/artRegistry.ts';
 import * as layout from './lib/museum-layout.mjs';
 import * as met from './lib/museum-met.mjs';
-import {REPO_ROOT} from './lib/product-pipeline.mjs';
+import {REPO_ROOT, unverifyArtworkMappings} from './lib/product-pipeline.mjs';
 
 const GREAT_WAVE_RAW = readFileSync(
   path.join(REPO_ROOT, 'data/museum-evidence/met-45434.json'),
@@ -244,6 +244,47 @@ test('a refetch keeps decisions unless the evidence behind them changed', () => 
   });
   assert.equal(newRecord.reviews.rights.status, 'pending');
   assert.equal(newRecord.reviews.master.status, 'pending');
+
+  // A trim survives a refetch of the same image, never a new one.
+  decided.trim = {
+    at: '2026-10-11T12:00:00.000Z',
+    bottom: 0,
+    by: 'Owner',
+    left: 0,
+    right: 0,
+    top: 98,
+  };
+  assert.deepEqual(waveRecord({previous: decided}).trim, decided.trim);
+  const replaced = waveRecord({
+    original: {...decided.original, sha256: 'c'.repeat(64)},
+    previous: decided,
+  });
+  assert.equal(replaced.trim, undefined);
+});
+
+test('a trim change unverifies the Prodigi mappings of its prints', () => {
+  const mapping = (id) => ({'8x10': {channelProductId: id, verified: true}});
+  const catalog = {
+    collections: [
+      {
+        prints: [
+          {artworkId: 'met-1', prodigi: mapping('9'), slug: 'a'},
+          {artworkId: 'met-2', prodigi: mapping('8'), slug: 'b'},
+          {artworkId: 'met-1', slug: 'c'},
+        ],
+      },
+    ],
+  };
+  assert.deepEqual(unverifyArtworkMappings(catalog, 'met-1', 'trim changed'), [
+    'a',
+  ]);
+  const [a, b] = catalog.collections[0].prints;
+  assert.deepEqual(a.prodigi['8x10'], {
+    channelProductId: '9',
+    note: 'trim changed',
+    verified: false,
+  });
+  assert.equal(b.prodigi['8x10'].verified, true);
 });
 
 test('a JPEG header gives the pixel size without the whole file', async () => {
