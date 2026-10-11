@@ -943,7 +943,7 @@
               "backgroundFile": "great-wave-living-room.png",
               "placement": {
                 "left": 380,
-                "top": 250,
+                "top": 329,
                 "width": 320,
                 "height": 256
               }
@@ -965,7 +965,7 @@
               "backgroundFile": "great-wave-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 434,
                 "width": 250,
                 "height": 200
               }
@@ -976,7 +976,7 @@
               "backgroundFile": "great-wave-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 459,
                 "width": 200,
                 "height": 160
               }
@@ -1027,7 +1027,7 @@
               "backgroundFile": "hodogaya-on-the-tokaido-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 494,
                 "width": 250,
                 "height": 200
               }
@@ -1038,7 +1038,7 @@
               "backgroundFile": "hodogaya-on-the-tokaido-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 417,
                 "width": 200,
                 "height": 160
               }
@@ -1067,7 +1067,7 @@
               "backgroundFile": "sekiya-village-on-the-sumida-river-living-room.png",
               "placement": {
                 "left": 380,
-                "top": 250,
+                "top": 347,
                 "width": 320,
                 "height": 256
               }
@@ -1089,7 +1089,7 @@
               "backgroundFile": "sekiya-village-on-the-sumida-river-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 412,
                 "width": 250,
                 "height": 200
               }
@@ -1100,7 +1100,7 @@
               "backgroundFile": "sekiya-village-on-the-sumida-river-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 469,
                 "width": 200,
                 "height": 160
               }
@@ -1151,7 +1151,7 @@
               "backgroundFile": "tago-bay-near-ejiri-on-the-tokaido-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 408,
                 "width": 250,
                 "height": 200
               }
@@ -1162,7 +1162,7 @@
               "backgroundFile": "tago-bay-near-ejiri-on-the-tokaido-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 497,
                 "width": 200,
                 "height": 160
               }
@@ -1191,7 +1191,7 @@
               "backgroundFile": "ushibori-in-hitachi-province-living-room.png",
               "placement": {
                 "left": 380,
-                "top": 250,
+                "top": 304,
                 "width": 320,
                 "height": 256
               }
@@ -1213,7 +1213,7 @@
               "backgroundFile": "ushibori-in-hitachi-province-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 391,
                 "width": 250,
                 "height": 200
               }
@@ -1224,7 +1224,7 @@
               "backgroundFile": "ushibori-in-hitachi-province-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 377,
                 "width": 200,
                 "height": 160
               }
@@ -1253,7 +1253,7 @@
               "backgroundFile": "yoshida-on-the-tokaido-living-room.png",
               "placement": {
                 "left": 380,
-                "top": 250,
+                "top": 313,
                 "width": 320,
                 "height": 256
               }
@@ -1275,7 +1275,7 @@
               "backgroundFile": "yoshida-on-the-tokaido-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 452,
                 "width": 250,
                 "height": 200
               }
@@ -1286,7 +1286,7 @@
               "backgroundFile": "yoshida-on-the-tokaido-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 477,
                 "width": 200,
                 "height": 160
               }
@@ -1337,7 +1337,7 @@
               "backgroundFile": "nissaka-sayo-no-nakayama-study.png",
               "placement": {
                 "left": 420,
-                "top": 240,
+                "top": 441,
                 "width": 250,
                 "height": 200
               }
@@ -1348,7 +1348,7 @@
               "backgroundFile": "nissaka-sayo-no-nakayama-wide-interior.png",
               "placement": {
                 "left": 450,
-                "top": 330,
+                "top": 436,
                 "width": 200,
                 "height": 160
               }
@@ -1399,7 +1399,7 @@
               "backgroundFile": "fireworks-at-ryogoku-bridge-study.png",
               "placement": {
                 "left": 440,
-                "top": 230,
+                "top": 304,
                 "width": 200,
                 "height": 250
               }
@@ -1461,7 +1461,7 @@
               "backgroundFile": "kinryusan-temple-at-asakusa-study.png",
               "placement": {
                 "left": 440,
-                "top": 230,
+                "top": 288,
                 "width": 200,
                 "height": 250
               }
@@ -1472,7 +1472,7 @@
               "backgroundFile": "kinryusan-temple-at-asakusa-wide-interior.png",
               "placement": {
                 "left": 470,
-                "top": 320,
+                "top": 412,
                 "width": 160,
                 "height": 200
               }
@@ -1523,7 +1523,7 @@
               "backgroundFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-study.png",
               "placement": {
                 "left": 440,
-                "top": 230,
+                "top": 350,
                 "width": 200,
                 "height": 250
               }
@@ -1534,7 +1534,7 @@
               "backgroundFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-wide-interior.png",
               "placement": {
                 "left": 470,
-                "top": 320,
+                "top": 423,
                 "width": 160,
                 "height": 200
               }

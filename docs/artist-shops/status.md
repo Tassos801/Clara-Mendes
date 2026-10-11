@@ -2,11 +2,9 @@
 
 **Updated:** 2026-10-11  
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Owner decisions applied; room backgrounds in progress; no production release  
-**Current writer:** Claude Code (2026-10-11, owner's Mac). Codex (Sol) has been
-asked to make only the 40 room backgrounds into
-`scripts/assets/print-room-mockups/floating-world/`; Claude Code reviews and
-commits them.
+**State:** Rooms done and print files in Prodigi; waiting on Shopify Admin credentials for Drafts; no production release  
+**Current writer:** Claude Code (2026-10-11, owner's Mac). Codex (Sol) made the
+40 room backgrounds under that writer's coordination.
 
 ## Where we are (2026-10-11)
 
@@ -31,14 +29,26 @@ commits them.
 **Still open:**
 - **Master reviews (owner):** pending for all ten. The prepared 8×10 files
   are 420–435 ppi native; the owner may want a physical proof first.
-- **Room backgrounds:** delegated to Codex at the owner's request. Each
-  print's four `backgroundFile` names are in `data/print-catalog.json`. They
-  are blank 4:5 interiors that the compositor stretches to 1080×1350, with
-  empty wall at the `placement` box (5:4 for the seven landscape prints, 4:5
-  for the three portrait ones). Then `npm run product -- rooms floating-world`.
-- Only with explicit owner approval: `stage --apply` (Shopify Drafts), Prodigi
-  mapping (landscape 3000×2400 files; untagged originals, so check colour),
-  `media`, `release`, then a PR to main.
+- **Room backgrounds: done (2026-10-11).** Codex generated all 40 blank
+  interiors (built-in image generation; 1122×1402 PNG, cropped to 4:5 before
+  resizing) and ran `rooms`, which passed. Claude Code reviewed every
+  composite. It then lowered 23 placements (`top` only) so each print hangs
+  about one print-height above the furniture instead of up to 2.3×; every
+  moved box was checked to be clear wall. `rooms` passes and `status` shows
+  `roomsReady` for all ten.
+- **Prodigi image library: done (2026-10-11).** All ten print files were
+  uploaded through the owner's Chrome and processed at full size (3000×2400
+  landscape, 2400×3000 portrait). The Shopify channel
+  `vre00g-8b.myshopify.com` is active in Prodigi.
+- **Blocked: Shopify Drafts.** The owner authorised Drafts, Prodigi mapping
+  and room media on 2026-10-11 (not `release`). `stage --apply` needs
+  `.env.shopify-admin.local` (`SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET` or
+  `SHOPIFY_ADMIN_ACCESS_TOKEN`), which is not on the owner's Mac. Once it is
+  in place: `stage floating-world --apply`, `handoff`, map each row in
+  Prodigi (choose the uploaded file; settings per the handoff), `mapped …`,
+  `media floating-world --apply`, then commit.
+- `release`, publishing and any PR to main need the master reviews plus the
+  owner's explicit go-ahead.
 
 ## Resume here (any PC)
 
@@ -202,7 +212,7 @@ the Met records were unchanged).
 2. ~~**Owner:** name, sizes, price and Minowa~~ (done 2026-10-11).
 3. ~~**Owner:** bios, curator's notes and rights~~ (done 2026-10-11).
    **Master reviews are still pending.**
-4. Room backgrounds (with Codex, 2026-10-11): four blank interiors per print (40 in total), named as
+4. ~~Room backgrounds~~ (done with Codex, 2026-10-11; notes kept for reference): four blank interiors per print (40 in total), named as
    in each print's `rooms[].backgroundFile`, under
    `scripts/assets/print-room-mockups/floating-world/`. Placements are 5:4
    for the seven landscape prints and 4:5 for the three portrait ones. Then
@@ -215,8 +225,8 @@ the Met records were unchanged).
 
 - The ten works are not yet cleared for sale: the master reviews are
   pending (artists approved and rights cleared on 2026-10-11).
-- Nothing has been created or changed in Shopify or Prodigi.
-- No room backgrounds or room mockups exist for Floating World.
+- Nothing has been created or changed in Shopify. In Prodigi, only the ten
+  print files were added to the image library.
 - Physical print quality, delivered cost and landscape-file handling in
   Prodigi are unverified.
 - No production deploy, supplier order, payment or public marketing action.
