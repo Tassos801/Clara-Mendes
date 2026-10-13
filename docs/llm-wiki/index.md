@@ -12,6 +12,9 @@ Source: local Shopify Hydrogen storefront repository at
 - [Floating World Draft readback](../artist-shops/evidence/draft-readback-2026-10-13.json) -
   Ten hidden Shopify Drafts and their 50 READY images verified on 13 October;
   product and variant IDs, print hashes, pending supplier mapping and scope limits.
+- [Floating World size expansion readback](../artist-shops/evidence/expansion-readback-2026-10-13.json) -
+  Thirty unavailable variants across the same ten Drafts; preserved 8×10
+  variants and mappings, larger-size file hashes and remaining mapping gates.
 
 - [Overview](overview.md) - Current synthesized picture of the Clara Mendes store.
 - [Architecture](architecture.md) - Runtime, routing, data flow, and integration map.

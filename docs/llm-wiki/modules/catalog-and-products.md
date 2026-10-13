@@ -528,3 +528,12 @@ assignments and per-location stock cannot be verified with the installed
 app's scopes (`read_publications` and `read_inventory` absent). Provider
 mapping and all master reviews remain pending. IDs, asset hashes and scope
 limits are in the [readback evidence](../../artist-shops/evidence/draft-readback-2026-10-13.json).
+
+The later 2026-10-13 resumed checkpoint expanded those same ten Drafts to
+thirty variants: 8×10 €26.99, 16×20 €35.99 and 20×24 €44.99. The original
+ten variants, their verified 8×10 Prodigi mapping records and all fifty media
+images were preserved; twenty new variants are tracked at aggregate stock 0
+with DENY. Larger-size mapping remains pending. All ten Storefront IDs are
+absent and public product URLs return 404. All master reviews remain pending.
+See [expansion readback](../../artist-shops/evidence/expansion-readback-2026-10-13.json)
+for the thirty variant IDs, file hashes and scope limits.

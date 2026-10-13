@@ -3,9 +3,12 @@
 **Updated:** 2026-10-13
 
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts (8×10 mapped in Prodigi), artist shop page redesigned Society6-style, product crops approved, 16×20 and 20×24 added to the catalog but not yet staged in Shopify; master reviews pending; no production release
+**State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; artist shop redesigned and product crops approved; master reviews pending; no production release
 
-**Current writer:** none. Claude Code was the writer on 2026-10-13 from 09:30
+**Current writer:** none. Codex (Sol) completed the resumed twenty-variant
+Draft expansion from GitHub checkpoint `31a9d12` and returned writer control
+to the parent agent. The next writer must name themselves before editing.
+Claude Code was the writer on 2026-10-13 from 09:30
 on the owner's Windows PC and stopped at the owner's request that evening
 (HEAD `4070390` plus this handoff). Codex (Sol) staged the ten Drafts and
 their room media earlier the same morning, then hit its usage limit; Claude
@@ -14,14 +17,34 @@ Prodigi, proposed product crops (approved) and added the larger sizes.
 
 ## Stopped here (2026-10-13): what the next agent does
 
+**Resumed checkpoint (2026-10-13):** the owner asked to continue Claude's
+latest GitHub work with Sol. `expand floating-world --apply` staged exactly
+twenty new variants; all ten products remain Draft with three variants each,
+at €26.99 / €35.99 / €44.99. Fresh readback verifies tracked inventory totals
+0, DENY, shipping required, exact size/finish/SKU/price, preservation of the
+ten existing 8×10 variants and their verified mapping records, and all fifty
+gallery images unchanged. The pipeline compared 61 unrelated Clara Mendes
+products unchanged. All ten Storefront product IDs return null and all ten
+public product URLs return 404. Thirty production-file hashes and their
+dimensions/300 dpi were checked against the current asset report; master
+reviews remain pending. Missing `read_inventory` and `read_publications`
+scopes still limit per-location stock and other-channel publication reads.
+
+Evidence: [larger-size Draft readback](evidence/expansion-readback-2026-10-13.json),
+local `expand-2026-10-13T11-09-50.json` and the regenerated thirty-row
+`prodigi-handoff.csv` / `.md` under `<launchDir>/floating-world/`.
+Baseline checks: 416/416 tests, typecheck and lint passed. No source-code
+change was required. Larger-size mapping is now the next external step;
+the ten completed 8×10 mappings must be preserved.
+
 Do these in order. Writes to the live store (Shopify `--apply`, Prodigi
 dashboard) need the owner's go-ahead in chat; the owner gave it on
 2026-10-13 for Drafts and mapping, not for `release`.
 
-1. **Stage the 20 new variants.** `npm run product -- expand floating-world`
-   (dry run: 20 × "stage unavailable", 10 × "preserve"), then `--apply`. On
-   2026-10-13 Claude Code's safety check blocked `--apply`, so the owner must
-   run it or allow it. Expect 30 variants: 8×10 €26.99, 16×20 €35.99
+1. **Stage the 20 new variants: done in the resumed Sol checkpoint.**
+   The dry run showed 20 × "stage unavailable", 10 × "preserve"; `--apply`
+   completed after the owner's continuation request. Claude Code's earlier
+   safety check had blocked that operation. Verified 30 variants: 8×10 €26.99, 16×20 €35.99
    (`ART-FAP-EMA-16X20`), 20×24 €44.99 (`GLOBAL-FAP-20X24`); every product
    still DRAFT, new variants tracked at 0 with DENY. `expand` refuses an
    unreleased product that is not DRAFT.
@@ -37,11 +60,10 @@ dashboard) need the owner's go-ahead in chat; the owner gave it on
    20×24 SKU is metric 50×60 cm, 5:6 like our files). Re-read on a fresh load,
    then `npm run product -- mapped floating-world --size 16x20 <slug>=<id> …`
    and the same for `--size 20x24`.
-3. **Owner decisions before the new product types:** a price for the framed
-   16×20 *with* print (`GLOBAL-CFP-16X20`; the frame-only product is €50, and
-   no framed-with-print price exists). Proposed defaults from the current
-   manifests, which may predate the ×0.90 repricing, so check the live prices:
-   canvas €89, greeting card €8, postcard €6, tough phone case €39.99.
+3. **Owner prices approved in the resumed chat (2026-10-13):** framed
+   16×20 *with* print €89.10 (`GLOBAL-CFP-16X20`), canvas €80.10,
+   greeting card €7.20, postcard €5.40 and tough phone case €35.99.
+   These are the approved prices for the new hidden museum products.
 4. **Build the five product types** (owner-approved 2026-10-13): framed print,
    canvas, greeting card, postcard and tough phone case for each of the ten
    works, as **separate hidden Drafts, one product per artwork per type**

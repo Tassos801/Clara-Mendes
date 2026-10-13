@@ -1593,3 +1593,17 @@ variants, 20 Prodigi mappings, the framed-with-print price, the five product
 types as separate Drafts, master reviews) are under "Stopped here" in
 [status](../artist-shops/status.md).
 
+## 2026-10-13 - Resumed larger-size Draft expansion verified
+
+Sol continued the owner's GitHub request from `31a9d12` using the existing
+pipeline. Twenty 16×20 / 20×24 variants were created across the ten hidden
+Floating World Drafts at €35.99 / €44.99, tracked at aggregate stock 0 with
+DENY. The ten 8×10 variants and their verified mapping records, fifty gallery
+images and 61 unrelated Clara Mendes products were preserved. All thirty
+print-file hashes match the prepared asset report. All ten Storefront IDs
+are absent and public product URLs return 404; master reviews and larger-size
+provider mapping remain pending. Baseline 416/416 tests, typecheck and lint
+passed; no source code changed. The owner also approved the new-family prices
+recorded in [status](../artist-shops/status.md); their implementation is the
+next writer's scope. See [expansion readback](../artist-shops/evidence/expansion-readback-2026-10-13.json).
+

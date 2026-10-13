@@ -1003,7 +1003,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927162702",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191506362702"
+              "8x10": "gid://shopify/ProductVariant/61191506362702",
+              "16x20": "gid://shopify/ProductVariant/61195110121806",
+              "20x24": "gid://shopify/ProductVariant/61195110154574"
             }
           },
           "prodigi": {
@@ -1078,7 +1080,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927293774",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191507902798"
+              "8x10": "gid://shopify/ProductVariant/61191507902798",
+              "16x20": "gid://shopify/ProductVariant/61195110482254",
+              "20x24": "gid://shopify/ProductVariant/61195110515022"
             }
           },
           "prodigi": {
@@ -1153,7 +1157,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927359310",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191510458702"
+              "8x10": "gid://shopify/ProductVariant/61191510458702",
+              "16x20": "gid://shopify/ProductVariant/61195110613326",
+              "20x24": "gid://shopify/ProductVariant/61195110646094"
             }
           },
           "prodigi": {
@@ -1228,7 +1234,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927424846",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191512588622"
+              "8x10": "gid://shopify/ProductVariant/61191512588622",
+              "16x20": "gid://shopify/ProductVariant/61195110777166",
+              "20x24": "gid://shopify/ProductVariant/61195110809934"
             }
           },
           "prodigi": {
@@ -1303,7 +1311,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927457614",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191512621390"
+              "8x10": "gid://shopify/ProductVariant/61191512621390",
+              "16x20": "gid://shopify/ProductVariant/61195110842702",
+              "20x24": "gid://shopify/ProductVariant/61195110875470"
             }
           },
           "prodigi": {
@@ -1378,7 +1388,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927490382",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191512654158"
+              "8x10": "gid://shopify/ProductVariant/61191512654158",
+              "16x20": "gid://shopify/ProductVariant/61195110941006",
+              "20x24": "gid://shopify/ProductVariant/61195110973774"
             }
           },
           "prodigi": {
@@ -1453,7 +1465,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927523150",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191512686926"
+              "8x10": "gid://shopify/ProductVariant/61191512686926",
+              "16x20": "gid://shopify/ProductVariant/61195111039310",
+              "20x24": "gid://shopify/ProductVariant/61195111072078"
             }
           },
           "prodigi": {
@@ -1528,7 +1542,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927621454",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191512883534"
+              "8x10": "gid://shopify/ProductVariant/61191512883534",
+              "16x20": "gid://shopify/ProductVariant/61195111170382",
+              "20x24": "gid://shopify/ProductVariant/61195111203150"
             }
           },
           "prodigi": {
@@ -1603,7 +1619,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927686990",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191513080142"
+              "8x10": "gid://shopify/ProductVariant/61191513080142",
+              "16x20": "gid://shopify/ProductVariant/61195111301454",
+              "20x24": "gid://shopify/ProductVariant/61195111334222"
             }
           },
           "prodigi": {
@@ -1678,7 +1696,9 @@
           "shopify": {
             "productId": "gid://shopify/Product/16144927719758",
             "variantIds": {
-              "8x10": "gid://shopify/ProductVariant/61191513112910"
+              "8x10": "gid://shopify/ProductVariant/61191513112910",
+              "16x20": "gid://shopify/ProductVariant/61195111432526",
+              "20x24": "gid://shopify/ProductVariant/61195111465294"
             }
           },
           "prodigi": {
