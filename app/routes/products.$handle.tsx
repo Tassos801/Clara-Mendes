@@ -35,6 +35,7 @@ import {
 } from '~/lib/capsules';
 import {getCapsulePage} from '~/lib/capsulePages';
 import {productArtworkCredit} from '~/lib/artistShops';
+import {artProductPage} from '~/lib/artProductCatalog';
 import {
   filterDemoProducts,
   isDemoProduct,
@@ -592,6 +593,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   }
 
   return {
+    // Museum framed prints, canvas, cards, postcards and cases: their own
+    // detail copy, for released family products only.
+    artProduct: artProductPage(product.handle),
     artworkCredit: productArtworkCredit(product.handle),
     capsuleSummary: shopCapsule
       ? {
@@ -626,6 +630,7 @@ export default function Product() {
 
 function ProductPage() {
   const {
+    artProduct,
     artworkCredit,
     capsuleSummary,
     classicFrameCrossSell,
@@ -757,13 +762,15 @@ function ProductPage() {
         !/unframed/i.test(option.value),
     ),
   );
-  const shippingReach: ShippingReach = isLetterPost
-    ? 'eu'
-    : (product.productType || '').toLowerCase() === 'canvas art' ||
-        isClassicFrame ||
-        (isPersonalisedType && isFramedSelection)
-      ? 'selected'
-      : 'worldwide';
+  const shippingReach: ShippingReach = artProduct
+    ? artProduct.shippingReach
+    : isLetterPost
+      ? 'eu'
+      : (product.productType || '').toLowerCase() === 'canvas art' ||
+          isClassicFrame ||
+          (isPersonalisedType && isFramedSelection)
+        ? 'selected'
+        : 'worldwide';
   const productLede =
     potDesign?.story ??
     curatedProduct?.tagline ??
@@ -1412,12 +1419,21 @@ function ProductPage() {
                 and print colours can vary slightly.
               </ProductDetail>
             ) : null}
+            {artProduct?.details.map((detail) => (
+              <ProductDetail
+                key={detail.label}
+                label={detail.label}
+                defaultOpen
+              >
+                {detail.text}
+              </ProductDetail>
+            ))}
             {artworkCredit?.artwork ? (
               <ProductDetail label="The artwork" defaultOpen>
                 {artworkCredit.artist.name}, <i>{artworkCredit.artwork.title}</i>
-                , {artworkCredit.artwork.date}. {artworkCredit.artwork.medium}.
-                Printed whole on a white border from a public-domain museum
-                image. {artworkCredit.artwork.credit}{' '}
+                , {artworkCredit.artwork.date}. {artworkCredit.artwork.medium}.{' '}
+                {artworkCredit.artwork.reproduction}{' '}
+                {artworkCredit.artwork.credit}{' '}
                 <a
                   className="text-link"
                   href={artworkCredit.artwork.objectUrl}
@@ -1489,7 +1505,7 @@ function ProductPage() {
                 {' — buy the complete three-print wall in one size.'}
               </ProductDetail>
             ) : null}
-            {isPhoneCase ? (
+            {isPhoneCase && !artProduct ? (
               <>
                 <ProductDetail label="Case" defaultOpen>
                   Slim snap case in impact-resistant polycarbonate with an

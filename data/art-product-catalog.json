@@ -1,0 +1,2230 @@
+{
+  "$comment": "Museum works on other products, one hidden Shopify Draft per artwork per family (app/lib/artProductCatalog.ts). collections[] holds the owner-approved prices and Prodigi SKUs per print-catalog collection; products[] is written by `npm run product -- prepare <collection> --families` (assets), `stage … --families --apply` (Shopify ids), `mapped … --family <f>` and `release`. Never add these works to the live studio extension products.",
+  "version": 1,
+  "currency": "EUR",
+  "collections": [
+    {
+      "slug": "floating-world",
+      "copy": "Part of Floating World, a Clara Mendes selection of Edo-period Japanese woodblock prints from museum open-access collections.",
+      "families": {
+        "framed-print": {
+          "priceEUR": "89.10",
+          "providerSku": "GLOBAL-CFP-16X20",
+          "providerSettings": "Natural classic frame, 200gsm Enhanced Matte Art paper, no mount, Perspex glazing; print area 100%, position 0/0, no Prodigi border; quality Excellent; Standard shipping; fulfilled automatically"
+        },
+        "canvas": {
+          "priceEUR": "80.10",
+          "providerSku": "GLOBAL-CAN-16X20",
+          "providerSettings": "38 mm bar, MirrorWrap; print area 100%, position 0/0; quality as rated (the live canvas files rate Acceptable); Standard shipping; fulfilled automatically"
+        },
+        "greeting-card": {
+          "priceEUR": "7.20",
+          "providerSku": "GLOBAL-GRE-MOH-7X5-BLA",
+          "providerSettings": "Four-panel 6117×2161 file at 100%, position 0/0 (front panel second from left, as the live cards); Budget shipping (letter post); fulfilled automatically"
+        },
+        "postcard": {
+          "priceEUR": "5.40",
+          "providerSku": "GLOBAL-POST-MOH-7X5",
+          "providerSettings": "Two-sided 4323×1559 file at 100%, position 0/0 (artwork on the right half, as the live postcards); Budget shipping (letter post); fulfilled automatically"
+        },
+        "phone-case": {
+          "priceEUR": "35.99",
+          "providerSku": "GLOBAL-TECH-<device>-TCB-CS-M",
+          "providerSettings": "Not channel-mapped: the orders/paid webhook sends the deployed 4:5 file to the Prodigi API with sizing fillPrintArea, one Prodigi SKU per device from data/art-tough-phone-case.json"
+        }
+      }
+    }
+  ],
+  "products": [
+    {
+      "handle": "the-great-wave-off-kanagawa-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "the-great-wave-off-kanagawa",
+      "artworkId": "met-39799",
+      "title": "The Great Wave off Kanagawa Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-01-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 213.9,
+        "preparedAt": "2026-10-13T12:05:47.816Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/the-great-wave-off-kanagawa-framed-print.webp",
+          "sha256": "c58f8aaeb6b976c67347631f3fdedb3a91435104582ff6c2f657eee164f5e43c",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/the-great-wave-off-kanagawa-16x20-300dpi.jpg",
+          "sha256": "0d15cc69443b6de1caa26ba1cae93a3fb1a9ac8afdfe89b2074a5f37de0dae4d",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "hodogaya-on-the-tokaido-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "hodogaya-on-the-tokaido",
+      "artworkId": "met-55458",
+      "title": "Hodogaya on the Tōkaidō Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-02-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 217.5,
+        "preparedAt": "2026-10-13T12:06:40.601Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/hodogaya-on-the-tokaido-framed-print.webp",
+          "sha256": "7b817c4b22e819a6861d6b69de12922a7ded0d63cc9b5a083c01914014df1cb8",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/hodogaya-on-the-tokaido-16x20-300dpi.jpg",
+          "sha256": "af07c94020cf39e542cb131570bc04fa98da95f87efd38caf236ba653bcb5b63",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "sekiya-village-on-the-sumida-river-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "sekiya-village-on-the-sumida-river",
+      "artworkId": "met-55291",
+      "title": "Sekiya Village on the Sumida River Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-03-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 216.4,
+        "preparedAt": "2026-10-13T12:06:41.261Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/sekiya-village-on-the-sumida-river-framed-print.webp",
+          "sha256": "c8cb79d50821d6a8f94a3e2845a34725b6242f42a6dd2ccc4eb13a890a0d01af",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/sekiya-village-on-the-sumida-river-16x20-300dpi.jpg",
+          "sha256": "34b4f70100ded704842f3fa6d9fbb40e2af5734bdcefed9b696e091f69b4ffde",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "artworkId": "met-57000",
+      "title": "Tago Bay near Ejiri on the Tōkaidō Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-04-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 216.1,
+        "preparedAt": "2026-10-13T12:06:41.955Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/tago-bay-near-ejiri-on-the-tokaido-framed-print.webp",
+          "sha256": "6476651473557ec2efc5093d2fd3c9bf1c3673465279dac476f5b0e46cf72d63",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/tago-bay-near-ejiri-on-the-tokaido-16x20-300dpi.jpg",
+          "sha256": "ff3a2aecd09d976e62f6aecd835063b2ea54ada41695aa20a0d15ab267a64966",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "ushibori-in-hitachi-province-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "ushibori-in-hitachi-province",
+      "artworkId": "met-56239",
+      "title": "Ushibori in Hitachi Province Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-05-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 214.3,
+        "preparedAt": "2026-10-13T12:06:42.584Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/ushibori-in-hitachi-province-framed-print.webp",
+          "sha256": "9a3f3e2509c9a9c3954fa621210bf53c8d835433498eae704f90e47532bd1e39",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/ushibori-in-hitachi-province-16x20-300dpi.jpg",
+          "sha256": "fd64283f6f51b41cd6d703453ced3c820899d3794594bd5d692df29ee3aa369a",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "yoshida-on-the-tokaido-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "yoshida-on-the-tokaido",
+      "artworkId": "met-56360",
+      "title": "Yoshida on the Tōkaidō Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-06-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 213.5,
+        "preparedAt": "2026-10-13T12:06:43.273Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/yoshida-on-the-tokaido-framed-print.webp",
+          "sha256": "0999c92a31be75511f6aa093ecd76d17960c91f42171af4499fb9515bc9f2d05",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/yoshida-on-the-tokaido-16x20-300dpi.jpg",
+          "sha256": "769d1a66de719cdd0e79f637998b8ca87ef437d4bb4478c5cb9b2de1383e17dc",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "nissaka-sayo-no-nakayama-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "nissaka-sayo-no-nakayama",
+      "artworkId": "met-55993",
+      "title": "Nissaka, Sayo no Nakayama Framed Art Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-07-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 216.1,
+        "preparedAt": "2026-10-13T12:06:44.079Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/nissaka-sayo-no-nakayama-framed-print.webp",
+          "sha256": "da7429483dd7ef3cb35af00f34ec3ea2a9928ecd40f42b6cfaa2cfe5711d645d",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 4800,
+          "path": "floating-world/print/nissaka-sayo-no-nakayama-16x20-300dpi.jpg",
+          "sha256": "b52cc02e8d1f866572178c63a4db75ac6f3faa55b2dbd7b8abd6d56b57cd1de3",
+          "width": 6000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "fireworks-at-ryogoku-bridge-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "fireworks-at-ryogoku-bridge",
+      "artworkId": "met-37093",
+      "title": "Fireworks at Ryōgoku Bridge Framed Art Print",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-08-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 212.4,
+        "preparedAt": "2026-10-13T12:06:45.166Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/fireworks-at-ryogoku-bridge-framed-print.webp",
+          "sha256": "8294c1d05ba714d7b96023c001957403f7e763376b716ed64511695db9453859",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 6000,
+          "path": "floating-world/print/fireworks-at-ryogoku-bridge-16x20-300dpi.jpg",
+          "sha256": "29d083f2a54164513dc3d2e3973974b77bb48c6a5f74121586d564a8a3983cfa",
+          "width": 4800
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "kinryusan-temple-at-asakusa-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "kinryusan-temple-at-asakusa",
+      "artworkId": "met-56689",
+      "title": "Kinryūsan Temple at Asakusa Framed Art Print",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-09-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 210.2,
+        "preparedAt": "2026-10-13T12:06:46.357Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/kinryusan-temple-at-asakusa-framed-print.webp",
+          "sha256": "eb154225dfccead98ad25d18d12be72bf3f94221e7f1a4db2726a02aabf2d56f",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 6000,
+          "path": "floating-world/print/kinryusan-temple-at-asakusa-16x20-300dpi.jpg",
+          "sha256": "50c06ee6e9a8c0a431df32a8e07e92d305f03dee3238ec9787cc3b7015799684",
+          "width": 4800
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-framed-print",
+      "family": "framed-print",
+      "collection": "floating-world",
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "artworkId": "met-55433",
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake Framed Art Print",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-10-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": null,
+        "ppi": 213.5,
+        "preparedAt": "2026-10-13T12:06:47.433Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/framed-print/web/sudden-shower-over-shin-ohashi-bridge-and-atake-framed-print.webp",
+          "sha256": "ddaae79416da229e17f329066c2f02700525d27253eea54bf3839e5127252694",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 6000,
+          "path": "floating-world/print/sudden-shower-over-shin-ohashi-bridge-and-atake-16x20-300dpi.jpg",
+          "sha256": "34f3249cf876cf88354559fa95890d1c9c95bd851d640342430a30f7da224de6",
+          "width": 4800
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      }
+    },
+    {
+      "handle": "the-great-wave-off-kanagawa-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "the-great-wave-off-kanagawa",
+      "artworkId": "met-39799",
+      "title": "The Great Wave off Kanagawa Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-01-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2568,
+          "left": 212,
+          "top": 34,
+          "width": 3210
+        },
+        "ppi": 160.5,
+        "preparedAt": "2026-10-13T12:05:49.156Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/the-great-wave-off-kanagawa-canvas.webp",
+          "sha256": "dbcef548b2166e01ae6575ad76cd9f62ce934b149be9d6a37dcedf9200dadd44",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/the-great-wave-off-kanagawa-canvas-16x20-150dpi.jpg",
+          "sha256": "81908807fc14e09c42ce2838c57cc1bb3f31f020d91c6e770575f1f73471a594",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[212,34,3210,2568],\"crop\":{\"cx\":0.47,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "hodogaya-on-the-tokaido-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "hodogaya-on-the-tokaido",
+      "artworkId": "met-55458",
+      "title": "Hodogaya on the Tōkaidō Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-02-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2510,
+          "left": 397,
+          "top": 10,
+          "width": 3138
+        },
+        "ppi": 156.9,
+        "preparedAt": "2026-10-13T12:06:49.194Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/hodogaya-on-the-tokaido-canvas.webp",
+          "sha256": "5581452565ad29466ec8dfd9063eabfd296f3fd46c21fda4e0920cccc3fbddb2",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/hodogaya-on-the-tokaido-canvas-16x20-150dpi.jpg",
+          "sha256": "52e351929d5b82488c349e1f1b5dd8d6d28f6116010b8575f4607f83a1534a9b",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[397,10,3138,2510],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "sekiya-village-on-the-sumida-river-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "sekiya-village-on-the-sumida-river",
+      "artworkId": "met-55291",
+      "title": "Sekiya Village on the Sumida River Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-03-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2487,
+          "left": 284,
+          "top": 79,
+          "width": 3109
+        },
+        "ppi": 155.5,
+        "preparedAt": "2026-10-13T12:06:50.732Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/sekiya-village-on-the-sumida-river-canvas.webp",
+          "sha256": "e8da832253f5de375eb5ef3c1840e43d84f12afe61db0621658523288ceb7ec2",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/sekiya-village-on-the-sumida-river-canvas-16x20-150dpi.jpg",
+          "sha256": "1c45d14550ceff4c1da8bd32b1b1701a3f9b091824270f6e056f4e083de838eb",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[284,79,3109,2487],\"crop\":{\"cx\":0.47,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "artworkId": "met-57000",
+      "title": "Tago Bay near Ejiri on the Tōkaidō Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-04-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2571,
+          "left": 425,
+          "top": 53,
+          "width": 3214
+        },
+        "ppi": 160.7,
+        "preparedAt": "2026-10-13T12:06:51.971Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/tago-bay-near-ejiri-on-the-tokaido-canvas.webp",
+          "sha256": "92017265419aad14dfbbf81e3aef6be1240f8d0fd001a9a9d3b5baaa552c80c0",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/tago-bay-near-ejiri-on-the-tokaido-canvas-16x20-150dpi.jpg",
+          "sha256": "b45a5d64536f96b8bc0bd424966190b62e53d4416b4d30981acd7bc823970c47",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[425,53,3214,2571],\"crop\":{\"cx\":0.52,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "ushibori-in-hitachi-province-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "ushibori-in-hitachi-province",
+      "artworkId": "met-56239",
+      "title": "Ushibori in Hitachi Province Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-05-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2556,
+          "left": 340,
+          "top": 70,
+          "width": 3195
+        },
+        "ppi": 159.8,
+        "preparedAt": "2026-10-13T12:06:53.186Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/ushibori-in-hitachi-province-canvas.webp",
+          "sha256": "1c1d975cdd03bcef3ab5154a49d9fcad2df9f5b39a813a969fdc56b0074062ed",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/ushibori-in-hitachi-province-canvas-16x20-150dpi.jpg",
+          "sha256": "09eb36a00982f279d12774b5c6b2afca626a83e3cd247717e6c2abb4fcf52f18",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[340,70,3195,2556],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "yoshida-on-the-tokaido-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "yoshida-on-the-tokaido",
+      "artworkId": "met-56360",
+      "title": "Yoshida on the Tōkaidō Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-06-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2584,
+          "left": 315,
+          "top": 29,
+          "width": 3230
+        },
+        "ppi": 161.5,
+        "preparedAt": "2026-10-13T12:06:54.444Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/yoshida-on-the-tokaido-canvas.webp",
+          "sha256": "2b0e23a14b8b783b86fe52602290b6a038acbb321191ade2a7171f6dbaff0ae8",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/yoshida-on-the-tokaido-canvas-16x20-150dpi.jpg",
+          "sha256": "aa6c1216046f4275937756e6334cbf63c063ea0da77b8c9b2b2cb11894bae112",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[315,29,3230,2584],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "nissaka-sayo-no-nakayama-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "nissaka-sayo-no-nakayama",
+      "artworkId": "met-55993",
+      "title": "Nissaka, Sayo no Nakayama Canvas Print",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-07-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2366,
+          "left": 476,
+          "top": 62,
+          "width": 2958
+        },
+        "ppi": 147.9,
+        "preparedAt": "2026-10-13T12:06:55.755Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/nissaka-sayo-no-nakayama-canvas.webp",
+          "sha256": "1794f0d727295263dffdc768df79d33d033b69e58540a66503f7cd4ac344190b",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 2400,
+          "path": "floating-world/canvas/nissaka-sayo-no-nakayama-canvas-16x20-150dpi.jpg",
+          "sha256": "b8bcedbebd462e3f3ca4d961156e5e0aed8441406bcb880fa1ea62c24da96ee5",
+          "width": 3000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[476,62,2958,2366],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "fireworks-at-ryogoku-bridge-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "fireworks-at-ryogoku-bridge",
+      "artworkId": "met-37093",
+      "title": "Fireworks at Ryōgoku Bridge Canvas Print",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-08-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3111,
+          "left": 42,
+          "top": 365,
+          "width": 2489
+        },
+        "ppi": 155.6,
+        "preparedAt": "2026-10-13T12:06:57.313Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/fireworks-at-ryogoku-bridge-canvas.webp",
+          "sha256": "06ab3a8ca02ce0b114a9e5500880519f29bd71a7ca1afe539402bf1665d2999a",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 3000,
+          "path": "floating-world/canvas/fireworks-at-ryogoku-bridge-canvas-16x20-150dpi.jpg",
+          "sha256": "6fc08f8fe763ef11a156b322e5044b75dc570998c15319d86005865cf20a19ef",
+          "width": 2400
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[42,365,2489,3111],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "kinryusan-temple-at-asakusa-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "kinryusan-temple-at-asakusa",
+      "artworkId": "met-56689",
+      "title": "Kinryūsan Temple at Asakusa Canvas Print",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-09-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2823,
+          "left": 234,
+          "top": 489,
+          "width": 2258
+        },
+        "ppi": 141.2,
+        "preparedAt": "2026-10-13T12:06:58.699Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/kinryusan-temple-at-asakusa-canvas.webp",
+          "sha256": "33e64ccbdccce69074ecdc321d3c77d5c8c05f21762d6978e2f53f83efc4e98a",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 3000,
+          "path": "floating-world/canvas/kinryusan-temple-at-asakusa-canvas-16x20-150dpi.jpg",
+          "sha256": "369ef7af24004c061a9f715bef5d7b55dcbbc67ae8a70071dfd472b824617cd6",
+          "width": 2400
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[234,489,2258,2823],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-canvas",
+      "family": "canvas",
+      "collection": "floating-world",
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "artworkId": "met-55433",
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake Canvas Print",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-10-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2800,
+          "left": 217,
+          "top": 607,
+          "width": 2240
+        },
+        "ppi": 140,
+        "preparedAt": "2026-10-13T12:07:00.529Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/canvas/web/sudden-shower-over-shin-ohashi-bridge-and-atake-canvas.webp",
+          "sha256": "7af9b06813ce932a0a400951181e3cac15cd80ac2b6952ced3eb2d25d21894c7",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 150,
+          "height": 3000,
+          "path": "floating-world/canvas/sudden-shower-over-shin-ohashi-bridge-and-atake-canvas-16x20-150dpi.jpg",
+          "sha256": "30ff0010ce9d4ff38b12e3041efa0acfba2720a38b894538ff6742bc7994023d",
+          "width": 2400
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[217,607,2240,2800],\"crop\":{\"cx\":0.5,\"cy\":0.52}}}"
+      }
+    },
+    {
+      "handle": "the-great-wave-off-kanagawa-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "the-great-wave-off-kanagawa",
+      "artworkId": "met-39799",
+      "title": "The Great Wave off Kanagawa Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-01-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2568,
+          "left": 832,
+          "top": 34,
+          "width": 1817
+        },
+        "ppi": 356.7,
+        "preparedAt": "2026-10-13T12:05:52.166Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/the-great-wave-off-kanagawa-greeting-card.webp",
+          "sha256": "6666091595e503abca395ab441b73102e8d271bc4a31fb80f26bc5352d264769",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/the-great-wave-off-kanagawa-greeting-card-7x5-300dpi.jpg",
+          "sha256": "99fe7ba2960c8683c93f45e1d5a51ad999cf61c397a23ac380413393be968d79",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[832,34,1817,2568],\"crop\":{\"cx\":0.45,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "hodogaya-on-the-tokaido-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "hodogaya-on-the-tokaido",
+      "artworkId": "met-55458",
+      "title": "Hodogaya on the Tōkaidō Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-02-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2510,
+          "left": 685,
+          "top": 10,
+          "width": 1776
+        },
+        "ppi": 348.6,
+        "preparedAt": "2026-10-13T12:07:02.815Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/hodogaya-on-the-tokaido-greeting-card.webp",
+          "sha256": "e1c4c864be650c6e8d3b0d846c6c1e7e28d2420866b08cb7a5797605aa6c0c05",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/hodogaya-on-the-tokaido-greeting-card-7x5-300dpi.jpg",
+          "sha256": "5572a81438dea5b0058e800f1ac1e2c98c6e7871ed50a6a2e29176dcf085aa0a",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[685,10,1776,2510],\"crop\":{\"cx\":0.4,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "sekiya-village-on-the-sumida-river-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "sekiya-village-on-the-sumida-river",
+      "artworkId": "met-55291",
+      "title": "Sekiya Village on the Sumida River Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-03-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2487,
+          "left": 1702,
+          "top": 79,
+          "width": 1760
+        },
+        "ppi": 345.4,
+        "preparedAt": "2026-10-13T12:07:04.892Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/sekiya-village-on-the-sumida-river-greeting-card.webp",
+          "sha256": "306a8704b63fdd0c1aa3b82973422e28b239b7356c3321aad999ba9b1195d4cb",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/sekiya-village-on-the-sumida-river-greeting-card-7x5-300dpi.jpg",
+          "sha256": "adcdaf5ebd6ec74d92819112e972680d8ee1c74aa113fc1c5c0c1512fbebd605",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[1702,79,1760,2487],\"crop\":{\"cx\":0.66,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "artworkId": "met-57000",
+      "title": "Tago Bay near Ejiri on the Tōkaidō Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-04-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2571,
+          "left": 1357,
+          "top": 53,
+          "width": 1819
+        },
+        "ppi": 357.1,
+        "preparedAt": "2026-10-13T12:07:07.063Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/tago-bay-near-ejiri-on-the-tokaido-greeting-card.webp",
+          "sha256": "b12cc467436ca45211a14571434b8c91fdddea1d0c58adeeb135b39b85af8ce7",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/tago-bay-near-ejiri-on-the-tokaido-greeting-card-7x5-300dpi.jpg",
+          "sha256": "57c2f0e946602a6ae8458380934bb3f9783130eb0d97e9d514b9f082c7642153",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[1357,53,1819,2571],\"crop\":{\"cx\":0.58,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "ushibori-in-hitachi-province-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "ushibori-in-hitachi-province",
+      "artworkId": "met-56239",
+      "title": "Ushibori in Hitachi Province Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-05-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2556,
+          "left": 1499,
+          "top": 70,
+          "width": 1808
+        },
+        "ppi": 355,
+        "preparedAt": "2026-10-13T12:07:09.187Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/ushibori-in-hitachi-province-greeting-card.webp",
+          "sha256": "64d0793c9ba6bbe1a50b4dbe2e1194efd91ae7651768b19b6b7090c30c48644d",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/ushibori-in-hitachi-province-greeting-card-7x5-300dpi.jpg",
+          "sha256": "2cc3b89b2adbbd66241370a601185a1e93032b95dec43c01f0248d473b7970ba",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[1499,70,1808,2556],\"crop\":{\"cx\":0.62,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "yoshida-on-the-tokaido-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "yoshida-on-the-tokaido",
+      "artworkId": "met-56360",
+      "title": "Yoshida on the Tōkaidō Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-06-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2584,
+          "left": 707,
+          "top": 29,
+          "width": 1828
+        },
+        "ppi": 358.9,
+        "preparedAt": "2026-10-13T12:07:11.528Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/yoshida-on-the-tokaido-greeting-card.webp",
+          "sha256": "805840eb5e742fd9d06c6f034f108347999105c79a8cd518443bfe35a0e02a94",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/yoshida-on-the-tokaido-greeting-card-7x5-300dpi.jpg",
+          "sha256": "08c16f66d0ca1218f7981f90dc6920bec864fc445839df5f155bf279a6881c10",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[707,29,1828,2584],\"crop\":{\"cx\":0.42,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "nissaka-sayo-no-nakayama-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "nissaka-sayo-no-nakayama",
+      "artworkId": "met-55993",
+      "title": "Nissaka, Sayo no Nakayama Greeting Card",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-07-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2366,
+          "left": 883,
+          "top": 62,
+          "width": 1674
+        },
+        "ppi": 328.6,
+        "preparedAt": "2026-10-13T12:07:13.788Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/nissaka-sayo-no-nakayama-greeting-card.webp",
+          "sha256": "d03cabe2c80396d287b40cc62251a6b8104fb98de2a58d68a7f10912f2feb6f4",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/nissaka-sayo-no-nakayama-greeting-card-7x5-300dpi.jpg",
+          "sha256": "70bcad72c031e9a1b53478fe41d0e588803c4707953478b7f05a8727c3d6b4b8",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[883,62,1674,2366],\"crop\":{\"cx\":0.44,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "fireworks-at-ryogoku-bridge-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "fireworks-at-ryogoku-bridge",
+      "artworkId": "met-37093",
+      "title": "Fireworks at Ryōgoku Bridge Greeting Card",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-08-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3517,
+          "left": 43,
+          "top": 162,
+          "width": 2488
+        },
+        "ppi": 488.5,
+        "preparedAt": "2026-10-13T12:07:15.997Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/fireworks-at-ryogoku-bridge-greeting-card.webp",
+          "sha256": "9b288e9121b65d45c46450651d1a8ea3deb7fe3e84ed68e8769a50795b621db9",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/fireworks-at-ryogoku-bridge-greeting-card-7x5-300dpi.jpg",
+          "sha256": "25443837af5922352fe44f6172ead6189d29f4ef65d3b940bd9f472c18117aeb",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[43,162,2488,3517],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "kinryusan-temple-at-asakusa-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "kinryusan-temple-at-asakusa",
+      "artworkId": "met-56689",
+      "title": "Kinryūsan Temple at Asakusa Greeting Card",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-09-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3192,
+          "left": 234,
+          "top": 304,
+          "width": 2258
+        },
+        "ppi": 443.3,
+        "preparedAt": "2026-10-13T12:07:18.177Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/kinryusan-temple-at-asakusa-greeting-card.webp",
+          "sha256": "3a9d390d0cfddcd91d370a184e6fdc3b444363512dbd39f6ce1b22dc184446eb",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/kinryusan-temple-at-asakusa-greeting-card-7x5-300dpi.jpg",
+          "sha256": "d9b729eaf192937832acd857b47fc8d142d07517d7a60bc080c4e8f539228685",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[234,304,2258,3192],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-greeting-card",
+      "family": "greeting-card",
+      "collection": "floating-world",
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "artworkId": "met-55433",
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake Greeting Card",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-10-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3165,
+          "left": 217,
+          "top": 348,
+          "width": 2239
+        },
+        "ppi": 439.6,
+        "preparedAt": "2026-10-13T12:07:20.311Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/greeting-card/web/sudden-shower-over-shin-ohashi-bridge-and-atake-greeting-card.webp",
+          "sha256": "11fa99e171e03cec86a3007d8a524d0abae53e71f84cdc055fd02da7c01848ab",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2161,
+          "path": "floating-world/greeting-card/sudden-shower-over-shin-ohashi-bridge-and-atake-greeting-card-7x5-300dpi.jpg",
+          "sha256": "c3d6fd543d45d4eee7bc3db7f5c4ec1774e29baa539e2f5a4a1e13141fb7ef1d",
+          "width": 6117
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[217,348,2239,3165],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "the-great-wave-off-kanagawa-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "the-great-wave-off-kanagawa",
+      "artworkId": "met-39799",
+      "title": "The Great Wave off Kanagawa Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-01-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2568,
+          "left": 153,
+          "top": 34,
+          "width": 3561
+        },
+        "ppi": 494.6,
+        "preparedAt": "2026-10-13T12:05:54.029Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/the-great-wave-off-kanagawa-postcard.webp",
+          "sha256": "717e867e3b26b110ca96a144d1b2c2b84ec5121c88c58227803d5746b3055574",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/the-great-wave-off-kanagawa-postcard-7x5-300dpi.jpg",
+          "sha256": "8cbc054305d802ba86cb061f317d24d2a0b9275abe8ab05f2b74a5920cf5359f",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[153,34,3561,2568],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "hodogaya-on-the-tokaido-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "hodogaya-on-the-tokaido",
+      "artworkId": "met-55458",
+      "title": "Hodogaya on the Tōkaidō Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-02-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2510,
+          "left": 226,
+          "top": 10,
+          "width": 3481
+        },
+        "ppi": 483.5,
+        "preparedAt": "2026-10-13T12:07:21.956Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/hodogaya-on-the-tokaido-postcard.webp",
+          "sha256": "7b2a5902a607ac592a4e91a6e08580611fab46d112918a3bbc8563aa452e2996",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/hodogaya-on-the-tokaido-postcard-7x5-300dpi.jpg",
+          "sha256": "e62f7125720c5c711fc9b72d088b3e31652e6d82c78f32db949fe943e7613763",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[226,10,3481,2510],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "sekiya-village-on-the-sumida-river-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "sekiya-village-on-the-sumida-river",
+      "artworkId": "met-55291",
+      "title": "Sekiya Village on the Sumida River Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-03-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2487,
+          "left": 232,
+          "top": 79,
+          "width": 3449
+        },
+        "ppi": 479,
+        "preparedAt": "2026-10-13T12:07:23.369Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/sekiya-village-on-the-sumida-river-postcard.webp",
+          "sha256": "bba745905bc3c83130425a058ca84932e10384655c83b60fd1869fc46da8b018",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/sekiya-village-on-the-sumida-river-postcard-7x5-300dpi.jpg",
+          "sha256": "f76507946fe0344125d8d9e7e57e4168947841dc15a363ad784158d027bc453d",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[232,79,3449,2487],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "artworkId": "met-57000",
+      "title": "Tago Bay near Ejiri on the Tōkaidō Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-04-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2571,
+          "left": 171,
+          "top": 53,
+          "width": 3565
+        },
+        "ppi": 495.1,
+        "preparedAt": "2026-10-13T12:07:24.897Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/tago-bay-near-ejiri-on-the-tokaido-postcard.webp",
+          "sha256": "b27db4b49080b9a984824312054013e72e4be6ee1837998138b0aececa14fc02",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/tago-bay-near-ejiri-on-the-tokaido-postcard-7x5-300dpi.jpg",
+          "sha256": "4ca215fd9831ab72a8f762c0ee12ef4e74eb9893bda64fdaef5a7d007ae86bb1",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[171,53,3565,2571],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "ushibori-in-hitachi-province-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "ushibori-in-hitachi-province",
+      "artworkId": "met-56239",
+      "title": "Ushibori in Hitachi Province Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-05-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2556,
+          "left": 165,
+          "top": 70,
+          "width": 3545
+        },
+        "ppi": 492.4,
+        "preparedAt": "2026-10-13T12:07:26.518Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/ushibori-in-hitachi-province-postcard.webp",
+          "sha256": "74d4ac03917f0b9a76069fac91aee91086933e0a8308a93786fdf7fbd604c114",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/ushibori-in-hitachi-province-postcard-7x5-300dpi.jpg",
+          "sha256": "8823aaee6471c5b16e632563955a189e3741cb2c7b63d4632f5b02ab917a8a4e",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[165,70,3545,2556],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "yoshida-on-the-tokaido-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "yoshida-on-the-tokaido",
+      "artworkId": "met-56360",
+      "title": "Yoshida on the Tōkaidō Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-06-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2584,
+          "left": 139,
+          "top": 29,
+          "width": 3583
+        },
+        "ppi": 497.6,
+        "preparedAt": "2026-10-13T12:07:28.634Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/yoshida-on-the-tokaido-postcard.webp",
+          "sha256": "8347ee40bedd60a1ade2c0350d2c09411ddfe469631270c8450e33c9537f7acb",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/yoshida-on-the-tokaido-postcard-7x5-300dpi.jpg",
+          "sha256": "53f1d4fca95915ffabb838c7c2d967d45df89fd7fa54726ba108672674c5ab9e",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[139,29,3583,2584],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "nissaka-sayo-no-nakayama-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "nissaka-sayo-no-nakayama",
+      "artworkId": "met-55993",
+      "title": "Nissaka, Sayo no Nakayama Postcard",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-07-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2366,
+          "left": 314,
+          "top": 62,
+          "width": 3281
+        },
+        "ppi": 455.7,
+        "preparedAt": "2026-10-13T12:07:30.728Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/nissaka-sayo-no-nakayama-postcard.webp",
+          "sha256": "2dbd58558b1d92608836c70f8d270fc6285832c923adb352891d2581353cfac5",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/nissaka-sayo-no-nakayama-postcard-7x5-300dpi.jpg",
+          "sha256": "5cac204353b75462665fa241e85b46181e04fc2344a1a9e478ca94065dd3f4f0",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[314,62,3281,2366],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "fireworks-at-ryogoku-bridge-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "fireworks-at-ryogoku-bridge",
+      "artworkId": "met-37093",
+      "title": "Fireworks at Ryōgoku Bridge Postcard",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-08-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 1794,
+          "left": 43,
+          "top": 1829,
+          "width": 2488
+        },
+        "ppi": 345.6,
+        "preparedAt": "2026-10-13T12:07:32.372Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/fireworks-at-ryogoku-bridge-postcard.webp",
+          "sha256": "da653c3930446c3bad2feb3d72f0d92faeca34e970bfcbb5ce325233eb57af59",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/fireworks-at-ryogoku-bridge-postcard-7x5-300dpi.jpg",
+          "sha256": "5976ac164ec304ed21c12e52f7203004bdd78c3fa49f03b0ae3f876a495eb22d",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[43,1829,2488,1794],\"crop\":{\"cx\":0.5,\"cy\":0.71}}}"
+      }
+    },
+    {
+      "handle": "kinryusan-temple-at-asakusa-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "kinryusan-temple-at-asakusa",
+      "artworkId": "met-56689",
+      "title": "Kinryūsan Temple at Asakusa Postcard",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-09-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 1628,
+          "left": 234,
+          "top": 326,
+          "width": 2258
+        },
+        "ppi": 313.6,
+        "preparedAt": "2026-10-13T12:07:33.823Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/kinryusan-temple-at-asakusa-postcard.webp",
+          "sha256": "cbf01b098d4aa8e723b359e1fd2f5feae63aca6a70bd32d9ca49c871daf1cd46",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/kinryusan-temple-at-asakusa-postcard-7x5-300dpi.jpg",
+          "sha256": "cea5a592364ca878c70fa44a73b45515cf1f8bc20ddeebadbf955687a90541be",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[234,326,2258,1628],\"crop\":{\"cx\":0.5,\"cy\":0.3}}}"
+      }
+    },
+    {
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-postcard",
+      "family": "postcard",
+      "collection": "floating-world",
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "artworkId": "met-55433",
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake Postcard",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-10-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 1615,
+          "left": 217,
+          "top": 1740,
+          "width": 2240
+        },
+        "ppi": 311.1,
+        "preparedAt": "2026-10-13T12:07:35.247Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/postcard/web/sudden-shower-over-shin-ohashi-bridge-and-atake-postcard.webp",
+          "sha256": "9b1dc3a2cd07ed9124dc12d7977c473defe7e531ed621f91ca61a976cdd72985",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 1559,
+          "path": "floating-world/postcard/sudden-shower-over-shin-ohashi-bridge-and-atake-postcard-7x5-300dpi.jpg",
+          "sha256": "dc1f7132827a0737eedb644fc1e72b949a9f9f12701b8ba997d8c6aaa0016ec7",
+          "width": 4323
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[217,1740,2240,1615],\"crop\":{\"cx\":0.5,\"cy\":0.66}}}"
+      }
+    },
+    {
+      "handle": "the-great-wave-off-kanagawa-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "the-great-wave-off-kanagawa",
+      "artworkId": "met-39799",
+      "title": "The Great Wave off Kanagawa Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-01-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-01-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-01-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-01-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-01-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-01-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-01-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-01-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-01-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-01-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-01-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-01-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-01-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-01-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-01-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-01-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-01-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-01-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-01-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-01-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-01-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-01-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-01-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-01-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-01-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-01-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-01-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-01-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2568,
+          "left": 829,
+          "top": 34,
+          "width": 2054
+        },
+        "ppi": 333.5,
+        "preparedAt": "2026-10-13T12:05:56.488Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/the-great-wave-off-kanagawa-phone-case.webp",
+          "sha256": "35797ea26c9167d142a5df13c0cdfaaf9c014d1834301aa8b0b8927bbd6cc905",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/the-great-wave-off-kanagawa-phone-case-4x5-300dpi.jpg",
+          "sha256": "f4efe672f342597583cbafa38459b67f126b2c7e75f37743b8be0246be2d6ea1",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[829,34,2054,2568],\"crop\":{\"cx\":0.48,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "hodogaya-on-the-tokaido-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "hodogaya-on-the-tokaido",
+      "artworkId": "met-55458",
+      "title": "Hodogaya on the Tōkaidō Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-02-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-02-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-02-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-02-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-02-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-02-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-02-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-02-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-02-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-02-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-02-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-02-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-02-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-02-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-02-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-02-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-02-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-02-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-02-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-02-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-02-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-02-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-02-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-02-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-02-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-02-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-02-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-02-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2510,
+          "left": 451,
+          "top": 10,
+          "width": 2008
+        },
+        "ppi": 326,
+        "preparedAt": "2026-10-13T12:07:38.683Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/hodogaya-on-the-tokaido-phone-case.webp",
+          "sha256": "d1ee88b61c4cc902505646f22247593a4ee2e5cdbd5c64e006b9f32a12083125",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/hodogaya-on-the-tokaido-phone-case-4x5-300dpi.jpg",
+          "sha256": "3e77ce63b421480be172f4e3bdbbf30653f43c6f585070eca676a022f6395ab2",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[451,10,2008,2510],\"crop\":{\"cx\":0.37,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "sekiya-village-on-the-sumida-river-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "sekiya-village-on-the-sumida-river",
+      "artworkId": "met-55291",
+      "title": "Sekiya Village on the Sumida River Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-03-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-03-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-03-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-03-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-03-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-03-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-03-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-03-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-03-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-03-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-03-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-03-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-03-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-03-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-03-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-03-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-03-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-03-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-03-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-03-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-03-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-03-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-03-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-03-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-03-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-03-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-03-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-03-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2487,
+          "left": 414,
+          "top": 79,
+          "width": 1990
+        },
+        "ppi": 323,
+        "preparedAt": "2026-10-13T12:07:41.029Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/sekiya-village-on-the-sumida-river-phone-case.webp",
+          "sha256": "7cc3952d6d606c298a8e3f14c06eda86d2908c9e0da689519b4f3babff2a64db",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/sekiya-village-on-the-sumida-river-phone-case-4x5-300dpi.jpg",
+          "sha256": "c7a83709bb00816e4f6a583dece36cbd36aa8e292a976424b289d178ea713cd9",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[414,79,1990,2487],\"crop\":{\"cx\":0.36,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "artworkId": "met-57000",
+      "title": "Tago Bay near Ejiri on the Tōkaidō Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-04-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-04-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-04-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-04-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-04-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-04-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-04-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-04-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-04-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-04-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-04-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-04-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-04-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-04-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-04-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-04-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-04-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-04-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-04-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-04-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-04-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-04-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-04-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-04-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-04-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-04-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-04-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-04-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2571,
+          "left": 1316,
+          "top": 53,
+          "width": 2057
+        },
+        "ppi": 333.9,
+        "preparedAt": "2026-10-13T12:07:43.812Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/tago-bay-near-ejiri-on-the-tokaido-phone-case.webp",
+          "sha256": "2d1c9990f6fc9db764a3808708bb1e3a9bbaef9486e6840e94625f09be007647",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/tago-bay-near-ejiri-on-the-tokaido-phone-case-4x5-300dpi.jpg",
+          "sha256": "1c73ea11159fb6e89091a6ff3f364c5ea938b83fcb474b9ccdee54e28f05c41c",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[1316,53,2057,2571],\"crop\":{\"cx\":0.6,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "ushibori-in-hitachi-province-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "ushibori-in-hitachi-province",
+      "artworkId": "met-56239",
+      "title": "Ushibori in Hitachi Province Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-05-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-05-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-05-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-05-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-05-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-05-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-05-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-05-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-05-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-05-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-05-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-05-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-05-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-05-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-05-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-05-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-05-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-05-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-05-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-05-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-05-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-05-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-05-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-05-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-05-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-05-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-05-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-05-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2556,
+          "left": 1458,
+          "top": 70,
+          "width": 2045
+        },
+        "ppi": 331.9,
+        "preparedAt": "2026-10-13T12:07:46.141Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/ushibori-in-hitachi-province-phone-case.webp",
+          "sha256": "12f47fe0761f9a16584e51d2c0e4f95badec97af7587f7eb4d449c270f39a204",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/ushibori-in-hitachi-province-phone-case-4x5-300dpi.jpg",
+          "sha256": "41a9b9d34396bc4c726e049164452820d3847832aed9c3c3491b3147a91f6ed1",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[1458,70,2045,2556],\"crop\":{\"cx\":0.64,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "yoshida-on-the-tokaido-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "yoshida-on-the-tokaido",
+      "artworkId": "met-56360",
+      "title": "Yoshida on the Tōkaidō Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-06-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-06-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-06-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-06-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-06-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-06-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-06-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-06-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-06-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-06-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-06-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-06-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-06-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-06-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-06-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-06-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-06-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-06-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-06-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-06-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-06-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-06-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-06-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-06-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-06-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-06-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-06-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-06-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2584,
+          "left": 357,
+          "top": 29,
+          "width": 2067
+        },
+        "ppi": 335.6,
+        "preparedAt": "2026-10-13T12:07:48.430Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/yoshida-on-the-tokaido-phone-case.webp",
+          "sha256": "016e4719150f8525ff13b3e70c2b93191f3dbe5937a268d6f0d81e778fbac9e1",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/yoshida-on-the-tokaido-phone-case-4x5-300dpi.jpg",
+          "sha256": "8fcb3ab52ea08849d0fb30925ff53f86189343eea09bbba5ee3c25001c54badf",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[357,29,2067,2584],\"crop\":{\"cx\":0.36,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "nissaka-sayo-no-nakayama-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "nissaka-sayo-no-nakayama",
+      "artworkId": "met-55993",
+      "title": "Nissaka, Sayo no Nakayama Tough Phone Case",
+      "orientation": "landscape",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-07-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-07-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-07-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-07-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-07-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-07-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-07-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-07-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-07-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-07-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-07-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-07-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-07-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-07-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-07-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-07-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-07-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-07-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-07-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-07-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-07-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-07-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-07-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-07-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-07-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-07-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-07-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-07-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 2366,
+          "left": 969,
+          "top": 62,
+          "width": 1893
+        },
+        "ppi": 307.3,
+        "preparedAt": "2026-10-13T12:07:50.917Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/nissaka-sayo-no-nakayama-phone-case.webp",
+          "sha256": "1b09e299fe8699a385743b349b071e9d21103d2580654d50c6849a0638562ac8",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/nissaka-sayo-no-nakayama-phone-case-4x5-300dpi.jpg",
+          "sha256": "24cfc7a2cb3914025eb28bab0994a55fb5b9a653283b6f55518eee951d729487",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[969,62,1893,2366],\"crop\":{\"cx\":0.49,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "fireworks-at-ryogoku-bridge-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "fireworks-at-ryogoku-bridge",
+      "artworkId": "met-37093",
+      "title": "Fireworks at Ryōgoku Bridge Tough Phone Case",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-08-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-08-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-08-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-08-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-08-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-08-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-08-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-08-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-08-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-08-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-08-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-08-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-08-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-08-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-08-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-08-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-08-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-08-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-08-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-08-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-08-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-08-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-08-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-08-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-08-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-08-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-08-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-08-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3271,
+          "left": 0,
+          "top": 285,
+          "width": 2617
+        },
+        "ppi": 424.8,
+        "preparedAt": "2026-10-13T12:07:53.502Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/fireworks-at-ryogoku-bridge-phone-case.webp",
+          "sha256": "0181569e7fe6b77ee731b3c1467ea0841e42bdb60fbd8cfb733c449d2d8387ce",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/fireworks-at-ryogoku-bridge-phone-case-4x5-300dpi.jpg",
+          "sha256": "c2a9089fe63e9c7fb2ce2b49be222921b6939d66be4f670c75350aabdbe002ac",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[0,285,2617,3271],\"crop\":{\"cx\":0.52,\"cy\":0.5}}}"
+      }
+    },
+    {
+      "handle": "kinryusan-temple-at-asakusa-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "kinryusan-temple-at-asakusa",
+      "artworkId": "met-56689",
+      "title": "Kinryūsan Temple at Asakusa Tough Phone Case",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-09-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-09-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-09-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-09-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-09-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-09-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-09-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-09-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-09-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-09-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-09-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-09-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-09-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-09-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-09-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-09-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-09-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-09-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-09-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-09-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-09-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-09-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-09-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-09-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-09-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-09-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-09-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-09-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3280,
+          "left": 0,
+          "top": 336,
+          "width": 2624
+        },
+        "ppi": 426,
+        "preparedAt": "2026-10-13T12:07:55.856Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/kinryusan-temple-at-asakusa-phone-case.webp",
+          "sha256": "8c98a722801f0ef1a61e279be53322e289d31b1541558e8e9eba9a5b325f0934",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/kinryusan-temple-at-asakusa-phone-case-4x5-300dpi.jpg",
+          "sha256": "fbb17431f33fad7598496acdf3a97b14efbfa75033bbda8482b5aba0e8856f09",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[0,336,2624,3280],\"crop\":{\"cx\":0.52,\"cy\":0.52}}}"
+      }
+    },
+    {
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-phone-case",
+      "family": "phone-case",
+      "collection": "floating-world",
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "artworkId": "met-55433",
+      "title": "Sudden Shower over Shin-Ōhashi Bridge and Atake Tough Phone Case",
+      "orientation": "portrait",
+      "released": false,
+      "variants": [
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-FW-10-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-FW-10-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-FW-10-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-FW-10-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-FW-10-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-FW-10-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-FW-10-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-FW-10-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-FW-10-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-FW-10-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-FW-10-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-FW-10-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-FW-10-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-FW-10-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-FW-10-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-FW-10-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-FW-10-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-FW-10-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-FW-10-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-FW-10-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-FW-10-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-FW-10-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-FW-10-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-FW-10-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-FW-10-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-FW-10-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-FW-10-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-FW-10-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+      ],
+      "assets": {
+        "box": {
+          "height": 3312,
+          "left": 0,
+          "top": 320,
+          "width": 2650
+        },
+        "ppi": 430.1,
+        "preparedAt": "2026-10-13T12:07:58.154Z",
+        "preview": {
+          "height": 2000,
+          "path": "floating-world/phone-case/web/sudden-shower-over-shin-ohashi-bridge-and-atake-phone-case.webp",
+          "sha256": "a429394765172a5a7b2cd28ddcdeb544d9c2f8c96ab8ced581a7f9a73c2d9c38",
+          "width": 1600
+        },
+        "print": {
+          "dpi": 300,
+          "height": 2500,
+          "path": "floating-world/phone-case/sudden-shower-over-shin-ohashi-bridge-and-atake-phone-case-4x5-300dpi.jpg",
+          "sha256": "07b8b9134d47b56b6daa97f27f11f87d9ffd1ebea5c5e7241fd1f5f8f746f66f",
+          "width": 2000
+        },
+        "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[0,320,2650,3312],\"crop\":{\"cx\":0.5,\"cy\":0.52}}}"
+      }
+    }
+  ]
+}

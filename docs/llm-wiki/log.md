@@ -1607,3 +1607,19 @@ passed; no source code changed. The owner also approved the new-family prices
 recorded in [status](../artist-shops/status.md); their implementation is the
 next writer's scope. See [expansion readback](../artist-shops/evidence/expansion-readback-2026-10-13.json).
 
+## 2026-10-13 - Floating World product families built (branch only)
+
+Claude Code built the owner-approved framed print (€89.10,
+`GLOBAL-CFP-16X20`), canvas (€80.10), greeting card (€7.20), postcard
+(€5.40) and tough phone case (€35.99, 40 devices) for each of the ten works:
+one hidden product per artwork per type, never variants of the live studio
+products. `data/art-product-catalog.json` + `app/lib/artProductCatalog.ts`
+hold the 50 products and their release gate; `npm run product -- prepare
+floating-world --families` wrote the files from the approved crops (framed
+reuses the 16×20 print file; ppi framed 210–218, canvas 140–162, card
+329–489, postcard 311–498, case 307–430); the stage dry run planned 50
+Drafts and 440 variants with 71 unrelated products to compare. `--apply`,
+Prodigi mapping, case-file deployment, shipping profiles and master reviews
+remain. Storefront support (artist-shop Product type filter, PDP copy,
+webhook case SKUs) is dormant until release. See
+[status](../artist-shops/status.md).

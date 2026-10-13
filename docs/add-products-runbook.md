@@ -151,6 +151,46 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    medium, credit, museum link, no-endorsement line) and tags
    `Museum Reproduction` + the artist's name, never `Clara Mendes Original`.
    `release` refuses a museum print until both owner reviews are cleared.
+5. **Other products from the same works** (framed print, canvas, greeting
+   card, postcard, tough phone case): one hidden Draft per artwork per type,
+   never variants of the live studio extension products. Prices and Prodigi
+   SKUs per collection live in
+   [data/art-product-catalog.json](../data/art-product-catalog.json)
+   (`collections[].families`); its `products[]` are written by the pipeline.
+   The same verbs take `--families` (all five) or `--family <f>[,<f>]`:
+   - `npm run product -- prepare <collection> --families [--only a,b]` adds
+     the catalog entries and writes the files under
+     `<launchDir>/<collection>/<family>/` (+ `web/` shopper previews,
+     `families-plan.json`, `families-assets.json`): card 6117×2161 with the
+     art on the front panel, postcard 4323×1559 with the art half, canvas
+     16×20 at 150 dpi in the work's orientation, case 2000×2500 (Prodigi
+     centre-crops per device), each cut from the approved crop; the framed
+     print reuses the bordered 16×20 print file. It refuses a file below the
+     family's accepted ppi or whose panel differs from its crop, and reuses
+     current files byte for byte. The case preview needs the iPhone 16 Pro
+     Prodigi template (found by checksum in any worktree's `output/`).
+   - `stage <collection> --families` (dry run saves
+     `stage-families-dry-run-<stamp>.json`), then `--apply`: Drafts tracked
+     at 0 with DENY, pending tags, museum copy and credit, the family's
+     product type and option (`Size`, or `Device` for cases), the preview as
+     the image. Idempotent by handle; refuses non-Drafts.
+   - Before release, put the products in the right Shopify shipping
+     profile (cards and postcards: Letter post; canvas, framed and cases:
+     their own profiles); new products land in General.
+   - `handoff <collection> --families` writes
+     `prodigi-handoff-families.csv/.md` for the channel-mapped families;
+     map each in Prodigi, then `mapped <collection> --family <f>
+     <print>=<channel product id> …`. Cases are not channel-mapped: `mapped
+     <collection> --family phone-case <print> …` copies the case file to
+     `public/print-files/<collection>/<print>-phone-case.jpg` (commit it with
+     the release PR); the `orders/paid` webhook sends that URL to Prodigi for
+     released products only.
+   - `status … --families`, `release … --family <f> [--apply]` (refuses
+     until the reviews, approved crops, current files, ids and mapping are
+     all in place) and `verify … --families` (staged handles 404; released
+     ones sellable, in the sitemap, and case files deployed with their
+     sha256). The artist shop lists released family products under Product
+     type automatically.
 
 The artist shop (`/artists/<slug>`), the artists index, the Artists nav link,
 search matches and sitemap entries appear automatically once an approved

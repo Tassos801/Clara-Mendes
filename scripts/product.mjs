@@ -17,6 +17,10 @@
  *   npm run product -- release  <collection> [--only a,b] [--apply]
  *   npm run product -- verify   <collection> [--origin https://…]
  *
+ * Museum works as other products (framed print, canvas, greeting card,
+ * postcard, tough phone case; data/art-product-catalog.json) use the same
+ * verbs with `--families` or `--family <f>` — see scripts/lib/art-product-steps.mjs.
+ *
  * Runbook: docs/add-products-runbook.md
  */
 
@@ -67,6 +71,8 @@ import {
   roomMediaPlan,
 } from './lib/print-room-scenes.mjs';
 import {borderedLayout, PILOT_TARGET_PPI} from './lib/museum-layout.mjs';
+import {createFamilySteps} from './lib/art-product-steps.mjs';
+import {selectFamilies} from './lib/art-product-pipeline.mjs';
 
 const DEFAULT_ORIGIN = 'https://shopclaramendes.com';
 /** --color-soft in app/styles/app.css, behind museum prints' paper. */
@@ -83,13 +89,25 @@ const option = (name) => {
   return index >= 0 ? rest[index + 1] : undefined;
 };
 const optionValues = new Set(
-  ['only', 'size', 'origin'].map((name) => option(name)).filter(Boolean),
+  ['only', 'size', 'origin', 'family']
+    .map((name) => option(name))
+    .filter(Boolean),
 );
 const positional = rest.filter(
   (arg) => !arg.startsWith('--') && !optionValues.has(arg),
 );
 const apply = flags.has('--apply');
 const only = option('only')?.split(',').filter(Boolean);
+const familyMode = flags.has('--families') || option('family') !== undefined;
+const FAMILY_STEPS = [
+  'handoff',
+  'mapped',
+  'prepare',
+  'release',
+  'stage',
+  'status',
+  'verify',
+];
 
 const steps = {
   expand,
@@ -124,7 +142,8 @@ if (problems.length) {
 const local = resolveLocalPaths();
 
 try {
-  await steps[step]();
+  if (familyMode) await runFamilyStep();
+  else await steps[step]();
 } catch (error) {
   console.error(`\n${step} failed: ${error.message}`);
   process.exit(1);
@@ -1133,6 +1152,57 @@ async function verify() {
     `${checks.length - failed.length}/${checks.length} checks passed against ${origin}. Screenshots of the shop filter, one PDP and the cart are still owed (runbook §Verify).`,
   );
   if (failed.length) process.exit(1);
+}
+
+/**
+ * The family variant of a step (`--families` / `--family <f>`): the same
+ * verbs, on data/art-product-catalog.json. data/print-catalog.json is only
+ * read.
+ */
+async function runFamilyStep() {
+  if (!FAMILY_STEPS.includes(step))
+    throw new Error(
+      `${step} has no family variant. Family steps: ${FAMILY_STEPS.join(', ')}`,
+    );
+  const slug = positional[0];
+  if (!slug)
+    throw new Error(
+      `Usage: npm run product -- ${step} <collection> --families`,
+    );
+  const collection = findCollection(catalog, slug);
+  if (collectionKind(collection) !== 'museum')
+    throw new Error(`${slug}: family products are for museum collections`);
+  const launchDir = path.join(local.launchRoot, collection.slug);
+  mkdirSync(launchDir, {recursive: true});
+  const familySteps = createFamilySteps({
+    apply,
+    collection,
+    families: selectFamilies({
+      all: flags.has('--families'),
+      family: option('family'),
+    }),
+    helpers: {
+      addToCart,
+      adminClient,
+      defaultOrigin: DEFAULT_ORIGIN,
+      delay,
+      htmlText,
+      page,
+      publish,
+      sitemapProductUrls,
+      stamp,
+      storefront,
+      uploadImage,
+      vendorProducts,
+      writeJson,
+    },
+    launchDir,
+    launchRoot: local.launchRoot,
+    only,
+    option,
+    positional,
+  });
+  await familySteps[step]();
 }
 
 // -------------------------------------------------------------- helpers --

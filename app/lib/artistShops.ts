@@ -17,6 +17,12 @@ import {
   type Orientation,
 } from './artRegistry.ts';
 import {
+  ART_PRODUCT_CATALOG,
+  FAMILY_SPECS,
+  reproductionSentence,
+  type ArtProductCatalog,
+} from './artProductCatalog.ts';
+import {
   collectionKind,
   PRINT_CATALOG,
   printHandle,
@@ -37,8 +43,19 @@ import {
  * once the owner approved them AND at least one of their products released.
  */
 
-/** Product families an artist shop can filter by, in display order. */
-export const ARTIST_PRODUCT_FAMILIES = ['Prints'] as const;
+/**
+ * Product families an artist shop can filter by, in display order: the
+ * print catalog's prints, then the family products of
+ * data/art-product-catalog.json (one per artwork per type).
+ */
+export const ARTIST_PRODUCT_FAMILIES = [
+  'Prints',
+  'Framed prints',
+  'Canvas',
+  'Cards',
+  'Postcards',
+  'Phone cases',
+] as const;
 export type ArtistProductFamily = (typeof ARTIST_PRODUCT_FAMILIES)[number];
 
 export type ArtistProduct = {
@@ -55,14 +72,23 @@ export type ArtistProduct = {
   title: string;
 };
 
-type Sources = {catalog?: PrintCatalog; registry?: ArtRegistry};
+type Sources = {
+  artProducts?: ArtProductCatalog;
+  catalog?: PrintCatalog;
+  registry?: ArtRegistry;
+};
 
-/** Every print-catalog product that belongs to a registered artist. */
+/**
+ * Every product that belongs to a registered artist: print-catalog prints,
+ * then museum family products in catalog order. A family product shows its
+ * print's committed web artwork on the artists index.
+ */
 export function artistProducts({
+  artProducts = ART_PRODUCT_CATALOG,
   catalog = PRINT_CATALOG,
   registry = ART_REGISTRY,
 }: Sources = {}): ArtistProduct[] {
-  return catalog.collections.flatMap((collection) =>
+  const prints = catalog.collections.flatMap((collection) =>
     collection.prints.flatMap((print) => {
       const artworkId = print.artworkId;
       const artistId = artworkId
@@ -84,6 +110,31 @@ export function artistProducts({
       ];
     }),
   );
+  const families = artProducts.products.flatMap((product) => {
+    const collection = catalog.collections.find(
+      (entry) => entry.slug === product.collection,
+    );
+    const print = collection?.prints.find(
+      (entry) => entry.slug === product.print,
+    );
+    const artistId = findArtwork(product.artworkId, registry)?.artistId;
+    if (!collection || !print || !artistId || !findArtist(artistId, registry))
+      return [];
+    return [
+      {
+        artistId,
+        artworkId: product.artworkId,
+        collectionTag: collection.title,
+        family: FAMILY_SPECS[product.family].artistFamily,
+        handle: product.handle,
+        image: printImagePath(collection, print),
+        orientation: product.orientation,
+        released: product.released === true,
+        title: product.title,
+      },
+    ];
+  });
+  return [...prints, ...families];
 }
 
 export type PublicArtist = {
@@ -195,6 +246,11 @@ export type ArtistFacetGroup = {
 
 const FAMILY_LABELS: Record<ArtistProductFamily, string> = {
   Prints: 'Art prints',
+  'Framed prints': 'Framed prints',
+  Canvas: 'Canvas',
+  Cards: 'Cards',
+  Postcards: 'Postcards',
+  'Phone cases': 'Phone cases',
 };
 
 /**
@@ -233,10 +289,12 @@ function productFacets(
       value: product.orientation,
     },
     series: series ? {label: series, value: facetSlug(series)} : null,
-    // `prints` keeps the `?type=Prints` links of the first artist pages.
+    // `prints` keeps the `?type=Prints` links of the first artist pages;
+    // the others are `framed-prints`, `canvas`, `cards`, `postcards` and
+    // `phone-cases`.
     type: {
       label: FAMILY_LABELS[product.family],
-      value: product.family.toLowerCase(),
+      value: facetSlug(product.family),
     },
   };
 }
@@ -380,6 +438,8 @@ export type ProductArtworkCredit = {
     date: string;
     medium: string;
     objectUrl: string;
+    /** How the museum image became this product. */
+    reproduction: string;
     title: string;
   } | null;
 };
@@ -421,6 +481,10 @@ export function productArtworkCredit(
           date: artwork.date,
           medium: artwork.medium,
           objectUrl: artwork.source.objectUrl,
+          reproduction: reproductionSentence(
+            product.handle,
+            sources.artProducts,
+          ),
           title: artwork.title,
         }
       : null,
@@ -456,10 +520,14 @@ export function searchArtists(
  * suite on the shipped data and by the pipeline before any Shopify write.
  */
 export function validateArtistLinks({
+  artProducts = ART_PRODUCT_CATALOG,
   catalog = PRINT_CATALOG,
   registry = ART_REGISTRY,
 }: Sources = {}): string[] {
   const problems: string[] = [];
+  // One product per artwork per product type: an artwork may be a print
+  // once and, separately, a framed print, a canvas, a card, a postcard and
+  // a phone case (data/art-product-catalog.json enforces those).
   const used = new Map<string, string>();
   for (const collection of catalog.collections) {
     if (collection.artistId) {
@@ -482,12 +550,13 @@ export function validateArtistLinks({
         problems.push(`${at}: unknown artwork ${print.artworkId}`);
         continue;
       }
-      const previous = used.get(artwork.id);
+      const key = `${artwork.id}:Prints`;
+      const previous = used.get(key);
       if (previous)
         problems.push(
           `${at}: artwork ${artwork.id} is already sold as ${previous}`,
         );
-      used.set(artwork.id, at);
+      used.set(key, at);
       const master = masterSize(artwork);
       if (master && orientationOf(master) !== printOrientation(print))
         problems.push(
@@ -503,6 +572,18 @@ export function validateArtistLinks({
       if (artwork.reviews.master.status !== 'cleared')
         problems.push(`${at}: released without a cleared master review`);
     }
+  }
+  for (const product of artProducts.products) {
+    const at = `${product.collection}/${product.handle}`;
+    const key = `${product.artworkId}:${product.family}`;
+    const previous = used.get(key);
+    if (previous)
+      problems.push(
+        `${at}: artwork ${product.artworkId} is already sold as ${previous}`,
+      );
+    used.set(key, at);
+    if (!findArtwork(product.artworkId, registry))
+      problems.push(`${at}: unknown artwork ${product.artworkId}`);
   }
   return problems;
 }

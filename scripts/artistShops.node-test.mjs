@@ -347,6 +347,7 @@ function floatingWorldProducts(artistId) {
   return shops
     .artistProducts()
     .filter((product) => product.collectionTag === 'Floating World')
+    .filter((product) => product.family === 'Prints')
     .filter((product) => !artistId || product.artistId === artistId);
 }
 

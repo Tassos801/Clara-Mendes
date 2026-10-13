@@ -537,3 +537,18 @@ with DENY. Larger-size mapping remains pending. All ten Storefront IDs are
 absent and public product URLs return 404. All master reviews remain pending.
 See [expansion readback](../../artist-shops/evidence/expansion-readback-2026-10-13.json)
 for the thirty variant IDs, file hashes and scope limits.
+
+Museum works on other products (built 2026-10-13, not staged): framed print,
+canvas, greeting card, postcard and tough phone case per artwork, each its
+own Draft (handle `<print>-<family>`, SKU `CM-FW-NN-CFP16X20 | CAN16X20 |
+CARD | POST | CASE-<device>`), in `data/art-product-catalog.json`
+(`app/lib/artProductCatalog.ts`). They use the live product types (`Framed
+Art`, `Canvas Art`, `Cards`, `Postcards`, `Phone Cases`) and are visible only
+when `released` is true (sellable handles, sitemap guard) and Active and
+published. `validateArtistLinks` allows an artwork once per product type.
+The artist shop lists them under Product type; their PDPs take detail copy
+and shipping reach from `artProductPage()` and the credit's "how it was made"
+line from `reproductionSentence()`. Museum case lines go to Prodigi through
+`buildProdigiOrderFromShopify` only when released with a verified API route
+(`artCaseLineForSku`). Pipeline: `npm run product -- <step> <collection>
+--families | --family <f>` (`scripts/lib/art-product-*.mjs`).

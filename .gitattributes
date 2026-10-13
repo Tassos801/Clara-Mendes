@@ -1,2 +1,4 @@
 # Raw museum API responses are checksummed evidence: never convert line endings.
 data/museum-evidence/** -text
+# Readback evidence is checksummed: never convert line endings.
+docs/artist-shops/evidence/** -text

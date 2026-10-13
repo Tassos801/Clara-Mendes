@@ -3,11 +3,14 @@
 **Updated:** 2026-10-13
 
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; artist shop redesigned and product crops approved; master reviews pending; no production release
+**State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; five more product types per work built and dry-run verified (50 Drafts not yet created); artist shop redesigned and product crops approved; master reviews pending; no production release
 
 **Current writer:** none. Codex (Sol) completed the resumed twenty-variant
 Draft expansion from GitHub checkpoint `31a9d12` and returned writer control
 to the parent agent. The next writer must name themselves before editing.
+Claude Code then built the five product types for the ten works on the
+afternoon of 2026-10-13 (item 4 below: catalog, files, dry run; no Shopify
+write).
 Claude Code was the writer on 2026-10-13 from 09:30
 on the owner's Windows PC and stopped at the owner's request that evening
 (HEAD `4070390` plus this handoff). Codex (Sol) staged the ten Drafts and
@@ -48,56 +51,100 @@ dashboard) need the owner's go-ahead in chat; the owner gave it on
    (`ART-FAP-EMA-16X20`), 20×24 €44.99 (`GLOBAL-FAP-20X24`); every product
    still DRAFT, new variants tracked at 0 with DENY. `expand` refuses an
    unreleased product that is not DRAFT.
-2. **Prodigi, 20 more mappings.** `npm run product -- handoff floating-world`.
-   Upload the 20 new files (`<launchDir>/floating-world/print/*-16x20-*` and
-   `*-20x24-*`, 6.6–10.8 MB) from the Image library page; above 10 MB the
-   Chrome extension upload fails, so inject them (local CORS server +
-   DataTransfer, see the Prodigi traps below). The channel products are
-   unchanged (6327576–6327585); each will show the new variants. Per variant:
-   the SKU above, its own file, 100%/0/0, Excellent, auto-fulfil; shipping
-   Standard is already set per product. Prodigi laid 3000×2400 files out
-   landscape by itself at 8×10; check the same holds at 16×20 and 20×24 (the
-   20×24 SKU is metric 50×60 cm, 5:6 like our files). Re-read on a fresh load,
-   then `npm run product -- mapped floating-world --size 16x20 <slug>=<id> …`
-   and the same for `--size 20x24`.
+2. **Prodigi, 20 more mappings: done (Claude Code, 2026-10-13 afternoon).**
+   Sol uploaded the 20 larger files to the Image library before its usage
+   limit; Claude mapped them in the owner's Chrome. Each 16×20 is
+   `ART-FAP-EMA-16X20` at 100%, 0/0; each 20×24 is `GLOBAL-FAP-20X24` at
+   Prodigi's auto-fit **98.43%** (the 6000×7200 file fitted exactly to the
+   metric 50×60 cm area, 7087×5906 px; whole composition, as for the studio
+   20×24 prints). Prodigi flipped the canvas to the work's orientation by
+   itself at both sizes. All Excellent, no border, auto-fulfil; shipping
+   stays Standard. A fresh load of all ten channel products read back 30/30
+   variants, each on its own exact library file, with the ten 8×10 mappings
+   unchanged: [readback](evidence/prodigi-larger-readback-2026-10-13.json).
+   Recorded with `mapped --size 16x20` and `--size 20x24`. Dashboard
+   traps this time: the MCP tab is hidden, so Chrome throttles in-page timers
+   and drops typed searches; set picker searches with the native value setter
+   plus an `input` event (twice), wait from the tool side, and target the
+   newest `[role=dialog]`, because closed editor dialogs stay in the DOM.
 3. **Owner prices approved in the resumed chat (2026-10-13):** framed
-   16×20 *with* print €89.10 (`GLOBAL-CFP-16X20`), canvas €80.10,
-   greeting card €7.20, postcard €5.40 and tough phone case €35.99.
-   These are the approved prices for the new hidden museum products.
-4. **Build the five product types** (owner-approved 2026-10-13): framed print,
-   canvas, greeting card, postcard and tough phone case for each of the ten
-   works, as **separate hidden Drafts, one product per artwork per type**
-   (Society6-style; this also feeds the artist page's Product type filter).
-   **Never add Floating World variants to the existing live products**
-   (`art-tough-phone-case`, the card/postcard/canvas extension products): they
-   are ACTIVE and published, so that would put the works on sale before the
-   master reviews. Files:
-   - framed: the bordered 16×20 file from `prepare` (whole composition);
-   - canvas `GLOBAL-CAN-16X20`, card `GLOBAL-GRE-MOH-7X5-BLA` (front panel
-     1529×2161 inside the 6117×2161 four-panel file), postcard
-     `GLOBAL-POST-MOH-7X5` (art half 2162×1559 of 4323×1559): render from the
-     approved crops, `cropPlan()` in `app/lib/museumCrops.ts`;
-   - phone case `GLOBAL-TECH-<device>-TCB-CS-M`, 40 devices from
-     `data/art-tough-phone-case.json`: one 4:5 2000×2500 file per work from
-     the crop's `file` box (`caseFileBox`). Prodigi centre-crops it per device
-     (`fillPrintArea`). Cases are fulfilled by the `orders/paid` webhook
-     through the Prodigi API (`app/lib/sky/fulfilment.ts`), not dashboard
-     mapping, so their SKUs must be added there before release.
+   16×20 *with* print €89.10 (`GLOBAL-CFP-16X20`), canvas €80.10
+   (`GLOBAL-CAN-16X20`), greeting card €7.20 (`GLOBAL-GRE-MOH-7X5-BLA`),
+   postcard €5.40 (`GLOBAL-POST-MOH-7X5`) and tough phone case €35.99
+   (`GLOBAL-TECH-<device>-TCB-CS-M`). They are recorded per family in
+   `data/art-product-catalog.json` (`collections[].families`).
+4. **Five product types: built, files generated, dry run verified; Drafts
+   NOT created (Claude Code, 2026-10-13 afternoon).** One hidden product per
+   artwork per type (Society6-style), never variants of the live studio
+   products. Same verbs as prints with `--families` / `--family <f>`
+   (`scripts/lib/art-product-steps.mjs`; runbook "Museum prints and artist
+   shops").
+   - **Catalog:** `data/art-product-catalog.json` +
+     `app/lib/artProductCatalog.ts` list 50 products: handle
+     `<print>-framed-print|-canvas|-greeting-card|-postcard|-phone-case`,
+     titles "<print title> Framed Art Print / Canvas Print / Greeting Card /
+     Postcard / Tough Phone Case", SKUs `CM-FW-NN-CFP16X20 | CAN16X20 | CARD
+     | POST | CASE-<device code>`, `released: false`, variants tracked at 0
+     with DENY, mapping state, asset paths/sha256/pixels/ppi and a
+     `sourceSignature` of every pixel-affecting input. Validation: one
+     product per artwork per type, unique handles and SKUs (also against
+     print SKUs), explicit release flag; a release needs artist approval,
+     cleared rights and master reviews, approved crops (cropped families),
+     current assets, Shopify ids and a verified mapping of the current file.
+     `validateArtistLinks` now allows an artwork once per product type.
+   - **Files (written under `<launchDir>/floating-world/<family>/`, previews
+     in `<family>/web/`, plan `families-plan.json`, report
+     `families-assets.json`):** `npm run product -- prepare floating-world
+     --families` cuts the approved crop (`cropPlan()`) from the museum
+     original once and resamples it, in the live layouts: card 6117×2161
+     (art on the 1529×2161 front panel, rear panel in its mean colour), postcard
+     4323×1559 (art half 2162×1559, live divider and stamp box), canvas
+     3000×2400 / 2400×3000 at 150 dpi, case 2000×2500 at 300 dpi from
+     `caseFileBox`. The framed print reuses the bordered 16×20 print file by
+     path + sha256 (checked against `asset-validation.json`). Native ppi:
+     framed 210.2–217.5, canvas 140.0–161.5, card 328.6–488.5, postcard
+     311.1–497.6, case 307.3–430.1. Each panel was compared with its crop
+     (mean difference 0.54–1.15/255; a shifted crop fails the check). Re-runs
+     reuse current files byte for byte.
+   - **Stage dry run** (`npm run product -- stage floating-world --families`,
+     `stage-families-dry-run-2026-10-13T12-23-58.json`): 50 × create Draft;
+     variants 10/10/10/10/400; €89.10 / €80.10 / €7.20 / €5.40 / €35.99;
+     71 unrelated Clara Mendes products (61 + the ten print Drafts) to
+     compare. `--apply` (implemented, not run) looks each handle up first,
+     creates only missing Drafts via `productSet` with the preview image,
+     writes ids to the catalog after each, refuses any non-Draft or SKU
+     mismatch, re-reads everything (DRAFT, tags, copy, SKU/price/option,
+     tracked + DENY + shipping, total inventory 0, READY preview), checks the
+     unrelated products are unchanged and saves
+     `stage-families-<stamp>.json`.
+   - **Storefront (dormant):** family handles stay 404 and out of sitemaps
+     until released; the artist shop lists released ones under Product type
+     Art prints, Framed prints, Canvas, Cards, Postcards and Phone cases; PDPs
+     get family detail copy (no "Unframed", "200gsm" except on the framed
+     print, or "Frame not included"), the artist credit with a per-family
+     "how it was made" line, and shipping reach (cards/postcards EU, canvas
+     and framed selected, cases worldwide). Museum case SKUs reach Prodigi
+     through `app/lib/sky/fulfilment.ts` only once released and mapped.
+   - **Next, in order:** (a) owner go-ahead, then `npm run product -- stage
+     floating-world --families --apply`; (b) in Shopify Admin, move the new
+     products into the right shipping profiles (cards and postcards: Letter
+     post; canvas: the canvas profile; framed: a framed profile; cases: the
+     phone-case profile) — new products land in General; (c) `handoff
+     floating-world --families` and map 40 Prodigi channel products
+     (framed/canvas/card/postcard; the framed rows use the 16×20 print files),
+     then `mapped floating-world --family <f> <print>=<id> …`; (d) cases:
+     `mapped floating-world --family phone-case <print> …` copies each file
+     to `public/print-files/floating-world/` for the release PR; (e) master
+     reviews; (f) `release … --family <f>` per family, merge, deploy,
+     `verify floating-world --families` + screenshots.
 
-   Pipeline gaps to close (extend the pipeline; no one-off scripts):
-   - `PrintSizeKey` and `printSku` are a closed set of paper sizes;
-   - collection `title` must be unique, and an artwork may appear in only one
-     museum collection (`validateArtistLinks`): relax that to one per
-     artwork per product type;
-   - the copy hard-codes "Unframed", "200gsm paper" and "Frame not included";
-   - the case, card/postcard and canvas generators and stagers
-     (`generate-tough-case-assets.mjs`, `prepare-art-product-extensions.py`,
-     `sync-art-product-extensions.mjs`, `stage-art-tough-phone-case.mjs`) are
-     hard-wired to the studio artworks ("Clara Mendes Original", fixed design
-     counts) and must not be reused as they are;
-   - artist shops list only the `Prints` family (`ARTIST_PRODUCT_FAMILIES`);
-   - storefront PDP copy and options for the new types are needed before
-     release.
+   Pipeline gaps closed: the closed `PrintSizeKey`/`printSku` set and the
+   unique collection title are untouched (families live in their own
+   catalog); "one museum collection per artwork" became one product per
+   artwork per type; family copy never says "Unframed", "200gsm paper"
+   (except framed) or "Frame not included"; the studio-only generators and
+   stagers are not reused (their file contracts are); artist shops list all
+   families; PDP copy and options exist for the new types.
 5. **Owner:** master reviews for all ten (a physical proof is advisable).
    Only then, with explicit approval, `release`; then merge to main, deploy
    and run `verify` with owner-Chrome screenshots.
@@ -422,10 +469,11 @@ the Met records were unchanged).
 
 - The ten works are not yet cleared for sale: the master reviews are
   pending (artists approved and rights cleared on 2026-10-11).
-- Shopify has ten hidden Drafts with verified room galleries and 8×10 only;
-  the catalog's 16×20 and 20×24 variants are not yet staged or mapped.
-- The five new product types (framed, canvas, card, postcard, case) exist
-  only as approved crops and specs; no files, Drafts or mappings yet.
+- Shopify has ten hidden Drafts with verified room galleries and all thirty
+  print variants; only the 8×10 variants are mapped in Prodigi.
+- The five new product types (framed, canvas, card, postcard, case) have
+  catalog entries, production files and a verified stage dry run, but no
+  Shopify Drafts, Prodigi mappings or deployed case files yet.
 - Physical print quality and delivered cost are unverified; Prodigi's
   landscape handling is verified at 8×10 only.
 - No production deploy, supplier order, payment or public marketing action.
