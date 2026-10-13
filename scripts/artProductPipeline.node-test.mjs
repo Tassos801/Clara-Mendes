@@ -189,7 +189,11 @@ test('validation keeps one product per artwork per type, unique handles and SKUs
 
 test('release is blocked until every owner, asset, Shopify and mapping gate passes', () => {
   const shipped = structuredClone(family.ART_PRODUCT_CATALOG);
-  productOf(shipped, WAVE, 'phone-case').released = true;
+  const shippedCase = productOf(shipped, WAVE, 'phone-case');
+  shippedCase.released = true;
+  // The live catalog now carries real Draft ids; drop them so the Shopify
+  // gate is exercised regardless of what has been staged.
+  delete shippedCase.shopify;
   const blocked = family.validateArtProductCatalog(shipped).join('\n');
   for (const gate of [
     'a cleared master review',

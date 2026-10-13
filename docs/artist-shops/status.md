@@ -73,6 +73,25 @@ dashboard) need the owner's go-ahead in chat; the owner gave it on
    postcard €5.40 (`GLOBAL-POST-MOH-7X5`) and tough phone case €35.99
    (`GLOBAL-TECH-<device>-TCB-CS-M`). They are recorded per family in
    `data/art-product-catalog.json` (`collections[].families`).
+4a. **Prodigi: 40 family products mapped + fresh-load verified (Claude Code,
+   2026-10-13 evening).** Owner confirmed the framed spec in chat ("natural
+   frame no mount perspex"). The 30 canvas/card/postcard files were uploaded
+   to the Image library (Claude in Chrome file upload, under 10 MB per call;
+   framed reuses the existing 16×20 print files). Channel products
+   6329045–6329093 (framed, canvas, card, postcard; ids in the catalog via
+   `mapped --family`): framed `GLOBAL-CFP-16X20` classic frame, Natural, EMA
+   200gsm, no mount, Perspex, 100%, Excellent, Standard; canvas
+   `GLOBAL-CAN-16X20` 38 mm bar, Mirror wrap, Prodigi cover fit 201.87%
+   (its 6045×4845 area is 0.1% off 4:5), rated Acceptable like the live
+   canvases, Standard; card `GLOBAL-GRE-MOH-7X5-BLA` single card + kraft
+   envelope, 100.01%, front panel second from left, Excellent, Budget;
+   postcard `GLOBAL-POST-MOH-7X5`, 100%, Excellent, Budget. All "Fulfilled
+   by Prodigi automatically", 1 of 1 active.
+   [Readback](evidence/prodigi-families-readback-2026-10-13.json).
+   **Before release:** the ten museum phone-case listings (6329094–6329103)
+   arrived in the Prodigi channel with its fulfil toggle ON; cases go
+   through the `orders/paid` webhook, so turn that toggle OFF (as for Your
+   Sky) to avoid double fulfilment.
 4. **Five product types: built, files generated, 50 Drafts created
    (Claude Code, 2026-10-13).** Owner said "go, create the drafts";
    `stage floating-world --families --apply` created 50 Drafts / 440

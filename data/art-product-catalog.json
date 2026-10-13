@@ -46,7 +46,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-01-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-01-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"0d15cc69443b6de1caa26ba1cae93a3fb1a9ac8afdfe89b2074a5f37de0dae4d","channelProductId":"6329045","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -84,7 +84,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-02-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-02-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"af07c94020cf39e542cb131570bc04fa98da95f87efd38caf236ba653bcb5b63","channelProductId":"6329046","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -122,7 +122,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-03-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-03-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"34b4f70100ded704842f3fa6d9fbb40e2af5734bdcefed9b696e091f69b4ffde","channelProductId":"6329047","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -160,7 +160,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-04-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-04-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ff3a2aecd09d976e62f6aecd835063b2ea54ada41695aa20a0d15ab267a64966","channelProductId":"6329049","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -198,7 +198,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-05-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-05-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"fd64283f6f51b41cd6d703453ced3c820899d3794594bd5d692df29ee3aa369a","channelProductId":"6329050","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -236,7 +236,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-06-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-06-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"769d1a66de719cdd0e79f637998b8ca87ef437d4bb4478c5cb9b2de1383e17dc","channelProductId":"6329051","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -274,7 +274,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-07-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-07-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b52cc02e8d1f866572178c63a4db75ac6f3faa55b2dbd7b8abd6d56b57cd1de3","channelProductId":"6329052","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -312,7 +312,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-08-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-08-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"29d083f2a54164513dc3d2e3973974b77bb48c6a5f74121586d564a8a3983cfa","channelProductId":"6329053","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -350,7 +350,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-09-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-09-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"50c06ee6e9a8c0a431df32a8e07e92d305f03dee3238ec9787cc3b7015799684","channelProductId":"6329054","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -388,7 +388,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-10-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-10-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"34f3249cf876cf88354559fa95890d1c9c95bd851d640342430a30f7da224de6","channelProductId":"6329056","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": null,
@@ -426,7 +426,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-01-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-01-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"81908807fc14e09c42ce2838c57cc1bb3f31f020d91c6e770575f1f73471a594","channelProductId":"6329057","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -469,7 +469,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-02-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-02-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"52e351929d5b82488c349e1f1b5dd8d6d28f6116010b8575f4607f83a1534a9b","channelProductId":"6329058","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -512,7 +512,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-03-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-03-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"1c45d14550ceff4c1da8bd32b1b1701a3f9b091824270f6e056f4e083de838eb","channelProductId":"6329060","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -555,7 +555,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-04-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-04-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b45a5d64536f96b8bc0bd424966190b62e53d4416b4d30981acd7bc823970c47","channelProductId":"6329061","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -598,7 +598,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-05-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-05-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"09eb36a00982f279d12774b5c6b2afca626a83e3cd247717e6c2abb4fcf52f18","channelProductId":"6329062","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -641,7 +641,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-06-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-06-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"aa6c1216046f4275937756e6334cbf63c063ea0da77b8c9b2b2cb11894bae112","channelProductId":"6329065","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -684,7 +684,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-07-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-07-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b8bcedbebd462e3f3ca4d961156e5e0aed8441406bcb880fa1ea62c24da96ee5","channelProductId":"6329066","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -727,7 +727,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-08-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-08-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6fc08f8fe763ef11a156b322e5044b75dc570998c15319d86005865cf20a19ef","channelProductId":"6329068","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -770,7 +770,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-09-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-09-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"369ef7af24004c061a9f715bef5d7b55dcbbc67ae8a70071dfd472b824617cd6","channelProductId":"6329070","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -813,7 +813,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-10-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-FW-10-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"30ff0010ce9d4ff38b12e3041efa0acfba2720a38b894538ff6742bc7994023d","channelProductId":"6329072","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -856,7 +856,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-01-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-01-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"99fe7ba2960c8683c93f45e1d5a51ad999cf61c397a23ac380413393be968d79","channelProductId":"6329074","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -899,7 +899,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-02-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-02-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"5572a81438dea5b0058e800f1ac1e2c98c6e7871ed50a6a2e29176dcf085aa0a","channelProductId":"6329075","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -942,7 +942,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-03-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-03-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"adcdaf5ebd6ec74d92819112e972680d8ee1c74aa113fc1c5c0c1512fbebd605","channelProductId":"6329076","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -985,7 +985,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-04-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-04-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"57c2f0e946602a6ae8458380934bb3f9783130eb0d97e9d514b9f082c7642153","channelProductId":"6329077","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1028,7 +1028,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-05-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-05-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2cc3b89b2adbbd66241370a601185a1e93032b95dec43c01f0248d473b7970ba","channelProductId":"6329078","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1071,7 +1071,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-06-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-06-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"08c16f66d0ca1218f7981f90dc6920bec864fc445839df5f155bf279a6881c10","channelProductId":"6329079","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1114,7 +1114,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-07-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-07-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"70bcad72c031e9a1b53478fe41d0e588803c4707953478b7f05a8727c3d6b4b8","channelProductId":"6329080","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1157,7 +1157,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-08-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-08-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"25443837af5922352fe44f6172ead6189d29f4ef65d3b940bd9f472c18117aeb","channelProductId":"6329081","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1200,7 +1200,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-09-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-09-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d9b729eaf192937832acd857b47fc8d142d07517d7a60bc080c4e8f539228685","channelProductId":"6329082","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1243,7 +1243,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"card","option":"5 × 7 in","sku":"CM-FW-10-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"card","option":"5 × 7 in","sku":"CM-FW-10-CARD","priceEUR":"7.20","providerSku":"GLOBAL-GRE-MOH-7X5-BLA","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c3d6fd543d45d4eee7bc3db7f5c4ec1774e29baa539e2f5a4a1e13141fb7ef1d","channelProductId":"6329083","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1286,7 +1286,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-01-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-01-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8cbc054305d802ba86cb061f317d24d2a0b9275abe8ab05f2b74a5920cf5359f","channelProductId":"6329084","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1329,7 +1329,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-02-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-02-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"e62f7125720c5c711fc9b72d088b3e31652e6d82c78f32db949fe943e7613763","channelProductId":"6329085","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1372,7 +1372,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-03-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-03-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"f76507946fe0344125d8d9e7e57e4168947841dc15a363ad784158d027bc453d","channelProductId":"6329086","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1415,7 +1415,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-04-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-04-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4ca215fd9831ab72a8f762c0ee12ef4e74eb9893bda64fdaef5a7d007ae86bb1","channelProductId":"6329087","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1458,7 +1458,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-05-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-05-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8823aaee6471c5b16e632563955a189e3741cb2c7b63d4632f5b02ab917a8a4e","channelProductId":"6329088","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1501,7 +1501,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-06-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-06-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"53f1d4fca95915ffabb838c7c2d967d45df89fd7fa54726ba108672674c5ab9e","channelProductId":"6329089","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1544,7 +1544,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-07-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-07-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"5cac204353b75462665fa241e85b46181e04fc2344a1a9e478ca94065dd3f4f0","channelProductId":"6329090","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1587,7 +1587,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-08-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-08-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"5976ac164ec304ed21c12e52f7203004bdd78c3fa49f03b0ae3f876a495eb22d","channelProductId":"6329091","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1630,7 +1630,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-09-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-09-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"cea5a592364ca878c70fa44a73b45515cf1f8bc20ddeebadbf955687a90541be","channelProductId":"6329092","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
@@ -1673,7 +1673,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-10-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"postcard","option":"7 × 5 in","sku":"CM-FW-10-POST","priceEUR":"5.40","providerSku":"GLOBAL-POST-MOH-7X5","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"dc1f7132827a0737eedb644fc1e72b949a9f9f12701b8ba997d8c6aaa0016ec7","channelProductId":"6329093","verified":true,"verifiedAt":"2026-10-13"}}
       ],
       "assets": {
         "box": {
