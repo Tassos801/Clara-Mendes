@@ -1,0 +1,689 @@
+{
+  "verifiedAt": "2026-10-13T06:13:36.469Z",
+  "branch": "codex/artist-shops-pilot",
+  "collection": "floating-world",
+  "shop": {
+    "name": "Clara Mendes",
+    "currencyCode": "EUR"
+  },
+  "checks": {
+    "products": 10,
+    "variants": 10,
+    "media": 50,
+    "rooms": 40,
+    "storefrontProductsFound": 0,
+    "stageArtifact": "stage-2026-10-13T06-10-25.json",
+    "mediaArtifact": "media-2026-10-13T06-13-19.json",
+    "existingProductsChecked": 61,
+    "existingProductsUnchanged": true
+  },
+  "limits": {
+    "publicationAssignments": "unverified: Admin app lacks read_publications; no publication mutation was run",
+    "inventoryByLocation": "unverified: Admin app lacks read_inventory; inventoryQuantity total zero verified",
+    "physicalPrintQuality": false,
+    "deliveredCost": false,
+    "prodigiMapping": false
+  },
+  "products": [
+    {
+      "slug": "the-great-wave-off-kanagawa",
+      "artworkId": "met-39799",
+      "productId": "gid://shopify/Product/16144927162702",
+      "handle": "the-great-wave-off-kanagawa-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191506362702",
+      "sku": "CM-FW-01-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397926687054",
+          "alt": "Hokusai’s Great Wave woodblock print: a towering blue wave with a clawing white crest over three boats, Mount Fuji in the distance, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397934616910",
+          "alt": "The Great Wave off Kanagawa print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397934649678",
+          "alt": "The Great Wave off Kanagawa print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397934682446",
+          "alt": "The Great Wave off Kanagawa print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397934715214",
+          "alt": "The Great Wave off Kanagawa print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397926687054",
+      "printFile": "the-great-wave-off-kanagawa-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "08f23c008c94051072c1bf2d59c750ce9843f33793029c6c8ff29bcee87de96a",
+      "sourceSha256": "b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c",
+      "nativePpi": 427.8,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "hodogaya-on-the-tokaido",
+      "artworkId": "met-55458",
+      "productId": "gid://shopify/Product/16144927293774",
+      "handle": "hodogaya-on-the-tokaido-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191507902798",
+      "sku": "CM-FW-02-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397927866702",
+          "alt": "Hokusai woodblock print: travellers, a horse and a palanquin on the Tōkaidō road beneath a row of tall pines, Mount Fuji seen between the trunks, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397936681294",
+          "alt": "Hodogaya on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397936714062",
+          "alt": "Hodogaya on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397936746830",
+          "alt": "Hodogaya on the Tōkaidō print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397936779598",
+          "alt": "Hodogaya on the Tōkaidō print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397927866702",
+      "printFile": "hodogaya-on-the-tokaido-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "ef3288b9b7041cc8b0c558ac56d55c2c202ee235798f8a67d32a40ac8c90118e",
+      "sourceSha256": "b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851",
+      "nativePpi": 435,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "sekiya-village-on-the-sumida-river",
+      "artworkId": "met-55291",
+      "productId": "gid://shopify/Product/16144927359310",
+      "handle": "sekiya-village-on-the-sumida-river-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191510458702",
+      "sku": "CM-FW-03-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928030542",
+          "alt": "Hokusai woodblock print: three horsemen galloping along a river embankment past a gnarled pine, a small red Mount Fuji on the horizon, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937041742",
+          "alt": "Sekiya Village on the Sumida River print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937074510",
+          "alt": "Sekiya Village on the Sumida River print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937107278",
+          "alt": "Sekiya Village on the Sumida River print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937140046",
+          "alt": "Sekiya Village on the Sumida River print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928030542",
+      "printFile": "sekiya-village-on-the-sumida-river-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "7fde36020d6c4b73835e04c73a1fed5843c88b06d2291bc058779240b5d768c2",
+      "sourceSha256": "d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f",
+      "nativePpi": 432.7,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "tago-bay-near-ejiri-on-the-tokaido",
+      "artworkId": "met-57000",
+      "productId": "gid://shopify/Product/16144927424846",
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191512588622",
+      "sku": "CM-FW-04-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928128846",
+          "alt": "Hokusai woodblock print: two boats rowed through choppy blue water below a long shoreline and a large snow-capped Mount Fuji, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937598798",
+          "alt": "Tago Bay near Ejiri on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937631566",
+          "alt": "Tago Bay near Ejiri on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937664334",
+          "alt": "Tago Bay near Ejiri on the Tōkaidō print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397937697102",
+          "alt": "Tago Bay near Ejiri on the Tōkaidō print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928128846",
+      "printFile": "tago-bay-near-ejiri-on-the-tokaido-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "d25eb81702cec68f058fd34812abee4d4df69acb5bc9f3a219eae415d53497fc",
+      "sourceSha256": "5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37",
+      "nativePpi": 432.2,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "ushibori-in-hitachi-province",
+      "artworkId": "met-56239",
+      "productId": "gid://shopify/Product/16144927457614",
+      "handle": "ushibori-in-hitachi-province-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191512621390",
+      "sku": "CM-FW-05-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928194382",
+          "alt": "Hokusai woodblock print: a covered boat moored among reeds, a figure pouring water over the side and herons rising, with white Mount Fuji beyond, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397938516302",
+          "alt": "Ushibori in Hitachi Province print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397938549070",
+          "alt": "Ushibori in Hitachi Province print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397938581838",
+          "alt": "Ushibori in Hitachi Province print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397938614606",
+          "alt": "Ushibori in Hitachi Province print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928194382",
+      "printFile": "ushibori-in-hitachi-province-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "23c158f7d5715a68bfca05ac693b7544814f8993da6e768a3d275af75dbc18c1",
+      "sourceSha256": "578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92",
+      "nativePpi": 428.7,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "yoshida-on-the-tokaido",
+      "artworkId": "met-56360",
+      "productId": "gid://shopify/Product/16144927490382",
+      "handle": "yoshida-on-the-tokaido-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191512654158",
+      "sku": "CM-FW-06-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928227150",
+          "alt": "Hokusai woodblock print: travellers and attendants in a roadside teahouse looking out through its open front at a small Mount Fuji, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397939892558",
+          "alt": "Yoshida on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397939925326",
+          "alt": "Yoshida on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397939958094",
+          "alt": "Yoshida on the Tōkaidō print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397939990862",
+          "alt": "Yoshida on the Tōkaidō print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928227150",
+      "printFile": "yoshida-on-the-tokaido-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "fc7354dbe8bd5858faea066420b41986a5528a5f2a3c5ebbb0262a607ca5c52b",
+      "sourceSha256": "c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342",
+      "nativePpi": 427,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "nissaka-sayo-no-nakayama",
+      "artworkId": "met-55993",
+      "productId": "gid://shopify/Product/16144927523150",
+      "handle": "nissaka-sayo-no-nakayama-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191512686926",
+      "sku": "CM-FW-07-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928259918",
+          "alt": "Hiroshige woodblock print: travellers on a steep, dark mountain pass with tall bare trees, a large round stone in the road and blue hills in the distance, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397940449614",
+          "alt": "Nissaka, Sayo no Nakayama print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397940482382",
+          "alt": "Nissaka, Sayo no Nakayama print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397940515150",
+          "alt": "Nissaka, Sayo no Nakayama print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397940547918",
+          "alt": "Nissaka, Sayo no Nakayama print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928259918",
+      "printFile": "nissaka-sayo-no-nakayama-8x10-300dpi.jpg",
+      "pixels": [
+        3000,
+        2400
+      ],
+      "printSha256": "4ce8856cf4753b2bd62df0e283daa655c33fd7196d6173d30a8faff72448646b",
+      "sourceSha256": "553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c",
+      "nativePpi": 432.4,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "fireworks-at-ryogoku-bridge",
+      "artworkId": "met-37093",
+      "productId": "gid://shopify/Product/16144927621454",
+      "handle": "fireworks-at-ryogoku-bridge-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191512883534",
+      "sku": "CM-FW-08-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928358222",
+          "alt": "Hiroshige woodblock print: a firework rising and bursting into stars in a dark night sky over a long wooden bridge and boats on a blue river, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397941465422",
+          "alt": "Fireworks at Ryōgoku Bridge print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397941498190",
+          "alt": "Fireworks at Ryōgoku Bridge print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397941530958",
+          "alt": "Fireworks at Ryōgoku Bridge print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397941563726",
+          "alt": "Fireworks at Ryōgoku Bridge print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928358222",
+      "printFile": "fireworks-at-ryogoku-bridge-8x10-300dpi.jpg",
+      "pixels": [
+        2400,
+        3000
+      ],
+      "printSha256": "1d4570c5ba710f09856381355239816b9c5b6ae4d891021a27bc70cc91cf82e9",
+      "sourceSha256": "84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773",
+      "nativePpi": 424.8,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "kinryusan-temple-at-asakusa",
+      "artworkId": "met-56689",
+      "productId": "gid://shopify/Product/16144927686990",
+      "handle": "kinryusan-temple-at-asakusa-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191513080142",
+      "sku": "CM-FW-09-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928849742",
+          "alt": "Hiroshige woodblock print: a giant red lantern framing a snowy temple approach at Asakusa, with a red gate, a pagoda and people walking under umbrellas, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397942874446",
+          "alt": "Kinryūsan Temple at Asakusa print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397942907214",
+          "alt": "Kinryūsan Temple at Asakusa print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397942939982",
+          "alt": "Kinryūsan Temple at Asakusa print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397942972750",
+          "alt": "Kinryūsan Temple at Asakusa print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928849742",
+      "printFile": "kinryusan-temple-at-asakusa-8x10-300dpi.jpg",
+      "pixels": [
+        2400,
+        3000
+      ],
+      "printSha256": "7935d9f3e22d7b63ce513961307df721fba19e080f96b4c9dc2cee21c5843cac",
+      "sourceSha256": "6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641",
+      "nativePpi": 420.4,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    },
+    {
+      "slug": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "artworkId": "met-55433",
+      "productId": "gid://shopify/Product/16144927719758",
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "storefrontVisible": false,
+      "variantId": "gid://shopify/ProductVariant/61191513112910",
+      "sku": "CM-FW-10-8X10",
+      "priceEUR": "26.99",
+      "selectedOptions": [
+        {
+          "name": "Size",
+          "value": "8 × 10 in"
+        },
+        {
+          "name": "Finish",
+          "value": "Unframed"
+        }
+      ],
+      "tracked": true,
+      "inventoryQuantity": 0,
+      "inventoryPolicy": "DENY",
+      "requiresShipping": true,
+      "media": [
+        {
+          "id": "gid://shopify/MediaImage/74397928915278",
+          "alt": "Hiroshige woodblock print: slanting rain over a wooden bridge where people hurry under an umbrella and straw hats, a raft on a grey-green river and a misty far shore beneath a dark sky, printed whole on a white border.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397943529806",
+          "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a low oak sideboard in a calm, light living room.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397943562574",
+          "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a linen-covered bed in a quiet bedroom.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397943595342",
+          "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a walnut desk in a pared-back study.",
+          "status": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/74397943628110",
+          "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print shown at scale in a wide, airy interior.",
+          "status": "READY"
+        }
+      ],
+      "featuredMediaId": "gid://shopify/MediaImage/74397928915278",
+      "printFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-8x10-300dpi.jpg",
+      "pixels": [
+        2400,
+        3000
+      ],
+      "printSha256": "9bc4e89bf24649f1f698bd4a4f4e5d54214586b28889c8f5b1584425f82e8881",
+      "sourceSha256": "17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31",
+      "nativePpi": 427,
+      "croppedFraction": 0,
+      "rightsReview": "cleared",
+      "masterReview": "pending",
+      "prodigiMappingVerified": false
+    }
+  ]
+}

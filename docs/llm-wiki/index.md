@@ -9,6 +9,9 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [Artist-shop pilot handoff](../artist-shops/HANDOFF.md) - Active work on
   `codex/artist-shops-pilot`; cross-PC setup, agreed scope and current status.
+- [Floating World Draft readback](../artist-shops/evidence/draft-readback-2026-10-13.json) -
+  Ten hidden Shopify Drafts and their 50 READY images verified on 13 October;
+  product and variant IDs, print hashes, pending supplier mapping and scope limits.
 
 - [Overview](overview.md) - Current synthesized picture of the Clara Mendes store.
 - [Architecture](architecture.md) - Runtime, routing, data flow, and integration map.

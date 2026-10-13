@@ -518,3 +518,13 @@ them without both reviews. Routes: `app/routes/artists._index.tsx`,
 tabs off the photograph; `masterSize()` is the size layout, qualification,
 `prepare` and the orientation check use, and recording a trim resets the
 master review. See the [status](../../artist-shops/status.md).
+
+On 2026-10-13 the owner's authorised continuation created the ten Floating
+World Drafts at €26.99, one 8×10 variant each, and attached their 40 current
+room images. All ten remain unreleased and Draft with tracked inventory
+total 0 and DENY; each gallery has its flat image first and four READY scenes.
+The Storefront channel returns none of their IDs. Other-channel publication
+assignments and per-location stock cannot be verified with the installed
+app's scopes (`read_publications` and `read_inventory` absent). Provider
+mapping and all master reviews remain pending. IDs, asset hashes and scope
+limits are in the [readback evidence](../../artist-shops/evidence/draft-readback-2026-10-13.json).

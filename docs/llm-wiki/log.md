@@ -1546,3 +1546,16 @@ cleared rights for all ten. Master reviews and room backgrounds are still
 open; nothing touched Shopify or Prodigi. See
 [status](../artist-shops/status.md).
 
+## 2026-10-13 - Floating World hidden Drafts and room galleries verified
+
+The owner's authorised continuation on `codex/artist-shops-pilot` created ten
+Shopify Drafts, each with one 8×10 variant at €26.99, tracked inventory total
+0 and DENY. The pipeline checked 61 other Clara Mendes products unchanged.
+Forty room images were uploaded and all ten five-image galleries read back
+READY with their flat artwork first. None of the ten product IDs is returned
+on the Storefront channel. All remain unreleased; master reviews and provider
+mapping are pending. Publication assignments on other channels and individual
+location quantities remain unverified because the Admin app lacks their read
+scopes. See [status](../artist-shops/status.md) and
+[nonsecret readback evidence](../artist-shops/evidence/draft-readback-2026-10-13.json).
+

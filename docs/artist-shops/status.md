@@ -1,12 +1,51 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-11  
+**Updated:** 2026-10-13
+
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Rooms done and print files in Prodigi; waiting on Shopify Admin credentials for Drafts; no production release  
-**Current writer:** Claude Code (2026-10-11, owner's Mac). Codex (Sol) made the
-40 room backgrounds under that writer's coordination.
+**State:** Ten Shopify Drafts and all 40 room images verified; Prodigi mapping in progress; master reviews pending; no production release
+
+**Current writer:** Claude Code, 2026-10-13 from 09:30 on the owner's
+Windows PC. Codex (Sol) staged the ten Drafts and their room media earlier
+the same morning, then hit its usage limit before any Prodigi mapping was
+recorded; this checkpoint commits its uncommitted IDs and evidence. Next:
+the Society6-style artist shop page the owner asked for, then mapping.
 
 ## Where we are (2026-10-11)
+
+**Windows continuation (2026-10-13):**
+- Admin credentials were resolved through the documented machine config;
+  no secret values were copied into the branch. Exact-handle read-only
+  preflight found no pilot products anywhere in the store and confirmed EUR.
+- Re-fetched met-55433: the original and museum metadata hashes match the
+  existing registry. Re-prepared all ten from verified originals using the
+  current four museum-tab trims and replacement. All 20 web/card and sheet
+  assets are byte-identical to the preceding Mac checkpoint; the 40 room
+  manifests stay current. Production files now match the current selection.
+- `stage floating-world --apply` created exactly ten Drafts, one 8×10
+  variant each at €26.99, and wrote their IDs into the catalog. The pipeline
+  compared 61 other Clara Mendes products and found them unchanged.
+- `media floating-world --apply` uploaded 40 room images. Fresh readback
+  verifies 50 READY images in total: each flat image is featured and first,
+  followed by its four exact room scenes. All ten remain Draft, unreleased,
+  with pending tags, tracked inventory total 0, `DENY` and shipping required.
+- Storefront API readback returns null for all ten product IDs. A separate
+  parent-agent live check on 2026-10-13 confirmed that all ten
+  `https://shopclaramendes.com/products/<pilot-handle>` URLs return 404.
+  Publication
+  assignments on other channels could not be read: the installed Admin app
+  lacks `read_publications`. It also lacks `read_inventory`, so individual
+  location quantities are unverified; aggregate inventory total 0 is verified.
+  No publication mutation was run.
+- Durable nonsecret IDs, media, asset hashes and readback:
+  [13 October evidence](evidence/draft-readback-2026-10-13.json).
+  Local launch evidence: `stage-2026-10-13T06-10-25.json`,
+  `media-2026-10-13T06-13-19.json`, `asset-validation.json`, and
+  `prodigi-handoff.csv` / `prodigi-handoff.md` under
+  `<launchDir>/floating-world/`.
+- Baseline before mutation: 407/407 tests, typecheck and lint passed.
+  No implementation changes were needed. Prodigi mapping is being checked
+  in the signed-in dashboard; no mapping has yet been recorded as verified.
 
 **Owner decisions (2026-10-11), now in data:**
 1. Collection: **Floating World**, 8×10 only, €26.99. Unchanged.
@@ -40,13 +79,14 @@
   uploaded through the owner's Chrome and processed at full size (3000×2400
   landscape, 2400×3000 portrait). The Shopify channel
   `vre00g-8b.myshopify.com` is active in Prodigi.
-- **Blocked: Shopify Drafts.** The owner authorised Drafts, Prodigi mapping
+- **Shopify Drafts and room media done (2026-10-13).** The owner authorised Drafts, Prodigi mapping
   and room media on 2026-10-11 (not `release`). `stage --apply` needs
   `.env.shopify-admin.local` (`SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET` or
-  `SHOPIFY_ADMIN_ACCESS_TOKEN`), which is not on the owner's Mac. Once it is
-  in place: `stage floating-world --apply`, `handoff`, map each row in
-  Prodigi (choose the uploaded file; settings per the handoff), `mapped …`,
-  `media floating-world --apply`, then commit.
+  `SHOPIFY_ADMIN_ACCESS_TOKEN`), which was unavailable on the owner's Mac.
+  The Windows machine resolved those credentials and completed `stage`,
+  `handoff` and `media`. Map each handoff row in Prodigi using the exact
+  current print file and settings; only then record `mapped …` after a fresh
+  dashboard load proves it.
 - `release`, publishing and any PR to main need the master reviews plus the
   owner's explicit go-ahead.
 
@@ -65,7 +105,7 @@
    `prepare` needs `PYTHON=python3` on a Mac without a `python` binary.
    Check the sha256 still matches. A refetch keeps the reviews unless the
    Met changed the record or image.
-4. Run `npm test` (406 pass), `npm run typecheck` and `npm run lint` before
+4. Run `npm test` (407 pass on 2026-10-13), `npm run typecheck` and `npm run lint` before
    changing anything. Run `npm run museum -- status` and `npm run product --
    status floating-world` to see the state.
 5. Don't run a blanket `git checkout` on `data/*.json` to drop
@@ -217,16 +257,20 @@ the Met records were unchanged).
    `scripts/assets/print-room-mockups/floating-world/`. Placements are 5:4
    for the seven landscape prints and 4:5 for the three portrait ones. Then
    run `npm run product -- rooms floating-world`.
-5. Only with owner approval: `stage --apply` (Shopify Drafts), Prodigi mapping
-   (check landscape 3000×2400 files and colour on untagged originals), `media`,
-   `release`, then a PR to main after review.
+5. Draft staging, Prodigi mapping and room media were authorised on
+   2026-10-11; Draft staging and media are now done. Finish Prodigi mapping,
+   checking landscape 3000×2400 files and colour on the untagged originals.
+   Record only mappings verified after a fresh dashboard load. Keep the
+   existing draft PR for handoff and review. `release` and publication require
+   master reviews and the owner's separate explicit approval.
 
 ## Not done
 
 - The ten works are not yet cleared for sale: the master reviews are
   pending (artists approved and rights cleared on 2026-10-11).
-- Nothing has been created or changed in Shopify. In Prodigi, only the ten
-  print files were added to the image library.
+- Shopify has ten hidden Drafts with verified room galleries. Prodigi image
+  library uploads were completed on the Mac; provider mapping is not yet
+  verified or recorded in the catalog.
 - Physical print quality, delivered cost and landscape-file handling in
   Prodigi are unverified.
 - No production deploy, supplier order, payment or public marketing action.

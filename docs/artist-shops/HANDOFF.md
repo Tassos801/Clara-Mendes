@@ -70,10 +70,15 @@ locally using the repository's existing setup. Read variable names in README;
 use `CLARA_ENV_DIR` / `CLARA_LAUNCH_DIR` only as documented in the
 [print runbook](../add-products-runbook.md).
 
-A Git branch isolates code, not Shopify data or supplier orders. This initial
-work is local/read-only: no Admin mutations, product publication, paid orders,
-webhook activation, production deploy or advertising. Use a development store
-for mutation testing when available.
+A Git branch isolates code, not Shopify data or supplier orders. The initial
+local/read-only phase was expanded by the owner's 2026-10-11 instruction to
+allow the ten Floating World Shopify Drafts, their room media and Prodigi
+mapping. The 2026-10-13 continuation completes those authorised steps using
+the existing print pipeline. Draft staging and mapping do not authorise
+`release`, product publication, paid orders, webhook activation, production
+deploy or advertising. Master reviews remain pending; release requires those
+reviews and the owner's explicit go-ahead. Read the current
+[status](status.md) and [Draft readback](evidence/draft-readback-2026-10-13.json).
 
 The current GitHub workflow validates branch pushes and then attempts an Oxygen
 preview; only main is the production branch. Verify the actual resulting
