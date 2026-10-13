@@ -1582,3 +1582,14 @@ review sheets. Case, card and postcard crops all reach 300 ppi or more; canvas
 is 140–162 ppi. Nothing is approved or staged; see
 [status](../artist-shops/status.md) for the open decisions and pipeline gaps.
 
+## 2026-10-13 - Session stop: larger sizes in the catalog, handoff written
+
+The owner approved the product crops, the lower-ppi museum files and
+framed-with-print, and stopped the session. Floating World now lists 8×10,
+16×20 and 20×24 (`4070390`); the 20 new print files exist, but the Shopify
+variants are not staged (`expand --apply` was blocked by Claude Code's safety
+check) and not mapped. The numbered next steps for the next agent (stage the
+variants, 20 Prodigi mappings, the framed-with-print price, the five product
+types as separate Drafts, master reviews) are under "Stopped here" in
+[status](../artist-shops/status.md).
+

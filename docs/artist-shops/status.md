@@ -3,18 +3,93 @@
 **Updated:** 2026-10-13
 
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts and all 40 room images verified; artist shop page redesigned; all ten Prodigi mappings verified and recorded; master reviews pending; no production release
+**State:** Ten Shopify Drafts (8×10 mapped in Prodigi), artist shop page redesigned Society6-style, product crops approved, 16×20 and 20×24 added to the catalog but not yet staged in Shopify; master reviews pending; no production release
 
-**Current writer:** Claude Code, 2026-10-13 from 09:30 on the owner's
-Windows PC. Codex (Sol) staged the ten Drafts and their room media earlier
-the same morning, then hit its usage limit before any Prodigi mapping was
-recorded; Claude committed its IDs and evidence (`1c7d9e0`), redesigned the
-artist page and mapped all ten in Prodigi. Next: the owner's master reviews,
-then `release` only on the owner's explicit go-ahead.
+**Current writer:** none. Claude Code was the writer on 2026-10-13 from 09:30
+on the owner's Windows PC and stopped at the owner's request that evening
+(HEAD `4070390` plus this handoff). Codex (Sol) staged the ten Drafts and
+their room media earlier the same morning, then hit its usage limit; Claude
+committed its ids (`1c7d9e0`), redesigned the artist page, mapped all ten in
+Prodigi, proposed product crops (approved) and added the larger sizes.
+
+## Stopped here (2026-10-13): what the next agent does
+
+Do these in order. Writes to the live store (Shopify `--apply`, Prodigi
+dashboard) need the owner's go-ahead in chat; the owner gave it on
+2026-10-13 for Drafts and mapping, not for `release`.
+
+1. **Stage the 20 new variants.** `npm run product -- expand floating-world`
+   (dry run: 20 × "stage unavailable", 10 × "preserve"), then `--apply`. On
+   2026-10-13 Claude Code's safety check blocked `--apply`, so the owner must
+   run it or allow it. Expect 30 variants: 8×10 €26.99, 16×20 €35.99
+   (`ART-FAP-EMA-16X20`), 20×24 €44.99 (`GLOBAL-FAP-20X24`); every product
+   still DRAFT, new variants tracked at 0 with DENY. `expand` refuses an
+   unreleased product that is not DRAFT.
+2. **Prodigi, 20 more mappings.** `npm run product -- handoff floating-world`.
+   Upload the 20 new files (`<launchDir>/floating-world/print/*-16x20-*` and
+   `*-20x24-*`, 6.6–10.8 MB) from the Image library page; above 10 MB the
+   Chrome extension upload fails, so inject them (local CORS server +
+   DataTransfer, see the Prodigi traps below). The channel products are
+   unchanged (6327576–6327585); each will show the new variants. Per variant:
+   the SKU above, its own file, 100%/0/0, Excellent, auto-fulfil; shipping
+   Standard is already set per product. Prodigi laid 3000×2400 files out
+   landscape by itself at 8×10; check the same holds at 16×20 and 20×24 (the
+   20×24 SKU is metric 50×60 cm, 5:6 like our files). Re-read on a fresh load,
+   then `npm run product -- mapped floating-world --size 16x20 <slug>=<id> …`
+   and the same for `--size 20x24`.
+3. **Owner decisions before the new product types:** a price for the framed
+   16×20 *with* print (`GLOBAL-CFP-16X20`; the frame-only product is €50, and
+   no framed-with-print price exists). Proposed defaults from the current
+   manifests, which may predate the ×0.90 repricing, so check the live prices:
+   canvas €89, greeting card €8, postcard €6, tough phone case €39.99.
+4. **Build the five product types** (owner-approved 2026-10-13): framed print,
+   canvas, greeting card, postcard and tough phone case for each of the ten
+   works, as **separate hidden Drafts, one product per artwork per type**
+   (Society6-style; this also feeds the artist page's Product type filter).
+   **Never add Floating World variants to the existing live products**
+   (`art-tough-phone-case`, the card/postcard/canvas extension products): they
+   are ACTIVE and published, so that would put the works on sale before the
+   master reviews. Files:
+   - framed: the bordered 16×20 file from `prepare` (whole composition);
+   - canvas `GLOBAL-CAN-16X20`, card `GLOBAL-GRE-MOH-7X5-BLA` (front panel
+     1529×2161 inside the 6117×2161 four-panel file), postcard
+     `GLOBAL-POST-MOH-7X5` (art half 2162×1559 of 4323×1559): render from the
+     approved crops, `cropPlan()` in `app/lib/museumCrops.ts`;
+   - phone case `GLOBAL-TECH-<device>-TCB-CS-M`, 40 devices from
+     `data/art-tough-phone-case.json`: one 4:5 2000×2500 file per work from
+     the crop's `file` box (`caseFileBox`). Prodigi centre-crops it per device
+     (`fillPrintArea`). Cases are fulfilled by the `orders/paid` webhook
+     through the Prodigi API (`app/lib/sky/fulfilment.ts`), not dashboard
+     mapping, so their SKUs must be added there before release.
+
+   Pipeline gaps to close (extend the pipeline; no one-off scripts):
+   - `PrintSizeKey` and `printSku` are a closed set of paper sizes;
+   - collection `title` must be unique, and an artwork may appear in only one
+     museum collection (`validateArtistLinks`): relax that to one per
+     artwork per product type;
+   - the copy hard-codes "Unframed", "200gsm paper" and "Frame not included";
+   - the case, card/postcard and canvas generators and stagers
+     (`generate-tough-case-assets.mjs`, `prepare-art-product-extensions.py`,
+     `sync-art-product-extensions.mjs`, `stage-art-tough-phone-case.mjs`) are
+     hard-wired to the studio artworks ("Clara Mendes Original", fixed design
+     counts) and must not be reused as they are;
+   - artist shops list only the `Prints` family (`ARTIST_PRODUCT_FAMILIES`);
+   - storefront PDP copy and options for the new types are needed before
+     release.
+5. **Owner:** master reviews for all ten (a physical proof is advisable).
+   Only then, with explicit approval, `release`; then merge to main, deploy
+   and run `verify` with owner-Chrome screenshots.
+
+To see the artist page locally while the products are Drafts (the
+Storefront API never returns Drafts), use a temporary, uncommitted stub:
+commit real work first, mark the prints `released: true` in the local
+catalog, and feed the route card products built from the committed web and
+room images (Hydrogen `Image` needs absolute URLs). Remove it by exact
+replacement afterwards.
 
 ## Where we are (2026-10-11)
 
-**Product crops for more families (2026-10-13), awaiting owner approval:**
+**Product crops for more families (2026-10-13), approved by the owner the same day:**
 the owner asked for the ten works on phone cases, cards and postcards, larger
 prints and canvas, and framed prints, with AI-chosen crops and no generated
 pixels. Claude chose a framing per work and shape by eye and recorded them in
@@ -25,14 +100,15 @@ shows, 0.626) 307–430 ppi; card front 329–488 ppi; postcard 311–498 ppi;
 canvas 16×20 (4:5 in the work's orientation) 140–162 ppi, below the store's
 150 dpi canvas files for Nissaka (148), Kinryūsan (141) and Sudden Shower
 (140). Larger prints and framed prints are 4:5 like 8×10, so they keep the
-whole composition: 16×20 210–218 ppi, 20×24 176–182 ppi. Open owner
-decisions: approve the crops; a ppi exception for canvas, 16×20, 20×24 and
-framed; framed-with-print (`GLOBAL-CFP-16X20`, withdrawn for frame-only on
-2026-08-24) since the backloader frame carries no art. Pipeline gaps found
-(no code yet): the phone case, card/postcard and canvas generators and Shopify
-stagers are hard-wired to the studio artworks ("Clara Mendes Original", fixed
-design counts), and `stage`/`expand` cannot add sizes to the unreleased
-Drafts.
+whole composition: 16×20 210–218 ppi, 20×24 176–182 ppi. **Owner decisions
+(2026-10-13, in chat):** the crops are approved (`approval` in
+`data/museum-crops.json`); the lower ppi is accepted for canvas (all ten,
+including the three under 150), 16×20, 20×24 and framed; framed-with-print
+(`GLOBAL-CFP-16X20`, withdrawn for frame-only on 2026-08-24) comes back for
+museum works, price to be set. Floating World now lists 8×10, 16×20 and 20×24
+(`4070390`); `prepare` wrote the 20 new print files and left the 8×10 files
+byte-identical. `expand` now also grows an unreleased Draft. Next steps are in
+"Stopped here" above.
 
 **Prodigi mapping, verified (2026-10-13):** channel products 6327576–6327585
 (catalog order, Great Wave to Sudden Shower), mapped in the owner's Chrome
@@ -161,7 +237,7 @@ until a print is released.
    `prepare` needs `PYTHON=python3` on a Mac without a `python` binary.
    Check the sha256 still matches. A refetch keeps the reviews unless the
    Met changed the record or image.
-4. Run `npm test` (407 pass on 2026-10-13), `npm run typecheck` and `npm run lint` before
+4. Run `npm test` (416 pass on 2026-10-13), `npm run typecheck` and `npm run lint` before
    changing anything. Run `npm run museum -- status` and `npm run product --
    status floating-world` to see the state.
 5. Don't run a blanket `git checkout` on `data/*.json` to drop
@@ -313,20 +389,21 @@ the Met records were unchanged).
    `scripts/assets/print-room-mockups/floating-world/`. Placements are 5:4
    for the seven landscape prints and 4:5 for the three portrait ones. Then
    run `npm run product -- rooms floating-world`.
-5. Draft staging, Prodigi mapping and room media were authorised on
-   2026-10-11; Draft staging and media are now done. Finish Prodigi mapping,
-   checking landscape 3000×2400 files and colour on the untagged originals.
-   Record only mappings verified after a fresh dashboard load. Keep the
-   existing draft PR for handoff and review. `release` and publication require
-   master reviews and the owner's separate explicit approval.
+5. ~~Draft staging, Prodigi mapping (8×10) and room media~~ (done
+   2026-10-13). The 16×20/20×24 variants, their mappings and the five new
+   product types are in "Stopped here" at the top. Colour on the untagged
+   originals is still unchecked in a physical proof. Keep the existing draft
+   PR for handoff and review. `release` and publication require master
+   reviews and the owner's separate explicit approval.
 
 ## Not done
 
 - The ten works are not yet cleared for sale: the master reviews are
   pending (artists approved and rights cleared on 2026-10-11).
-- Shopify has ten hidden Drafts with verified room galleries. Prodigi image
-  library uploads were completed on the Mac; provider mapping is not yet
-  verified or recorded in the catalog.
-- Physical print quality, delivered cost and landscape-file handling in
-  Prodigi are unverified.
+- Shopify has ten hidden Drafts with verified room galleries and 8×10 only;
+  the catalog's 16×20 and 20×24 variants are not yet staged or mapped.
+- The five new product types (framed, canvas, card, postcard, case) exist
+  only as approved crops and specs; no files, Drafts or mappings yet.
+- Physical print quality and delivered cost are unverified; Prodigi's
+  landscape handling is verified at 8×10 only.
 - No production deploy, supplier order, payment or public marketing action.

@@ -11,7 +11,8 @@ the writer is named in [status.md](status.md).
 ## Read first
 
 1. Root [AGENTS.md](../../AGENTS.md).
-2. [Current status and next step](status.md).
+2. [Current status and next step](status.md): start with its numbered
+   "Stopped here" list (last updated 2026-10-13).
 3. [Agreed product brief](brief.md).
 4. The implementation plan linked from status, plus [LLM wiki](../llm-wiki/index.md).
 
