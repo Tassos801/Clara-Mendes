@@ -287,12 +287,15 @@ async function stage() {
     if (!found) return {print, input, action: 'create'};
     const skus = found.variants.nodes.map((variant) => variant.sku);
     const expected = input.variants.map((variant) => variant.sku);
-    // A released print that lacks a newly added size is expand's job; it must
-    // not stop new prints in the same collection from being staged.
+    // A product (released, or an unreleased Draft) that lacks a newly added
+    // size is expand's job; it must not stop new prints in the same
+    // collection from being staged.
     const missing = expected.filter((sku) => !skus.includes(sku));
     assert.ok(
       skus.every((sku) => expected.includes(sku)) &&
-        (missing.length === 0 || print.released === true),
+        (missing.length === 0 ||
+          print.released === true ||
+          found.status === 'DRAFT'),
       `${input.handle} already exists in Shopify with different SKUs — resolve by hand.`,
     );
     return {print, input, found, action: missing.length ? 'expand' : 'present'};
@@ -391,7 +394,7 @@ async function stage() {
   const toExpand = actions.filter((entry) => entry.action === 'expand');
   if (toExpand.length)
     console.log(
-      `Released print(s) missing a catalog size: ${toExpand.map(({print}) => print.slug).join(', ')} — run expand for those.`,
+      `Print(s) missing a catalog size: ${toExpand.map(({print}) => print.slug).join(', ')} — run expand for those.`,
     );
 }
 
@@ -401,17 +404,15 @@ async function expand() {
   const before = await vendorProducts(admin);
   const byHandle = new Map(before.map((product) => [product.handle, product]));
   const work = prints.map((print) => {
-    assert.equal(
-      print.released,
-      true,
-      `${print.slug}: expand is only for an already released print`,
-    );
     const product = byHandle.get(printHandle(print));
     assert.ok(product, `${print.slug}: Shopify product not found`);
+    // A released print grows while Active; an unreleased one only while it is
+    // still a Draft. New variants are tracked at zero with DENY either way.
+    const expected = print.released === true ? 'ACTIVE' : 'DRAFT';
     assert.equal(
       product.status,
-      'ACTIVE',
-      `${print.slug}: expected ACTIVE before expansion`,
+      expected,
+      `${print.slug}: expected ${expected} before expansion`,
     );
     return {
       plan: variantExpansionPlan(collection, print, product),

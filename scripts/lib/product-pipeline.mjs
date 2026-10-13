@@ -334,7 +334,9 @@ export function printStatus(
   let next = 'verify';
   if (!hasWebImage) next = 'prepare';
   else if (!print.shopify?.productId) next = 'stage';
-  else if (!staged) next = print.released ? 'expand' : 'stage';
+  // A product that exists but lacks a catalog size is expand's job, whether
+  // it is released (Active) or still an unreleased Draft.
+  else if (!staged) next = 'expand';
   else if (!mapped) next = 'handoff → map in Prodigi → mapped';
   else if (!hasRoomAssets) next = 'rooms';
   else if (!print.released || !allSizesReleased) next = 'media → release';

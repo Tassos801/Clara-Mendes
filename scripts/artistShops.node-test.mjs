@@ -323,7 +323,7 @@ test('a museum Draft carries museum copy, credit and tags, never "original"', ()
   );
   assert.match(
     input.descriptionHtml,
-    /Unframed 8 × 10 inch landscape print, the full composition on a white border/,
+    /Unframed landscape print in 8 × 10, 16 × 20, and 20 × 24 inch sizes, the full composition on a white border/,
   );
   assert.ok(
     input.descriptionHtml.includes(

@@ -6,7 +6,10 @@
     "note": "Owner chose AI-chosen crops with no generated pixels on 2026-10-13; each framing keeps the subject of the work."
   },
   "approval": {
-    "approved": false
+    "approved": true,
+    "by": "Tassos",
+    "at": "2026-10-13",
+    "note": "Owner approved the proposed crops in chat; also accepted the ppi exceptions for canvas (140-162 ppi), 16x20, 20x24 and framed 16x20, and framed-with-print for museum works."
   },
   "crops": {
     "met-39799": {
