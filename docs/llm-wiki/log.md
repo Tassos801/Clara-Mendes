@@ -1571,3 +1571,14 @@ name over a rule, About the artist beside a room slideshow, a Refine sidebar
 with counts, Sort, and a "By <artist>" card line. Nothing is released; master
 reviews are pending. See [status](../artist-shops/status.md).
 
+## 2026-10-13 - Product crops for Floating World (proposed)
+
+The owner asked for the Floating World works on phone cases, cards and
+postcards, larger prints and canvas, and framed prints, choosing AI-chosen
+crops with no generated pixels. `data/museum-crops.json` records a framing per
+work and shape (printed area plus a centre; the box is computed), validated
+and measured by `app/lib/museumCrops.ts`; `npm run museum -- crops` renders the
+review sheets. Case, card and postcard crops all reach 300 ppi or more; canvas
+is 140–162 ppi. Nothing is approved or staged; see
+[status](../artist-shops/status.md) for the open decisions and pipeline gaps.
+

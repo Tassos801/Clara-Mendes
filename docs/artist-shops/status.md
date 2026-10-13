@@ -14,6 +14,26 @@ then `release` only on the owner's explicit go-ahead.
 
 ## Where we are (2026-10-11)
 
+**Product crops for more families (2026-10-13), awaiting owner approval:**
+the owner asked for the ten works on phone cases, cards and postcards, larger
+prints and canvas, and framed prints, with AI-chosen crops and no generated
+pixels. Claude chose a framing per work and shape by eye and recorded them in
+`data/museum-crops.json` (`app/lib/museumCrops.ts`, 5 tests); `npm run museum
+-- crops` writes the review sheets and per-product overviews to
+`<launchDir>/museum/crops/`. Results: phone case (the area the widest device
+shows, 0.626) 307–430 ppi; card front 329–488 ppi; postcard 311–498 ppi;
+canvas 16×20 (4:5 in the work's orientation) 140–162 ppi, below the store's
+150 dpi canvas files for Nissaka (148), Kinryūsan (141) and Sudden Shower
+(140). Larger prints and framed prints are 4:5 like 8×10, so they keep the
+whole composition: 16×20 210–218 ppi, 20×24 176–182 ppi. Open owner
+decisions: approve the crops; a ppi exception for canvas, 16×20, 20×24 and
+framed; framed-with-print (`GLOBAL-CFP-16X20`, withdrawn for frame-only on
+2026-08-24) since the backloader frame carries no art. Pipeline gaps found
+(no code yet): the phone case, card/postcard and canvas generators and Shopify
+stagers are hard-wired to the studio artworks ("Clara Mendes Original", fixed
+design counts), and `stage`/`expand` cannot add sizes to the unreleased
+Drafts.
+
 **Prodigi mapping, verified (2026-10-13):** channel products 6327576–6327585
 (catalog order, Great Wave to Sudden Shower), mapped in the owner's Chrome
 and recorded with `mapped floating-world --size 8x10`. Each row: EMA 8×10

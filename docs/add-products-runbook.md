@@ -130,6 +130,15 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    removes it). Layout, `qualify` and `prepare` use the trimmed size, and a
    trim resets the master review. Measure the insets on full-resolution crops
    and stop at the paper edge; seals and marks on the paper stay.
+   **Product crops.** Phone cases, card fronts, postcards and canvas are not
+   the shape of the work, so they use a crop recorded in
+   `data/museum-crops.json`: the printed block of the sheet (`area`) and, per
+   shape, a centre and an optional zoom. The box is computed (largest box of
+   the shape inside the area), and pixels are only cut, never generated.
+   `npm run museum -- crops [--artwork <id>]` writes a review sheet per work
+   and an overview per product to `<launchDir>/museum/crops/`, with ppi and
+   coverage. The owner approves the crops (`approval` in the file) before any
+   product uses them. Prints and framed prints keep the whole composition.
 3. **Catalog:** a collection with `"kind": "museum"`; each print names its
    `artworkId` and `orientation` (the artwork's), and its four room
    placements are 5:4 for landscape paper. Choose collection sizes every work

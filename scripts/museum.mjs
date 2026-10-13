@@ -41,11 +41,19 @@ import sharp from 'sharp';
 import {
   artworkId,
   findArtist,
+  findArtwork,
   masterSize,
   screenArtworkRights,
   validateArtRegistry,
 } from '../app/lib/artRegistry.ts';
-import {PRINT_SIZES} from '../app/lib/printCatalog.ts';
+import {
+  CROP_SHAPES,
+  MUSEUM_CROPS,
+  cropPlan,
+  validateMuseumCrops,
+} from '../app/lib/museumCrops.ts';
+import {PRINT_CATALOG, PRINT_SIZES} from '../app/lib/printCatalog.ts';
+import {renderCropPreviews} from './lib/museum-crop-previews.mjs';
 import {qualifySizes} from './lib/museum-layout.mjs';
 import {
   attributionIssues,
@@ -75,6 +83,7 @@ const [step = 'status', ...rest] = process.argv.slice(2);
 const TRIM_EDGES = ['top', 'right', 'bottom', 'left'];
 const VALUE_OPTIONS = [
   'artist',
+  'artwork',
   'by',
   'limit',
   'master',
@@ -103,6 +112,7 @@ for (let index = 0; index < rest.length; index++) {
 
 const steps = {
   'approve-artist': approveArtist,
+  crops,
   fetch: fetchArtwork,
   qualify,
   review,
@@ -186,6 +196,66 @@ function status() {
     }),
   );
   console.log(`Originals: ${path.join(museumRoot, 'originals')}`);
+}
+
+/**
+ * Review sheets for the product crops (data/museum-crops.json): every crop
+ * outlined on its work, then shaped as its product, with ppi and coverage.
+ * `--artwork <id>` renders one. Local files only.
+ */
+async function crops() {
+  const problems = validateMuseumCrops(MUSEUM_CROPS, registry);
+  if (problems.length)
+    throw new Error(
+      `data/museum-crops.json is invalid:\n- ${problems.join('\n- ')}`,
+    );
+  const ids = options.artwork
+    ? [options.artwork]
+    : Object.keys(MUSEUM_CROPS.crops);
+  const prints = PRINT_CATALOG.collections.flatMap(
+    (collection) => collection.prints,
+  );
+  const artworks = ids.map((id) => {
+    const artwork = findArtwork(id, registry);
+    if (!artwork) throw new Error(`unknown artwork ${id}`);
+    const print = prints.find((entry) => entry.artworkId === id);
+    return {
+      artwork,
+      fileStem: print
+        ? `${String(print.sequence).padStart(2, '0')}-${print.slug}`
+        : id,
+      label: print?.title ?? artwork.shortTitle ?? artwork.title,
+    };
+  });
+  const outDir = path.join(museumRoot, 'crops');
+  const written = await renderCropPreviews({
+    artworks,
+    data: MUSEUM_CROPS,
+    originalsDir: path.join(museumRoot, 'originals'),
+    outDir,
+    registry,
+  });
+  console.table(
+    artworks.map(({artwork, label}) => {
+      const plan = cropPlan(artwork.id, {data: MUSEUM_CROPS, registry});
+      return Object.fromEntries([
+        ['work', label],
+        ...CROP_SHAPES.map((shape) => {
+          const entry = plan.shapes.find((item) => item.shape === shape);
+          return [
+            shape,
+            `${Math.round(entry.ppi)} ppi ${Math.round(entry.coverage * 100)}%${entry.verdict === 'qualified' ? '' : ' !'}`,
+          ];
+        }),
+      ]);
+    }),
+  );
+  console.log(`\n${written.length} review sheets in ${outDir}`);
+  console.log(
+    MUSEUM_CROPS.approval.approved
+      ? `Approved by ${MUSEUM_CROPS.approval.by} on ${MUSEUM_CROPS.approval.at}.`
+      : 'Not approved yet: the owner reviews these sheets before any product uses a crop.',
+  );
 }
 
 async function search() {
