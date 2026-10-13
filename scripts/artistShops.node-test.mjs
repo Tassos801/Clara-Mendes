@@ -279,3 +279,120 @@ test('a museum Draft carries museum copy, credit and tags, never "original"', ()
   assert.ok(!input.tags.includes('Clara Mendes Original'));
   assert.ok(!input.tags.includes('4:5 Ratio'));
 });
+
+/** Every Floating World print, as the artist shops would list them. */
+function floatingWorldProducts(artistId) {
+  return shops
+    .artistProducts()
+    .filter((product) => product.collectionTag === 'Floating World')
+    .filter((product) => !artistId || product.artistId === artistId);
+}
+
+test('artist shop Refine groups come from data, with counts per choice', () => {
+  const hiroshige = floatingWorldProducts('utagawa-hiroshige');
+  assert.equal(hiroshige.length, 4);
+  const view = shops.artistShopView(hiroshige, new URLSearchParams());
+  assert.deepEqual(
+    view.groups.map((group) => group.key),
+    ['type', 'series', 'orientation', 'collection'],
+  );
+  const series = view.groups.find((group) => group.key === 'series');
+  // Quotes and the romanised original are trimmed; Nissaka has no series.
+  assert.deepEqual(series.options, [
+    {
+      count: 3,
+      label: 'One Hundred Famous Views of Edo',
+      selected: false,
+      value: 'one-hundred-famous-views-of-edo',
+    },
+  ]);
+  const orientation = view.groups.find((group) => group.key === 'orientation');
+  assert.deepEqual(
+    orientation.options.map(({count, value}) => [value, count]),
+    [
+      ['landscape', 1],
+      ['portrait', 3],
+    ],
+  );
+  assert.equal(view.activeCount, 0);
+  assert.equal(view.sort, 'featured');
+  assert.deepEqual(view.products, hiroshige);
+});
+
+test('artist shop filters AND across groups, OR within one, and drop stale values', () => {
+  const hiroshige = floatingWorldProducts('utagawa-hiroshige');
+  const portrait = shops.artistShopView(
+    hiroshige,
+    new URLSearchParams('orientation=Portrait&series=no-such-series'),
+  );
+  assert.equal(portrait.activeCount, 1);
+  assert.ok(portrait.products.every((product) => product.orientation === 'portrait'));
+  assert.equal(portrait.products.length, 3);
+  // Counts in other groups follow the orientation choice.
+  const type = portrait.groups.find((group) => group.key === 'type');
+  assert.deepEqual(type.options, [
+    {count: 3, label: 'Art prints', selected: false, value: 'prints'},
+  ]);
+  const orientation = portrait.groups.find((group) => group.key === 'orientation');
+  assert.deepEqual(
+    orientation.options.map(({count, selected}) => [count, selected]),
+    [
+      [1, false],
+      [3, true],
+    ],
+  );
+
+  const both = shops.artistShopView(
+    hiroshige,
+    new URLSearchParams('orientation=portrait&orientation=landscape&type=Prints'),
+  );
+  assert.equal(both.products.length, 4);
+  assert.equal(both.activeCount, 3);
+
+  const none = shops.artistShopView(
+    hiroshige,
+    new URLSearchParams(
+      'orientation=landscape&series=one-hundred-famous-views-of-edo',
+    ),
+  );
+  assert.deepEqual(none.products, []);
+});
+
+test('artist shop sorts by title or by the artwork date, keeping ties in order', () => {
+  const all = floatingWorldProducts();
+  const titles = shops
+    .artistShopView(all, new URLSearchParams('sort=title'))
+    .products.map((product) => product.title);
+  assert.deepEqual(titles, [...titles].sort((a, b) => a.localeCompare(b)));
+
+  const year = (product) =>
+    Number(registryModule.findArtwork(product.artworkId).date.match(/\d{4}/)[0]);
+  const oldest = shops.artistShopView(all, new URLSearchParams('sort=oldest')).products;
+  assert.deepEqual(oldest.map(year), [...oldest.map(year)].sort((a, b) => a - b));
+  // The six Fuji views share a date, so they keep the catalog order.
+  assert.deepEqual(
+    oldest.slice(0, 6).map((product) => product.handle),
+    all.filter((product) => year(product) === 1830).map((product) => product.handle),
+  );
+  const newest = shops.artistShopView(all, new URLSearchParams('sort=NEWEST')).products;
+  assert.equal(year(newest[0]), 1858);
+
+  assert.equal(
+    shops.artistShopView(all, new URLSearchParams('sort=price')).sort,
+    'featured',
+  );
+});
+
+test('artist shops point to the museums that hold the work', () => {
+  const hokusai = registryModule.findArtist('katsushika-hokusai');
+  const artworks = shops.artistArtworks(floatingWorldProducts(hokusai.id));
+  assert.deepEqual(shops.artistElsewhere(hokusai, artworks), [
+    {
+      label: 'The Metropolitan Museum of Art',
+      url: 'https://www.metmuseum.org/art/collection/search?q=Katsushika%20Hokusai',
+    },
+  ]);
+  assert.deepEqual(shops.artistElsewhere(hokusai, []), []);
+  assert.equal(shops.seriesLabel('"One Hundred Famous Views of Edo"'), 'One Hundred Famous Views of Edo');
+  assert.equal(shops.seriesLabel(undefined), null);
+});

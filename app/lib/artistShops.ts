@@ -14,6 +14,7 @@ import {
   type ArtRegistry,
   type Artist,
   type Artwork,
+  type Orientation,
 } from './artRegistry.ts';
 import {
   collectionKind,
@@ -49,6 +50,7 @@ export type ArtistProduct = {
   handle: string;
   /** Committed web artwork, for the artists index. */
   image: string;
+  orientation: Orientation;
   released: boolean;
   title: string;
 };
@@ -75,6 +77,7 @@ export function artistProducts({
           family: 'Prints' as const,
           handle: printHandle(print),
           image: printImagePath(collection, print),
+          orientation: printOrientation(print),
           released: print.released === true,
           title: print.title,
         },
@@ -150,6 +153,215 @@ export function artistFamilies(products: Pick<ArtistProduct, 'family'>[]) {
   return ARTIST_PRODUCT_FAMILIES.filter((family) =>
     products.some((product) => product.family === family),
   );
+}
+
+/**
+ * The Refine panel's groups, in display order. Values come from data, so a
+ * group appears once one listed product has a value for it.
+ */
+export const ARTIST_FACETS = [
+  {key: 'type', label: 'Product type'},
+  {key: 'series', label: 'Series'},
+  {key: 'orientation', label: 'Orientation'},
+  {key: 'collection', label: 'Collection'},
+] as const;
+export type ArtistFacetKey = (typeof ARTIST_FACETS)[number]['key'];
+
+export const ARTIST_SORTS = [
+  {label: 'Featured', value: 'featured'},
+  {label: 'Title, A–Z', value: 'title'},
+  {label: 'Earliest work', value: 'oldest'},
+  {label: 'Latest work', value: 'newest'},
+] as const;
+export type ArtistSort = (typeof ARTIST_SORTS)[number]['value'];
+
+export type ArtistFacetOption = {
+  /** Listed products with this value, given the other groups' choices. */
+  count: number;
+  label: string;
+  selected: boolean;
+  value: string;
+};
+
+export type ArtistFacetGroup = {
+  key: ArtistFacetKey;
+  label: string;
+  options: ArtistFacetOption[];
+};
+
+const FAMILY_LABELS: Record<ArtistProductFamily, string> = {
+  Prints: 'Art prints',
+};
+
+/**
+ * A series name for display: the Met records some with a romanised
+ * original in brackets or wrapped in quotes.
+ */
+export function seriesLabel(series: string | null | undefined) {
+  const label = (series ?? '')
+    .replace(/\s*\([^)]*\)\s*$/, '')
+    .replace(/^["“”']+|["“”']+$/g, '')
+    .trim();
+  return label || null;
+}
+
+function facetSlug(label: string) {
+  return foldName(label).replaceAll(' ', '-');
+}
+
+type FacetValue = {label: string; value: string};
+
+function productFacets(
+  product: ArtistProduct,
+  registry: ArtRegistry,
+): Record<ArtistFacetKey, FacetValue | null> {
+  const artwork = product.artworkId
+    ? findArtwork(product.artworkId, registry)
+    : undefined;
+  const series = seriesLabel(artwork?.series);
+  return {
+    collection: {
+      label: product.collectionTag,
+      value: facetSlug(product.collectionTag),
+    },
+    orientation: {
+      label: product.orientation === 'landscape' ? 'Landscape' : 'Portrait',
+      value: product.orientation,
+    },
+    series: series ? {label: series, value: facetSlug(series)} : null,
+    // `prints` keeps the `?type=Prints` links of the first artist pages.
+    type: {
+      label: FAMILY_LABELS[product.family],
+      value: product.family.toLowerCase(),
+    },
+  };
+}
+
+/** The first year in a museum date such as "ca. 1830–32". */
+function artworkYear(product: ArtistProduct, registry: ArtRegistry) {
+  const artwork = product.artworkId
+    ? findArtwork(product.artworkId, registry)
+    : undefined;
+  const year = Number(artwork?.date.match(/\d{4}/)?.[0]);
+  return Number.isFinite(year) && year > 0 ? year : null;
+}
+
+export type ArtistShopView = {
+  /** Selected values across all groups that match at least one product. */
+  activeCount: number;
+  groups: ArtistFacetGroup[];
+  products: ArtistProduct[];
+  sort: ArtistSort;
+};
+
+/**
+ * The filtered, sorted listing of an artist shop from its URL parameters
+ * (`type`, `series`, `orientation`, `collection`, each repeatable, and
+ * `sort`). Values match case-insensitively and unknown values are dropped,
+ * so a stale link shows everything rather than nothing. Groups combine with
+ * AND and values within a group with OR; each option's count applies the
+ * other groups' choices.
+ */
+export function artistShopView(
+  products: ArtistProduct[],
+  params: URLSearchParams,
+  registry: ArtRegistry = ART_REGISTRY,
+): ArtistShopView {
+  const rows = products.map((product, index) => ({
+    facets: productFacets(product, registry),
+    index,
+    product,
+    year: artworkYear(product, registry),
+  }));
+  type Row = (typeof rows)[number];
+  const selected = new Map<ArtistFacetKey, Set<string>>();
+  for (const {key} of ARTIST_FACETS) {
+    const known = new Set(
+      rows.flatMap((row) => (row.facets[key] ? [row.facets[key].value] : [])),
+    );
+    selected.set(
+      key,
+      new Set(
+        params
+          .getAll(key)
+          .map((value) => value.trim().toLowerCase())
+          .filter((value) => known.has(value)),
+      ),
+    );
+  }
+  const matches = (row: Row, except?: ArtistFacetKey) =>
+    ARTIST_FACETS.every(({key}) => {
+      const chosen = selected.get(key)!;
+      if (key === except || !chosen.size) return true;
+      const value = row.facets[key]?.value;
+      return value != null && chosen.has(value);
+    });
+
+  const groups = ARTIST_FACETS.map(({key, label}) => {
+    const options = new Map<string, ArtistFacetOption>();
+    for (const row of rows) {
+      const facet = row.facets[key];
+      if (!facet) continue;
+      const option = options.get(facet.value) ?? {
+        count: 0,
+        label: facet.label,
+        selected: selected.get(key)!.has(facet.value),
+        value: facet.value,
+      };
+      if (matches(row, key)) option.count += 1;
+      options.set(facet.value, option);
+    }
+    return {key, label, options: [...options.values()]};
+  }).filter((group) => group.options.length > 0);
+
+  const requested = params.get('sort')?.trim().toLowerCase();
+  const sort =
+    ARTIST_SORTS.find((option) => option.value === requested)?.value ??
+    'featured';
+  const byYear = (direction: 1 | -1) => (a: Row, b: Row) => {
+    if (a.year === b.year) return a.index - b.index;
+    if (a.year == null) return 1;
+    if (b.year == null) return -1;
+    return (a.year - b.year) * direction;
+  };
+  const shown = rows.filter((row) => matches(row));
+  if (sort === 'title')
+    shown.sort(
+      (a, b) =>
+        a.product.title.localeCompare(b.product.title) || a.index - b.index,
+    );
+  else if (sort === 'oldest') shown.sort(byYear(1));
+  else if (sort === 'newest') shown.sort(byYear(-1));
+
+  return {
+    activeCount: [...selected.values()].reduce((sum, set) => sum + set.size, 0),
+    groups,
+    products: shown.map((row) => row.product),
+    sort,
+  };
+}
+
+const MUSEUM_SEARCH: Record<string, (name: string) => string> = {
+  met: (name) =>
+    `https://www.metmuseum.org/art/collection/search?q=${encodeURIComponent(name)}`,
+};
+
+/**
+ * Where else a shopper can see the artist's work: a collection search at
+ * each museum our prints of them come from, in product order.
+ */
+export function artistElsewhere(
+  artist: Pick<Artist, 'name'>,
+  artworks: Artwork[],
+) {
+  const links: Array<{label: string; url: string}> = [];
+  for (const artwork of artworks) {
+    const search = MUSEUM_SEARCH[artwork.source.museum];
+    const label = artwork.source.institution;
+    if (!search || links.some((link) => link.label === label)) continue;
+    links.push({label, url: search(artist.name)});
+  }
+  return links;
 }
 
 export type ProductArtworkCredit = {
