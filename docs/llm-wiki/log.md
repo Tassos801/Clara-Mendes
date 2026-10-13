@@ -1559,3 +1559,15 @@ location quantities remain unverified because the Admin app lacks their read
 scopes. See [status](../artist-shops/status.md) and
 [nonsecret readback evidence](../artist-shops/evidence/draft-readback-2026-10-13.json).
 
+## 2026-10-13 - Floating World Prodigi mappings verified; Society6-style artist shop
+
+All ten Floating World Drafts are mapped in Prodigi (channel products
+6327576–6327585): EMA 8×10 `ART-FAP-EMA-8X10`, their own print files at
+100%, Excellent, Standard shipping, fulfilled automatically, each read back
+on a fresh dashboard load and recorded with `mapped`. The library files were
+pixel-diffed against the current print files first. Separately, the artist
+shop page (`/artists/<slug>`) was rebuilt to the owner's Society6 reference:
+name over a rule, About the artist beside a room slideshow, a Refine sidebar
+with counts, Sort, and a "By <artist>" card line. Nothing is released; master
+reviews are pending. See [status](../artist-shops/status.md).
+

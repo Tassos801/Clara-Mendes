@@ -3,16 +3,35 @@
 **Updated:** 2026-10-13
 
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts and all 40 room images verified; artist shop page redesigned; Prodigi mapping not started (no mapping recorded); master reviews pending; no production release
+**State:** Ten Shopify Drafts and all 40 room images verified; artist shop page redesigned; all ten Prodigi mappings verified and recorded; master reviews pending; no production release
 
 **Current writer:** Claude Code, 2026-10-13 from 09:30 on the owner's
 Windows PC. Codex (Sol) staged the ten Drafts and their room media earlier
 the same morning, then hit its usage limit before any Prodigi mapping was
-recorded; Claude committed its IDs and evidence (`1c7d9e0`). Next: Prodigi
-mapping, which needs a fresh Prodigi sign-in (the `clara-prodigi` Playwright
-session is gone).
+recorded; Claude committed its IDs and evidence (`1c7d9e0`), redesigned the
+artist page and mapped all ten in Prodigi. Next: the owner's master reviews,
+then `release` only on the owner's explicit go-ahead.
 
 ## Where we are (2026-10-11)
+
+**Prodigi mapping, verified (2026-10-13):** channel products 6327576–6327585
+(catalog order, Great Wave to Sudden Shower), mapped in the owner's Chrome
+and recorded with `mapped floating-world --size 8x10`. Each row: EMA 8×10
+(`ART-FAP-EMA-8X10`), its own print file from the library, scale 100%,
+position 0/0, no Prodigi border, quality Excellent, shipping Standard
+(the channel defaulted new products to Auto-select), "Fulfilled by Prodigi
+automatically", 1 of 1 variants active. A fresh dashboard load read all ten
+back, including each variant's exact image-library id. Before mapping, all
+ten library files were pixel-diffed against the current print files (mean
+difference 2.4–3.6/255, no pixel over 40; a 1.5% scale control gave 17.3 and
+16%), so the trimmed versions are the ones in the library. Prodigi lays a
+3000×2400 file out on a landscape 8×10 at 100% by itself, so landscape files
+need no rotation. Dashboard traps: a background or occluded Chrome tab
+freezes search debounce and canvas rendering (keep the tab visible); the
+pickers drop the first typed search; changing shipping while the editor is
+open re-creates the variant, so the editor's save then 404s (save the image
+first, then set shipping); keep the pointer off the canvas while an image
+loads (one image landed at 100.23% and was redone).
 
 **Artist shop page, Society6-style (2026-10-13):** the owner asked for
 `/artists/<slug>` to look like a Society6 artist shop
