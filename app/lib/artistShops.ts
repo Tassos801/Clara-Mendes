@@ -98,7 +98,9 @@ export type PublicArtist = {
  */
 export function publicArtists(sources: Sources = {}): PublicArtist[] {
   const registry = sources.registry ?? ART_REGISTRY;
-  const released = artistProducts(sources).filter((product) => product.released);
+  const released = artistProducts(sources).filter(
+    (product) => product.released,
+  );
   return registry.artists
     .filter((artist) => artist.approval.approved)
     .map((artist) => ({
@@ -115,7 +117,9 @@ export function publicArtistBySlug(
 ): PublicArtist | null {
   const key = slug?.trim().toLowerCase();
   if (!key) return null;
-  return publicArtists(sources).find((entry) => entry.artist.slug === key) ?? null;
+  return (
+    publicArtists(sources).find((entry) => entry.artist.slug === key) ?? null
+  );
 }
 
 export function artistPath(artist: Pick<Artist, 'slug'>) {
@@ -431,7 +435,9 @@ export function searchArtists(
   term: string | null | undefined,
   sources: Sources = {},
 ): Artist[] {
-  const words = foldName(term ?? '').split(' ').filter(Boolean);
+  const words = foldName(term ?? '')
+    .split(' ')
+    .filter(Boolean);
   if (!words.length) return [];
   return publicArtists(sources)
     .map((entry) => entry.artist)
@@ -478,7 +484,9 @@ export function validateArtistLinks({
       }
       const previous = used.get(artwork.id);
       if (previous)
-        problems.push(`${at}: artwork ${artwork.id} is already sold as ${previous}`);
+        problems.push(
+          `${at}: artwork ${artwork.id} is already sold as ${previous}`,
+        );
       used.set(artwork.id, at);
       const master = masterSize(artwork);
       if (master && orientationOf(master) !== printOrientation(print))

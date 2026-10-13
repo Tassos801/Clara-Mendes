@@ -26,7 +26,11 @@ const WAVE_ID = prints.PRINT_CATALOG.collections
   .find((c) => c.slug === 'floating-world')
   .prints.find((p) => p.slug === 'the-great-wave-off-kanagawa').artworkId;
 const WAVE = registryModule.findArtwork(WAVE_ID);
-const REVIEWED = {at: '2026-10-09T12:00:00.000Z', by: 'Owner', status: 'cleared'};
+const REVIEWED = {
+  at: '2026-10-09T12:00:00.000Z',
+  by: 'Owner',
+  status: 'cleared',
+};
 
 /**
  * The shipped data with Hokusai approved, the Great Wave's reviews cleared
@@ -84,7 +88,10 @@ test('a released print appears on its approved artist shop automatically', () =>
     [WAVE_HANDLE],
   );
   assert.equal(entry.products[0].artworkId, WAVE_ID);
-  assert.equal(shops.publicArtistBySlug('HOKUSAI', sources)?.artist.slug, 'hokusai');
+  assert.equal(
+    shops.publicArtistBySlug('HOKUSAI', sources)?.artist.slug,
+    'hokusai',
+  );
   assert.equal(shops.publicArtistBySlug('hiroshige', sources), null);
   assert.equal(
     shops.artistProductsQuery(entry.products),
@@ -95,12 +102,22 @@ test('a released print appears on its approved artist shop automatically', () =>
     shops.artistArtworks(entry.products, sources.registry).map((a) => a.id),
     [WAVE_ID],
   );
-  assert.ok(computeSellableHandles(undefined, undefined, sources.catalog).has(WAVE_HANDLE));
+  assert.ok(
+    computeSellableHandles(undefined, undefined, sources.catalog).has(
+      WAVE_HANDLE,
+    ),
+  );
 });
 
 test('artist search matches names, aliases and word prefixes of public artists', () => {
   const sources = releasedFixture();
-  for (const term of ['Hokusai', 'hoku', 'katsushika hokusai', '葛飾北斎', 'HOKUSAI ']) {
+  for (const term of [
+    'Hokusai',
+    'hoku',
+    'katsushika hokusai',
+    '葛飾北斎',
+    'HOKUSAI ',
+  ]) {
     assert.deepEqual(
       shops.searchArtists(term, sources).map((artist) => artist.id),
       ['katsushika-hokusai'],
@@ -156,22 +173,35 @@ test('museum prints keep the artwork whole, once per artwork', () => {
 
   const twice = releasedFixture({release: false});
   const copy = structuredClone(floatingWorld(twice.catalog).prints[0]);
-  floatingWorld(twice.catalog).prints.push({...copy, sequence: 2, slug: 'wave-again'});
+  floatingWorld(twice.catalog).prints.push({
+    ...copy,
+    sequence: 2,
+    slug: 'wave-again',
+  });
   assert.match(
     shops.validateArtistLinks(twice).join('\n'),
-    new RegExp(`${WAVE_ID} is already sold as floating-world/the-great-wave-off-kanagawa`),
+    new RegExp(
+      `${WAVE_ID} is already sold as floating-world/the-great-wave-off-kanagawa`,
+    ),
   );
 
   const unknown = releasedFixture({release: false});
   floatingWorld(unknown.catalog).prints[0].artworkId = 'met-1';
-  assert.match(shops.validateArtistLinks(unknown).join('\n'), /unknown artwork met-1/);
+  assert.match(
+    shops.validateArtistLinks(unknown).join('\n'),
+    /unknown artwork met-1/,
+  );
 });
 
 test('studio collections name a studio artist; museum collections never do', () => {
   const sources = releasedFixture({release: false});
-  const studio = sources.catalog.collections.find((c) => c.slug === 'light-and-silence');
+  const studio = sources.catalog.collections.find(
+    (c) => c.slug === 'light-and-silence',
+  );
   studio.artistId = 'clara-mendes-studio';
-  sources.registry.artists.find((a) => a.id === 'clara-mendes-studio').approval = {
+  sources.registry.artists.find(
+    (a) => a.id === 'clara-mendes-studio',
+  ).approval = {
     approved: true,
     at: REVIEWED.at,
     by: 'Owner',
@@ -201,10 +231,21 @@ test('the print catalog enforces museum fields and paper-shaped room boxes', () 
   const museum = floatingWorld(catalog);
   delete museum.prints[0].artworkId;
   catalog.collections[0].prints[0].artworkId = WAVE_ID;
-  museum.prints[0].rooms[0].placement = {height: 300, left: 1, top: 1, width: 240};
+  museum.prints[0].rooms[0].placement = {
+    height: 300,
+    left: 1,
+    top: 1,
+    width: 240,
+  };
   const problems = prints.validatePrintCatalog(catalog).join('\n');
-  assert.match(problems, /floating-world\/the-great-wave-off-kanagawa: museum prints need an artworkId/);
-  assert.match(problems, /scifi-cinema\/orbital-silence: only museum collections reproduce registry artworks/);
+  assert.match(
+    problems,
+    /floating-world\/the-great-wave-off-kanagawa: museum prints need an artworkId/,
+  );
+  assert.match(
+    problems,
+    /scifi-cinema\/orbital-silence: only museum collections reproduce registry artworks/,
+  );
   assert.match(problems, /living-room: placement must be 5:4 landscape/);
 });
 
@@ -217,10 +258,14 @@ test('museum rooms frame the bordered paper sheet in its own orientation', async
     sheet,
     'images/product-art/floating-world/the-great-wave-off-kanagawa.sheet.webp',
   );
-  const {height, width} = await sharp(path.join(REPO_ROOT, 'public', sheet)).metadata();
+  const {height, width} = await sharp(
+    path.join(REPO_ROOT, 'public', sheet),
+  ).metadata();
   assert.equal(width / height, 1.25);
   for (const room of wave.rooms)
-    assert.ok(Math.abs(room.placement.width / room.placement.height - 1.25) < 0.016);
+    assert.ok(
+      Math.abs(room.placement.width / room.placement.height - 1.25) < 0.016,
+    );
 
   const studio = prints.PRINT_CATALOG.collections[0];
   assert.equal(
@@ -229,7 +274,10 @@ test('museum rooms frame the bordered paper sheet in its own orientation', async
   );
   const portraitRooms = structuredClone(wave);
   portraitRooms.orientation = 'portrait';
-  assert.throws(() => roomMediaPlan(collection, portraitRooms), /placement must be 4:5 portrait/);
+  assert.throws(
+    () => roomMediaPlan(collection, portraitRooms),
+    /placement must be 4:5 portrait/,
+  );
 });
 
 test('museum collections are never described or counted as Clara Mendes originals', () => {
@@ -252,7 +300,9 @@ test('museum collections are never described or counted as Clara Mendes original
 test('a museum Draft carries museum copy, credit and tags, never "original"', () => {
   const {catalog, registry} = releasedFixture({release: false});
   const collection = floatingWorld(catalog);
-  const input = buildProductSetInput(collection, collection.prints[0], {registry});
+  const input = buildProductSetInput(collection, collection.prints[0], {
+    registry,
+  });
   assert.equal(input.handle, WAVE_HANDLE);
   assert.equal(input.status, 'DRAFT');
   assert.deepEqual(input.tags, [
@@ -267,15 +317,27 @@ test('a museum Draft carries museum copy, credit and tags, never "original"', ()
     input.seo.title,
     'The Great Wave off Kanagawa Art Print by Katsushika Hokusai | Clara Mendes',
   );
-  assert.match(input.descriptionHtml, /Katsushika Hokusai \(1760–1849\), <em>Under the Wave off Kanagawa/);
-  assert.match(input.descriptionHtml, /Unframed 8 × 10 inch landscape print, the full composition on a white border/);
+  assert.match(
+    input.descriptionHtml,
+    /Katsushika Hokusai \(1760–1849\), <em>Under the Wave off Kanagawa/,
+  );
+  assert.match(
+    input.descriptionHtml,
+    /Unframed 8 × 10 inch landscape print, the full composition on a white border/,
+  );
   assert.ok(
     input.descriptionHtml.includes(
       `href="https://www.metmuseum.org/art/collection/search/${WAVE.source.objectId}"`,
     ),
   );
-  assert.match(input.descriptionHtml, /not affiliated with or endorsed by the museum/);
-  assert.doesNotMatch(input.descriptionHtml, /Clara Mendes composition|original/i);
+  assert.match(
+    input.descriptionHtml,
+    /not affiliated with or endorsed by the museum/,
+  );
+  assert.doesNotMatch(
+    input.descriptionHtml,
+    /Clara Mendes composition|original/i,
+  );
   assert.ok(!input.tags.includes('Clara Mendes Original'));
   assert.ok(!input.tags.includes('4:5 Ratio'));
 });
@@ -326,14 +388,18 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
     new URLSearchParams('orientation=Portrait&series=no-such-series'),
   );
   assert.equal(portrait.activeCount, 1);
-  assert.ok(portrait.products.every((product) => product.orientation === 'portrait'));
+  assert.ok(
+    portrait.products.every((product) => product.orientation === 'portrait'),
+  );
   assert.equal(portrait.products.length, 3);
   // Counts in other groups follow the orientation choice.
   const type = portrait.groups.find((group) => group.key === 'type');
   assert.deepEqual(type.options, [
     {count: 3, label: 'Art prints', selected: false, value: 'prints'},
   ]);
-  const orientation = portrait.groups.find((group) => group.key === 'orientation');
+  const orientation = portrait.groups.find(
+    (group) => group.key === 'orientation',
+  );
   assert.deepEqual(
     orientation.options.map(({count, selected}) => [count, selected]),
     [
@@ -344,7 +410,9 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
 
   const both = shops.artistShopView(
     hiroshige,
-    new URLSearchParams('orientation=portrait&orientation=landscape&type=Prints'),
+    new URLSearchParams(
+      'orientation=portrait&orientation=landscape&type=Prints',
+    ),
   );
   assert.equal(both.products.length, 4);
   assert.equal(both.activeCount, 3);
@@ -363,18 +431,34 @@ test('artist shop sorts by title or by the artwork date, keeping ties in order',
   const titles = shops
     .artistShopView(all, new URLSearchParams('sort=title'))
     .products.map((product) => product.title);
-  assert.deepEqual(titles, [...titles].sort((a, b) => a.localeCompare(b)));
+  assert.deepEqual(
+    titles,
+    [...titles].sort((a, b) => a.localeCompare(b)),
+  );
 
   const year = (product) =>
-    Number(registryModule.findArtwork(product.artworkId).date.match(/\d{4}/)[0]);
-  const oldest = shops.artistShopView(all, new URLSearchParams('sort=oldest')).products;
-  assert.deepEqual(oldest.map(year), [...oldest.map(year)].sort((a, b) => a - b));
+    Number(
+      registryModule.findArtwork(product.artworkId).date.match(/\d{4}/)[0],
+    );
+  const oldest = shops.artistShopView(
+    all,
+    new URLSearchParams('sort=oldest'),
+  ).products;
+  assert.deepEqual(
+    oldest.map(year),
+    [...oldest.map(year)].sort((a, b) => a - b),
+  );
   // The six Fuji views share a date, so they keep the catalog order.
   assert.deepEqual(
     oldest.slice(0, 6).map((product) => product.handle),
-    all.filter((product) => year(product) === 1830).map((product) => product.handle),
+    all
+      .filter((product) => year(product) === 1830)
+      .map((product) => product.handle),
   );
-  const newest = shops.artistShopView(all, new URLSearchParams('sort=NEWEST')).products;
+  const newest = shops.artistShopView(
+    all,
+    new URLSearchParams('sort=NEWEST'),
+  ).products;
   assert.equal(year(newest[0]), 1858);
 
   assert.equal(
@@ -393,6 +477,9 @@ test('artist shops point to the museums that hold the work', () => {
     },
   ]);
   assert.deepEqual(shops.artistElsewhere(hokusai, []), []);
-  assert.equal(shops.seriesLabel('"One Hundred Famous Views of Edo"'), 'One Hundred Famous Views of Edo');
+  assert.equal(
+    shops.seriesLabel('"One Hundred Famous Views of Edo"'),
+    'One Hundred Famous Views of Edo',
+  );
   assert.equal(shops.seriesLabel(undefined), null);
 });

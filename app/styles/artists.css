@@ -317,7 +317,6 @@
 
 .artist-featured__slide img {
   object-fit: cover;
-  object-position: 50% 35%;
 }
 
 .artist-featured__bar {
@@ -390,6 +389,11 @@
   display: grid;
   gap: clamp(24px, 3vw, 48px);
   grid-template-columns: 220px minmax(0, 1fr);
+}
+
+/* The panel's form only groups its fields; the panel lays them out. */
+.artist-refine__form {
+  display: contents;
 }
 
 .artist-refine {
@@ -585,6 +589,7 @@
 
 .artist-listing__sort span {
   color: var(--color-muted);
+  white-space: nowrap;
 }
 
 .artist-listing__sort select {
@@ -736,9 +741,17 @@
     padding: 0 18px 0 14px;
   }
 
+  .artist-listing__toolbar {
+    flex-wrap: wrap;
+  }
+
   .artist-listing__count {
     flex-basis: 100%;
     order: 3;
+  }
+
+  .artist-grid .cm-card-byline {
+    letter-spacing: 0.08em;
   }
 
   /* Refine becomes a sheet from the right. */

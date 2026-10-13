@@ -186,7 +186,9 @@ export default function ArtistShop() {
           {artist.meta.length ? (
             <p className="artist-hero__meta">{artist.meta.join(' · ')}</p>
           ) : null}
-          {artist.bio ? <p className="artist-about__bio">{artist.bio}</p> : null}
+          {artist.bio ? (
+            <p className="artist-about__bio">{artist.bio}</p>
+          ) : null}
           {artist.curatorNote ? (
             <figure className="artist-about__note">
               <p>{artist.curatorNote}</p>
@@ -450,99 +452,120 @@ function ArtistListing({
 
   const count = `${products.length} ${products.length === 1 ? 'product' : 'products'}`;
 
+  // The form wraps the panel only: each card's quick add is a form of its
+  // own, and forms cannot nest. The sort menu joins it by id.
   return (
-    <Form action={path} className="artist-listing__layout" method="get">
+    <div className="artist-listing__layout">
       <aside
         aria-label="Refine"
         className="artist-refine"
         data-open={open ? 'true' : undefined}
         id="artist-refine"
       >
-        <div className="artist-refine__head">
-          <p className="artist-refine__title">Refine</p>
-          {activeCount ? (
+        <Form
+          action={path}
+          className="artist-refine__form"
+          id={REFINE_FORM_ID}
+          method="get"
+        >
+          <div className="artist-refine__head">
+            <p className="artist-refine__title">Refine</p>
+            {activeCount ? (
+              <button
+                className="artist-refine__clear"
+                onClick={clear}
+                type="button"
+              >
+                Clear all
+              </button>
+            ) : null}
             <button
-              className="artist-refine__clear"
-              onClick={clear}
+              aria-label="Close filters"
+              className="artist-refine__close"
+              onClick={close}
+              ref={closeRef}
               type="button"
             >
-              Clear all
+              <svg
+                aria-hidden
+                fill="none"
+                height="16"
+                viewBox="0 0 16 16"
+                width="16"
+              >
+                <path
+                  d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeWidth="1.5"
+                />
+              </svg>
             </button>
-          ) : null}
-          <button
-            aria-label="Close filters"
-            className="artist-refine__close"
-            onClick={close}
-            ref={closeRef}
-            type="button"
-          >
-            <svg aria-hidden fill="none" height="16" viewBox="0 0 16 16" width="16">
-              <path
-                d="M3.5 3.5l9 9M12.5 3.5l-9 9"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-              />
-            </svg>
-          </button>
-        </div>
-        <div className="artist-refine__groups">
-          {groups.map((group) => (
-            <details className="artist-refine__group" key={group.key} open>
-              <summary>
-                {group.label}
-                <svg aria-hidden fill="none" height="14" viewBox="0 0 16 16" width="14">
-                  <path
-                    d="M3.5 6 8 10.5 12.5 6"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              </summary>
-              <ul>
-                {group.options.map((option) => {
-                  const id = `refine-${group.key}-${option.value}`;
-                  const checked = isChecked(group.key, option.value);
-                  return (
-                    <li key={option.value}>
-                      <input
-                        checked={checked}
-                        disabled={!option.count && !checked}
-                        id={id}
-                        name={group.key}
-                        onChange={() => toggle(group.key, option.value)}
-                        type="checkbox"
-                        value={option.value}
-                      />
-                      <label htmlFor={id}>
-                        <span>{option.label}</span>
-                        <span className="artist-refine__count">
-                          {option.count}
-                        </span>
-                      </label>
-                    </li>
-                  );
-                })}
-              </ul>
-            </details>
-          ))}
-        </div>
-        <noscript>
-          <button className="artist-refine__apply" type="submit">
-            Apply
-          </button>
-        </noscript>
-        <div className="artist-refine__foot">
-          <button
-            className="artist-refine__done"
-            onClick={close}
-            type="button"
-          >
-            Show {count}
-          </button>
-        </div>
+          </div>
+          <div className="artist-refine__groups">
+            {groups.map((group) => (
+              <details className="artist-refine__group" key={group.key} open>
+                <summary>
+                  {group.label}
+                  <svg
+                    aria-hidden
+                    fill="none"
+                    height="14"
+                    viewBox="0 0 16 16"
+                    width="14"
+                  >
+                    <path
+                      d="M3.5 6 8 10.5 12.5 6"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </summary>
+                <ul>
+                  {group.options.map((option) => {
+                    const id = `refine-${group.key}-${option.value}`;
+                    const checked = isChecked(group.key, option.value);
+                    return (
+                      <li key={option.value}>
+                        <input
+                          checked={checked}
+                          disabled={!option.count && !checked}
+                          id={id}
+                          name={group.key}
+                          onChange={() => toggle(group.key, option.value)}
+                          type="checkbox"
+                          value={option.value}
+                        />
+                        <label htmlFor={id}>
+                          <span>{option.label}</span>
+                          <span className="artist-refine__count">
+                            {option.count}
+                          </span>
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </details>
+            ))}
+          </div>
+          <noscript>
+            <button className="artist-refine__apply" type="submit">
+              Apply
+            </button>
+          </noscript>
+          <div className="artist-refine__foot">
+            <button
+              className="artist-refine__done"
+              onClick={close}
+              type="button"
+            >
+              Show {count}
+            </button>
+          </div>
+        </Form>
       </aside>
       {open ? (
         <button
@@ -564,7 +587,13 @@ function ArtistListing({
             ref={toggleRef}
             type="button"
           >
-            <svg aria-hidden fill="none" height="16" viewBox="0 0 16 16" width="16">
+            <svg
+              aria-hidden
+              fill="none"
+              height="16"
+              viewBox="0 0 16 16"
+              width="16"
+            >
               <path
                 d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"
                 stroke="currentColor"
@@ -575,11 +604,14 @@ function ArtistListing({
             Filter{activeCount ? ` (${activeCount})` : ''}
           </button>
           <p aria-live="polite" className="artist-listing__count">
-            {products.length === total ? count : `${count} of ${total}`}
+            {products.length === total
+              ? count
+              : `${products.length} of ${total} products`}
           </p>
           <label className="artist-listing__sort">
             <span>Sort by:</span>
             <select
+              form={REFINE_FORM_ID}
               name="sort"
               onChange={(event) => {
                 const value = event.currentTarget.value;
@@ -619,9 +651,11 @@ function ArtistListing({
           </div>
         )}
       </div>
-    </Form>
+    </div>
   );
 }
+
+const REFINE_FORM_ID = 'artist-refine-form';
 
 function firstSentence(text: string) {
   const sentence = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;

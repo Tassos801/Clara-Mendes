@@ -3,15 +3,32 @@
 **Updated:** 2026-10-13
 
 **Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts and all 40 room images verified; Prodigi mapping in progress; master reviews pending; no production release
+**State:** Ten Shopify Drafts and all 40 room images verified; artist shop page redesigned; Prodigi mapping not started (no mapping recorded); master reviews pending; no production release
 
 **Current writer:** Claude Code, 2026-10-13 from 09:30 on the owner's
 Windows PC. Codex (Sol) staged the ten Drafts and their room media earlier
 the same morning, then hit its usage limit before any Prodigi mapping was
-recorded; this checkpoint commits its uncommitted IDs and evidence. Next:
-the Society6-style artist shop page the owner asked for, then mapping.
+recorded; Claude committed its IDs and evidence (`1c7d9e0`). Next: Prodigi
+mapping, which needs a fresh Prodigi sign-in (the `clara-prodigi` Playwright
+session is gone).
 
 ## Where we are (2026-10-11)
+
+**Artist shop page, Society6-style (2026-10-13):** the owner asked for
+`/artists/<slug>` to look like a Society6 artist shop
+(society6.com/collections/joystclaire). It now has a breadcrumb, the name
+over a rule, then "About the artist" (a circular detail of the
+representative print stands in for a portrait, plus bio, curator's note and
+a Met collection link) beside a three-design room slideshow with "Shop this
+design", then a Refine sidebar (product type, series, orientation,
+collection, with counts) and "Sort by" over a 3-column grid. Cards carry
+"By <artist>". On phones Refine is a sheet. Choices live in the URL; old
+`?type=Prints` links still work. Logic: `artistShopView`,
+`artistElsewhere`, `seriesLabel` in `app/lib/artistShops.ts`, with 4 new
+tests (411/411). Checked locally with a temporary, uncommitted stub that
+fed the ten Draft products from their committed images; screenshots are in
+the owner's `screens/artist-shop-society6/`. The page stays dormant (404)
+until a print is released.
 
 **Windows continuation (2026-10-13):**
 - Admin credentials were resolved through the documented machine config;
