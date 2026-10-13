@@ -66,6 +66,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067358030",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195902714190"
+        }
       }
     },
     {
@@ -98,6 +104,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067423566",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195902779726"
+        }
       }
     },
     {
@@ -130,6 +142,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067521870",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195902878030"
+        }
       }
     },
     {
@@ -162,6 +180,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067587406",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195902943566"
+        }
       }
     },
     {
@@ -194,6 +218,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067784014",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903238478"
+        }
       }
     },
     {
@@ -226,6 +256,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067816782",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903336782"
+        }
       }
     },
     {
@@ -258,6 +294,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067882318",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903402318"
+        }
       }
     },
     {
@@ -290,6 +332,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146067947854",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903467854"
+        }
       }
     },
     {
@@ -322,6 +370,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068013390",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903533390"
+        }
       }
     },
     {
@@ -354,6 +408,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068144462",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903664462"
+        }
       }
     },
     {
@@ -391,6 +451,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[212,34,3210,2568],\"crop\":{\"cx\":0.47,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068242766",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195903926606"
+        }
       }
     },
     {
@@ -428,6 +494,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[397,10,3138,2510],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068308302",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904057678"
+        }
       }
     },
     {
@@ -465,6 +537,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[284,79,3109,2487],\"crop\":{\"cx\":0.47,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068472142",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904287054"
+        }
       }
     },
     {
@@ -502,6 +580,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[425,53,3214,2571],\"crop\":{\"cx\":0.52,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068635982",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904450894"
+        }
       }
     },
     {
@@ -539,6 +623,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[340,70,3195,2556],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068668750",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904516430"
+        }
       }
     },
     {
@@ -576,6 +666,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[315,29,3230,2584],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068734286",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904581966"
+        }
       }
     },
     {
@@ -613,6 +709,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[476,62,2958,2366],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068767054",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904614734"
+        }
       }
     },
     {
@@ -650,6 +752,12 @@
           "width": 2400
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[42,365,2489,3111],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146068898126",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195904844110"
+        }
       }
     },
     {
@@ -687,6 +795,12 @@
           "width": 2400
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[234,489,2258,2823],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069029198",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195905007950"
+        }
       }
     },
     {
@@ -724,6 +838,12 @@
           "width": 2400
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[217,607,2240,2800],\"crop\":{\"cx\":0.5,\"cy\":0.52}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069160270",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61195905237326"
+        }
       }
     },
     {
@@ -761,6 +881,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[832,34,1817,2568],\"crop\":{\"cx\":0.45,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069225806",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195905335630"
+        }
       }
     },
     {
@@ -798,6 +924,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[685,10,1776,2510],\"crop\":{\"cx\":0.4,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069291342",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195905466702"
+        }
       }
     },
     {
@@ -835,6 +967,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[1702,79,1760,2487],\"crop\":{\"cx\":0.66,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069389646",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195905696078"
+        }
       }
     },
     {
@@ -872,6 +1010,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[1357,53,1819,2571],\"crop\":{\"cx\":0.58,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069455182",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195905925454"
+        }
       }
     },
     {
@@ -909,6 +1053,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[1499,70,1808,2556],\"crop\":{\"cx\":0.62,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069520718",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195905990990"
+        }
       }
     },
     {
@@ -946,6 +1096,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[707,29,1828,2584],\"crop\":{\"cx\":0.42,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069586254",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195906056526"
+        }
       }
     },
     {
@@ -983,6 +1139,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[883,62,1674,2366],\"crop\":{\"cx\":0.44,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069651790",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195906122062"
+        }
       }
     },
     {
@@ -1020,6 +1182,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[43,162,2488,3517],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069717326",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195906187598"
+        }
       }
     },
     {
@@ -1057,6 +1225,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[234,304,2258,3192],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069782862",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195906220366"
+        }
       }
     },
     {
@@ -1094,6 +1268,12 @@
           "width": 6117
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"greeting-card\",\"file\":[6117,2161,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[217,348,2239,3165],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146069848398",
+        "variantIds": {
+          "card": "gid://shopify/ProductVariant/61195906318670"
+        }
       }
     },
     {
@@ -1131,6 +1311,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[153,34,3561,2568],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070012238",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195906646350"
+        }
       }
     },
     {
@@ -1168,6 +1354,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[226,10,3481,2510],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070110542",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195906744654"
+        }
       }
     },
     {
@@ -1205,6 +1397,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[232,79,3449,2487],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070143310",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195906777422"
+        }
       }
     },
     {
@@ -1242,6 +1440,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[171,53,3565,2571],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070176078",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195906810190"
+        }
       }
     },
     {
@@ -1279,6 +1483,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[165,70,3545,2556],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070372686",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195907006798"
+        }
       }
     },
     {
@@ -1316,6 +1526,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[139,29,3583,2584],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070470990",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195907137870"
+        }
       }
     },
     {
@@ -1353,6 +1569,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[314,62,3281,2366],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070569294",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195909988686"
+        }
       }
     },
     {
@@ -1390,6 +1612,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[43,1829,2488,1794],\"crop\":{\"cx\":0.5,\"cy\":0.71}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070602062",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195910021454"
+        }
       }
     },
     {
@@ -1427,6 +1655,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[234,326,2258,1628],\"crop\":{\"cx\":0.5,\"cy\":0.3}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070667598",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195910086990"
+        }
       }
     },
     {
@@ -1464,6 +1698,12 @@
           "width": 4323
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"postcard\",\"file\":[4323,1559,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[217,1740,2240,1615],\"crop\":{\"cx\":0.5,\"cy\":0.66}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070798670",
+        "variantIds": {
+          "postcard": "gid://shopify/ProductVariant/61195910480206"
+        }
       }
     },
     {
@@ -1540,6 +1780,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"box\":[829,34,2054,2568],\"crop\":{\"cx\":0.48,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146070896974",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195910578510",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195910611278",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195910644046",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195910676814",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195910709582",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195910742350",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195910775118",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195910807886",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195910840654",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195910873422",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195910906190",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195910938958",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195910971726",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195911004494",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195911037262",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195911070030",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195911102798",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195911135566",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195911168334",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195911201102",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195911233870",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195911266638",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195911299406",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195911332174",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195911364942",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195911397710",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195911430478",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195911463246",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195911496014",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195911528782",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195911561550",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195911594318",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195911627086",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195911659854",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195911692622",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195911725390",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195911758158",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195911790926",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195911823694",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195911856462"
+        }
       }
     },
     {
@@ -1616,6 +1901,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"layout\":{\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"box\":[451,10,2008,2510],\"crop\":{\"cx\":0.37,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071028046",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195912020302",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195912053070",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195912085838",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195912118606",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195912151374",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195912184142",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195912216910",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195912249678",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195912282446",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195912315214",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195912347982",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195912380750",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195912413518",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195912446286",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195912479054",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195912511822",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195912544590",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195912577358",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195912610126",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195912642894",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195912675662",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195912708430",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195912741198",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195912773966",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195912806734",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195912839502",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195912872270",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195912905038",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195912937806",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195912970574",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195913003342",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195913036110",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195913068878",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195913101646",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195913134414",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195913167182",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195913199950",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195913232718",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195913265486",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195913298254"
+        }
       }
     },
     {
@@ -1692,6 +2022,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"box\":[414,79,1990,2487],\"crop\":{\"cx\":0.36,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071093582",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195913363790",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195913396558",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195913429326",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195913462094",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195913494862",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195913527630",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195913560398",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195913593166",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195913625934",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195913658702",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195913691470",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195913724238",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195913757006",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195913789774",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195913822542",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195913855310",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195913888078",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195913920846",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195913953614",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195913986382",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195914019150",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195914051918",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195914084686",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195914117454",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195914150222",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195914182990",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195914215758",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195914248526",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195914281294",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195914314062",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195914346830",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195914379598",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195914412366",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195914445134",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195914477902",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195914510670",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195914543438",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195914576206",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195914608974",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195914641742"
+        }
       }
     },
     {
@@ -1768,6 +2143,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"box\":[1316,53,2057,2571],\"crop\":{\"cx\":0.6,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071257422",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195914969422",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195915002190",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195915034958",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195915067726",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195915100494",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195915133262",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195915166030",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195915198798",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195915231566",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195915264334",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195915297102",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195915329870",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195915362638",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195915395406",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195915428174",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195915460942",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195915493710",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195915526478",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195915559246",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195915592014",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195915624782",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195915657550",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195915690318",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195915723086",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195915755854",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195915788622",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195915821390",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195915854158",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195915886926",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195915919694",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195915952462",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195915985230",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195916017998",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195916050766",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195916083534",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195916116302",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195916149070",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195916181838",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195916214606",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195916247374"
+        }
       }
     },
     {
@@ -1844,6 +2264,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"box\":[1458,70,2045,2556],\"crop\":{\"cx\":0.64,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071355726",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195916378446",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195916411214",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195916443982",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195916476750",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195916509518",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195916542286",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195916575054",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195916607822",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195916640590",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195916673358",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195916706126",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195916738894",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195916771662",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195916804430",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195916837198",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195916869966",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195916902734",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195916935502",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195916968270",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195917001038",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195917033806",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195917066574",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195917099342",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195917132110",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195917164878",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195917197646",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195917230414",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195917263182",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195917295950",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195917328718",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195917361486",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195917394254",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195917427022",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195917459790",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195917492558",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195917525326",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195917558094",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195917590862",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195917623630",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195917656398"
+        }
       }
     },
     {
@@ -1920,6 +2385,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"box\":[357,29,2067,2584],\"crop\":{\"cx\":0.36,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071486798",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195917820238",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195917853006",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195917885774",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195917918542",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195917951310",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195917984078",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195918016846",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195918049614",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195918082382",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195918115150",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195918147918",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195918180686",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195918213454",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195918246222",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195918278990",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195918311758",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195918344526",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195918377294",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195918410062",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195918442830",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195918475598",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195918508366",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195918541134",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195918573902",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195918606670",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195918639438",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195918672206",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195918704974",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195918737742",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195918770510",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195918803278",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195918836046",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195918868814",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195918901582",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195918934350",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195918967118",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195918999886",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195919032654",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195919065422",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195919098190"
+        }
       }
     },
     {
@@ -1996,6 +2506,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"layout\":{\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"box\":[969,62,1893,2366],\"crop\":{\"cx\":0.49,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071519566",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195919130958",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195919163726",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195919196494",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195919229262",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195919262030",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195919294798",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195919327566",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195919360334",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195919393102",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195919425870",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195919458638",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195919491406",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195919524174",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195919556942",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195919589710",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195919622478",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195919655246",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195919688014",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195919720782",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195919753550",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195919786318",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195919819086",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195919851854",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195919884622",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195919917390",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195919950158",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195919982926",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195920015694",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195920048462",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195920081230",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195920113998",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195920146766",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195920179534",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195920212302",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195920245070",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195920277838",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195920310606",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195920343374",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195920376142",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195920408910"
+        }
       }
     },
     {
@@ -2072,6 +2627,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"layout\":{\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"box\":[0,285,2617,3271],\"crop\":{\"cx\":0.52,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071650638",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195920539982",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195920572750",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195920605518",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195920638286",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195920671054",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195920703822",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195920736590",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195920769358",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195920802126",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195920834894",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195920867662",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195920900430",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195920933198",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195920965966",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195920998734",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195921031502",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195921064270",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195921097038",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195921129806",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195921162574",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195921195342",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195921228110",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195921260878",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195921293646",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195921326414",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195921359182",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195921391950",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195921424718",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195921457486",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195921490254",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195921523022",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195921555790",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195921588558",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195921621326",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195921654094",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195921686862",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195921719630",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195921752398",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195921785166",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195921817934"
+        }
       }
     },
     {
@@ -2148,6 +2748,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"layout\":{\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"box\":[0,336,2624,3280],\"crop\":{\"cx\":0.52,\"cy\":0.52}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071716174",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195921883470",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195921916238",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195921949006",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195921981774",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195922014542",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195922047310",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195922080078",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195922112846",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195922145614",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195922178382",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195922211150",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195922243918",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195922276686",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195922309454",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195922342222",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195922374990",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195922407758",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195922440526",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195922473294",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195922506062",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195922538830",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195922571598",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195922604366",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195922637134",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195922669902",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195922702670",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195922735438",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195922768206",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195922800974",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195922833742",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195922866510",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195922899278",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195922932046",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195922964814",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195922997582",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195923030350",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195923063118",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195923095886",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195923128654",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195923161422"
+        }
       }
     },
     {
@@ -2224,6 +2869,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"box\":[0,320,2650,3312],\"crop\":{\"cx\":0.5,\"cy\":0.52}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16146071781710",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61195923226958",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61195923259726",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61195923292494",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61195923325262",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61195923358030",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61195923390798",
+          "IPHONE-14": "gid://shopify/ProductVariant/61195923423566",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61195923456334",
+          "IPHONE-15": "gid://shopify/ProductVariant/61195923489102",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61195923521870",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61195923554638",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61195923587406",
+          "IPHONE-16": "gid://shopify/ProductVariant/61195923620174",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61195923652942",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61195923685710",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61195923718478",
+          "IPHONE-17": "gid://shopify/ProductVariant/61195923751246",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61195923784014",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61195923816782",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61195923849550",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61195923882318",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61195923915086",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61195923947854",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61195923980622",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61195924013390",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61195924046158",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61195924078926",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61195924111694",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61195924144462",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61195924177230",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61195924209998",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61195924242766",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61195924275534",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61195924308302",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61195924341070",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61195924373838",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61195924406606",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61195924439374",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61195924472142",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61195924504910"
+        }
       }
     }
   ]

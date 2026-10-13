@@ -73,8 +73,17 @@ dashboard) need the owner's go-ahead in chat; the owner gave it on
    postcard €5.40 (`GLOBAL-POST-MOH-7X5`) and tough phone case €35.99
    (`GLOBAL-TECH-<device>-TCB-CS-M`). They are recorded per family in
    `data/art-product-catalog.json` (`collections[].families`).
-4. **Five product types: built, files generated, dry run verified; Drafts
-   NOT created (Claude Code, 2026-10-13 afternoon).** One hidden product per
+4. **Five product types: built, files generated, 50 Drafts created
+   (Claude Code, 2026-10-13).** Owner said "go, create the drafts";
+   `stage floating-world --families --apply` created 50 Drafts / 440
+   variants (10 each framed, canvas, card, postcard; 10 phone cases × 40
+   devices). A fresh readback found no issues: all DRAFT, total inventory 0,
+   71 unrelated products unchanged, sampled public URLs 404. Ids are in
+   `data/art-product-catalog.json`; evidence
+   [stage-families](evidence/stage-families-2026-10-13.json). Next is
+   `handoff --families` (written: 40 channel rows), then Prodigi uploads and
+   mappings, then moving the products out of Shopify's General shipping
+   profile before release. The earlier entry follows: One hidden product per
    artwork per type (Society6-style), never variants of the live studio
    products. Same verbs as prints with `--families` / `--family <f>`
    (`scripts/lib/art-product-steps.mjs`; runbook "Museum prints and artist
