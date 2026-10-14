@@ -226,6 +226,11 @@ The refund block (14 days, candles) and the terms block had drifted from
 Admin; both now copy the live text exactly. The live refund policy allows 30
 days and excludes custom or personalised orders, final-sale items and items
 that have been used, assembled or altered. It offers no direct exchanges. The
-privacy policy is Shopify's generated template and is not drafted. The
-activewear additions are not yet in Admin: pasting them needs the owner's
-explicit approval.
+privacy policy is Shopify's generated template and is not drafted.
+
+With the owner's explicit approval, the shipping block was pasted into
+Shopify Admin > Settings > Policies > Shipping policy (HTML view) the same
+day and saved. The new section was still there after reopening the editor.
+The live `/policies/shipping-policy` page showed it within about 20
+seconds. After that, the shipping, refund and terms bodies all matched
+their drafts exactly.

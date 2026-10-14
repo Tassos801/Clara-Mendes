@@ -1724,7 +1724,8 @@ and section built from `APPAREL_SHIPPING_RATES`, the
 `APPAREL_*_WINDOW_BUSINESS_DAYS` constants and the
 [launch record](../quiet-current-release.md): made to order by the
 fulfilment partner, production 2–7 / dispatch 3–8 business days, one fee
-per order, heavier US fabric. Not yet pasted into Admin; that needs the
-owner's approval. Open: the Your Sky configurator still shows a
+per order, heavier US fabric. With the owner's approval it was pasted into
+Shopify Admin and saved; after reload all three live policy bodies match
+the drafts exactly. Open: the Your Sky configurator still shows a
 "30-day returns" chip although the live refund policy excludes personalised
 orders. See [fulfillment](modules/fulfillment.md#2026-10-14---policy-drafts-realigned-with-the-live-store).

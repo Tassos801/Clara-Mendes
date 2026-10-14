@@ -6,10 +6,11 @@ Paste each section into the corresponding field in Shopify Admin:
 Each policy is written in HTML so Shopify's rich text editor preserves formatting.
 
 On 2026-10-14 each block was compared with the body the live
-`/policies/<handle>` page serves: the refund and terms blocks match it
-exactly. The shipping block is the live text plus the Quiet Current
-activewear bullet and section, which are not yet pasted into Admin. The
-privacy policy is Shopify's generated template and is not drafted here.
+`/policies/<handle>` page serves. The refund and terms drafts were updated
+to copy it, and the shipping block gained the Quiet Current activewear
+bullet and section, pasted into Admin with the owner's approval. After the
+save, all three live bodies matched these blocks exactly. The privacy
+policy is Shopify's generated template and is not drafted here.
 
 ---
 
