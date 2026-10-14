@@ -1713,6 +1713,23 @@ plain-language 404 message. `public/llms.txt` was rewritten for the current
 catalogue. Shopify-hosted policies were not changed: the shipping policy still
 has no clothing section.
 
+## 2026-10-14 - Policy drafts match the live store; activewear shipping drafted
+
+Compared each block in `docs/shopify-policies-drafts.md` with the live
+`/policies/<handle>` body. Shipping already matched; the refund block
+(14 days, candles) and terms block had drifted and now copy the live text
+exactly (30 days; personalised, final-sale and used, assembled or altered
+items excluded). The shipping draft gains a Quiet Current activewear bullet
+and section built from `APPAREL_SHIPPING_RATES`, the
+`APPAREL_*_WINDOW_BUSINESS_DAYS` constants and the
+[launch record](../quiet-current-release.md): made to order by the
+fulfilment partner, production 2–7 / dispatch 3–8 business days, one fee
+per order, heavier US fabric. With the owner's approval it was pasted into
+Shopify Admin and saved; after reload all three live policy bodies match
+the drafts exactly. The Your Sky "30-day returns" chip that contradicted
+the personalised-orders exclusion is fixed in the next entry. See
+[fulfillment](modules/fulfillment.md#2026-10-14---policy-drafts-realigned-with-the-live-store).
+
 ## 2026-10-14 - Personalised products no longer promise 30-day returns
 
 The live refund policy now lists "Custom or personalized orders" as

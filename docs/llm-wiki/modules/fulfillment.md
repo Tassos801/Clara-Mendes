@@ -207,3 +207,30 @@ table and "Shipping from" line are also tied to those four handles. A new
 garment needs its own verified estimate and a code change. See
 [Clothing](clothing.md) and
 [the operator guide](../../clothing-destination.md#what-still-needs-code).
+
+## 2026-10-14 - Policy drafts realigned with the live store
+
+`docs/shopify-policies-drafts.md` was compared with the bodies the live
+`/policies/<handle>` pages serve. The shipping block matched the live policy
+exactly, but neither mentioned Quiet Current, although `/clothing` links to
+the shipping policy. The draft now adds an activewear bullet under Shipping
+costs and a "Quiet Current activewear" section: printed, cut and sewn to
+order by the fulfilment partner (no supplier named), production 2–7 and
+dispatch 3–8 business days, the shared EU 5–10 / elsewhere 7–20 delivery
+estimates, the nine zone rates charged once per order, and the heavier US
+fabric. These mirror `APPAREL_SHIPPING_RATES` and the
+`APPAREL_*_WINDOW_BUSINESS_DAYS` constants in `app/lib/storefrontBasics.ts`,
+so a rate or window change must update the draft and the Admin policy too.
+
+The refund block (14 days, candles) and the terms block had drifted from
+Admin; both now copy the live text exactly. The live refund policy allows 30
+days and excludes custom or personalised orders, final-sale items and items
+that have been used, assembled or altered. It offers no direct exchanges. The
+privacy policy is Shopify's generated template and is not drafted.
+
+With the owner's explicit approval, the shipping block was pasted into
+Shopify Admin > Settings > Policies > Shipping policy (HTML view) the same
+day and saved. The new section was still there after reopening the editor.
+The live `/policies/shipping-policy` page showed it within about 20
+seconds. After that, the shipping, refund and terms bodies all matched
+their drafts exactly.
