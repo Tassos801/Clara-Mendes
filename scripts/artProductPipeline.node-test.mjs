@@ -39,6 +39,10 @@ const FLOATING_WORLD = PRINT_CATALOG.collections.find(
 const ART_COLLECTION = family.ART_PRODUCT_CATALOG.collections.find(
   (collection) => collection.slug === 'floating-world',
 );
+/** The five families Floating World sells (no mug), in catalog order. */
+const FW_FAMILIES = family.ART_PRODUCT_FAMILIES.filter(
+  (kind) => kind in ART_COLLECTION.families,
+);
 const WAVE = 'the-great-wave-off-kanagawa';
 const LAUNCH = path.join('X:', 'launches');
 const productOf = (catalog, print, kind) =>
@@ -150,7 +154,7 @@ test('the shipped family catalog is valid: 50 released products, 10 per family',
     'The Great Wave off Kanagawa Canvas Print',
   );
   assert.deepEqual(
-    family.ART_PRODUCT_FAMILIES.map((kind) => wave(kind).variants[0].sku),
+    FW_FAMILIES.map((kind) => wave(kind).variants[0].sku),
     [
       'CM-FW-01-CFP16X20',
       'CM-FW-01-CAN16X20',
@@ -301,7 +305,7 @@ test('asset plans follow the live file contracts and the approved crops', () => 
       launchRoot: LAUNCH,
     });
   const sizes = Object.fromEntries(
-    family.ART_PRODUCT_FAMILIES.map((kind) => {
+    FW_FAMILIES.map((kind) => {
       const {output} = plan(kind);
       return [kind, [output.width, output.height, output.dpi]];
     }),
@@ -376,7 +380,7 @@ test('a family Draft input is a hidden, unbuyable museum product of its type', (
       artCollection: ART_COLLECTION,
       collection: FLOATING_WORLD,
     });
-  for (const kind of family.ART_PRODUCT_FAMILIES) {
+  for (const kind of FW_FAMILIES) {
     const draft = input(kind);
     assert.equal(draft.status, 'DRAFT');
     assert.equal(draft.vendor, 'Clara Mendes');
@@ -492,7 +496,7 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
   const catalog = structuredClone(family.ART_PRODUCT_CATALOG);
   const before = JSON.stringify(catalog);
   const options = {
-    families: [...family.ART_PRODUCT_FAMILIES],
+    families: [...FW_FAMILIES],
     prints: FLOATING_WORLD.prints,
   };
   assert.deepEqual(syncFamilyProducts(catalog, FLOATING_WORLD, options), {
@@ -564,7 +568,18 @@ test('handoff covers channel-mapped families; cases go through the webhook', () 
     'canvas',
     'postcard',
   ]);
-  assert.throws(() => selectFamilies({family: 'mug'}), /Unknown family mug/);
+  assert.throws(
+    () => selectFamilies({family: 'cushion'}),
+    /Unknown family cushion/,
+  );
+  // `--families` is what the collection offers; Floating World has no mug.
+  const offered = Object.keys(ART_COLLECTION.families);
+  assert.deepEqual(selectFamilies({all: true, offered}), FW_FAMILIES);
+  assert.equal(FW_FAMILIES.length, 5);
+  assert.throws(
+    () => selectFamilies({family: 'mug', offered}),
+    /does not offer mug/,
+  );
 });
 
 test('museum case lines reach Prodigi only once released and mapped', async () => {
@@ -661,7 +676,7 @@ test('storefront: staged family products stay hidden; released ones join the art
     undefined,
     catalog,
   );
-  for (const kind of family.ART_PRODUCT_FAMILIES)
+  for (const kind of FW_FAMILIES)
     assert.ok(released.has(`${WAVE}-${kind}`));
   assert.ok(!released.has(`hodogaya-on-the-tokaido-canvas`));
 
@@ -708,7 +723,7 @@ test('storefront: staged family products stay hidden; released ones join the art
     .find((entry) => entry.artist.id === 'katsushika-hokusai');
   assert.deepEqual(
     hokusai.products.map((p) => p.handle),
-    family.ART_PRODUCT_FAMILIES.map((kind) => `${WAVE}-${kind}`),
+    FW_FAMILIES.map((kind) => `${WAVE}-${kind}`),
   );
 });
 
@@ -722,7 +737,7 @@ test('family product pages carry their own copy and the museum credit', () => {
   assert.equal(page('greeting-card').shippingReach, 'eu');
   assert.equal(page('framed-print').shippingReach, 'selected');
   assert.equal(page('canvas').shippingReach, 'selected');
-  for (const kind of family.ART_PRODUCT_FAMILIES) {
+  for (const kind of FW_FAMILIES) {
     const text = page(kind)
       .details.map((d) => d.text)
       .join(' ');

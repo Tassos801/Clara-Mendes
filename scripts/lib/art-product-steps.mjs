@@ -2,9 +2,10 @@
 
 /**
  * The family steps of scripts/product.mjs: the same verbs as prints, for
- * museum works as framed prints, canvas, greeting cards, postcards and tough
- * phone cases (one Shopify Draft per artwork per family). Selected with
- * `--families` (all five) or `--family <f>[,<f>]`:
+ * museum works as framed prints, canvas, greeting cards, postcards, tough
+ * phone cases and mugs (one Shopify Draft per artwork per family). Selected
+ * with `--families` (every family the collection offers in
+ * data/art-product-catalog.json) or `--family <f>[,<f>]`:
  *
  *   npm run product -- status   <collection> --families
  *   npm run product -- prepare  <collection> --families [--only a,b]
@@ -697,7 +698,7 @@ export function createFamilySteps({
     writeFileSync(
       path.join(launchDir, 'prodigi-handoff-families.md'),
       [
-        `# Prodigi mapping — ${collection.title} framed prints, canvas, cards and postcards`,
+        `# Prodigi mapping — ${collection.title} ${new Intl.ListFormat('en-GB').format(families.filter((family) => FAMILY_SPECS[family].route === 'channel').map((family) => FAMILY_SPECS[family].artistFamily.toLowerCase()))}`,
         '',
         'Prodigi dashboard → Sales channels → Clara Mendes → Products. Each row is its',
         'own Shopify product (one variant). Per row: the Prodigi SKU and settings',
@@ -875,7 +876,7 @@ export function createFamilySteps({
       })),
     );
     console.log(
-      'Before --apply: the products must be in the right Shopify shipping profile (cards and postcards: Letter post, EU only; canvas: the canvas profile; framed: a framed profile; cases: the phone-case profile) — new products land in General. See docs/add-products-runbook.md.',
+      'Before --apply: the products must be in the right Shopify shipping profile (cards and postcards: Letter post, EU only; canvas: the canvas profile; framed: a framed profile; cases: the phone-case profile; mugs: a mug profile, not set up yet) — new products land in General. See docs/add-products-runbook.md.',
     );
     if (!apply) {
       console.log('Dry run — nothing written. Re-run with --apply to release.');

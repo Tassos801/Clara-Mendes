@@ -56,8 +56,9 @@ import {
   validateMuseumCrops,
 } from '../app/lib/museumCrops.ts';
 import {PRINT_CATALOG, PRINT_SIZES} from '../app/lib/printCatalog.ts';
+import {FAMILY_SPECS, wholePanelLayout} from '../app/lib/artProductCatalog.ts';
 import {renderCropPreviews} from './lib/museum-crop-previews.mjs';
-import {qualifySizes} from './lib/museum-layout.mjs';
+import {ppiVerdict, qualifySizes} from './lib/museum-layout.mjs';
 import {
   artworkRecord,
   attributionIssues,
@@ -594,31 +595,45 @@ function approveArtist() {
 // -------------------------------------------------------------- helpers --
 
 function printQualification(artworks) {
-  const rows = artworks.flatMap((artwork) =>
-    artwork.original
-      ? qualifySizes(masterSize(artwork), Object.keys(PRINT_SIZES)).map(
-          (layout) => ({
-            artwork: artwork.id,
-            size: layout.size,
-            paper: `${layout.paperInches.width}×${layout.paperInches.height} in ${layout.orientation}`,
-            image: `${layout.imageInches.width}×${layout.imageInches.height} in`,
-            needs: `${layout.image.width}×${layout.image.height}px`,
-            original: `${artwork.original.width}×${artwork.original.height}${
-              artwork.trim
-                ? ` trimmed to ${masterSize(artwork).width}×${masterSize(artwork).height}`
-                : ''
-            }${
-              capped(artwork)
-                ? ` (capped; full ${artwork.source.fullResolution.width}×${artwork.source.fullResolution.height})`
-                : ''
-            }`,
-            ppi: layout.nativePpi,
-            verdict: layout.verdict,
-          }),
-        )
-      : [{artwork: artwork.id, verdict: 'original not fetched'}],
+  const rows = artworks.flatMap((artwork) => {
+    if (!artwork.original)
+      return [{artwork: artwork.id, verdict: 'original not fetched'}];
+    const master = masterSize(artwork);
+    const original = `${artwork.original.width}×${artwork.original.height}${
+      artwork.trim ? ` trimmed to ${master.width}×${master.height}` : ''
+    }${
+      capped(artwork)
+        ? ` (capped; full ${artwork.source.fullResolution.width}×${artwork.source.fullResolution.height})`
+        : ''
+    }`;
+    // The mug prints the whole work too, once in each of its two panels.
+    const mug = wholePanelLayout(master, 'mug');
+    return [
+      ...qualifySizes(master, Object.keys(PRINT_SIZES)).map((layout) => ({
+        artwork: artwork.id,
+        size: layout.size,
+        paper: `${layout.paperInches.width}×${layout.paperInches.height} in ${layout.orientation}`,
+        image: `${layout.imageInches.width}×${layout.imageInches.height} in`,
+        needs: `${layout.image.width}×${layout.image.height}px`,
+        original,
+        ppi: layout.nativePpi,
+        verdict: layout.verdict,
+      })),
+      {
+        artwork: artwork.id,
+        size: 'mug',
+        paper: `11 oz wrap, ${FAMILY_SPECS.mug.file.wholePanels.length} panels`,
+        image: `${mug.imageMm.width}×${mug.imageMm.height} mm`,
+        needs: `${mug.placements[0].width}×${mug.placements[0].height}px`,
+        original,
+        ppi: mug.nativePpi,
+        verdict: ppiVerdict(mug.nativePpi),
+      },
+    ];
+  });
+  console.log(
+    '\nSize qualification (full composition: prints on a white border, the mug twice on white; 300 ppi target)',
   );
-  console.log('\nSize qualification (full composition on a white border, 300 ppi target)');
   console.table(rows);
 }
 
