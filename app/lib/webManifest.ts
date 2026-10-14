@@ -6,9 +6,9 @@
  * Icons (and /favicon.ico): node scripts/build-app-icons.mjs
  */
 
-/** Warm ivory, the page background, so the launch screen matches the site. */
-export const APP_BACKGROUND_COLOR = '#FBFAF6';
-export const APP_THEME_COLOR = '#FBFAF6';
+/** Warm stone, the page background (--color-page), so the launch screen matches the site. */
+export const APP_BACKGROUND_COLOR = '#D6CCBB';
+export const APP_THEME_COLOR = '#D6CCBB';
 export const APP_NAME = 'Clara Mendes';
 export const APPLE_TOUCH_ICON = '/icons/apple-touch-icon.png';
 export const FAVICON_ICO = '/favicon.ico';

@@ -619,7 +619,7 @@ html:has(.kot-root) main {
 
 /* Soft landing onto the paper site footer below the journal */
 .kot-sky::before {
-  background: linear-gradient(180deg, transparent, rgba(251, 250, 246, 0.6) 78%, #fbfaf6);
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--color-page) 60%, transparent) 78%, var(--color-page));
   bottom: 0;
   content: '';
   height: 120px;
