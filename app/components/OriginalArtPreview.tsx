@@ -30,7 +30,7 @@ export function OriginalArtPreview({
 
       <header className="original-art-preview__heading">
         <div>
-          <p className="eyebrow">Original Clara Mendes art</p>
+          <p className="eyebrow">The founding capsules</p>
           <h2 id="original-art-preview-title">
             Five moods. One <i>considered</i> collection.
           </h2>
@@ -38,8 +38,8 @@ export function OriginalArtPreview({
         <div className="original-art-preview__intro">
           <p>
             {hasAvailableProducts
-              ? 'Explore fifteen original works across five coordinated capsules, with product details and secure checkout on every available print.'
-              : 'Fifteen original works across five coordinated capsules introduce the Clara Mendes collection, with more considered product types able to follow over time.'}
+              ? 'The fifteen original works that started Clara Mendes, in five capsules of three, each print with full details and secure checkout.'
+              : 'The fifteen original works that started Clara Mendes, in five coordinated capsules of three.'}
           </p>
           {compact ? (
             <Link className="text-link" to="/collections/all">

@@ -43,6 +43,20 @@ export function links() {
   ];
 }
 
+// Pages set their own titles; this only names error pages, which have none.
+export const meta: Route.MetaFunction = ({error}) =>
+  error
+    ? [
+        {
+          title: `${
+            isRouteErrorResponse(error) && error.status === 404
+              ? 'Page not found'
+              : 'Something went wrong'
+          } | ${APP_NAME}`,
+        },
+      ]
+    : [];
+
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
 
@@ -122,16 +136,18 @@ export default function App() {
 export function ErrorBoundary() {
   const error = useRouteError();
   let title = 'Something shifted out of place';
-  let detail = 'Please return to the collection and try again.';
+  let detail = 'Please go back to the shop and try again.';
   let status = 500;
 
   if (isRouteErrorResponse(error)) {
     status = error.status;
     title = status === 404 ? 'Page not found' : title;
     detail =
-      typeof error.data === 'string' && error.data
-        ? error.data
-        : `Error ${status}`;
+      status === 404
+        ? 'The link may be out of date, or the item is no longer available. Everything on sale now is in the shop.'
+        : typeof error.data === 'string' && error.data
+          ? error.data
+          : `Error ${status}`;
   } else if (error instanceof Error) {
     detail = error.message;
   }
@@ -142,7 +158,7 @@ export function ErrorBoundary() {
       <h1>{title}</h1>
       <p>{detail}</p>
       <a className="text-link" href="/collections/all">
-        Return to the collection
+        Back to the shop
       </a>
     </main>
   );

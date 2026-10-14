@@ -19,7 +19,7 @@ export const links: Route.LinksFunction = () => [
 export const meta: Route.MetaFunction = ({data}) =>
   buildSeoMeta({
     description:
-      'Every artist whose work Clara Mendes prints, each with a shop of everything we sell of theirs.',
+      'The artists behind the museum works Clara Mendes prints, each with a shop of everything we sell of theirs.',
     image: data?.shareImage ?? undefined,
     title: 'Artists | Clara Mendes',
     url: `${STOREFRONT_ORIGIN}/artists`,
@@ -93,8 +93,8 @@ export default function Artists() {
         <p className="eyebrow">Clara Mendes / Artists</p>
         <h1>Artists</h1>
         <p>
-          Every artist whose work we print. Each has a shop of everything we
-          sell of theirs, with where each work comes from.
+          The artists behind the museum works we print. Each has a shop of
+          everything we sell of theirs, with where each work comes from.
         </p>
       </header>
 

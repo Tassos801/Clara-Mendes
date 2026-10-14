@@ -222,7 +222,8 @@ export default function BookNooks() {
 
       <aside className="nook-delivery" aria-label="Book nook delivery">
         <p>
-          Kits ship from our fulfilment partner, separately from art prints.
+          Kits ship from our fulfilment partner, separately from anything else
+          in your order.
           {delivery
             ? ` Delivery is included ${delivery}.`
             : ''}{' '}

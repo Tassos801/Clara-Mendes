@@ -25,7 +25,7 @@ import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
-      'Search original Clara Mendes art and considered products for calm, collected spaces.',
+      'Search Clara Mendes art and museum prints, canvas, cards, clothing, phone cases, plant pots and book nooks.',
     noIndex: true,
     title: 'Search | Clara Mendes',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/search`,
@@ -77,8 +77,8 @@ export default function SearchPage() {
         <p className="eyebrow">Search</p>
         <h1>Find your piece.</h1>
         <p>
-          Look through original prints and every considered product currently
-          available from Clara Mendes.
+          Search every print and product in the shop — capsules and museum
+          works, clothing, phone cases, plant pots and book nooks.
         </p>
       </header>
       <SearchForm className="search-page-form">
