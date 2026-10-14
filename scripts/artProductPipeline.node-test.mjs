@@ -31,6 +31,7 @@ import {
   syncFamilyProducts,
 } from './lib/art-product-pipeline.mjs';
 import {MUSEUM_TAG, PENDING_TAGS} from './lib/product-pipeline.mjs';
+import {stagedArtProducts, stagedPrintCatalog} from './lib/staged-fixtures.mjs';
 
 const FLOATING_WORLD = PRINT_CATALOG.collections.find(
   (collection) => collection.slug === 'floating-world',
@@ -51,12 +52,15 @@ const CLEARED = {
 };
 
 /**
- * The shipped data with the Great Wave's family products fully releasable:
- * Hokusai approved, both reviews cleared, crops approved, assets current,
- * Shopify ids recorded and every mapping verified on the current file.
+ * The shipped data, with every museum print and family product staged, and
+ * the Great Wave's family products fully releasable: Hokusai approved, both
+ * reviews cleared, crops approved, assets current, Shopify ids recorded and
+ * every mapping verified on the current file. Starting from staged copies
+ * keeps these tests independent of what the live data has released.
  */
 function releasable({release = false} = {}) {
-  const catalog = structuredClone(family.ART_PRODUCT_CATALOG);
+  const catalog = stagedArtProducts();
+  const prints = stagedPrintCatalog();
   const registry = structuredClone(registryModule.ART_REGISTRY);
   const crops = structuredClone(MUSEUM_CROPS);
   const wave = productOf(catalog, WAVE, 'framed-print').artworkId;
@@ -90,10 +94,10 @@ function releasable({release = false} = {}) {
     }
     if (release) product.released = true;
   }
-  return {catalog, crops, registry};
+  return {catalog, crops, prints, registry};
 }
 
-test('the shipped family catalog is valid: 50 hidden products, 10 per family', () => {
+test('the shipped family catalog is valid: 50 released products, 10 per family', () => {
   assert.deepEqual(family.validateArtProductCatalog(), []);
   assert.deepEqual(familySummary(family.ART_PRODUCT_CATALOG.products), [
     {
@@ -132,8 +136,10 @@ test('the shipped family catalog is valid: 50 hidden products, 10 per family', (
       variants: 400,
     },
   ]);
+  // Released 2026-10-14: validation above also proves every release gate.
   for (const product of family.ART_PRODUCT_CATALOG.products) {
-    assert.equal(product.released, false, product.handle);
+    assert.equal(product.released, true, product.handle);
+    assert.deepEqual(family.familyReleaseIssues(product), [], product.handle);
     assert.ok(product.assets, `${product.handle} has current assets`);
     assert.ok(familyStatus(product).current, `${product.handle} is current`);
   }
@@ -579,9 +585,16 @@ test('museum case lines reach Prodigi only once released and mapped', async () =
     origin: 'https://shopclaramendes.com',
     secret: 'test-secret-at-least-32-characters-long!!',
   };
-  assert.equal(family.artCaseLineForSku(sku), null);
+  // While staged, the line never reaches Prodigi.
+  const staged = stagedArtProducts();
+  assert.equal(family.artCaseLineForSku(sku, staged), null);
   assert.equal(
-    (await buildProdigiOrderFromShopify(order, options)).kind,
+    (
+      await buildProdigiOrderFromShopify(order, {
+        ...options,
+        artProducts: staged,
+      })
+    ).kind,
     'skip',
   );
 
@@ -615,22 +628,35 @@ test('museum case lines reach Prodigi only once released and mapped', async () =
 });
 
 test('storefront: staged family products stay hidden; released ones join the artist shop', () => {
-  const handles = family.ART_PRODUCT_CATALOG.products.map((p) => p.handle);
-  const sellable = computeSellableHandles();
+  const staged = stagedArtProducts();
+  const handles = staged.products.map((p) => p.handle);
+  const sellable = computeSellableHandles(
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    staged,
+  );
   for (const handle of handles) {
     assert.ok(!sellable.has(handle), `${handle} is not sellable`);
     assert.ok(
-      isUnreleasedExtensionHandle(handle),
+      family.isUnreleasedArtProductHandle(handle, staged),
       `${handle} stays out of sitemaps`,
     );
-    assert.equal(family.artProductPage(handle), null);
+    assert.equal(family.artProductPage(handle, staged), null);
+    // The sitemap/listing guard consults exactly this gate.
+    assert.equal(
+      isUnreleasedExtensionHandle(handle),
+      family.isUnreleasedArtProductHandle(handle),
+    );
   }
 
-  const {catalog, registry} = releasable({release: true});
+  const {catalog, prints, registry} = releasable({release: true});
   const released = computeSellableHandles(
     undefined,
     undefined,
-    undefined,
+    prints,
     undefined,
     undefined,
     catalog,
@@ -640,7 +666,7 @@ test('storefront: staged family products stay hidden; released ones join the art
   assert.ok(!released.has(`hodogaya-on-the-tokaido-canvas`));
 
   const products = shops
-    .artistProducts({artProducts: catalog, registry})
+    .artistProducts({artProducts: catalog, catalog: prints, registry})
     .filter((p) => p.artistId === 'katsushika-hokusai');
   assert.equal(products.length, 6 * 6, 'six works as prints and five families');
   const view = shops.artistShopView(
@@ -678,7 +704,7 @@ test('storefront: staged family products stay hidden; released ones join the art
   );
   // Only released products are public: the Wave's families, not the prints.
   const hokusai = shops
-    .publicArtists({artProducts: catalog, registry})
+    .publicArtists({artProducts: catalog, catalog: prints, registry})
     .find((entry) => entry.artist.id === 'katsushika-hokusai');
   assert.deepEqual(
     hokusai.products.map((p) => p.handle),
@@ -718,7 +744,10 @@ test('family product pages carry their own copy and the museum credit', () => {
   assert.match(credit.artwork.reproduction, /^Cropped to the postcard/);
   assert.match(credit.artwork.credit, /The Metropolitan Museum of Art/);
   assert.equal(
-    shops.productArtworkCredit(`${WAVE}-postcard`, {registry}),
+    shops.productArtworkCredit(`${WAVE}-postcard`, {
+      artProducts: stagedArtProducts(),
+      registry,
+    }),
     null,
     'nothing is credited while the product is staged',
   );
@@ -832,17 +861,21 @@ test('rendered files hold exactly the crop in the live layouts', async () => {
 });
 
 test('museum "Pair with": the same artwork first, then the artist, released only', () => {
-  const {catalog, registry} = releasable({release: true});
+  const {catalog, prints, registry} = releasable({release: true});
   // A staged product is never suggested, even beside released siblings.
   productOf(catalog, WAVE, 'postcard').released = false;
-  const prints = structuredClone(PRINT_CATALOG);
   const floatingWorld = prints.collections.find(
     (collection) => collection.slug === 'floating-world',
   );
   // Hodogaya is Hokusai's too; Nissaka is Hiroshige's.
-  for (const slug of [WAVE, 'hodogaya-on-the-tokaido', 'nissaka-sayo-no-nakayama'])
+  for (const slug of [
+    WAVE,
+    'hodogaya-on-the-tokaido',
+    'nissaka-sayo-no-nakayama',
+  ])
     floatingWorld.prints.find((print) => print.slug === slug).released = true;
-  productOf(catalog, 'hodogaya-on-the-tokaido', 'greeting-card').released = true;
+  productOf(catalog, 'hodogaya-on-the-tokaido', 'greeting-card').released =
+    true;
   const sources = {artProducts: catalog, catalog: prints, registry};
   const pairs = (handle) =>
     shops.museumPairings(handle, sources)?.products.map((p) => p.handle);
@@ -878,10 +911,17 @@ test('museum "Pair with": the same artwork first, then the artist, released only
   );
 
   // Studio products keep their usual companions.
-  assert.equal(shops.museumPairings('orbital-silence-art-print', sources), null);
+  assert.equal(
+    shops.museumPairings('orbital-silence-art-print', sources),
+    null,
+  );
   assert.equal(shops.museumPairings('no-such-product', sources), null);
-  // The shipped data releases nothing: the block has nothing to show.
-  const staged = shops.museumPairings(`${WAVE}-canvas`);
+  // With nothing released the block has nothing to show.
+  const staged = shops.museumPairings(`${WAVE}-canvas`, {
+    artProducts: stagedArtProducts(),
+    catalog: stagedPrintCatalog(),
+    registry,
+  });
   assert.deepEqual(staged.products, []);
   assert.equal(staged.artist.path, null);
 });
@@ -921,7 +961,10 @@ test('the case picker groups the offered devices by brand and never guesses one'
   );
   const one = toughCasePhoneGroups([offered[0]]);
   assert.equal(one.length, 1);
-  assert.deepEqual(one[0].phones.map((phone) => phone.label), [offered[0]]);
+  assert.deepEqual(
+    one[0].phones.map((phone) => phone.label),
+    [offered[0]],
+  );
 
   const pick = (requested) => requestedPhoneModel(requested, 'Device', offered);
   assert.equal(pick([]), null, 'no model is preselected');

@@ -19,6 +19,7 @@ import {
   roomArtworkRelativePath,
   roomMediaPlan,
 } from './lib/print-room-scenes.mjs';
+import {stagedArtProducts, stagedPrintCatalog} from './lib/staged-fixtures.mjs';
 
 const WAVE_HANDLE = 'the-great-wave-off-kanagawa-art-print';
 /** The Great Wave impression the catalog sells (the owner's pick). */
@@ -33,13 +34,15 @@ const REVIEWED = {
 };
 
 /**
- * The shipped data with Hokusai approved, the Great Wave's reviews cleared
- * and its print released — the state a real release would reach. Each part
- * can be turned off whatever the shipped data currently records.
+ * The shipped data with every museum print and family product staged, then
+ * Hokusai approved, the Great Wave's reviews cleared and its print released —
+ * the state a real release would reach. Each part can be turned off whatever
+ * the shipped data currently records.
  */
 function releasedFixture({approve = true, clear = true, release = true} = {}) {
   const registry = structuredClone(registryModule.ART_REGISTRY);
-  const catalog = structuredClone(prints.PRINT_CATALOG);
+  const catalog = stagedPrintCatalog();
+  const artProducts = stagedArtProducts();
   const hokusai = registry.artists.find((a) => a.id === 'katsushika-hokusai');
   hokusai.approval = approve
     ? {approved: true, at: REVIEWED.at, by: 'Owner'}
@@ -55,7 +58,7 @@ function releasedFixture({approve = true, clear = true, release = true} = {}) {
     print.shopify = {productId: 'gid://p', variantIds: {'8x10': 'gid://v'}};
     print.prodigi = {'8x10': {channelProductId: '1', verified: true}};
   }
-  return {catalog, registry};
+  return {artProducts, catalog, registry};
 }
 
 function floatingWorld(catalog) {
@@ -68,10 +71,31 @@ test('the shipped catalog and registry link up cleanly', () => {
 });
 
 test('nothing is public until an approved artist has a released product', () => {
-  assert.deepEqual(shops.publicArtists(), []);
-  assert.equal(shops.productArtworkCredit(WAVE_HANDLE), null);
-  assert.ok(!CUSTOM_SITEMAP_PATHS.some((path) => path.startsWith('/artists')));
-  assert.ok(!computeSellableHandles().has(WAVE_HANDLE));
+  // Everything staged, with the shipped artist approvals.
+  const staged = {
+    artProducts: stagedArtProducts(),
+    catalog: stagedPrintCatalog(),
+  };
+  assert.deepEqual(shops.publicArtists(staged), []);
+  assert.equal(shops.productArtworkCredit(WAVE_HANDLE, staged), null);
+  assert.ok(
+    !computeSellableHandles(
+      undefined,
+      undefined,
+      staged.catalog,
+      undefined,
+      undefined,
+      staged.artProducts,
+    ).has(WAVE_HANDLE),
+  );
+  // The sitemap lists exactly the public artists, and nothing while none is.
+  const publicPaths = shops
+    .publicArtists()
+    .map(({artist}) => shops.artistPath(artist));
+  assert.deepEqual(
+    CUSTOM_SITEMAP_PATHS.filter((path) => path.startsWith('/artists')),
+    publicPaths.length ? ['/artists', ...publicPaths] : [],
+  );
 
   // Approved but unreleased, or released but unapproved: still not public.
   assert.deepEqual(shops.publicArtists(releasedFixture({release: false})), []);
@@ -127,7 +151,10 @@ test('artist search matches names, aliases and word prefixes of public artists',
   for (const term of ['wave', 'hiroshige', '', 'sai']) {
     assert.deepEqual(shops.searchArtists(term, sources), [], term);
   }
-  assert.deepEqual(shops.searchArtists('hokusai'), []);
+  assert.deepEqual(
+    shops.searchArtists('hokusai', releasedFixture({release: false})),
+    [],
+  );
 });
 
 test('a product page credits the museum work and links a public artist', () => {

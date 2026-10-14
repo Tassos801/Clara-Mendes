@@ -320,4 +320,11 @@ test('normalizeHtml ignores the whitespace Shopify adds between tags', () => {
   ].join('\n');
   assert.equal(normalizeHtml(stored), normalizeHtml(expected));
   assert.notEqual(normalizeHtml('<p>Lead</p>'), normalizeHtml('<p>Other</p>'));
+  // Shopify stores an escaped quote in text as the plain character.
+  assert.equal(
+    normalizeHtml('<em>the series "One Hundred Famous Views of Edo"</em>'),
+    normalizeHtml(
+      '<em>the series &quot;One Hundred Famous Views of Edo&quot;</em>',
+    ),
+  );
 });

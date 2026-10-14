@@ -994,7 +994,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2644,
             "nativeWidth": 3867,
@@ -1024,7 +1024,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "hodogaya-on-the-tokaido",
@@ -1081,7 +1086,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2603,
             "nativeWidth": 3932,
@@ -1111,7 +1116,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "sekiya-village-on-the-sumida-river",
@@ -1168,7 +1178,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2634,
             "nativeWidth": 3912,
@@ -1198,7 +1208,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "tago-bay-near-ejiri-on-the-tokaido",
@@ -1255,7 +1270,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2669,
             "nativeWidth": 3907,
@@ -1285,7 +1300,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "ushibori-in-hitachi-province",
@@ -1342,7 +1362,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2682,
             "nativeWidth": 3875,
@@ -1372,7 +1392,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "yoshida-on-the-tokaido",
@@ -1429,7 +1454,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2655,
             "nativeWidth": 3860,
@@ -1459,7 +1484,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "nissaka-sayo-no-nakayama",
@@ -1516,7 +1546,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 2490,
             "nativeWidth": 3909,
@@ -1546,7 +1576,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "fireworks-at-ryogoku-bridge",
@@ -1603,7 +1638,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 3840,
             "nativeWidth": 2617,
@@ -1633,7 +1668,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "kinryusan-temple-at-asakusa",
@@ -1690,7 +1730,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 3800,
             "nativeWidth": 2624,
@@ -1720,7 +1760,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         },
         {
           "slug": "sudden-shower-over-shin-ohashi-bridge-and-atake",
@@ -1777,7 +1822,7 @@
               }
             }
           ],
-          "released": false,
+          "released": true,
           "source": {
             "nativeHeight": 3860,
             "nativeWidth": 2650,
@@ -1807,7 +1852,12 @@
               "verified": true,
               "verifiedAt": "2026-10-13"
             }
-          }
+          },
+          "releasedSizes": [
+            "8x10",
+            "16x20",
+            "20x24"
+          ]
         }
       ]
     }
