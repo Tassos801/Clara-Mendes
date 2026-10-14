@@ -565,6 +565,11 @@ export type ArtProductPage = {
   details: Array<{label: string; text: string}>;
   family: ArtProductFamily;
   shippingReach: ShippingReach;
+  /**
+   * The one size of a single-variant product ("16 × 20 in", "5 × 7 in"),
+   * shown by the price because there is no size picker; null for cases.
+   */
+  size: string | null;
 };
 
 /** Product-page copy for a released family product; null otherwise. */
@@ -579,6 +584,7 @@ export function artProductPage(
     details: spec.details,
     family: product.family,
     shippingReach: spec.shippingReach,
+    size: spec.single?.option ?? null,
   };
 }
 

@@ -210,6 +210,62 @@ export function artistFamilies(products: Pick<ArtistProduct, 'family'>[]) {
   );
 }
 
+export type MuseumPairing = {
+  artist: {name: string; path: string | null};
+  /** Released products to suggest, best match first. */
+  products: ArtistProduct[];
+  /** Storefront `products(query:)` clause that returns all of them. */
+  query: string;
+};
+
+/**
+ * "Pair with" for a museum product (a print or a family product of one
+ * artwork): the same artwork's other released products in product-type
+ * order (print, framed print, canvas, card, postcard, phone case), then the
+ * same artist's released products, those of the same type first. Never an
+ * unrelated category: null for anything that is not a museum work, so its
+ * page keeps its usual companions, and an empty list hides the block.
+ */
+export function museumPairings(
+  handle: string | null | undefined,
+  sources: Sources = {},
+): MuseumPairing | null {
+  const key = handle?.toLowerCase();
+  if (!key) return null;
+  const registry = sources.registry ?? ART_REGISTRY;
+  const all = artistProducts(sources);
+  const self = all.find((product) => product.handle === key);
+  if (!self?.artworkId) return null;
+  const artist = findArtist(self.artistId, registry);
+  if (!artist) return null;
+  const released = all.filter(
+    (product) => product.released && product.handle !== self.handle,
+  );
+  const typeRank = (product: ArtistProduct) =>
+    ARTIST_PRODUCT_FAMILIES.indexOf(product.family);
+  const sameArtwork = released
+    .filter((product) => product.artworkId === self.artworkId)
+    .sort((a, b) => typeRank(a) - typeRank(b));
+  const sameType = (product: ArtistProduct) =>
+    product.family === self.family ? 0 : 1;
+  const sameArtist = released
+    .filter(
+      (product) =>
+        product.artistId === self.artistId &&
+        product.artworkId !== self.artworkId,
+    )
+    .sort((a, b) => sameType(a) - sameType(b));
+  const products = [...sameArtwork, ...sameArtist];
+  const isPublic = publicArtists(sources).some(
+    (entry) => entry.artist.id === artist.id,
+  );
+  return {
+    artist: {name: artist.name, path: isPublic ? artistPath(artist) : null},
+    products,
+    query: artistProductsQuery(products),
+  };
+}
+
 /**
  * The Refine panel's groups, in display order. Values come from data, so a
  * group appears once one listed product has a value for it.
@@ -245,7 +301,7 @@ export type ArtistFacetGroup = {
 };
 
 const FAMILY_LABELS: Record<ArtistProductFamily, string> = {
-  Prints: 'Art prints',
+  Prints: 'Prints',
   'Framed prints': 'Framed prints',
   Canvas: 'Canvas',
   Cards: 'Cards',
@@ -289,15 +345,24 @@ function productFacets(
       value: product.orientation,
     },
     series: series ? {label: series, value: facetSlug(series)} : null,
-    // `prints` keeps the `?type=Prints` links of the first artist pages;
-    // the others are `framed-prints`, `canvas`, `cards`, `postcards` and
-    // `phone-cases`.
+    // `prints` keeps the `?type=Prints` links of the first artist pages
+    // (TYPE_ALIASES also maps the old "Art prints" label); the others are
+    // `framed-prints`, `canvas`, `cards`, `postcards` and `phone-cases`.
     type: {
       label: FAMILY_LABELS[product.family],
       value: facetSlug(product.family),
     },
   };
 }
+
+/**
+ * Earlier `type` spellings that still select a product type: the filter was
+ * labelled "Art prints", so `?type=Art+prints` or `art-prints` mean `prints`.
+ */
+const TYPE_ALIASES: Record<string, string> = {
+  'art prints': 'prints',
+  'art-prints': 'prints',
+};
 
 /** The first year in a museum date such as "ca. 1830–32". */
 function artworkYear(product: ArtistProduct, registry: ArtRegistry) {
@@ -347,6 +412,9 @@ export function artistShopView(
         params
           .getAll(key)
           .map((value) => value.trim().toLowerCase())
+          .map((value) =>
+            key === 'type' ? (TYPE_ALIASES[value] ?? value) : value,
+          )
           .filter((value) => known.has(value)),
       ),
     );

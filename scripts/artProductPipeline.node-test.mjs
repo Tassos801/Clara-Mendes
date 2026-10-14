@@ -12,7 +12,11 @@ import {MUSEUM_CROPS} from '../app/lib/museumCrops.ts';
 import {PRINT_CATALOG} from '../app/lib/printCatalog.ts';
 import {getProductLede} from '../app/lib/productCopy.ts';
 import {buildProdigiOrderFromShopify} from '../app/lib/sky/fulfilment.ts';
-import {TOUGH_CASE_PHONES} from '../app/lib/toughCase.ts';
+import {
+  requestedPhoneModel,
+  TOUGH_CASE_PHONES,
+  toughCasePhoneGroups,
+} from '../app/lib/toughCase.ts';
 import {
   buildFamilyProductInput,
   familyAssetPlan,
@@ -639,7 +643,7 @@ test('storefront: staged family products stay hidden; released ones join the art
       .find((group) => group.key === 'type')
       .options.map(({label, value}) => [label, value]),
     [
-      ['Art prints', 'prints'],
+      ['Prints', 'prints'],
       ['Framed prints', 'framed-prints'],
       ['Canvas', 'canvas'],
       ['Cards', 'cards'],
@@ -814,5 +818,118 @@ test('rendered files hold exactly the crop in the live layouts', async () => {
       );
   } finally {
     rmSync(dir, {force: true, recursive: true});
+  }
+});
+
+test('museum "Pair with": the same artwork first, then the artist, released only', () => {
+  const {catalog, registry} = releasable({release: true});
+  // A staged product is never suggested, even beside released siblings.
+  productOf(catalog, WAVE, 'postcard').released = false;
+  const prints = structuredClone(PRINT_CATALOG);
+  const floatingWorld = prints.collections.find(
+    (collection) => collection.slug === 'floating-world',
+  );
+  // Hodogaya is Hokusai's too; Nissaka is Hiroshige's.
+  for (const slug of [WAVE, 'hodogaya-on-the-tokaido', 'nissaka-sayo-no-nakayama'])
+    floatingWorld.prints.find((print) => print.slug === slug).released = true;
+  productOf(catalog, 'hodogaya-on-the-tokaido', 'greeting-card').released = true;
+  const sources = {artProducts: catalog, catalog: prints, registry};
+  const pairs = (handle) =>
+    shops.museumPairings(handle, sources)?.products.map((p) => p.handle);
+
+  assert.deepEqual(pairs(`${WAVE}-greeting-card`), [
+    `${WAVE}-art-print`,
+    `${WAVE}-framed-print`,
+    `${WAVE}-canvas`,
+    `${WAVE}-phone-case`,
+    // Then the artist's other works, the same product type first.
+    'hodogaya-on-the-tokaido-greeting-card',
+    'hodogaya-on-the-tokaido-art-print',
+  ]);
+  assert.deepEqual(pairs(`${WAVE}-art-print`), [
+    `${WAVE}-framed-print`,
+    `${WAVE}-canvas`,
+    `${WAVE}-greeting-card`,
+    `${WAVE}-phone-case`,
+    'hodogaya-on-the-tokaido-art-print',
+    'hodogaya-on-the-tokaido-greeting-card',
+  ]);
+  const pairing = shops.museumPairings(`${WAVE}-greeting-card`, sources);
+  assert.deepEqual(pairing.artist, {
+    name: 'Katsushika Hokusai',
+    path: '/artists/hokusai',
+  });
+  assert.equal(pairing.query, 'tag:"Floating World"');
+  assert.ok(
+    !pairs('nissaka-sayo-no-nakayama-art-print').some((handle) =>
+      handle.startsWith(WAVE),
+    ),
+    'another artist is never paired',
+  );
+
+  // Studio products keep their usual companions.
+  assert.equal(shops.museumPairings('orbital-silence-art-print', sources), null);
+  assert.equal(shops.museumPairings('no-such-product', sources), null);
+  // The shipped data releases nothing: the block has nothing to show.
+  const staged = shops.museumPairings(`${WAVE}-canvas`);
+  assert.deepEqual(staged.products, []);
+  assert.equal(staged.artist.path, null);
+});
+
+test('single-size family pages name their size by the price', () => {
+  const {catalog} = releasable({release: true});
+  const size = (kind) => family.artProductPage(`${WAVE}-${kind}`, catalog).size;
+  assert.equal(size('framed-print'), '16 × 20 in');
+  assert.equal(size('canvas'), '16 × 20 in');
+  assert.equal(size('greeting-card'), '5 × 7 in');
+  assert.equal(size('postcard'), '7 × 5 in');
+  assert.equal(size('phone-case'), null, 'cases choose a device instead');
+  for (const kind of ['framed-print', 'canvas', 'greeting-card', 'postcard'])
+    assert.equal(size(kind), productOf(catalog, WAVE, kind).variants[0].option);
+});
+
+test('the case picker groups the offered devices by brand and never guesses one', () => {
+  const groups = toughCasePhoneGroups();
+  assert.deepEqual(
+    groups.map((group) => group.label),
+    ['iPhone', 'Samsung Galaxy', 'Google Pixel'],
+  );
+  assert.equal(
+    groups.flatMap((group) => group.phones).length,
+    TOUGH_CASE_PHONES.length,
+  );
+  const offered = productOf(
+    family.ART_PRODUCT_CATALOG,
+    WAVE,
+    'phone-case',
+  ).variants.map((variant) => variant.option);
+  assert.deepEqual(
+    toughCasePhoneGroups(offered)
+      .flatMap((group) => group.phones.map((phone) => phone.label))
+      .sort(),
+    [...offered].sort(),
+  );
+  const one = toughCasePhoneGroups([offered[0]]);
+  assert.equal(one.length, 1);
+  assert.deepEqual(one[0].phones.map((phone) => phone.label), [offered[0]]);
+
+  const pick = (requested) => requestedPhoneModel(requested, 'Device', offered);
+  assert.equal(pick([]), null, 'no model is preselected');
+  assert.equal(pick([{name: 'Device', value: 'Nokia 3310'}]), null);
+  assert.equal(pick([{name: 'Phone Model', value: offered[3]}]), null);
+  assert.equal(pick([{name: 'Device', value: offered[3]}]), offered[3]);
+});
+
+test("curator's notes say which products keep the whole composition", () => {
+  const notes = registryModule.ART_REGISTRY.artists
+    .map((artist) => artist.curatorNote)
+    .filter(Boolean);
+  assert.ok(notes.length >= 2);
+  for (const note of notes) {
+    assert.doesNotMatch(note, /every print keeps/i);
+    assert.match(
+      note,
+      /Prints and framed prints keep the full composition .* set on a white border; cards, postcards, canvas and phone cases use a chosen detail\.$/,
+    );
   }
 });

@@ -1321,12 +1321,19 @@ button {
 }
 
 .variant-fieldset legend,
-.quantity-row > span {
+.quantity-row > span,
+.product-fixed-size {
   color: var(--color-muted);
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
+}
+
+/* A single-size product (museum framed print, canvas, card, postcard)
+   names its size by the price, styled like the size picker's legend. */
+.product-fixed-size {
+  margin: 10px 0 0;
 }
 
 .variant-options {

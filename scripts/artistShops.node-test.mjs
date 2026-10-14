@@ -396,7 +396,7 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
   // Counts in other groups follow the orientation choice.
   const type = portrait.groups.find((group) => group.key === 'type');
   assert.deepEqual(type.options, [
-    {count: 3, label: 'Art prints', selected: false, value: 'prints'},
+    {count: 3, label: 'Prints', selected: false, value: 'prints'},
   ]);
   const orientation = portrait.groups.find(
     (group) => group.key === 'orientation',
@@ -417,6 +417,21 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
   );
   assert.equal(both.products.length, 4);
   assert.equal(both.activeCount, 3);
+  // The filter was labelled "Art prints"; links written from that label
+  // still select the prints.
+  for (const old of ['Art+prints', 'art-prints', 'ART%20PRINTS', 'prints']) {
+    const view = shops.artistShopView(
+      hiroshige,
+      new URLSearchParams(`type=${old}`),
+    );
+    assert.equal(view.activeCount, 1, old);
+    assert.equal(view.products.length, 4, old);
+    assert.equal(
+      view.groups.find((group) => group.key === 'type').options[0].selected,
+      true,
+      old,
+    );
+  }
 
   const none = shops.artistShopView(
     hiroshige,
