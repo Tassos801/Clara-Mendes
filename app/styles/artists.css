@@ -319,10 +319,13 @@
   object-fit: cover;
 }
 
+/* On the narrowest phones the link drops below the numbers rather than
+   breaking over two lines. */
 .artist-featured__bar {
   align-items: center;
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 4px 16px;
   justify-content: space-between;
   margin-top: 12px;
 }
@@ -367,12 +370,14 @@
   gap: 12px;
   min-height: 44px;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .artist-featured__arrow {
   border: 1px solid currentColor;
   border-radius: 50%;
   display: inline-grid;
+  flex: none;
   height: 28px;
   place-items: center;
   transition: transform 300ms cubic-bezier(0.25, 1, 0.5, 1);
@@ -501,6 +506,8 @@
   flex: none;
   height: 17px;
   margin: 0;
+  /* reset.css pads every input; padded, the tick has no room to centre. */
+  padding: 0;
   place-items: center;
   width: 17px;
 }
@@ -809,6 +816,11 @@
     overscroll-behavior: contain;
   }
 
+  /* The foot's rule closes the list; a second one above it doubled up. */
+  .artist-refine__group:last-child {
+    border-bottom: 0;
+  }
+
   .artist-refine__foot {
     border-top: 1px solid var(--artists-line);
     display: block;
@@ -842,6 +854,18 @@
 
   .artist-grid {
     gap: 28px 12px;
+  }
+}
+
+/* 320 px phones (and larger Display Zoom): Filter and Sort keep one row;
+   "Sort by:" stays the menu's accessible name. */
+@media (max-width: 359px) {
+  .artist-listing__sort span {
+    clip: rect(0, 0, 0, 0);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
   }
 }
 
