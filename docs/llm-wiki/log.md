@@ -1638,3 +1638,19 @@ tone), and the route-local greys (`--cv-muted`, `--rv-muted`, `--os-muted`,
 The phone-case teaser (`--case-linen`) and Pastel Forms bands stay light
 because their images carry that background. `APP_THEME_COLOR` /
 `APP_BACKGROUND_COLOR` in `app/lib/webManifest.ts` match `--color-page`.
+
+## 2026-10-14 - Store-wide wording for the multi-product range
+
+Storefront copy that still described a print-only shop now covers the full
+range. Homepage title and description, hero line, trust band ("Tracked
+delivery" became "International delivery": plant pots ship untracked and
+cards go by letter post), collection intro and story band; the founding
+capsules preview; footer blurb plus a Phone Cases link; Shop All, Search and
+manifest descriptions; search empty-state suggestions (each checked live to
+return results); empty cart; contact response time (one business day
+throughout); book nook and artists intros. Our Story now lists all studio
+capsules with their real work counts and adds an "Around the art" list of
+released lines. Error pages get a "Page not found | Clara Mendes" title and a
+plain-language 404 message. `public/llms.txt` was rewritten for the current
+catalogue. Shopify-hosted policies were not changed: the shipping policy still
+has no clothing section.
