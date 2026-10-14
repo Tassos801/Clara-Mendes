@@ -1,0 +1,253 @@
+/* Homepage artist-shops feature (app/components/ArtistShopsFeature.tsx).
+   A deep indigo band, after the woodblock blues, so the artist shops read
+   as their own destination right under the hero. */
+.artist-feature {
+  --af-ink: #f3efe6;
+  --af-muted: rgba(243, 239, 230, 0.72);
+  --af-line: rgba(243, 239, 230, 0.22);
+  align-items: center;
+  background:
+    radial-gradient(
+      120% 90% at 0% 0%,
+      rgba(84, 112, 150, 0.28),
+      transparent 60%
+    ),
+    #1d2633;
+  color: var(--af-ink);
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  padding: clamp(56px, 7vw, 96px) clamp(18px, 5vw, 80px);
+}
+
+.artist-feature a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.artist-feature a:focus-visible {
+  outline: 2px solid var(--af-ink);
+  outline-offset: 4px;
+}
+
+.artist-feature-eyebrow {
+  color: var(--af-muted);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.6;
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+
+.artist-feature h2 {
+  font-family: var(--serif);
+  font-size: clamp(40px, 4.6vw, 66px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  margin: 0 0 22px;
+}
+
+.artist-feature h2 em {
+  font-weight: 400;
+}
+
+.artist-feature-copy > p:not(.artist-feature-eyebrow) {
+  color: var(--af-muted);
+  font-size: 15px;
+  line-height: 1.75;
+  margin: 0;
+  max-width: 34ch;
+}
+
+.artist-feature-families {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 24px 0 0;
+  max-width: 420px;
+  padding: 0;
+}
+
+.artist-feature-families li {
+  border: 1px solid var(--af-line);
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  padding: 8px 12px;
+}
+
+.artist-feature-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 26px;
+  margin-top: 32px;
+}
+
+.artist-feature .artist-feature-button {
+  align-items: center;
+  background: var(--af-ink);
+  border-radius: 999px;
+  color: #1d2633;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.16em;
+  min-height: 46px;
+  padding: 0 24px;
+  text-transform: uppercase;
+  transition: background 240ms ease;
+}
+
+.artist-feature .artist-feature-button:hover {
+  background: #ffffff;
+}
+
+.artist-feature-link,
+.artist-feature-cta {
+  align-items: center;
+  border-bottom: 1px solid currentColor;
+  display: inline-flex;
+  font-size: 12px;
+  gap: 18px;
+  min-height: 44px;
+  padding: 4px 0 6px;
+  width: fit-content;
+}
+
+.artist-feature-link span,
+.artist-feature-cta span {
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.artist-feature-grid {
+  display: grid;
+  gap: clamp(16px, 2.4vw, 32px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.artist-feature-card {
+  display: grid;
+  gap: 8px;
+}
+
+.artist-feature-media {
+  aspect-ratio: 4 / 5;
+  background: #f1efe8;
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.artist-feature-media img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms cubic-bezier(0.25, 1, 0.5, 1);
+  width: 100%;
+}
+
+.artist-feature-card:hover .artist-feature-media img,
+.artist-feature-card:focus-visible .artist-feature-media img {
+  transform: scale(1.03);
+}
+
+.artist-feature-name {
+  font-family: var(--serif);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.artist-feature-meta,
+.artist-feature-count {
+  color: var(--af-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.artist-feature-count {
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: none;
+}
+
+.artist-feature-cta {
+  margin-top: 2px;
+}
+
+/* Tablets and phones: copy first, then the artists side by side; a third
+   artist scrolls sideways rather than shrinking the cards. */
+@media (max-width: 860px) {
+  .artist-feature {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .artist-feature-copy > p:not(.artist-feature-eyebrow) {
+    max-width: 46ch;
+  }
+}
+
+@media (max-width: 599px) {
+  .artist-feature {
+    gap: 30px;
+    padding: 46px 0;
+  }
+
+  .artist-feature-copy {
+    padding: 0 16px;
+  }
+
+  .artist-feature h2 {
+    font-size: clamp(36px, 11vw, 48px);
+  }
+
+  .artist-feature-grid {
+    grid-auto-columns: calc((100% - 12px) / 2);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    gap: 12px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 0 16px 4px;
+    scroll-padding-inline: 16px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .artist-feature-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .artist-feature-grid > li {
+    scroll-snap-align: start;
+  }
+
+  .artist-feature-name {
+    font-size: 1.12rem;
+  }
+
+  .artist-feature-meta {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artist-feature-media img {
+    transition: none;
+  }
+}

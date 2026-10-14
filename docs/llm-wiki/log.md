@@ -1623,3 +1623,15 @@ Prodigi mapping, case-file deployment, shipping profiles and master reviews
 remain. Storefront support (artist-shop Product type filter, PDP copy,
 webhook case SKUs) is dormant until release. See
 [status](../artist-shops/status.md).
+
+## 2026-10-14 - Shop categories and homepage artist feature
+
+Shop All gained a Framed Art tab (the ten Floating World framed prints had
+none) and orders its tabs wall art first; the tabs take their own toolbar
+row, so Clothing no longer slides under the collection picker on desktop.
+The collection picker separates Clara Mendes capsules from museum
+collections and lists the artist shops. The homepage adds an Artists header
+link and an artist-shops feature under the hero, and "More from the edit"
+shows varied studio products instead of four museum phone cases. See
+[catalog](modules/catalog-and-products.md) and
+[routes](modules/routes-and-pages.md).

@@ -530,3 +530,51 @@ test('artist shops point to the museums that hold the work', () => {
   );
   assert.equal(shops.seriesLabel(undefined), null);
 });
+
+test('the homepage artist feature lists public artists only, from data', () => {
+  // Nothing public: the homepage section renders nothing.
+  const staged = {
+    artProducts: stagedArtProducts(),
+    catalog: stagedPrintCatalog(),
+  };
+  assert.deepEqual(shops.artistFeature(staged), {artists: [], families: []});
+
+  // One released print: Hokusai's card leads with it and links his shop.
+  const sources = releasedFixture();
+  const feature = shops.artistFeature(sources);
+  assert.deepEqual(feature.families, ['Prints']);
+  assert.equal(feature.artists.length, 1);
+  const [hokusai] = feature.artists;
+  assert.equal(hokusai.name, 'Katsushika Hokusai');
+  assert.equal(hokusai.shortName, 'Hokusai');
+  assert.equal(hokusai.path, '/artists/hokusai');
+  assert.equal(hokusai.products, 1);
+  assert.equal(hokusai.works, 1);
+  assert.match(hokusai.image, /\/the-great-wave-off-kanagawa\.webp$/);
+  assert.equal(
+    hokusai.imageAlt,
+    'The Great Wave off Kanagawa by Katsushika Hokusai',
+  );
+  assert.equal(
+    hokusai.meta[0],
+    registryModule.lifeDatesLabel(
+      sources.registry.artists.find((a) => a.id === 'katsushika-hokusai'),
+    ),
+  );
+
+  // The shipped data: one card per public artist, in the shop's order, and
+  // the product types sold across them in display order.
+  const live = shops.artistFeature();
+  assert.deepEqual(
+    live.artists.map((artist) => artist.path),
+    shops.publicArtists().map(({artist}) => shops.artistPath(artist)),
+  );
+  assert.deepEqual(
+    live.families,
+    shops.artistFamilies(shops.publicArtists().flatMap((e) => e.products)),
+  );
+  for (const artist of live.artists) {
+    assert.ok(artist.works > 0 && artist.products >= artist.works);
+    assert.ok(artist.image.startsWith('/images/'));
+  }
+});

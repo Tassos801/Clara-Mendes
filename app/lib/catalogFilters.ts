@@ -3,6 +3,7 @@ import {
   CURATED_PRODUCTS,
   isUnreleasedCuratedHandle,
   releasedCuratedProducts,
+  releasedCuratedProductTypes,
   type CuratedProduct,
 } from './curatedProducts.ts';
 import {
@@ -16,11 +17,13 @@ import {
   ART_PRODUCT_CATALOG,
   isUnreleasedArtProductHandle,
   releasedArtProductHandles,
+  releasedArtProductTypes,
   type ArtProductCatalog,
 } from './artProductCatalog.ts';
 import {
   hasClothingApprovals,
   isClothingProduct,
+  isClothingProductType,
   type ClothingProductLike,
 } from './clothing.ts';
 
@@ -173,6 +176,58 @@ export function releasedExtensionProductTypes(
     if (productFlags[handle] && !types.includes(type)) types.push(type);
   }
   return types;
+}
+
+/**
+ * The shop's Product tabs, in this order: wall art (prints, framed,
+ * canvas), then paper, then objects. A released type missing here keeps
+ * its release order after these, so a new family is never left without a
+ * tab.
+ */
+export const SHOP_PRODUCT_TYPE_ORDER: readonly string[] = [
+  'Art Prints',
+  'Framed Art',
+  'Canvas Art',
+  'Cards',
+  'Postcards',
+  'Phone Cases',
+  'Plant Pots',
+  'Book Nooks',
+];
+
+export function orderShopProductTypes(types: readonly string[]): string[] {
+  const rank = (type: string) => {
+    const index = SHOP_PRODUCT_TYPE_ORDER.indexOf(type);
+    return index < 0 ? SHOP_PRODUCT_TYPE_ORDER.length : index;
+  };
+  return [...new Set(types)]
+    .map((type, index) => ({index, type}))
+    .sort((a, b) => rank(a.type) - rank(b.type) || a.index - b.index)
+    .map((row) => row.type);
+}
+
+/**
+ * Every product type the shop's type filter offers: the prints, released
+ * extension families and standalone products, museum family products
+ * (data/art-product-catalog.json) and curated products, in tab order.
+ */
+export function shopProductTypes({
+  artProducts = ART_PRODUCT_CATALOG,
+  curatedProducts = CURATED_PRODUCTS,
+  extensionFlags = EXTENSION_RELEASE_FLAGS,
+  productFlags = PRODUCT_RELEASE_FLAGS,
+}: {
+  artProducts?: ArtProductCatalog;
+  curatedProducts?: readonly CuratedProduct[];
+  extensionFlags?: Record<string, boolean>;
+  productFlags?: Record<string, boolean>;
+} = {}): string[] {
+  return orderShopProductTypes([
+    'Art Prints',
+    ...releasedExtensionProductTypes(extensionFlags, productFlags),
+    ...releasedArtProductTypes(artProducts),
+    ...releasedCuratedProductTypes(curatedProducts),
+  ]);
 }
 
 /**
@@ -447,6 +502,36 @@ export function isStoreThemeProduct(product: CatalogProductLike) {
     SELLABLE_PRODUCT_HANDLES.has(handle) ||
     (isClothingProduct(product) && hasClothingApprovals(product))
   );
+}
+
+/**
+ * Up to `count` products for a short mixed row: the first of each shop
+ * category in the given order (garments count as one, Clothing), then the
+ * rest in order, so one range — ten book nooks, four garments — cannot
+ * fill the row alone. Products in `exclude` (by id) are skipped.
+ */
+export function pickVariedProducts<
+  T extends {id: string; productType?: string | null},
+>(products: readonly T[], count: number, exclude: readonly {id: string}[] = []) {
+  const excluded = new Set(exclude.map((product) => product.id));
+  const pool = products.filter((product) => !excluded.has(product.id));
+  const category = (product: T) =>
+    isClothingProductType(product.productType)
+      ? 'Clothing'
+      : (product.productType ?? '');
+  const picked: T[] = [];
+  const seen = new Set<string>();
+  for (const product of pool) {
+    if (picked.length === count) break;
+    if (seen.has(category(product))) continue;
+    seen.add(category(product));
+    picked.push(product);
+  }
+  for (const product of pool) {
+    if (picked.length === count) break;
+    if (!picked.includes(product)) picked.push(product);
+  }
+  return picked;
 }
 
 export function isDemoProduct(product: CatalogProductLike) {
