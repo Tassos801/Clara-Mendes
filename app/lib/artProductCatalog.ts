@@ -100,7 +100,11 @@ export type ArtFamilySpec = {
   /** Single-variant families; phone cases have one variant per device. */
   single: {key: string; option: string; skuSuffix: string} | null;
   file: FileSpec;
-  /** Lowest native ppi accepted (owner decisions of 2026-10-13). */
+  /**
+   * Lowest native ppi accepted for every work (owner decisions of
+   * 2026-10-13: canvas 140, framed 200, the rest 300). One work goes lower
+   * only by a recorded owner exception (ArtFamilyConfig.ppiExceptions).
+   */
   minPpi: number;
   tags: string[];
   /** Product noun in running copy. */
@@ -460,6 +464,27 @@ export type ArtFamilyProduct = {
   variants: ArtProductVariant[];
 };
 
+/**
+ * The owner accepting one work's native ppi below its family's floor, as the
+ * canvas and framed floors were accepted for every work on 2026-10-13, but
+ * for a single artwork and with who decided, when and why. Only the owner
+ * grants one; the pipeline never does.
+ */
+export type PpiException = {
+  at: string;
+  by: string;
+  /** The lowest native ppi accepted for this work and family. */
+  minPpi: number;
+  /** The reason, e.g. "AIC serves 3000 px; owner accepts 288 ppi". */
+  note: string;
+};
+
+/**
+ * No exception goes below the museum verdicts' floor: under 150 ppi a size
+ * is unsupported (scripts/lib/museum-layout.mjs, app/lib/museumCrops.ts).
+ */
+export const MIN_EXCEPTION_PPI = 150;
+
 export type ArtFamilyConfig = {
   /**
    * The owner-approved price. Absent while it waits for a supplier quote
@@ -470,6 +495,8 @@ export type ArtFamilyConfig = {
   providerSku: string;
   /** Prodigi dashboard settings for channel-mapped families (handoff). */
   providerSettings?: string;
+  /** Owner exceptions to the family's ppi floor, by artwork id. */
+  ppiExceptions?: Record<string, PpiException>;
 };
 
 export type ArtProductCollection = {
@@ -621,13 +648,35 @@ export function familySourceSignature(
   });
 }
 
+/**
+ * The lowest native ppi a product's file may have: its family's floor, or
+ * the owner's recorded exception for that artwork in its collection.
+ */
+export function familyPpiFloor(
+  product: Pick<ArtFamilyProduct, 'artworkId' | 'collection' | 'family'>,
+  catalog: Pick<ArtProductCatalog, 'collections'> = ART_PRODUCT_CATALOG,
+) {
+  const exception = catalog.collections.find(
+    (entry) => entry.slug === product.collection,
+  )?.families[product.family]?.ppiExceptions?.[product.artworkId];
+  return {
+    minPpi: exception?.minPpi ?? FAMILY_SPECS[product.family].minPpi,
+    ppiException: exception ?? null,
+  };
+}
+
 /** What still blocks a product's release; empty when it may be released. */
 export function familyReleaseIssues(
   product: ArtFamilyProduct,
   {
+    catalog = ART_PRODUCT_CATALOG,
     crops = MUSEUM_CROPS,
     registry = ART_REGISTRY,
-  }: {crops?: MuseumCrops; registry?: ArtRegistry} = {},
+  }: {
+    catalog?: Pick<ArtProductCatalog, 'collections'>;
+    crops?: MuseumCrops;
+    registry?: ArtRegistry;
+  } = {},
 ): string[] {
   const artwork = findArtwork(product.artworkId, registry);
   const artist = artwork && findArtist(artwork.artistId, registry);
@@ -651,6 +700,12 @@ export function familyReleaseIssues(
       familySourceSignature(product, {crops, registry})
   )
     issues.push('current assets');
+  // An exception withdrawn after `prepare` must stop the release too.
+  if (
+    product.assets &&
+    !(product.assets.ppi >= familyPpiFloor(product, catalog).minPpi)
+  )
+    issues.push('native ppi at its floor or an owner ppi exception');
   if (
     !product.shopify?.productId ||
     product.variants.some(
@@ -819,6 +874,27 @@ export function validateArtProductCatalog(
         problems.push(`${at}: ${family} priceEUR must look like "29.99"`);
       if (!config?.providerSku?.trim())
         problems.push(`${at}: ${family} missing providerSku`);
+      for (const [artworkId, exception] of Object.entries(
+        config?.ppiExceptions ?? {},
+      )) {
+        const where = `${at}: ${family} ppi exception for ${artworkId}`;
+        const floor = FAMILY_SPECS[family as ArtProductFamily]?.minPpi ?? 0;
+        if (!source?.prints.some((print) => print.artworkId === artworkId))
+          problems.push(`${where}: not an artwork of this collection`);
+        if (
+          typeof exception?.minPpi !== 'number' ||
+          !(exception.minPpi >= MIN_EXCEPTION_PPI && exception.minPpi < floor)
+        )
+          problems.push(
+            `${where}: minPpi must be at least ${MIN_EXCEPTION_PPI} and below the family's ${floor}`,
+          );
+        if (
+          !exception?.by?.trim() ||
+          !exception.at?.trim() ||
+          !exception.note?.trim()
+        )
+          problems.push(`${where}: records who granted it, when and why`);
+      }
       const contract = FAMILY_SPECS[family as ArtProductFamily]?.providerSku;
       if (contract && config?.providerSku !== contract)
         problems.push(
@@ -962,7 +1038,7 @@ export function validateArtProductCatalog(
       );
     if (product.released === true)
       problems.push(
-        ...familyReleaseIssues(product, {crops, registry}).map(
+        ...familyReleaseIssues(product, {catalog, crops, registry}).map(
           (issue) => `${at}: released without ${issue}`,
         ),
       );

@@ -9,12 +9,14 @@
 
 import path from 'node:path';
 import {
+  ART_PRODUCT_CATALOG,
   ART_PRODUCT_FAMILIES,
   casePrintUrlPath,
   FAMILY_SPECS,
   familyCrop,
   familyFileSize,
   familyHandle,
+  familyPpiFloor,
   familyReleaseIssues,
   familySku,
   familySourceSignature,
@@ -260,6 +262,7 @@ export function familyAssetPlan(
   {
     collection,
     launchRoot,
+    artCatalog = ART_PRODUCT_CATALOG,
     crops = MUSEUM_CROPS,
     registry = ART_REGISTRY,
     framedPpi,
@@ -357,7 +360,8 @@ export function familyAssetPlan(
     ppi: crop
       ? Math.round(crop.ppi * 10) / 10
       : (whole?.nativePpi ?? framedPpi ?? null),
-    minPpi: spec.minPpi,
+    // The family's floor, or the owner's recorded exception for this work.
+    ...familyPpiFloor(product, artCatalog),
     sourceSignature: familySourceSignature(product, {crops, registry}),
   };
 }
@@ -375,7 +379,7 @@ export function assetIssues(plan, file) {
     );
   if (!(plan.ppi >= plan.minPpi))
     issues.push(
-      `${plan.handle}: ${plan.ppi} ppi native is below the accepted ${plan.minPpi}`,
+      `${plan.handle}: ${plan.ppi} ppi native is below the accepted ${plan.minPpi}; only the owner can accept less (ppiExceptions in data/art-product-catalog.json)`,
     );
   if (plan.extract) {
     const {extract, source} = plan;

@@ -232,6 +232,7 @@ export function createFamilySteps({
           ? borderedLayout(masterSize(artwork), FRAMED_PRINT_SIZE).nativePpi
           : undefined;
       const plan = familyAssetPlan(product, {
+        artCatalog,
         collection,
         framedPpi,
         launchRoot,
@@ -361,6 +362,9 @@ export function createFamilySteps({
               minPpi: Math.min(...ppis),
               maxPpi: Math.max(...ppis),
               accepted: FAMILY_SPECS[family].minPpi,
+              ownerExceptions: Object.keys(
+                artCollection.families[family]?.ppiExceptions ?? {},
+              ).length,
               file: `${products.find((p) => p.family === family).assets.print.width}×${products.find((p) => p.family === family).assets.print.height} @ ${FAMILY_SPECS[family].file.dpi} dpi (${family === 'framed-print' || family === 'canvas' ? 'in the work’s orientation' : 'fixed'})`,
             }
           : null;
@@ -808,7 +812,7 @@ export function createFamilySteps({
     const blocked = products
       .map((product) => ({
         handle: product.handle,
-        issues: familyReleaseBlockers(product),
+        issues: familyReleaseBlockers(product, {catalog: artCatalog}),
       }))
       .filter((entry) => entry.issues.length);
     if (blocked.length)
