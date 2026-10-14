@@ -58,6 +58,15 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
   `app/routes/products.$handle.tsx` interpolate those constants;
   `ProductShippingText` takes a `reach` (`worldwide` / `selected` for canvas
   and framed Your Sky / `eu` for cards) that mirrors the shipping profiles.
+- Out-of-reach buyers: Storefront `availableForSale` is per buyer country, so
+  an item whose shipping profile has no zone for the buyer reads false like a
+  sold-out one. `app/lib/deliveryReach.server.ts` re-reads unavailable items
+  in the default market (Cyprus): the PDP says "Doesn't ship to …" with a
+  delivery-country picker (posts to `/locale`); Your Sky, listing cards (one
+  batched read per listing) and `/pastel-forms` say the same, and option
+  chips drop "Sold out". "Sold out" stays for items unavailable in Cyprus
+  too. JSON-LD uses the default-market view, matching its EU-27
+  `shippingDestination`.
 - Shipping policy: `docs/shopify-policies-drafts.md` is the paste source for
   Shopify Admin > Settings > Policies; the site footer links
   `/policies/shipping-policy`, which renders the admin-hosted content.

@@ -1760,3 +1760,15 @@ link and an artist-shops feature under the hero, and "More from the edit"
 shows varied studio products instead of four museum phone cases. See
 [catalog](modules/catalog-and-products.md) and
 [routes](modules/routes-and-pages.md).
+
+## 2026-10-14 - "Doesn't ship to" instead of "Sold out"
+
+Buyers outside an item's shipping profile (a US visitor on an EU-only card,
+framed museum print, pot or framed Your Sky) saw "Sold out" and JSON-LD
+OutOfStock, because Storefront `availableForSale` is per buyer country. The
+storefront now re-reads unavailable items in the default market (Cyprus):
+the PDP, Your Sky, listing cards and `/pastel-forms` say "Doesn't ship to
+…" (the PDP adds a delivery-country picker), real sold-out keeps "Sold out",
+and structured data uses the default-market view. Store data and shipping
+zones are unchanged. See
+[fulfillment](modules/fulfillment.md#where-the-promises-render).

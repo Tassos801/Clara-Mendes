@@ -41,6 +41,7 @@ import {
   ORIGINAL_ART_COLLECTIONS,
   pickVariedProducts,
 } from '~/lib/catalogFilters';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {
   buildOriginalArtQuery,
@@ -191,7 +192,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
         data.frameProduct && !isDemoProduct(data.frameProduct)
           ? (data.frameProduct as ClaraCardProduct)
           : null,
-      products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+      products: await withDeliveryReach(
+        context.storefront,
+        filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+      ),
       caseTeaser: buildCaseTeaser(
         data.toughCase as ToughCaseTeaserProduct | null,
       ),

@@ -165,6 +165,13 @@ import {
   type ReviewsMetafieldResponse,
 } from '~/lib/reviews';
 import {summarizeReviews, type ProductReviewsData} from '~/lib/reviewTypes';
+import {countryPhrase, defaultMarketVariants} from '~/lib/deliveryReach';
+import {
+  deliveryCountryChoices,
+  withDeliveryReach,
+  withVariantReach,
+} from '~/lib/deliveryReach.server';
+import {DeliveryCountryNote} from '~/components/DeliveryCountryNote';
 
 type ProductImage = {
   altText?: string | null;
@@ -193,6 +200,8 @@ type ProductVariant = {
   id: string;
   title: string;
   availableForSale: boolean;
+  /** Sellable in the default market, but not shipped to this buyer. */
+  outOfReach?: boolean;
   barcode?: string | null;
   price: MoneyAmount;
   compareAtPrice?: MoneyAmount | null;
@@ -660,6 +669,21 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     }
   }
 
+  // A buyer outside an item's shipping profile reads it as unavailable, like
+  // a sold-out one; the default-market reads tell the two apart (free for a
+  // buyer in Cyprus or when everything is buyable).
+  const buyerCountry = context.storefront.i18n.country;
+  const [reachedProduct, relatedProducts] = await Promise.all([
+    withVariantReach(context.storefront, product),
+    withDeliveryReach(
+      context.storefront,
+      museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
+    ),
+  ]);
+  const outOfReach = reachedProduct.variants.nodes.some(
+    (variant: ProductVariant) => variant.outOfReach,
+  );
+
   return {
     artProduct,
     artworkCredit: productArtworkCredit(product.handle),
@@ -670,17 +694,24 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           title: shopCapsule.title,
         }
       : null,
+    deliveryCountry: {
+      choices: outOfReach
+        ? await deliveryCountryChoices(context.storefront)
+        : null,
+      code: buyerCountry,
+      phrase: countryPhrase(buyerCountry),
+    },
     museumCase,
     phoneCaseCrossSell,
     classicFrameCrossSell,
     toughCaseCrossSell,
-    product,
+    product: reachedProduct,
     relatedByArtist: museumPairing ? museumPairing.artist : null,
     // The section shows three cards; it is "from the same capsule" only
     // when no best-selling fill is among them.
     relatedFromCapsule: !museumRelated && capsuleSiblings.length >= 3,
     relatedFromBookNooks: isNookPage && capsuleSiblings.length > 0,
-    relatedProducts: museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
+    relatedProducts,
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
     skyTheme: DEFAULT_SKY_THEME,
@@ -702,6 +733,7 @@ function ProductPage() {
     artworkCredit,
     capsuleSummary,
     classicFrameCrossSell,
+    deliveryCountry,
     museumCase,
     phoneCaseCrossSell,
     product,
@@ -763,6 +795,10 @@ function ProductPage() {
       : isNatal && natalParams
         ? toNatalCartAttributes(natalParams)
         : undefined;
+  // Sellable in the default market but not shipped to this buyer's country.
+  const notShippedHere = Boolean(
+    !selectedVariant?.availableForSale && selectedVariant?.outOfReach,
+  );
   const purchaseBlocked =
     !selectedVariant?.availableForSale ||
     (isSkyMap && !skyParams) ||
@@ -778,14 +814,18 @@ function ProductPage() {
       ? personalisedPendingLabel
       : selectedVariant?.availableForSale && selectedVariantPrice
         ? `Add to cart - ${selectedVariantPrice}`
-        : 'Sold out';
+        : notShippedHere
+          ? `Doesn't ship to ${deliveryCountry.phrase}`
+          : 'Sold out';
   const stickyButtonLabel = caseModelPending
     ? 'Choose your model'
     : isPersonalisedPending
       ? personalisedPendingLabel
       : selectedVariant?.availableForSale && selectedVariantPrice
         ? `Add - ${selectedVariantPrice}`
-        : 'Sold out';
+        : notShippedHere
+          ? "Doesn't ship here"
+          : 'Sold out';
   const skyPendingAction =
     skyStatus.nextRequired === 'place'
       ? {href: '#sky-place', label: 'Choose a place'}
@@ -879,6 +919,9 @@ function ProductPage() {
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
+  // Structured data describes the default market: its Offer ships to the EU
+  // (seo.ts), and Googlebot crawls as a US buyer, who cannot be sent cards.
+  const schemaVariants = defaultMarketVariants(product.variants.nodes);
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
   const shopUrl = new URL('/collections/all', seoUrl).toString();
   const galleryLeadImage = isArtPrint
@@ -1010,7 +1053,9 @@ function ProductPage() {
       <StructuredData
         data={[
           productSchema({
-            availableForSale: productAvailableForSale,
+            availableForSale: schemaVariants.some(
+              (variant) => variant.availableForSale,
+            ),
             description: productDescription,
             gtin: selectedVariant?.barcode,
             image: absoluteImageUrl(primaryImage?.url),
@@ -1030,7 +1075,7 @@ function ProductPage() {
             title: product.title,
             url: seoUrl,
             vendor: product.vendor,
-            variants: product.variants.nodes,
+            variants: schemaVariants,
           }),
           breadcrumbSchema({
             items: [
@@ -1177,7 +1222,9 @@ function ProductPage() {
                   ? curatedProduct
                     ? 'DIY kit'
                     : isFutureClothing ? 'Available' : 'Made to order'
-                  : 'Unavailable'}
+                  : notShippedHere
+                    ? 'Not shipped here'
+                    : 'Unavailable'}
               </span>
               <span>
                 {curatedProduct
@@ -1431,6 +1478,15 @@ function ProductPage() {
                 </AddToCartButton>
               )}
             </div>
+
+            {notShippedHere ? (
+              <DeliveryCountryNote
+                choices={deliveryCountry.choices}
+                countryCode={deliveryCountry.code}
+                countryPhrase={deliveryCountry.phrase}
+                redirectTo={`${location.pathname}${location.search}`}
+              />
+            ) : null}
 
             {!isSkyMap &&
             !isNatal &&

@@ -22,7 +22,9 @@ export type VariantOptionsProduct = {
  * Each legend repeats the current choice, so it stays readable when the
  * chips wrap on a phone, and a value shows its price when the values of
  * that option cost different amounts. A value that cannot be bought stays
- * selectable (to show it is sold out) and the purchase button disables.
+ * selectable (to show it is sold out) and the purchase button disables. A
+ * value that only doesn't ship to the buyer's country is not sold out: the
+ * purchase button says so once for every value.
  */
 export function VariantOptions({
   basePath,
@@ -88,7 +90,7 @@ export function VariantOptions({
                 value.targetOptions.forEach((selectedOption) => {
                   params.set(selectedOption.name, selectedOption.value);
                 });
-                const soldOut = value.available === false;
+                const soldOut = value.available === false && !value.outOfReach;
 
                 return (
                   <Link

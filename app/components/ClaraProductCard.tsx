@@ -80,6 +80,9 @@ export type ClaraCardProduct = ClothingProductLike & {
   variants?: {
     nodes: ProductVariant[];
   };
+  /** "the United States": on sale, but not shipped to the buyer's country
+   * (lib/deliveryReach.ts). */
+  notShippedTo?: string;
 };
 
 export function ClaraProductCard({
@@ -202,6 +205,11 @@ export function ClaraProductCard({
               <strong className="cm-card-price">{priceLabel}</strong>
             ) : null}
           </div>
+          {product.notShippedTo ? (
+            <p className="cm-card-reach">
+              Doesn&rsquo;t ship to {product.notShippedTo}
+            </p>
+          ) : null}
           {story ? <p className="cm-card-story">{story}</p> : null}
         </div>
       </Link>
@@ -250,12 +258,17 @@ function QuickAddButton({
   }
 
   if (mode === 'unavailable') {
+    // Unbuyable here but on sale in the default market: not sold out.
+    const label = product.notShippedTo
+      ? `Doesn't ship to ${product.notShippedTo}`
+      : 'Sold out';
     return (
       <button
         type="button"
         className="cm-quick-add cm-quick-add--unavailable"
         disabled
-        aria-label="Sold out"
+        aria-label={label}
+        title={label}
       >
         <svg
           width="14"
@@ -441,6 +454,15 @@ const cardCss = `
   font-size: 0.78rem;
   line-height: 1.5;
   margin: 8px 0 0;
+}
+
+.cm-card-reach {
+  color: var(--color-clay, #9c6f5d);
+  font-family: var(--sans);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  margin: 6px 0 0;
 }
 
 .cm-card-title {

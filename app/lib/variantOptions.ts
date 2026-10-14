@@ -9,6 +9,8 @@ type Money = {amount: string; currencyCode: string};
 
 export type OptionVariant = {
   availableForSale: boolean;
+  /** Sellable in the default market, not shipped to this buyer. */
+  outOfReach?: boolean;
   price?: Money | null;
   selectedOptions: SelectedOption[];
 };
@@ -23,6 +25,8 @@ export type PickerValue = {
   available: boolean | null;
   id: string;
   name: string;
+  /** Unavailable only because it doesn't ship to the buyer's country. */
+  outOfReach: boolean;
   price: Money | null;
   selected: boolean;
   /** Every option of the variant this value leads to, for its URL. */
@@ -85,6 +89,9 @@ export function describeOptionValues<V extends OptionVariant>({
       available: variant ? variant.availableForSale : null,
       id: value.id || value.name,
       name: value.name,
+      outOfReach: Boolean(
+        variant && !variant.availableForSale && variant.outOfReach,
+      ),
       price: variant?.price ?? null,
       selected: selectedMap.get(option.name) === value.name,
       targetOptions: variant
