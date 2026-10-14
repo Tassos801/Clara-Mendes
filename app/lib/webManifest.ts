@@ -20,7 +20,7 @@ export function webManifest() {
     name: APP_NAME,
     short_name: APP_NAME,
     description:
-      'Original art prints, considered objects and Clara Mendes Clothing.',
+      'Original art and museum prints, clothing, phone cases, plant pots and book nooks.',
     start_url: '/',
     scope: '/',
     display: 'standalone',

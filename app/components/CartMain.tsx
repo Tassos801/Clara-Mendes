@@ -123,8 +123,9 @@ function CartEmpty({
       <p className="eyebrow">Your cart is empty</p>
       <p className="cart-empty-title">Nothing here yet.</p>
       <p className="cart-empty-copy">
-        Start with original art prints, considered objects or a star map of your
-        own.
+        {hasYourSky
+          ? 'Start with an art print, a phone case or a plant pot — or a star map of your own.'
+          : 'Start with an art print, a phone case or a plant pot.'}
       </p>
       <div className="cart-empty-actions">
         <Link

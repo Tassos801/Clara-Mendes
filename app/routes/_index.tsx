@@ -91,8 +91,8 @@ type HomeCollection = {
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
-      'Original Clara Mendes art prints in 8 × 10, 16 × 20, and 20 × 24 inch sizes.',
-    title: 'Original Art Prints | Clara Mendes',
+      'Original Clara Mendes art, museum prints of Hokusai and Hiroshige, cards, canvas, phone cases, ceramic plant pots, book nook kits and activewear.',
+    title: 'Original Art Prints & Everyday Objects | Clara Mendes',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
 };
@@ -516,7 +516,7 @@ export default function Homepage() {
               <i>Objects</i> with soul
             </h1>
             <p ref={subRef} className="hm-prompt-sub">
-              Original art now. Considered products for collected spaces.
+              Original art and everyday objects for calm, collected spaces.
             </p>
             <div className="hm-hero-actions">
               <Link
@@ -560,7 +560,7 @@ export default function Homepage() {
         data-chapter="linen"
       >
         <p>Secure checkout</p>
-        <p>Tracked delivery</p>
+        <p>International delivery</p>
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
 
@@ -617,16 +617,13 @@ export default function Homepage() {
       >
         <div data-reveal>
           <p className="eyebrow">The collection</p>
-          <h2>
-            {products.length > 0
-              ? 'Original work, ready to live with.'
-              : 'The first print edition is being prepared.'}
-          </h2>
+          <h2>Original work, ready to live with.</h2>
         </div>
         <p>
-          {products.length > 0
-            ? 'The collection begins with original prints and leaves room for considered objects and editions to follow.'
-            : `${capitalize(WORK_COUNT_WORD)} original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.`}
+          The art comes first: {WORK_COUNT_WORD} original works across{' '}
+          {CAPSULE_COUNT_WORD} capsules, printed to order. The founding capsules
+          also come as cards, postcards and canvas, and every work as a phone
+          case.
         </p>
       </section>
 
@@ -774,15 +771,14 @@ export default function Homepage() {
         </section>
       ) : (
         <section className="empty-state home-empty-catalog">
-          <p className="eyebrow">Original art collection</p>
-          <h2>Explore the complete first print edition.</h2>
+          <p className="eyebrow">The shop</p>
+          <h2>Browse the full collection.</h2>
           <p>
-            Browse all {WORK_COUNT_WORD} works now. Product pages and secure
-            Shopify checkout appear automatically as each print becomes
-            available.
+            Every available print and product is in the shop, each with its
+            details and secure checkout.
           </p>
           <Link className="primary-button" to="/collections/all">
-            Browse the print collection
+            Browse the shop
           </Link>
         </section>
       )}
@@ -790,12 +786,12 @@ export default function Homepage() {
       <section className="story-section home-story-return" data-chapter="ink">
         <div className="story-image" aria-hidden />
         <div className="story-copy" data-reveal>
-          <p className="eyebrow">Considered editions</p>
-          <h2>Original art first, room to grow.</h2>
+          <p className="eyebrow">Our story</p>
+          <h2>Original art first, then the things around it.</h2>
           <p>
-            New product types can join the collection over time, each with clear
-            production details, delivery expectations, and a simple checkout
-            path.
+            What began as fifteen prints now takes in clothing, ceramics, phone
+            cases and book nooks. Every product page sets out how it is made
+            and how it ships.
           </p>
           <Link className="text-link" to="/our-story">
             Read the story
