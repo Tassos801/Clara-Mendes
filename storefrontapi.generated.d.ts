@@ -2013,6 +2013,187 @@ export type AllCollectionQuery = {
   };
 };
 
+export type ShopListingProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  endCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
+  first?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  last?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  query?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+  reverse?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Boolean']['input']>;
+  sortKey?: StorefrontAPI.InputMaybe<StorefrontAPI.ProductSortKeys>;
+  startCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
+}>;
+
+export type ShopListingProductsQuery = {
+  products: {
+    nodes: Array<
+      Pick<
+        StorefrontAPI.Product,
+        'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+      > & {
+        storefrontApproved?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+        >;
+        fulfillmentVerified?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+        >;
+        featuredImage?: StorefrontAPI.Maybe<
+          Pick<
+            StorefrontAPI.Image,
+            'id' | 'url' | 'altText' | 'width' | 'height'
+          >
+        >;
+        images: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Image,
+              'id' | 'url' | 'altText' | 'width' | 'height'
+            >
+          >;
+        };
+        priceRange: {
+          minVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+          maxVariantPrice: Pick<
+            StorefrontAPI.MoneyV2,
+            'amount' | 'currencyCode'
+          >;
+        };
+        sizeVariants: {
+          nodes: Array<
+            Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+            }
+          >;
+        };
+        cardVariant: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.ProductVariant,
+              'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
+            > & {
+              compareAtPrice?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+              >;
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'id' | 'url' | 'altText' | 'width' | 'height'
+                >
+              >;
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+            }
+          >;
+        };
+      }
+    >;
+    pageInfo: Pick<
+      StorefrontAPI.PageInfo,
+      'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'
+    >;
+  };
+};
+
+export type ShopCollectionLinksQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type ShopCollectionLinksQuery = {
+  collections: {
+    nodes: Array<
+      Pick<StorefrontAPI.Collection, 'id' | 'handle' | 'title'> & {
+        products: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.Product,
+              'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+            > & {
+              storefrontApproved?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+              >;
+              fulfillmentVerified?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+              >;
+              featuredImage?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'id' | 'url' | 'altText' | 'width' | 'height'
+                >
+              >;
+              images: {
+                nodes: Array<
+                  Pick<
+                    StorefrontAPI.Image,
+                    'id' | 'url' | 'altText' | 'width' | 'height'
+                  >
+                >;
+              };
+              priceRange: {
+                minVariantPrice: Pick<
+                  StorefrontAPI.MoneyV2,
+                  'amount' | 'currencyCode'
+                >;
+                maxVariantPrice: Pick<
+                  StorefrontAPI.MoneyV2,
+                  'amount' | 'currencyCode'
+                >;
+              };
+              sizeVariants: {
+                nodes: Array<
+                  Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+                    price: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                  }
+                >;
+              };
+              cardVariant: {
+                nodes: Array<
+                  Pick<
+                    StorefrontAPI.ProductVariant,
+                    'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
+                  > & {
+                    compareAtPrice?: StorefrontAPI.Maybe<
+                      Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+                    >;
+                    image?: StorefrontAPI.Maybe<
+                      Pick<
+                        StorefrontAPI.Image,
+                        'id' | 'url' | 'altText' | 'width' | 'height'
+                      >
+                    >;
+                    price: Pick<
+                      StorefrontAPI.MoneyV2,
+                      'amount' | 'currencyCode'
+                    >;
+                    product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+                    selectedOptions: Array<
+                      Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+                    >;
+                  }
+                >;
+              };
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
 export type PageQueryVariables = StorefrontAPI.Exact<{
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
@@ -3293,6 +3474,14 @@ interface GeneratedQueryTypes {
   '#graphql\n  query AllCollection(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $query: String\n    $reverse: Boolean\n    $sortKey: ProductSortKeys\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(\n      after: $endCursor\n      before: $startCursor\n      first: $first\n      last: $last\n      query: $query\n      reverse: $reverse\n      sortKey: $sortKey\n    ) {\n      nodes {\n        ...ClaraProductCard\n      }\n      pageInfo {\n        hasNextPage\n        hasPreviousPage\n        startCursor\n        endCursor\n      }\n    }\n    collections(first: 24) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            ...ClaraProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
     return: AllCollectionQuery;
     variables: AllCollectionQueryVariables;
+  };
+  '#graphql\n  query ShopListingProducts(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $query: String\n    $reverse: Boolean\n    $sortKey: ProductSortKeys\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(\n      after: $endCursor\n      before: $startCursor\n      first: $first\n      last: $last\n      query: $query\n      reverse: $reverse\n      sortKey: $sortKey\n    ) {\n      nodes {\n        ...ClaraProductCard\n      }\n      pageInfo {\n        hasNextPage\n        hasPreviousPage\n        startCursor\n        endCursor\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
+    return: ShopListingProductsQuery;
+    variables: ShopListingProductsQueryVariables;
+  };
+  '#graphql\n  query ShopCollectionLinks(\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    collections(first: 24) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            ...ClaraProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
+    return: ShopCollectionLinksQuery;
+    variables: ShopCollectionLinksQueryVariables;
   };
   '#graphql\n  query Page(\n    $language: LanguageCode,\n    $country: CountryCode,\n    $handle: String!\n  )\n  @inContext(language: $language, country: $country) {\n    page(handle: $handle) {\n      handle\n      id\n      title\n      body\n      seo {\n        description\n        title\n      }\n    }\n  }\n': {
     return: PageQuery;

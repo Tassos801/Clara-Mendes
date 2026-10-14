@@ -50,6 +50,7 @@ import {
   CATALOG_PATH,
   findCollection,
   handoffRows,
+  listingPages,
   MIN_NATIVE_PPI,
   museumSource,
   parseMappings,
@@ -1086,15 +1087,18 @@ async function verify() {
   }
 
   const sitemap = await sitemapProductUrls(origin);
-  const shopPage = await page(
+  // Every page of the shop filter, following "Load more": a large
+  // collection lists past the first page.
+  const shopPages = await listingPages(
     `${origin}/collections/all?capsule=${collection.slug}`,
+    page,
   );
   if (released.length)
     check(
       collection.slug,
       'shop filter: page loads',
-      shopPage.status === 200,
-      `HTTP ${shopPage.status}`,
+      shopPages[0].status === 200,
+      `HTTP ${shopPages[0].status}`,
     );
   for (const print of released) {
     const handle = printHandle(print);
@@ -1111,10 +1115,16 @@ async function verify() {
       'sitemap: listed',
       sitemap.some((url) => url.endsWith(`/products/${handle}`)),
     );
+    const listedOn = shopPages.findIndex((shopPage) =>
+      shopPage.body.includes(`/products/${handle}`),
+    );
     check(
       print.slug,
       'shop filter: listed',
-      shopPage.body.includes(`/products/${handle}`),
+      listedOn >= 0,
+      listedOn >= 0
+        ? `page ${listedOn + 1} of ${shopPages.length}`
+        : `not on ${shopPages.length} page(s)`,
     );
   }
   for (const print of staged) {

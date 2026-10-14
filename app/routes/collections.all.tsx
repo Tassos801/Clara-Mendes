@@ -9,6 +9,7 @@ import {
 import {Analytics, getPaginationVariables, Pagination} from '@shopify/hydrogen';
 import {ensurePaginatedData} from '~/lib/pagination';
 import type {Route} from './+types/collections.all';
+import type {ShopListingProductsQuery} from 'storefrontapi.generated';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
@@ -46,6 +47,17 @@ import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import type {CollectionHero} from '~/lib/collectionHeroes';
 import {releasedPrintHandles} from '~/lib/printCatalog';
+import {
+  ListingCursorError,
+  featuredMuseumClause,
+  museumSearchQuery,
+  sortMuseumProducts,
+  studioConnection,
+  studioPageVariables,
+  studioSearchQuery,
+  studioThenMuseumPage,
+  type ListingPaginationVariables,
+} from '~/lib/museumListingOrder';
 import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
 import {bookNookDeliveryPhrase} from '~/lib/bookNooks';
 import {loadClothingProducts} from '~/lib/clothing.server';
@@ -171,13 +183,25 @@ export async function loader({context, request}: Route.LoaderArgs) {
     .filter(Boolean)
     .join(' ');
 
-  const data = await context.storefront.query(ALL_COLLECTION_QUERY, {
-    variables: {
-      ...paginationVariables,
-      ...getProductsSortInput(sort),
-      query: searchQuery || null,
-    },
-  });
+  // "Featured" lists the studio's products first and museum reproductions
+  // after them, prints first (app/lib/museumListingOrder.ts); explicit
+  // sorts keep Shopify's order across the whole shop.
+  const museumClause = featuredMuseumClause(sort);
+  const data = museumClause
+    ? await loadFeaturedListing({
+        museumClause,
+        paginationVariables,
+        request,
+        searchQuery: searchQuery || null,
+        storefront: context.storefront,
+      })
+    : await context.storefront.query(ALL_COLLECTION_QUERY, {
+        variables: {
+          ...paginationVariables,
+          ...getProductsSortInput(sort),
+          query: searchQuery || null,
+        },
+      });
   ensurePaginatedData(request, data);
 
   return {
@@ -821,6 +845,84 @@ function splitTitle(str: string): {italic: string; rest: string} {
   return {italic: parts[0], rest: parts.slice(1).join(' ')};
 }
 
+type ListingStorefront = Route.LoaderArgs['context']['storefront'];
+
+/**
+ * The default listing: studio products in Shopify's order, then museum
+ * products in listing order, with cursors from app/lib/museumListingOrder.ts.
+ * Returns the same shape as ALL_COLLECTION_QUERY.
+ */
+async function loadFeaturedListing({
+  museumClause,
+  paginationVariables,
+  request,
+  searchQuery,
+  storefront,
+}: {
+  museumClause: string;
+  paginationVariables: ListingPaginationVariables;
+  request: Request;
+  searchQuery: string | null;
+  storefront: ListingStorefront;
+}) {
+  const sortInput = getProductsSortInput('featured');
+  const studioQuery = studioSearchQuery(searchQuery, museumClause);
+  let museum: Promise<ClaraCardProduct[]> | null = null;
+  const loadMuseum = async () => {
+    const products: ClaraCardProduct[] = [];
+    let after: string | null = null;
+    // A safety cap: 20 pages of 100 is far beyond any museum release.
+    for (let page = 0; page < 20; page += 1) {
+      const result: ShopListingProductsQuery = await storefront.query(
+        SHOP_LISTING_PRODUCTS_QUERY,
+        {
+          variables: {
+            ...sortInput,
+            endCursor: after,
+            first: 100,
+            query: museumSearchQuery(searchQuery, museumClause),
+          },
+        },
+      );
+      ensurePaginatedData(request, result);
+      products.push(...(result.products.nodes as ClaraCardProduct[]));
+      if (!result.products.pageInfo.hasNextPage) break;
+      after = result.products.pageInfo.endCursor ?? null;
+    }
+    return sortMuseumProducts(filterDemoProducts(products));
+  };
+
+  const [links, products] = await Promise.all([
+    storefront.query(SHOP_COLLECTION_LINKS_QUERY),
+    studioThenMuseumPage<ClaraCardProduct>(paginationVariables, {
+      museum: () => (museum ??= loadMuseum()),
+      studio: async (page) => {
+        const result = await storefront.query(SHOP_LISTING_PRODUCTS_QUERY, {
+          variables: {
+            ...studioPageVariables(page, sortInput.reverse),
+            query: studioQuery,
+            sortKey: sortInput.sortKey,
+          },
+        });
+        ensurePaginatedData(request, result);
+        return studioConnection(
+          page,
+          result.products.nodes as ClaraCardProduct[],
+          result.products.pageInfo,
+        );
+      },
+    }).catch((error: unknown) => {
+      if (!(error instanceof ListingCursorError)) throw error;
+      // A cursor this listing did not issue: start from the first page.
+      const url = new URL(request.url);
+      url.searchParams.delete('cursor');
+      url.searchParams.delete('direction');
+      throw redirect(`${url.pathname}${url.search}`);
+    }),
+  ]);
+  return {collections: links.collections, products};
+}
+
 function filterProductConnection(
   connection: CollectionProductConnection,
 ): CollectionProductConnection {
@@ -861,6 +963,62 @@ const ALL_COLLECTION_QUERY = `#graphql
         endCursor
       }
     }
+    collections(first: 24) {
+      nodes {
+        id
+        handle
+        title
+        products(first: 4) {
+          nodes {
+            ...ClaraProductCard
+          }
+        }
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+const SHOP_LISTING_PRODUCTS_QUERY = `#graphql
+  query ShopListingProducts(
+    $country: CountryCode
+    $endCursor: String
+    $first: Int
+    $language: LanguageCode
+    $last: Int
+    $query: String
+    $reverse: Boolean
+    $sortKey: ProductSortKeys
+    $startCursor: String
+  ) @inContext(country: $country, language: $language) {
+    products(
+      after: $endCursor
+      before: $startCursor
+      first: $first
+      last: $last
+      query: $query
+      reverse: $reverse
+      sortKey: $sortKey
+    ) {
+      nodes {
+        ...ClaraProductCard
+      }
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+        startCursor
+        endCursor
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
+
+const SHOP_COLLECTION_LINKS_QUERY = `#graphql
+  query ShopCollectionLinks(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
     collections(first: 24) {
       nodes {
         id

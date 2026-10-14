@@ -40,6 +40,7 @@ import toughCaseManifest from '../../data/art-tough-phone-case.json' with {type:
 import {
   artMatchError,
   caseMasks,
+  compareDeployedImage,
   describeFile,
   findCaseTemplate,
   renderFamilyFile,
@@ -1063,15 +1064,46 @@ export function createFamilySteps({
         sitemap.some((url) => url.endsWith(`/products/${product.handle}`)),
       );
       if (product.family === 'phone-case') {
+        // Oxygen re-encodes images under /print-files/, so the served bytes
+        // never hash like the committed file: compare pixels instead,
+        // against the committed copy (which must still be the recorded one).
         const response = await fetch(`${origin}${casePrintUrlPath(product)}`);
+        const type = response.headers.get('content-type') ?? '';
         const body = response.ok
           ? Buffer.from(await response.arrayBuffer())
           : null;
+        const committed = casePublicFile(product);
+        const reference =
+          existsSync(committed) &&
+          fileSha(committed) === product.assets.print.sha256
+            ? readFileSync(committed)
+            : null;
+        const recorded = product.assets.print;
+        const match =
+          body && reference && type.startsWith('image/jpeg')
+            ? await compareDeployedImage(body, reference)
+            : null;
+        const sizeOk = match?.size
+          ? match.size.width === recorded.width &&
+            match.size.height === recorded.height
+          : false;
         check(
           product.handle,
-          'case print file deployed with the recorded sha256',
-          body && hashBuffer(body) === product.assets.print.sha256,
-          `HTTP ${response.status}`,
+          'case print file deployed (same pixels within re-encode tolerance)',
+          response.status === 200 && match?.ok && sizeOk,
+          [
+            `HTTP ${response.status}`,
+            type || 'no content type',
+            reference
+              ? null
+              : 'committed copy missing or not the recorded sha256',
+            match?.detail,
+            match && !sizeOk
+              ? `recorded ${recorded.width}x${recorded.height}`
+              : null,
+          ]
+            .filter(Boolean)
+            .join('; '),
         );
       }
     }

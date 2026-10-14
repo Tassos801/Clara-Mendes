@@ -377,6 +377,39 @@ export function handoffRows(collection, prints, {printDir, sha256}) {
   );
 }
 
+/**
+ * The "Load more" link of a server-rendered listing page (Hydrogen's
+ * <Pagination> NextLink, `?…direction=next&cursor=…`), resolved against the
+ * page's URL; null on the last page.
+ */
+export function nextPageHref(html, pageUrl) {
+  for (const match of html.matchAll(/<a\b[^>]*\bhref="([^"]*)"/g)) {
+    const href = match[1].replaceAll('&amp;', '&');
+    const url = new URL(href, pageUrl);
+    if (url.searchParams.get('direction') === 'next') return url.toString();
+  }
+  return null;
+}
+
+/**
+ * Every page of a paginated listing, following "Load more" from `url` until
+ * the last page, a non-200 answer, a repeated URL or `maxPages`.
+ * `fetchPage(url)` resolves to `{status, body}`.
+ */
+export async function listingPages(url, fetchPage, {maxPages = 20} = {}) {
+  const pages = [];
+  const seen = new Set();
+  let next = url;
+  while (next && !seen.has(next) && pages.length < maxPages) {
+    seen.add(next);
+    const page = await fetchPage(next);
+    pages.push({...page, url: next});
+    if (page.status !== 200) break;
+    next = nextPageHref(page.body, next);
+  }
+  return pages;
+}
+
 export function toCsv(rows) {
   if (!rows.length) return '';
   const keys = Object.keys(rows[0]);
