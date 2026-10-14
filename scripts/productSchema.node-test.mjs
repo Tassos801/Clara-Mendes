@@ -112,3 +112,33 @@ test('future garment product and variant offers omit unsupported shipping promis
     for (const node of schema.hasVariant) assert.equal(node.offers.shippingDetails, undefined);
   }
 });
+
+test('personalised offers permit no returns; prints keep the 30-day window', () => {
+  const policies = (productType, variants) => {
+    const schema = productSchema({...base, productType, variants});
+    return schema.hasVariant
+      ? schema.hasVariant.map((node) => node.offers.hasMerchantReturnPolicy)
+      : [schema.offers.hasMerchantReturnPolicy];
+  };
+  const one = [variant(1, '8 × 10 in', '35.99')];
+  const two = [...one, variant(2, '20 × 24 in', '59.99')];
+
+  for (const variants of [one, two]) {
+    for (const policy of policies('Personalised Art', variants)) {
+      assert.equal(
+        policy.returnPolicyCategory,
+        'https://schema.org/MerchantReturnNotPermitted',
+      );
+      assert.equal(policy.merchantReturnDays, undefined);
+      assert.equal(policy.returnFees, undefined);
+      assert.equal(policy.applicableCountry.length, 27);
+    }
+    for (const policy of policies('Art Prints', variants)) {
+      assert.equal(
+        policy.returnPolicyCategory,
+        'https://schema.org/MerchantReturnFiniteReturnWindow',
+      );
+      assert.equal(policy.merchantReturnDays, 30);
+    }
+  }
+});

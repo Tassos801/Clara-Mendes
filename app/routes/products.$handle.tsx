@@ -86,7 +86,6 @@ import {
 } from '~/lib/sky/params';
 import {
   SKY_FINISH_LABELS,
-  SKY_PRODUCT_TYPE,
   SKY_SIZES,
   skyFinishFromOptions,
   skySizeFromOptions,
@@ -127,9 +126,11 @@ import {
 import {wallSetsContainingHandle} from '~/lib/wallSets';
 import {keepTabInside} from '~/lib/focusTrap';
 import {
+  DAMAGE_REPORT_WINDOW_DAYS,
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   fulfilmentWindows,
+  isPersonalisedProductType,
   isQuietCurrentProduct,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
@@ -743,9 +744,9 @@ function ProductPage() {
   // Personalised Art products stage behind the personalised flags; the
   // handle picks which configurator mounts (the sky is the default so its
   // behavior is unchanged from before the second product existed).
-  const isPersonalisedType =
-    (product.productType || '').toLowerCase() ===
-    SKY_PRODUCT_TYPE.toLowerCase();
+  // They are also non-returnable, so the returns copy below switches to the
+  // refund policy's damaged/defective promise.
+  const isPersonalisedType = isPersonalisedProductType(product.productType);
   const isNatal = isPersonalisedType && product.handle === NATAL_PRODUCT_HANDLE;
   const isSkyMap = isPersonalisedType && !isNatal;
   // Complete personalisation is released only when the current preview has
@@ -1196,7 +1197,11 @@ function ProductPage() {
                   )}
                 </span>
               ) : null}
-              <span>{RETURN_WINDOW_DAYS}-day returns</span>
+              <span>
+                {isPersonalisedType
+                  ? 'Free replacement or refund if damaged'
+                  : `${RETURN_WINDOW_DAYS}-day returns`}
+              </span>
             </div>
 
             {kitSpecRows.length > 0 ? (
@@ -1718,8 +1723,21 @@ function ProductPage() {
               )}
             </ProductDetail>
             <ProductDetail label="Returns">
-              {RETURN_WINDOW_DAYS}-day return window from delivery. Items must
-              be unused and in original packaging.{' '}
+              {isPersonalisedType ? (
+                <>
+                  Made to order for you, so personalised pieces can&apos;t be
+                  returned unless the law requires it. If yours arrives
+                  damaged, defective or incorrect, contact us within{' '}
+                  {DAMAGE_REPORT_WINDOW_DAYS} days of delivery with your order
+                  number and photos, and we&apos;ll arrange a replacement or
+                  full refund at no cost to you.
+                </>
+              ) : (
+                <>
+                  {RETURN_WINDOW_DAYS}-day return window from delivery. Items
+                  must be unused and in original packaging.
+                </>
+              )}{' '}
               <Link to="/policies/refund-policy" className="text-link">
                 Full policy
               </Link>

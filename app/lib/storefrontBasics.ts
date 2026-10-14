@@ -1,8 +1,23 @@
 import {isClothingProduct} from './clothing.ts';
+import {SKY_PRODUCT_TYPE} from './sky/products.ts';
 
 export const SUPPORT_EMAIL = 'hello@shopclaramendes.com';
 export const STOREFRONT_ORIGIN = 'https://shopclaramendes.com';
 export const RETURN_WINDOW_DAYS = 30;
+
+// The live refund policy (docs/shopify-policies-drafts.md) lists custom or
+// personalised orders as non-returnable, so RETURN_WINDOW_DAYS never applies
+// to them. What it does promise every order: a replacement or full refund for
+// an item that arrives damaged, defective or incorrect, reported within this
+// many days of delivery.
+export const DAMAGE_REPORT_WINDOW_DAYS = 7;
+
+/** Your Sky and First Light share this type; both are made for one person. */
+export function isPersonalisedProductType(productType?: string | null) {
+  return (
+    productType?.trim().toLowerCase() === SKY_PRODUCT_TYPE.toLowerCase()
+  );
+}
 
 // Prodigi Standard windows (docs/first-order-runbook.md): a 24-hour
 // auto-release hold precedes the 1–3 business-day production window, so

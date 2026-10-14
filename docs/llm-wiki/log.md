@@ -1726,6 +1726,25 @@ and section built from `APPAREL_SHIPPING_RATES`, the
 fulfilment partner, production 2–7 / dispatch 3–8 business days, one fee
 per order, heavier US fabric. With the owner's approval it was pasted into
 Shopify Admin and saved; after reload all three live policy bodies match
-the drafts exactly. Open: the Your Sky configurator still shows a
-"30-day returns" chip although the live refund policy excludes personalised
-orders. See [fulfillment](modules/fulfillment.md#2026-10-14---policy-drafts-realigned-with-the-live-store).
+the drafts exactly. The Your Sky "30-day returns" chip that contradicted
+the personalised-orders exclusion is fixed in the next entry. See
+[fulfillment](modules/fulfillment.md#2026-10-14---policy-drafts-realigned-with-the-live-store).
+
+## 2026-10-14 - Personalised products no longer promise 30-day returns
+
+The live refund policy now lists "Custom or personalized orders" as
+non-returnable, which settles the "30-day returns" chip on Your Sky that the
+2026-09-02 entry left as an owner policy decision. Personalised Art products
+(Your Sky, staged First Light) now show "Free replacement or refund if damaged"
+in the purchase status row on `/your-sky` and on the product page. The product
+page Returns panel now says the piece is made to order and can't be returned
+unless the law requires it, and that a damaged, defective or incorrect item
+reported within 7 days of delivery is replaced or refunded, as the policy's
+damaged-items clause says. Their structured-data offers say
+`MerchantReturnNotPermitted` instead of a 30-day window. Prints, cases, clothing
+and every other product are unchanged. See
+[catalog-and-products](modules/catalog-and-products.md#returns-on-personalised-products).
+
+Sources: `app/lib/storefrontBasics.ts`, `app/lib/seo.ts`,
+`app/components/SkyStudio.tsx`, `app/routes/products.$handle.tsx`,
+`scripts/productSchema.node-test.mjs`, `scripts/skyConfigurator.node-test.mjs`.
