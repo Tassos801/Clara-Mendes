@@ -202,16 +202,15 @@ function SearchResultsEmpty({term}: {term?: string}) {
       <p className="eyebrow">Search</p>
       <h2>
         {term
-          ? `Nothing in the edit for “${term}” yet.`
+          ? `Nothing in the shop for “${term}” yet.`
           : 'What are you looking for?'}
       </h2>
       <p>
-        Try a capsule name — Quiet Form, Patina Blue, Neo Deco, Midnight
-        Garden, Sunlit Mosaic — or a mood like botanical print, neutral wall
-        art, geometric art, or blue abstract print.
+        Try an artwork or capsule — Quiet Form, The Great Wave — or a product,
+        like phone case, leggings, plant pot or book nook.
       </p>
       <Link className="primary-button" to="/collections/all">
-        Shop all pieces
+        Browse the shop
       </Link>
     </section>
   );

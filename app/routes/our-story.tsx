@@ -3,15 +3,84 @@ import {Link} from 'react-router';
 import type {Route} from './+types/our-story';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
-import {ORIGINAL_ART_COLLECTIONS} from '~/lib/catalogFilters';
+import {
+  isReleasedExtensionHandle,
+  isReleasedProductHandle,
+  PERSONALISED_RELEASE_FLAGS,
+  SKY_PRODUCT_HANDLE,
+} from '~/lib/catalogFilters';
+import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
+import {listShopCapsules, shopCapsulePath} from '~/lib/capsules';
+import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {catalogCounts, countWord} from '~/lib/catalogSummary';
+import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
+import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
 
 const CATALOG = catalogCounts();
+const WORKS = countWord(CATALOG.works);
+const CAPSULES = countWord(CATALOG.capsules);
 const PAGE_URL = `${STOREFRONT_ORIGIN}/our-story`;
 // Kept under the 155-char meta truncation in buildSeoMeta.
-const PAGE_DESCRIPTION = `Clara Mendes creates original art for calm, collected spaces: ${countWord(CATALOG.works)} works across ${countWord(CATALOG.capsules)} capsules, giclée-printed to order in three sizes up to 20 × 24 in.`;
+const PAGE_DESCRIPTION = `Clara Mendes began with original art: now ${WORKS} works in ${CAPSULES} capsules, with cards, canvas, clothing, ceramics and book nooks around them.`;
+
+// Clara Mendes' own capsules; museum collections appear with the range below.
+const SHOP_CAPSULES = listShopCapsules();
+const STUDIO_CAPSULES = SHOP_CAPSULES.filter(
+  (capsule) => capsule.kind !== 'museum',
+);
+
+/** Everything else the shop sells, each line only once it is released. */
+const RANGE = [
+  {
+    name: 'Art for Everyday Living',
+    note: 'The founding capsules on greeting cards, postcards and stretched canvas.',
+    released: [
+      'fine-art-greeting-card',
+      'fine-art-postcard',
+      'stretched-canvas-art-16x20',
+    ].some(isReleasedExtensionHandle),
+    to: '/collections/clara-mendes-art-living',
+  },
+  {
+    name: 'Phone cases',
+    note: 'Every original work on a matte, dual-layer tough case for iPhone, Samsung Galaxy and Google Pixel.',
+    released: isReleasedProductHandle(TOUGH_CASE_HANDLE),
+    to: `/products/${TOUGH_CASE_HANDLE}`,
+  },
+  {
+    name: YOUR_SKY_PAGE.navLabel,
+    note: 'A star map of the place and minute you choose, drawn as a Clara Mendes print with your own title.',
+    released: Boolean(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]),
+    to: YOUR_SKY_PAGE.path,
+  },
+  ...SHOP_CAPSULES.filter((capsule) => capsule.kind === 'museum').map(
+    (capsule) => ({
+      name: capsule.title,
+      note: `${capsule.note}, from museum open-access collections: prints, framed prints, canvas, cards and phone cases.`,
+      released: true,
+      to: shopCapsulePath(capsule.slug),
+    }),
+  ),
+  {
+    name: 'Clothing',
+    note: 'Quiet Current activewear, printed with a soft watercolour-style design drawn from the print Where Mist Rests.',
+    released: true,
+    to: '/clothing',
+  },
+  {
+    name: 'Pastel Forms',
+    note: 'Small ceramic plant pots in four soft colours.',
+    released: true,
+    to: '/pastel-forms',
+  },
+  {
+    name: 'Book Nooks',
+    note: 'DIY kits for miniature rooms that slide between your books.',
+    released: releasedBookNooks().length > 0,
+    to: BOOK_NOOKS_PATH,
+  },
+].filter((line) => line.released);
 
 export const meta: Route.MetaFunction = () => {
   return buildSeoMeta({
@@ -141,9 +210,11 @@ export default function OurStory() {
                 of view to everyday spaces.
               </p>
               <p>
-                The collection begins with fifteen original works across five
-                coordinated art capsules — each made to hold its own on a wall,
-                and to sit comfortably beside the others.
+                It began with fifteen original works in five coordinated
+                capsules. Today there are {WORKS} works across {CAPSULES}{' '}
+                capsules, each made to hold its own on a wall and to sit
+                comfortably beside the others — and around them, a small range
+                of things to live with.
               </p>
             </div>
             <a className="os-scroll-cue" href="#os-collection">
@@ -162,33 +233,63 @@ export default function OurStory() {
         className="os-section"
         aria-labelledby="os-collection-title"
       >
-        <p className="os-eyebrow">The collection</p>
+        <p className="os-eyebrow">The capsules</p>
         <h2 id="os-collection-title">
-          Fifteen works. Five capsules. One considered whole.
+          {capitalize(WORKS)} works. {capitalize(CAPSULES)} capsules. One
+          considered whole.
         </h2>
         <p className="os-section-lede">
-          Every capsule holds three complementary original works, composed so a
-          single print carries a room and a pair or trio reads as one
-          intentional arrangement. Buy one now and add its companions later —
-          they are designed to keep belonging together.
+          Each capsule is a small family of original works, composed so a single
+          print carries a room and a pair or trio reads as one intentional
+          arrangement. Buy one now and add its companions later — they are
+          designed to keep belonging together.
         </p>
         <ul className="os-capsule-list">
-          {ORIGINAL_ART_COLLECTIONS.map((capsule) => (
-            <li key={capsule.id}>
+          {STUDIO_CAPSULES.map((capsule) => (
+            <li key={capsule.slug}>
               <Link
                 className="os-capsule-item"
-                to={`/collections/all?capsule=${capsule.handle}`}
+                to={shopCapsulePath(capsule.slug)}
               >
                 <span className="os-capsule-name">{capsule.title}</span>
                 <span className="os-capsule-note">{capsule.note}</span>
                 <span className="os-capsule-cta" aria-hidden>
-                  View the three works →
+                  View the {countWord(capsule.handles.length)} works →
                 </span>
               </Link>
             </li>
           ))}
         </ul>
       </section>
+
+      {RANGE.length ? (
+        <section
+          className="os-section os-section--range"
+          aria-labelledby="os-range-title"
+        >
+          <p className="os-eyebrow">Around the art</p>
+          <h2 id="os-range-title">The same eye, beyond the wall.</h2>
+          <p className="os-section-lede">
+            The shop has grown around the prints: the art on things you use
+            every day, museum works we have chosen to print, and pieces made to
+            sit beside them. Each product page explains how it is made and how
+            it ships.
+          </p>
+          <ul className="os-capsule-list">
+            {RANGE.map((line) => (
+              <li key={line.to}>
+                <Link className="os-capsule-item" to={line.to}>
+                  <span className="os-capsule-name">{line.name}</span>
+                  <span className="os-capsule-note">{line.note}</span>
+                  <span className="os-capsule-cta" aria-hidden>
+                    Explore →
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section
         className="os-section os-section--facts"
@@ -200,9 +301,8 @@ export default function OurStory() {
           <div>
             <dt>Format</dt>
             <dd>
-              Unframed portrait prints in three sizes — 8 × 10, 16 × 20, and 20
-              × 24 in — that work alone, in pairs, or as a full capsule of
-              three.
+              Unframed prints in three sizes — 8 × 10, 16 × 20, and 20 × 24 in
+              — made to work alone, in pairs, or as a full capsule.
             </dd>
           </div>
           <div>
@@ -220,11 +320,11 @@ export default function OurStory() {
             </dd>
           </div>
           <div>
-            <dt>What comes next</dt>
+            <dt>Beyond prints</dt>
             <dd>
-              Considered objects may join the collection over time, and only
-              once their quality and production meet the same standard as the
-              art.
+              Cards, canvas, phone cases, plant pots and clothing are made to
+              order too. Book nook kits ship ready to build from our fulfilment
+              partner.
             </dd>
           </div>
         </dl>
@@ -555,6 +655,7 @@ html:has(.our-story-root) main {
   color: var(--os-ink);
 }
 
+.os-section--range,
 .os-section--facts {
   border-top: 1px solid rgba(38, 35, 31, 0.12);
 }

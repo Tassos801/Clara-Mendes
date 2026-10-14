@@ -38,7 +38,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
 | `/cart`                                         | `app/routes/cart.tsx`                | Cart page loader/action and cart mutation endpoint for `CartForm`.              |
 | `/search`                                       | `app/routes/search.tsx`              | Regular and predictive search for products, pages, articles, and suggestions.   |
-| `/our-story`                                    | `app/routes/our-story.tsx`           | Brand story content.                                                            |
+| `/our-story`                                    | `app/routes/our-story.tsx`           | Brand story: every studio capsule (from `listShopCapsules`) and an "Around the art" list of the other released lines, each gated like the nav. |
 | `/contact`                                      | `app/routes/contact.tsx`             | Contact/support page.                                                           |
 | `/policies` and `/policies/:handle`             | `app/routes/policies.*.tsx`          | Policy listing and policy detail from Shopify.                                  |
 | `/pages/:handle`                                | `app/routes/pages.$handle.tsx`       | Shopify pages.                                                                  |

@@ -48,7 +48,7 @@ export default function Contact() {
             <p>
               For questions about an existing order — tracking, delivery timing,
               or changes — include your order number and we&apos;ll get back to you
-              within 24 hours.
+              within one business day.
             </p>
             <a
               href={`mailto:${SUPPORT_EMAIL}?subject=Order%20Support`}

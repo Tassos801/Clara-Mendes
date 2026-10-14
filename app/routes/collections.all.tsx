@@ -147,7 +147,7 @@ export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
       data?.description ??
-      'Original art and considered objects for a collected home, selected by Clara Mendes.',
+      'Shop Clara Mendes art and museum prints, canvas, cards, phone cases, ceramic plant pots, book nook kits and activewear.',
     image: `${STOREFRONT_ORIGIN}${data?.shareImage || '/images/product-art/quiet-form/quiet-form-01.webp'}`,
     title: isCapsule
       ? `${heading} Capsule`
@@ -236,7 +236,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       : isBookNooks
         ? `Miniature worlds for your bookshelf. Explore DIY book nook kits curated by Clara Mendes, with delivery included ${bookNookDeliveryPhrase()}.`
         : releasedCuratedProductTypes().length > 0
-          ? 'Original art and considered objects for a collected home, selected by Clara Mendes.'
+          ? 'Shop Clara Mendes art and museum prints, canvas, cards, phone cases, ceramic plant pots, book nook kits and activewear.'
           : releasedPrintHandles().length > 0
             ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
             : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
