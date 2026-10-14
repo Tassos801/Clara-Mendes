@@ -18,6 +18,7 @@ import {
   ARTIST_SORTS,
   artistArtworks,
   artistElsewhere,
+  artistFacetValue,
   artistPath,
   artistProductsQuery,
   artistShopView,
@@ -409,7 +410,9 @@ function ArtistListing({
       ? new URLSearchParams(navigation.location.search)
       : searchParams;
   const isChecked = (key: string, value: string) =>
-    pending.getAll(key).some((entry) => entry.toLowerCase() === value);
+    pending
+      .getAll(key)
+      .some((entry) => artistFacetValue(key, entry) === value);
 
   const update = (mutate: (params: URLSearchParams) => void) => {
     // From the pending URL, so quick successive clicks all count.
@@ -421,7 +424,7 @@ function ArtistListing({
     update((params) => {
       const kept = params
         .getAll(key)
-        .filter((entry) => entry.toLowerCase() !== value);
+        .filter((entry) => artistFacetValue(key, entry) !== value);
       params.delete(key);
       for (const entry of kept) params.append(key, entry);
       if (!isChecked(key, value)) params.append(key, value);

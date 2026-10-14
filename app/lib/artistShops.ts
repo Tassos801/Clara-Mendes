@@ -364,6 +364,15 @@ const TYPE_ALIASES: Record<string, string> = {
   'art-prints': 'prints',
 };
 
+/**
+ * A Refine value from the URL as the facets compare it: trimmed, lower
+ * case, and an old product-type spelling mapped to today's value.
+ */
+export function artistFacetValue(key: string, value: string) {
+  const folded = value.trim().toLowerCase();
+  return key === 'type' ? (TYPE_ALIASES[folded] ?? folded) : folded;
+}
+
 /** The first year in a museum date such as "ca. 1830–32". */
 function artworkYear(product: ArtistProduct, registry: ArtRegistry) {
   const artwork = product.artworkId
@@ -411,10 +420,7 @@ export function artistShopView(
       new Set(
         params
           .getAll(key)
-          .map((value) => value.trim().toLowerCase())
-          .map((value) =>
-            key === 'type' ? (TYPE_ALIASES[value] ?? value) : value,
-          )
+          .map((value) => artistFacetValue(key, value))
           .filter((value) => known.has(value)),
       ),
     );

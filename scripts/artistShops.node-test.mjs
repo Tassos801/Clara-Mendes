@@ -432,6 +432,10 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
       old,
     );
   }
+  // The page's checkboxes compare URL values the same way.
+  assert.equal(shops.artistFacetValue('type', ' Art prints '), 'prints');
+  assert.equal(shops.artistFacetValue('type', 'Phone-Cases'), 'phone-cases');
+  assert.equal(shops.artistFacetValue('series', 'art-prints'), 'art-prints');
 
   const none = shops.artistShopView(
     hiroshige,
