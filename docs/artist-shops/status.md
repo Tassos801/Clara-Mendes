@@ -88,10 +88,21 @@ dashboard) need the owner's go-ahead in chat; the owner gave it on
    postcard `GLOBAL-POST-MOH-7X5`, 100%, Excellent, Budget. All "Fulfilled
    by Prodigi automatically", 1 of 1 active.
    [Readback](evidence/prodigi-families-readback-2026-10-13.json).
-   **Before release:** the ten museum phone-case listings (6329094–6329103)
-   arrived in the Prodigi channel with its fulfil toggle ON; cases go
-   through the `orders/paid` webhook, so turn that toggle OFF (as for Your
-   Sky) to avoid double fulfilment.
+   **Phone cases (2026-10-14, owner said "do the fix"):** the ten museum
+   case listings (6329094–6329103) arrived in the Prodigi channel with its
+   fulfil toggle ON; they go through the `orders/paid` webhook instead, so the
+   toggle was switched OFF on all ten (fresh reload: 0 of 40 variants active
+   each), as for Your Sky, to avoid double fulfilment.
+4b. **Shopify shipping profiles (2026-10-14):** the 50 new Drafts landed in
+   General. Moved in the admin (the API token has no shipping scope):
+   cards + postcards → "Letter post - cards & postcards" (EU + CY, €2.90;
+   10 → 30 products), canvas → "Canvas 16x20" (5 → 15), framed → "Framed
+   Your Sky" (4 → 14; the only framed profile, whose outside-EU countries
+   were chosen for the bigger 20×24 frame, so they hold for 16×20), cases →
+   "Phone cases" (+400 variants). Each dialog showed "Removing 0" before
+   Done. The ten print Drafts stay in General with the live prints.
+   **Owner note:** the studio "Classic Framed Art Print — 16 × 20 in" sits in
+   General (worldwide rates), unlike the framed rule; left unchanged.
 4. **Five product types: built, files generated, 50 Drafts created
    (Claude Code, 2026-10-13).** Owner said "go, create the drafts";
    `stage floating-world --families --apply` created 50 Drafts / 440
