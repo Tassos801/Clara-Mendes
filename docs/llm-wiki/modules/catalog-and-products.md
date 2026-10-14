@@ -245,6 +245,23 @@ merge commit `300c87d` (PR #64). The six Shopify SKUs, prices, Prodigi mappings,
 PDF geometry, checkout integration, and First Light release state remain
 explicitly unchanged.
 
+### Returns on personalised products
+
+The live refund policy lists custom or personalised orders as non-returnable,
+so nothing of product type `Personalised Art` (Your Sky and the staged First
+Light) quotes the 30-day `RETURN_WINDOW_DAYS`. `isPersonalisedProductType` in
+`app/lib/storefrontBasics.ts` is the one check. In the purchase status row on
+`/your-sky` (`SkyStudio`) and on the product page, the chip that reads "30-day
+returns" for other products says "Free replacement or refund if damaged". The product page
+Returns panel explains that the piece is made to order and can't be returned
+unless the law requires it, and that a damaged, defective or incorrect item
+reported within `DAMAGE_REPORT_WINDOW_DAYS` (7) days of delivery is replaced or
+refunded. Their offers in structured data carry
+`MerchantReturnNotPermitted` with no window or fees (`app/lib/seo.ts`). Every
+other product keeps the 30-day copy and `MerchantReturnFiniteReturnWindow`.
+Tests: `scripts/productSchema.node-test.mjs`,
+`scripts/skyConfigurator.node-test.mjs`.
+
 ## Admin Cleanup Relationship
 
 The code filters off-theme products defensively, but the Admin cleanup document
