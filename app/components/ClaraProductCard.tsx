@@ -457,7 +457,7 @@ const cardCss = `
 }
 
 .cm-card-reach {
-  color: var(--color-clay, #9c6f5d);
+  color: var(--color-muted, #524d45);
   font-family: var(--sans);
   font-size: 0.74rem;
   letter-spacing: 0.04em;
