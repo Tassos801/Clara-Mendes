@@ -22,6 +22,7 @@ import {
   reproductionSentence,
   type ArtProductCatalog,
 } from './artProductCatalog.ts';
+import {compareListingOrder} from './museumListingOrder.ts';
 import {
   collectionKind,
   PRINT_CATALOG,
@@ -468,6 +469,15 @@ export function artistShopView(
     );
   else if (sort === 'oldest') shown.sort(byYear(1));
   else if (sort === 'newest') shown.sort(byYear(-1));
+  // Featured: museum works by product type (prints, framed prints, canvas,
+  // cards, postcards, phone cases), then artwork sequence; anything else
+  // keeps its place ahead of them.
+  else
+    shown.sort(
+      (a, b) =>
+        compareListingOrder(a.product.handle, b.product.handle) ||
+        a.index - b.index,
+    );
 
   return {
     activeCount: [...selected.values()].reduce((sum, set) => sum + set.size, 0),

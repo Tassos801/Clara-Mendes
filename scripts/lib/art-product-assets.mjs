@@ -167,6 +167,60 @@ export async function artMatchError(plan, file) {
   return Math.round((total / ours.length) * 100) / 100;
 }
 
+/**
+ * Largest mean difference (0–255 per channel) between a deployed image and
+ * the committed file it was served from. Oxygen re-encodes images under
+ * /print-files/ (4:2:0 chroma, about 1.4 on the case files); a different
+ * artwork or crop is tens of levels away.
+ */
+export const MAX_REENCODE_DIFFERENCE = 3;
+
+/**
+ * Whether `deployed` shows the same pixels as `reference` within re-encode
+ * tolerance: the same pixel size and a mean absolute difference per channel
+ * no larger than `maxMeanDifference`. Byte hashes cannot be used because the
+ * host re-encodes the file.
+ */
+export async function compareDeployedImage(
+  deployed,
+  reference,
+  {maxMeanDifference = MAX_REENCODE_DIFFERENCE} = {},
+) {
+  const decode = (buffer) =>
+    sharp(buffer)
+      .toColourspace('srgb')
+      .removeAlpha()
+      .raw()
+      .toBuffer({resolveWithObject: true});
+  const [live, ours] = await Promise.all([decode(deployed), decode(reference)]);
+  const size = (info) => `${info.width}x${info.height}`;
+  if (
+    live.info.width !== ours.info.width ||
+    live.info.height !== ours.info.height ||
+    live.info.channels !== ours.info.channels
+  )
+    return {
+      detail: `${size(live.info)} served, ${size(ours.info)} committed`,
+      meanDifference: null,
+      ok: false,
+      size: {height: live.info.height, width: live.info.width},
+    };
+  let total = 0;
+  let max = 0;
+  for (let i = 0; i < live.data.length; i += 1) {
+    const difference = Math.abs(live.data[i] - ours.data[i]);
+    total += difference;
+    if (difference > max) max = difference;
+  }
+  const meanDifference = Math.round((total / live.data.length) * 100) / 100;
+  return {
+    detail: `${size(live.info)}, mean difference ${meanDifference}/255 (max ${max}; limit ${maxMeanDifference})`,
+    meanDifference,
+    ok: meanDifference <= maxMeanDifference,
+    size: {height: live.info.height, width: live.info.width},
+  };
+}
+
 /** Facts read back from an encoded file. */
 export async function describeFile(buffer) {
   const meta = await sharp(buffer).metadata();
