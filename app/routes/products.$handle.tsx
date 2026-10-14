@@ -98,6 +98,7 @@ import {
   nearestCarouselIndex,
   resolveZoomSwipe,
 } from '~/lib/productGalleryCarousel';
+import {printOrientationForHandle} from '~/lib/printCatalog';
 import {
   filterGalleryImagesForSize,
   printScaleGeometry,
@@ -1008,6 +1009,7 @@ function ProductPage() {
             key={`${product.id}:${printSize.key}`}
             images={galleryImages}
             isArtPrint={isArtPrint}
+            printOrientation={printOrientationForHandle(product.handle)}
             printSize={printSize}
             productTitle={displayTitle}
           />
@@ -1802,11 +1804,13 @@ function ProductPage() {
 function ProductGalleryCarousel({
   images,
   isArtPrint,
+  printOrientation,
   printSize,
   productTitle,
 }: {
   images: ProductImage[];
   isArtPrint: boolean;
+  printOrientation: 'landscape' | 'portrait';
   printSize: {key: PrintSizeKey; label: string};
   productTitle: string;
 }) {
@@ -2053,7 +2057,10 @@ function ProductGalleryCarousel({
                 aria-roledescription="slide"
                 aria-label={`${slideCount} of ${slideCount}, print scale diagram`}
               >
-                <PrintScaleDiagram size={printSize.key} />
+                <PrintScaleDiagram
+                  orientation={printOrientation}
+                  size={printSize.key}
+                />
               </div>
             ) : null}
           </div>
@@ -2207,10 +2214,17 @@ function ProductGalleryCarousel({
 }
 
 /**
- * The selected print at true proportion above the same 84 in sofa reference.
+ * The selected print at true proportion, in its orientation, above the same
+ * 84 in sofa reference.
  */
-function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
-  const geometry = printScaleGeometry(size);
+function PrintScaleDiagram({
+  orientation,
+  size,
+}: {
+  orientation: 'landscape' | 'portrait';
+  size: PrintSizeKey;
+}) {
+  const geometry = printScaleGeometry(size, orientation);
   const left = 280 - geometry.width / 2;
   const top = 107 - geometry.height;
   const guideY = top - 14;
@@ -2221,7 +2235,7 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
       <svg
         viewBox="0 0 560 300"
         role="img"
-        aria-label={`Scale diagram: an unframed ${geometry.widthInches} by ${geometry.heightInches} inch portrait print shown at true proportion on a wall above a standard 84 inch sofa.`}
+        aria-label={`Scale diagram: an unframed ${geometry.widthInches} by ${geometry.heightInches} inch ${geometry.orientation} print shown at true proportion on a wall above a standard 84 inch sofa.`}
       >
         <g stroke="currentColor" strokeWidth="1.4" fill="none">
           {/* floor */}
@@ -2233,7 +2247,7 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
             <line x1="133" y1="231" x2="133" y2="262" />
             <line x1="427" y1="231" x2="427" y2="262" />
           </g>
-          {/* selected portrait print, hung above the sofa */}
+          {/* selected print, hung above the sofa */}
           <rect
             x={left}
             y={top}
@@ -2269,9 +2283,9 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
         </g>
       </svg>
       <figcaption>
-        True to size: an unframed {geometry.label} ({geometry.centimeters})
-        portrait print, shown to scale above a standard 84 in sofa. Hang it
-        solo, or pair it with its capsule companions.
+        True to size: an unframed {geometry.label} ({geometry.centimeters}){' '}
+        {geometry.orientation} print, shown to scale above a standard 84 in
+        sofa. Hang it solo, or pair it with its capsule companions.
       </figcaption>
     </figure>
   );

@@ -69,13 +69,27 @@ export function filterGalleryImagesForSize(
   });
 }
 
-export function printScaleGeometry(size: PrintSizeKey) {
+/**
+ * The scale diagram's print, drawn the way it hangs: a landscape print (the
+ * museum landscapes) keeps its size name, "8 × 10 in", but is wider than
+ * tall.
+ */
+export function printScaleGeometry(
+  size: PrintSizeKey,
+  orientation: 'landscape' | 'portrait' = 'portrait',
+) {
   const spec = PRINT_SIZE_SPECS[size];
   const unitsPerInch = 3.5;
+  const landscape = orientation === 'landscape';
+  const widthInches = landscape ? spec.heightInches : spec.widthInches;
+  const heightInches = landscape ? spec.widthInches : spec.heightInches;
   return {
     ...spec,
-    height: spec.heightInches * unitsPerInch,
-    width: spec.widthInches * unitsPerInch,
+    height: heightInches * unitsPerInch,
+    heightInches,
+    orientation,
+    width: widthInches * unitsPerInch,
+    widthInches,
   };
 }
 

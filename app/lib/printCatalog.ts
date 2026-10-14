@@ -114,6 +114,18 @@ export function printOrientation(
   return print.orientation ?? 'portrait';
 }
 
+/** A catalog print's orientation by product handle; portrait otherwise. */
+export function printOrientationForHandle(
+  handle?: string | null,
+  catalog: PrintCatalog = PRINT_CATALOG,
+) {
+  const key = handle?.toLowerCase();
+  for (const collection of catalog.collections)
+    for (const print of collection.prints)
+      if (printHandle(print) === key) return printOrientation(print);
+  return 'portrait';
+}
+
 export function printProductTitle(print: Pick<PrintCatalogPrint, 'title'>) {
   return `${print.title} Art Print`;
 }
