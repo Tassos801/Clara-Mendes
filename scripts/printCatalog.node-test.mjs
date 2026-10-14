@@ -255,3 +255,16 @@ test('validation refuses a release without ids or a verified mapping, and bad en
 
   assert.deepEqual(prints.validatePrintCatalog(fixture()), []);
 });
+
+test('printOrientationForHandle reads a catalog print by handle, portrait otherwise', () => {
+  assert.equal(
+    prints.printOrientationForHandle('the-great-wave-off-kanagawa-art-print'),
+    'landscape',
+  );
+  assert.equal(
+    prints.printOrientationForHandle('Fireworks-At-Ryogoku-Bridge-Art-Print'),
+    'portrait',
+  );
+  assert.equal(prints.printOrientationForHandle('not-a-print'), 'portrait');
+  assert.equal(prints.printOrientationForHandle(null), 'portrait');
+});

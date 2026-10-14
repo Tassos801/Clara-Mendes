@@ -128,6 +128,12 @@ test('status names the single next step', () => {
     shopify: {productId: 'p', variantIds: {'8x10': 'a'}},
   };
   assert.equal(printStatus(collection, expanding).next, 'expand');
+  // An unreleased Draft that lacks a newly added size grows the same way.
+  assert.equal(
+    printStatus(collection, {...expanding, released: false, releasedSizes: []})
+      .next,
+    'expand',
+  );
 
   // One mapped size out of two is not mapped.
   const half = {

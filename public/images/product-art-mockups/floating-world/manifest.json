@@ -1,0 +1,1085 @@
+{
+  "collection": "floating-world",
+  "images": [
+    {
+      "print": "the-great-wave-off-kanagawa",
+      "room": "living-room",
+      "alt": "The Great Wave off Kanagawa print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 329,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/great-wave-living-room.png",
+        "sha256": "a248b7de13318e70de64e0ca1304047b89d7200bdf70a7d0aead07a76b1d3f66"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/the-great-wave-off-kanagawa.sheet.webp",
+        "sha256": "986c6e268805665cbd2ae67c1dbaf15a4e5d1192be226f183b43e25d764f9651"
+      },
+      "output": {
+        "file": "floating-world/the-great-wave-off-kanagawa-living-room.jpg",
+        "sha256": "fe8cb9e5c68690042af11c636ba3d92568fd2f98560496cb15fe1b73a330743b"
+      }
+    },
+    {
+      "print": "the-great-wave-off-kanagawa",
+      "room": "bedroom",
+      "alt": "The Great Wave off Kanagawa print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/great-wave-bedroom.png",
+        "sha256": "a013639474636d9d8c08b050e7ed3379aa2df1b7b80495082e5f65cc197161a6"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/the-great-wave-off-kanagawa.sheet.webp",
+        "sha256": "986c6e268805665cbd2ae67c1dbaf15a4e5d1192be226f183b43e25d764f9651"
+      },
+      "output": {
+        "file": "floating-world/the-great-wave-off-kanagawa-bedroom.jpg",
+        "sha256": "42fcc0870f8d79fc9b16c10ec23dbaf945bca723176cb5909cd34fc9d9197c6e"
+      }
+    },
+    {
+      "print": "the-great-wave-off-kanagawa",
+      "room": "study",
+      "alt": "The Great Wave off Kanagawa print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 434,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/great-wave-study.png",
+        "sha256": "eb9691e118144610f05513faa6e5c306562e67ef276ca22ab9ff4ea5bac4b653"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/the-great-wave-off-kanagawa.sheet.webp",
+        "sha256": "986c6e268805665cbd2ae67c1dbaf15a4e5d1192be226f183b43e25d764f9651"
+      },
+      "output": {
+        "file": "floating-world/the-great-wave-off-kanagawa-study.jpg",
+        "sha256": "cd3962c6143618a4ab5a7d0914fcec03127f9c3545e8d0ce90f3a2cdb5ff6b38"
+      }
+    },
+    {
+      "print": "the-great-wave-off-kanagawa",
+      "room": "wide-interior",
+      "alt": "The Great Wave off Kanagawa print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 459,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/great-wave-wide-interior.png",
+        "sha256": "32fa18d8497b33e66fb3bfcd6bc62f55ce9f3ae85dab0ec604ea459b418f8f11"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/the-great-wave-off-kanagawa.sheet.webp",
+        "sha256": "986c6e268805665cbd2ae67c1dbaf15a4e5d1192be226f183b43e25d764f9651"
+      },
+      "output": {
+        "file": "floating-world/the-great-wave-off-kanagawa-wide-interior.jpg",
+        "sha256": "b8e0d36704a5213ec4efcf45eb7ecbb6744487b7f0a2bc7a5cec51c5b06238b1"
+      }
+    },
+    {
+      "print": "hodogaya-on-the-tokaido",
+      "room": "living-room",
+      "alt": "Hodogaya on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 250,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/hodogaya-on-the-tokaido-living-room.png",
+        "sha256": "0ba669e7a13cd9f74787f63b8530add278251c190f002af538b10b46cdb652e3"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/hodogaya-on-the-tokaido.sheet.webp",
+        "sha256": "7aac7c9c58ff416f3d68d78fd6c7238949863809cfea9ba324a04596025cb650"
+      },
+      "output": {
+        "file": "floating-world/hodogaya-on-the-tokaido-living-room.jpg",
+        "sha256": "31b68b3ec8aa3b82477e0da90b5acd23ce182bf38b037eb8d0c3d6956b15dc05"
+      }
+    },
+    {
+      "print": "hodogaya-on-the-tokaido",
+      "room": "bedroom",
+      "alt": "Hodogaya on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/hodogaya-on-the-tokaido-bedroom.png",
+        "sha256": "ff99a35902fe94b89ab3012e3caf3f74671317489233bb5fe9130c3bbe9aa092"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/hodogaya-on-the-tokaido.sheet.webp",
+        "sha256": "7aac7c9c58ff416f3d68d78fd6c7238949863809cfea9ba324a04596025cb650"
+      },
+      "output": {
+        "file": "floating-world/hodogaya-on-the-tokaido-bedroom.jpg",
+        "sha256": "e4fa05cc77ad8fa39a3d6b44090a746900412b24cac9d738de82f507ec8e7b79"
+      }
+    },
+    {
+      "print": "hodogaya-on-the-tokaido",
+      "room": "study",
+      "alt": "Hodogaya on the Tōkaidō print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 494,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/hodogaya-on-the-tokaido-study.png",
+        "sha256": "84479cbc7ca555bb13f7421da4a906dead7f83bc45bb39979a9a543f9adfca71"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/hodogaya-on-the-tokaido.sheet.webp",
+        "sha256": "7aac7c9c58ff416f3d68d78fd6c7238949863809cfea9ba324a04596025cb650"
+      },
+      "output": {
+        "file": "floating-world/hodogaya-on-the-tokaido-study.jpg",
+        "sha256": "aac7794f9e033c29992d1fe6fb937df3a338fe815cbe4b932247fdb94469240f"
+      }
+    },
+    {
+      "print": "hodogaya-on-the-tokaido",
+      "room": "wide-interior",
+      "alt": "Hodogaya on the Tōkaidō print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 417,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/hodogaya-on-the-tokaido-wide-interior.png",
+        "sha256": "5697fde18ceaccb4d00d8ca6b17d8d22e8237351afbde063b91618ba31a92bd0"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/hodogaya-on-the-tokaido.sheet.webp",
+        "sha256": "7aac7c9c58ff416f3d68d78fd6c7238949863809cfea9ba324a04596025cb650"
+      },
+      "output": {
+        "file": "floating-world/hodogaya-on-the-tokaido-wide-interior.jpg",
+        "sha256": "53f8ad74b8b9a8c40427f4f711ee97122c763e4f78e9b1a4140b2727d58b0fdf"
+      }
+    },
+    {
+      "print": "sekiya-village-on-the-sumida-river",
+      "room": "living-room",
+      "alt": "Sekiya Village on the Sumida River print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 347,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-living-room.png",
+        "sha256": "38ed8a2cd751892a0112d787418beff13b20d0a4ff1175301a74391ab221face"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sekiya-village-on-the-sumida-river.sheet.webp",
+        "sha256": "bbd36fe2947cf574486c161f12b958be899bcf387a3fcc79739dba0226696b41"
+      },
+      "output": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-living-room.jpg",
+        "sha256": "9e0896667abb26c38635b16b748aea4d7fd7d2f5e58c4a9a53629cdfda8da4d0"
+      }
+    },
+    {
+      "print": "sekiya-village-on-the-sumida-river",
+      "room": "bedroom",
+      "alt": "Sekiya Village on the Sumida River print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-bedroom.png",
+        "sha256": "c8e3b3f9b3100e81e22e7a880e2b1d679c8af1040badfc23bdd326a39ee3c194"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sekiya-village-on-the-sumida-river.sheet.webp",
+        "sha256": "bbd36fe2947cf574486c161f12b958be899bcf387a3fcc79739dba0226696b41"
+      },
+      "output": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-bedroom.jpg",
+        "sha256": "fc96185ec59c2d45df9ba791cfa4a1dc3db9ec4af4eeefe2131b121668fafe92"
+      }
+    },
+    {
+      "print": "sekiya-village-on-the-sumida-river",
+      "room": "study",
+      "alt": "Sekiya Village on the Sumida River print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 412,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-study.png",
+        "sha256": "0c5ae910ff8d361c35a63c6c354f6915aceaca9a9d027ca2847bd1d75854f61b"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sekiya-village-on-the-sumida-river.sheet.webp",
+        "sha256": "bbd36fe2947cf574486c161f12b958be899bcf387a3fcc79739dba0226696b41"
+      },
+      "output": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-study.jpg",
+        "sha256": "094a88a88a522523da96fc56a314df24553069f8897127967e65fda35d8e9b8c"
+      }
+    },
+    {
+      "print": "sekiya-village-on-the-sumida-river",
+      "room": "wide-interior",
+      "alt": "Sekiya Village on the Sumida River print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 469,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-wide-interior.png",
+        "sha256": "d0515cd432e4b50131adc4a0a38300b058575b9a9248088f96b0b81e1bb16310"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sekiya-village-on-the-sumida-river.sheet.webp",
+        "sha256": "bbd36fe2947cf574486c161f12b958be899bcf387a3fcc79739dba0226696b41"
+      },
+      "output": {
+        "file": "floating-world/sekiya-village-on-the-sumida-river-wide-interior.jpg",
+        "sha256": "ea4093ce1c17a2b96456461c4cb98dec4a3e5145dd9166d54825858b1aad9418"
+      }
+    },
+    {
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "room": "living-room",
+      "alt": "Tago Bay near Ejiri on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 250,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-living-room.png",
+        "sha256": "e06b5ce55d3205fca86da64b39bd4b92258d248afd11bcf2f95f615db89a28f5"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/tago-bay-near-ejiri-on-the-tokaido.sheet.webp",
+        "sha256": "ea6fd61ca78b55f8d6d6cfebb2ea3dc38fa2ace4d2b06d7e01aca5a09edb86e4"
+      },
+      "output": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-living-room.jpg",
+        "sha256": "c3672945ce8b5a6fc5f9db19a29f99e0cbca8f9f54864f731569559ea17e5fc3"
+      }
+    },
+    {
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "room": "bedroom",
+      "alt": "Tago Bay near Ejiri on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-bedroom.png",
+        "sha256": "9d6d325095faf5584a2727e31f28c703ef84299a5a653552774da8e9a790e1c1"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/tago-bay-near-ejiri-on-the-tokaido.sheet.webp",
+        "sha256": "ea6fd61ca78b55f8d6d6cfebb2ea3dc38fa2ace4d2b06d7e01aca5a09edb86e4"
+      },
+      "output": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-bedroom.jpg",
+        "sha256": "1d9f76f5fac30631f71b834c50791d318334f0e513485c911082df1424330884"
+      }
+    },
+    {
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "room": "study",
+      "alt": "Tago Bay near Ejiri on the Tōkaidō print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 408,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-study.png",
+        "sha256": "4295e479307c6d9123bfc2ce7a407b9983f82665fdf9f36334063c9acdf55b97"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/tago-bay-near-ejiri-on-the-tokaido.sheet.webp",
+        "sha256": "ea6fd61ca78b55f8d6d6cfebb2ea3dc38fa2ace4d2b06d7e01aca5a09edb86e4"
+      },
+      "output": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-study.jpg",
+        "sha256": "627292646cff8ea3e49248fd9efd08271bdabd9595451e0972d9e20fdb9a4ec3"
+      }
+    },
+    {
+      "print": "tago-bay-near-ejiri-on-the-tokaido",
+      "room": "wide-interior",
+      "alt": "Tago Bay near Ejiri on the Tōkaidō print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 497,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-wide-interior.png",
+        "sha256": "116f537cfdbf8c509778f340a1fa9923361bdf3ff3b2ad2c17b13414b825033c"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/tago-bay-near-ejiri-on-the-tokaido.sheet.webp",
+        "sha256": "ea6fd61ca78b55f8d6d6cfebb2ea3dc38fa2ace4d2b06d7e01aca5a09edb86e4"
+      },
+      "output": {
+        "file": "floating-world/tago-bay-near-ejiri-on-the-tokaido-wide-interior.jpg",
+        "sha256": "c0c0719893db62e90cb5b676c7a107d11d82b30479275fb152aed24106195d94"
+      }
+    },
+    {
+      "print": "ushibori-in-hitachi-province",
+      "room": "living-room",
+      "alt": "Ushibori in Hitachi Province print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 304,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/ushibori-in-hitachi-province-living-room.png",
+        "sha256": "4821aed9445fa5327b85ac598692e3c4f3c01e7f32431043347b8cc79192802b"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/ushibori-in-hitachi-province.sheet.webp",
+        "sha256": "02e488c2f06211a2fda167032d014e3d011c815acbe6f9ef04a1c03a504474af"
+      },
+      "output": {
+        "file": "floating-world/ushibori-in-hitachi-province-living-room.jpg",
+        "sha256": "5cae033d5152098d29a2ea92058017138f31a7f865b98b891d07d817d8d11c61"
+      }
+    },
+    {
+      "print": "ushibori-in-hitachi-province",
+      "room": "bedroom",
+      "alt": "Ushibori in Hitachi Province print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/ushibori-in-hitachi-province-bedroom.png",
+        "sha256": "f91218a1b3446a6f6abacf580bc12847dc1196fa3b570476d126a21917530d7e"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/ushibori-in-hitachi-province.sheet.webp",
+        "sha256": "02e488c2f06211a2fda167032d014e3d011c815acbe6f9ef04a1c03a504474af"
+      },
+      "output": {
+        "file": "floating-world/ushibori-in-hitachi-province-bedroom.jpg",
+        "sha256": "688b496d14358ad72fa290775003d7b9eacc2e6d2dee659713454bab3e155dc1"
+      }
+    },
+    {
+      "print": "ushibori-in-hitachi-province",
+      "room": "study",
+      "alt": "Ushibori in Hitachi Province print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 391,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/ushibori-in-hitachi-province-study.png",
+        "sha256": "523a377ef4e96bea6c6f41139f57d0e3a3d46639eafb5d56b4643fc3839b77c9"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/ushibori-in-hitachi-province.sheet.webp",
+        "sha256": "02e488c2f06211a2fda167032d014e3d011c815acbe6f9ef04a1c03a504474af"
+      },
+      "output": {
+        "file": "floating-world/ushibori-in-hitachi-province-study.jpg",
+        "sha256": "bc188fddb8af6f8ae9bf72f12abb5e83ddc905b914c11a22c272f3de2256a0da"
+      }
+    },
+    {
+      "print": "ushibori-in-hitachi-province",
+      "room": "wide-interior",
+      "alt": "Ushibori in Hitachi Province print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 377,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/ushibori-in-hitachi-province-wide-interior.png",
+        "sha256": "f2492fcb2d880e5d10613dae89a7d361b4e2e5b5d897b9abb735ba7fbf429719"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/ushibori-in-hitachi-province.sheet.webp",
+        "sha256": "02e488c2f06211a2fda167032d014e3d011c815acbe6f9ef04a1c03a504474af"
+      },
+      "output": {
+        "file": "floating-world/ushibori-in-hitachi-province-wide-interior.jpg",
+        "sha256": "dac64493b99d82dc2ff80a590eab59d5d101be12df178043dd3a90e88110323d"
+      }
+    },
+    {
+      "print": "yoshida-on-the-tokaido",
+      "room": "living-room",
+      "alt": "Yoshida on the Tōkaidō print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 313,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/yoshida-on-the-tokaido-living-room.png",
+        "sha256": "526db96b0881710e441b003e2b2f3533b63e713dbb08f7902f6d846a4cf46d15"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/yoshida-on-the-tokaido.sheet.webp",
+        "sha256": "24d0c2400855c04accd6c2226299b24fe61e0070dd195c62e9f8c2ab7d6392e6"
+      },
+      "output": {
+        "file": "floating-world/yoshida-on-the-tokaido-living-room.jpg",
+        "sha256": "261f1c645e73624680a6adf076a6db37253c84978e71738e846c54b9ec92bfca"
+      }
+    },
+    {
+      "print": "yoshida-on-the-tokaido",
+      "room": "bedroom",
+      "alt": "Yoshida on the Tōkaidō print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/yoshida-on-the-tokaido-bedroom.png",
+        "sha256": "c16ff618ae1d2cb8c1d951e656c606627891c5629d21cee8603d529d1673a764"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/yoshida-on-the-tokaido.sheet.webp",
+        "sha256": "24d0c2400855c04accd6c2226299b24fe61e0070dd195c62e9f8c2ab7d6392e6"
+      },
+      "output": {
+        "file": "floating-world/yoshida-on-the-tokaido-bedroom.jpg",
+        "sha256": "97c3fc83398c4bc66b63253dc9feab818c79ce876d9e138a5282b069114cdce3"
+      }
+    },
+    {
+      "print": "yoshida-on-the-tokaido",
+      "room": "study",
+      "alt": "Yoshida on the Tōkaidō print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 452,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/yoshida-on-the-tokaido-study.png",
+        "sha256": "50ccb4078319b1d1dfbd8d52dbdaf8c7c0dc5a99405ddb9da073bfc76a0463bd"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/yoshida-on-the-tokaido.sheet.webp",
+        "sha256": "24d0c2400855c04accd6c2226299b24fe61e0070dd195c62e9f8c2ab7d6392e6"
+      },
+      "output": {
+        "file": "floating-world/yoshida-on-the-tokaido-study.jpg",
+        "sha256": "f14c3e9daffa35570abe07188e5f3434864049164f6a07bf1bbd74d297e13db1"
+      }
+    },
+    {
+      "print": "yoshida-on-the-tokaido",
+      "room": "wide-interior",
+      "alt": "Yoshida on the Tōkaidō print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 477,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/yoshida-on-the-tokaido-wide-interior.png",
+        "sha256": "53b1573da8c59cf2fbe2b6f8fc0d61b2bb1f90a3755cf836c0fb4505b14a5469"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/yoshida-on-the-tokaido.sheet.webp",
+        "sha256": "24d0c2400855c04accd6c2226299b24fe61e0070dd195c62e9f8c2ab7d6392e6"
+      },
+      "output": {
+        "file": "floating-world/yoshida-on-the-tokaido-wide-interior.jpg",
+        "sha256": "621631c828caa776b0b6f4ee1f452b58b1c140e67d23f1e8f397b7f87b5561c9"
+      }
+    },
+    {
+      "print": "nissaka-sayo-no-nakayama",
+      "room": "living-room",
+      "alt": "Nissaka, Sayo no Nakayama print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 380,
+        "top": 250,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-living-room.png",
+        "sha256": "871a8c4c17ecc5000c6ecd7beb486b22c0918301402c6cd9b137983946903c66"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/nissaka-sayo-no-nakayama.sheet.webp",
+        "sha256": "bd2c4675b7ef4fa3948e5ebc609cb03a22f9d650a410e7209840a815415d95ac"
+      },
+      "output": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-living-room.jpg",
+        "sha256": "1024ed4f5088088d6ab5cf37f5a201b9c5adc6b9d03f6fe36c7b1f65a1707809"
+      }
+    },
+    {
+      "print": "nissaka-sayo-no-nakayama",
+      "room": "bedroom",
+      "alt": "Nissaka, Sayo no Nakayama print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 200,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-bedroom.png",
+        "sha256": "eaa830862501fb6228dc7d9e825c090a973f3eaf0e47d3150cd6970b9f2e5e34"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/nissaka-sayo-no-nakayama.sheet.webp",
+        "sha256": "bd2c4675b7ef4fa3948e5ebc609cb03a22f9d650a410e7209840a815415d95ac"
+      },
+      "output": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-bedroom.jpg",
+        "sha256": "2a124804ec065054345644d27054b0303db421d1375d8a5336766eafcdafe9cf"
+      }
+    },
+    {
+      "print": "nissaka-sayo-no-nakayama",
+      "room": "study",
+      "alt": "Nissaka, Sayo no Nakayama print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 420,
+        "top": 441,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-study.png",
+        "sha256": "dc36fb76c019183da4f408f07025020f916d021c55708a125ef4b706567751ca"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/nissaka-sayo-no-nakayama.sheet.webp",
+        "sha256": "bd2c4675b7ef4fa3948e5ebc609cb03a22f9d650a410e7209840a815415d95ac"
+      },
+      "output": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-study.jpg",
+        "sha256": "aa25782a1dba5353d32caf03ccb473c58861c9a3b27a1f92e78267066b469814"
+      }
+    },
+    {
+      "print": "nissaka-sayo-no-nakayama",
+      "room": "wide-interior",
+      "alt": "Nissaka, Sayo no Nakayama print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 450,
+        "top": 436,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-wide-interior.png",
+        "sha256": "5e8eced63cf2aa2361311be456045e6990f8064712aed9fa50fa6a72d741aaa7"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/nissaka-sayo-no-nakayama.sheet.webp",
+        "sha256": "bd2c4675b7ef4fa3948e5ebc609cb03a22f9d650a410e7209840a815415d95ac"
+      },
+      "output": {
+        "file": "floating-world/nissaka-sayo-no-nakayama-wide-interior.jpg",
+        "sha256": "8bcc7efd46b631c8ec1f7dbdece62fff2a96dcc8183965a07248ed594960108f"
+      }
+    },
+    {
+      "print": "fireworks-at-ryogoku-bridge",
+      "room": "living-room",
+      "alt": "Fireworks at Ryōgoku Bridge print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 420,
+        "top": 230,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-living-room.png",
+        "sha256": "1435c2ceec0c8be45812a17d8bdb3a90258be13d5901f01e1439691893eec910"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/fireworks-at-ryogoku-bridge.sheet.webp",
+        "sha256": "24e9854d172e36da3feb27a3e15be9bd65a28fef885eb116d53cc35d3195f945"
+      },
+      "output": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-living-room.jpg",
+        "sha256": "16f86412a8ee3494be441231dc450580f505c218ebda330f4829999403af1087"
+      }
+    },
+    {
+      "print": "fireworks-at-ryogoku-bridge",
+      "room": "bedroom",
+      "alt": "Fireworks at Ryōgoku Bridge print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 180,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-bedroom.png",
+        "sha256": "b0235810292f0126d7a86d88bcb95015a669cee7cf293f7fb77b98d6a1fa1b1a"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/fireworks-at-ryogoku-bridge.sheet.webp",
+        "sha256": "24e9854d172e36da3feb27a3e15be9bd65a28fef885eb116d53cc35d3195f945"
+      },
+      "output": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-bedroom.jpg",
+        "sha256": "4f6a137a0f1e67897e365860f6f2df554a14720cf465cf7d5908bba5eaa46aee"
+      }
+    },
+    {
+      "print": "fireworks-at-ryogoku-bridge",
+      "room": "study",
+      "alt": "Fireworks at Ryōgoku Bridge print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 304,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-study.png",
+        "sha256": "2a781c40afcba5f84ccc733fb7c2da5ddbcfa550edd8279504898f0db31a8418"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/fireworks-at-ryogoku-bridge.sheet.webp",
+        "sha256": "24e9854d172e36da3feb27a3e15be9bd65a28fef885eb116d53cc35d3195f945"
+      },
+      "output": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-study.jpg",
+        "sha256": "094efcc3d522e10ce73970c982e0d6d5178d49e64affea984611d62bd72e2756"
+      }
+    },
+    {
+      "print": "fireworks-at-ryogoku-bridge",
+      "room": "wide-interior",
+      "alt": "Fireworks at Ryōgoku Bridge print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 470,
+        "top": 320,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-wide-interior.png",
+        "sha256": "3f977849730a0332bd4133723a9390e47b1ce17f4f58ac45c106145f0aa05889"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/fireworks-at-ryogoku-bridge.sheet.webp",
+        "sha256": "24e9854d172e36da3feb27a3e15be9bd65a28fef885eb116d53cc35d3195f945"
+      },
+      "output": {
+        "file": "floating-world/fireworks-at-ryogoku-bridge-wide-interior.jpg",
+        "sha256": "46ebca6351bd05ef34d20e87b601f8f18ed80e8805323f55ed93a00bd4b40bf8"
+      }
+    },
+    {
+      "print": "kinryusan-temple-at-asakusa",
+      "room": "living-room",
+      "alt": "Kinryūsan Temple at Asakusa print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 420,
+        "top": 230,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-living-room.png",
+        "sha256": "333032b7cbe15d123224f5aebcfd5420a964ef5d629b709ac7c5f8422b475dae"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/kinryusan-temple-at-asakusa.sheet.webp",
+        "sha256": "891d9d32a0821a533630d195fb59548ea15d8f5f9d137fefabd6ea7aa7190eaf"
+      },
+      "output": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-living-room.jpg",
+        "sha256": "e2653de6b010cc8629557dd5fd1881b881bb6f4111ddb61a486ca231d4ae4239"
+      }
+    },
+    {
+      "print": "kinryusan-temple-at-asakusa",
+      "room": "bedroom",
+      "alt": "Kinryūsan Temple at Asakusa print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 180,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-bedroom.png",
+        "sha256": "62e0bffb6587a53cd7efa56cf8255d20a3a7b59de8f2aa740ccba8205a84fdcc"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/kinryusan-temple-at-asakusa.sheet.webp",
+        "sha256": "891d9d32a0821a533630d195fb59548ea15d8f5f9d137fefabd6ea7aa7190eaf"
+      },
+      "output": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-bedroom.jpg",
+        "sha256": "732db29a865afc33b316bccaa2fbcbf70b28e1a544cc0b1314d4e1b2739b98f8"
+      }
+    },
+    {
+      "print": "kinryusan-temple-at-asakusa",
+      "room": "study",
+      "alt": "Kinryūsan Temple at Asakusa print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 288,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-study.png",
+        "sha256": "23e53e6b8e6270aab1d57b1c965b415181f73e770aa1bd5e968b752f36c5d0f3"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/kinryusan-temple-at-asakusa.sheet.webp",
+        "sha256": "891d9d32a0821a533630d195fb59548ea15d8f5f9d137fefabd6ea7aa7190eaf"
+      },
+      "output": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-study.jpg",
+        "sha256": "eebd6513db635ad201c2e2e252ff2178d1191ed459dc7223791c7dc39e1924b5"
+      }
+    },
+    {
+      "print": "kinryusan-temple-at-asakusa",
+      "room": "wide-interior",
+      "alt": "Kinryūsan Temple at Asakusa print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 470,
+        "top": 412,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-wide-interior.png",
+        "sha256": "8b11a2c5f0b520930d9838e4ab3c2eab0a436355737464207cdc9fb8974e350c"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/kinryusan-temple-at-asakusa.sheet.webp",
+        "sha256": "891d9d32a0821a533630d195fb59548ea15d8f5f9d137fefabd6ea7aa7190eaf"
+      },
+      "output": {
+        "file": "floating-world/kinryusan-temple-at-asakusa-wide-interior.jpg",
+        "sha256": "0523d4cafbb725a87d12079e4b7ffbc4bda1d9f10c6a0f0bb5f7b95b1c388eb5"
+      }
+    },
+    {
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "room": "living-room",
+      "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a low oak sideboard in a calm, light living room.",
+      "placement": {
+        "left": 420,
+        "top": 230,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-living-room.png",
+        "sha256": "9cadab31a61652d37e9164c079f91c5850f0f23eb0cdacca16fbd92d47618919"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake.sheet.webp",
+        "sha256": "19da746fddf3ca0a4f43a563ae3549f4696dbab04aedbe8ea676c9efe8160425"
+      },
+      "output": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-living-room.jpg",
+        "sha256": "1ced9292ce1ff542fae95ecc04c2dc56c76e9d32ffe4db713d6904960e17e24a"
+      }
+    },
+    {
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "room": "bedroom",
+      "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a linen-covered bed in a quiet bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 180,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-bedroom.png",
+        "sha256": "2231cf0b2e35df07e5307fb3679f06cd099d5fc80d9c14b5a480f619ad317b24"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake.sheet.webp",
+        "sha256": "19da746fddf3ca0a4f43a563ae3549f4696dbab04aedbe8ea676c9efe8160425"
+      },
+      "output": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-bedroom.jpg",
+        "sha256": "6252b1c60752de267ca4cfaebb76eb1fe892172ccc43d9a0de2b365e64efea64"
+      }
+    },
+    {
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "room": "study",
+      "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print above a walnut desk in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 350,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-study.png",
+        "sha256": "b1097bf385124a0aa91adc3a967428e8939a58f38bf401bbab3a2a1ca388d3ac"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake.sheet.webp",
+        "sha256": "19da746fddf3ca0a4f43a563ae3549f4696dbab04aedbe8ea676c9efe8160425"
+      },
+      "output": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-study.jpg",
+        "sha256": "2fb5a8fca53eed4a1e1d091e6284ab766e57ca60df2286102b65caeb836ccd60"
+      }
+    },
+    {
+      "print": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "room": "wide-interior",
+      "alt": "Sudden Shower over Shin-Ōhashi Bridge and Atake print shown at scale in a wide, airy interior.",
+      "placement": {
+        "left": 470,
+        "top": 423,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-wide-interior.png",
+        "sha256": "d72fe78a18c5d893f946b11372a95b66283e9e4271dae81384816413e6dd046c"
+      },
+      "artwork": {
+        "file": "images/product-art/floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake.sheet.webp",
+        "sha256": "19da746fddf3ca0a4f43a563ae3549f4696dbab04aedbe8ea676c9efe8160425"
+      },
+      "output": {
+        "file": "floating-world/sudden-shower-over-shin-ohashi-bridge-and-atake-wide-interior.jpg",
+        "sha256": "8a3621f31e37e44c541d12f99c0aee4f97819bea458a1439fdb81fc596aed3b5"
+      }
+    }
+  ]
+}

@@ -1,0 +1,834 @@
+{
+  "verifiedAt": "2026-10-13T11:11:59.506Z",
+  "branch": "codex/artist-shops-pilot",
+  "baseCommit": "31a9d125de8206bc7e80223208bd50c6f60e1a34",
+  "shop": {
+    "name": "Clara Mendes",
+    "currencyCode": "EUR"
+  },
+  "collection": "floating-world",
+  "checks": {
+    "products": 10,
+    "variants": 30,
+    "newVariantsStaged": 20,
+    "existing8x10VariantsPreserved": 10,
+    "existing8x10MappingRecordsPreserved": 10,
+    "mediaUnchanged": 50,
+    "storefrontProductsFound": 0,
+    "publicPdp404": 10,
+    "assetFilesHashVerified": 30,
+    "expandArtifact": "expand-2026-10-13T11-09-50.json",
+    "unrelatedProductsChecked": 61,
+    "unrelatedProductsUnchanged": true
+  },
+  "limits": {
+    "publicationAssignments": "unverified; installed Admin app lacks read_publications",
+    "inventoryByLocation": "unverified; installed Admin app lacks read_inventory; aggregate quantities zero verified",
+    "largerProdigiMappingsVerified": 0,
+    "masterReviewsPending": 10,
+    "physicalPrintQualityVerified": false,
+    "noPublicationOrReleaseMutationRun": true
+  },
+  "products": [
+    {
+      "slug": "the-great-wave-off-kanagawa",
+      "productId": "gid://shopify/Product/16144927162702",
+      "handle": "the-great-wave-off-kanagawa-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191506362702",
+          "sku": "CM-FW-01-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "the-great-wave-off-kanagawa-8x10-300dpi.jpg",
+          "printSha256": "08f23c008c94051072c1bf2d59c750ce9843f33793029c6c8ff29bcee87de96a",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 427.8,
+          "prodigiMapping": {
+            "channelProductId": "6327576",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195110121806",
+          "sku": "CM-FW-01-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "the-great-wave-off-kanagawa-16x20-300dpi.jpg",
+          "printSha256": "0d15cc69443b6de1caa26ba1cae93a3fb1a9ac8afdfe89b2074a5f37de0dae4d",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 213.9,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195110154574",
+          "sku": "CM-FW-01-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "the-great-wave-off-kanagawa-20x24-300dpi.jpg",
+          "printSha256": "e9dc20aad7a219f2380576b56a7b4e6517df310fbab7b274fea4d5990502c36b",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 179,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "hodogaya-on-the-tokaido",
+      "productId": "gid://shopify/Product/16144927293774",
+      "handle": "hodogaya-on-the-tokaido-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191507902798",
+          "sku": "CM-FW-02-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "hodogaya-on-the-tokaido-8x10-300dpi.jpg",
+          "printSha256": "ef3288b9b7041cc8b0c558ac56d55c2c202ee235798f8a67d32a40ac8c90118e",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 435,
+          "prodigiMapping": {
+            "channelProductId": "6327577",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195110482254",
+          "sku": "CM-FW-02-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "hodogaya-on-the-tokaido-16x20-300dpi.jpg",
+          "printSha256": "af07c94020cf39e542cb131570bc04fa98da95f87efd38caf236ba653bcb5b63",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 217.5,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195110515022",
+          "sku": "CM-FW-02-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "hodogaya-on-the-tokaido-20x24-300dpi.jpg",
+          "printSha256": "05952917a4f2d4e3220d811454b06e0abc58f04227a4ba0c184ef1166d92105a",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 182,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "sekiya-village-on-the-sumida-river",
+      "productId": "gid://shopify/Product/16144927359310",
+      "handle": "sekiya-village-on-the-sumida-river-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191510458702",
+          "sku": "CM-FW-03-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "sekiya-village-on-the-sumida-river-8x10-300dpi.jpg",
+          "printSha256": "7fde36020d6c4b73835e04c73a1fed5843c88b06d2291bc058779240b5d768c2",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 432.7,
+          "prodigiMapping": {
+            "channelProductId": "6327578",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195110613326",
+          "sku": "CM-FW-03-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "sekiya-village-on-the-sumida-river-16x20-300dpi.jpg",
+          "printSha256": "34b4f70100ded704842f3fa6d9fbb40e2af5734bdcefed9b696e091f69b4ffde",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 216.4,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195110646094",
+          "sku": "CM-FW-03-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "sekiya-village-on-the-sumida-river-20x24-300dpi.jpg",
+          "printSha256": "e02b37ae91b9233609967cba22cbceea03b73d4c61caa8f5d203fd88b7125b1b",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 181.1,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "tago-bay-near-ejiri-on-the-tokaido",
+      "productId": "gid://shopify/Product/16144927424846",
+      "handle": "tago-bay-near-ejiri-on-the-tokaido-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191512588622",
+          "sku": "CM-FW-04-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "tago-bay-near-ejiri-on-the-tokaido-8x10-300dpi.jpg",
+          "printSha256": "d25eb81702cec68f058fd34812abee4d4df69acb5bc9f3a219eae415d53497fc",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 432.2,
+          "prodigiMapping": {
+            "channelProductId": "6327579",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195110777166",
+          "sku": "CM-FW-04-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "tago-bay-near-ejiri-on-the-tokaido-16x20-300dpi.jpg",
+          "printSha256": "ff3a2aecd09d976e62f6aecd835063b2ea54ada41695aa20a0d15ab267a64966",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 216.1,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195110809934",
+          "sku": "CM-FW-04-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "tago-bay-near-ejiri-on-the-tokaido-20x24-300dpi.jpg",
+          "printSha256": "6312fa8ffc119c9b4ba9680a429179a31df691899b3c7973933c50ffcd6a3d5f",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 180.9,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ushibori-in-hitachi-province",
+      "productId": "gid://shopify/Product/16144927457614",
+      "handle": "ushibori-in-hitachi-province-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191512621390",
+          "sku": "CM-FW-05-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "ushibori-in-hitachi-province-8x10-300dpi.jpg",
+          "printSha256": "23c158f7d5715a68bfca05ac693b7544814f8993da6e768a3d275af75dbc18c1",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 428.7,
+          "prodigiMapping": {
+            "channelProductId": "6327580",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195110842702",
+          "sku": "CM-FW-05-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "ushibori-in-hitachi-province-16x20-300dpi.jpg",
+          "printSha256": "fd64283f6f51b41cd6d703453ced3c820899d3794594bd5d692df29ee3aa369a",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 214.3,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195110875470",
+          "sku": "CM-FW-05-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "ushibori-in-hitachi-province-20x24-300dpi.jpg",
+          "printSha256": "6b7fa50b19e9c337e940d8c27967e57b2f447bc95e3048d064cef9e73797fd2d",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 179.4,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "yoshida-on-the-tokaido",
+      "productId": "gid://shopify/Product/16144927490382",
+      "handle": "yoshida-on-the-tokaido-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191512654158",
+          "sku": "CM-FW-06-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "yoshida-on-the-tokaido-8x10-300dpi.jpg",
+          "printSha256": "fc7354dbe8bd5858faea066420b41986a5528a5f2a3c5ebbb0262a607ca5c52b",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 427,
+          "prodigiMapping": {
+            "channelProductId": "6327581",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195110941006",
+          "sku": "CM-FW-06-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "yoshida-on-the-tokaido-16x20-300dpi.jpg",
+          "printSha256": "769d1a66de719cdd0e79f637998b8ca87ef437d4bb4478c5cb9b2de1383e17dc",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 213.5,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195110973774",
+          "sku": "CM-FW-06-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "yoshida-on-the-tokaido-20x24-300dpi.jpg",
+          "printSha256": "fd8c95a992ee264af0961c7f9dbb6e0500073f27f39cdeff4a8300f1cf13ce93",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 178.7,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "nissaka-sayo-no-nakayama",
+      "productId": "gid://shopify/Product/16144927523150",
+      "handle": "nissaka-sayo-no-nakayama-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191512686926",
+          "sku": "CM-FW-07-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "nissaka-sayo-no-nakayama-8x10-300dpi.jpg",
+          "printSha256": "4ce8856cf4753b2bd62df0e283daa655c33fd7196d6173d30a8faff72448646b",
+          "pixels": [
+            3000,
+            2400
+          ],
+          "nativePpi": 432.4,
+          "prodigiMapping": {
+            "channelProductId": "6327582",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195111039310",
+          "sku": "CM-FW-07-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "nissaka-sayo-no-nakayama-16x20-300dpi.jpg",
+          "printSha256": "b52cc02e8d1f866572178c63a4db75ac6f3faa55b2dbd7b8abd6d56b57cd1de3",
+          "pixels": [
+            6000,
+            4800
+          ],
+          "nativePpi": 216.2,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195111072078",
+          "sku": "CM-FW-07-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "nissaka-sayo-no-nakayama-20x24-300dpi.jpg",
+          "printSha256": "4e7ce033d6e56a91eed012d2c3a3f1182e072b14838c5b700527402eabab8767",
+          "pixels": [
+            7200,
+            6000
+          ],
+          "nativePpi": 181,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "fireworks-at-ryogoku-bridge",
+      "productId": "gid://shopify/Product/16144927621454",
+      "handle": "fireworks-at-ryogoku-bridge-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191512883534",
+          "sku": "CM-FW-08-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "fireworks-at-ryogoku-bridge-8x10-300dpi.jpg",
+          "printSha256": "1d4570c5ba710f09856381355239816b9c5b6ae4d891021a27bc70cc91cf82e9",
+          "pixels": [
+            2400,
+            3000
+          ],
+          "nativePpi": 424.8,
+          "prodigiMapping": {
+            "channelProductId": "6327583",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195111170382",
+          "sku": "CM-FW-08-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "fireworks-at-ryogoku-bridge-16x20-300dpi.jpg",
+          "printSha256": "29d083f2a54164513dc3d2e3973974b77bb48c6a5f74121586d564a8a3983cfa",
+          "pixels": [
+            4800,
+            6000
+          ],
+          "nativePpi": 212.4,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195111203150",
+          "sku": "CM-FW-08-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "fireworks-at-ryogoku-bridge-20x24-300dpi.jpg",
+          "printSha256": "e792960d5de3c358f6b3f9400a0d3623a333219ef0a1efc21cf909ccffe8023d",
+          "pixels": [
+            6000,
+            7200
+          ],
+          "nativePpi": 177.8,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "kinryusan-temple-at-asakusa",
+      "productId": "gid://shopify/Product/16144927686990",
+      "handle": "kinryusan-temple-at-asakusa-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191513080142",
+          "sku": "CM-FW-09-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "kinryusan-temple-at-asakusa-8x10-300dpi.jpg",
+          "printSha256": "7935d9f3e22d7b63ce513961307df721fba19e080f96b4c9dc2cee21c5843cac",
+          "pixels": [
+            2400,
+            3000
+          ],
+          "nativePpi": 420.4,
+          "prodigiMapping": {
+            "channelProductId": "6327584",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195111301454",
+          "sku": "CM-FW-09-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "kinryusan-temple-at-asakusa-16x20-300dpi.jpg",
+          "printSha256": "50c06ee6e9a8c0a431df32a8e07e92d305f03dee3238ec9787cc3b7015799684",
+          "pixels": [
+            4800,
+            6000
+          ],
+          "nativePpi": 210.2,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195111334222",
+          "sku": "CM-FW-09-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "kinryusan-temple-at-asakusa-20x24-300dpi.jpg",
+          "printSha256": "a623f97741c4b77c016c79690185618c77fb3e32f009676a95f67c9fb41cd131",
+          "pixels": [
+            6000,
+            7200
+          ],
+          "nativePpi": 175.9,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    },
+    {
+      "slug": "sudden-shower-over-shin-ohashi-bridge-and-atake",
+      "productId": "gid://shopify/Product/16144927719758",
+      "handle": "sudden-shower-over-shin-ohashi-bridge-and-atake-art-print",
+      "status": "DRAFT",
+      "released": false,
+      "masterReview": "pending",
+      "mediaCount": 5,
+      "mediaAndFeaturedArtworkUnchanged": true,
+      "old8x10VariantUnchanged": true,
+      "storefrontVisible": false,
+      "publicPdpHttpStatus": 404,
+      "variants": [
+        {
+          "size": "8x10",
+          "variantId": "gid://shopify/ProductVariant/61191513112910",
+          "sku": "CM-FW-10-8X10",
+          "priceEUR": "26.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-8X10",
+          "printFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-8x10-300dpi.jpg",
+          "printSha256": "9bc4e89bf24649f1f698bd4a4f4e5d54214586b28889c8f5b1584425f82e8881",
+          "pixels": [
+            2400,
+            3000
+          ],
+          "nativePpi": 427,
+          "prodigiMapping": {
+            "channelProductId": "6327585",
+            "verified": true,
+            "verifiedAt": "2026-10-13"
+          }
+        },
+        {
+          "size": "16x20",
+          "variantId": "gid://shopify/ProductVariant/61195111432526",
+          "sku": "CM-FW-10-16X20",
+          "priceEUR": "35.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "ART-FAP-EMA-16X20",
+          "printFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-16x20-300dpi.jpg",
+          "printSha256": "34f3249cf876cf88354559fa95890d1c9c95bd851d640342430a30f7da224de6",
+          "pixels": [
+            4800,
+            6000
+          ],
+          "nativePpi": 213.5,
+          "prodigiMapping": {
+            "verified": false
+          }
+        },
+        {
+          "size": "20x24",
+          "variantId": "gid://shopify/ProductVariant/61195111465294",
+          "sku": "CM-FW-10-20X24",
+          "priceEUR": "44.99",
+          "inventoryQuantity": 0,
+          "tracked": true,
+          "inventoryPolicy": "DENY",
+          "requiresShipping": true,
+          "providerSku": "GLOBAL-FAP-20X24",
+          "printFile": "sudden-shower-over-shin-ohashi-bridge-and-atake-20x24-300dpi.jpg",
+          "printSha256": "6009105a051916c6b35e2866810dfb3eefe636f8b9a98e3ed6c9baea1e14b7c1",
+          "pixels": [
+            6000,
+            7200
+          ],
+          "nativePpi": 178.7,
+          "prodigiMapping": {
+            "verified": false
+          }
+        }
+      ]
+    }
+  ]
+}

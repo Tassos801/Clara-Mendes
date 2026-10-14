@@ -351,7 +351,22 @@ test('the phone case asks for the phone instead of guessing one', () => {
     'label posing as a button',
   );
   assert.match(source, /onClick=\{choosePhone\}/);
-  assert.match(source, /showPicker/);
+  // The picker (and its showPicker focus) is shared with museum cases.
+  assert.match(source, /<PhoneModelPicker/);
+  assert.match(source, /choosePhone = focusPhoneModelPicker/);
+  assert.match(read('app/components/PhoneModelPicker.tsx'), /showPicker/);
+});
+
+test('a museum phone case uses the same picker and never guesses a model', () => {
+  const source = read('app/routes/products.$handle.tsx');
+  assert.match(source, /<PhoneModelPicker/);
+  assert.match(source, /requestedPhoneModel\(selectedOptions, optionName/);
+  assert.match(source, /selectedOrFirstAvailableVariant: null/);
+  assert.match(source, /onClick=\{focusPhoneModelPicker\}/);
+  const picker = read('app/components/PhoneModelPicker.tsx');
+  assert.match(picker, /<option value="" disabled>\s*Select your phone/);
+  assert.match(picker, /value=\{value \?\? ''\}/);
+  assert.match(picker, /required/);
 });
 
 test('phone shop toolbar scrolls away and the grid keeps two columns', () => {

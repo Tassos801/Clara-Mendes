@@ -13,6 +13,8 @@ export type Capsule = {
   handles: string[];
   /** Site-relative artwork path used for the capsule's share card. */
   image: string;
+  /** Print-catalog collections: museum reproductions are never "original". */
+  kind?: 'museum' | 'studio';
   note: string;
   /** Offered sizes; set only for print-catalog collections. */
   sizeLabels?: string[];
@@ -102,7 +104,10 @@ export function shopCapsulePath(slug: string) {
 export function shopCapsuleDescription(capsule: Capsule) {
   if (capsule.sizeLabels?.length) {
     const count = capsule.handles.length;
-    return `${capsule.title} — ${capsule.note}. ${count} original Clara Mendes ${count === 1 ? 'print' : 'prints'}, available unframed in ${joinLabels(capsule.sizeLabels)}.`;
+    const prints = count === 1 ? 'print' : 'prints';
+    if (capsule.kind === 'museum')
+      return `${capsule.title} — ${capsule.note}. ${count} ${prints} of public-domain works from museum collections, each printed whole on a white border and available unframed in ${joinLabels(capsule.sizeLabels)}.`;
+    return `${capsule.title} — ${capsule.note}. ${count} original Clara Mendes ${prints}, available unframed in ${joinLabels(capsule.sizeLabels)}.`;
   }
   return `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`;
 }

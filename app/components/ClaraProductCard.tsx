@@ -84,11 +84,14 @@ export type ClaraCardProduct = ClothingProductLike & {
 
 export function ClaraProductCard({
   product: storefrontProduct,
+  byline,
   loading = 'lazy',
   showStory = false,
   pricing,
 }: {
   product: ClaraCardProduct;
+  /** The artist's name, shown as "By …" above the title (artist shops). */
+  byline?: string;
   loading?: 'eager' | 'lazy';
   showStory?: boolean;
   /** Precomputed pricing for cards fed from snapshots (recently viewed). */
@@ -189,6 +192,7 @@ export function ClaraProductCard({
         className="cm-card-copy-link"
       >
         <div className="product-card-copy cm-card-copy">
+          {byline ? <p className="cm-card-byline">By {byline}</p> : null}
           <div className="cm-card-heading">
             <h3 className="cm-card-title">
               <i>{titleWords[0]}</i>
@@ -411,6 +415,17 @@ const cardCss = `
 
 .cm-card-copy {
   padding-top: 14px;
+}
+
+.cm-card-byline {
+  color: var(--color-muted, #6f685e);
+  font-family: var(--sans);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  margin: 0 0 6px;
+  text-transform: uppercase;
 }
 
 .cm-card-heading {

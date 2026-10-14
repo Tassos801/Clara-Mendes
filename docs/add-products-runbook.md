@@ -105,6 +105,99 @@ Known sizes and their verified Prodigi SKUs (current prices for the originals):
 | `16x20` | 4800×6000 | `ART-FAP-EMA-16X20` | €39.99 |
 | `20x24` | 6000×7200 | `GLOBAL-FAP-20X24` (metric 50×60 cm; 5:6, so a 4:5 source is cropped ~4%) | €49.99 |
 
+## Museum prints and artist shops
+
+Public-domain museum works use the same catalog and steps, plus a sourcing
+step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md).
+
+1. **Source:** `npm run museum -- search <artist> [--title|--anywhere]` lists
+   Met candidates (same-title rows may be different impressions; compare them).
+   `npm run museum -- fetch <object id> --artist <artist id> [--short-title "…"]`
+   records the work in [data/art-registry.json](../data/art-registry.json),
+   commits the raw Met record under `data/museum-evidence/` and caches the
+   original under `<launch folder>/museum/originals/` (re-fetchable on any PC,
+   checked by sha256). `qualify` prints each size's bordered layout: ≥300 ppi
+   qualifies; 150–299 needs an owner exception; <150 is omitted.
+2. **Owner reviews (the owner runs these or explicitly asks for them):**
+   `npm run museum -- review <artwork id> --rights cleared --by "<name>"`,
+   the same with `--master` after the prepared files are checked, and
+   `npm run museum -- approve-artist <artist id> --by "<name>"` once the
+   biography, dates and curator's note are right. If the photograph shows
+   museum mount tabs or pencilled numbers outside the sheet, the owner can
+   have them trimmed off:
+   `npm run museum -- trim <artwork id> --top <px> [--right|--bottom|--left <px>] --by "<name>"`
+   (edge insets in original pixels, each at most 5% of the side; `--clear`
+   removes it). Layout, `qualify` and `prepare` use the trimmed size, and a
+   trim resets the master review. Measure the insets on full-resolution crops
+   and stop at the paper edge; seals and marks on the paper stay.
+   **Product crops.** Phone cases, card fronts, postcards and canvas are not
+   the shape of the work, so they use a crop recorded in
+   `data/museum-crops.json`: the printed block of the sheet (`area`) and, per
+   shape, a centre and an optional zoom. The box is computed (largest box of
+   the shape inside the area), and pixels are only cut, never generated.
+   `npm run museum -- crops [--artwork <id>]` writes a review sheet per work
+   and an overview per product to `<launchDir>/museum/crops/`, with ppi and
+   coverage. The owner approves the crops (`approval` in the file) before any
+   product uses them. Prints and framed prints keep the whole composition.
+3. **Catalog:** a collection with `"kind": "museum"`; each print names its
+   `artworkId` and `orientation` (the artwork's), and its four room
+   placements are 5:4 for landscape paper. Choose collection sizes every work
+   qualifies for. Museum collections never set `artistId`; studio collections
+   may (their artist's shop then lists them).
+4. **Then the usual steps.** `prepare` lays the whole artwork on white paper in
+   its own orientation (no crop, no stretch) and writes the card image (the
+   sheet on the soft background) plus `<print>.sheet.webp`, which `rooms`
+   composites. `stage` writes museum copy (artist, full museum title, date,
+   medium, credit, museum link, no-endorsement line) and tags
+   `Museum Reproduction` + the artist's name, never `Clara Mendes Original`.
+   `release` refuses a museum print until both owner reviews are cleared.
+5. **Other products from the same works** (framed print, canvas, greeting
+   card, postcard, tough phone case): one hidden Draft per artwork per type,
+   never variants of the live studio extension products. Prices and Prodigi
+   SKUs per collection live in
+   [data/art-product-catalog.json](../data/art-product-catalog.json)
+   (`collections[].families`); its `products[]` are written by the pipeline.
+   The same verbs take `--families` (all five) or `--family <f>[,<f>]`:
+   - `npm run product -- prepare <collection> --families [--only a,b]` adds
+     the catalog entries and writes the files under
+     `<launchDir>/<collection>/<family>/` (+ `web/` shopper previews,
+     `families-plan.json`, `families-assets.json`): card 6117×2161 with the
+     art on the front panel, postcard 4323×1559 with the art half, canvas
+     16×20 at 150 dpi in the work's orientation, case 2000×2500 (Prodigi
+     centre-crops per device), each cut from the approved crop; the framed
+     print reuses the bordered 16×20 print file. It refuses a file below the
+     family's accepted ppi or whose panel differs from its crop, and reuses
+     current files byte for byte. The case preview needs the iPhone 16 Pro
+     Prodigi template (found by checksum in any worktree's `output/`).
+   - `stage <collection> --families` (dry run saves
+     `stage-families-dry-run-<stamp>.json`), then `--apply`: Drafts tracked
+     at 0 with DENY, pending tags, museum copy and credit, the family's
+     product type and option (`Size`, or `Device` for cases), the preview as
+     the image. Idempotent by handle; refuses non-Drafts.
+   - Before release, put the products in the right Shopify shipping
+     profile (cards and postcards: Letter post; canvas, framed and cases:
+     their own profiles); new products land in General.
+   - `handoff <collection> --families` writes
+     `prodigi-handoff-families.csv/.md` for the channel-mapped families;
+     map each in Prodigi, then `mapped <collection> --family <f>
+     <print>=<channel product id> …`. Cases are not channel-mapped: `mapped
+     <collection> --family phone-case <print> …` copies the case file to
+     `public/print-files/<collection>/<print>-phone-case.jpg` (commit it with
+     the release PR); the `orders/paid` webhook sends that URL to Prodigi for
+     released products only.
+   - `status … --families`, `release … --family <f> [--apply]` (refuses
+     until the reviews, approved crops, current files, ids and mapping are
+     all in place) and `verify … --families` (staged handles 404; released
+     ones sellable, in the sitemap, and case files deployed with their
+     sha256). The artist shop lists released family products under Product
+     type automatically.
+
+The artist shop (`/artists/<slug>`), the artists index, the Artists nav link,
+search matches and sitemap entries appear automatically once an approved
+artist has a released print that is Active and published. Nothing else is
+edited by hand. Prodigi must still be checked for landscape files (the
+museum sheet for 8 × 10 is 3000 × 2400) when mapping.
+
 ## Gates that need a person
 
 - **Owner:** accepts any print `prepare` flags (below 150 PPI native, or cropped); approves prices; merges the release PR.

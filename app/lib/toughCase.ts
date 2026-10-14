@@ -73,6 +73,52 @@ export const TOUGH_CASE_PHONES: ToughCasePhone[] = manifest.phones.map(
   },
 );
 
+const PHONE_BRANDS = ['Apple', 'Samsung', 'Google'] as const;
+const BRAND_LABELS: Record<ToughCasePhone['brand'], string> = {
+  Apple: 'iPhone',
+  Samsung: 'Samsung Galaxy',
+  Google: 'Google Pixel',
+};
+
+export type ToughCasePhoneGroup = {
+  brand: ToughCasePhone['brand'];
+  label: string;
+  phones: ToughCasePhone[];
+};
+
+/**
+ * The "Select your phone" list, grouped by brand in manifest order. Pass the
+ * option values a product actually offers (a museum case's `Device` values)
+ * to leave out any model it lacks; empty groups are dropped.
+ */
+export function toughCasePhoneGroups(
+  offered?: Iterable<string> | null,
+  phones: ToughCasePhone[] = TOUGH_CASE_PHONES,
+): ToughCasePhoneGroup[] {
+  const allowed = offered ? new Set(offered) : null;
+  return PHONE_BRANDS.map((brand) => ({
+    brand,
+    label: BRAND_LABELS[brand],
+    phones: phones.filter(
+      (phone) =>
+        phone.brand === brand && (!allowed || allowed.has(phone.label)),
+    ),
+  })).filter((group) => group.phones.length > 0);
+}
+
+/**
+ * The model a URL asks for, only if the product offers it: cases are cut
+ * per device, so a missing or unknown model is never defaulted.
+ */
+export function requestedPhoneModel(
+  requested: Array<{name: string; value: string}>,
+  optionName: string,
+  offered: Iterable<string>,
+): string | null {
+  const value = requested.find((option) => option.name === optionName)?.value;
+  return value && new Set(offered).has(value) ? value : null;
+}
+
 const VARIANTS_BY_SKU = new Map<string, ToughCaseVariant>(
   TOUGH_CASE_DESIGNS.flatMap((design) =>
     TOUGH_CASE_PHONES.map(

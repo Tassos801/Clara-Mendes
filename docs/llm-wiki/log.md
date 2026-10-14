@@ -1509,3 +1509,117 @@ icons are redrawn from it, and `node scripts/build-app-icons.mjs` also writes
 crawlers that request `/favicon.ico`, which used to 404. `app/root.tsx` links
 the ICO with `sizes="32x32"` so Chrome keeps the SVG.
 
+
+## 2026-10-09 - Isolated artist-shop pilot started
+
+The owner requested GitHub handoff and Sol-led implementation on a separate branch. See [handoff](../artist-shops/HANDOFF.md) and [status](../artist-shops/status.md). Work starts from f4ac0f2 on codex/artist-shops-pilot. This records development only; no Shopify mutation or production release.
+
+
+## 2026-10-09 - Artist shops and museum sourcing (branch only)
+
+On `codex/artist-shops-pilot`, not main. `data/art-registry.json` holds artists
+and museum artworks with stable ids, rights evidence and owner reviews;
+`npm run museum` sources from The Met (v1.1 search). Print-catalog collections
+gain `kind: "museum"` with per-print `artworkId`/`orientation`; museum prints
+are laid out whole on white paper and get museum copy and tags. `/artists`,
+`/artists/<slug>`, the product-page credit, search matches and sitemap entries
+derive from that data and stay hidden until an approved artist has a released
+print. Floating World (The Great Wave, 8 × 10) is unreleased. See
+[status](../artist-shops/status.md) and the
+[runbook](../add-products-runbook.md#museum-prints-and-artist-shops).
+
+## 2026-10-09 - Floating World pilot works chosen; pilot paused
+
+The owner chose ten Met works (six Hokusai, four Hiroshige). They are fetched,
+catalogued in the unreleased Floating World collection and prepared at 8 × 10
+on `codex/artist-shops-pilot`. Work is paused pending owner decisions (name,
+price, one low-resolution work, artist approvals, rights and master reviews);
+see [status](../artist-shops/status.md) for the stop point and how to resume.
+
+## 2026-10-11 - Floating World owner decisions applied (branch only)
+
+On `codex/artist-shops-pilot`. The owner kept Floating World at 8 × 10 and
+€26.99, swapped the 213 ppi Minowa for Sudden Shower over Shin-Ōhashi Bridge
+(met-55433), had the museum mount tabs trimmed off four sheets (new
+`npm run museum -- trim`), approved the Hokusai and Hiroshige pages and
+cleared rights for all ten. Master reviews and room backgrounds are still
+open; nothing touched Shopify or Prodigi. See
+[status](../artist-shops/status.md).
+
+## 2026-10-13 - Floating World hidden Drafts and room galleries verified
+
+The owner's authorised continuation on `codex/artist-shops-pilot` created ten
+Shopify Drafts, each with one 8×10 variant at €26.99, tracked inventory total
+0 and DENY. The pipeline checked 61 other Clara Mendes products unchanged.
+Forty room images were uploaded and all ten five-image galleries read back
+READY with their flat artwork first. None of the ten product IDs is returned
+on the Storefront channel. All remain unreleased; master reviews and provider
+mapping are pending. Publication assignments on other channels and individual
+location quantities remain unverified because the Admin app lacks their read
+scopes. See [status](../artist-shops/status.md) and
+[nonsecret readback evidence](../artist-shops/evidence/draft-readback-2026-10-13.json).
+
+## 2026-10-13 - Floating World Prodigi mappings verified; Society6-style artist shop
+
+All ten Floating World Drafts are mapped in Prodigi (channel products
+6327576–6327585): EMA 8×10 `ART-FAP-EMA-8X10`, their own print files at
+100%, Excellent, Standard shipping, fulfilled automatically, each read back
+on a fresh dashboard load and recorded with `mapped`. The library files were
+pixel-diffed against the current print files first. Separately, the artist
+shop page (`/artists/<slug>`) was rebuilt to the owner's Society6 reference:
+name over a rule, About the artist beside a room slideshow, a Refine sidebar
+with counts, Sort, and a "By <artist>" card line. Nothing is released; master
+reviews are pending. See [status](../artist-shops/status.md).
+
+## 2026-10-13 - Product crops for Floating World (proposed)
+
+The owner asked for the Floating World works on phone cases, cards and
+postcards, larger prints and canvas, and framed prints, choosing AI-chosen
+crops with no generated pixels. `data/museum-crops.json` records a framing per
+work and shape (printed area plus a centre; the box is computed), validated
+and measured by `app/lib/museumCrops.ts`; `npm run museum -- crops` renders the
+review sheets. Case, card and postcard crops all reach 300 ppi or more; canvas
+is 140–162 ppi. Nothing is approved or staged; see
+[status](../artist-shops/status.md) for the open decisions and pipeline gaps.
+
+## 2026-10-13 - Session stop: larger sizes in the catalog, handoff written
+
+The owner approved the product crops, the lower-ppi museum files and
+framed-with-print, and stopped the session. Floating World now lists 8×10,
+16×20 and 20×24 (`4070390`); the 20 new print files exist, but the Shopify
+variants are not staged (`expand --apply` was blocked by Claude Code's safety
+check) and not mapped. The numbered next steps for the next agent (stage the
+variants, 20 Prodigi mappings, the framed-with-print price, the five product
+types as separate Drafts, master reviews) are under "Stopped here" in
+[status](../artist-shops/status.md).
+
+## 2026-10-13 - Resumed larger-size Draft expansion verified
+
+Sol continued the owner's GitHub request from `31a9d12` using the existing
+pipeline. Twenty 16×20 / 20×24 variants were created across the ten hidden
+Floating World Drafts at €35.99 / €44.99, tracked at aggregate stock 0 with
+DENY. The ten 8×10 variants and their verified mapping records, fifty gallery
+images and 61 unrelated Clara Mendes products were preserved. All thirty
+print-file hashes match the prepared asset report. All ten Storefront IDs
+are absent and public product URLs return 404; master reviews and larger-size
+provider mapping remain pending. Baseline 416/416 tests, typecheck and lint
+passed; no source code changed. The owner also approved the new-family prices
+recorded in [status](../artist-shops/status.md); their implementation is the
+next writer's scope. See [expansion readback](../artist-shops/evidence/expansion-readback-2026-10-13.json).
+
+## 2026-10-13 - Floating World product families built (branch only)
+
+Claude Code built the owner-approved framed print (€89.10,
+`GLOBAL-CFP-16X20`), canvas (€80.10), greeting card (€7.20), postcard
+(€5.40) and tough phone case (€35.99, 40 devices) for each of the ten works:
+one hidden product per artwork per type, never variants of the live studio
+products. `data/art-product-catalog.json` + `app/lib/artProductCatalog.ts`
+hold the 50 products and their release gate; `npm run product -- prepare
+floating-world --families` wrote the files from the approved crops (framed
+reuses the 16×20 print file; ppi framed 210–218, canvas 140–162, card
+329–489, postcard 311–498, case 307–430); the stage dry run planned 50
+Drafts and 440 variants with 71 unrelated products to compare. `--apply`,
+Prodigi mapping, case-file deployment, shipping profiles and master reviews
+remain. Storefront support (artist-shop Product type filter, PDP copy,
+webhook case SKUs) is dormant until release. See
+[status](../artist-shops/status.md).

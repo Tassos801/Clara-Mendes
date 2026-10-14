@@ -124,6 +124,29 @@ test('scales both diagrams against the same 84 inch sofa', () => {
   );
 });
 
+test('draws a landscape print wider than tall, keeping its size name', () => {
+  const geometry = printScaleGeometry('8x10', 'landscape');
+  assert.deepEqual(
+    {
+      height: geometry.height,
+      heightInches: geometry.heightInches,
+      label: geometry.label,
+      orientation: geometry.orientation,
+      width: geometry.width,
+      widthInches: geometry.widthInches,
+    },
+    {
+      height: 28,
+      heightInches: 8,
+      label: '8 × 10 in',
+      orientation: 'landscape',
+      width: 35,
+      widthInches: 10,
+    },
+  );
+  assert.equal(printScaleGeometry('20x24').orientation, 'portrait');
+});
+
 const variant = (size, availableForSale = true) => ({
   availableForSale,
   selectedOptions: [

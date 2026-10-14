@@ -500,3 +500,55 @@ empty, all hidden by the code) and all four garments "Uncategorized" in
 Shopify. See [Clothing](clothing.md),
 [the operator guide](../../clothing-destination.md) and
 [the audit](../../audits/clothing-catalog-2026-10-08.md).
+
+## 2026-10-09 - Artist shops and museum prints (branch `codex/artist-shops-pilot`)
+
+Not on main. Artists and museum artworks live in `data/art-registry.json`
+(`app/lib/artRegistry.ts`: stable ids, owner approval, rights and master
+reviews, a life + 70 rights screen). `app/lib/artistShops.ts` derives each
+artist's products from the print catalog: a museum print's `artworkId` → its
+artist, or a studio collection's `artistId`. An artist is public only when
+approved with a released print, and every listing still passes
+`filterDemoProducts` and Shopify Active/publication. Museum collections
+(`kind: "museum"`) are excluded from the "original works" counts and capsule
+copy. Their Drafts never carry `Clara Mendes Original`, and `release` refuses
+them without both reviews. Routes: `app/routes/artists._index.tsx`,
+`app/routes/artists.$slug.tsx`. An artwork may carry an owner-recorded
+`trim` (edge insets in original pixels, ≤5% per side) that takes museum mount
+tabs off the photograph; `masterSize()` is the size layout, qualification,
+`prepare` and the orientation check use, and recording a trim resets the
+master review. See the [status](../../artist-shops/status.md).
+
+On 2026-10-13 the owner's authorised continuation created the ten Floating
+World Drafts at €26.99, one 8×10 variant each, and attached their 40 current
+room images. All ten remain unreleased and Draft with tracked inventory
+total 0 and DENY; each gallery has its flat image first and four READY scenes.
+The Storefront channel returns none of their IDs. Other-channel publication
+assignments and per-location stock cannot be verified with the installed
+app's scopes (`read_publications` and `read_inventory` absent). Provider
+mapping and all master reviews remain pending. IDs, asset hashes and scope
+limits are in the [readback evidence](../../artist-shops/evidence/draft-readback-2026-10-13.json).
+
+The later 2026-10-13 resumed checkpoint expanded those same ten Drafts to
+thirty variants: 8×10 €26.99, 16×20 €35.99 and 20×24 €44.99. The original
+ten variants, their verified 8×10 Prodigi mapping records and all fifty media
+images were preserved; twenty new variants are tracked at aggregate stock 0
+with DENY. Larger-size mapping remains pending. All ten Storefront IDs are
+absent and public product URLs return 404. All master reviews remain pending.
+See [expansion readback](../../artist-shops/evidence/expansion-readback-2026-10-13.json)
+for the thirty variant IDs, file hashes and scope limits.
+
+Museum works on other products (built 2026-10-13, not staged): framed print,
+canvas, greeting card, postcard and tough phone case per artwork, each its
+own Draft (handle `<print>-<family>`, SKU `CM-FW-NN-CFP16X20 | CAN16X20 |
+CARD | POST | CASE-<device>`), in `data/art-product-catalog.json`
+(`app/lib/artProductCatalog.ts`). They use the live product types (`Framed
+Art`, `Canvas Art`, `Cards`, `Postcards`, `Phone Cases`) and are visible only
+when `released` is true (sellable handles, sitemap guard) and Active and
+published. `validateArtistLinks` allows an artwork once per product type.
+The artist shop lists them under Product type; their PDPs take detail copy
+and shipping reach from `artProductPage()` and the credit's "how it was made"
+line from `reproductionSentence()`. Museum case lines go to Prodigi through
+`buildProdigiOrderFromShopify` only when released with a verified API route
+(`artCaseLineForSku`). Pipeline: `npm run product -- <step> <collection>
+--families | --family <f>` (`scripts/lib/art-product-*.mjs`).

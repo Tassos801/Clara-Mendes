@@ -1,9 +1,11 @@
 /**
  * Shopify `orders/paid` payload → Prodigi order payload for every line
  * Prodigi's Shopify app does not fulfil: signed personalised lines (star map
- * or birth poster, told apart by `_kind`) and Art Tough Phone Case lines
- * (mapped by SKU, see toughCase.ts). Pure apart from HMAC verification; the
- * webhook route and the replay script both call this.
+ * or birth poster, told apart by `_kind`), Art Tough Phone Case lines
+ * (mapped by SKU, see toughCase.ts) and museum phone-case lines (released
+ * products of data/art-product-catalog.json only, see artProductCatalog.ts).
+ * Pure apart from HMAC verification; the webhook route and the replay script
+ * both call this.
  */
 import {
   canonicalNatalParams,
@@ -13,6 +15,10 @@ import {
 import {natalVariantForSku} from '../natal/products.ts';
 import type {ProdigiOrderPayload} from '../prodigi.server.ts';
 import {toughCasePrintUrl, toughCaseVariantForSku} from '../toughCase.ts';
+import {
+  artCaseLineForSku,
+  type ArtProductCatalog,
+} from '../artProductCatalog.ts';
 import {
   giftNoteCanonical,
   giftNoteFromAttributes,
@@ -68,7 +74,11 @@ export function natalPrintUrl(origin: string, token: string, size: string) {
 
 export async function buildProdigiOrderFromShopify(
   order: ShopifyOrderWebhook,
-  {secret, origin}: {secret: string; origin: string},
+  {
+    artProducts,
+    origin,
+    secret,
+  }: {artProducts?: ArtProductCatalog; origin: string; secret: string},
 ): Promise<FulfilmentBuild> {
   const personalisedLines = order.line_items.filter((l) =>
     l.properties?.some((p) => p.name === '_v'),
@@ -90,7 +100,18 @@ export async function buildProdigiOrderFromShopify(
   const caseLines = order.line_items.filter(
     (l) => !personalisedLines.includes(l) && toughCaseVariantForSku(l.sku),
   );
-  if (personalisedLines.length === 0 && caseLines.length === 0)
+  // Museum cases: one product per artwork, Device option; the release gate
+  // in artCaseLineForSku keeps staged Drafts out of this path.
+  const museumCaseLines = order.line_items.flatMap((l) => {
+    if (personalisedLines.includes(l) || caseLines.includes(l)) return [];
+    const item = artCaseLineForSku(l.sku, artProducts);
+    return item ? [{item, line: l}] : [];
+  });
+  if (
+    personalisedLines.length === 0 &&
+    caseLines.length === 0 &&
+    museumCaseLines.length === 0
+  )
     return {kind: 'skip', reason: 'No personalised or phone case lines.'};
 
   const items: ProdigiOrderPayload['items'] = [];
@@ -180,6 +201,19 @@ export async function buildProdigiOrderFromShopify(
       assets: [
         {printArea: 'default', url: toughCasePrintUrl(origin, variant.design)},
       ],
+    });
+  }
+
+  for (const {item, line} of museumCaseLines) {
+    items.push({
+      merchantReference: `line:${line.id}`,
+      sku: item.providerSku,
+      copies: Math.max(1, line.quantity),
+      // The same 4:5 contract as the studio cases: Prodigi centre-crops the
+      // file to the device's print area.
+      sizing: 'fillPrintArea',
+      attributes: item.attributes,
+      assets: [{printArea: 'default', url: `${origin}${item.printUrlPath}`}],
     });
   }
 

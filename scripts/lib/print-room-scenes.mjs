@@ -1,11 +1,29 @@
 import {createHash} from 'node:crypto';
 import {existsSync, readFileSync} from 'node:fs';
 import path from 'node:path';
-import {PRINT_ROOM_KEYS} from '../../app/lib/printCatalog.ts';
+import {
+  collectionKind,
+  PRINT_ROOM_KEYS,
+  printOrientation,
+} from '../../app/lib/printCatalog.ts';
 
 export const ROOM_KEYS = Object.freeze([...PRINT_ROOM_KEYS]);
 
 const OUTPUT_ROOT = 'images/product-art-mockups';
+
+/**
+ * The image composited into each room, relative to /public. Studio prints
+ * use their 4:5 artwork; museum prints use the bare bordered sheet written by
+ * `prepare`, so rooms show exactly the paper, border and crop that print.
+ */
+export function roomArtworkRelativePath(collection, print) {
+  const suffix = collectionKind(collection) === 'museum' ? '.sheet.webp' : '.webp';
+  return path.posix.join(
+    'images/product-art',
+    collection.slug,
+    `${print.slug}${suffix}`,
+  );
+}
 
 export function validateRoomScenes(print) {
   const problems = [];
@@ -42,9 +60,11 @@ export function validateRoomScenes(print) {
       problems.push(`${print.slug}/${room.key}: invalid placement`);
       continue;
     }
-    if (Math.abs(placement.width / placement.height - 0.8) > 0.01) {
+    const landscape = printOrientation(print) === 'landscape';
+    const ratio = landscape ? 1.25 : 0.8;
+    if (Math.abs(placement.width / placement.height - ratio) > 0.0125 * ratio) {
       problems.push(
-        `${print.slug}/${room.key}: placement must be 4:5 portrait`,
+        `${print.slug}/${room.key}: placement must be ${landscape ? '5:4 landscape' : '4:5 portrait'}`,
       );
     }
   }
@@ -137,17 +157,8 @@ export function inspectRoomAssets(collection, print, manifest, repoRoot) {
       ],
       [
         'artwork',
-        path.posix.join(
-          'images/product-art',
-          collection.slug,
-          `${print.slug}.webp`,
-        ),
-        path.join(
-          repoRoot,
-          'public/images/product-art',
-          collection.slug,
-          `${print.slug}.webp`,
-        ),
+        roomArtworkRelativePath(collection, print),
+        path.join(repoRoot, 'public', roomArtworkRelativePath(collection, print)),
       ],
       [
         'output',

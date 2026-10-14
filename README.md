@@ -1,5 +1,11 @@
 # Clara Mendes Storefront
 
+> **Artist-shop pilot in progress:** this workstream lives on
+> `codex/artist-shops-pilot`, separately from production `main`.
+> Start with the [cross-PC handoff](docs/artist-shops/HANDOFF.md),
+> [current status](docs/artist-shops/status.md) and
+> [agreed brief](docs/artist-shops/brief.md).
+
 Production Shopify Hydrogen storefront for [shopclaramendes.com](https://shopclaramendes.com) — original art for calm, collected spaces.
 
 **Stack:** Shopify Hydrogen (2026.4) · React Router 7 · Vite · Shopify Oxygen · Storefront API.

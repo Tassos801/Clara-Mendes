@@ -1,4 +1,5 @@
 import artCatalog from '../../data/original-art-catalog.json' with {type: 'json'};
+import {artProductByHandle} from './artProductCatalog.ts';
 import {getCuratedProduct} from './curatedProducts.ts';
 
 type ProductCopyInput = {
@@ -77,7 +78,12 @@ const SPEC_SHEET_PRODUCT_TYPES = new Set([
 export function getProductLede(product: ProductCopyInput) {
   const description = getProductDescription(product);
   const productType = product.productType?.toLowerCase() ?? '';
-  if (!SPEC_SHEET_PRODUCT_TYPES.has(productType)) return description;
+  // Museum family products (canvas included) carry a full museum credit.
+  if (
+    !SPEC_SHEET_PRODUCT_TYPES.has(productType) &&
+    !artProductByHandle(product.handle)
+  )
+    return description;
 
   const sentenceEnd = description.indexOf('. ');
   return sentenceEnd === -1

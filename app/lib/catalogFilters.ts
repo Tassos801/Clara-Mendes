@@ -13,6 +13,12 @@ import {
 } from './printCatalog.ts';
 import {TOUGH_CASE_HANDLE} from './toughCase.ts';
 import {
+  ART_PRODUCT_CATALOG,
+  isUnreleasedArtProductHandle,
+  releasedArtProductHandles,
+  type ArtProductCatalog,
+} from './artProductCatalog.ts';
+import {
   hasClothingApprovals,
   isClothingProduct,
   type ClothingProductLike,
@@ -298,6 +304,7 @@ export function isUnreleasedExtensionHandle(handle?: string | null) {
   if (!key) return false;
   if (RETIRED_EXTENSION_HANDLES.has(key)) return true;
   if (isUnreleasedPrintHandle(key)) return true;
+  if (isUnreleasedArtProductHandle(key)) return true;
   if (isUnreleasedCuratedHandle(key)) return true;
   if (key in EXTENSION_RELEASE_FLAGS) return !EXTENSION_RELEASE_FLAGS[key];
   if (key in PERSONALISED_RELEASE_FLAGS)
@@ -317,6 +324,7 @@ export function computeSellableHandles(
   printCatalog: PrintCatalog = PRINT_CATALOG,
   productFlags: Record<string, boolean> = PRODUCT_RELEASE_FLAGS,
   curatedProducts: readonly CuratedProduct[] = CURATED_PRODUCTS,
+  artProducts: ArtProductCatalog = ART_PRODUCT_CATALOG,
 ): ReadonlySet<string> {
   const handles = new Set(LAUNCH_PRODUCT_HANDLES);
   for (const flags of [extensionFlags, personalisedFlags, productFlags]) {
@@ -325,6 +333,8 @@ export function computeSellableHandles(
     }
   }
   for (const handle of releasedPrintHandles(printCatalog)) handles.add(handle);
+  for (const handle of releasedArtProductHandles(artProducts))
+    handles.add(handle);
   for (const product of releasedCuratedProducts(curatedProducts)) {
     handles.add(product.handle);
   }

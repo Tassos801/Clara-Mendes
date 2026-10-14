@@ -7,6 +7,20 @@ Source: local Shopify Hydrogen storefront repository at
 
 ## Start Here
 
+- [Artist-shop pilot handoff](../artist-shops/HANDOFF.md) - Active work on
+  `codex/artist-shops-pilot`; cross-PC setup, agreed scope and current status.
+- [Floating World Draft readback](../artist-shops/evidence/draft-readback-2026-10-13.json) -
+  Ten hidden Shopify Drafts and their 50 READY images verified on 13 October;
+  product and variant IDs, print hashes, pending supplier mapping and scope limits.
+- [Floating World size expansion readback](../artist-shops/evidence/expansion-readback-2026-10-13.json) -
+  Thirty unavailable variants across the same ten Drafts; preserved 8×10
+  variants and mappings, larger-size file hashes and remaining mapping gates.
+- [Floating World product families](../artist-shops/status.md) - Framed
+  print, canvas, greeting card, postcard and tough phone case per work: 50
+  catalog entries in `data/art-product-catalog.json`, generated files and a
+  verified stage dry run (Drafts not yet created); `npm run product -- …
+  --families`.
+
 - [Overview](overview.md) - Current synthesized picture of the Clara Mendes store.
 - [Architecture](architecture.md) - Runtime, routing, data flow, and integration map.
 - [Open Questions](open-questions.md) - Pending setup, launch, and operational gaps.

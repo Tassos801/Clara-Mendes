@@ -1,0 +1,86 @@
+{
+  "$comment": "Framings of museum artworks for products that are not the shape of the work (app/lib/museumCrops.ts). area = the printed block of the sheet as fractions of the master (original less trim), so a crop never shows bare museum paper. Per shape: the crop centre (cx, cy as fractions of the master) and an optional zoom >= 1; the box is computed as the largest box of the shape's aspect inside the area, tightened by zoom and moved as little as possible to stay inside. Pixels are only cut, never generated. Prints and framed prints keep the whole composition and never use these.",
+  "chosen": {
+    "by": "Claude Code (AI-chosen framing)",
+    "at": "2026-10-13",
+    "note": "Owner chose AI-chosen crops with no generated pixels on 2026-10-13; each framing keeps the subject of the work."
+  },
+  "approval": {
+    "approved": true,
+    "by": "Tassos",
+    "at": "2026-10-13",
+    "note": "Owner approved the proposed crops in chat; also accepted the ppi exceptions for canvas (140-162 ppi), 16x20, 20x24 and framed 16x20, and framed-with-print for museum works."
+  },
+  "crops": {
+    "met-39799": {
+      "area": {"left": 0.011, "top": 0.013, "right": 0.989, "bottom": 0.984},
+      "case": {"cx": 0.48, "cy": 0.5},
+      "card": {"cx": 0.45, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.47, "cy": 0.5}
+    },
+    "met-55458": {
+      "area": {"left": 0.018, "top": 0.004, "right": 0.982, "bottom": 0.968},
+      "case": {"cx": 0.37, "cy": 0.5},
+      "card": {"cx": 0.4, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.5, "cy": 0.5}
+    },
+    "met-55291": {
+      "area": {"left": 0.023, "top": 0.03, "right": 0.982, "bottom": 0.974},
+      "case": {"cx": 0.36, "cy": 0.5},
+      "card": {"cx": 0.66, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.47, "cy": 0.5}
+    },
+    "met-57000": {
+      "area": {"left": 0.014, "top": 0.02, "right": 0.986, "bottom": 0.983},
+      "case": {"cx": 0.6, "cy": 0.5},
+      "card": {"cx": 0.58, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.52, "cy": 0.5}
+    },
+    "met-56239": {
+      "area": {"left": 0.014, "top": 0.026, "right": 0.986, "bottom": 0.979},
+      "case": {"cx": 0.64, "cy": 0.5},
+      "card": {"cx": 0.62, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.5, "cy": 0.5}
+    },
+    "met-56360": {
+      "area": {"left": 0.009, "top": 0.011, "right": 0.989, "bottom": 0.984},
+      "case": {"cx": 0.36, "cy": 0.5},
+      "card": {"cx": 0.42, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.5, "cy": 0.5}
+    },
+    "met-55993": {
+      "area": {"left": 0.03, "top": 0.025, "right": 0.97, "bottom": 0.975},
+      "case": {"cx": 0.49, "cy": 0.5},
+      "card": {"cx": 0.44, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.5},
+      "canvas": {"cx": 0.5, "cy": 0.5}
+    },
+    "met-37093": {
+      "area": {"left": 0.016, "top": 0.005, "right": 0.967, "bottom": 0.982},
+      "case": {"cx": 0.52, "cy": 0.5},
+      "card": {"cx": 0.5, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.71},
+      "canvas": {"cx": 0.5, "cy": 0.5}
+    },
+    "met-56689": {
+      "area": {"left": 0.089, "top": 0.055, "right": 0.95, "bottom": 0.956},
+      "case": {"cx": 0.52, "cy": 0.52},
+      "card": {"cx": 0.5, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.3},
+      "canvas": {"cx": 0.5, "cy": 0.5}
+    },
+    "met-55433": {
+      "area": {"left": 0.082, "top": 0.047, "right": 0.927, "bottom": 0.941},
+      "case": {"cx": 0.5, "cy": 0.52},
+      "card": {"cx": 0.5, "cy": 0.5},
+      "postcard": {"cx": 0.5, "cy": 0.66},
+      "canvas": {"cx": 0.5, "cy": 0.52}
+    }
+  }
+}

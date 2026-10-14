@@ -7,7 +7,13 @@ import {
   useRef,
   useState,
 } from 'react';
-import {Link, redirect, useLoaderData} from 'react-router';
+import {
+  Link,
+  redirect,
+  useLoaderData,
+  useLocation,
+  useNavigate,
+} from 'react-router';
 import {
   Analytics,
   getSelectedProductOptions,
@@ -16,6 +22,10 @@ import {
 } from '@shopify/hydrogen';
 import type {Route} from './+types/products.$handle';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {
+  focusPhoneModelPicker,
+  PhoneModelPicker,
+} from '~/components/PhoneModelPicker';
 import {
   ClaraProductCard,
   type ClaraCardProduct,
@@ -34,6 +44,8 @@ import {
   shopCapsulePath,
 } from '~/lib/capsules';
 import {getCapsulePage} from '~/lib/capsulePages';
+import {museumPairings, productArtworkCredit} from '~/lib/artistShops';
+import {artProductPage, FAMILY_SPECS} from '~/lib/artProductCatalog';
 import {
   filterDemoProducts,
   isDemoProduct,
@@ -46,6 +58,8 @@ import {
   TOUGH_CASE_ARTWORK_OPTION,
   TOUGH_CASE_DESIGNS,
   TOUGH_CASE_HANDLE,
+  requestedPhoneModel,
+  toughCasePhoneGroups,
 } from '~/lib/toughCase';
 import {
   buildClassicFrameUrl,
@@ -96,6 +110,7 @@ import {
   nearestCarouselIndex,
   resolveZoomSwipe,
 } from '~/lib/productGalleryCarousel';
+import {printOrientationForHandle} from '~/lib/printCatalog';
 import {
   filterGalleryImagesForSize,
   printScaleGeometry,
@@ -415,30 +430,40 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // Book nooks pair with the other nooks on the shelf before best sellers.
   const isNookPage = isBookNook(getCuratedProduct(handle));
 
-  const data = await context.storefront.query(PRODUCT_QUERY, {
-    variables: {
-      // The fallback is a tag no product carries, so non-capsule products
-      // get zero capsule siblings (tag is a supported search field; an
-      // unsupported field would be silently ignored and match everything).
-      capsuleQuery: shopCapsule
-        ? buildCapsuleTagQuery(shopCapsule)
-        : isNookPage
-          ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
-          : 'tag:"__no-capsule__"',
-      first: 4,
-      classicFrameHandle: classicFrameEligible
-        ? CLASSIC_FRAME_HANDLE
-        : '__classic-frame-not-applicable__',
-      handle,
-      phoneCaseHandle: phoneCaseEligible
-        ? PHONE_CASE_HANDLE
-        : '__phone-case-staged__',
-      selectedOptions,
-      toughCaseHandle: toughCaseEligible
-        ? TOUGH_CASE_HANDLE
-        : '__tough-case-staged__',
-    },
-  });
+  // Museum works pair only with the same artwork's and artist's released
+  // products, never best sellers from unrelated categories.
+  const museumPairing = museumPairings(handle);
+  const [data, pairData] = await Promise.all([
+    context.storefront.query(PRODUCT_QUERY, {
+      variables: {
+        // The fallback is a tag no product carries, so non-capsule products
+        // get zero capsule siblings (tag is a supported search field; an
+        // unsupported field would be silently ignored and match everything).
+        capsuleQuery: shopCapsule
+          ? buildCapsuleTagQuery(shopCapsule)
+          : isNookPage
+            ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
+            : 'tag:"__no-capsule__"',
+        first: 4,
+        classicFrameHandle: classicFrameEligible
+          ? CLASSIC_FRAME_HANDLE
+          : '__classic-frame-not-applicable__',
+        handle,
+        phoneCaseHandle: phoneCaseEligible
+          ? PHONE_CASE_HANDLE
+          : '__phone-case-staged__',
+        selectedOptions,
+        toughCaseHandle: toughCaseEligible
+          ? TOUGH_CASE_HANDLE
+          : '__tough-case-staged__',
+      },
+    }),
+    museumPairing?.products.length
+      ? context.storefront.query(MUSEUM_PAIR_QUERY, {
+          variables: {query: museumPairing.query},
+        })
+      : Promise.resolve(null),
+  ]);
 
   if (!data.product) {
     throw new Response('Product not found', {status: 404});
@@ -458,13 +483,42 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     data.product as ProductDetail,
     selectedOptions,
   );
-  const product = withCuratedImages(
+  const curatedProduct = withCuratedImages(
     capsule
       ? sanitizeOriginalArtProduct(rawProduct)
       : handle === CLASSIC_FRAME_HANDLE
         ? sanitizeClassicFrameProduct(rawProduct)
         : rawProduct,
   );
+  // Museum framed prints, canvas, cards, postcards and cases: their own
+  // detail copy, for released family products only.
+  const artProduct = artProductPage(curatedProduct.handle);
+  // A museum phone case is cut per device, so, as on the Art Tough Phone
+  // Case, no model is preselected: Shopify's first-variant fallback would
+  // otherwise put an iPhone 13 in the cart. `?Device=<model>` preselects.
+  let museumCase: {
+    device: string | null;
+    offered: string[];
+    optionName: string;
+  } | null = null;
+  let product = curatedProduct;
+  if (artProduct?.family === 'phone-case') {
+    const optionName = FAMILY_SPECS['phone-case'].optionName;
+    const offered =
+      product.options
+        .find((option) => option.name === optionName)
+        ?.optionValues.map((value) => value.name) ?? [];
+    const device = requestedPhoneModel(selectedOptions, optionName, offered);
+    const chosen = product.selectedOrFirstAvailableVariant;
+    const matches = Boolean(
+      device &&
+        chosen?.selectedOptions.some(
+          (option) => option.name === optionName && option.value === device,
+        ),
+    );
+    if (!matches) product = {...product, selectedOrFirstAvailableVariant: null};
+    museumCase = {device: matches ? device : null, offered, optionName};
+  }
   const matchingFrameSize = capsule
     ? selectedClassicFrameSize(
         product.selectedOrFirstAvailableVariant?.selectedOptions,
@@ -502,6 +556,21 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   );
 
   const capsulePage = capsule ? getCapsulePage(capsule.slug) : null;
+
+  // Released-only: the pairing lists catalog-released handles, Storefront
+  // returns only Active + published products, and the listing filter
+  // applies the release gate once more.
+  const pairedByHandle = new Map(
+    filterDemoProducts(
+      (pairData?.products.nodes ?? []) as ClaraCardProduct[],
+    ).map((paired) => [paired.handle, paired]),
+  );
+  const museumRelated = museumPairing
+    ? museumPairing.products.flatMap((paired) => {
+        const card = pairedByHandle.get(paired.handle);
+        return card && card.handle !== handle ? [card] : [];
+      })
+    : null;
 
   const phoneCaseProduct = data.phoneCase as
     | (ClaraCardProduct & {caseVariants?: {nodes?: PhoneCaseVariantNode[]}})
@@ -591,6 +660,8 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   }
 
   return {
+    artProduct,
+    artworkCredit: productArtworkCredit(product.handle),
     capsuleSummary: shopCapsule
       ? {
           blurb: capsulePage?.pdpBlurb ?? null,
@@ -598,15 +669,17 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           title: shopCapsule.title,
         }
       : null,
+    museumCase,
     phoneCaseCrossSell,
     classicFrameCrossSell,
     toughCaseCrossSell,
     product,
+    relatedByArtist: museumPairing ? museumPairing.artist : null,
     // The section shows three cards; it is "from the same capsule" only
     // when no best-selling fill is among them.
-    relatedFromCapsule: capsuleSiblings.length >= 3,
+    relatedFromCapsule: !museumRelated && capsuleSiblings.length >= 3,
     relatedFromBookNooks: isNookPage && capsuleSiblings.length > 0,
-    relatedProducts: [...capsuleSiblings, ...bestSellingFill],
+    relatedProducts: museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
     skyTheme: DEFAULT_SKY_THEME,
@@ -624,10 +697,14 @@ export default function Product() {
 
 function ProductPage() {
   const {
+    artProduct,
+    artworkCredit,
     capsuleSummary,
     classicFrameCrossSell,
+    museumCase,
     phoneCaseCrossSell,
     product,
+    relatedByArtist,
     relatedFromBookNooks,
     relatedFromCapsule,
     relatedProducts,
@@ -642,8 +719,24 @@ function ProductPage() {
   const atcRef = useRef<HTMLDivElement>(null);
   const skyIntroRef = useRef<HTMLDivElement>(null);
   const [showStickyATC, setShowStickyATC] = useState(false);
-  const selectedVariant =
-    product.selectedOrFirstAvailableVariant ?? product.variants.nodes[0];
+  const location = useLocation();
+  const navigate = useNavigate();
+  const selectedVariant = museumCase
+    ? (product.selectedOrFirstAvailableVariant ?? null)
+    : (product.selectedOrFirstAvailableVariant ?? product.variants.nodes[0]);
+  // A museum case waits for a phone model before it can be added.
+  const caseModelPending = Boolean(museumCase && !museumCase.device);
+  const chooseCaseModel = (model: string | null) => {
+    if (!museumCase) return;
+    const params = new URLSearchParams(location.search);
+    if (model) params.set(museumCase.optionName, model);
+    else params.delete(museumCase.optionName);
+    const query = params.toString();
+    void navigate(`/products/${product.handle}${query ? `?${query}` : ''}`, {
+      preventScrollReset: true,
+      replace: true,
+    });
+  };
   const selectedVariantPrice = selectedVariant
     ? formatMoney(selectedVariant.price)
     : null;
@@ -678,16 +771,20 @@ function ProductPage() {
   const personalisedPendingLabel = isNatal
     ? 'Add the name and birthplace'
     : 'Add your place and date';
-  const purchaseButtonLabel = isPersonalisedPending
-    ? personalisedPendingLabel
-    : selectedVariant?.availableForSale && selectedVariantPrice
-      ? `Add to cart - ${selectedVariantPrice}`
-      : 'Sold out';
-  const stickyButtonLabel = isPersonalisedPending
-    ? personalisedPendingLabel
-    : selectedVariant?.availableForSale && selectedVariantPrice
-      ? `Add - ${selectedVariantPrice}`
-      : 'Sold out';
+  const purchaseButtonLabel = caseModelPending
+    ? 'Choose your phone'
+    : isPersonalisedPending
+      ? personalisedPendingLabel
+      : selectedVariant?.availableForSale && selectedVariantPrice
+        ? `Add to cart - ${selectedVariantPrice}`
+        : 'Sold out';
+  const stickyButtonLabel = caseModelPending
+    ? 'Choose your model'
+    : isPersonalisedPending
+      ? personalisedPendingLabel
+      : selectedVariant?.availableForSale && selectedVariantPrice
+        ? `Add - ${selectedVariantPrice}`
+        : 'Sold out';
   const skyPendingAction =
     skyStatus.nextRequired === 'place'
       ? {href: '#sky-place', label: 'Choose a place'}
@@ -704,12 +801,18 @@ function ProductPage() {
       ? (product.featuredImage ?? primaryImage)
       : primaryImage;
   const stickyThumbUrl = stickyThumb ? sizedImageUrl(stickyThumb.url, 96) : '';
-  const stickyOptions = selectedOptionsSummary(
-    selectedVariant?.selectedOptions,
-    (product.productType || '').toLowerCase() === 'art prints'
-      ? ['Presentation']
-      : [],
-  );
+  const stickyOptions = caseModelPending
+    ? 'No phone chosen yet'
+    : selectedOptionsSummary(
+        selectedVariant?.selectedOptions,
+        (product.productType || '').toLowerCase() === 'art prints'
+          ? ['Presentation']
+          : [],
+      );
+  // Before a case model is chosen the price is the product's (one price).
+  const displayPrice =
+    selectedVariant?.price ??
+    (museumCase ? product.priceRange?.minVariantPrice : undefined);
   const productDescription = getProductDescription(product);
   const curatedProduct = getCuratedProduct(product.handle);
   const displayTitle = curatedDisplayTitle(product);
@@ -754,13 +857,15 @@ function ProductPage() {
         !/unframed/i.test(option.value),
     ),
   );
-  const shippingReach: ShippingReach = isLetterPost
-    ? 'eu'
-    : (product.productType || '').toLowerCase() === 'canvas art' ||
-        isClassicFrame ||
-        (isPersonalisedType && isFramedSelection)
-      ? 'selected'
-      : 'worldwide';
+  const shippingReach: ShippingReach = artProduct
+    ? artProduct.shippingReach
+    : isLetterPost
+      ? 'eu'
+      : (product.productType || '').toLowerCase() === 'canvas art' ||
+          isClassicFrame ||
+          (isPersonalisedType && isFramedSelection)
+        ? 'selected'
+        : 'worldwide';
   const productLede =
     potDesign?.story ??
     curatedProduct?.tagline ??
@@ -998,6 +1103,7 @@ function ProductPage() {
             key={`${product.id}:${printSize.key}`}
             images={galleryImages}
             isArtPrint={isArtPrint}
+            printOrientation={printOrientationForHandle(product.handle)}
             printSize={printSize}
             productTitle={displayTitle}
           />
@@ -1013,12 +1119,43 @@ function ProductPage() {
                   'Curated object'}
             </p>
             <h1>{displayTitle}</h1>
+            {artworkCredit ? (
+              <p className="product-artist-line">
+                by{' '}
+                {artworkCredit.artist.path ? (
+                  <Link to={artworkCredit.artist.path} prefetch="intent">
+                    {artworkCredit.artist.name}
+                  </Link>
+                ) : (
+                  artworkCredit.artist.name
+                )}
+                {artworkCredit.artist.dates ? (
+                  <>
+                    {' '}
+                    <span className="product-artist-line__dates">
+                      ({artworkCredit.artist.dates})
+                    </span>
+                  </>
+                ) : null}
+              </p>
+            ) : null}
             <p className="product-lede">{productLede}</p>
             {selectedVariant ? (
               <ProductPrice
                 price={selectedVariant.price}
                 compareAtPrice={selectedVariant.compareAtPrice}
               />
+            ) : displayPrice ? (
+              <ProductPrice price={displayPrice} />
+            ) : null}
+            {artProduct?.size ? (
+              <p className="product-fixed-size">
+                Size
+                <span className="variant-legend-value">
+                  {' · '}
+                  {artProduct.size}
+                </span>
+              </p>
             ) : null}
             {isQuietCurrent ? <ApparelShippingLine /> : null}
 
@@ -1028,12 +1165,14 @@ function ProductPage() {
             >
               <span
                 className={`product-availability-chip ${
-                  selectedVariant?.availableForSale
+                  selectedVariant?.availableForSale ||
+                  (caseModelPending && productAvailableForSale)
                     ? 'is-available'
                     : 'is-unavailable'
                 }`}
               >
-                {selectedVariant?.availableForSale
+                {selectedVariant?.availableForSale ||
+                (caseModelPending && productAvailableForSale)
                   ? curatedProduct
                     ? 'DIY kit'
                     : isFutureClothing ? 'Available' : 'Made to order'
@@ -1072,7 +1211,16 @@ function ProductPage() {
             ) : null}
           </div>
 
-          {isSkyMap ? (
+          {museumCase ? (
+            <div className="product-options">
+              <PhoneModelPicker
+                groups={toughCasePhoneGroups(museumCase.offered)}
+                name={museumCase.optionName}
+                onSelect={chooseCaseModel}
+                value={museumCase.device}
+              />
+            </div>
+          ) : isSkyMap ? (
             <section
               aria-labelledby="sky-options-heading"
               className="sky-product-options-stage"
@@ -1237,7 +1385,15 @@ function ProductPage() {
             </div>
 
             <div ref={atcRef}>
-              {isSkyMap && !skyParams ? (
+              {caseModelPending ? (
+                <button
+                  className="primary-button full-width"
+                  onClick={focusPhoneModelPicker}
+                  type="button"
+                >
+                  {purchaseButtonLabel}
+                </button>
+              ) : isSkyMap && !skyParams ? (
                 <a
                   className="primary-button full-width"
                   href={skyPendingAction.href}
@@ -1389,6 +1545,44 @@ function ProductPage() {
                 and print colours can vary slightly.
               </ProductDetail>
             ) : null}
+            {artProduct?.details.map((detail) => (
+              <ProductDetail
+                key={detail.label}
+                label={detail.label}
+                defaultOpen
+              >
+                {detail.text}
+              </ProductDetail>
+            ))}
+            {artworkCredit?.artwork ? (
+              <ProductDetail label="The artwork" defaultOpen>
+                {artworkCredit.artist.name}, <i>{artworkCredit.artwork.title}</i>
+                , {artworkCredit.artwork.date}. {artworkCredit.artwork.medium}.{' '}
+                {artworkCredit.artwork.reproduction}{' '}
+                {artworkCredit.artwork.credit}{' '}
+                <a
+                  className="text-link"
+                  href={artworkCredit.artwork.objectUrl}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Museum record
+                </a>{' '}
+                Clara Mendes is not affiliated with or endorsed by the museum.
+                {artworkCredit.artist.path ? (
+                  <>
+                    {' '}
+                    <Link
+                      className="text-link"
+                      prefetch="intent"
+                      to={artworkCredit.artist.path}
+                    >
+                      More by {artworkCredit.artist.name}
+                    </Link>
+                  </>
+                ) : null}
+              </ProductDetail>
+            ) : null}
             {isClassicFrame ? (
               <>
                 <ProductDetail label="Frame" defaultOpen>
@@ -1437,7 +1631,7 @@ function ProductPage() {
                 {' — buy the complete three-print wall in one size.'}
               </ProductDetail>
             ) : null}
-            {isPhoneCase ? (
+            {isPhoneCase && !artProduct ? (
               <>
                 <ProductDetail label="Case" defaultOpen>
                   Slim snap case in impact-resistant polycarbonate with an
@@ -1622,17 +1816,27 @@ function ProductPage() {
           <div className="section-heading-row">
             <div>
               <p className="eyebrow">
-                {relatedFromBookNooks
-                  ? 'Book nooks'
-                  : relatedFromCapsule
-                    ? 'From the same capsule'
-                    : 'Also in the catalog'}
+                {relatedByArtist
+                  ? `By ${relatedByArtist.name}`
+                  : relatedFromBookNooks
+                    ? 'Book nooks'
+                    : relatedFromCapsule
+                      ? 'From the same capsule'
+                      : 'Also in the catalog'}
               </p>
               <h2 id="related">
                 {relatedFromBookNooks ? 'More small worlds' : 'Pair with'}
               </h2>
             </div>
-            {capsuleSummary ? (
+            {relatedByArtist?.path ? (
+              <Link
+                className="text-link"
+                to={relatedByArtist.path}
+                prefetch="intent"
+              >
+                More by {relatedByArtist.name}
+              </Link>
+            ) : capsuleSummary ? (
               <Link
                 className="text-link"
                 to={capsuleSummary.path}
@@ -1686,17 +1890,25 @@ function ProductPage() {
           ) : null}
           <div>
             <p className="sticky-atc-title">{displayTitle}</p>
-            {selectedVariant ? (
+            {displayPrice ? (
               <p className="sticky-atc-price">
                 {stickyOptions ? (
                   <span className="sticky-atc-options">{stickyOptions}</span>
                 ) : null}
-                {formatMoney(selectedVariant.price)}
+                {formatMoney(displayPrice)}
               </p>
             ) : null}
           </div>
         </div>
-        {isSkyMap && !skyParams ? (
+        {caseModelPending ? (
+          <button
+            className="primary-button sticky-atc-button"
+            onClick={focusPhoneModelPicker}
+            type="button"
+          >
+            {stickyButtonLabel}
+          </button>
+        ) : isSkyMap && !skyParams ? (
           <a
             className="primary-button sticky-atc-button"
             href={skyPendingAction.href}
@@ -1734,11 +1946,13 @@ function ProductPage() {
 function ProductGalleryCarousel({
   images,
   isArtPrint,
+  printOrientation,
   printSize,
   productTitle,
 }: {
   images: ProductImage[];
   isArtPrint: boolean;
+  printOrientation: 'landscape' | 'portrait';
   printSize: {key: PrintSizeKey; label: string};
   productTitle: string;
 }) {
@@ -1985,7 +2199,10 @@ function ProductGalleryCarousel({
                 aria-roledescription="slide"
                 aria-label={`${slideCount} of ${slideCount}, print scale diagram`}
               >
-                <PrintScaleDiagram size={printSize.key} />
+                <PrintScaleDiagram
+                  orientation={printOrientation}
+                  size={printSize.key}
+                />
               </div>
             ) : null}
           </div>
@@ -2139,10 +2356,17 @@ function ProductGalleryCarousel({
 }
 
 /**
- * The selected print at true proportion above the same 84 in sofa reference.
+ * The selected print at true proportion, in its orientation, above the same
+ * 84 in sofa reference.
  */
-function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
-  const geometry = printScaleGeometry(size);
+function PrintScaleDiagram({
+  orientation,
+  size,
+}: {
+  orientation: 'landscape' | 'portrait';
+  size: PrintSizeKey;
+}) {
+  const geometry = printScaleGeometry(size, orientation);
   const left = 280 - geometry.width / 2;
   const top = 107 - geometry.height;
   const guideY = top - 14;
@@ -2153,7 +2377,7 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
       <svg
         viewBox="0 0 560 300"
         role="img"
-        aria-label={`Scale diagram: an unframed ${geometry.widthInches} by ${geometry.heightInches} inch portrait print shown at true proportion on a wall above a standard 84 inch sofa.`}
+        aria-label={`Scale diagram: an unframed ${geometry.widthInches} by ${geometry.heightInches} inch ${geometry.orientation} print shown at true proportion on a wall above a standard 84 inch sofa.`}
       >
         <g stroke="currentColor" strokeWidth="1.4" fill="none">
           {/* floor */}
@@ -2165,7 +2389,7 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
             <line x1="133" y1="231" x2="133" y2="262" />
             <line x1="427" y1="231" x2="427" y2="262" />
           </g>
-          {/* selected portrait print, hung above the sofa */}
+          {/* selected print, hung above the sofa */}
           <rect
             x={left}
             y={top}
@@ -2201,9 +2425,9 @@ function PrintScaleDiagram({size}: {size: PrintSizeKey}) {
         </g>
       </svg>
       <figcaption>
-        True to size: an unframed {geometry.label} ({geometry.centimeters})
-        portrait print, shown to scale above a standard 84 in sofa. Hang it
-        solo, or pair it with its capsule companions.
+        True to size: an unframed {geometry.label} ({geometry.centimeters}){' '}
+        {geometry.orientation} print, shown to scale above a standard 84 in
+        sofa. Hang it solo, or pair it with its capsule companions.
       </figcaption>
     </figure>
   );
@@ -2220,6 +2444,23 @@ function getStoreUrl(storeDomain: string) {
     ? storeDomain
     : `https://${storeDomain}`;
 }
+
+// The candidates' collections by tag (handle is not a search field); the
+// loader keeps the paired handles, in pairing order.
+const MUSEUM_PAIR_QUERY = `#graphql
+  query MuseumPairs(
+    $country: CountryCode
+    $language: LanguageCode
+    $query: String!
+  ) @inContext(country: $country, language: $language) {
+    products(first: 100, query: $query) {
+      nodes {
+        ...ClaraProductCard
+      }
+    }
+  }
+  ${PRODUCT_CARD_FRAGMENT}
+` as const;
 
 const PRODUCT_QUERY = `#graphql
   query Product(

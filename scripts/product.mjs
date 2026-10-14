@@ -17,6 +17,10 @@
  *   npm run product -- release  <collection> [--only a,b] [--apply]
  *   npm run product -- verify   <collection> [--origin https://…]
  *
+ * Museum works as other products (framed print, canvas, greeting card,
+ * postcard, tough phone case; data/art-product-catalog.json) use the same
+ * verbs with `--families` or `--family <f>` — see scripts/lib/art-product-steps.mjs.
+ *
  * Runbook: docs/add-products-runbook.md
  */
 
@@ -26,6 +30,7 @@ import {createHash} from 'node:crypto';
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import path from 'node:path';
 import {
+  collectionKind,
   PRINT_SIZES,
   printHandle,
   printImagePath,
@@ -33,6 +38,8 @@ import {
   printSku,
   validatePrintCatalog,
 } from '../app/lib/printCatalog.ts';
+import {masterSize} from '../app/lib/artRegistry.ts';
+import {validateArtistLinks} from '../app/lib/artistShops.ts';
 import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 import {
@@ -44,6 +51,7 @@ import {
   findCollection,
   handoffRows,
   MIN_NATIVE_PPI,
+  museumSource,
   parseMappings,
   PENDING_TAGS,
   printFileName,
@@ -62,8 +70,13 @@ import {
   resolvePrintRoomMediaPlan,
   roomMediaPlan,
 } from './lib/print-room-scenes.mjs';
+import {borderedLayout, PILOT_TARGET_PPI} from './lib/museum-layout.mjs';
+import {createFamilySteps} from './lib/art-product-steps.mjs';
+import {selectFamilies} from './lib/art-product-pipeline.mjs';
 
 const DEFAULT_ORIGIN = 'https://shopclaramendes.com';
+/** --color-soft in app/styles/app.css, behind museum prints' paper. */
+const WEB_PAPER_BACKGROUND = '#f4f0e8';
 
 const [step = 'status', ...rest] = process.argv.slice(2);
 const flags = new Set(
@@ -76,13 +89,25 @@ const option = (name) => {
   return index >= 0 ? rest[index + 1] : undefined;
 };
 const optionValues = new Set(
-  ['only', 'size', 'origin'].map((name) => option(name)).filter(Boolean),
+  ['only', 'size', 'origin', 'family']
+    .map((name) => option(name))
+    .filter(Boolean),
 );
 const positional = rest.filter(
   (arg) => !arg.startsWith('--') && !optionValues.has(arg),
 );
 const apply = flags.has('--apply');
 const only = option('only')?.split(',').filter(Boolean);
+const familyMode = flags.has('--families') || option('family') !== undefined;
+const FAMILY_STEPS = [
+  'handoff',
+  'mapped',
+  'prepare',
+  'release',
+  'stage',
+  'status',
+  'verify',
+];
 
 const steps = {
   expand,
@@ -104,17 +129,21 @@ if (!steps[step]) {
 }
 
 const catalog = JSON.parse(readFileSync(CATALOG_PATH, 'utf8'));
-const problems = validatePrintCatalog(catalog);
+const problems = [
+  ...validatePrintCatalog(catalog),
+  ...validateArtistLinks({catalog}),
+];
 if (problems.length) {
   console.error(
-    `data/print-catalog.json is invalid:\n- ${problems.join('\n- ')}`,
+    `data/print-catalog.json (or its links into data/art-registry.json) is invalid:\n- ${problems.join('\n- ')}`,
   );
   process.exit(1);
 }
 const local = resolveLocalPaths();
 
 try {
-  await steps[step]();
+  if (familyMode) await runFamilyStep();
+  else await steps[step]();
 } catch (error) {
   console.error(`\n${step} failed: ${error.message}`);
   process.exit(1);
@@ -157,20 +186,25 @@ function status() {
 
 function prepare() {
   const {collection, prints, launchDir} = context();
+  const museum = collectionKind(collection) === 'museum';
   const plan = {
     collection: collection.slug,
     sourceDir: path.join(launchDir, 'source'),
     printDir: path.join(launchDir, 'print'),
     webDir: path.dirname(webImage(collection, prints[0])),
     reportPath: path.join(launchDir, 'asset-validation.json'),
-    prints: prints.map((print) => ({
-      slug: print.slug,
-      sizes: collection.variants.map((variant) => ({
-        key: variant.size,
-        fileName: printFileName(print, variant.size),
-        ...PRINT_SIZES[variant.size],
-      })),
-    })),
+    prints: prints.map((print) =>
+      museum
+        ? museumPreparePlan(collection, print)
+        : {
+            slug: print.slug,
+            sizes: collection.variants.map((variant) => ({
+              key: variant.size,
+              fileName: printFileName(print, variant.size),
+              ...PRINT_SIZES[variant.size],
+            })),
+          },
+    ),
   };
   mkdirSync(plan.sourceDir, {recursive: true});
   const planPath = path.join(launchDir, 'prepare-plan.json');
@@ -196,7 +230,11 @@ function prepare() {
       sourceSha256: file.sourceSha256,
     };
     for (const size of file.sizes) {
-      if (size.nativePpi < MIN_NATIVE_PPI)
+      if (museum && size.nativePpi < PILOT_TARGET_PPI)
+        soft.push(
+          `${file.slug} ${size.size}: ${size.nativePpi} PPI native (museum target ${PILOT_TARGET_PPI})`,
+        );
+      else if (size.nativePpi < MIN_NATIVE_PPI)
         soft.push(`${file.slug} ${size.size}: ${size.nativePpi} PPI native`);
       if (size.croppedFraction > 0.01)
         soft.push(
@@ -268,12 +306,15 @@ async function stage() {
     if (!found) return {print, input, action: 'create'};
     const skus = found.variants.nodes.map((variant) => variant.sku);
     const expected = input.variants.map((variant) => variant.sku);
-    // A released print that lacks a newly added size is expand's job; it must
-    // not stop new prints in the same collection from being staged.
+    // A product (released, or an unreleased Draft) that lacks a newly added
+    // size is expand's job; it must not stop new prints in the same
+    // collection from being staged.
     const missing = expected.filter((sku) => !skus.includes(sku));
     assert.ok(
       skus.every((sku) => expected.includes(sku)) &&
-        (missing.length === 0 || print.released === true),
+        (missing.length === 0 ||
+          print.released === true ||
+          found.status === 'DRAFT'),
       `${input.handle} already exists in Shopify with different SKUs — resolve by hand.`,
     );
     return {print, input, found, action: missing.length ? 'expand' : 'present'};
@@ -372,7 +413,7 @@ async function stage() {
   const toExpand = actions.filter((entry) => entry.action === 'expand');
   if (toExpand.length)
     console.log(
-      `Released print(s) missing a catalog size: ${toExpand.map(({print}) => print.slug).join(', ')} — run expand for those.`,
+      `Print(s) missing a catalog size: ${toExpand.map(({print}) => print.slug).join(', ')} — run expand for those.`,
     );
 }
 
@@ -382,17 +423,15 @@ async function expand() {
   const before = await vendorProducts(admin);
   const byHandle = new Map(before.map((product) => [product.handle, product]));
   const work = prints.map((print) => {
-    assert.equal(
-      print.released,
-      true,
-      `${print.slug}: expand is only for an already released print`,
-    );
     const product = byHandle.get(printHandle(print));
     assert.ok(product, `${print.slug}: Shopify product not found`);
+    // A released print grows while Active; an unreleased one only while it is
+    // still a Draft. New variants are tracked at zero with DENY either way.
+    const expected = print.released === true ? 'ACTIVE' : 'DRAFT';
     assert.equal(
       product.status,
-      'ACTIVE',
-      `${print.slug}: expected ACTIVE before expansion`,
+      expected,
+      `${print.slug}: expected ${expected} before expansion`,
     );
     return {
       plan: variantExpansionPlan(collection, print, product),
@@ -751,6 +790,26 @@ async function release() {
       `${print.slug}: every size needs a verified Prodigi mapping before release`,
     );
   }
+  // Prove museum prints would pass the catalog validator once released,
+  // before anything in Shopify changes.
+  const releasedCollection = {
+    ...collection,
+    prints: collection.prints.map((print) =>
+      prints.includes(print) ? {...print, released: true} : print,
+    ),
+  };
+  const blocked = validateArtistLinks({
+    catalog: {
+      collections: catalog.collections.map((entry) =>
+        entry === collection ? releasedCollection : entry,
+      ),
+    },
+  });
+  assert.equal(
+    blocked.length,
+    0,
+    `owner reviews are missing:\n- ${blocked.join('\n- ')}`,
+  );
   const admin = await adminClient();
   const read = async () =>
     (
@@ -1095,6 +1154,57 @@ async function verify() {
   if (failed.length) process.exit(1);
 }
 
+/**
+ * The family variant of a step (`--families` / `--family <f>`): the same
+ * verbs, on data/art-product-catalog.json. data/print-catalog.json is only
+ * read.
+ */
+async function runFamilyStep() {
+  if (!FAMILY_STEPS.includes(step))
+    throw new Error(
+      `${step} has no family variant. Family steps: ${FAMILY_STEPS.join(', ')}`,
+    );
+  const slug = positional[0];
+  if (!slug)
+    throw new Error(
+      `Usage: npm run product -- ${step} <collection> --families`,
+    );
+  const collection = findCollection(catalog, slug);
+  if (collectionKind(collection) !== 'museum')
+    throw new Error(`${slug}: family products are for museum collections`);
+  const launchDir = path.join(local.launchRoot, collection.slug);
+  mkdirSync(launchDir, {recursive: true});
+  const familySteps = createFamilySteps({
+    apply,
+    collection,
+    families: selectFamilies({
+      all: flags.has('--families'),
+      family: option('family'),
+    }),
+    helpers: {
+      addToCart,
+      adminClient,
+      defaultOrigin: DEFAULT_ORIGIN,
+      delay,
+      htmlText,
+      page,
+      publish,
+      sitemapProductUrls,
+      stamp,
+      storefront,
+      uploadImage,
+      vendorProducts,
+      writeJson,
+    },
+    launchDir,
+    launchRoot: local.launchRoot,
+    only,
+    option,
+    positional,
+  });
+  await familySteps[step]();
+}
+
 // -------------------------------------------------------------- helpers --
 
 function context({needsLaunchDir = true} = {}) {
@@ -1104,6 +1214,62 @@ function context({needsLaunchDir = true} = {}) {
   const launchDir = path.join(local.launchRoot, collection.slug);
   if (needsLaunchDir) mkdirSync(launchDir, {recursive: true});
   return {collection, launchDir, prints: selectPrints(collection, only)};
+}
+
+/**
+ * A museum print is prepared from its registry original, checked against the
+ * recorded checksum and size, and laid out whole on white paper per size.
+ */
+function museumPreparePlan(collection, print) {
+  const {artwork} = museumSource(print);
+  if (!artwork.original)
+    throw new Error(
+      `${print.slug}: run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId} first`,
+    );
+  const source = path.join(
+    local.launchRoot,
+    'museum',
+    'originals',
+    artwork.original.fileName,
+  );
+  if (!existsSync(source))
+    throw new Error(
+      `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId}`,
+    );
+  const master = masterSize(artwork);
+  const layouts = collection.variants.map((variant) =>
+    borderedLayout(master, variant.size),
+  );
+  return {
+    slug: print.slug,
+    layout: 'bordered',
+    source,
+    expectedSha256: artwork.original.sha256,
+    nativeSize: [artwork.original.width, artwork.original.height],
+    ...(artwork.trim
+      ? {
+          trim: {
+            bottom: artwork.trim.bottom,
+            left: artwork.trim.left,
+            right: artwork.trim.right,
+            top: artwork.trim.top,
+          },
+        }
+      : {}),
+    web: {
+      background: WEB_PAPER_BACKGROUND,
+      image: layouts[0].image,
+      paper: layouts[0].paper,
+    },
+    sizes: layouts.map((layout) => ({
+      key: layout.size,
+      fileName: printFileName(print, layout.size),
+      height: layout.paper.height,
+      image: layout.image,
+      paper: layout.paper,
+      width: layout.paper.width,
+    })),
+  };
 }
 
 function describeVariants(collection) {

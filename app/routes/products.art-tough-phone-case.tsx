@@ -1,8 +1,12 @@
 import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Form, Link, redirect, useLoaderData, useNavigate} from 'react-router';
+import {Link, redirect, useLoaderData, useNavigate} from 'react-router';
 import {Analytics, getSelectedProductOptions, ShopPayButton} from '@shopify/hydrogen';
 import type {Route} from './+types/products.art-tough-phone-case';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {
+  focusPhoneModelPicker,
+  PhoneModelPicker,
+} from '~/components/PhoneModelPicker';
 import {ProductDetail} from '~/components/ProductDetail';
 import {sizedImageUrl} from '~/lib/cartPresentation';
 import {useAside} from '~/components/Aside';
@@ -25,7 +29,7 @@ import {
   TOUGH_CASE_ARTWORK_OPTION,
   TOUGH_CASE_HANDLE,
   TOUGH_CASE_PHONE_OPTION,
-  TOUGH_CASE_PHONES,
+  toughCasePhoneGroups,
 } from '~/lib/toughCase';
 
 type CaseImage = {
@@ -55,12 +59,7 @@ type CaseOption = {
   }>;
 };
 
-const PHONE_BRANDS = ['Apple', 'Samsung', 'Google'] as const;
-const BRAND_LABELS: Record<(typeof PHONE_BRANDS)[number], string> = {
-  Apple: 'iPhone',
-  Samsung: 'Samsung Galaxy',
-  Google: 'Google Pixel',
-};
+const PHONE_GROUPS = toughCasePhoneGroups();
 
 export const meta: Route.MetaFunction = ({data}) =>
   buildSeoMeta({
@@ -198,27 +197,7 @@ export default function ToughCasePage() {
   }, [artworkImage?.altText, artworkImage?.url, product]);
 
   const openCart = useCallback(() => open('cart'), [open]);
-  // A <label> only focuses the select; on a phone the customer still has to
-  // find and tap it. Bring it into view, focus it and, where the browser
-  // allows, open the native picker straight away.
-  const choosePhone = useCallback(() => {
-    const select = document.getElementById(
-      'tough-case-phone',
-    ) as HTMLSelectElement | null;
-    if (!select) return;
-    select.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-        ? 'auto'
-        : 'smooth',
-      block: 'center',
-    });
-    select.focus({preventScroll: true});
-    try {
-      select.showPicker?.();
-    } catch {
-      // Not supported for selects in this browser; focus is enough.
-    }
-  }, []);
+  const choosePhone = focusPhoneModelPicker;
   const analyticsProduct = useMemo(
     () =>
       variant
@@ -236,11 +215,6 @@ export default function ToughCasePage() {
         : null,
     [product, variant],
   );
-
-  const phonesByBrand = PHONE_BRANDS.map((brand) => ({
-    brand,
-    phones: TOUGH_CASE_PHONES.filter((p) => p.brand === brand),
-  }));
 
   return (
     <div className="product-page tough-case-page">
@@ -366,51 +340,22 @@ export default function ToughCasePage() {
               </div>
             </fieldset>
 
-            <Form
-              className="variant-fieldset tough-case-phone"
-              method="get"
-              preventScrollReset
-              replace
-            >
-              <label htmlFor="tough-case-phone">Phone model</label>
-              {artwork ? (
-                <input type="hidden" name={TOUGH_CASE_ARTWORK_OPTION} value={artwork} />
-              ) : null}
-              <select
-                id="tough-case-phone"
-                name={TOUGH_CASE_PHONE_OPTION}
-                value={phone ?? ''}
-                onChange={(event) =>
-                  void navigate(caseUrl(artwork, event.target.value || null), {
-                    preventScrollReset: true,
-                    replace: true,
-                  })
-                }
-                required
-              >
-                <option value="" disabled>
-                  Select your phone
-                </option>
-                {phonesByBrand.map(({brand, phones}) => (
-                  <optgroup key={brand} label={BRAND_LABELS[brand]}>
-                    {phones.map((p) => (
-                      <option key={p.code} value={p.label}>
-                        {p.label}
-                      </option>
-                    ))}
-                  </optgroup>
-                ))}
-              </select>
-              <noscript>
-                <button className="secondary-button" type="submit">
-                  Choose
-                </button>
-              </noscript>
-              <p className="tough-case-phone-help">
-                Not sure? iPhone: Settings › General › About. Android: Settings
-                › About phone.
-              </p>
-            </Form>
+            <PhoneModelPicker
+              groups={PHONE_GROUPS}
+              hidden={
+                artwork
+                  ? [{name: TOUGH_CASE_ARTWORK_OPTION, value: artwork}]
+                  : undefined
+              }
+              name={TOUGH_CASE_PHONE_OPTION}
+              onSelect={(model) =>
+                void navigate(caseUrl(artwork, model), {
+                  preventScrollReset: true,
+                  replace: true,
+                })
+              }
+              value={phone}
+            />
           </div>
 
           <div className="product-buy-box">
