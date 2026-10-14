@@ -435,7 +435,11 @@ the Met records were unchanged).
   The Met website returns 429 to scripts, but its API does not. AIC's API
   JSON works, but its IIIF image server serves a Cloudflare bot challenge
   (403) to scripts, so AIC is not used for images and the challenge must not
-  be bypassed.
+  be bypassed. *Update 2026-10-14:* AIC's API docs ask clients to send an
+  `AIC-User-Agent` header (project and contact); with it the IIIF server
+  serves images (no challenge is bypassed), capped at 3000 px on the long
+  side. `npm run museum` now sources from AIC and Cleveland too; see the
+  [runbook](../add-products-runbook.md#museum-prints-and-artist-shops).
 
 - **Milestone 2: artist shops and the museum print pipeline (code only).**
   - Decision: artist and artwork identity lives in repo data

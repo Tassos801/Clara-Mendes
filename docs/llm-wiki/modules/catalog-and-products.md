@@ -552,3 +552,21 @@ line from `reproductionSentence()`. Museum case lines go to Prodigi through
 `buildProdigiOrderFromShopify` only when released with a verified API route
 (`artCaseLineForSku`). Pipeline: `npm run product -- <step> <collection>
 --families | --family <f>` (`scripts/lib/art-product-*.mjs`).
+
+On 2026-10-14 the pipeline gained what the Kandinsky + Mondrian collection
+needs (code only; no artwork registered, nothing staged):
+`npm run museum -- search --museum aic|cma` and `fetch aic-<id>` /
+`fetch cma-<accession>` source from the Art Institute of Chicago
+(`scripts/lib/museum-aic.mjs`: `is_public_domain` gate, IIIF images capped
+at 3000 px on the long side, so the served size is the original and
+`source.fullResolution` keeps the museum's master size; AIC's credit form
+names the institution, see `sourceCredit()`) and the Cleveland Museum of Art
+(`scripts/lib/museum-cma.mjs`: CC0 gate, full-resolution TIFF), beside the
+Met (`scripts/lib/museum-sources.mjs`). A sixth family, `mug` (Prodigi
+`GLOBAL-MUG-W`, 2705×1122 at 300 dpi, the whole work twice on white), has
+no price: a collection may offer a family without `priceEUR`, which
+`prepare` accepts and `stage` refuses. `--families` means the families a
+collection offers. One work may go below its family's ppi floor only by an
+owner-recorded `ppiExceptions` entry in `data/art-product-catalog.json`;
+none is granted. See the
+[runbook](../../add-products-runbook.md#museum-prints-and-artist-shops).

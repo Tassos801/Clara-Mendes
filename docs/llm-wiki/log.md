@@ -1638,3 +1638,15 @@ tone), and the route-local greys (`--cv-muted`, `--rv-muted`, `--os-muted`,
 The phone-case teaser (`--case-linen`) and Pastel Forms bands stay light
 because their images carry that background. `APP_THEME_COLOR` /
 `APP_BACKGROUND_COLOR` in `app/lib/webManifest.ts` match `--color-page`.
+
+## 2026-10-14 - Museum sources for the modern collection; mug family
+
+`npm run museum` now searches and fetches from the Art Institute of Chicago
+(`aic-<id>`, public-domain flag, images capped at 3000 px with the full
+resolution recorded beside them, `AIC-User-Agent`, 60 requests a minute)
+and the Cleveland Museum of Art (`cma-<accession>`, CC0, full-resolution
+TIFF) as well as the Met. Added the `mug` product family (Prodigi
+`GLOBAL-MUG-W`, whole work twice on white, price pending: `stage` refuses a
+family without `priceEUR`) and a per-artwork owner ppi-exception path
+(`ppiExceptions`, none granted). No Shopify, Prodigi or registry data
+changed. See [catalog and products](modules/catalog-and-products.md).
