@@ -27,6 +27,7 @@ import {
   masterSize,
   MUSEUMS,
   orientationOf,
+  sourceCredit,
 } from '../../app/lib/artRegistry.ts';
 import {MUSEUM_CROPS} from '../../app/lib/museumCrops.ts';
 import {TOUGH_CASE_PHONES} from '../../app/lib/toughCase.ts';
@@ -387,7 +388,7 @@ export function familyDescription(
     `<p>${escapeHtml(artist.name)}${dates ? ` (${escapeHtml(dates)})` : ''}, <em>${escapeHtml(artwork.title)}</em>, ${escapeHtml(artwork.date)}. ${escapeHtml(artwork.medium)}.</p>`,
     `<p>${escapeHtml(artCollection.copy)}</p>`,
     `<ul>${spec.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul>`,
-    `<p>${escapeHtml(spec.reproduction)} Source: ${escapeHtml(source.institution)}, ${escapeHtml(source.creditLine)}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
+    `<p>${escapeHtml(spec.reproduction)} Source: ${escapeHtml(sourceCredit(source))}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
     '<p>Printed to order. Screen and print colours can vary slightly.</p>',
   ].join('\n');
 }

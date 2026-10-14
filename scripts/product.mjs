@@ -1234,7 +1234,7 @@ function museumPreparePlan(collection, print) {
   const {artwork} = museumSource(print);
   if (!artwork.original)
     throw new Error(
-      `${print.slug}: run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId} first`,
+      `${print.slug}: run npm run museum -- fetch ${artwork.id} --artist ${artwork.artistId} first`,
     );
   const source = path.join(
     local.launchRoot,
@@ -1244,7 +1244,7 @@ function museumPreparePlan(collection, print) {
   );
   if (!existsSync(source))
     throw new Error(
-      `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId}`,
+      `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.id} --artist ${artwork.artistId}`,
     );
   const master = masterSize(artwork);
   const layouts = collection.variants.map((variant) =>

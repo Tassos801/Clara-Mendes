@@ -15,6 +15,7 @@ import {
   findArtwork,
   lifeDatesLabel,
   MUSEUMS,
+  sourceCredit,
 } from '../../app/lib/artRegistry.ts';
 import {
   collectionKind,
@@ -227,7 +228,7 @@ function museumDescription(collection, print, registry) {
     `<p>${escapeHtml(artist.name)}${dates ? ` (${escapeHtml(dates)})` : ''}, <em>${escapeHtml(artwork.title)}</em>, ${escapeHtml(artwork.date)}. ${escapeHtml(artwork.medium)}.</p>`,
     `<p>${escapeHtml(collection.collectionCopy)}</p>`,
     `<ul><li>200gsm enhanced matte fine-art paper</li><li>Giclée printed with archival pigment inks</li><li>${sizeBullet(collection, print)}</li></ul>`,
-    `<p>Reproduced from a public-domain image: ${escapeHtml(source.institution)}, ${escapeHtml(source.creditLine)}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
+    `<p>Reproduced from a public-domain image: ${escapeHtml(sourceCredit(source))}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
     '<p>Printed to order. Frame not included. Screen and print colours can vary slightly.</p>',
   ].join('\n');
 }

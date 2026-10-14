@@ -7,6 +7,8 @@ import sharp from 'sharp';
 import * as registry from '../app/lib/artRegistry.ts';
 import * as layout from './lib/museum-layout.mjs';
 import * as met from './lib/museum-met.mjs';
+import * as record from './lib/museum-record.mjs';
+import {evidenceObjectId} from './lib/museum-sources.mjs';
 import {REPO_ROOT, unverifyArtworkMappings} from './lib/product-pipeline.mjs';
 
 const GREAT_WAVE_RAW = readFileSync(
@@ -20,7 +22,7 @@ const hokusai = () =>
 
 /** A registered artwork built from the committed Met record. */
 function waveRecord(overrides = {}) {
-  return met.metArtworkRecord(met.normalizeMetObject(GREAT_WAVE), {
+  return record.artworkRecord(met.normalizeMetObject(GREAT_WAVE), {
     artistId: 'katsushika-hokusai',
     evidenceFile: 'data/museum-evidence/met-45434.json',
     fetchedAt: '2026-10-09T13:00:00.000Z',
@@ -52,7 +54,10 @@ test('committed museum evidence matches the checksum the registry records', () =
       artwork.source.metadataSha256,
       artwork.id,
     );
-    assert.equal(String(JSON.parse(raw).objectID), artwork.source.objectId);
+    assert.equal(
+      evidenceObjectId(artwork.source.museum, JSON.parse(raw)),
+      artwork.source.objectId,
+    );
   }
 });
 
@@ -162,7 +167,7 @@ test('a Met object record normalises with its attribution and series', () => {
     'Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)',
   );
   assert.match(candidate.imageUrl, /\/original\/DP130155\.jpg$/);
-  assert.deepEqual(met.attributionIssues(candidate), []);
+  assert.deepEqual(record.attributionIssues(candidate), []);
 
   const shared = met.normalizeMetObject({
     ...GREAT_WAVE,
@@ -173,7 +178,7 @@ test('a Met object record normalises with its attribution and series', () => {
       {name: 'Publisher', role: 'Publisher'},
     ],
   });
-  assert.deepEqual(met.attributionIssues(shared), [
+  assert.deepEqual(record.attributionIssues(shared), [
     'attribution qualifier "Workshop of"',
     '2 artist constituents',
   ]);
@@ -202,21 +207,21 @@ test('short titles drop series clauses, alternate titles and romanisation', () =
 test('other impressions of one design share a flag key, other designs do not', () => {
   const storm = (title) => ({artistDisplayName: 'Katsushika Hokusai', title});
   assert.equal(
-    met.impressionKey(
+    record.impressionKey(
       storm('Storm below Mount Fuji (Sanka no haku u), from the series Thirty-six Views of Mount Fuji'),
     ),
-    met.impressionKey(storm('Storm below Mount Fuji, from the series Thirty-six Views of Mount Fuji')),
+    record.impressionKey(storm('Storm below Mount Fuji, from the series Thirty-six Views of Mount Fuji')),
   );
   assert.notEqual(
-    met.impressionKey(storm('Storm below Mount Fuji')),
-    met.impressionKey(storm('Noboto Bay (Noboto no ura)')),
+    record.impressionKey(storm('Storm below Mount Fuji')),
+    record.impressionKey(storm('Noboto Bay (Noboto no ura)')),
   );
   // The Met titles one Great Wave impression "…, or The Great Wave".
   assert.equal(
-    met.impressionKey(
+    record.impressionKey(
       storm('Under the Wave off Kanagawa (Kanagawa oki nami ura), or The Great Wave, from the series Thirty-six Views of Mount Fuji (Fugaku sanjūrokkei)'),
     ),
-    met.impressionKey(storm(GREAT_WAVE.title)),
+    record.impressionKey(storm(GREAT_WAVE.title)),
   );
 });
 
@@ -296,12 +301,12 @@ test('a JPEG header gives the pixel size without the whole file', async () => {
     .toBuffer();
   const start = jpeg.indexOf(Buffer.from([0xff, 0xc0]));
   assert.ok(start > 100, 'the ICC profile sits before the frame header');
-  assert.deepEqual(met.jpegDimensions(jpeg.subarray(0, start + 9)), {
+  assert.deepEqual(record.jpegDimensions(jpeg.subarray(0, start + 9)), {
     height: 210,
     width: 377,
   });
-  assert.equal(met.jpegDimensions(jpeg.subarray(0, start)), null);
-  assert.equal(met.jpegDimensions(Buffer.from('not a jpeg')), null);
+  assert.equal(record.jpegDimensions(jpeg.subarray(0, start)), null);
+  assert.equal(record.jpegDimensions(Buffer.from('not a jpeg')), null);
 });
 
 test('Met search uses the paginated v1.1 endpoint', () => {
