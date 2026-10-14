@@ -1,8 +1,10 @@
 :root {
   --color-ink: #26231f;
-  --color-muted: #746f65;
-  --color-soft: #f4f0e8;
+  --color-muted: #524d45;
+  --color-soft: #cbc0ad;
   --color-paper: #fbfaf6;
+  --color-page: #d6ccbb;
+  --color-page-warm: #d0c6b4;
   --color-mist: #dfe4dc;
   --color-clay: #9c6f5d;
   --color-moss: #6f7769;
@@ -47,7 +49,7 @@
 }
 
 html {
-  background: var(--color-paper);
+  background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--sans);
   scroll-behavior: smooth;
@@ -57,7 +59,7 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-paper);
+  background: var(--color-page);
   color: var(--color-ink);
   -webkit-font-smoothing: antialiased;
 }
@@ -5229,7 +5231,7 @@ html.lenis body {
   max-width: 1440px;
   padding: clamp(20px, 3vw, 44px);
   border-radius: 28px;
-  background: var(--color-paper);
+  background: var(--color-page);
   color: var(--color-ink);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55);
 }

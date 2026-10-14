@@ -1623,3 +1623,18 @@ Prodigi mapping, case-file deployment, shipping profiles and master reviews
 remain. Storefront support (artist-shop Product type filter, PDP copy,
 webhook case SKUs) is dormant until release. See
 [status](../artist-shops/status.md).
+
+## 2026-10-14 - Darker page background and muted text
+
+The site-wide page background moved from near-white `#fbfaf6` to warm sand
+`#d6ccbb` via a new `--color-page` token in `app/styles/app.css`
+(`--color-paper` stays `#fbfaf6` for light text and raised panels).
+`--color-soft` (`#cbc0ad`) and the new `--color-page-warm` (`#d0c6b4`) are
+the band tones; page-level wrappers on the homepage, shop grid, Our Story,
+Your Sky, clothing and journal now read these tokens instead of hardcoded
+paper values. `--color-muted` darkened to `#524d45` (≥4.6:1 on every page
+tone), and the route-local greys (`--cv-muted`, `--rv-muted`, `--os-muted`,
+`--kot-muted`, `--clothing-secondary`, Original Art Preview) now alias it.
+The phone-case teaser (`--case-linen`) and Pastel Forms bands stay light
+because their images carry that background. `APP_THEME_COLOR` /
+`APP_BACKGROUND_COLOR` in `app/lib/webManifest.ts` match `--color-page`.

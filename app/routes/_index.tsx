@@ -931,8 +931,8 @@ html:has(.home-root) main {
 
 .commerce-home {
   /* Translucent wash lets the cinematic painted canvas breathe through;
-     falls back to the solid paper body background without WebGL */
-  background: rgba(251, 250, 246, 0.85);
+     falls back to the solid page body background without WebGL */
+  background: color-mix(in srgb, var(--color-page) 85%, transparent);
 }
 
 .home-root {
@@ -1365,7 +1365,7 @@ html:has(.home-root) main {
 .home-shop-accelerator {
   align-items: start;
   background:
-    linear-gradient(90deg, var(--color-paper) 0%, #f4f0e8 58%, #dde4d9 100%);
+    linear-gradient(90deg, var(--color-page) 0%, var(--color-soft) 58%, #c2c9bb 100%);
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
   display: grid;
   gap: clamp(28px, 4vw, 58px);
@@ -1425,7 +1425,7 @@ html:has(.home-root) main {
 }
 
 .featured-collections--carousel {
-  background: linear-gradient(180deg, var(--color-soft) 0%, var(--color-paper) 100%);
+  background: linear-gradient(180deg, var(--color-soft) 0%, var(--color-page) 100%);
   color: var(--color-ink);
   display: block;
   overflow: hidden;
@@ -1592,7 +1592,7 @@ html:has(.home-root) main {
 
 .featured-grid-section {
   background:
-    linear-gradient(180deg, #f6f2eb 0%, var(--color-paper) 28%);
+    linear-gradient(180deg, var(--color-page-warm) 0%, var(--color-page) 28%);
 }
 
 .home-story-return {

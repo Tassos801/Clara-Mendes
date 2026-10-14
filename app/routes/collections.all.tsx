@@ -1039,10 +1039,10 @@ const collectionCss = `
 .cv-root {
   --cv-bg-base: #6B655B;
   --cv-ink: #26231f;
-  --cv-muted: #746f65;
+  --cv-muted: var(--color-muted);
   /* Translucent so the cinematic painted canvas shows through;
      reads as solid paper when WebGL is unavailable (paper body behind) */
-  --cv-paper: rgba(251, 250, 246, 0.92);
+  --cv-paper: color-mix(in srgb, var(--color-page) 92%, transparent);
   --cv-ease: cubic-bezier(0.25, 1, 0.5, 1);
   padding-left: 0 !important;
   padding-right: 0 !important;
