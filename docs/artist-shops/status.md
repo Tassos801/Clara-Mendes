@@ -1,6 +1,6 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-13
+**Updated:** 2026-10-14
 
 **Branch:** `codex/artist-shops-pilot`  
 **State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; five more product types per work built and dry-run verified (50 Drafts not yet created); artist shop redesigned and product crops approved; master reviews pending; no production release
@@ -17,6 +17,33 @@ on the owner's Windows PC and stopped at the owner's request that evening
 their room media earlier the same morning, then hit its usage limit; Claude
 committed its ids (`1c7d9e0`), redesigned the artist page, mapped all ten in
 Prodigi, proposed product crops (approved) and added the larger sizes.
+
+## Storefront fixes for the dormant families (2026-10-14, Claude Code)
+
+Code only; no Shopify or Prodigi write. Checked locally with a temporary,
+uncommitted stub (screenshots in the owner's
+`screens/museum-families-qa/round2/`).
+- **Museum phone case PDP** uses the Art Tough Phone Case picker
+  (`app/components/PhoneModelPicker.tsx`, shared by both routes): one
+  grouped "Select your phone" list, no model preselected, the buy button
+  reads "Choose your phone" (it opens the list) until a model is chosen;
+  `?Device=<model>` still preselects.
+- **"Pair with" on museum PDPs** (prints and families) lists the same
+  artwork's other released products, then the artist's (same type first),
+  and never store best sellers; it hides when nothing is released
+  (`museumPairings` in `app/lib/artistShops.ts`).
+- **Artist shop filter** "Art prints" is now "Prints"; `?type=prints`,
+  `Prints`, `Art prints` and `art-prints` all still select it.
+- **Single-size family PDPs** (framed, canvas, card, postcard) show
+  "Size · 16 × 20 in" / "5 × 7 in" / "7 × 5 in" under the price.
+- **Curator's notes** no longer say every print keeps the whole work: prints
+  and framed prints keep the full composition on a white border; cards,
+  postcards, canvas and phone cases use a chosen detail. The owner had
+  approved the notes as written on 2026-10-11 (Tassos), so both artists'
+  approvals were **revoked** (`approved: false`) with the edit. **Owner:**
+  re-read the two notes, then `npm run museum -- approve-artist
+  katsushika-hokusai --by "<name>"` and the same for `utagawa-hiroshige`.
+  Until then no artist page can go public and no family can be released.
 
 ## Stopped here (2026-10-13): what the next agent does
 
@@ -158,7 +185,7 @@ dashboard) need the owner's go-ahead in chat; the owner gave it on
      `stage-families-<stamp>.json`.
    - **Storefront (dormant):** family handles stay 404 and out of sitemaps
      until released; the artist shop lists released ones under Product type
-     Art prints, Framed prints, Canvas, Cards, Postcards and Phone cases; PDPs
+     Prints, Framed prints, Canvas, Cards, Postcards and Phone cases; PDPs
      get family detail copy (no "Unframed", "200gsm" except on the framed
      print, or "Frame not included"), the artist credit with a per-family
      "how it was made" line, and shipping reach (cards/postcards EU, canvas
@@ -295,6 +322,8 @@ until a print is released.
    three impressions (the others are 37094 and 37386). Minowa stays
    registered but unused, like 45434.
 3. Hokusai and Hiroshige are **approved** as written (bios and curator's notes).
+   Revoked on 2026-10-14 when the notes' last sentence was corrected; the
+   owner re-approves (see the top).
 4. Rights are **cleared** for all ten (owner, after the automated screen).
 5. Margins: **trim the museum mount tabs only**. The paper, its borders and
    the publisher/censor seals stay. New `npm run museum -- trim` records

@@ -29,11 +29,9 @@
         "https://www.wikidata.org/wiki/Q5586",
         "https://collectionapi.metmuseum.org/public/collection/v1/objects/45434"
       ],
-      "curatorNote": "We start with Hokusai's landscapes because they hold a room the way they hold the sheet: a decisive line, a few flat colours and a great deal of air. Every print keeps the full composition as the museum photographed it, set on a white border.",
+      "curatorNote": "We start with Hokusai's landscapes because they hold a room the way they hold the sheet: a decisive line, a few flat colours and a great deal of air. Prints and framed prints keep the full composition as the museum photographed it, set on a white border; cards, postcards, canvas and phone cases use a chosen detail.",
       "approval": {
-        "approved": true,
-        "at": "2026-10-11T14:48:39.546Z",
-        "by": "Tassos"
+        "approved": false
       },
       "tags": {
         "country": "Japan",
@@ -70,11 +68,9 @@
         "https://www.wikidata.org/wiki/Q200798",
         "https://collectionapi.metmuseum.org/public/collection/v1/objects/36461"
       ],
-      "curatorNote": "Hiroshige's views are quieter than Hokusai's: weather, distance and the small figures who move through them. Every print keeps the full composition as the museum photographed it, set on a white border.",
+      "curatorNote": "Hiroshige's views are quieter than Hokusai's: weather, distance and the small figures who move through them. Prints and framed prints keep the full composition as the museum photographed it, set on a white border; cards, postcards, canvas and phone cases use a chosen detail.",
       "approval": {
-        "approved": true,
-        "at": "2026-10-11T14:48:39.735Z",
-        "by": "Tassos"
+        "approved": false
       },
       "tags": {
         "country": "Japan",
