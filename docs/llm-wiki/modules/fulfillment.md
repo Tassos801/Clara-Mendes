@@ -65,8 +65,10 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
   delivery-country picker (posts to `/locale`); Your Sky, listing cards (one
   batched read per listing) and `/pastel-forms` say the same, and option
   chips drop "Sold out". "Sold out" stays for items unavailable in Cyprus
-  too. JSON-LD uses the default-market view, matching its EU-27
-  `shippingDestination`.
+  too. JSON-LD uses the default-market view (InStock when Cyprus can buy
+  it), matching its EU-27 `shippingDestination`; the owner chose this over
+  the requesting country's view on 2026-10-14, since Googlebot crawls as a
+  US buyer.
 - Shipping policy: `docs/shopify-policies-drafts.md` is the paste source for
   Shopify Admin > Settings > Policies; the site footer links
   `/policies/shipping-policy`, which renders the admin-hosted content.
