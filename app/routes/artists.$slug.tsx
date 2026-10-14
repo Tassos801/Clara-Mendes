@@ -456,14 +456,19 @@ function ArtistListing({
   const count = `${products.length} ${products.length === 1 ? 'product' : 'products'}`;
 
   // The form wraps the panel only: each card's quick add is a form of its
-  // own, and forms cannot nest. The sort menu joins it by id.
+  // own, and forms cannot nest. The sort menu joins it by id. Open, the
+  // sheet is a modal and keeps wheel scrolling native under smooth scroll,
+  // so its list scrolls instead of the page behind it.
   return (
     <div className="artist-listing__layout">
       <aside
         aria-label="Refine"
+        aria-modal={open || undefined}
         className="artist-refine"
+        data-lenis-prevent={open || undefined}
         data-open={open ? 'true' : undefined}
         id="artist-refine"
+        role={open ? 'dialog' : undefined}
       >
         <Form
           action={path}
@@ -574,6 +579,7 @@ function ArtistListing({
         <button
           aria-label="Close filters"
           className="artist-refine__scrim"
+          data-lenis-prevent
           onClick={close}
           tabIndex={-1}
           type="button"
