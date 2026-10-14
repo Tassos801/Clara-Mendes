@@ -22,6 +22,7 @@ import {
 } from '../app/lib/catalogFilters.ts';
 import {releasedPrintHandles} from '../app/lib/printCatalog.ts';
 import {releasedCuratedProducts} from '../app/lib/curatedProducts.ts';
+import {releasedArtProductHandles} from '../app/lib/artProductCatalog.ts';
 
 /**
  * Runs `fn` with the module's release flags temporarily replaced by
@@ -150,10 +151,12 @@ assert.equal(releasedCount, 3);
 assert.equal(isStoreThemeProduct(print), true);
 const sellableToday = computeSellableHandles();
 // 15 prints + released extensions + the released Your Sky star map + the
-// released standalone products + every released print-catalog entry. The
-// count is read from the catalog so adding a print never needs an edit here;
-// printCatalog.node-test.mjs owns the gate.
-const releasedCatalogCount = releasedPrintHandles().length;
+// released standalone products + every released print-catalog entry + every
+// released museum family product. The counts are read from the catalogs so
+// adding a print never needs an edit here; printCatalog.node-test.mjs and
+// artProductPipeline.node-test.mjs own the gates.
+const releasedCatalogCount =
+  releasedPrintHandles().length + releasedArtProductHandles().length;
 const releasedCuratedCount = releasedCuratedProducts().length;
 const releasedProductCount = Object.values(PRODUCT_RELEASE_FLAGS).filter(
   Boolean,

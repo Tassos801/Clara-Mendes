@@ -460,7 +460,10 @@ function mainWorktree() {
  * compared with inter-tag whitespace removed rather than byte for byte.
  */
 export function normalizeHtml(html) {
+  // Shopify stores a double quote in text as a plain character, so the
+  // escaped and plain forms are the same copy.
   return String(html ?? '')
+    .replace(/&quot;|&#0*34;|&#x0*22;/gi, '"')
     .replace(/>\s+</g, '><')
     .trim();
 }

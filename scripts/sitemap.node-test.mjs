@@ -91,6 +91,10 @@ assert.deepEqual(
     '/pastel-forms',
     // The book nook page exists only while a nook is released.
     ...(releasedBookNooks().length ? ['/book-nooks'] : []),
+    // Public artist shops (approved, with a released product), by sortName.
+    '/artists',
+    '/artists/hiroshige',
+    '/artists/hokusai',
     '/collections/quiet-form',
     '/collections/patina-blue',
     '/collections/neo-deco',
