@@ -7,6 +7,11 @@ import {
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {ClothingFeature} from '~/components/ClothingFeature';
+import {ArtistShopsFeature} from '~/components/ArtistShopsFeature';
+import {artistFeature} from '~/lib/artistShops';
+import {listShopCapsules, shopCapsulePath} from '~/lib/capsules';
+import {museumTagClause, studioSearchQuery} from '~/lib/museumListingOrder';
+import artistFeatureStyles from '~/styles/artist-feature.css?url';
 import {
   loadClothingProducts,
   type ClothingProduct,
@@ -34,6 +39,7 @@ import {
   isReleasedExtensionHandle,
   isReleasedProductHandle,
   ORIGINAL_ART_COLLECTIONS,
+  pickVariedProducts,
 } from '~/lib/catalogFilters';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {
@@ -66,6 +72,21 @@ import {
 } from '~/lib/bookNooks';
 
 const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
+
+// Artist shops from catalog data, like the site header's Artists link.
+const ARTIST_FEATURE = artistFeature();
+const MUSEUM_COLLECTIONS = listShopCapsules()
+  .filter((capsule) => capsule.kind === 'museum')
+  .map((capsule) => ({
+    path: shopCapsulePath(capsule.slug),
+    title: capsule.title,
+  }));
+
+// "More from the edit" shows the studio's own products; museum
+// reproductions have the artist feature instead, and would otherwise fill
+// it, being the newest products in Shopify's best-selling order.
+const MUSEUM_CLAUSE = museumTagClause();
+const EDIT_QUERY = MUSEUM_CLAUSE ? studioSearchQuery(null, MUSEUM_CLAUSE) : null;
 
 // Read from the catalog data so a new collection release updates the copy.
 const CATALOG = catalogCounts();
@@ -102,6 +123,7 @@ export const meta: Route.MetaFunction = ({data}) => {
 // 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
 // the media queries match the stylesheet so only one file is fetched.
 export const links: Route.LinksFunction = () => [
+  {rel: 'stylesheet', href: artistFeatureStyles},
   {
     as: 'image',
     href: '/images/backdrops/hero-interior.jpg',
@@ -140,7 +162,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
           : '__frame-not-released__',
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
-        first: 12,
+        first: 24,
+        productsQuery: EDIT_QUERY,
         toughCaseHandle: isReleasedProductHandle(TOUGH_CASE_HANDLE)
           ? TOUGH_CASE_HANDLE
           : '__tough-case-not-released__',
@@ -269,8 +292,11 @@ export default function Homepage() {
     featuredPrints.length === FEATURED_PRINT_HANDLES.length
       ? featuredPrints
       : products.slice(0, 3);
-  const featuredProducts =
-    products.length > 3 ? products.slice(3, 7) : products.slice(0, 4);
+  const featuredProducts = pickVariedProducts(
+    products,
+    4,
+    products.length > 3 ? quickShopProducts : [],
+  );
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const outlineRef = useRef<HTMLDivElement | null>(null);
@@ -462,6 +488,11 @@ export default function Homepage() {
               <Link to="/collections/all" className="hm-nav-text">
                 Shop
               </Link>
+              {ARTIST_FEATURE.artists.length ? (
+                <Link to="/artists" className="hm-nav-text">
+                  Artists
+                </Link>
+              ) : null}
               {clothingPicks.length ? (
                 <Link to="/clothing" className="hm-nav-text">
                   Clothing
@@ -563,6 +594,12 @@ export default function Homepage() {
         <p>International delivery</p>
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
+
+      <ArtistShopsFeature
+        artists={ARTIST_FEATURE.artists}
+        collections={MUSEUM_COLLECTIONS}
+        families={ARTIST_FEATURE.families}
+      />
 
       <ClothingFeature picks={clothingPicks} />
 
@@ -839,9 +876,10 @@ const HOMEPAGE_QUERY = `#graphql
     $first: Int!
     $frameHandle: String!
     $language: LanguageCode
+    $productsQuery: String
     $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, sortKey: BEST_SELLING) {
+    products(first: $first, sortKey: BEST_SELLING, query: $productsQuery) {
       nodes {
         ...ClaraProductCard
       }

@@ -475,6 +475,22 @@ A true flag adds the product's type (Yoga Leggings, Sports Bra, Biker Shorts,
 Studio Top) to the shop's type tabs. All four published products now appear
 in Shop All and their matching types.
 
+### Shop Product tabs (14 October 2026)
+
+`shopProductTypes()` in `app/lib/catalogFilters.ts` builds the tabs of
+`/collections/all` from the prints, released extension families and
+standalone products, released museum family products
+(`releasedArtProductTypes()` in `app/lib/artProductCatalog.ts`) and curated
+products, ordered by `SHOP_PRODUCT_TYPE_ORDER`: Art Prints, Framed Art,
+Canvas Art, Cards, Postcards, Phone Cases, Plant Pots, Book Nooks, then any
+other type in release order; garment types collapse into the Clothing link.
+Before this, the ten Floating World framed prints (type Framed Art) had no
+tab. On desktop the tabs have the toolbar's first row to themselves; the
+collection picker, filters and sort share the second (tablets too). The
+picker groups Clara Mendes capsules, museum collections and the public
+artists' shops. In a museum collection, the tabs of types it sells keep the
+collection selected; other tabs leave it, as studio capsules always did.
+
 The collection route's handle-only guard admits `quiet-current` when any
 member product is released; its post-query guard still hides an empty
 Shopify collection. This also lets the real collection URL remain in the

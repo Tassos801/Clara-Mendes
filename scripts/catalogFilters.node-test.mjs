@@ -16,13 +16,20 @@ import {
   isStoreThemeProduct,
   isUnreleasedExtensionHandle,
   PHONE_CASE_HANDLE,
+  orderShopProductTypes,
+  pickVariedProducts,
   PRODUCT_RELEASE_FLAGS,
   releasedExtensionProductTypes,
+  shopProductTypes,
   SKY_PRODUCT_HANDLE,
 } from '../app/lib/catalogFilters.ts';
 import {releasedPrintHandles} from '../app/lib/printCatalog.ts';
 import {releasedCuratedProducts} from '../app/lib/curatedProducts.ts';
-import {releasedArtProductHandles} from '../app/lib/artProductCatalog.ts';
+import {
+  releasedArtProductHandles,
+  releasedArtProductTypes,
+} from '../app/lib/artProductCatalog.ts';
+import {stagedArtProducts} from './lib/staged-fixtures.mjs';
 
 /**
  * Runs `fn` with the module's release flags temporarily replaced by
@@ -386,5 +393,74 @@ assert.equal(
   assert.deepEqual(
     filterDemoProducts([print, sky, phoneCase]).map((p) => p.handle),
     [print.handle],
+  );
+}
+
+// The shop's Product tabs: wall art first, then paper, then objects; a
+// released museum family (Framed Art) gets its own tab, and a type the
+// order does not know keeps its release order at the end.
+{
+  assert.deepEqual(
+    orderShopProductTypes([
+      'Cards',
+      'Book Nooks',
+      'Yoga Leggings',
+      'Art Prints',
+      'Framed Art',
+      'Cards',
+    ]),
+    ['Art Prints', 'Framed Art', 'Cards', 'Book Nooks', 'Yoga Leggings'],
+  );
+  const staged = shopProductTypes({artProducts: stagedArtProducts()});
+  assert.equal(staged.includes('Framed Art'), false);
+  assert.deepEqual(releasedArtProductTypes(stagedArtProducts()), []);
+  const live = shopProductTypes();
+  assert.deepEqual(releasedArtProductTypes(), [
+    'Framed Art',
+    'Canvas Art',
+    'Cards',
+    'Postcards',
+    'Phone Cases',
+  ]);
+  assert.deepEqual(live.slice(0, 8), [
+    'Art Prints',
+    'Framed Art',
+    'Canvas Art',
+    'Cards',
+    'Postcards',
+    'Phone Cases',
+    'Plant Pots',
+    'Book Nooks',
+  ]);
+  assert.equal(new Set(live).size, live.length);
+  for (const type of releasedExtensionProductTypes())
+    assert.ok(live.includes(type), `${type} has a tab`);
+}
+
+// A short mixed row takes one product per shop category first (garments
+// count as one), skips what is already shown, then fills in order.
+{
+  const row = (...types) =>
+    types.map((productType, index) => ({id: `p${index}`, productType}));
+  const products = row(
+    'Book Nooks',
+    'Book Nooks',
+    'Studio Top',
+    'Yoga Leggings',
+    'Book Nooks',
+    'Plant Pots',
+    'Art Prints',
+  );
+  assert.deepEqual(
+    pickVariedProducts(products, 4).map((p) => p.id),
+    ['p0', 'p2', 'p5', 'p6'],
+  );
+  assert.deepEqual(
+    pickVariedProducts(products, 4, [{id: 'p0'}, {id: 'p6'}]).map((p) => p.id),
+    ['p1', 'p2', 'p5', 'p3'],
+  );
+  assert.deepEqual(
+    pickVariedProducts(row('Cards', 'Cards'), 4).map((p) => p.id),
+    ['p0', 'p1'],
   );
 }

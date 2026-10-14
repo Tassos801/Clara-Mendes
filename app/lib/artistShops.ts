@@ -178,6 +178,60 @@ export function artistPath(artist: Pick<Artist, 'slug'>) {
   return `/artists/${artist.slug}`;
 }
 
+export type ArtistFeatureCard = {
+  /** Committed web artwork of the artist's lead print. */
+  image: string;
+  imageAlt: string;
+  meta: string[];
+  name: string;
+  path: string;
+  products: number;
+  /** "Hokusai" from "Hokusai, Katsushika", for "Shop Hokusai". */
+  shortName: string;
+  works: number;
+};
+
+/**
+ * The homepage's artist feature, from the same gate as the header's Artists
+ * link (approved artists with a released product), so it needs no Storefront
+ * query and disappears with the last artist. `families` are the product
+ * types sold across them, in display order.
+ */
+export function artistFeature(sources: Sources = {}): {
+  artists: ArtistFeatureCard[];
+  families: ArtistProductFamily[];
+} {
+  const registry = sources.registry ?? ART_REGISTRY;
+  const artists = publicArtists(sources);
+  return {
+    artists: artists.map(({artist, products}) => {
+      const lead =
+        products.find(
+          (product) =>
+            product.family === 'Prints' &&
+            product.artworkId === artist.representativeArtworkId,
+        ) ??
+        products.find((product) => product.family === 'Prints') ??
+        products[0];
+      return {
+        image: lead.image,
+        imageAlt: `${lead.title} by ${artist.name}`,
+        meta: [
+          lifeDatesLabel(artist),
+          artist.nationality,
+          artist.tags?.movement,
+        ].filter((value): value is string => Boolean(value)),
+        name: artist.name,
+        path: artistPath(artist),
+        products: products.length,
+        shortName: artist.sortName.split(',')[0].trim() || artist.name,
+        works: artistArtworks(products, registry).length,
+      };
+    }),
+    families: artistFamilies(artists.flatMap((entry) => entry.products)),
+  };
+}
+
 /**
  * Storefront `products(query:)` clause for an artist's products. Handle is
  * not a supported search field, so this selects their collections by tag;
