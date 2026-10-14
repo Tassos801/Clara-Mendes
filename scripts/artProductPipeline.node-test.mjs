@@ -198,6 +198,8 @@ test('release is blocked until every owner, asset, Shopify and mapping gate pass
   // The live catalog now carries real Draft ids; drop them so the Shopify
   // gate is exercised regardless of what has been staged.
   delete shippedCase.shopify;
+  for (const variant of shippedCase.variants)
+    variant.mapping = {verified: false};
   // Likewise the live registry may already hold a cleared master review;
   // reset it so the master gate is exercised regardless of owner progress.
   const pendingRegistry = structuredClone(registryModule.ART_REGISTRY);
