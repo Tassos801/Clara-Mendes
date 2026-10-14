@@ -198,7 +198,15 @@ test('release is blocked until every owner, asset, Shopify and mapping gate pass
   // The live catalog now carries real Draft ids; drop them so the Shopify
   // gate is exercised regardless of what has been staged.
   delete shippedCase.shopify;
-  const blocked = family.validateArtProductCatalog(shipped).join('\n');
+  // Likewise the live registry may already hold a cleared master review;
+  // reset it so the master gate is exercised regardless of owner progress.
+  const pendingRegistry = structuredClone(registryModule.ART_REGISTRY);
+  pendingRegistry.artworks.find(
+    (a) => a.id === shippedCase.artworkId,
+  ).reviews.master = {status: 'pending'};
+  const blocked = family
+    .validateArtProductCatalog(shipped, {registry: pendingRegistry})
+    .join('\n');
   for (const gate of [
     'a cleared master review',
     'Shopify ids',
