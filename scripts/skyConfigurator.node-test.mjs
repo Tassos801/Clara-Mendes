@@ -205,6 +205,25 @@ test('Your Sky PDP has one guided review and exact completion actions', () => {
   );
 });
 
+test('personalised purchase panels never quote the return window', () => {
+  // The refund policy lists custom or personalised orders as non-returnable;
+  // only its damaged/defective promise applies to them.
+  const studioSource = readFileSync(
+    path.join(ROOT, 'app/components/SkyStudio.tsx'),
+    'utf8',
+  );
+  assert.ok(!studioSource.includes('RETURN_WINDOW_DAYS'));
+  assert.match(studioSource, /Free replacement or refund if damaged/);
+  assert.match(
+    productSource,
+    /isPersonalisedType\s*\?\s*'Free replacement or refund if damaged'\s*:\s*`\$\{RETURN_WINDOW_DAYS\}-day returns`/,
+  );
+  assert.match(
+    productSource,
+    /\{isPersonalisedType \? \(\s*<>\s*Made to order for you, so personalised pieces can&apos;t be\s+returned/,
+  );
+});
+
 test('Your Sky uses one responsive grid with theme and frame treatments', () => {
   for (const token of [
     '.product-detail-layout--sky',

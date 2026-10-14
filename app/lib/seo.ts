@@ -3,6 +3,7 @@ import {deriveCardPricing} from './productCardPricing.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   fulfilmentWindows,
+  isPersonalisedProductType,
   RETURN_WINDOW_DAYS,
   SHIPPING_COUNTRY_CODES,
   STOREFRONT_ORIGIN,
@@ -325,9 +326,9 @@ function dayRange(window: string) {
  * Shipping and return enrichments for Offer nodes, mirroring the published
  * promises: the product type's dispatch window (prints 2–4 business days,
  * Printful activewear 3–8), EU delivery 5–10 after dispatch
- * (storefrontBasics constants), 30-day returns with buyer-paid return
- * shipping (docs/shopify-policies-drafts.md). Google reads these for
- * shipping/returns annotations on product results.
+ * (storefrontBasics constants), and the refund policy's returns
+ * (merchantReturnPolicy below). Google reads these for shipping/returns
+ * annotations on product results.
  */
 function offerShippingDetails(
   productType?: string | null,
@@ -358,7 +359,18 @@ function offerShippingDetails(
   };
 }
 
-function merchantReturnPolicy() {
+/**
+ * The refund policy's return terms: 30 days by mail at the buyer's cost, except
+ * custom or personalised orders, which are non-returnable (Your Sky, First
+ * Light). Google reads MerchantReturnNotPermitted with no window or fees.
+ */
+function merchantReturnPolicy(productType?: string | null) {
+  if (isPersonalisedProductType(productType))
+    return {
+      '@type': 'MerchantReturnPolicy',
+      applicableCountry: [...SHIPPING_COUNTRY_CODES],
+      returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+    };
   return {
     '@type': 'MerchantReturnPolicy',
     applicableCountry: [...SHIPPING_COUNTRY_CODES],
@@ -399,7 +411,7 @@ function offerFromPrice({
       ? offerShippingDetails(productType, productHandle, tags)
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
-      ? merchantReturnPolicy()
+      ? merchantReturnPolicy(productType)
       : undefined,
     url,
   };

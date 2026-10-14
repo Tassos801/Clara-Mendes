@@ -1712,3 +1712,22 @@ released lines. Error pages get a "Page not found | Clara Mendes" title and a
 plain-language 404 message. `public/llms.txt` was rewritten for the current
 catalogue. Shopify-hosted policies were not changed: the shipping policy still
 has no clothing section.
+
+## 2026-10-14 - Personalised products no longer promise 30-day returns
+
+The live refund policy now lists "Custom or personalized orders" as
+non-returnable, which settles the "30-day returns" chip on Your Sky that the
+2026-09-02 entry left as an owner policy decision. Personalised Art products
+(Your Sky, staged First Light) now show "Free replacement or refund if damaged"
+in the purchase status row on `/your-sky` and on the product page. The product
+page Returns panel now says the piece is made to order and can't be returned
+unless the law requires it, and that a damaged, defective or incorrect item
+reported within 7 days of delivery is replaced or refunded, as the policy's
+damaged-items clause says. Their structured-data offers say
+`MerchantReturnNotPermitted` instead of a 30-day window. Prints, cases, clothing
+and every other product are unchanged. See
+[catalog-and-products](modules/catalog-and-products.md#returns-on-personalised-products).
+
+Sources: `app/lib/storefrontBasics.ts`, `app/lib/seo.ts`,
+`app/components/SkyStudio.tsx`, `app/routes/products.$handle.tsx`,
+`scripts/productSchema.node-test.mjs`, `scripts/skyConfigurator.node-test.mjs`.
