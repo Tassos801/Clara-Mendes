@@ -34,10 +34,7 @@ import {
   skyFinishFromOptions,
   skySizeFromOptions,
 } from '~/lib/sky/products';
-import {
-  PRODUCTION_WINDOW_BUSINESS_DAYS,
-  RETURN_WINDOW_DAYS,
-} from '~/lib/storefrontBasics';
+import {PRODUCTION_WINDOW_BUSINESS_DAYS} from '~/lib/storefrontBasics';
 
 export type StudioVariant = {
   id: string;
@@ -240,7 +237,9 @@ export function SkyStudio({
               <span>
                 Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days
               </span>
-              <span>{RETURN_WINDOW_DAYS}-day returns</span>
+              {/* Personalised orders are non-returnable under the refund
+                  policy; only its damaged/defective promise applies. */}
+              <span>Free replacement or refund if damaged</span>
             </div>
           </div>
 
