@@ -122,7 +122,7 @@ export function OriginalArtPreview({
 
 const previewCss = `
 .original-art-preview {
-  background: #f4f0e8;
+  background: var(--color-soft);
   color: #27231f;
   padding: clamp(68px, 9vw, 138px) clamp(18px, 5vw, 78px);
 }
@@ -157,7 +157,7 @@ const previewCss = `
 
 .original-art-preview__intro p,
 .original-art-preview__note {
-  color: #6f685e;
+  color: var(--color-muted);
   font-size: clamp(0.92rem, 1.2vw, 1.08rem);
   line-height: 1.7;
   margin: 0 0 22px;
@@ -221,7 +221,7 @@ const previewCss = `
 }
 
 .original-art-card__capsule {
-  color: #81796e;
+  color: var(--color-muted);
   font-family: var(--sans);
   font-size: 0.66rem;
   font-weight: 600;
@@ -238,14 +238,14 @@ const previewCss = `
 }
 
 .original-art-card__copy > p:not(.original-art-card__capsule) {
-  color: #6f685e;
+  color: var(--color-muted);
   line-height: 1.55;
   margin: 0;
 }
 
 .original-art-card__meta {
   border-top: 1px solid rgba(39, 35, 31, 0.14);
-  color: #777066;
+  color: var(--color-muted);
   display: flex;
   flex-wrap: wrap;
   font-family: var(--sans);

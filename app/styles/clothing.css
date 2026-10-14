@@ -7,8 +7,8 @@
   --clothing-max: 1240px;
   --clothing-frame: #eeede7;
   --clothing-line: #dcd9d0;
-  --clothing-secondary: #67625a;
-  background: var(--color-paper);
+  --clothing-secondary: var(--color-muted);
+  background: var(--color-page);
   color: var(--color-ink);
   font-family: var(--sans);
   padding-top: var(--header-height, 76px);
@@ -640,7 +640,7 @@
 
 /* Homepage clothing feature */
 .clothing-feature {
-  background: #f1f0e8;
+  background: var(--color-page-warm);
   color: #26231f;
   display: grid;
   grid-template-columns: 0.9fr 1.4fr;

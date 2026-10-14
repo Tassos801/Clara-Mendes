@@ -92,7 +92,7 @@ function EditorialFigure({
 
 const editorialCss = `
 .home-editorial {
-  background: linear-gradient(180deg, var(--color-paper) 0%, #f6f2eb 100%);
+  background: linear-gradient(180deg, var(--color-page) 0%, var(--color-page-warm) 100%);
   display: grid;
   gap: clamp(26px, 4vw, 58px);
   padding: clamp(64px, 9vw, 132px) clamp(18px, 4vw, 70px)

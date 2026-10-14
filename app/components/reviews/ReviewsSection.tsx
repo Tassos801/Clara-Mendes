@@ -428,7 +428,7 @@ function ReviewCard({
 const reviewsCss = `
 .rv-root {
   --rv-ink: #26231f;
-  --rv-muted: #746f65;
+  --rv-muted: var(--color-muted);
   --rv-paper: #fbfaf6;
   --rv-line: rgba(38, 35, 31, 0.12);
   --rv-line-strong: rgba(38, 35, 31, 0.18);

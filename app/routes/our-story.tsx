@@ -257,7 +257,7 @@ html:has(.our-story-root) main {
 .our-story-root {
   --os-bg-base: #6B655B;
   --os-ink: #26231f;
-  --os-muted: #6f685e;
+  --os-muted: var(--color-muted);
   --os-paper: #fbfaf6;
   --os-text-main: #ffffff;
   --os-text-muted: rgba(255, 255, 255, 0.7);
@@ -265,7 +265,7 @@ html:has(.our-story-root) main {
   --os-font-serif: Georgia, 'Times New Roman', serif;
   --os-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  background: var(--os-paper);
+  background: var(--color-page);
   color: var(--os-ink);
   font-family: var(--os-font-sans);
   -webkit-font-smoothing: antialiased;

@@ -156,7 +156,7 @@ export default function Article() {
 const articleCss = `
 .kot-article-root {
   --kot-ink: #26231f;
-  --kot-muted: #6f685e;
+  --kot-muted: var(--color-muted);
   --kot-hairline: rgba(38, 35, 31, 0.16);
   --kot-serif: Georgia, 'Times New Roman', serif;
   --kot-mono: 'Courier Prime', 'Courier New', ui-monospace, monospace;
