@@ -355,14 +355,17 @@ export type ArtistFacetGroup = {
   options: ArtistFacetOption[];
 };
 
-const FAMILY_LABELS: Record<ArtistProductFamily, string> = {
-  Prints: 'Prints',
-  'Framed prints': 'Framed prints',
-  Canvas: 'Canvas',
-  Cards: 'Cards',
-  Postcards: 'Postcards',
-  'Phone cases': 'Phone cases',
-};
+/**
+ * A family's name in the shop: its Shopify productType, as the cards' chips
+ * and the Shop All tabs show it ("Art Prints", "Framed Art", …).
+ */
+const FAMILY_LABELS = Object.fromEntries([
+  ['Prints', 'Art Prints'],
+  ...Object.values(FAMILY_SPECS).map((spec) => [
+    spec.artistFamily,
+    spec.productType,
+  ]),
+]) as Record<ArtistProductFamily, string>;
 
 /**
  * A series name for display: the Met records some with a romanised
@@ -437,11 +440,25 @@ function artworkYear(product: ArtistProduct, registry: ArtRegistry) {
   return Number.isFinite(year) && year > 0 ? year : null;
 }
 
+/** One product type of an artist shop's sectioned "Featured" listing. */
+export type ArtistShopSection = {
+  label: string;
+  products: ArtistProduct[];
+  /** The `type` value that lists this section on its own. */
+  value: string;
+};
+
 export type ArtistShopView = {
   /** Selected values across all groups that match at least one product. */
   activeCount: number;
   groups: ArtistFacetGroup[];
+  /** In section order when `sections` is set. */
   products: ArtistProduct[];
+  /**
+   * The listing by product type: "Featured" with no type chosen, once it
+   * spans two types or more. Null lists `products` as one grid.
+   */
+  sections: ArtistShopSection[] | null;
   sort: ArtistSort;
 };
 
@@ -451,7 +468,8 @@ export type ArtistShopView = {
  * `sort`). Values match case-insensitively and unknown values are dropped,
  * so a stale link shows everything rather than nothing. Groups combine with
  * AND and values within a group with OR; each option's count applies the
- * other groups' choices.
+ * other groups' choices. A group that cannot narrow the shop (one value,
+ * carried by every product) is left out, and so are its URL values.
  */
 export function artistShopView(
   products: ArtistProduct[],
@@ -465,8 +483,12 @@ export function artistShopView(
     year: artworkYear(product, registry),
   }));
   type Row = (typeof rows)[number];
+  const facets = ARTIST_FACETS.filter(({key}) => {
+    const values = new Set(rows.map((row) => row.facets[key]?.value ?? null));
+    return values.size > 1;
+  });
   const selected = new Map<ArtistFacetKey, Set<string>>();
-  for (const {key} of ARTIST_FACETS) {
+  for (const {key} of facets) {
     const known = new Set(
       rows.flatMap((row) => (row.facets[key] ? [row.facets[key].value] : [])),
     );
@@ -481,14 +503,14 @@ export function artistShopView(
     );
   }
   const matches = (row: Row, except?: ArtistFacetKey) =>
-    ARTIST_FACETS.every(({key}) => {
+    facets.every(({key}) => {
       const chosen = selected.get(key)!;
       if (key === except || !chosen.size) return true;
       const value = row.facets[key]?.value;
       return value != null && chosen.has(value);
     });
 
-  const groups = ARTIST_FACETS.map(({key, label}) => {
+  const groups = facets.map(({key, label}) => {
     const options = new Map<string, ArtistFacetOption>();
     for (const row of rows) {
       const facet = row.facets[key];
@@ -503,7 +525,7 @@ export function artistShopView(
       options.set(facet.value, option);
     }
     return {key, label, options: [...options.values()]};
-  }).filter((group) => group.options.length > 0);
+  });
 
   const requested = params.get('sort')?.trim().toLowerCase();
   const sort =
@@ -533,10 +555,32 @@ export function artistShopView(
         a.index - b.index,
     );
 
+  // Featured with every type showing reads as one section per type, in
+  // family order; within one, products keep the order above.
+  const sections =
+    sort === 'featured' && !selected.get('type')?.size
+      ? ARTIST_PRODUCT_FAMILIES.flatMap((family) => {
+          const members = shown.filter((row) => row.product.family === family);
+          return members.length
+            ? [
+                {
+                  label: members[0].facets.type!.label,
+                  products: members.map((row) => row.product),
+                  value: members[0].facets.type!.value,
+                },
+              ]
+            : [];
+        })
+      : [];
+  const sectioned = sections.length > 1;
+
   return {
     activeCount: [...selected.values()].reduce((sum, set) => sum + set.size, 0),
     groups,
-    products: shown.map((row) => row.product),
+    products: sectioned
+      ? sections.flatMap((section) => section.products)
+      : shown.map((row) => row.product),
+    sections: sectioned ? sections : null,
     sort,
   };
 }

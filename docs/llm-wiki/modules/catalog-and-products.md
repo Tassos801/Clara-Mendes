@@ -585,3 +585,26 @@ line from `reproductionSentence()`. Museum case lines go to Prodigi through
 `buildProdigiOrderFromShopify` only when released with a verified API route
 (`artCaseLineForSku`). Pipeline: `npm run product -- <step> <collection>
 --families | --family <f>` (`scripts/lib/art-product-*.mjs`).
+
+## 2026-10-15 - Artist shop categories
+
+An artist shop (`/artists/<slug>`) names its product types as the cards'
+chips and the Shop All tabs do: Art Prints, Framed Art, Canvas Art, Cards,
+Postcards and Phone Cases (`FAMILY_LABELS` in `app/lib/artistShops.ts`, from
+each family's Shopify productType). The `type` URL values are unchanged
+(`prints`, `framed-prints`, `canvas`, `cards`, `postcards`, `phone-cases`, and
+the old `Art prints` spellings).
+
+Product type is a row of chips over the listing (All plus one per type, with
+counts), no longer a Refine group. Refine keeps Series, Orientation and
+Collection, and `artistShopView` drops any group that cannot narrow the shop
+(one value carried by every product) together with its URL values. With no
+group left (Hokusai today), there is no Filter button or sidebar and the grid
+takes the full width.
+
+"Featured" with no type chosen lists one section per type in family order
+(`ArtistShopView.sections`). On screens up to 900px each section is one row
+swiped sideways, edge to edge, with the next card peeking in and a "See all"
+link to that type; wider screens show each section as a grid. Choosing a type,
+or another sort, lists one grid. On phones the cards drop the "By <artist>"
+line, which repeated the page's own artist.
