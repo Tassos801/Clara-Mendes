@@ -1005,3 +1005,27 @@ test("curator's notes say which products keep the whole composition", () => {
     );
   }
 });
+
+test('a framed print needs its work offered at 16×20, whose print file it reuses', () => {
+  const printCatalog = structuredClone(PRINT_CATALOG);
+  const collection = printCatalog.collections.find(
+    (entry) => entry.slug === 'floating-world',
+  );
+  const wave = collection.prints.find((print) => print.slug === WAVE);
+  wave.sizes = ['8x10'];
+  wave.releasedSizes = ['8x10'];
+  assert.match(
+    family
+      .validateArtProductCatalog(family.ART_PRODUCT_CATALOG, {printCatalog})
+      .join('\n'),
+    /the-great-wave-off-kanagawa-framed-print: the framed print reuses the 16x20 print file, which the-great-wave-off-kanagawa is not offered in/,
+  );
+  assert.throws(
+    () =>
+      familyAssetPlan(
+        productOf(family.ART_PRODUCT_CATALOG, WAVE, 'framed-print'),
+        {collection, framedPpi: 213.9, launchRoot: LAUNCH},
+      ),
+    /reuses the 16x20 print file/,
+  );
+});

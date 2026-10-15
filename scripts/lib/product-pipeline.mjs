@@ -24,6 +24,7 @@ import {
   printOrientation,
   printProductTitle,
   printSku,
+  printVariants,
 } from '../../app/lib/printCatalog.ts';
 
 export const REPO_ROOT = path.resolve(
@@ -84,7 +85,9 @@ function bareSize(size) {
 }
 
 export function sizeBullet(collection, print = {}) {
-  const sizes = collection.variants.map((variant) => bareSize(variant.size));
+  const sizes = printVariants(collection, print).map((variant) =>
+    bareSize(variant.size),
+  );
   const orientation = printOrientation(print);
   const whole =
     collectionKind(collection) === 'museum'
@@ -151,8 +154,9 @@ export function variantExpansionPlan(collection, print, product) {
     throw new Error(`${handle}: Shopify product identity does not match`);
   }
 
+  const variants = printVariants(collection, print);
   const expected = new Map(
-    collection.variants.map((variant) => [
+    variants.map((variant) => [
       printSku(collection, print, variant.size),
       variant,
     ]),
@@ -168,7 +172,7 @@ export function variantExpansionPlan(collection, print, product) {
     existingBySku.set(node.sku, node);
   }
 
-  return collection.variants.map((variant) => {
+  return variants.map((variant) => {
     const sku = printSku(collection, print, variant.size);
     const existing = existingBySku.get(sku);
     if (existing) {
@@ -239,7 +243,8 @@ export function buildProductSetInput(
   print,
   {registry = ART_REGISTRY} = {},
 ) {
-  const finishes = [...new Set(collection.variants.map((v) => v.finish))];
+  const variants = printVariants(collection, print);
+  const finishes = [...new Set(variants.map((v) => v.finish))];
   const museum = collectionKind(collection) === 'museum';
   const artist = museum ? museumSource(print, registry).artist : null;
   return {
@@ -256,7 +261,7 @@ export function buildProductSetInput(
       {
         name: 'Size',
         position: 1,
-        values: collection.variants.map((v) => ({name: sizeLabel(v.size)})),
+        values: variants.map((v) => ({name: sizeLabel(v.size)})),
       },
       {name: 'Finish', position: 2, values: finishes.map((name) => ({name}))},
     ],
@@ -283,7 +288,7 @@ export function buildProductSetInput(
           ...PENDING_TAGS,
         ],
     title: printProductTitle(print),
-    variants: collection.variants.map((variant) => ({
+    variants: variants.map((variant) => ({
       // Tracked at zero with DENY keeps a Draft unbuyable even if it is
       // activated by accident; `release` switches tracking off.
       inventoryItem: {requiresShipping: true, tracked: true},
@@ -320,7 +325,7 @@ export function printStatus(
   print,
   {hasWebImage = true, hasRoomAssets = true} = {},
 ) {
-  const sizes = collection.variants.map((variant) => variant.size);
+  const sizes = printVariants(collection, print).map((variant) => variant.size);
   const staged =
     Boolean(print.shopify?.productId) &&
     sizes.every((size) => print.shopify?.variantIds?.[size]);
@@ -358,7 +363,7 @@ export function assertPrintMediaTarget(product, handle) {
 
 export function handoffRows(collection, prints, {printDir, sha256}) {
   return prints.flatMap((print) =>
-    collection.variants.map((variant) => {
+    printVariants(collection, print).map((variant) => {
       const file = path.join(printDir, printFileName(print, variant.size));
       return {
         print: print.title,

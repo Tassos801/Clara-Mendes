@@ -33,6 +33,7 @@ import {
   sourceCredit,
 } from '../../app/lib/artRegistry.ts';
 import {MUSEUM_CROPS} from '../../app/lib/museumCrops.ts';
+import {printVariants} from '../../app/lib/printCatalog.ts';
 import {TOUGH_CASE_PHONES} from '../../app/lib/toughCase.ts';
 import {
   MUSEUM_TAG,
@@ -286,6 +287,15 @@ export function familyAssetPlan(
   const trim = artwork.trim ?? {bottom: 0, left: 0, right: 0, top: 0};
   const whole = wholePanelLayout(master, product.family);
   const reused = !spec.shape && !whole;
+  if (
+    reused &&
+    !printVariants(collection, print).some(
+      (variant) => variant.size === FRAMED_PRINT_SIZE,
+    )
+  )
+    throw new Error(
+      `${product.handle}: the framed print reuses the ${FRAMED_PRINT_SIZE} print file, which ${print.slug} is not offered in`,
+    );
   const output = reused
     ? path.join(
         launchRoot,

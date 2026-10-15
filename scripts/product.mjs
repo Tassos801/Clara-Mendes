@@ -36,6 +36,7 @@ import {
   printImagePath,
   printProductTitle,
   printSku,
+  printVariants,
   validatePrintCatalog,
 } from '../app/lib/printCatalog.ts';
 import {masterSize} from '../app/lib/artRegistry.ts';
@@ -203,7 +204,7 @@ function prepare() {
         ? museumPreparePlan(collection, print)
         : {
             slug: print.slug,
-            sizes: collection.variants.map((variant) => ({
+            sizes: printVariants(collection, print).map((variant) => ({
               key: variant.size,
               fileName: printFileName(print, variant.size),
               ...PRINT_SIZES[variant.size],
@@ -602,6 +603,10 @@ function mapped() {
   );
   for (const {slug, id} of parseMappings(collection, positional.slice(1))) {
     const print = collection.prints.find((entry) => entry.slug === slug);
+    assert.ok(
+      printVariants(collection, print).some((variant) => variant.size === size),
+      `${slug} is not offered in ${size}`,
+    );
     print.prodigi = {
       ...print.prodigi,
       [size]: {
@@ -845,7 +850,7 @@ async function release() {
       `${print.slug}: run media --apply and verify the five-image gallery before release`,
     );
     assert.equal(product.featuredMedia?.id, gallery.flat.id);
-    for (const variant of collection.variants) {
+    for (const variant of printVariants(collection, print)) {
       const live = product.variants.nodes.find(
         (node) => node.id === print.shopify.variantIds[variant.size],
       );
@@ -875,7 +880,7 @@ async function release() {
       removeTags: untag.length,
       activate,
       flipReleased: !print.released,
-      releaseSizes: collection.variants
+      releaseSizes: printVariants(collection, print)
         .map((variant) => variant.size)
         .filter((size) => !(print.releasedSizes ?? []).includes(size))
         .join(' '),
@@ -970,7 +975,7 @@ async function release() {
       (candidate) => candidate.handle === printHandle(print),
     );
     if (!entry?.availableForSale) unavailable.push(printHandle(print));
-    for (const variant of collection.variants) {
+    for (const variant of printVariants(collection, print)) {
       const live = entry?.variants.find(
         (candidate) =>
           candidate.sku === printSku(collection, print, variant.size),
@@ -1003,7 +1008,9 @@ async function release() {
   }
   for (const print of prints) {
     print.released = true;
-    print.releasedSizes = collection.variants.map((variant) => variant.size);
+    print.releasedSizes = printVariants(collection, print).map(
+      (variant) => variant.size,
+    );
   }
   saveCatalog();
   console.log(
@@ -1035,7 +1042,7 @@ async function verify() {
       'storefront: available for sale',
       entry?.availableForSale,
     );
-    for (const variant of collection.variants) {
+    for (const variant of printVariants(collection, print)) {
       const live = entry?.variants.find(
         (node) => node.sku === printSku(collection, print, variant.size),
       );
@@ -1258,7 +1265,7 @@ function museumPreparePlan(collection, print) {
       `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.id} --artist ${artwork.artistId}`,
     );
   const master = masterSize(artwork);
-  const layouts = collection.variants.map((variant) =>
+  const layouts = printVariants(collection, print).map((variant) =>
     borderedLayout(master, variant.size),
   );
   return {
@@ -1458,7 +1465,7 @@ function recordIds(collection, actions) {
   for (const {print, found} of actions) {
     if (!found) continue;
     const variantIds = {};
-    for (const variant of collection.variants) {
+    for (const variant of printVariants(collection, print)) {
       const live = found.variants.nodes.find(
         (node) => node.sku === printSku(collection, print, variant.size),
       );

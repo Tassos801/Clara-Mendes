@@ -21,6 +21,7 @@ import {
 import {
   PRINT_CATALOG,
   printSku,
+  printVariants,
   type PrintCatalog,
   type PrintCatalogCollection,
   type PrintCatalogPrint,
@@ -978,6 +979,16 @@ export function validateArtProductCatalog(
     }
     if (print.artworkId !== product.artworkId)
       problems.push(`${at}: artwork must be ${print.artworkId}, as its print`);
+    // The framed print reuses the bordered 16×20 print file.
+    if (
+      product.family === 'framed-print' &&
+      !printVariants(collection, print).some(
+        (variant) => variant.size === '16x20',
+      )
+    )
+      problems.push(
+        `${at}: the framed print reuses the 16x20 print file, which ${print.slug} is not offered in`,
+      );
     if (product.handle !== familyHandle(print, product.family))
       problems.push(
         `${at}: handle must be ${familyHandle(print, product.family)}`,

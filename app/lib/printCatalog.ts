@@ -61,6 +61,11 @@ export type PrintCatalogPrint = {
   released: boolean;
   /** Sizes that are fully mapped and intentionally offered to consumers. */
   releasedSizes?: PrintSizeKey[];
+  /**
+   * The collection sizes this print is offered in, when not all of them (a
+   * museum original too small for the larger sizes). Absent: every size.
+   */
+  sizes?: PrintSizeKey[];
   rooms: PrintRoomScene[];
   sequence: number;
   /** Written back by `product stage`. */
@@ -100,6 +105,19 @@ export const PRINT_CATALOG = printCatalog as unknown as PrintCatalog;
 
 export function printHandle(print: Pick<PrintCatalogPrint, 'slug'>) {
   return `${print.slug}-art-print`;
+}
+
+/** The collection variants one print is offered in, in collection order. */
+export function printVariants(
+  collection: Pick<PrintCatalogCollection, 'variants'>,
+  print: Pick<PrintCatalogPrint, 'sizes'>,
+) {
+  const {sizes} = print;
+  return sizes
+    ? collection.variants.filter((variant) =>
+        sizes.includes(variant.size as PrintSizeKey),
+      )
+    : collection.variants;
 }
 
 export function collectionKind(
@@ -177,7 +195,10 @@ export type ReleasedPrintCollection = {
   image: string;
   kind: PrintCollectionKind;
   note: string;
+  /** Every size a released member is sold in, in collection order. */
   sizeLabels: string[];
+  /** True when some released members are not sold in every listed size. */
+  sizesVary: boolean;
   slug: string;
   title: string;
 };
@@ -191,22 +212,23 @@ export function releasedPrintCollections(
       const released = collection.prints.filter(
         (print) => print.released === true,
       );
-      const commonSizes = collection.variants.filter((variant) =>
-        released.every((print) =>
-          (print.releasedSizes ?? []).includes(
-            variant.size as PrintSizeKey,
-          ),
-        ),
+      const offered = (variant: PrintCatalogVariant) =>
+        released.map((print) =>
+          (print.releasedSizes ?? []).includes(variant.size as PrintSizeKey),
+        );
+      const sizes = collection.variants.filter((variant) =>
+        offered(variant).some(Boolean),
       );
       return {
         handles: released.map(printHandle),
         image: released[0] ? printImagePath(collection, released[0]) : '',
         kind: collectionKind(collection),
         note: collection.note,
-        sizeLabels: commonSizes.map(
+        sizeLabels: sizes.map(
           (variant) =>
             PRINT_SIZES[variant.size as PrintSizeKey]?.label ?? variant.size,
         ),
+        sizesVary: sizes.some((variant) => !offered(variant).every(Boolean)),
         slug: collection.slug,
         title: collection.title,
       };
@@ -339,12 +361,33 @@ export function validatePrintCatalog(
           );
         }
       }
+      if (print.sizes !== undefined) {
+        if (!Array.isArray(print.sizes) || !print.sizes.length)
+          problems.push(`${at}: sizes must list at least one size`);
+        else {
+          if (new Set(print.sizes).size !== print.sizes.length)
+            problems.push(`${at}: sizes must not contain duplicates`);
+          for (const size of print.sizes)
+            if (!sizes.has(size))
+              problems.push(`${at}: sizes contains unknown size ${size}`);
+        }
+      }
+      const offered = new Set<string>(
+        printVariants(
+          {variants: collection.variants ?? []},
+          {sizes: Array.isArray(print.sizes) ? print.sizes : undefined},
+        ).map((variant) => variant.size),
+      );
       const releasedSizes = print.releasedSizes ?? [];
       if (new Set(releasedSizes).size !== releasedSizes.length)
         problems.push(`${at}: releasedSizes must not contain duplicates`);
       for (const size of releasedSizes)
         if (!sizes.has(size))
           problems.push(`${at}: releasedSizes contains unknown size ${size}`);
+        else if (!offered.has(size))
+          problems.push(
+            `${at}: releasedSizes contains ${size}, not in its sizes`,
+          );
       if (print.released === true && releasedSizes.length === 0)
         problems.push(`${at}: released without releasedSizes`);
       if (print.released !== true && releasedSizes.length > 0)
@@ -355,7 +398,8 @@ export function validatePrintCatalog(
       seen.handles.add(handle);
 
       for (const variant of collection.variants ?? []) {
-        if (!(variant.size in PRINT_SIZES)) continue;
+        if (!(variant.size in PRINT_SIZES) || !offered.has(variant.size))
+          continue;
         const sku = printSku(collection, print, variant.size);
         if (seen.skus.has(sku)) problems.push(`${at}: duplicate SKU ${sku}`);
         seen.skus.add(sku);
