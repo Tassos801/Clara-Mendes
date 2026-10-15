@@ -187,10 +187,13 @@ export function createFamilySteps({
     const prints = only?.length
       ? collection.prints.filter((print) => only.includes(print.slug))
       : collection.prints;
-    const {added, refreshed} = syncFamilyProducts(artCatalog, collection, {
-      families,
-      prints,
-    });
+    const {added, refreshed, skipped} = syncFamilyProducts(
+      artCatalog,
+      collection,
+      {families, prints},
+    );
+    for (const {family, print, reason} of skipped)
+      console.log(`Skipped ${print} ${family}: ${reason}.`);
     const products = selected();
 
     // The framed print reuses `prepare`'s bordered 16×20 file: it must be

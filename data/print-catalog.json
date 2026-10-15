@@ -1865,9 +1865,9 @@
       "slug": "line-and-colour",
       "title": "Line and Colour",
       "kind": "museum",
-      "note": "Early modern paintings by Kandinsky and Mondrian",
+      "note": "Early twentieth-century paintings by Kandinsky and Mondrian",
       "skuCode": "LC",
-      "collectionCopy": "Part of Line and Colour, a Clara Mendes selection of early modern paintings by Kandinsky and Mondrian from museum open-access collections, each reproduced whole on archival fine-art paper.",
+      "collectionCopy": "Part of Line and Colour, a Clara Mendes selection of early twentieth-century paintings by Kandinsky and Mondrian from museum open-access collections, each reproduced whole on archival fine-art paper.",
       "seoSuffix": "A modern art print reproduced whole from a public-domain museum original.",
       "publications": [
         "Clara Mendes",
@@ -1910,7 +1910,7 @@
               "backgroundFile": "improvisation-no-30-cannons-living-room.png",
               "placement": {
                 "left": 420,
-                "top": 230,
+                "top": 354,
                 "width": 240,
                 "height": 300
               }
@@ -1921,7 +1921,7 @@
               "backgroundFile": "improvisation-no-30-cannons-bedroom.png",
               "placement": {
                 "left": 430,
-                "top": 180,
+                "top": 259,
                 "width": 220,
                 "height": 275
               }
@@ -1932,7 +1932,7 @@
               "backgroundFile": "improvisation-no-30-cannons-study.png",
               "placement": {
                 "left": 440,
-                "top": 304,
+                "top": 488,
                 "width": 200,
                 "height": 250
               }
@@ -1942,8 +1942,8 @@
               "alt": "Improvisation No. 30 (Cannons) print shown at scale in a wide, airy interior with concrete floors.",
               "backgroundFile": "improvisation-no-30-cannons-wide-interior.png",
               "placement": {
-                "left": 470,
-                "top": 320,
+                "left": 460,
+                "top": 570,
                 "width": 160,
                 "height": 200
               }
@@ -1975,7 +1975,7 @@
               "backgroundFile": "landscape-with-two-poplars-living-room.png",
               "placement": {
                 "left": 380,
-                "top": 329,
+                "top": 410,
                 "width": 320,
                 "height": 256
               }
@@ -1986,7 +1986,7 @@
               "backgroundFile": "landscape-with-two-poplars-bedroom.png",
               "placement": {
                 "left": 400,
-                "top": 200,
+                "top": 407,
                 "width": 280,
                 "height": 224
               }
@@ -1996,8 +1996,8 @@
               "alt": "Landscape with Two Poplars print above an oak desk with a black steel lamp in a pared-back study.",
               "backgroundFile": "landscape-with-two-poplars-study.png",
               "placement": {
-                "left": 420,
-                "top": 434,
+                "left": 415,
+                "top": 526,
                 "width": 250,
                 "height": 200
               }
@@ -2007,8 +2007,8 @@
               "alt": "Landscape with Two Poplars print shown at scale in a wide, airy interior with concrete floors.",
               "backgroundFile": "landscape-with-two-poplars-wide-interior.png",
               "placement": {
-                "left": 450,
-                "top": 459,
+                "left": 480,
+                "top": 600,
                 "width": 200,
                 "height": 160
               }

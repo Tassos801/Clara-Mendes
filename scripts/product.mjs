@@ -862,6 +862,21 @@ async function release() {
         `${print.slug} ${variant.size}: Shopify price differs from the catalog`,
       );
     }
+    // Untracking makes a variant buyable, so a size the print is not sold in
+    // (an earlier staging, before `sizes`) must go before anything changes.
+    const offered = new Set(
+      printVariants(collection, print).map((variant) =>
+        printSku(collection, print, variant.size),
+      ),
+    );
+    const stray = product.variants.nodes.filter(
+      (node) => !offered.has(node.sku),
+    );
+    assert.equal(
+      stray.length,
+      0,
+      `${print.slug}: Shopify also has ${stray.map((node) => node.sku).join(', ')}, which this print is not sold in; delete those variants in Shopify first`,
+    );
     return {
       print,
       product,
@@ -1066,6 +1081,20 @@ async function verify() {
           : 'variant missing',
       );
     }
+    const offeredSkus = new Set(
+      printVariants(collection, print).map((variant) =>
+        printSku(collection, print, variant.size),
+      ),
+    );
+    const stray = (entry?.variants ?? []).filter(
+      (node) => node.availableForSale && !offeredSkus.has(node.sku),
+    );
+    check(
+      print.slug,
+      'storefront: no size outside its sizes for sale',
+      stray.length === 0,
+      stray.map((node) => node.sku).join(' '),
+    );
     const first = entry?.variants.find((node) => node.availableForSale);
     if (first) {
       const cart = await addToCart(first.id);

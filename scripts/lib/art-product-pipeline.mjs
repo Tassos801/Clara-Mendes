@@ -16,6 +16,7 @@ import {
   familyCrop,
   familyFileSize,
   familyHandle,
+  familyIneligibility,
   familyPpiFloor,
   familyReleaseIssues,
   familySku,
@@ -33,7 +34,6 @@ import {
   sourceCredit,
 } from '../../app/lib/artRegistry.ts';
 import {MUSEUM_CROPS} from '../../app/lib/museumCrops.ts';
-import {printVariants} from '../../app/lib/printCatalog.ts';
 import {TOUGH_CASE_PHONES} from '../../app/lib/toughCase.ts';
 import {
   MUSEUM_TAG,
@@ -151,14 +151,26 @@ const IDENTITY_FIELDS = [
  * checks existing ones still match the catalog. An entry not yet in Shopify
  * is refreshed from the data; a staged one must match exactly (a price or
  * SKU change of a staged Draft is a Shopify update, not a data edit).
- * Products stay ordered by collection, family, then print sequence.
+ * A work that cannot have a family (no crop for its shape, or a framed print
+ * without 16×20) is skipped and reported. Products stay ordered by
+ * collection, family, then print sequence.
  */
-export function syncFamilyProducts(artCatalog, collection, {families, prints}) {
+export function syncFamilyProducts(
+  artCatalog,
+  collection,
+  {families, prints, crops = MUSEUM_CROPS},
+) {
   const config = findArtCollection(artCatalog, collection.slug).families;
   const added = [];
   const refreshed = [];
+  const skipped = [];
   for (const family of families)
     for (const print of prints) {
+      const reason = familyIneligibility(family, collection, print, crops);
+      if (reason) {
+        skipped.push({family, print: print.slug, reason});
+        continue;
+      }
       const expected = expectedFamilyProduct(
         collection,
         print,
@@ -216,7 +228,7 @@ export function syncFamilyProducts(artCatalog, collection, {families, prints}) {
     const [cb, fb, sb] = rank(b);
     return ca.localeCompare(cb) || fa - fb || sa - sb;
   });
-  return {added, refreshed};
+  return {added, refreshed, skipped};
 }
 
 /** Products of one collection, narrowed to families and print slugs. */
@@ -287,15 +299,13 @@ export function familyAssetPlan(
   const trim = artwork.trim ?? {bottom: 0, left: 0, right: 0, top: 0};
   const whole = wholePanelLayout(master, product.family);
   const reused = !spec.shape && !whole;
-  if (
-    reused &&
-    !printVariants(collection, print).some(
-      (variant) => variant.size === FRAMED_PRINT_SIZE,
-    )
-  )
-    throw new Error(
-      `${product.handle}: the framed print reuses the ${FRAMED_PRINT_SIZE} print file, which ${print.slug} is not offered in`,
-    );
+  const ineligible = familyIneligibility(
+    product.family,
+    collection,
+    print,
+    crops,
+  );
+  if (ineligible) throw new Error(`${product.handle}: ${ineligible}`);
   const output = reused
     ? path.join(
         launchRoot,

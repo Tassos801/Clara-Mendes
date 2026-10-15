@@ -510,6 +510,7 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
   assert.deepEqual(syncFamilyProducts(catalog, FLOATING_WORLD, options), {
     added: [],
     refreshed: [],
+    skipped: [],
   });
   assert.equal(JSON.stringify(catalog), before);
 
@@ -1033,4 +1034,51 @@ test('a framed print needs its work offered at 16×20, whose print file it reuse
       ),
     /reuses the 16x20 print file/,
   );
+});
+
+test('family sync adds a product only where its work qualifies', () => {
+  const catalog = structuredClone(family.ART_PRODUCT_CATALOG);
+  const lineAndColour = PRINT_CATALOG.collections.find(
+    (entry) => entry.slug === 'line-and-colour',
+  );
+  const sync = (families) =>
+    syncFamilyProducts(catalog, lineAndColour, {
+      families,
+      prints: lineAndColour.prints,
+    });
+  // Everything that qualifies is already in the catalog.
+  const existing = sync(['framed-print', 'canvas', 'mug']);
+  assert.deepEqual(existing.added, []);
+  assert.deepEqual(
+    existing.skipped
+      .filter((entry) => entry.family === 'framed-print')
+      .map((entry) => entry.print),
+    [
+      'landscape-with-two-poplars',
+      'houses-at-murnau',
+      'painting-with-troika',
+      'painting-with-green-center',
+      'composition-no-1-gray-red',
+    ],
+  );
+  assert.deepEqual(
+    existing.skipped
+      .filter((entry) => entry.family === 'canvas')
+      .map((entry) => entry.print),
+    [
+      'painting-with-troika',
+      'painting-with-green-center',
+      'lozenge-composition',
+      'composition-no-1-gray-red',
+    ],
+  );
+  assert.ok(existing.skipped.every((entry) => entry.family !== 'mug'));
+  // Cases follow the works that have a case crop.
+  assert.deepEqual(sync(['phone-case']).added, [
+    'improvisation-no-30-cannons-phone-case',
+    'landscape-with-two-poplars-phone-case',
+    'composition-with-red-yellow-and-blue-phone-case',
+    'chrysanthemum-phone-case',
+    'field-with-young-trees-phone-case',
+  ]);
 });

@@ -569,6 +569,31 @@ export function familyFileSize(
 }
 
 /**
+ * Why a print's work cannot have a family product, or null when it can: a
+ * cropped family needs the work's crop for its shape, and the framed print
+ * reuses the 16×20 print file, so the print must be offered at 16×20.
+ * Whole-work families (the mug) fit every work.
+ */
+export function familyIneligibility(
+  family: ArtProductFamily,
+  collection: Pick<PrintCatalogCollection, 'variants'>,
+  print: Pick<PrintCatalogPrint, 'artworkId' | 'sizes' | 'slug'>,
+  crops: MuseumCrops = MUSEUM_CROPS,
+): string | null {
+  const spec = FAMILY_SPECS[family];
+  if (spec.shape && !crops.crops[print.artworkId ?? '']?.[spec.shape])
+    return `${print.artworkId} has no ${spec.shape} crop`;
+  if (
+    family === 'framed-print' &&
+    !printVariants(collection, print).some(
+      (variant) => variant.size === '16x20',
+    )
+  )
+    return `the framed print reuses the 16x20 print file, which ${print.slug} is not offered in`;
+  return null;
+}
+
+/**
  * The crop a family product renders from, in master pixels, with its native
  * ppi; the phone case renders its 4:5 file box. Null for whole-work families.
  */
@@ -930,7 +955,7 @@ export function validateArtProductCatalog(
   const printSkus = new Set(
     printCatalog.collections.flatMap((collection) =>
       collection.prints.flatMap((print) =>
-        collection.variants.map((variant) =>
+        printVariants(collection, print).map((variant) =>
           printSku(collection, print, variant.size),
         ),
       ),
@@ -979,16 +1004,13 @@ export function validateArtProductCatalog(
     }
     if (print.artworkId !== product.artworkId)
       problems.push(`${at}: artwork must be ${print.artworkId}, as its print`);
-    // The framed print reuses the bordered 16×20 print file.
-    if (
-      product.family === 'framed-print' &&
-      !printVariants(collection, print).some(
-        (variant) => variant.size === '16x20',
-      )
-    )
-      problems.push(
-        `${at}: the framed print reuses the 16x20 print file, which ${print.slug} is not offered in`,
-      );
+    const ineligible = familyIneligibility(
+      product.family,
+      collection,
+      print,
+      crops,
+    );
+    if (ineligible) problems.push(`${at}: ${ineligible}`);
     if (product.handle !== familyHandle(print, product.family))
       problems.push(
         `${at}: handle must be ${familyHandle(print, product.family)}`,
