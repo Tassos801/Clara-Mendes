@@ -18,6 +18,62 @@ their room media earlier the same morning, then hit its usage limit; Claude
 committed its ids (`1c7d9e0`), redesigned the artist page, mapped all ten in
 Prodigi, proposed product crops (approved) and added the larger sizes.
 
+## Line and Colour, the second collection (2026-10-15, Claude Code)
+
+**Writer:** Claude Code on `claude/modern-collection` (owner's Mac), stacked
+on #134 (AIC/Cleveland importers, mug). Codex (Sol) generated the room
+backgrounds and reviewed the changes read-only. Nothing in Shopify or
+Prodigi was touched.
+
+**Built:** Kandinsky and Mondrian registered (unapproved); eleven works
+fetched; collection `line-and-colour` (SKU code `LC`) with ten prints
+prepared; framed (5), canvas (6), phone case (5) and mug (10) files prepared;
+crops approved; room backgrounds and placements. Two pipeline changes:
+per-print `sizes` and per-work crop approval (runbook, museum section).
+
+| Work | Prints | Framed | Canvas | Case | Mug |
+| --- | --- | --- | --- | --- | --- |
+| Kandinsky, Improvisation No. 30 (Cannons) (AIC 8991) | 8×10, 16×20 (212 ppi), 20×24 (170) | ✓ | 150 ppi | 388 ppi | ✓ |
+| Kandinsky, Landscape with Two Poplars (AIC 8980) | 8×10 | – | 148 ppi | 307 ppi | ✓ |
+| Kandinsky, Houses at Murnau (AIC 129849) | 8×10 | – | 141 ppi | – | ✓ |
+| Kandinsky, Painting with Troika (AIC 8983) | 8×10 | – | – | – | ✓ |
+| Kandinsky, Painting with Green Center (AIC 8987) | 8×10 | – | – | – | ✓ |
+| Mondrian, Composition with Red, Yellow, and Blue (CMA 1967.215) | all three | ✓ | 449 ppi | 1166 ppi | ✓ |
+| Mondrian, Lozenge Composition (AIC 109819) | all three (20×24 at 170) | ✓ | – | – | ✓ |
+| Mondrian, Composition (No. 1) Gray-Red (AIC 65821) | 8×10 | – | – | – | ✓ |
+| Mondrian, Chrysanthemum (CMA 1958.38) | all three (20×24 at 251) | ✓ | 235 ppi | 609 ppi | ✓ |
+| Mondrian, Field with Young Trees (CMA 1971.220) | all three (16×20 at 266, 20×24 at 213) | ✓ | 230 ppi | 477 ppi | ✓ |
+
+36 listings: Kandinsky 16, Mondrian 20. Prices reuse Floating World's.
+
+**Decided by the owner in chat (2026-10-15):** the name *Line and
+Colour*; the trims, recorded as Tassos (Troika: the grey photo backdrop
+outside Kandinsky's painted frame; Composition 1927: the wall and its shadow
+outside the white strip frame, which stays, after which its crop fractions
+were recomputed to the same pixels); approval of the case and canvas crops
+of all six cropped works; and downloading Prodigi's iPhone 16 Pro template
+(sha256 matches) so the five phone cases could be prepared.
+
+**Still open (owner):**
+1. *Study for a Composition* (AIC 142570, fetched, not in the collection):
+   AIC's photograph has 9–11% grey backdrop top and bottom, beyond the 5%
+   trim limit. Leave out, or accept the backdrop on the print.
+2. The Lozenge prints as a diamond on AIC's pale grey square; it has no
+   canvas or case (a crop inside the diamond is about 225 ppi for a case,
+   70 for a canvas).
+3. Accept the larger-size ppi: Cannons and Lozenge 16×20 at 212–213 and
+   20×24 at 170 (3% below Floating World's 176); Chrysanthemum and Field
+   are above the precedent.
+4. Artist approval (`approve-artist`), rights and master reviews for the
+   ten works, and a mug price (Prodigi quote). Composition 1927's canvas
+   keeps the red and blue but not the thin yellow strip (approved as shown).
+
+**Machine notes:** this Mac's `.env.shopify-admin.local` has empty
+`SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET`, so `stage` (even a dry run)
+needs the Windows PC or those credentials. The Prodigi iPhone 16 Pro case
+template is now in the main checkout's
+`output/prodigi-assets/tough-phone-case/`.
+
 ## Storefront fixes for the dormant families (2026-10-14, Claude Code)
 
 Code only; no Shopify or Prodigi write. Checked locally with a temporary,

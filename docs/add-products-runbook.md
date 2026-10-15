@@ -154,15 +154,24 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    `data/museum-crops.json`: the printed block of the sheet (`area`) and, per
    shape, a centre and an optional zoom. The box is computed (largest box of
    the shape inside the area), and pixels are only cut, never generated.
-   `npm run museum -- crops [--artwork <id>]` writes a review sheet per work
-   and an overview per product to `<launchDir>/museum/crops/`, with ppi and
-   coverage. The owner approves the crops (`approval` in the file) before any
-   product uses them. Prints and framed prints keep the whole composition.
+   A work lists only the shapes its products use (new artists have no card
+   or postcard). `npm run museum -- crops [--artwork <id> | --collection
+   <slug>]` writes a review sheet per work and an overview per product to
+   `<launchDir>/museum/crops/` (`crops/<slug>/` for a collection), with ppi
+   and coverage. Each work records who chose its framings (`chosen`) and
+   the owner's `approval`; a new work starts `{"approved": false}`, so an
+   earlier approval never covers it, and release refuses its cropped
+   products until the owner approves that work. Prints, framed prints and
+   mugs keep the whole composition.
 3. **Catalog:** a collection with `"kind": "museum"`; each print names its
    `artworkId` and `orientation` (the artwork's), and its four room
-   placements are 5:4 for landscape paper. Choose collection sizes every work
-   qualifies for. Museum collections never set `artistId`; studio collections
-   may (their artist's shop then lists them).
+   placements are 5:4 for landscape paper. A print that does not qualify for
+   every collection size lists the ones it is sold in, `"sizes": ["8x10"]`
+   (in collection order; absent means all). Staging, handoff, mapping,
+   release and verify then cover only those sizes, and a framed print needs
+   its work at 16×20 because it reuses that print file. Museum collections
+   never set `artistId`; studio collections may (their artist's shop then
+   lists them).
 4. **Then the usual steps.** `prepare` lays the whole artwork on white paper in
    its own orientation (no crop, no stretch) and writes the card image (the
    sheet on the soft background) plus `<print>.sheet.webp`, which `rooms`

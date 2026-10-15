@@ -1784,3 +1784,18 @@ TIFF) as well as the Met. Added the `mug` product family (Prodigi
 family without `priceEUR`) and a per-artwork owner ppi-exception path
 (`ppiExceptions`, none granted). No Shopify, Prodigi or registry data
 changed. See [catalog and products](modules/catalog-and-products.md).
+
+## 2026-10-15 - Line and Colour prepared (Kandinsky + Mondrian, not staged)
+
+Stacked on the AIC/Cleveland importer branch: Kandinsky and Mondrian are
+registered (unapproved) and eleven works fetched; the museum collection
+`line-and-colour` holds ten of them as prints, with framed, canvas and mug
+and phone-case files prepared per qualifying work. A print can now list `sizes` when it does not
+qualify for every collection size (the five 3000 px AIC works sell at 8×10
+only), and crop approval is recorded per work, so Floating World's approval
+no longer covers new crops. Codex generated the room backgrounds and reviewed
+the change read-only. The owner chose the name, recorded trims for two works and
+approved the crops; the open decisions (*Study for a Composition*, ppi,
+reviews, mug price) are listed in
+[artist-shops/status.md](../artist-shops/status.md). See
+[catalog and products](modules/catalog-and-products.md#line-and-colour-2026-10-15-prepared-not-staged).
