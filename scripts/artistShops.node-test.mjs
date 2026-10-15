@@ -378,13 +378,22 @@ function floatingWorldProducts(artistId) {
     .filter((product) => !artistId || product.artistId === artistId);
 }
 
+/** An artist's whole Floating World range: prints and every family. */
+function floatingWorldRange(artistId) {
+  return shops
+    .artistProducts()
+    .filter((product) => product.collectionTag === 'Floating World')
+    .filter((product) => product.artistId === artistId);
+}
+
 test('artist shop Refine groups come from data, with counts per choice', () => {
   const hiroshige = floatingWorldProducts('utagawa-hiroshige');
   assert.equal(hiroshige.length, 4);
   const view = shops.artistShopView(hiroshige, new URLSearchParams());
+  // One product type and one collection, on every print, narrow nothing.
   assert.deepEqual(
     view.groups.map((group) => group.key),
-    ['type', 'series', 'orientation', 'collection'],
+    ['series', 'orientation'],
   );
   const series = view.groups.find((group) => group.key === 'series');
   // Quotes and the romanised original are trimmed; Nissaka has no series.
@@ -407,6 +416,91 @@ test('artist shop Refine groups come from data, with counts per choice', () => {
   assert.equal(view.activeCount, 0);
   assert.equal(view.sort, 'featured');
   assert.deepEqual(view.products, hiroshige);
+  assert.equal(view.sections, null);
+});
+
+test('artist shop types are named as on the cards and the Shop All tabs', () => {
+  const view = shops.artistShopView(
+    floatingWorldRange('utagawa-hiroshige'),
+    new URLSearchParams(),
+  );
+  assert.deepEqual(
+    view.groups
+      .find((group) => group.key === 'type')
+      .options.map(({count, label, value}) => [value, label, count]),
+    [
+      ['prints', 'Art Prints', 4],
+      ['framed-prints', 'Framed Art', 4],
+      ['canvas', 'Canvas Art', 4],
+      ['cards', 'Cards', 4],
+      ['postcards', 'Postcards', 4],
+      ['phone-cases', 'Phone Cases', 4],
+    ],
+  );
+});
+
+test('artist shop Featured lists one section per type, in family order', () => {
+  const range = floatingWorldRange('utagawa-hiroshige');
+  const view = shops.artistShopView(range, new URLSearchParams());
+  assert.deepEqual(
+    view.sections.map((section) => [section.value, section.products.length]),
+    [
+      ['prints', 4],
+      ['framed-prints', 4],
+      ['canvas', 4],
+      ['cards', 4],
+      ['postcards', 4],
+      ['phone-cases', 4],
+    ],
+  );
+  assert.ok(
+    view.sections.every((section) =>
+      section.products.every(
+        (product) =>
+          shops.ARTIST_PRODUCT_FAMILIES.indexOf(product.family) ===
+          view.sections.indexOf(section),
+      ),
+    ),
+  );
+  // The flat list is the sections in order, for counts and the cards.
+  assert.deepEqual(
+    view.products,
+    view.sections.flatMap((section) => section.products),
+  );
+  // Other filters keep the sections; their counts follow.
+  const portrait = shops.artistShopView(
+    range,
+    new URLSearchParams('orientation=portrait'),
+  );
+  assert.deepEqual(
+    portrait.sections.map((section) => section.products.length),
+    [3, 3, 3, 3, 3, 3],
+  );
+  // A chosen type, or another sort, lists one grid.
+  for (const query of ['type=cards', 'type=cards&type=postcards', 'sort=title'])
+    assert.equal(
+      shops.artistShopView(range, new URLSearchParams(query)).sections,
+      null,
+      query,
+    );
+});
+
+test('artist shop drops groups that cannot narrow it, and their URL values', () => {
+  const range = floatingWorldRange('katsushika-hokusai');
+  assert.equal(range.length, 36);
+  // Every Hokusai is a landscape Fuji view of Floating World.
+  const view = shops.artistShopView(
+    range,
+    new URLSearchParams(
+      'orientation=portrait&collection=floating-world&series=thirty-six-views-of-mount-fuji',
+    ),
+  );
+  assert.deepEqual(
+    view.groups.map((group) => group.key),
+    ['type'],
+  );
+  assert.equal(view.activeCount, 0);
+  assert.equal(view.products.length, 36);
 });
 
 test('artist shop filters AND across groups, OR within one, and drop stale values', () => {
@@ -421,9 +515,14 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
   );
   assert.equal(portrait.products.length, 3);
   // Counts in other groups follow the orientation choice.
-  const type = portrait.groups.find((group) => group.key === 'type');
-  assert.deepEqual(type.options, [
-    {count: 3, label: 'Prints', selected: false, value: 'prints'},
+  const series = portrait.groups.find((group) => group.key === 'series');
+  assert.deepEqual(series.options, [
+    {
+      count: 3,
+      label: 'One Hundred Famous Views of Edo',
+      selected: false,
+      value: 'one-hundred-famous-views-of-edo',
+    },
   ]);
   const orientation = portrait.groups.find(
     (group) => group.key === 'orientation',
@@ -436,25 +535,28 @@ test('artist shop filters AND across groups, OR within one, and drop stale value
     ],
   );
 
+  const range = floatingWorldRange('utagawa-hiroshige');
   const both = shops.artistShopView(
-    hiroshige,
+    range,
     new URLSearchParams(
       'orientation=portrait&orientation=landscape&type=Prints',
     ),
   );
-  assert.equal(both.products.length, 4);
+  assert.deepEqual(both.products, hiroshige);
   assert.equal(both.activeCount, 3);
   // The filter was labelled "Art prints"; links written from that label
   // still select the prints.
   for (const old of ['Art+prints', 'art-prints', 'ART%20PRINTS', 'prints']) {
     const view = shops.artistShopView(
-      hiroshige,
+      range,
       new URLSearchParams(`type=${old}`),
     );
     assert.equal(view.activeCount, 1, old);
-    assert.equal(view.products.length, 4, old);
+    assert.deepEqual(view.products, hiroshige, old);
     assert.equal(
-      view.groups.find((group) => group.key === 'type').options[0].selected,
+      view.groups
+        .find((group) => group.key === 'type')
+        .options.find((option) => option.value === 'prints').selected,
       true,
       old,
     );

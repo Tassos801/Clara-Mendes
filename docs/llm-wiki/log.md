@@ -1773,6 +1773,18 @@ and structured data uses the default-market view. Store data and shipping
 zones are unchanged. See
 [fulfillment](modules/fulfillment.md#where-the-promises-render).
 
+## 2026-10-15 - Artist shop categories on phones
+
+Artist shops show product-type chips (named as on the cards and Shop All)
+instead of a Product type filter, and "Featured" lists one section per type.
+On phones each section is a swiped row with "See all". This cut Hokusai's
+listing from about 6,500px to 2,140px at 375px wide. Refine groups that can't
+narrow the shop are hidden, so Hokusai has no Filter button. See
+[catalog](modules/catalog-and-products.md#2026-10-15---artist-shop-categories).
+
+Sources: `app/lib/artistShops.ts`, `app/routes/artists.$slug.tsx`,
+`app/styles/artists.css`, `scripts/artistShops.node-test.mjs`.
+
 ## 2026-10-15 - Compact "About the works" on phones
 
 The provenance list at the foot of an artist shop ran to about 2,200px at

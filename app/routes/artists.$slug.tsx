@@ -126,7 +126,6 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     })),
     featured,
     groups: view.groups,
-    activeCount: view.activeCount,
     portrait: cardOf(lead.handle).featuredImage
       ? {...cardOf(lead.handle).featuredImage!, title: lead.title}
       : null,
@@ -136,6 +135,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       context.storefront,
       view.products.map((product) => cardOf(product.handle)),
     ),
+    sections:
+      view.sections?.map((section) => ({
+        handles: section.products.map((product) => product.handle),
+        label: section.label,
+        value: section.value,
+      })) ?? null,
     sort: view.sort,
     total: listed.length,
   };
@@ -143,13 +148,13 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 
 export default function ArtistShop() {
   const {
-    activeCount,
     artist,
     artworks,
     featured,
     groups,
     portrait,
     products,
+    sections,
     sort,
     total,
   } = useLoaderData<typeof loader>();
@@ -228,11 +233,11 @@ export default function ArtistShop() {
           Shop {artist.name}
         </h2>
         <ArtistListing
-          activeCount={activeCount}
           byline={artist.name}
           groups={groups}
           path={artist.path}
           products={products}
+          sections={sections}
           sort={sort}
           total={total}
         />
@@ -464,24 +469,28 @@ function FeaturedDesigns({slides}: {slides: Slide[]}) {
   );
 }
 
+type Section = {handles: string[]; label: string; value: string};
+
 /**
- * Refine (left, or a sheet on phones), sort and the grid. Every choice lives
- * in the URL; without JavaScript the panel is a plain GET form.
+ * Product-type chips, Refine (left, or a sheet on phones), sort and the
+ * grid, or one section per type (a swiped row on phones). Every choice
+ * lives in the URL; without JavaScript the chips are links and the panel is
+ * a plain GET form.
  */
 function ArtistListing({
-  activeCount,
   byline,
   groups,
   path,
   products,
+  sections,
   sort,
   total,
 }: {
-  activeCount: number;
   byline: string;
   groups: ArtistFacetGroup[];
   path: string;
   products: ClaraCardProduct[];
+  sections: Section[] | null;
   sort: string;
   total: number;
 }) {
@@ -491,6 +500,16 @@ function ArtistListing({
   const [open, setOpen] = useState(false);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const typesRef = useRef<HTMLElement>(null);
+
+  // Product type is the chips' choice; the other groups are Refine's.
+  const types = groups.find((group) => group.key === 'type');
+  const refine = groups.filter((group) => group !== types);
+  const refineCount = refine.reduce(
+    (sum, group) =>
+      sum + group.options.filter((option) => option.selected).length,
+    0,
+  );
 
   // Show a choice as made while its page loads.
   const pending =
@@ -498,9 +517,7 @@ function ArtistListing({
       ? new URLSearchParams(navigation.location.search)
       : searchParams;
   const isChecked = (key: string, value: string) =>
-    pending
-      .getAll(key)
-      .some((entry) => artistFacetValue(key, entry) === value);
+    pending.getAll(key).some((entry) => artistFacetValue(key, entry) === value);
 
   const update = (mutate: (params: URLSearchParams) => void) => {
     // From the pending URL, so quick successive clicks all count.
@@ -522,6 +539,34 @@ function ArtistListing({
       for (const group of groups) params.delete(group.key);
       params.delete('type');
     });
+  const clearRefine = () =>
+    update((params) => {
+      for (const group of refine) params.delete(group.key);
+    });
+
+  // One type, or every type: the chips' links keep the other choices.
+  const typeTo = (value: string | null) => {
+    const params = new URLSearchParams(searchParams);
+    params.delete('type');
+    if (value) params.set('type', value);
+    const search = params.toString();
+    return {pathname: path, search: search ? `?${search}` : ''};
+  };
+  const typeChosen = types?.options.some((option) =>
+    isChecked('type', option.value),
+  );
+
+  // Phones swipe the chips sideways; keep the chosen one in view without
+  // moving the page.
+  useEffect(() => {
+    const row = typesRef.current;
+    const active = row?.querySelector<HTMLElement>('[aria-current]');
+    if (!row || !active || row.scrollWidth <= row.clientWidth) return;
+    row.scrollLeft = Math.max(
+      0,
+      active.offsetLeft - (row.clientWidth - active.offsetWidth) / 2,
+    );
+  }, [searchParams]);
 
   useEffect(() => {
     if (!open) return;
@@ -542,44 +587,204 @@ function ArtistListing({
   };
 
   const count = `${products.length} ${products.length === 1 ? 'product' : 'products'}`;
+  const productByHandle = new Map(
+    products.map((product) => [product.handle, product]),
+  );
 
   // The form wraps the panel only: each card's quick add is a form of its
-  // own, and forms cannot nest. The sort menu joins it by id. Open, the
-  // sheet is a modal and keeps wheel scrolling native under smooth scroll,
-  // so its list scrolls instead of the page behind it.
+  // own, and forms cannot nest. The sort menu joins it by id. With no group
+  // that can narrow the shop there is no panel, Filter button or sidebar.
+  // Open, the sheet is a modal and keeps wheel scrolling native under smooth
+  // scroll, so its list scrolls instead of the page behind it.
   return (
-    <div className="artist-listing__layout">
-      <aside
-        aria-label="Refine"
-        aria-modal={open || undefined}
-        className="artist-refine"
-        data-lenis-prevent={open || undefined}
-        data-open={open ? 'true' : undefined}
-        id="artist-refine"
-        role={open ? 'dialog' : undefined}
-      >
-        <Form
-          action={path}
-          className="artist-refine__form"
-          id={REFINE_FORM_ID}
-          method="get"
-        >
-          <div className="artist-refine__head">
-            <p className="artist-refine__title">Refine</p>
-            {activeCount ? (
-              <button
-                className="artist-refine__clear"
-                onClick={clear}
-                type="button"
-              >
-                Clear all
-              </button>
-            ) : null}
+    <div
+      className={`artist-listing__layout${
+        refine.length ? '' : ' artist-listing__layout--full'
+      }`}
+    >
+      {refine.length ? (
+        <>
+          <aside
+            aria-label="Refine"
+            aria-modal={open || undefined}
+            className="artist-refine"
+            data-lenis-prevent={open || undefined}
+            data-open={open ? 'true' : undefined}
+            id="artist-refine"
+            role={open ? 'dialog' : undefined}
+          >
+            <Form
+              action={path}
+              className="artist-refine__form"
+              id={REFINE_FORM_ID}
+              method="get"
+            >
+              {/* The chips' choice rides along with a no-JS Apply. */}
+              {searchParams.getAll('type').map((value) => (
+                <input key={value} name="type" type="hidden" value={value} />
+              ))}
+              <div className="artist-refine__head">
+                <p className="artist-refine__title">Refine</p>
+                {refineCount ? (
+                  <button
+                    className="artist-refine__clear"
+                    onClick={clearRefine}
+                    type="button"
+                  >
+                    Clear all
+                  </button>
+                ) : null}
+                <button
+                  aria-label="Close filters"
+                  className="artist-refine__close"
+                  onClick={close}
+                  ref={closeRef}
+                  type="button"
+                >
+                  <svg
+                    aria-hidden
+                    fill="none"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    width="16"
+                  >
+                    <path
+                      d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeWidth="1.5"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div className="artist-refine__groups">
+                {refine.map((group) => (
+                  <details
+                    className="artist-refine__group"
+                    key={group.key}
+                    open
+                  >
+                    <summary>
+                      {group.label}
+                      <svg
+                        aria-hidden
+                        fill="none"
+                        height="14"
+                        viewBox="0 0 16 16"
+                        width="14"
+                      >
+                        <path
+                          d="M3.5 6 8 10.5 12.5 6"
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="1.5"
+                        />
+                      </svg>
+                    </summary>
+                    <ul>
+                      {group.options.map((option) => {
+                        const id = `refine-${group.key}-${option.value}`;
+                        const checked = isChecked(group.key, option.value);
+                        return (
+                          <li key={option.value}>
+                            <input
+                              checked={checked}
+                              disabled={!option.count && !checked}
+                              id={id}
+                              name={group.key}
+                              onChange={() => toggle(group.key, option.value)}
+                              type="checkbox"
+                              value={option.value}
+                            />
+                            <label htmlFor={id}>
+                              <span>{option.label}</span>
+                              <span className="artist-refine__count">
+                                {option.count}
+                              </span>
+                            </label>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </details>
+                ))}
+              </div>
+              <noscript>
+                <button className="artist-refine__apply" type="submit">
+                  Apply
+                </button>
+              </noscript>
+              <div className="artist-refine__foot">
+                <button
+                  className="artist-refine__done"
+                  onClick={close}
+                  type="button"
+                >
+                  Show {count}
+                </button>
+              </div>
+            </Form>
+          </aside>
+          {open ? (
             <button
               aria-label="Close filters"
-              className="artist-refine__close"
+              className="artist-refine__scrim"
+              data-lenis-prevent
               onClick={close}
-              ref={closeRef}
+              tabIndex={-1}
+              type="button"
+            />
+          ) : null}
+        </>
+      ) : null}
+
+      <div className="artist-listing__results">
+        {types ? (
+          <nav
+            aria-label="Product type"
+            className="artist-types"
+            ref={typesRef}
+          >
+            <Link
+              aria-current={typeChosen ? undefined : 'true'}
+              className="artist-types__link"
+              prefetch="intent"
+              preventScrollReset
+              to={typeTo(null)}
+            >
+              All
+              <span className="artist-types__count">
+                {types.options.reduce((sum, option) => sum + option.count, 0)}
+              </span>
+            </Link>
+            {types.options
+              .filter((option) => option.count || option.selected)
+              .map((option) => (
+                <Link
+                  aria-current={
+                    isChecked('type', option.value) ? 'true' : undefined
+                  }
+                  className="artist-types__link"
+                  key={option.value}
+                  prefetch="intent"
+                  preventScrollReset
+                  to={typeTo(option.value)}
+                >
+                  {option.label}
+                  <span className="artist-types__count">{option.count}</span>
+                </Link>
+              ))}
+          </nav>
+        ) : null}
+        <div className="artist-listing__toolbar">
+          {refine.length ? (
+            <button
+              aria-controls="artist-refine"
+              aria-expanded={open}
+              className="artist-listing__filter"
+              onClick={() => setOpen(true)}
+              ref={toggleRef}
               type="button"
             >
               <svg
@@ -590,116 +795,15 @@ function ArtistListing({
                 width="16"
               >
                 <path
-                  d="M3.5 3.5l9 9M12.5 3.5l-9 9"
+                  d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"
                   stroke="currentColor"
                   strokeLinecap="round"
                   strokeWidth="1.5"
                 />
               </svg>
+              Filter{refineCount ? ` (${refineCount})` : ''}
             </button>
-          </div>
-          <div className="artist-refine__groups">
-            {groups.map((group) => (
-              <details className="artist-refine__group" key={group.key} open>
-                <summary>
-                  {group.label}
-                  <svg
-                    aria-hidden
-                    fill="none"
-                    height="14"
-                    viewBox="0 0 16 16"
-                    width="14"
-                  >
-                    <path
-                      d="M3.5 6 8 10.5 12.5 6"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="1.5"
-                    />
-                  </svg>
-                </summary>
-                <ul>
-                  {group.options.map((option) => {
-                    const id = `refine-${group.key}-${option.value}`;
-                    const checked = isChecked(group.key, option.value);
-                    return (
-                      <li key={option.value}>
-                        <input
-                          checked={checked}
-                          disabled={!option.count && !checked}
-                          id={id}
-                          name={group.key}
-                          onChange={() => toggle(group.key, option.value)}
-                          type="checkbox"
-                          value={option.value}
-                        />
-                        <label htmlFor={id}>
-                          <span>{option.label}</span>
-                          <span className="artist-refine__count">
-                            {option.count}
-                          </span>
-                        </label>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </details>
-            ))}
-          </div>
-          <noscript>
-            <button className="artist-refine__apply" type="submit">
-              Apply
-            </button>
-          </noscript>
-          <div className="artist-refine__foot">
-            <button
-              className="artist-refine__done"
-              onClick={close}
-              type="button"
-            >
-              Show {count}
-            </button>
-          </div>
-        </Form>
-      </aside>
-      {open ? (
-        <button
-          aria-label="Close filters"
-          className="artist-refine__scrim"
-          data-lenis-prevent
-          onClick={close}
-          tabIndex={-1}
-          type="button"
-        />
-      ) : null}
-
-      <div className="artist-listing__results">
-        <div className="artist-listing__toolbar">
-          <button
-            aria-controls="artist-refine"
-            aria-expanded={open}
-            className="artist-listing__filter"
-            onClick={() => setOpen(true)}
-            ref={toggleRef}
-            type="button"
-          >
-            <svg
-              aria-hidden
-              fill="none"
-              height="16"
-              viewBox="0 0 16 16"
-              width="16"
-            >
-              <path
-                d="M2.5 4.5h11M4.5 8h7M6.5 11.5h3"
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeWidth="1.5"
-              />
-            </svg>
-            Filter{activeCount ? ` (${activeCount})` : ''}
-          </button>
+          ) : null}
           <p aria-live="polite" className="artist-listing__count">
             {products.length === total
               ? count
@@ -708,7 +812,7 @@ function ArtistListing({
           <label className="artist-listing__sort">
             <span>Sort by:</span>
             <select
-              form={REFINE_FORM_ID}
+              form={refine.length ? REFINE_FORM_ID : undefined}
               name="sort"
               onChange={(event) => {
                 const value = event.currentTarget.value;
@@ -728,7 +832,48 @@ function ArtistListing({
           </label>
         </div>
 
-        {products.length ? (
+        {sections ? (
+          <div className="artist-sections">
+            {sections.map((section, sectionIndex) => (
+              <section
+                aria-labelledby={`artist-type-${section.value}`}
+                className="artist-section"
+                key={section.value}
+              >
+                <div className="artist-section__head">
+                  <h3 id={`artist-type-${section.value}`}>{section.label}</h3>
+                  <span className="artist-section__count">
+                    {section.handles.length}
+                  </span>
+                  <Link
+                    aria-label={`See all ${section.handles.length} ${section.label}`}
+                    className="artist-section__all"
+                    prefetch="intent"
+                    preventScrollReset
+                    to={typeTo(section.value)}
+                  >
+                    See all
+                  </Link>
+                </div>
+                <div className="artist-grid artist-section__row">
+                  {section.handles.map((handle, index) => {
+                    const product = productByHandle.get(handle);
+                    return product ? (
+                      <ClaraProductCard
+                        byline={byline}
+                        key={product.id}
+                        loading={
+                          sectionIndex === 0 && index < 3 ? 'eager' : 'lazy'
+                        }
+                        product={product}
+                      />
+                    ) : null;
+                  })}
+                </div>
+              </section>
+            ))}
+          </div>
+        ) : products.length ? (
           <div className="artist-grid">
             {products.map((product, index) => (
               <ClaraProductCard

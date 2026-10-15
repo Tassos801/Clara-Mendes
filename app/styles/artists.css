@@ -2,9 +2,12 @@
    The artists index and each artist's shop: who they were, then every
    product we sell of their work, then where each work comes from. */
 .artists-page {
+  --artists-gutter: clamp(18px, 4vw, 70px);
+  /* To the screen edge: the gutter plus main's 1rem (reset.css). */
+  --artists-bleed: calc(var(--artists-gutter) + 1rem);
   --artists-line: rgba(38, 35, 31, 0.14);
   padding: calc(var(--header-height) + clamp(48px, 7vw, 104px))
-    clamp(18px, 4vw, 70px) clamp(64px, 9vw, 128px);
+    var(--artists-gutter) clamp(64px, 9vw, 128px);
 }
 
 .artists-intro {
@@ -646,6 +649,108 @@
   font: inherit;
 }
 
+/* No group can narrow the shop: no sidebar, and the grid takes the width. */
+.artist-listing__layout--full {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.artist-listing__layout--full .artist-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Product types, named as on the cards and the Shop All tabs. */
+.artist-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 18px;
+}
+
+.artist-types__link {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid var(--artists-line);
+  border-radius: 999px;
+  color: var(--color-muted);
+  display: inline-flex;
+  flex: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 16px;
+  transition:
+    background 240ms ease,
+    border-color 240ms ease,
+    color 240ms ease;
+  white-space: nowrap;
+}
+
+.artist-types__link:hover {
+  border-color: rgba(38, 35, 31, 0.36);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.artist-types__link[aria-current] {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.artist-types__link:focus-visible {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 2px;
+}
+
+.artist-types__count {
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  opacity: 0.72;
+}
+
+/* Featured, every type: one section per type. */
+.artist-sections {
+  display: grid;
+  gap: clamp(40px, 5vw, 64px);
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* reset.css pads every section; the sections' gap spaces these. */
+.artist-section {
+  padding: 0;
+}
+
+.artist-section__head {
+  align-items: baseline;
+  border-top: 1px solid var(--artists-line);
+  display: flex;
+  gap: 10px;
+  margin-bottom: clamp(16px, 2vw, 22px);
+  padding-top: 16px;
+}
+
+.artist-section__head h3 {
+  font-family: var(--serif);
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.artist-section__count {
+  color: var(--color-muted);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Every card of a section shows on wide screens; the link is for rows. */
+.artist-section__all {
+  display: none;
+}
+
 /* Provenance */
 .artist-works {
   margin-top: clamp(64px, 8vw, 112px);
@@ -785,6 +890,10 @@
   .artist-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+
+  .artist-listing__layout--full .artist-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 900px) {
@@ -793,8 +902,9 @@
     grid-template-columns: 1fr;
   }
 
+  /* minmax: a swiped row must not widen its column to fit every card. */
   .artist-listing__layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .artist-listing__filter {
@@ -822,8 +932,85 @@
     order: 3;
   }
 
-  .artist-grid .cm-card-byline {
-    letter-spacing: 0.08em;
+  /* No Filter button: the count and Sort share the row. */
+  .artist-listing__layout--full .artist-listing__count {
+    flex-basis: auto;
+    order: 0;
+  }
+
+  /* The page is the artist's: "By …" on every card cost two lines each. */
+  .artist-listing .cm-card-byline {
+    display: none;
+  }
+
+  /* Chips swipe sideways, edge to edge. */
+  .artist-types {
+    flex-wrap: nowrap;
+    margin-inline: calc(var(--artists-bleed) * -1);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 2px var(--artists-bleed) 16px;
+    scroll-padding-inline: var(--artists-bleed);
+    scrollbar-width: none;
+  }
+
+  .artist-types::-webkit-scrollbar {
+    display: none;
+  }
+
+  .artist-types__link {
+    min-height: 44px;
+  }
+
+  .artist-grid,
+  .artist-listing__layout--full .artist-grid {
+    gap: 28px 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Each type is one row, swiped sideways; the next card peeks in. Card
+     widths count the bleed on the right, where the row runs to the edge. */
+  .artist-grid.artist-section__row {
+    gap: 12px;
+    grid-auto-columns: calc((100% + var(--artists-bleed) - 76px) / 3);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    margin-inline: calc(var(--artists-bleed) * -1);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding-inline: var(--artists-bleed);
+    scroll-padding-inline: var(--artists-bleed);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .artist-section__row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .artist-section__row > * {
+    scroll-snap-align: start;
+  }
+
+  .artist-section__all {
+    align-items: center;
+    color: inherit;
+    display: inline-flex;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-left: auto;
+    min-height: 44px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .artist-section__head {
+    margin-bottom: 8px;
+    padding-top: 6px;
+  }
+
+  .artist-sections {
+    gap: 36px;
   }
 
   /* Refine becomes a sheet from the right. */
@@ -916,15 +1103,23 @@
   html.artist-refine-open {
     overflow: hidden;
   }
+}
 
-  .artist-grid {
-    gap: 28px 12px;
+/* Phones: two cards a row, the third peeking in. */
+@media (max-width: 640px) {
+  .artist-grid.artist-section__row {
+    grid-auto-columns: calc((100% + var(--artists-bleed) - 52px) / 2);
   }
 }
 
 /* 320 px phones (and larger Display Zoom): Filter and Sort keep one row;
-   "Sort by:" stays the menu's accessible name. */
+   "Sort by:" stays the menu's accessible name. Rows show a card and a half,
+   so a card keeps a readable width. */
 @media (max-width: 359px) {
+  .artist-grid.artist-section__row {
+    grid-auto-columns: calc((100% + var(--artists-bleed) - 12px) / 1.5);
+  }
+
   .artist-listing__sort span {
     clip: rect(0, 0, 0, 0);
     height: 1px;

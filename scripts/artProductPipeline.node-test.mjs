@@ -679,12 +679,12 @@ test('storefront: staged family products stay hidden; released ones join the art
       .find((group) => group.key === 'type')
       .options.map(({label, value}) => [label, value]),
     [
-      ['Prints', 'prints'],
-      ['Framed prints', 'framed-prints'],
-      ['Canvas', 'canvas'],
+      ['Art Prints', 'prints'],
+      ['Framed Art', 'framed-prints'],
+      ['Canvas Art', 'canvas'],
       ['Cards', 'cards'],
       ['Postcards', 'postcards'],
-      ['Phone cases', 'phone-cases'],
+      ['Phone Cases', 'phone-cases'],
     ],
   );
   const cases = shops.artistShopView(
