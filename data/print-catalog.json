@@ -2359,7 +2359,7 @@
               "backgroundFile": "composition-no-1-gray-red-living-room.png",
               "placement": {
                 "left": 420,
-                "top": 230,
+                "top": 330,
                 "width": 240,
                 "height": 300
               }
@@ -2369,8 +2369,8 @@
               "alt": "Composition (No. 1) Gray-Red print above a linen-covered bed in a calm, pale bedroom.",
               "backgroundFile": "composition-no-1-gray-red-bedroom.png",
               "placement": {
-                "left": 430,
-                "top": 180,
+                "left": 480,
+                "top": 279,
                 "width": 220,
                 "height": 275
               }
@@ -2381,7 +2381,7 @@
               "backgroundFile": "composition-no-1-gray-red-study.png",
               "placement": {
                 "left": 440,
-                "top": 304,
+                "top": 424,
                 "width": 200,
                 "height": 250
               }
@@ -2391,8 +2391,8 @@
               "alt": "Composition (No. 1) Gray-Red print shown at scale in a wide, airy interior with concrete floors.",
               "backgroundFile": "composition-no-1-gray-red-wide-interior.png",
               "placement": {
-                "left": 470,
-                "top": 320,
+                "left": 460,
+                "top": 530,
                 "width": 160,
                 "height": 200
               }
@@ -2421,7 +2421,7 @@
               "backgroundFile": "chrysanthemum-living-room.png",
               "placement": {
                 "left": 420,
-                "top": 230,
+                "top": 354,
                 "width": 240,
                 "height": 300
               }
@@ -2432,7 +2432,7 @@
               "backgroundFile": "chrysanthemum-bedroom.png",
               "placement": {
                 "left": 430,
-                "top": 180,
+                "top": 263,
                 "width": 220,
                 "height": 275
               }
@@ -2443,7 +2443,7 @@
               "backgroundFile": "chrysanthemum-study.png",
               "placement": {
                 "left": 440,
-                "top": 304,
+                "top": 516,
                 "width": 200,
                 "height": 250
               }
@@ -2453,8 +2453,8 @@
               "alt": "Chrysanthemum print shown at scale in a wide, airy interior with concrete floors.",
               "backgroundFile": "chrysanthemum-wide-interior.png",
               "placement": {
-                "left": 470,
-                "top": 320,
+                "left": 460,
+                "top": 530,
                 "width": 160,
                 "height": 200
               }
@@ -2483,7 +2483,7 @@
               "backgroundFile": "field-with-young-trees-living-room.png",
               "placement": {
                 "left": 380,
-                "top": 329,
+                "top": 442,
                 "width": 320,
                 "height": 256
               }
@@ -2494,7 +2494,7 @@
               "backgroundFile": "field-with-young-trees-bedroom.png",
               "placement": {
                 "left": 400,
-                "top": 200,
+                "top": 395,
                 "width": 280,
                 "height": 224
               }
@@ -2504,8 +2504,8 @@
               "alt": "Field with Young Trees print above an oak desk with a black steel lamp in a pared-back study.",
               "backgroundFile": "field-with-young-trees-study.png",
               "placement": {
-                "left": 420,
-                "top": 434,
+                "left": 415,
+                "top": 546,
                 "width": 250,
                 "height": 200
               }
@@ -2515,8 +2515,8 @@
               "alt": "Field with Young Trees print shown at scale in a wide, airy interior with concrete floors.",
               "backgroundFile": "field-with-young-trees-wide-interior.png",
               "placement": {
-                "left": 450,
-                "top": 459,
+                "left": 400,
+                "top": 600,
                 "width": 200,
                 "height": 160
               }
