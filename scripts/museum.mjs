@@ -53,6 +53,7 @@ import {
   CROP_SHAPES,
   MUSEUM_CROPS,
   cropPlan,
+  cropsApproved,
   validateMuseumCrops,
 } from '../app/lib/museumCrops.ts';
 import {PRINT_CATALOG, PRINT_SIZES} from '../app/lib/printCatalog.ts';
@@ -204,7 +205,8 @@ function status() {
 /**
  * Review sheets for the product crops (data/museum-crops.json): every crop
  * outlined on its work, then shaped as its product, with ppi and coverage.
- * `--artwork <id>` renders one. Local files only.
+ * `--artwork <id>` renders one; `--collection <slug>` the works of one print
+ * collection, with an overview per product. Local files only.
  */
 async function crops() {
   const problems = validateMuseumCrops(MUSEUM_CROPS, registry);
@@ -230,13 +232,18 @@ async function crops() {
       label: print?.title ?? artwork.shortTitle ?? artwork.title,
     };
   });
-  const outDir = path.join(museumRoot, 'crops');
+  const outDir = path.join(
+    museumRoot,
+    'crops',
+    ...(collection ? [collection.slug] : []),
+  );
   const written = await renderCropPreviews({
     artworks,
     data: MUSEUM_CROPS,
     originalsDir: path.join(museumRoot, 'originals'),
     outDir,
     registry,
+    ...(collection ? {title: collection.title} : {}),
   });
   console.table(
     artworks.map(({artwork, label}) => {
@@ -247,17 +254,23 @@ async function crops() {
           const entry = plan.shapes.find((item) => item.shape === shape);
           return [
             shape,
-            `${Math.round(entry.ppi)} ppi ${Math.round(entry.coverage * 100)}%${entry.verdict === 'qualified' ? '' : ' !'}`,
+            entry
+              ? `${Math.round(entry.ppi)} ppi ${Math.round(entry.coverage * 100)}%${entry.verdict === 'qualified' ? '' : ' !'}`
+              : '—',
           ];
         }),
+        ['approved', cropsApproved(artwork.id, MUSEUM_CROPS)],
       ]);
     }),
   );
   console.log(`\n${written.length} review sheets in ${outDir}`);
+  const pending = artworks.filter(
+    ({artwork}) => !cropsApproved(artwork.id, MUSEUM_CROPS),
+  );
   console.log(
-    MUSEUM_CROPS.approval.approved
-      ? `Approved by ${MUSEUM_CROPS.approval.by} on ${MUSEUM_CROPS.approval.at}.`
-      : 'Not approved yet: the owner reviews these sheets before any product uses a crop.',
+    pending.length
+      ? `Not approved yet (${pending.map(({artwork}) => artwork.id).join(', ')}): the owner reviews these sheets, then sets that work's approval in data/museum-crops.json.`
+      : 'Every listed work is approved.',
   );
 }
 

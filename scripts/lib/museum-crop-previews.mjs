@@ -107,8 +107,8 @@ async function productTile(shape, master, entry, height) {
 }
 
 /**
- * One review sheet per artwork: the work with each crop outlined, then the
- * four crops as products. Returns the sheet paths.
+ * One review sheet per artwork: the work with each crop outlined, then each
+ * crop it has as its product. Returns the sheet paths.
  */
 export async function renderCropPreviews({
   artworks,
@@ -116,6 +116,7 @@ export async function renderCropPreviews({
   outDir,
   data,
   registry,
+  title = 'Museum crops',
 }) {
   mkdirSync(outDir, {recursive: true});
   const written = [];
@@ -124,7 +125,7 @@ export async function renderCropPreviews({
     const plan = cropPlan(artwork.id, {data, registry});
     if (!plan) throw new Error(`no crops for ${artwork.id}`);
     const master = await masterBuffer(
-      path.join(originalsDir, `${artwork.id}.jpg`),
+      path.join(originalsDir, artwork.original.fileName),
       artwork.trim,
       plan.size,
     );
@@ -154,8 +155,8 @@ export async function renderCropPreviews({
       .toBuffer();
 
     const tiles = [];
-    for (const shape of CROP_SHAPES) {
-      const entry = plan.shapes.find((s) => s.shape === shape);
+    for (const entry of plan.shapes) {
+      const {shape} = entry;
       tiles.push(await productTile(shape, master, entry, 560));
       byShape[shape].push({
         label,
@@ -174,10 +175,12 @@ export async function renderCropPreviews({
     const tilesTop = 110 + overviewHeight + GUTTER;
     const height =
       tilesTop + Math.max(...tileMeta.map((m) => m.height)) + GUTTER;
-    const legend = CROP_SHAPES.map(
-      (shape, i) =>
-        `<rect x="${GUTTER + i * 250}" y="72" width="22" height="22" fill="${COLOURS[shape]}"/><text x="${GUTTER + 32 + i * 250}" y="90" font-family="Segoe UI, Arial" font-size="20" fill="${INK}">${escape(SHAPES[shape].label)}</text>`,
-    ).join('');
+    const legend = plan.shapes
+      .map(
+        ({shape}, i) =>
+          `<rect x="${GUTTER + i * 250}" y="72" width="22" height="22" fill="${COLOURS[shape]}"/><text x="${GUTTER + 32 + i * 250}" y="90" font-family="Segoe UI, Arial" font-size="20" fill="${INK}">${escape(SHAPES[shape].label)}</text>`,
+      )
+      .join('');
     const header =
       `<text x="${GUTTER}" y="48" font-family="Georgia, serif" font-size="36" fill="${INK}">${escape(label)}</text>` +
       `<text x="${width - GUTTER}" y="48" text-anchor="end" font-family="Segoe UI, Arial" font-size="20" fill="#746f65">${escape(artwork.id)} · ${plan.size.width}×${plan.size.height} px · dashed white = printed area</text>` +
@@ -205,12 +208,15 @@ export async function renderCropPreviews({
   }
   if (artworks.length > 1)
     for (const shape of CROP_SHAPES)
-      written.push(await renderShapeOverview(shape, byShape[shape], outDir));
+      if (byShape[shape].length)
+        written.push(
+          await renderShapeOverview(shape, byShape[shape], outDir, title),
+        );
   return written;
 }
 
 /** Every artwork in one shape, five to a row: the collection as a shopper sees it. */
-async function renderShapeOverview(shape, entries, outDir) {
+async function renderShapeOverview(shape, entries, outDir, title) {
   const metas = await Promise.all(
     entries.map(({tile}) => sharp(tile).metadata()),
   );
@@ -221,7 +227,7 @@ async function renderShapeOverview(shape, entries, outDir) {
   const width = columns * cellWidth + (columns + 1) * GUTTER;
   const height = 90 + rows * cellHeight + rows * GUTTER;
   const layers = [];
-  let captions = `<text x="${GUTTER}" y="56" font-family="Georgia, serif" font-size="38" fill="${INK}">Floating World · ${escape(SHAPES[shape].label)}</text>`;
+  let captions = `<text x="${GUTTER}" y="56" font-family="Georgia, serif" font-size="38" fill="${INK}">${escape(title)} · ${escape(SHAPES[shape].label)}</text>`;
   entries.forEach(({label, tile}, index) => {
     const column = index % columns;
     const row = Math.floor(index / columns);

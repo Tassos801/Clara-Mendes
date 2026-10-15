@@ -77,7 +77,7 @@ function releasable({release = false} = {}) {
     master: {...CLEARED},
     rights: {...CLEARED},
   };
-  crops.approval = {approved: true, at: '2026-10-13', by: 'Owner'};
+  crops.crops[wave].approval = {approved: true, at: '2026-10-13', by: 'Owner'};
   for (const product of catalog.products.filter((p) => p.print === WAVE)) {
     product.shopify = {
       productId: `gid://shopify/Product/${product.family}`,
@@ -245,7 +245,12 @@ test('release is blocked until every owner, asset, Shopify and mapping gate pass
     ['artist approval'],
   );
   const unapproved = releasable({release: true});
-  unapproved.crops.approval = {approved: false};
+  const unapprovedWork = productOf(
+    unapproved.catalog,
+    WAVE,
+    'canvas',
+  ).artworkId;
+  unapproved.crops.crops[unapprovedWork].approval = {approved: false};
   assert.ok(
     family
       .familyReleaseIssues(
@@ -676,8 +681,7 @@ test('storefront: staged family products stay hidden; released ones join the art
     undefined,
     catalog,
   );
-  for (const kind of FW_FAMILIES)
-    assert.ok(released.has(`${WAVE}-${kind}`));
+  for (const kind of FW_FAMILIES) assert.ok(released.has(`${WAVE}-${kind}`));
   assert.ok(!released.has(`hodogaya-on-the-tokaido-canvas`));
 
   const products = shops
@@ -997,7 +1001,7 @@ test("curator's notes say which products keep the whole composition", () => {
     assert.doesNotMatch(note, /every print keeps/i);
     assert.match(
       note,
-      /Prints and framed prints keep the full composition .* set on a white border; cards, postcards, canvas and phone cases use a chosen detail\.$/,
+      /Prints(, framed prints and mugs| and framed prints) keep the full composition .* set on (a white border|white); (cards, postcards, )?canvas and phone cases use a chosen detail\.$/,
     );
   }
 });

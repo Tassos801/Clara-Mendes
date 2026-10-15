@@ -12,6 +12,7 @@ import {
 } from './artRegistry.ts';
 import {
   cropPlan,
+  cropsApproved,
   MUSEUM_CROPS,
   type CropShape,
   type MuseumCrops,
@@ -693,7 +694,8 @@ export function familyReleaseIssues(
     issues.push('a cleared rights review');
   if (artwork?.reviews.master.status !== 'cleared')
     issues.push('a cleared master review');
-  if (spec?.shape && !crops.approval.approved) issues.push('crop approval');
+  if (spec?.shape && !cropsApproved(product.artworkId, crops))
+    issues.push('crop approval');
   if (
     !product.assets ||
     product.assets.sourceSignature !==
