@@ -54,6 +54,7 @@
           "providerSettings": "Not channel-mapped: the orders/paid webhook sends the deployed 4:5 file to the Prodigi API with sizing fillPrintArea, one Prodigi SKU per device from data/art-tough-phone-case.json"
         },
         "mug": {
+          "priceEUR": "5.53",
           "providerSku": "GLOBAL-MUG-W",
           "providerSettings": "11 oz white mug; 2705×1122 wrap file at 100%, position 0/0 (the whole work twice, one either side of the handle); Standard shipping; fulfilled automatically"
         }
@@ -3713,7 +3714,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-01-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-01-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3745,7 +3746,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-02-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-02-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3777,7 +3778,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-03-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-03-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3809,7 +3810,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-04-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-04-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3841,7 +3842,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-05-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-05-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3873,7 +3874,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-06-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-06-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3905,7 +3906,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-07-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-07-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3937,7 +3938,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-08-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-08-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -3969,7 +3970,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-09-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-09-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4001,7 +4002,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-10-MUG11","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-10-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,

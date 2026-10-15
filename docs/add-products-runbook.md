@@ -187,6 +187,9 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    (`collections[].families`); its `products[]` are written by the pipeline.
    A family may be offered before its price is approved: leave `priceEUR`
    out and `prepare` builds and checks the files, while `stage` refuses.
+   Once the price is added, re-run `prepare --family <f>`: it copies the
+   price onto the entries not yet in Shopify, keeps their files, and only
+   then checks the catalog.
    Each family has a ppi floor (canvas 140, framed 200, the rest 300). Only
    the owner can accept one work below it, by recording it in that family's
    `ppiExceptions` (`"<artwork id>": {"minPpi", "by", "at", "note"}`, never

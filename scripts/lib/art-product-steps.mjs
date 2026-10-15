@@ -102,11 +102,16 @@ export function createFamilySteps({
   positional,
 }) {
   const artCatalog = JSON.parse(readFileSync(ART_CATALOG_PATH, 'utf8'));
+  const assertValid = (problems = validateArtProductCatalog(artCatalog)) => {
+    if (problems.length)
+      throw new Error(
+        `data/art-product-catalog.json is invalid:\n- ${problems.join('\n- ')}`,
+      );
+  };
+  // `prepare` first refreshes the entries not yet in Shopify from their
+  // collection (a price approved after their files were made), so it checks
+  // the catalog after that sync; every other step needs it valid as it is.
   const invalid = validateArtProductCatalog(artCatalog);
-  if (invalid.length)
-    throw new Error(
-      `data/art-product-catalog.json is invalid:\n- ${invalid.join('\n- ')}`,
-    );
   const artCollection = findArtCollection(artCatalog, collection.slug);
   const selected = () =>
     selectFamilyProducts(artCatalog, collection, {families, only});
@@ -194,6 +199,7 @@ export function createFamilySteps({
     );
     for (const {family, print, reason} of skipped)
       console.log(`Skipped ${print} ${family}: ${reason}.`);
+    assertValid();
     const products = selected();
 
     // The framed print reuses `prepare`'s bordered 16×20 file: it must be
@@ -1150,7 +1156,21 @@ export function createFamilySteps({
     if (failed.length) process.exitCode = 1;
   }
 
-  return {handoff, mapped, prepare, release, stage, status, verify};
+  const checked =
+    (step) =>
+    (...args) => {
+      assertValid(invalid);
+      return step(...args);
+    };
+  return {
+    handoff: checked(handoff),
+    mapped: checked(mapped),
+    prepare,
+    release: checked(release),
+    stage: checked(stage),
+    status: checked(status),
+    verify: checked(verify),
+  };
 }
 
 /* eslint-enable no-console */

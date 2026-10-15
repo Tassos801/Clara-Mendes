@@ -1821,6 +1821,7 @@ only), and crop approval is recorded per work, so Floating World's approval
 no longer covers new crops. Codex generated the room backgrounds and reviewed
 the change read-only. The owner chose the name, recorded trims for two works, approved
 the crops and both artists, cleared the rights and master reviews and
-accepted the larger-size ppi; a mug price and staging remain, as listed in
+accepted the larger-size ppi, and set the mug at €5.53 (30% over Prodigi's
+published wholesale price); staging remains, as listed in
 [artist-shops/status.md](../artist-shops/status.md). See
 [catalog and products](modules/catalog-and-products.md#line-and-colour-2026-10-15-prepared-not-staged).

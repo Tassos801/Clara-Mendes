@@ -62,10 +62,17 @@ Lozenge keeps prints, framed and mug only; and the print ppi below 300
 at 251, Field 16×20 at 266 and 20×24 at 213), as Floating World's were.
 Every owner gate on the 36 products is now clear.
 
-**Still open:** a mug price (Prodigi quote; `stage` refuses mugs until
-`priceEUR` is set), then `stage` → `handoff` → Prodigi mapping → `mapped`
-→ `media` → shipping profiles → `release`, which needs the owner's separate
-go-ahead.
+**Mug price (owner, 2026-10-15): €5.53**, "30% profit, no need for a
+quote": Prodigi's published wholesale price for the 11 oz white mug is from
+£3.59 (excluding tax and shipping), about €4.25 at 1.18 €/£, the top of
+2026's range; ×1.30 = €5.53. Shipping is charged through a shipping profile,
+which mugs do not have yet. Payment fees (about 2.9% + €0.30) come out of
+the margin. Check the real `GLOBAL-MUG-W` cost in the Prodigi dashboard when
+mapping.
+
+**Still open:** `stage` → `handoff` → Prodigi mapping → `mapped` →
+`media` → shipping profiles (a new one for mugs) → `release`, which needs
+the owner's separate go-ahead.
 
 **Machine notes:** this Mac's `.env.shopify-admin.local` has empty
 `SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET`, so `stage` (even a dry run)

@@ -634,7 +634,8 @@ Two pipeline changes came with it:
 Families are offered per work, decided by the data: a framed print needs
 the work at 16×20, a canvas or case needs the work's crop for that shape
 (`familyIneligibility()`), and the mug fits every work. That gives framed
-(5), canvas (6), phone case (5) and mug (10, no price). *Study for a Composition* (AIC 142570) was
+(5), canvas (6), phone case (5) and mug (10, €5.53: the owner's 30% over
+Prodigi's published wholesale price, about €4.25). *Study for a Composition* (AIC 142570) was
 fetched but left out: AIC's photograph has 9–11% grey backdrop top and
 bottom, beyond the 5% trim limit. The Lozenge has no canvas or case: a crop
 inside the diamond is about 225 ppi for a case and 70 ppi for a canvas.
