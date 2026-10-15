@@ -150,7 +150,7 @@ test('actual regular and predictive search loaders include eligible future garme
 
 test('actual PDP loader accepts future approved garments and refuses revoked or channel-missing products', async () => {
   const route = loadRoute('products.$handle');
-  const load = (product) => route.loader({params: {handle: future.handle}, request: new Request(`https://shopclaramendes.com/products/${future.handle}`), context: {env: {PUBLIC_STORE_DOMAIN: 'example.myshopify.com'}, storefront: {query: async (query) => {
+  const load = (product) => route.loader({params: {handle: future.handle}, request: new Request(`https://shopclaramendes.com/products/${future.handle}`), context: {env: {PUBLIC_STORE_DOMAIN: 'example.myshopify.com'}, storefront: {i18n: {country: 'CY', language: 'EN'}, query: async (query) => {
     requireApprovalSelections(query);
     return {product, relatedProducts: {nodes: []}, capsuleProducts: {nodes: []}};
   }}}});

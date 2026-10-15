@@ -14,6 +14,8 @@ import type {MoneyAmount} from '~/lib/money';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {breadcrumbSchema, buildSeoMeta, productSchema} from '~/lib/seo';
+import {countryPhrase, defaultMarketVariants} from '~/lib/deliveryReach';
+import {withVariantReach} from '~/lib/deliveryReach.server';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 const page = YOUR_SKY_PAGE;
@@ -39,7 +41,7 @@ export const meta: Route.MetaFunction = ({data}) =>
 export async function loader({context, request}: Route.LoaderArgs) {
   // Release gate, storefront lookup and 404s live in loadFeaturePage so the
   // plain-Node tests can drive them with a product fixture.
-  return loadFeaturePage<FeatureProduct>({
+  const feature = await loadFeaturePage<FeatureProduct>({
     page,
     env: context.env,
     selectedOptions: getSelectedProductOptions(request),
@@ -47,13 +49,28 @@ export async function loader({context, request}: Route.LoaderArgs) {
       const data = await context.storefront.query(FEATURE_PRODUCT_QUERY, {
         variables,
       });
-      return {product: data.product as FeatureProduct | null};
+      const product = data.product as FeatureProduct | null;
+      // Framed prints don't ship everywhere the unframed ones do.
+      return {
+        product: product
+          ? await withVariantReach(context.storefront, product)
+          : null,
+      };
     },
   });
+  return {
+    ...feature,
+    deliveryCountry: countryPhrase(context.storefront.i18n.country),
+  };
 }
 
 export default function YourSkyPage() {
-  const {product, seoUrl, skyTheme} = useLoaderData<typeof loader>();
+  const {deliveryCountry, product, seoUrl, skyTheme} =
+    useLoaderData<typeof loader>();
+  // Structured data describes the default market (see products.$handle).
+  const schemaVariants = defaultMarketVariants<StudioVariant>(
+    product.variants.nodes,
+  );
   const selectedVariant =
     product.selectedOrFirstAvailableVariant ??
     product.variants.nodes[0] ??
@@ -64,7 +81,7 @@ export default function YourSkyPage() {
       <StructuredData
         data={[
           productSchema({
-            availableForSale: product.variants.nodes.some(
+            availableForSale: schemaVariants.some(
               (variant) => variant.availableForSale,
             ),
             description: page.description,
@@ -76,7 +93,7 @@ export default function YourSkyPage() {
             title: product.title,
             url: seoUrl,
             vendor: product.vendor,
-            variants: product.variants.nodes,
+            variants: schemaVariants,
           }),
           breadcrumbSchema({
             items: [
@@ -112,6 +129,7 @@ export default function YourSkyPage() {
 
       <SkyStudio
         basePath={page.path}
+        deliveryCountry={deliveryCountry}
         eyebrow={page.studio.eyebrow}
         heading={page.studio.heading}
         note={page.studio.note}

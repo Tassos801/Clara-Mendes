@@ -6,6 +6,7 @@ import catalog from '../../data/pastel-plant-pots.json';
 import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {isReleasedProductHandle} from '~/lib/catalogFilters';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import styles from '~/styles/pastel-forms.css?url';
 
 export const links: Route.LinksFunction = () => [
@@ -22,11 +23,12 @@ export const meta: Route.MetaFunction = () =>
 export async function loader({context}: Route.LoaderArgs) {
   // Shopify returns null for Drafts and products unpublished from this channel.
   const data = await context.storefront.query(PASTEL_PRODUCTS_QUERY);
-  return {
-    products: [data.blush, data.sage, data.blue, data.butter].filter(
-      (product) => product && isReleasedProductHandle(product.handle),
-    ),
-  };
+  const released = [data.blush, data.sage, data.blue, data.butter].filter(
+    (product): product is NonNullable<typeof product> =>
+      Boolean(product && isReleasedProductHandle(product.handle)),
+  );
+  // The pots don't ship to every country (not the US): say so, not "Sold out".
+  return {products: await withDeliveryReach(context.storefront, released)};
 }
 
 export default function PastelForms() {
@@ -61,7 +63,9 @@ export default function PastelForms() {
             {product
               ? product.availableForSale
                 ? 'Made to order'
-                : 'Sold out'
+                : product.notShippedTo
+                  ? `Doesn't ship to ${product.notShippedTo}`
+                  : 'Sold out'
               : 'Coming soon'}
           </p>
           <div aria-live="polite" aria-atomic="true">
@@ -156,6 +160,7 @@ export default function PastelForms() {
 
 const PASTEL_PRODUCTS_QUERY = `#graphql
   fragment PastelProduct on Product {
+    id
     handle
     availableForSale
     priceRange { minVariantPrice { amount currencyCode } }
