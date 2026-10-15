@@ -552,6 +552,16 @@ tabs off the photograph; `masterSize()` is the size layout, qualification,
 `prepare` and the orientation check use, and recording a trim resets the
 master review. See the [status](../../artist-shops/status.md).
 
+"About the works" at the foot of an artist shop (`ArtistWorks` in
+`app/routes/artists.$slug.tsx`) gives each work's museum title, date and
+medium, credit line (`artworkCreditLine()`) and museum link, then the
+not-affiliated disclaimer. The server HTML always carries all of it in full,
+as wide screens show it. Since 2026-10-15, on screens up to 900px each work
+folds to a `<details>` row once the page runs: short title, date and museum
+object number (two Great Wave impressions share a short title), opening to
+the same facts. The disclaimer stays visible. Hokusai's section went from
+about 2,200px to 610px at 375px wide.
+
 On 2026-10-13 the owner's authorised continuation created the ten Floating
 World Drafts at €26.99, one 8×10 variant each, and attached their 40 current
 room images. All ten remain unreleased and Draft with tracked inventory
@@ -603,3 +613,26 @@ collection offers. One work may go below its family's ppi floor only by an
 owner-recorded `ppiExceptions` entry in `data/art-product-catalog.json`;
 none is granted. See the
 [runbook](../../add-products-runbook.md#museum-prints-and-artist-shops).
+
+## 2026-10-15 - Artist shop categories
+
+An artist shop (`/artists/<slug>`) names its product types as the cards'
+chips and the Shop All tabs do: Art Prints, Framed Art, Canvas Art, Cards,
+Postcards and Phone Cases (`FAMILY_LABELS` in `app/lib/artistShops.ts`, from
+each family's Shopify productType). The `type` URL values are unchanged
+(`prints`, `framed-prints`, `canvas`, `cards`, `postcards`, `phone-cases`, and
+the old `Art prints` spellings).
+
+Product type is a row of chips over the listing (All plus one per type, with
+counts), no longer a Refine group. Refine keeps Series, Orientation and
+Collection, and `artistShopView` drops any group that cannot narrow the shop
+(one value carried by every product) together with its URL values. With no
+group left (Hokusai today), there is no Filter button or sidebar and the grid
+takes the full width.
+
+"Featured" with no type chosen lists one section per type in family order
+(`ArtistShopView.sections`). On screens up to 900px each section is one row
+swiped sideways, edge to edge, with the next card peeking in and a "See all"
+link to that type; wider screens show each section as a grid. Choosing a type,
+or another sort, lists one grid. On phones the cards drop the "By <artist>"
+line, which repeated the page's own artist.

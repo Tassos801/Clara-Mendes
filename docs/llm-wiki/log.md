@@ -1784,3 +1784,28 @@ TIFF) as well as the Met. Added the `mug` product family (Prodigi
 family without `priceEUR`) and a per-artwork owner ppi-exception path
 (`ppiExceptions`, none granted). No Shopify, Prodigi or registry data
 changed. See [catalog and products](modules/catalog-and-products.md).
+
+## 2026-10-15 - Artist shop categories on phones
+
+Artist shops show product-type chips (named as on the cards and Shop All)
+instead of a Product type filter, and "Featured" lists one section per type.
+On phones each section is a swiped row with "See all". This cut Hokusai's
+listing from about 6,500px to 2,140px at 375px wide. Refine groups that can't
+narrow the shop are hidden, so Hokusai has no Filter button. See
+[catalog](modules/catalog-and-products.md#2026-10-15---artist-shop-categories).
+
+Sources: `app/lib/artistShops.ts`, `app/routes/artists.$slug.tsx`,
+`app/styles/artists.css`, `scripts/artistShops.node-test.mjs`.
+
+## 2026-10-15 - Compact "About the works" on phones
+
+The provenance list at the foot of an artist shop ran to about 2,200px at
+375px wide for Hokusai: six works, each with its full Met title, credit line
+and museum link. On screens up to 900px each work is now one row (short
+title, date, museum object) that opens to its full title, date and medium,
+credit and museum link; the disclaimer stays visible. Hokusai's section is
+about 610px at 375px and 680px at 320px. The server HTML and wider screens
+list everything in full as before. See
+[catalog](modules/catalog-and-products.md#2026-10-09---artist-shops-and-museum-prints-branch-codexartist-shops-pilot).
+
+Sources: `app/routes/artists.$slug.tsx`, `app/styles/artists.css`.
