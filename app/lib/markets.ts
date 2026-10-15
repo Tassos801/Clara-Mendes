@@ -253,6 +253,14 @@ export function normalizeMarketCountry(
     : null;
 }
 
+/** "United States" for `US`; null for a code outside MARKET_COUNTRIES. */
+export function marketCountryName(code: unknown): string | null {
+  const country = normalizeMarketCountry(code);
+  return country
+    ? (MARKET_COUNTRIES.find((entry) => entry.code === country)?.name ?? null)
+    : null;
+}
+
 export function resolveMarketCountry({
   explicitCountry,
   oxygenCountry,

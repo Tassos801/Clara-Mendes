@@ -38,7 +38,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
 | `/cart`                                         | `app/routes/cart.tsx`                | Cart page loader/action and cart mutation endpoint for `CartForm`.              |
 | `/search`                                       | `app/routes/search.tsx`              | Regular and predictive search for products, pages, articles, and suggestions.   |
-| `/our-story`                                    | `app/routes/our-story.tsx`           | Brand story content.                                                            |
+| `/our-story`                                    | `app/routes/our-story.tsx`           | Brand story: every studio capsule (from `listShopCapsules`) and an "Around the art" list of the other released lines, each gated like the nav. |
 | `/contact`                                      | `app/routes/contact.tsx`             | Contact/support page.                                                           |
 | `/policies` and `/policies/:handle`             | `app/routes/policies.*.tsx`          | Policy listing and policy detail from Shopify.                                  |
 | `/pages/:handle`                                | `app/routes/pages.$handle.tsx`       | Shopify pages.                                                                  |
@@ -65,6 +65,18 @@ same-capsule images that repeated the adjacent grids and collided in the
 layout. Changing this section is a code change to
 `app/content/homeEditorial.ts` (items) and the images directory.
 
+Directly under the hero, the artist-shops feature
+(`app/components/ArtistShopsFeature.tsx`, `app/styles/artist-feature.css`)
+promotes every public artist with a card linking to their shop, plus
+"Meet the artists" (`/artists`) and the museum collection's shop filter. It
+reads `artistFeature()` from `app/lib/artistShops.ts` — the same gate as the
+header's Artists link (owner-approved artist with a released product) — so
+it needs no Storefront query and renders nothing until an artist is public.
+The homepage's own header also links Artists. "More from the edit" lists
+studio products only (museum products, the newest in Shopify's best-selling
+order, used to fill it) and takes one product per shop category first via
+`pickVariedProducts` in `app/lib/catalogFilters.ts`.
+
 The mobile hero keeps its expansive composition on standard phone screens. On
 viewports no wider than 768 pixels and no taller than 680 pixels, the UI layer
 switches to a compact three-row grid so the glass navigation, hero copy and
@@ -82,7 +94,8 @@ Important dependencies:
 - `HOME_EDITORIAL_ITEMS`
 
 Sources: `app/routes/_index.tsx`, `app/components/HomepageEditorial.tsx`,
-`app/content/homeEditorial.ts`, `scripts/mobileLanding.node-test.mjs`.
+`app/content/homeEditorial.ts`, `app/components/ArtistShopsFeature.tsx`,
+`scripts/mobileLanding.node-test.mjs`, `scripts/artistShops.node-test.mjs`.
 
 ## Product Page
 

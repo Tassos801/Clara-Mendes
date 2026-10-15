@@ -736,6 +736,27 @@ export function releasedArtProductHandles(
     .map((product) => product.handle);
 }
 
+/**
+ * Shopify product types of the released family products, in family order,
+ * so the shop's type filter offers a family the day it releases.
+ */
+export function releasedArtProductTypes(
+  catalog: ArtProductCatalog = ART_PRODUCT_CATALOG,
+) {
+  const released = new Set(
+    catalog.products
+      .filter((product) => product.released === true)
+      .map((product) => product.family),
+  );
+  return [
+    ...new Set(
+      ART_PRODUCT_FAMILIES.filter((family) => released.has(family)).map(
+        (family) => FAMILY_SPECS[family].productType,
+      ),
+    ),
+  ];
+}
+
 /** Staged family handles stay out of listings and sitemaps if published. */
 export function isUnreleasedArtProductHandle(
   handle?: string | null,

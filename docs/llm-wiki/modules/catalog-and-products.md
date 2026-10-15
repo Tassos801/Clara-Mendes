@@ -245,6 +245,23 @@ merge commit `300c87d` (PR #64). The six Shopify SKUs, prices, Prodigi mappings,
 PDF geometry, checkout integration, and First Light release state remain
 explicitly unchanged.
 
+### Returns on personalised products
+
+The live refund policy lists custom or personalised orders as non-returnable,
+so nothing of product type `Personalised Art` (Your Sky and the staged First
+Light) quotes the 30-day `RETURN_WINDOW_DAYS`. `isPersonalisedProductType` in
+`app/lib/storefrontBasics.ts` is the one check. In the purchase status row on
+`/your-sky` (`SkyStudio`) and on the product page, the chip that reads "30-day
+returns" for other products says "Free replacement or refund if damaged". The product page
+Returns panel explains that the piece is made to order and can't be returned
+unless the law requires it, and that a damaged, defective or incorrect item
+reported within `DAMAGE_REPORT_WINDOW_DAYS` (7) days of delivery is replaced or
+refunded. Their offers in structured data carry
+`MerchantReturnNotPermitted` with no window or fees (`app/lib/seo.ts`). Every
+other product keeps the 30-day copy and `MerchantReturnFiniteReturnWindow`.
+Tests: `scripts/productSchema.node-test.mjs`,
+`scripts/skyConfigurator.node-test.mjs`.
+
 ## Admin Cleanup Relationship
 
 The code filters off-theme products defensively, but the Admin cleanup document
@@ -457,6 +474,22 @@ were exercised in the browser cart.
 A true flag adds the product's type (Yoga Leggings, Sports Bra, Biker Shorts,
 Studio Top) to the shop's type tabs. All four published products now appear
 in Shop All and their matching types.
+
+### Shop Product tabs (14 October 2026)
+
+`shopProductTypes()` in `app/lib/catalogFilters.ts` builds the tabs of
+`/collections/all` from the prints, released extension families and
+standalone products, released museum family products
+(`releasedArtProductTypes()` in `app/lib/artProductCatalog.ts`) and curated
+products, ordered by `SHOP_PRODUCT_TYPE_ORDER`: Art Prints, Framed Art,
+Canvas Art, Cards, Postcards, Phone Cases, Plant Pots, Book Nooks, then any
+other type in release order; garment types collapse into the Clothing link.
+Before this, the ten Floating World framed prints (type Framed Art) had no
+tab. On desktop the tabs have the toolbar's first row to themselves; the
+collection picker, filters and sort share the second (tablets too). The
+picker groups Clara Mendes capsules, museum collections and the public
+artists' shops. In a museum collection, the tabs of types it sells keep the
+collection selected; other tabs leave it, as studio capsules always did.
 
 The collection route's handle-only guard admits `quiet-current` when any
 member product is released; its post-query guard still hides an empty

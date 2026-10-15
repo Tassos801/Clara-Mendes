@@ -86,7 +86,6 @@ import {
 } from '~/lib/sky/params';
 import {
   SKY_FINISH_LABELS,
-  SKY_PRODUCT_TYPE,
   SKY_SIZES,
   skyFinishFromOptions,
   skySizeFromOptions,
@@ -127,9 +126,11 @@ import {
 import {wallSetsContainingHandle} from '~/lib/wallSets';
 import {keepTabInside} from '~/lib/focusTrap';
 import {
+  DAMAGE_REPORT_WINDOW_DAYS,
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   fulfilmentWindows,
+  isPersonalisedProductType,
   isQuietCurrentProduct,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
@@ -164,6 +165,13 @@ import {
   type ReviewsMetafieldResponse,
 } from '~/lib/reviews';
 import {summarizeReviews, type ProductReviewsData} from '~/lib/reviewTypes';
+import {countryPhrase, defaultMarketVariants} from '~/lib/deliveryReach';
+import {
+  deliveryCountryChoices,
+  withDeliveryReach,
+  withVariantReach,
+} from '~/lib/deliveryReach.server';
+import {DeliveryCountryNote} from '~/components/DeliveryCountryNote';
 
 type ProductImage = {
   altText?: string | null;
@@ -192,6 +200,8 @@ type ProductVariant = {
   id: string;
   title: string;
   availableForSale: boolean;
+  /** Sellable in the default market, but not shipped to this buyer. */
+  outOfReach?: boolean;
   barcode?: string | null;
   price: MoneyAmount;
   compareAtPrice?: MoneyAmount | null;
@@ -659,6 +669,21 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     }
   }
 
+  // A buyer outside an item's shipping profile reads it as unavailable, like
+  // a sold-out one; the default-market reads tell the two apart (free for a
+  // buyer in Cyprus or when everything is buyable).
+  const buyerCountry = context.storefront.i18n.country;
+  const [reachedProduct, relatedProducts] = await Promise.all([
+    withVariantReach(context.storefront, product),
+    withDeliveryReach(
+      context.storefront,
+      museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
+    ),
+  ]);
+  const outOfReach = reachedProduct.variants.nodes.some(
+    (variant: ProductVariant) => variant.outOfReach,
+  );
+
   return {
     artProduct,
     artworkCredit: productArtworkCredit(product.handle),
@@ -669,17 +694,24 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           title: shopCapsule.title,
         }
       : null,
+    deliveryCountry: {
+      choices: outOfReach
+        ? await deliveryCountryChoices(context.storefront)
+        : null,
+      code: buyerCountry,
+      phrase: countryPhrase(buyerCountry),
+    },
     museumCase,
     phoneCaseCrossSell,
     classicFrameCrossSell,
     toughCaseCrossSell,
-    product,
+    product: reachedProduct,
     relatedByArtist: museumPairing ? museumPairing.artist : null,
     // The section shows three cards; it is "from the same capsule" only
     // when no best-selling fill is among them.
     relatedFromCapsule: !museumRelated && capsuleSiblings.length >= 3,
     relatedFromBookNooks: isNookPage && capsuleSiblings.length > 0,
-    relatedProducts: museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
+    relatedProducts,
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
     skyTheme: DEFAULT_SKY_THEME,
@@ -701,6 +733,7 @@ function ProductPage() {
     artworkCredit,
     capsuleSummary,
     classicFrameCrossSell,
+    deliveryCountry,
     museumCase,
     phoneCaseCrossSell,
     product,
@@ -743,9 +776,9 @@ function ProductPage() {
   // Personalised Art products stage behind the personalised flags; the
   // handle picks which configurator mounts (the sky is the default so its
   // behavior is unchanged from before the second product existed).
-  const isPersonalisedType =
-    (product.productType || '').toLowerCase() ===
-    SKY_PRODUCT_TYPE.toLowerCase();
+  // They are also non-returnable, so the returns copy below switches to the
+  // refund policy's damaged/defective promise.
+  const isPersonalisedType = isPersonalisedProductType(product.productType);
   const isNatal = isPersonalisedType && product.handle === NATAL_PRODUCT_HANDLE;
   const isSkyMap = isPersonalisedType && !isNatal;
   // Complete personalisation is released only when the current preview has
@@ -762,6 +795,10 @@ function ProductPage() {
       : isNatal && natalParams
         ? toNatalCartAttributes(natalParams)
         : undefined;
+  // Sellable in the default market but not shipped to this buyer's country.
+  const notShippedHere = Boolean(
+    !selectedVariant?.availableForSale && selectedVariant?.outOfReach,
+  );
   const purchaseBlocked =
     !selectedVariant?.availableForSale ||
     (isSkyMap && !skyParams) ||
@@ -777,14 +814,18 @@ function ProductPage() {
       ? personalisedPendingLabel
       : selectedVariant?.availableForSale && selectedVariantPrice
         ? `Add to cart - ${selectedVariantPrice}`
-        : 'Sold out';
+        : notShippedHere
+          ? `Doesn't ship to ${deliveryCountry.phrase}`
+          : 'Sold out';
   const stickyButtonLabel = caseModelPending
     ? 'Choose your model'
     : isPersonalisedPending
       ? personalisedPendingLabel
       : selectedVariant?.availableForSale && selectedVariantPrice
         ? `Add - ${selectedVariantPrice}`
-        : 'Sold out';
+        : notShippedHere
+          ? "Doesn't ship here"
+          : 'Sold out';
   const skyPendingAction =
     skyStatus.nextRequired === 'place'
       ? {href: '#sky-place', label: 'Choose a place'}
@@ -878,6 +919,9 @@ function ProductPage() {
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
+  // Structured data describes the default market: its Offer ships to the EU
+  // (seo.ts), and Googlebot crawls as a US buyer, who cannot be sent cards.
+  const schemaVariants = defaultMarketVariants(product.variants.nodes);
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
   const shopUrl = new URL('/collections/all', seoUrl).toString();
   const galleryLeadImage = isArtPrint
@@ -1009,7 +1053,9 @@ function ProductPage() {
       <StructuredData
         data={[
           productSchema({
-            availableForSale: productAvailableForSale,
+            availableForSale: schemaVariants.some(
+              (variant) => variant.availableForSale,
+            ),
             description: productDescription,
             gtin: selectedVariant?.barcode,
             image: absoluteImageUrl(primaryImage?.url),
@@ -1029,7 +1075,7 @@ function ProductPage() {
             title: product.title,
             url: seoUrl,
             vendor: product.vendor,
-            variants: product.variants.nodes,
+            variants: schemaVariants,
           }),
           breadcrumbSchema({
             items: [
@@ -1176,7 +1222,9 @@ function ProductPage() {
                   ? curatedProduct
                     ? 'DIY kit'
                     : isFutureClothing ? 'Available' : 'Made to order'
-                  : 'Unavailable'}
+                  : notShippedHere
+                    ? 'Not shipped here'
+                    : 'Unavailable'}
               </span>
               <span>
                 {curatedProduct
@@ -1196,7 +1244,11 @@ function ProductPage() {
                   )}
                 </span>
               ) : null}
-              <span>{RETURN_WINDOW_DAYS}-day returns</span>
+              <span>
+                {isPersonalisedType
+                  ? 'Free replacement or refund if damaged'
+                  : `${RETURN_WINDOW_DAYS}-day returns`}
+              </span>
             </div>
 
             {kitSpecRows.length > 0 ? (
@@ -1426,6 +1478,15 @@ function ProductPage() {
                 </AddToCartButton>
               )}
             </div>
+
+            {notShippedHere ? (
+              <DeliveryCountryNote
+                choices={deliveryCountry.choices}
+                countryCode={deliveryCountry.code}
+                countryPhrase={deliveryCountry.phrase}
+                redirectTo={`${location.pathname}${location.search}`}
+              />
+            ) : null}
 
             {!isSkyMap &&
             !isNatal &&
@@ -1718,8 +1779,21 @@ function ProductPage() {
               )}
             </ProductDetail>
             <ProductDetail label="Returns">
-              {RETURN_WINDOW_DAYS}-day return window from delivery. Items must
-              be unused and in original packaging.{' '}
+              {isPersonalisedType ? (
+                <>
+                  Made to order for you, so personalised pieces can&apos;t be
+                  returned unless the law requires it. If yours arrives
+                  damaged, defective or incorrect, contact us within{' '}
+                  {DAMAGE_REPORT_WINDOW_DAYS} days of delivery with your order
+                  number and photos, and we&apos;ll arrange a replacement or
+                  full refund at no cost to you.
+                </>
+              ) : (
+                <>
+                  {RETURN_WINDOW_DAYS}-day return window from delivery. Items
+                  must be unused and in original packaging.
+                </>
+              )}{' '}
               <Link to="/policies/refund-policy" className="text-link">
                 Full policy
               </Link>

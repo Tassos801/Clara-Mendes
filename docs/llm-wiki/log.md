@@ -1624,6 +1624,64 @@ remain. Storefront support (artist-shop Product type filter, PDP copy,
 webhook case SKUs) is dormant until release. See
 [status](../artist-shops/status.md).
 
+## 2026-10-14 - Floating World released (#123, #124)
+
+The artist-shop pilot branch merged to main (#123), then Floating World went
+live (#124): ten Met Open Access works (six Hokusai, four Hiroshige) as prints
+in 8×10 / 16×20 / 20×24, plus 50 product-type items (framed print, canvas,
+greeting card, postcard, tough phone case per work). All 60 products are
+Active and published to both storefront channels; the Prodigi mappings, case
+print files and shipping profiles were verified before release.
+`data/print-catalog.json` and `data/art-product-catalog.json` mark them
+released. `docs/artist-shops/status.md` still describes the pre-release state;
+its "Stopped here" steps are history.
+
+## 2026-10-14 - Museum listing order (#125)
+
+The default (Featured) order on `/collections/all` lists every studio product
+first, then museum items ranked prints → framed → canvas → cards → postcards
+→ cases, in catalog artwork order (`app/lib/museumListingOrder.ts`). Museum
+products are found by their collection tag; paging is two-phase with `s.`/`m.`
+cursors. Explicit sorts are unchanged. `product verify` now follows "Load
+more", and the case-file check compares pixels within re-encode tolerance
+because Oxygen re-encodes `/print-files/`.
+
+## 2026-10-14 - Artist pages on phones (#126)
+
+Fixed the off-centre Refine checkbox tick (`padding: 0`), let the Refine sheet
+scroll under Lenis (`data-lenis-prevent`, dialog role while open), and kept
+"Shop this design" and the Filter/Sort toolbar compact at 320 px.
+
+## 2026-10-14 - "Sold out" means "doesn't ship here" (no change)
+
+Floating World framed prints, cards and postcards showed "Sold out" on the
+local dev server. Not a stock bug: Storefront `availableForSale` is per buyer
+country, and the dev server always browses as a US buyer (Mini Oxygen's fake
+`oxygen-buyer-country`). Cards and postcards ship to the EU only; framed ships
+outside the EU only where Prodigi shipping is at most €30 (the US is not).
+Live from Cyprus all 103 products are for sale. To check locally, pick an EU
+country at `/locale`. Shoppers outside a product's reach still see a
+misleading "Sold out"; a "Doesn't ship to <country>" change is in progress.
+
+## 2026-10-14 - Next museum collection decided (not started)
+
+Owner decisions: every new artist gets an art print, framed 16×20, canvas
+16×20, tough phone case and a new 11 oz mug (Prodigi `GLOBAL-MUG-W`, price
+pending a quote); greeting cards and postcards are dropped for new artists
+(Floating World keeps its). The next collection is Kandinsky + Mondrian.
+The Met has neither in the public domain; AIC IIIF caps at 3000 px and needs
+an `AIC-User-Agent` header, and Cleveland's CC0 API serves full TIFFs. Only a
+Met importer exists, so AIC and Cleveland importers are new work. AIC-sized
+works get 8×10 print, canvas, case and mug only, unless larger files arrive.
+
+## 2026-10-14 - Open at end of day
+
+Not merged when this was written: #127 (shop category tabs and homepage
+artist feature), the "Doesn't ship to <country>" change, a moss/clay text
+contrast fix for the darker page background (`claude/accent-ink-contrast`)
+and a store wording refresh (`claude/store-wording-refresh`). Check `gh pr
+list` before assuming any of them landed.
+
 ## 2026-10-14 - Darker page background and muted text
 
 The site-wide page background moved from near-white `#fbfaf6` to warm sand
@@ -1638,6 +1696,82 @@ tone), and the route-local greys (`--cv-muted`, `--rv-muted`, `--os-muted`,
 The phone-case teaser (`--case-linen`) and Pastel Forms bands stay light
 because their images carry that background. `APP_THEME_COLOR` /
 `APP_BACKGROUND_COLOR` in `app/lib/webManifest.ts` match `--color-page`.
+
+## 2026-10-14 - Store-wide wording for the multi-product range
+
+Storefront copy that still described a print-only shop now covers the full
+range. Homepage title and description, hero line, trust band ("Tracked
+delivery" became "International delivery": plant pots ship untracked and
+cards go by letter post), collection intro and story band; the founding
+capsules preview; footer blurb plus a Phone Cases link; Shop All, Search and
+manifest descriptions; search empty-state suggestions (each checked live to
+return results); empty cart; contact response time (one business day
+throughout); book nook and artists intros. Our Story now lists all studio
+capsules with their real work counts and adds an "Around the art" list of
+released lines. Error pages get a "Page not found | Clara Mendes" title and a
+plain-language 404 message. `public/llms.txt` was rewritten for the current
+catalogue. Shopify-hosted policies were not changed: the shipping policy still
+has no clothing section.
+
+## 2026-10-14 - Policy drafts match the live store; activewear shipping drafted
+
+Compared each block in `docs/shopify-policies-drafts.md` with the live
+`/policies/<handle>` body. Shipping already matched; the refund block
+(14 days, candles) and terms block had drifted and now copy the live text
+exactly (30 days; personalised, final-sale and used, assembled or altered
+items excluded). The shipping draft gains a Quiet Current activewear bullet
+and section built from `APPAREL_SHIPPING_RATES`, the
+`APPAREL_*_WINDOW_BUSINESS_DAYS` constants and the
+[launch record](../quiet-current-release.md): made to order by the
+fulfilment partner, production 2–7 / dispatch 3–8 business days, one fee
+per order, heavier US fabric. With the owner's approval it was pasted into
+Shopify Admin and saved; after reload all three live policy bodies match
+the drafts exactly. The Your Sky "30-day returns" chip that contradicted
+the personalised-orders exclusion is fixed in the next entry. See
+[fulfillment](modules/fulfillment.md#2026-10-14---policy-drafts-realigned-with-the-live-store).
+
+## 2026-10-14 - Personalised products no longer promise 30-day returns
+
+The live refund policy now lists "Custom or personalized orders" as
+non-returnable, which settles the "30-day returns" chip on Your Sky that the
+2026-09-02 entry left as an owner policy decision. Personalised Art products
+(Your Sky, staged First Light) now show "Free replacement or refund if damaged"
+in the purchase status row on `/your-sky` and on the product page. The product
+page Returns panel now says the piece is made to order and can't be returned
+unless the law requires it, and that a damaged, defective or incorrect item
+reported within 7 days of delivery is replaced or refunded, as the policy's
+damaged-items clause says. Their structured-data offers say
+`MerchantReturnNotPermitted` instead of a 30-day window. Prints, cases, clothing
+and every other product are unchanged. See
+[catalog-and-products](modules/catalog-and-products.md#returns-on-personalised-products).
+
+Sources: `app/lib/storefrontBasics.ts`, `app/lib/seo.ts`,
+`app/components/SkyStudio.tsx`, `app/routes/products.$handle.tsx`,
+`scripts/productSchema.node-test.mjs`, `scripts/skyConfigurator.node-test.mjs`.
+
+## 2026-10-14 - Shop categories and homepage artist feature
+
+Shop All gained a Framed Art tab (the ten Floating World framed prints had
+none) and orders its tabs wall art first; the tabs take their own toolbar
+row, so Clothing no longer slides under the collection picker on desktop.
+The collection picker separates Clara Mendes capsules from museum
+collections and lists the artist shops. The homepage adds an Artists header
+link and an artist-shops feature under the hero, and "More from the edit"
+shows varied studio products instead of four museum phone cases. See
+[catalog](modules/catalog-and-products.md) and
+[routes](modules/routes-and-pages.md).
+
+## 2026-10-14 - "Doesn't ship to" instead of "Sold out"
+
+Buyers outside an item's shipping profile (a US visitor on an EU-only card,
+framed museum print, pot or framed Your Sky) saw "Sold out" and JSON-LD
+OutOfStock, because Storefront `availableForSale` is per buyer country. The
+storefront now re-reads unavailable items in the default market (Cyprus):
+the PDP, Your Sky, listing cards and `/pastel-forms` say "Doesn't ship to
+…" (the PDP adds a delivery-country picker), real sold-out keeps "Sold out",
+and structured data uses the default-market view. Store data and shipping
+zones are unchanged. See
+[fulfillment](modules/fulfillment.md#where-the-promises-render).
 
 ## 2026-10-14 - Museum sources for the modern collection; mug family
 

@@ -7,10 +7,12 @@ import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
 import {
+  isReleasedProductHandle,
   NATAL_PRODUCT_HANDLE,
   PERSONALISED_RELEASE_FLAGS,
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
+import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
 import {publicArtists} from '~/lib/artistShops';
@@ -18,6 +20,7 @@ import {cartItemCountLabel} from '~/lib/cartPresentation';
 
 const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
 const HAS_ARTISTS = publicArtists().length > 0;
+const HAS_PHONE_CASES = isReleasedProductHandle(TOUGH_CASE_HANDLE);
 
 const NAV_LINKS = [
   {to: '/collections/all', label: 'Shop'},
@@ -207,12 +210,12 @@ function ClaraFooter() {
           Clara Mendes
         </Link>
         <p>
-          Original art and considered products with secure checkout. Wall art
-          ships tracked worldwide; cards and postcards travel by letter post
-          within the EU.
+          Original art, museum prints and everyday objects, with secure
+          checkout. We ship across the EU and to most other countries; each
+          product page shows how its item is delivered.
         </p>
       </div>
-      <nav className="footer-style-nav" aria-label="Shop by style">
+      <nav className="footer-style-nav" aria-label="Shop wall art by style">
         <Link to="/collections/all?type=Art+Prints">Unframed Art Prints</Link>
         <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
         <Link to="/collections/terracotta-wall-art">Terracotta Wall Art</Link>
@@ -228,6 +231,9 @@ function ClaraFooter() {
         {HAS_ARTISTS ? <Link to="/artists">Artists</Link> : null}
         <Link to="/clothing">Clothing</Link>
         {HAS_BOOK_NOOKS ? <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link> : null}
+        {HAS_PHONE_CASES ? (
+          <Link to="/collections/all?type=Phone+Cases">Phone Cases</Link>
+        ) : null}
         <Link to="/pastel-forms">Pastel Forms</Link>
         <Link to="/our-story">Our Story</Link>
         <Link to="/blogs/karina-of-time">Karina of Time</Link>

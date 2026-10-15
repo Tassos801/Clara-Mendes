@@ -7,6 +7,11 @@ import {
 } from '~/components/ClaraProductCard';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {ClothingFeature} from '~/components/ClothingFeature';
+import {ArtistShopsFeature} from '~/components/ArtistShopsFeature';
+import {artistFeature} from '~/lib/artistShops';
+import {listShopCapsules, shopCapsulePath} from '~/lib/capsules';
+import {museumTagClause, studioSearchQuery} from '~/lib/museumListingOrder';
+import artistFeatureStyles from '~/styles/artist-feature.css?url';
 import {
   loadClothingProducts,
   type ClothingProduct,
@@ -34,7 +39,9 @@ import {
   isReleasedExtensionHandle,
   isReleasedProductHandle,
   ORIGINAL_ART_COLLECTIONS,
+  pickVariedProducts,
 } from '~/lib/catalogFilters';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {
   buildOriginalArtQuery,
@@ -67,6 +74,21 @@ import {
 
 const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
 
+// Artist shops from catalog data, like the site header's Artists link.
+const ARTIST_FEATURE = artistFeature();
+const MUSEUM_COLLECTIONS = listShopCapsules()
+  .filter((capsule) => capsule.kind === 'museum')
+  .map((capsule) => ({
+    path: shopCapsulePath(capsule.slug),
+    title: capsule.title,
+  }));
+
+// "More from the edit" shows the studio's own products; museum
+// reproductions have the artist feature instead, and would otherwise fill
+// it, being the newest products in Shopify's best-selling order.
+const MUSEUM_CLAUSE = museumTagClause();
+const EDIT_QUERY = MUSEUM_CLAUSE ? studioSearchQuery(null, MUSEUM_CLAUSE) : null;
+
 // Read from the catalog data so a new collection release updates the copy.
 const CATALOG = catalogCounts();
 const CAPSULE_COUNT_WORD = countWord(CATALOG.capsules);
@@ -91,8 +113,8 @@ type HomeCollection = {
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
-      'Original Clara Mendes art prints in 8 × 10, 16 × 20, and 20 × 24 inch sizes.',
-    title: 'Original Art Prints | Clara Mendes',
+      'Original Clara Mendes art, museum prints of Hokusai and Hiroshige, cards, canvas, phone cases, ceramic plant pots, book nook kits and activewear.',
+    title: 'Original Art Prints & Everyday Objects | Clara Mendes',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
 };
@@ -102,6 +124,7 @@ export const meta: Route.MetaFunction = ({data}) => {
 // 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
 // the media queries match the stylesheet so only one file is fetched.
 export const links: Route.LinksFunction = () => [
+  {rel: 'stylesheet', href: artistFeatureStyles},
   {
     as: 'image',
     href: '/images/backdrops/hero-interior.jpg',
@@ -140,7 +163,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
           : '__frame-not-released__',
         // Headroom above the 7 cards rendered, since demo/off-theme
         // products are filtered out after fetching
-        first: 12,
+        first: 24,
+        productsQuery: EDIT_QUERY,
         toughCaseHandle: isReleasedProductHandle(TOUGH_CASE_HANDLE)
           ? TOUGH_CASE_HANDLE
           : '__tough-case-not-released__',
@@ -168,7 +192,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
         data.frameProduct && !isDemoProduct(data.frameProduct)
           ? (data.frameProduct as ClaraCardProduct)
           : null,
-      products: filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+      products: await withDeliveryReach(
+        context.storefront,
+        filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
+      ),
       caseTeaser: buildCaseTeaser(
         data.toughCase as ToughCaseTeaserProduct | null,
       ),
@@ -269,8 +296,11 @@ export default function Homepage() {
     featuredPrints.length === FEATURED_PRINT_HANDLES.length
       ? featuredPrints
       : products.slice(0, 3);
-  const featuredProducts =
-    products.length > 3 ? products.slice(3, 7) : products.slice(0, 4);
+  const featuredProducts = pickVariedProducts(
+    products,
+    4,
+    products.length > 3 ? quickShopProducts : [],
+  );
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const outlineRef = useRef<HTMLDivElement | null>(null);
@@ -462,6 +492,11 @@ export default function Homepage() {
               <Link to="/collections/all" className="hm-nav-text">
                 Shop
               </Link>
+              {ARTIST_FEATURE.artists.length ? (
+                <Link to="/artists" className="hm-nav-text">
+                  Artists
+                </Link>
+              ) : null}
               {clothingPicks.length ? (
                 <Link to="/clothing" className="hm-nav-text">
                   Clothing
@@ -516,7 +551,7 @@ export default function Homepage() {
               <i>Objects</i> with soul
             </h1>
             <p ref={subRef} className="hm-prompt-sub">
-              Original art now. Considered products for collected spaces.
+              Original art and everyday objects for calm, collected spaces.
             </p>
             <div className="hm-hero-actions">
               <Link
@@ -560,9 +595,15 @@ export default function Homepage() {
         data-chapter="linen"
       >
         <p>Secure checkout</p>
-        <p>Tracked delivery</p>
+        <p>International delivery</p>
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
+
+      <ArtistShopsFeature
+        artists={ARTIST_FEATURE.artists}
+        collections={MUSEUM_COLLECTIONS}
+        families={ARTIST_FEATURE.families}
+      />
 
       <ClothingFeature picks={clothingPicks} />
 
@@ -617,16 +658,13 @@ export default function Homepage() {
       >
         <div data-reveal>
           <p className="eyebrow">The collection</p>
-          <h2>
-            {products.length > 0
-              ? 'Original work, ready to live with.'
-              : 'The first print edition is being prepared.'}
-          </h2>
+          <h2>Original work, ready to live with.</h2>
         </div>
         <p>
-          {products.length > 0
-            ? 'The collection begins with original prints and leaves room for considered objects and editions to follow.'
-            : `${capitalize(WORK_COUNT_WORD)} original art prints lead the new collection, with future product types introduced only when they meet the same creative and production standards.`}
+          The art comes first: {WORK_COUNT_WORD} original works across{' '}
+          {CAPSULE_COUNT_WORD} capsules, printed to order. The founding capsules
+          also come as cards, postcards and canvas, and every work as a phone
+          case.
         </p>
       </section>
 
@@ -774,15 +812,14 @@ export default function Homepage() {
         </section>
       ) : (
         <section className="empty-state home-empty-catalog">
-          <p className="eyebrow">Original art collection</p>
-          <h2>Explore the complete first print edition.</h2>
+          <p className="eyebrow">The shop</p>
+          <h2>Browse the full collection.</h2>
           <p>
-            Browse all {WORK_COUNT_WORD} works now. Product pages and secure
-            Shopify checkout appear automatically as each print becomes
-            available.
+            Every available print and product is in the shop, each with its
+            details and secure checkout.
           </p>
           <Link className="primary-button" to="/collections/all">
-            Browse the print collection
+            Browse the shop
           </Link>
         </section>
       )}
@@ -790,12 +827,12 @@ export default function Homepage() {
       <section className="story-section home-story-return" data-chapter="ink">
         <div className="story-image" aria-hidden />
         <div className="story-copy" data-reveal>
-          <p className="eyebrow">Considered editions</p>
-          <h2>Original art first, room to grow.</h2>
+          <p className="eyebrow">Our story</p>
+          <h2>Original art first, then the things around it.</h2>
           <p>
-            New product types can join the collection over time, each with clear
-            production details, delivery expectations, and a simple checkout
-            path.
+            What began as fifteen prints now takes in clothing, ceramics, phone
+            cases and book nooks. Every product page sets out how it is made
+            and how it ships.
           </p>
           <Link className="text-link" to="/our-story">
             Read the story
@@ -843,9 +880,10 @@ const HOMEPAGE_QUERY = `#graphql
     $first: Int!
     $frameHandle: String!
     $language: LanguageCode
+    $productsQuery: String
     $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, sortKey: BEST_SELLING) {
+    products(first: $first, sortKey: BEST_SELLING, query: $productsQuery) {
       nodes {
         ...ClaraProductCard
       }

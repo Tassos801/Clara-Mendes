@@ -41,6 +41,7 @@ import {
   isDemoCollection,
   isOffThemeCollectionHandle,
 } from '~/lib/catalogFilters';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {
   clothingCategories,
   clothingCapsules,
@@ -156,10 +157,14 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     ]);
 
     const catalogOrder = page.capsule.handles;
-    const products = filterDemoProducts(
-      (data.products?.nodes ?? []) as ClaraCardProduct[],
-    ).sort(
-      (a, b) => catalogOrder.indexOf(a.handle) - catalogOrder.indexOf(b.handle),
+    const products = await withDeliveryReach(
+      context.storefront,
+      filterDemoProducts(
+        (data.products?.nodes ?? []) as ClaraCardProduct[],
+      ).sort(
+        (a, b) =>
+          catalogOrder.indexOf(a.handle) - catalogOrder.indexOf(b.handle),
+      ),
     );
 
     return {
@@ -194,11 +199,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     ]);
 
     const curated = galleryPage.handles;
-    const products = filterDemoProducts(
-      (data.products?.nodes ?? []) as ClaraCardProduct[],
-    )
-      .filter((product) => curated.includes(product.handle))
-      .sort((a, b) => curated.indexOf(a.handle) - curated.indexOf(b.handle));
+    const products = await withDeliveryReach(
+      context.storefront,
+      filterDemoProducts((data.products?.nodes ?? []) as ClaraCardProduct[])
+        .filter((product) => curated.includes(product.handle))
+        .sort((a, b) => curated.indexOf(a.handle) - curated.indexOf(b.handle)),
+    );
 
     return {
       kind: 'gallery',
@@ -310,7 +316,11 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     hero: collectionHero(data.collection.handle),
     products: {
       ...products,
-      nodes: filterDemoProducts(products.nodes),
+      // Labelled where they don't ship to the buyer, not "Sold out".
+      nodes: await withDeliveryReach(
+        context.storefront,
+        filterDemoProducts(products.nodes),
+      ),
     },
     seoUrl: getCanonicalUrl(request, `/collections/${data.collection.handle}`),
   } satisfies CollectionViewData;

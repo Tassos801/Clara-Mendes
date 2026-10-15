@@ -27,8 +27,10 @@ import {
   filterDemoCollections,
   filterDemoProducts,
   isOffThemeCollectionHandle,
-  releasedExtensionProductTypes,
+  shopProductTypes,
 } from '~/lib/catalogFilters';
+import {artistPath, publicArtists} from '~/lib/artistShops';
+import {releasedArtProductTypes} from '~/lib/artProductCatalog';
 import {
   buildProductsSearchQuery,
   countActiveFacets,
@@ -43,6 +45,7 @@ import {
   getProductsSortInput,
 } from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import type {CollectionHero} from '~/lib/collectionHeroes';
@@ -88,13 +91,25 @@ export type CollectionLink = {
 /**
  * The prints plus the product type of every released catalog family, so
  * a family becomes filterable (and its `?type=` deep links valid) the day
- * its flag flips.
+ * its flag flips. Wall art leads the tabs (app/lib/catalogFilters.ts).
  */
-export const SHOP_PRODUCT_TYPES: readonly string[] = [
+export const SHOP_PRODUCT_TYPES: readonly string[] = shopProductTypes();
+
+/**
+ * Types a museum collection sells beyond its prints: every museum work is
+ * also a framed print, canvas, card, postcard and phone case, so those tabs
+ * keep a museum collection selected. Studio capsules are prints only.
+ */
+const MUSEUM_PRODUCT_TYPES: ReadonlySet<string> = new Set([
   'Art Prints',
-  ...releasedExtensionProductTypes(),
-  ...releasedCuratedProductTypes(),
-];
+  ...releasedArtProductTypes(),
+]);
+
+/** Artist shops offered from the Collection picker. */
+const SHOP_ARTISTS = publicArtists().map(({artist}) => ({
+  name: artist.name,
+  path: artistPath(artist),
+}));
 
 export type CollectionProductConnection = {
   nodes: ClaraCardProduct[];
@@ -133,7 +148,7 @@ export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description:
       data?.description ??
-      'Original art and considered objects for a collected home, selected by Clara Mendes.',
+      'Shop Clara Mendes art and museum prints, canvas, cards, phone cases, ceramic plant pots, book nook kits and activewear.',
     image: `${STOREFRONT_ORIGIN}${data?.shareImage || '/images/product-art/quiet-form/quiet-form-01.webp'}`,
     title: isCapsule
       ? `${heading} Capsule`
@@ -222,7 +237,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       : isBookNooks
         ? `Miniature worlds for your bookshelf. Explore DIY book nook kits curated by Clara Mendes, with delivery included ${bookNookDeliveryPhrase()}.`
         : releasedCuratedProductTypes().length > 0
-          ? 'Original art and considered objects for a collected home, selected by Clara Mendes.'
+          ? 'Shop Clara Mendes art and museum prints, canvas, cards, phone cases, ceramic plant pots, book nook kits and activewear.'
           : releasedPrintHandles().length > 0
             ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
             : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
@@ -232,7 +247,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
     },
     heading: capsule ? capsule.title : isBookNooks ? 'Book Nooks' : 'Shop All',
     shareImage: capsule?.image ?? null,
-    products: filterProductConnection(
+    products: await filterProductConnection(
+      context.storefront,
       data.products as CollectionProductConnection,
     ),
     seoUrl: getCanonicalUrl(
@@ -263,6 +279,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
   const [filtersOpen, setFiltersOpen] = useState(activeFacetCount > 0);
   const {ref: loadMoreRef, inView} = useInView();
   const activeCapsule = data.activeCapsule ?? null;
+  const activeCapsuleKind = getShopCapsuleBySlug(activeCapsule)?.kind;
   const toolbarRef = useRef<HTMLDivElement>(null);
   const typeTabsRef = useRef<HTMLElement>(null);
   const filterToggleRef = useRef<HTMLButtonElement>(null);
@@ -331,6 +348,19 @@ export function CollectionView({data}: {data: CollectionViewData}) {
       !shadowedTitles.has(capsule.title.trim().toLowerCase()),
   );
 
+  // Clara Mendes' own capsules and the museum collections are different
+  // things to a shopper, so the picker lists them apart.
+  const capsuleGroups = [
+    {
+      capsules: capsuleLinks.filter((capsule) => capsule.kind !== 'museum'),
+      label: 'Clara Mendes capsules',
+    },
+    {
+      capsules: capsuleLinks.filter((capsule) => capsule.kind === 'museum'),
+      label: 'Museum collections',
+    },
+  ].filter((group) => group.capsules.length > 0);
+
   const capsuleSearch = (slug: string | null) => {
     const next = new URLSearchParams(searchParams);
     next.delete('cursor');
@@ -351,7 +381,11 @@ export function CollectionView({data}: {data: CollectionViewData}) {
     next.delete('type');
     if (productType) {
       next.set('type', productType);
-      if (productType !== 'Art Prints') next.delete('capsule');
+      const keepsCapsule =
+        productType === 'Art Prints' ||
+        (activeCapsuleKind === 'museum' &&
+          MUSEUM_PRODUCT_TYPES.has(productType));
+      if (!keepsCapsule) next.delete('capsule');
     }
     const queryString = next.toString();
     return queryString ? `?${queryString}` : '';
@@ -500,49 +534,49 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         ref={toolbarRef}
         role="region"
       >
-        <div className="cv-browse-controls">
-          <div className="cv-browse-group cv-browse-group--category">
-            <span className="cv-browse-label" id="cv-category-label">
-              Product
-            </span>
-            <nav
-              aria-labelledby="cv-category-label"
-              className="cv-type-tabs"
-              ref={typeTabsRef}
-            >
-              {productCategories.map((category) => (
-                <Link
-                  aria-current={category.active ? 'page' : undefined}
-                  className={`cv-type-link${
-                    category.active ? ' is-active' : ''
-                  }`}
-                  key={category.label}
-                  prefetch="intent"
-                  to={category.path}
-                >
-                  {category.label}
-                </Link>
-              ))}
-            </nav>
-            <select
-              aria-labelledby="cv-category-label"
-              className="cv-category-select"
-              value={
-                productCategories.find((category) => category.active)?.path ??
-                productCategories[0].path
-              }
-              onChange={(event) =>
-                void navigate(event.target.value, {preventScrollReset: true})
-              }
-            >
-              {productCategories.map((category) => (
-                <option key={category.label} value={category.path}>
-                  {category.label}
-                </option>
-              ))}
-            </select>
-          </div>
+        <div className="cv-browse-group cv-browse-group--category">
+          <span className="cv-browse-label" id="cv-category-label">
+            Product
+          </span>
+          <nav
+            aria-labelledby="cv-category-label"
+            className="cv-type-tabs"
+            ref={typeTabsRef}
+          >
+            {productCategories.map((category) => (
+              <Link
+                aria-current={category.active ? 'page' : undefined}
+                className={`cv-type-link${
+                  category.active ? ' is-active' : ''
+                }`}
+                key={category.label}
+                prefetch="intent"
+                to={category.path}
+              >
+                {category.label}
+              </Link>
+            ))}
+          </nav>
+          <select
+            aria-labelledby="cv-category-label"
+            className="cv-category-select"
+            value={
+              productCategories.find((category) => category.active)?.path ??
+              productCategories[0].path
+            }
+            onChange={(event) =>
+              void navigate(event.target.value, {preventScrollReset: true})
+            }
+          >
+            {productCategories.map((category) => (
+              <option key={category.label} value={category.path}>
+                {category.label}
+              </option>
+            ))}
+          </select>
+        </div>
 
+        <div className="cv-browse-controls">
           <div className="cv-browse-group cv-browse-group--collection">
             <label className="cv-browse-label" htmlFor="cv-collection-select">
               Collection
@@ -578,14 +612,25 @@ export function CollectionView({data}: {data: CollectionViewData}) {
                     ))}
                 </optgroup>
               ) : null}
-              {!data.clothingOnly && capsuleLinks.length > 0 ? (
-                <optgroup label="Art capsules">
-                  {capsuleLinks.map((capsule) => (
-                    <option
-                      key={capsule.slug}
-                      value={`/collections/all${capsuleSearch(capsule.slug)}`}
-                    >
-                      {capsule.title}
+              {data.clothingOnly
+                ? null
+                : capsuleGroups.map((group) => (
+                    <optgroup key={group.label} label={group.label}>
+                      {group.capsules.map((capsule) => (
+                        <option
+                          key={capsule.slug}
+                          value={`/collections/all${capsuleSearch(capsule.slug)}`}
+                        >
+                          {capsule.title}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+              {!data.clothingOnly && SHOP_ARTISTS.length > 0 ? (
+                <optgroup label="Artists">
+                  {SHOP_ARTISTS.map((artist) => (
+                    <option key={artist.path} value={artist.path}>
+                      {artist.name}
                     </option>
                   ))}
                 </optgroup>
@@ -923,12 +968,17 @@ async function loadFeaturedListing({
   return {collections: links.collections, products};
 }
 
-function filterProductConnection(
+/** Released products only, labelled where they don't ship to the buyer. */
+async function filterProductConnection(
+  storefront: ListingStorefront,
   connection: CollectionProductConnection,
-): CollectionProductConnection {
+): Promise<CollectionProductConnection> {
   return {
     ...connection,
-    nodes: filterDemoProducts(connection.nodes),
+    nodes: await withDeliveryReach(
+      storefront,
+      filterDemoProducts(connection.nodes),
+    ),
   };
 }
 
@@ -1156,8 +1206,14 @@ const collectionCss = `
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
-  gap: clamp(18px, 3vw, 46px);
-  padding: 18px clamp(18px, 4vw, 70px);
+  gap: 12px clamp(18px, 3vw, 46px);
+  padding: 14px clamp(18px, 4vw, 70px);
+}
+
+/* The Product tabs have the first row to themselves, so every type stays
+   visible; the collection picker, filters and sort share the second. */
+.cv-browse-group--category {
+  grid-column: 1 / -1;
 }
 
 .cv-browse-controls {
@@ -1189,8 +1245,37 @@ const collectionCss = `
   border-radius: 8px;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.78);
   display: inline-flex;
+  max-width: 100%;
   min-height: 44px;
+  overflow-x: auto;
   padding: 3px;
+  scrollbar-width: none;
+}
+
+.cv-type-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+/* Desktop: labels sit beside their controls, like Sort, to keep the
+   pinned toolbar low. */
+@media (min-width: 981px) {
+  .cv-browse-group--category,
+  .cv-browse-group--collection {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+  }
+
+  /* One label width, so the tabs and the picker start in line. */
+  .cv-browse-group--category .cv-browse-label,
+  .cv-browse-group--collection .cv-browse-label {
+    flex: none;
+    min-width: 9em;
+  }
+
+  .cv-type-tabs {
+    min-width: 0;
+  }
 }
 
 .cv-type-link {
@@ -1569,8 +1654,7 @@ const collectionCss = `
 
 @media (max-width: 980px) {
   .cv-toolbar {
-    align-items: stretch;
-    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
   }
 
   .cv-toolbar-actions {
@@ -1624,6 +1708,7 @@ const collectionCss = `
     top: auto;
     align-items: stretch;
     gap: 10px;
+    grid-template-columns: minmax(0, 1fr);
     padding: 12px 0 12px;
   }
 

@@ -27,6 +27,7 @@ import {
 } from '~/lib/artistShops';
 import {artworkCreditLine, lifeDatesLabel} from '~/lib/artRegistry';
 import {filterDemoProducts} from '~/lib/catalogFilters';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
@@ -126,7 +127,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     portrait: cardOf(lead.handle).featuredImage
       ? {...cardOf(lead.handle).featuredImage!, title: lead.title}
       : null,
-    products: view.products.map((product) => cardOf(product.handle)),
+    // Cards and framed pieces don't reach every country; their cards say so
+    // instead of "Sold out".
+    products: await withDeliveryReach(
+      context.storefront,
+      view.products.map((product) => cardOf(product.handle)),
+    ),
     sort: view.sort,
     total: listed.length,
   };
