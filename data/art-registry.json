@@ -916,8 +916,18 @@
           "status": "pending"
         },
         "master": {
-          "status": "pending"
+          "status": "pending",
+          "at": "2026-10-15T18:05:55.147Z"
         }
+      },
+      "trim": {
+        "top": 50,
+        "right": 46,
+        "bottom": 50,
+        "left": 48,
+        "at": "2026-10-15T18:05:55.147Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-15: trim the grey photo backdrop outside Kandinsky's painted frame; the painted frame stays"
       }
     },
     {
@@ -1345,8 +1355,18 @@
           "status": "pending"
         },
         "master": {
-          "status": "pending"
+          "status": "pending",
+          "at": "2026-10-15T18:05:55.348Z"
         }
+      },
+      "trim": {
+        "top": 196,
+        "right": 298,
+        "bottom": 474,
+        "left": 230,
+        "at": "2026-10-15T18:05:55.348Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-15: trim the wall and its shadow outside the white strip frame; the frame stays"
       }
     }
   ]

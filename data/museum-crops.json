@@ -96,41 +96,41 @@
       "case": {"cx": 0.6, "cy": 0.5},
       "canvas": {"cx": 0.55, "cy": 0.5},
       "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop."},
-      "approval": {"approved": false}
+      "approval": {"approved": true, "by": "Tassos", "at": "2026-10-15", "note": "Owner approved the proposed phone-case and canvas crops in chat after viewing the Line and Colour overview sheets."}
     },
     "aic-8980": {
       "area": {"left": 0, "top": 0, "right": 1, "bottom": 1},
       "case": {"cx": 0.47, "cy": 0.5},
       "canvas": {"cx": 0.5, "cy": 0.5},
       "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop."},
-      "approval": {"approved": false}
+      "approval": {"approved": true, "by": "Tassos", "at": "2026-10-15", "note": "Owner approved the proposed phone-case and canvas crops in chat after viewing the Line and Colour overview sheets."}
     },
     "aic-129849": {
       "area": {"left": 0, "top": 0, "right": 1, "bottom": 1},
       "canvas": {"cx": 0.5, "cy": 0.5},
       "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop."},
-      "approval": {"approved": false}
+      "approval": {"approved": true, "by": "Tassos", "at": "2026-10-15", "note": "Owner approved the proposed phone-case and canvas crops in chat after viewing the Line and Colour overview sheets."}
     },
     "cma-1967.215": {
-      "area": {"left": 0.041, "top": 0.04, "right": 0.949, "bottom": 0.938},
-      "case": {"cx": 0.33, "cy": 0.5},
-      "canvas": {"cx": 0.41, "cy": 0.5},
-      "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop."},
-      "approval": {"approved": false}
+      "area": {"left": 0.0187, "top": 0.0219, "right": 0.9781, "bottom": 0.9844},
+      "case": {"cx": 0.324, "cy": 0.5149},
+      "canvas": {"cx": 0.4086, "cy": 0.5149},
+      "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop. Fractions recomputed after the owner's 2026-10-15 trim so the crops cover the same pixels."},
+      "approval": {"approved": true, "by": "Tassos", "at": "2026-10-15", "note": "Owner approved the proposed phone-case and canvas crops in chat after viewing the Line and Colour overview sheets."}
     },
     "cma-1958.38": {
       "area": {"left": 0.005, "top": 0.005, "right": 0.995, "bottom": 0.995},
       "case": {"cx": 0.45, "cy": 0.5},
       "canvas": {"cx": 0.45, "cy": 0.5},
       "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop."},
-      "approval": {"approved": false}
+      "approval": {"approved": true, "by": "Tassos", "at": "2026-10-15", "note": "Owner approved the proposed phone-case and canvas crops in chat after viewing the Line and Colour overview sheets."}
     },
     "cma-1971.220": {
       "area": {"left": 0, "top": 0, "right": 1, "bottom": 0.98},
       "case": {"cx": 0.62, "cy": 0.5},
       "canvas": {"cx": 0.5, "cy": 0.5},
       "chosen": {"by": "Claude Code (AI-chosen framing)", "at": "2026-10-15", "note": "Proposed for Line and Colour; whole-work products (prints, framed, mugs) need no crop."},
-      "approval": {"approved": false}
+      "approval": {"approved": true, "by": "Tassos", "at": "2026-10-15", "note": "Owner approved the proposed phone-case and canvas crops in chat after viewing the Line and Colour overview sheets."}
     }
   }
 }
