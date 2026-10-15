@@ -428,7 +428,13 @@ test('fetched AIC and Cleveland works are valid registry records that pass the r
   );
   assert.deepEqual(
     registry.validateArtRegistry({
-      artists: [...registry.ART_REGISTRY.artists, KANDINSKY, MONDRIAN],
+      artists: [
+        ...registry.ART_REGISTRY.artists.filter(
+          (artist) => ![KANDINSKY.id, MONDRIAN.id].includes(artist.id),
+        ),
+        KANDINSKY,
+        MONDRIAN,
+      ],
       artworks: [improvisation, composition],
     }),
     [],
