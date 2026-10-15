@@ -40,6 +40,8 @@ export type StudioVariant = {
   id: string;
   title: string;
   availableForSale: boolean;
+  /** Sellable in the default market, not shipped to this buyer. */
+  outOfReach?: boolean;
   price: MoneyAmount;
   compareAtPrice?: MoneyAmount | null;
   selectedOptions: Array<{name: string; value: string}>;
@@ -74,6 +76,7 @@ const EMPTY_SKY_STATUS: SkyConfiguratorStatus = {
  */
 export function SkyStudio({
   basePath,
+  deliveryCountry,
   eyebrow,
   heading,
   note,
@@ -82,6 +85,8 @@ export function SkyStudio({
   theme,
 }: {
   basePath: string;
+  /** The buyer's country as a phrase: "the United States". */
+  deliveryCountry: string;
   eyebrow: string;
   heading: string;
   note: string;
@@ -112,8 +117,17 @@ export function SkyStudio({
   const purchaseBlocked = !selectedVariant?.availableForSale || !skyParams;
   const price = selectedVariant ? formatMoney(selectedVariant.price) : null;
   const available = Boolean(selectedVariant?.availableForSale && price);
-  const buttonLabel = available ? `Add to cart · ${price}` : 'Unavailable';
-  const stickyLabel = available ? `Add · ${price}` : 'Unavailable';
+  // A framed print doesn't reach every country the unframed one does.
+  const notShippedHere = Boolean(!available && selectedVariant?.outOfReach);
+  const unavailableLabel = notShippedHere
+    ? `Doesn't ship to ${deliveryCountry}`
+    : 'Unavailable';
+  const buttonLabel = available ? `Add to cart · ${price}` : unavailableLabel;
+  const stickyLabel = available
+    ? `Add · ${price}`
+    : notShippedHere
+      ? "Doesn't ship here"
+      : 'Unavailable';
   const stickyOptions = selectedOptionsSummary(
     selectedVariant?.selectedOptions,
   );
@@ -232,7 +246,9 @@ export function SkyStudio({
               >
                 {selectedVariant?.availableForSale
                   ? 'Made to order'
-                  : 'Unavailable'}
+                  : notShippedHere
+                    ? 'Not shipped here'
+                    : 'Unavailable'}
               </span>
               <span>
                 Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days

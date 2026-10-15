@@ -16,6 +16,12 @@ npm run dev
 
 Sources: [README](../../../README.md), `package.json`.
 
+Local Mini Oxygen sends `oxygen-buyer-country: US`, so a local session
+browses as a US buyer until a country is chosen (`/locale`, or the
+delivery-country picker under an out-of-reach product). US buyers cannot be
+sent cards, postcards, framed museum prints or pots, so those read "Doesn't
+ship to the United States" locally; choose Cyprus to see them on sale.
+
 ## Validation Commands
 
 Run these before pushing or deploying:

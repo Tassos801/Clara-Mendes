@@ -1,5 +1,6 @@
 import type {Route} from './+types/api.recently-viewed';
 import {filterDemoProducts} from '~/lib/catalogFilters';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {recentlyViewedProductIds} from '~/lib/recentlyViewed';
 
@@ -24,10 +25,13 @@ export async function loader({
     },
     cache: storefront.CacheNone(),
   });
-  const products = filterDemoProducts(
-    result.nodes.filter(
-      (node): node is NonNullable<typeof node> & {__typename: 'Product'} =>
-        node?.__typename === 'Product',
+  const products = await withDeliveryReach(
+    storefront,
+    filterDemoProducts(
+      result.nodes.filter(
+        (node): node is NonNullable<typeof node> & {__typename: 'Product'} =>
+          node?.__typename === 'Product',
+      ),
     ),
   );
   return Response.json({products}, {headers: {'Cache-Control': 'no-store'}});

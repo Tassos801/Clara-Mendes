@@ -45,6 +45,7 @@ import {
   getProductsSortInput,
 } from '~/lib/collectionSort';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import type {CollectionHero} from '~/lib/collectionHeroes';
@@ -246,7 +247,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
     },
     heading: capsule ? capsule.title : isBookNooks ? 'Book Nooks' : 'Shop All',
     shareImage: capsule?.image ?? null,
-    products: filterProductConnection(
+    products: await filterProductConnection(
+      context.storefront,
       data.products as CollectionProductConnection,
     ),
     seoUrl: getCanonicalUrl(
@@ -966,12 +968,17 @@ async function loadFeaturedListing({
   return {collections: links.collections, products};
 }
 
-function filterProductConnection(
+/** Released products only, labelled where they don't ship to the buyer. */
+async function filterProductConnection(
+  storefront: ListingStorefront,
   connection: CollectionProductConnection,
-): CollectionProductConnection {
+): Promise<CollectionProductConnection> {
   return {
     ...connection,
-    nodes: filterDemoProducts(connection.nodes),
+    nodes: await withDeliveryReach(
+      storefront,
+      filterDemoProducts(connection.nodes),
+    ),
   };
 }
 
