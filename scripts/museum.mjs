@@ -88,6 +88,7 @@ const VALUE_OPTIONS = [
   'artist',
   'artwork',
   'by',
+  'collection',
   'limit',
   'master',
   'museum',
