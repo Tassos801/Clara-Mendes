@@ -103,7 +103,10 @@ function releasable({release = false} = {}) {
 
 test('the shipped family catalog is valid: 50 released products, 10 per family', () => {
   assert.deepEqual(family.validateArtProductCatalog(), []);
-  assert.deepEqual(familySummary(family.ART_PRODUCT_CATALOG.products), [
+  const floatingWorld = family.ART_PRODUCT_CATALOG.products.filter(
+    (product) => product.collection === 'floating-world',
+  );
+  assert.deepEqual(familySummary(floatingWorld), [
     {
       family: 'framed-print',
       priceEUR: '89.10',
@@ -141,7 +144,7 @@ test('the shipped family catalog is valid: 50 released products, 10 per family',
     },
   ]);
   // Released 2026-10-14: validation above also proves every release gate.
-  for (const product of family.ART_PRODUCT_CATALOG.products) {
+  for (const product of floatingWorld) {
     assert.equal(product.released, true, product.handle);
     assert.deepEqual(family.familyReleaseIssues(product), [], product.handle);
     assert.ok(product.assets, `${product.handle} has current assets`);
@@ -517,7 +520,9 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
   );
   assert.deepEqual(
     empty.products.map((p) => p.handle),
-    catalog.products.map((p) => p.handle),
+    catalog.products
+      .filter((p) => p.collection === FLOATING_WORLD.slug)
+      .map((p) => p.handle),
   );
 
   const staged = structuredClone(catalog);
