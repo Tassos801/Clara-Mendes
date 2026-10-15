@@ -113,7 +113,9 @@
       ],
       "curatorNote": "These five paintings come from 1909 to 1913, the Murnau and Munich years in which Kandinsky's landscapes loosened into colour and line until the subject could hardly be read. Prints, framed prints and mugs keep the full composition as the museum photographed it, set on white; canvas and phone cases use a chosen detail.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-10-15T18:26:31.214Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Russia",
@@ -151,7 +153,9 @@
       ],
       "curatorNote": "We show Mondrian's route as well as where it led: a Dutch field and a single chrysanthemum beside the 1921 lozenge and the grids of 1927 and 1935. Prints, framed prints and mugs keep the full composition as the museum photographed it, set on white; canvas and phone cases use a chosen detail.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-10-15T18:26:31.416Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Netherlands",
@@ -864,10 +868,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:31.619Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:31.819Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -913,11 +923,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.828Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending",
-          "at": "2026-10-15T18:05:55.147Z"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.027Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       },
       "trim": {
@@ -972,10 +987,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.019Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.222Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1021,10 +1042,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.423Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.625Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1070,10 +1097,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.228Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.428Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1119,10 +1152,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.111Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.314Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1217,10 +1256,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.517Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.717Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1262,10 +1307,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.917Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:35.119Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1307,10 +1358,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:35.321Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:35.522Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       }
     },
@@ -1352,11 +1409,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.628Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
         },
         "master": {
-          "status": "pending",
-          "at": "2026-10-15T18:05:55.348Z"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.831Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
         }
       },
       "trim": {

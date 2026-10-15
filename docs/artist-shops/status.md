@@ -25,7 +25,7 @@ on #134 (AIC/Cleveland importers, mug). Codex (Sol) generated the room
 backgrounds and reviewed the changes read-only. Nothing in Shopify or
 Prodigi was touched.
 
-**Built:** Kandinsky and Mondrian registered (unapproved); eleven works
+**Built:** Kandinsky and Mondrian registered and approved; eleven works
 fetched; collection `line-and-colour` (SKU code `LC`) with ten prints
 prepared; framed (5), canvas (6), phone case (5) and mug (10) files prepared;
 crops approved; room backgrounds and placements. Two pipeline changes:
@@ -54,19 +54,18 @@ were recomputed to the same pixels); approval of the case and canvas crops
 of all six cropped works; and downloading Prodigi's iPhone 16 Pro template
 (sha256 matches) so the five phone cases could be prepared.
 
-**Still open (owner):**
-1. *Study for a Composition* (AIC 142570, fetched, not in the collection):
-   AIC's photograph has 9–11% grey backdrop top and bottom, beyond the 5%
-   trim limit. Leave out, or accept the backdrop on the print.
-2. The Lozenge prints as a diamond on AIC's pale grey square; it has no
-   canvas or case (a crop inside the diamond is about 225 ppi for a case,
-   70 for a canvas).
-3. Accept the larger-size ppi: Cannons and Lozenge 16×20 at 212–213 and
-   20×24 at 170 (3% below Floating World's 176); Chrysanthemum and Field
-   are above the precedent.
-4. Artist approval (`approve-artist`), rights and master reviews for the
-   ten works, and a mug price (Prodigi quote). Composition 1927's canvas
-   keeps the red and blue but not the thin yellow strip (approved as shown).
+**Approved by the owner in chat (2026-10-15, later):** both artists
+(`approve-artist`, as Tassos); the rights and master reviews of all ten
+works; *Study for a Composition* stays out (its reviews stay pending); the
+Lozenge keeps prints, framed and mug only; and the print ppi below 300
+(Cannons and Lozenge 16×20 at 212–213 and 20×24 at 170, Chrysanthemum 20×24
+at 251, Field 16×20 at 266 and 20×24 at 213), as Floating World's were.
+Every owner gate on the 36 products is now clear.
+
+**Still open:** a mug price (Prodigi quote; `stage` refuses mugs until
+`priceEUR` is set), then `stage` → `handoff` → Prodigi mapping → `mapped`
+→ `media` → shipping profiles → `release`, which needs the owner's separate
+go-ahead.
 
 **Machine notes:** this Mac's `.env.shopify-admin.local` has empty
 `SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET`, so `stage` (even a dry run)

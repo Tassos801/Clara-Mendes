@@ -618,8 +618,9 @@ none is granted. See the
 
 The second museum collection, `line-and-colour` (SKU code `LC`): five
 Kandinskys (AIC 8991, 8980, 129849, 8983, 8987) and five Mondrians
-(Cleveland 1967.215, 1958.38, 1971.220; AIC 109819, 65821). Both artists are
-registered but unapproved; every rights and master review is pending.
+(Cleveland 1967.215, 1958.38, 1971.220; AIC 109819, 65821). The owner
+approved both artists and cleared the rights and master reviews of the ten
+works on 2026-10-15; only staging, Prodigi mapping and a mug price remain.
 Two pipeline changes came with it:
 
 - **Per-print sizes.** `print.sizes` lists the collection sizes a print is

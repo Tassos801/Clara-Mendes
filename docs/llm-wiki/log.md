@@ -1819,8 +1819,8 @@ and phone-case files prepared per qualifying work. A print can now list `sizes` 
 qualify for every collection size (the five 3000 px AIC works sell at 8×10
 only), and crop approval is recorded per work, so Floating World's approval
 no longer covers new crops. Codex generated the room backgrounds and reviewed
-the change read-only. The owner chose the name, recorded trims for two works and
-approved the crops; the open decisions (*Study for a Composition*, ppi,
-reviews, mug price) are listed in
+the change read-only. The owner chose the name, recorded trims for two works, approved
+the crops and both artists, cleared the rights and master reviews and
+accepted the larger-size ppi; a mug price and staging remain, as listed in
 [artist-shops/status.md](../artist-shops/status.md). See
 [catalog and products](modules/catalog-and-products.md#line-and-colour-2026-10-15-prepared-not-staged).
