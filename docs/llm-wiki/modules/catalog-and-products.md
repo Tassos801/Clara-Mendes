@@ -552,6 +552,16 @@ tabs off the photograph; `masterSize()` is the size layout, qualification,
 `prepare` and the orientation check use, and recording a trim resets the
 master review. See the [status](../../artist-shops/status.md).
 
+"About the works" at the foot of an artist shop (`ArtistWorks` in
+`app/routes/artists.$slug.tsx`) gives each work's museum title, date and
+medium, credit line (`artworkCreditLine()`) and museum link, then the
+not-affiliated disclaimer. The server HTML always carries all of it in full,
+as wide screens show it. Since 2026-10-15, on screens up to 900px each work
+folds to a `<details>` row once the page runs: short title, date and museum
+object number (two Great Wave impressions share a short title), opening to
+the same facts. The disclaimer stays visible. Hokusai's section went from
+about 2,200px to 610px at 375px wide.
+
 On 2026-10-13 the owner's authorised continuation created the ten Floating
 World Drafts at €26.99, one 8×10 variant each, and attached their 40 current
 room images. All ten remain unreleased and Draft with tracked inventory
