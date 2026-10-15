@@ -214,12 +214,21 @@ async function crops() {
     throw new Error(
       `data/museum-crops.json is invalid:\n- ${problems.join('\n- ')}`,
     );
+  const collection = options.collection
+    ? PRINT_CATALOG.collections.find(
+        (entry) => entry.slug === options.collection,
+      )
+    : null;
+  if (options.collection && !collection)
+    throw new Error(`unknown print collection ${options.collection}`);
   const ids = options.artwork
     ? [options.artwork]
-    : Object.keys(MUSEUM_CROPS.crops);
-  const prints = PRINT_CATALOG.collections.flatMap(
-    (collection) => collection.prints,
-  );
+    : collection
+      ? collection.prints
+          .map((print) => print.artworkId)
+          .filter((id) => MUSEUM_CROPS.crops[id])
+      : Object.keys(MUSEUM_CROPS.crops);
+  const prints = PRINT_CATALOG.collections.flatMap((entry) => entry.prints);
   const artworks = ids.map((id) => {
     const artwork = findArtwork(id, registry);
     if (!artwork) throw new Error(`unknown artwork ${id}`);
