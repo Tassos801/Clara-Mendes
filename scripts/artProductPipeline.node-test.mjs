@@ -704,12 +704,12 @@ test('storefront: staged family products stay hidden; released ones join the art
       .find((group) => group.key === 'type')
       .options.map(({label, value}) => [label, value]),
     [
-      ['Prints', 'prints'],
-      ['Framed prints', 'framed-prints'],
-      ['Canvas', 'canvas'],
+      ['Art Prints', 'prints'],
+      ['Framed Art', 'framed-prints'],
+      ['Canvas Art', 'canvas'],
       ['Cards', 'cards'],
       ['Postcards', 'postcards'],
-      ['Phone cases', 'phone-cases'],
+      ['Phone Cases', 'phone-cases'],
     ],
   );
   const cases = shops.artistShopView(
@@ -1047,7 +1047,7 @@ test('family sync adds a product only where its work qualifies', () => {
       prints: lineAndColour.prints,
     });
   // Everything that qualifies is already in the catalog.
-  const existing = sync(['framed-print', 'canvas', 'mug']);
+  const existing = sync(['framed-print', 'canvas', 'phone-case', 'mug']);
   assert.deepEqual(existing.added, []);
   assert.deepEqual(
     existing.skipped
@@ -1072,13 +1072,17 @@ test('family sync adds a product only where its work qualifies', () => {
       'composition-no-1-gray-red',
     ],
   );
+  assert.deepEqual(
+    existing.skipped
+      .filter((entry) => entry.family === 'phone-case')
+      .map((entry) => entry.print),
+    [
+      'houses-at-murnau',
+      'painting-with-troika',
+      'painting-with-green-center',
+      'lozenge-composition',
+      'composition-no-1-gray-red',
+    ],
+  );
   assert.ok(existing.skipped.every((entry) => entry.family !== 'mug'));
-  // Cases follow the works that have a case crop.
-  assert.deepEqual(sync(['phone-case']).added, [
-    'improvisation-no-30-cannons-phone-case',
-    'landscape-with-two-poplars-phone-case',
-    'composition-with-red-yellow-and-blue-phone-case',
-    'chrysanthemum-phone-case',
-    'field-with-young-trees-phone-case',
-  ]);
 });
