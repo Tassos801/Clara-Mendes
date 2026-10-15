@@ -25,7 +25,7 @@ import {
   publicArtistBySlug,
   type ArtistFacetGroup,
 } from '~/lib/artistShops';
-import {artworkCreditLine, lifeDatesLabel} from '~/lib/artRegistry';
+import {artworkCreditLine, lifeDatesLabel, MUSEUMS} from '~/lib/artRegistry';
 import {filterDemoProducts} from '~/lib/catalogFilters';
 import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
@@ -118,7 +118,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       date: artwork.date,
       id: artwork.id,
       medium: artwork.medium,
+      museum: MUSEUMS[artwork.source.museum].shortName,
+      objectId: artwork.source.objectId,
       objectUrl: artwork.source.objectUrl,
+      shortTitle: artwork.shortTitle,
       title: artwork.title,
     })),
     featured,
@@ -240,34 +243,7 @@ export default function ArtistShop() {
         />
       </section>
 
-      {artworks.length ? (
-        <section className="artist-works" aria-labelledby="artist-works">
-          <h2 id="artist-works">About the works</h2>
-          <ol>
-            {artworks.map((artwork) => (
-              <li key={artwork.id}>
-                <h3>{artwork.title}</h3>
-                <p>
-                  {artwork.date}. {artwork.medium}.
-                </p>
-                <p>{artwork.credit}</p>
-                <a
-                  className="text-link"
-                  href={artwork.objectUrl}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Museum record
-                </a>
-              </li>
-            ))}
-          </ol>
-          <p className="artist-works__disclaimer">
-            Reproduced from public-domain museum images. Clara Mendes is not
-            affiliated with or endorsed by the museums.
-          </p>
-        </section>
-      ) : null}
+      {artworks.length ? <ArtistWorks artworks={artworks} /> : null}
 
       <p className="artists-back">
         <Link className="text-link" prefetch="intent" to="/artists">
@@ -276,6 +252,112 @@ export default function ArtistShop() {
       </p>
     </div>
   );
+}
+
+type ArtworkSource = {
+  credit: string;
+  date: string;
+  id: string;
+  medium: string;
+  museum: string;
+  objectId: string;
+  objectUrl: string;
+  shortTitle: string;
+  title: string;
+};
+
+/**
+ * Where each work comes from. The page HTML always lists every title, credit
+ * and museum link in full, as wide screens show them. On phones, once the
+ * page runs, each work folds to one row (short title, date, museum object)
+ * that opens to the same facts.
+ */
+function ArtistWorks({artworks}: {artworks: ArtworkSource[]}) {
+  const compact = useMediaQuery('(max-width: 900px)');
+
+  return (
+    <section className="artist-works" aria-labelledby="artist-works">
+      <h2 id="artist-works">About the works</h2>
+      <ol>
+        {artworks.map((artwork) => {
+          const facts = (
+            <>
+              <p>
+                {artwork.date}. {artwork.medium}.
+              </p>
+              <p>{artwork.credit}</p>
+              <a
+                className="text-link"
+                href={artwork.objectUrl}
+                rel="noreferrer"
+                target="_blank"
+              >
+                Museum record
+              </a>
+            </>
+          );
+
+          return (
+            <li key={artwork.id}>
+              {compact ? (
+                <details>
+                  <summary>
+                    <h3>{artwork.shortTitle}</h3>
+                    {/* Two impressions can share a short title. */}
+                    <span className="artist-works__meta">
+                      {artwork.date} · {artwork.museum}, object{' '}
+                      {artwork.objectId}
+                    </span>
+                    <svg
+                      aria-hidden
+                      fill="none"
+                      height="14"
+                      viewBox="0 0 16 16"
+                      width="14"
+                    >
+                      <path
+                        d="M3.5 6 8 10.5 12.5 6"
+                        stroke="currentColor"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
+                      />
+                    </svg>
+                  </summary>
+                  <div className="artist-works__facts">
+                    <p className="artist-works__title">{artwork.title}</p>
+                    {facts}
+                  </div>
+                </details>
+              ) : (
+                <>
+                  <h3>{artwork.title}</h3>
+                  {facts}
+                </>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+      <p className="artist-works__disclaimer">
+        Reproduced from public-domain museum images. Clara Mendes is not
+        affiliated with or endorsed by the museums.
+      </p>
+    </section>
+  );
+}
+
+/** Whether `query` matches; false during SSR and the first client render. */
+function useMediaQuery(query: string) {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const list = window.matchMedia(query);
+    const update = () => setMatches(list.matches);
+    update();
+    list.addEventListener('change', update);
+    return () => list.removeEventListener('change', update);
+  }, [query]);
+  return matches;
 }
 
 type Slide = {

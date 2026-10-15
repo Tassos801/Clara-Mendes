@@ -811,6 +811,71 @@
   max-width: 60ch;
 }
 
+/* Phones: one row per work that opens to its full title, credit and museum
+   link (ArtistWorks swaps these rows in once the page runs). */
+@media (max-width: 900px) {
+  .artist-works ol {
+    margin-top: 16px;
+  }
+
+  .artist-works li {
+    display: block;
+    padding: 0;
+  }
+
+  .artist-works summary {
+    align-items: center;
+    column-gap: 12px;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    list-style: none;
+    min-height: 48px;
+    padding: 12px 0;
+  }
+
+  .artist-works summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .artist-works summary h3 {
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+
+  .artist-works__meta {
+    color: var(--color-muted);
+    font-size: 0.8rem;
+    grid-column: 1;
+    line-height: 1.5;
+  }
+
+  .artist-works summary svg {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    transition: transform 200ms ease;
+  }
+
+  .artist-works details[open] summary svg {
+    transform: rotate(180deg);
+  }
+
+  .artist-works summary:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  .artist-works__facts {
+    display: grid;
+    gap: 6px;
+    padding: 0 0 18px;
+  }
+
+  .artist-works .artist-works__title {
+    color: var(--color-ink);
+  }
+}
+
 .artists-back {
   margin-top: clamp(40px, 6vw, 72px);
 }

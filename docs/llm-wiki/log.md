@@ -1784,3 +1784,16 @@ narrow the shop are hidden, so Hokusai has no Filter button. See
 
 Sources: `app/lib/artistShops.ts`, `app/routes/artists.$slug.tsx`,
 `app/styles/artists.css`, `scripts/artistShops.node-test.mjs`.
+
+## 2026-10-15 - Compact "About the works" on phones
+
+The provenance list at the foot of an artist shop ran to about 2,200px at
+375px wide for Hokusai: six works, each with its full Met title, credit line
+and museum link. On screens up to 900px each work is now one row (short
+title, date, museum object) that opens to its full title, date and medium,
+credit and museum link; the disclaimer stays visible. Hokusai's section is
+about 610px at 375px and 680px at 320px. The server HTML and wider screens
+list everything in full as before. See
+[catalog](modules/catalog-and-products.md#2026-10-09---artist-shops-and-museum-prints-branch-codexartist-shops-pilot).
+
+Sources: `app/routes/artists.$slug.tsx`, `app/styles/artists.css`.
