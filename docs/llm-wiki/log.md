@@ -1797,3 +1797,21 @@ list everything in full as before. See
 [catalog](modules/catalog-and-products.md#2026-10-09---artist-shops-and-museum-prints-branch-codexartist-shops-pilot).
 
 Sources: `app/routes/artists.$slug.tsx`, `app/styles/artists.css`.
+
+## 2026-10-16 - Artists index rows, header and footer fixes
+
+`/artists` cards were product photos in tall grey boxes, two cards in a
+four-column grid, with "36 products" as the only detail. Each artist is now a
+row: the curator's note, works count, lowest price, product types and up to
+three works hung bare at their own shapes. On a 1366x800 laptop the first
+name now sits at 481px instead of 811px (below the fold); on a 375px phone
+at 568px instead of 774px. The artist queries read every page of results;
+the index already fetched 60 of 100 products, and the next collection would
+have dropped products silently. Site-wide: the header menu button now takes
+over below 1280px (at 1024px the cart sat off-screen), links never wrap, and
+the footer's style links no longer shrink into overlapping 35px columns. See
+[catalog](modules/catalog-and-products.md#2026-10-16---artists-index-rows).
+
+Sources: `app/routes/artists._index.tsx`, `app/lib/artistShops.ts`,
+`app/lib/printCatalog.ts`, `app/styles/artists.css`, `app/styles/app.css`,
+`scripts/prepare-print-assets.py`, `scripts/artistShops.node-test.mjs`.

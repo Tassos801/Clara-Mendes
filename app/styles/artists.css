@@ -40,73 +40,191 @@
   max-width: 56ch;
 }
 
-/* ── Index ── */
-.artists-letter {
-  border-top: 1px solid var(--artists-line);
-  margin-top: clamp(40px, 6vw, 72px);
-  padding-top: 18px;
+/* ── Index ──
+   One row per artist: who they were and what we make of their work, beside
+   a few of their works hung bare at their own shapes (never cropped). */
+.artists-page:not(.artist-shop) {
+  padding-top: calc(var(--header-height) + clamp(36px, 5vw, 76px));
 }
 
-.artists-letter h2 {
+.artists-letter {
+  margin-top: clamp(24px, 3vw, 40px);
+}
+
+.artists-letter > h2 {
   color: var(--color-muted);
   font-family: var(--serif);
   font-size: 1.4rem;
   font-style: italic;
   font-weight: 400;
-  margin: 0 0 22px;
+  margin: 0 0 12px;
 }
 
-.artists-grid {
-  display: grid;
-  gap: clamp(22px, 3vw, 40px);
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+.artists-list {
+  border-bottom: 1px solid var(--artists-line);
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.artist-card {
-  color: inherit;
+.artist-row {
+  --wall-gap: clamp(12px, 1.6vw, 22px);
+  /* Works never stand taller than this; shorter when the row is narrow. */
+  --wall-max-height: 210px;
+  align-items: center;
+  border-top: 1px solid var(--artists-line);
   display: grid;
-  gap: 14px;
-  text-decoration: none;
+  gap: clamp(28px, 4vw, 64px);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  padding: clamp(28px, 3.4vw, 46px) 0;
+  position: relative;
 }
 
-.artist-card__media {
-  aspect-ratio: 4 / 5;
-  background: var(--color-soft);
-  border-radius: 6px;
-  overflow: hidden;
+.artist-row__copy {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
 }
 
-.artist-card__media img {
-  display: block;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 900ms cubic-bezier(0.25, 1, 0.5, 1);
-  width: 100%;
-}
-
-.artist-card:hover .artist-card__media img,
-.artist-card:focus-visible .artist-card__media img {
-  transform: scale(1.025);
-}
-
-.artist-card:focus-visible {
-  outline: 2px solid var(--color-ink);
-  outline-offset: 6px;
-}
-
-.artist-card__name {
+.artist-row__name {
   font-family: var(--serif);
-  font-size: 1.5rem;
+  font-size: clamp(1.9rem, 3vw, 2.6rem);
   font-weight: 400;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   margin: 0;
 }
 
-.artist-card__meta,
+.artist-row__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* The whole row opens the shop. */
+.artist-row__link::after {
+  border-radius: 8px;
+  content: '';
+  inset: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.artist-row__link:focus-visible {
+  outline: none;
+}
+
+.artist-row__link:focus-visible::after {
+  outline: 2px solid var(--color-ink);
+  outline-offset: 4px;
+}
+
+.artist-row__note {
+  color: var(--color-muted);
+  font-family: var(--serif);
+  font-size: 1.08rem;
+  font-style: italic;
+  line-height: 1.55;
+  margin: 4px 0 0;
+  max-width: 44ch;
+}
+
+.artist-row__offer {
+  font-size: 0.95rem;
+  margin: 6px 0 0;
+}
+
+.artist-row__offer strong {
+  font-weight: 600;
+}
+
+.artist-row__families {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 46ch;
+}
+
+.artist-row__cta {
+  align-items: center;
+  border-bottom: 1px solid currentColor;
+  display: inline-flex;
+  font-size: 0.72rem;
+  font-weight: 700;
+  gap: 8px;
+  letter-spacing: 0.16em;
+  margin-top: 8px;
+  padding-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.artist-row__cta span {
+  transition: transform 300ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Each work grows in proportion to its shape (set inline), so the row
+   shares one height and fills the column up to --wall-max-height. */
+.artist-row__wall {
+  align-items: flex-end;
+  display: flex;
+  gap: var(--wall-gap);
+  justify-self: end;
+  width: min(
+    100%,
+    var(--wall-ratio) * var(--wall-max-height) + var(--wall-count-gaps) *
+      var(--wall-gap)
+  );
+}
+
+.artist-row__wall img {
+  box-shadow:
+    0 1px 2px rgba(38, 35, 31, 0.1),
+    0 16px 30px -14px rgba(38, 35, 31, 0.42);
+  display: block;
+  flex-basis: 0;
+  height: auto;
+  min-width: 0;
+  transition: transform 700ms cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.artist-row:hover .artist-row__wall img {
+  transform: translateY(-4px);
+}
+
+.artist-row:hover .artist-row__cta span {
+  transform: translateX(4px);
+}
+
+/* Tablets and phones: the works above the words, across the full width. */
+@media (max-width: 900px) {
+  .artist-row {
+    gap: 22px;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .artist-row__wall {
+    justify-self: start;
+    order: -1;
+  }
+}
+
+/* Narrow phones: two works, so each stays large enough to read. */
+@media (max-width: 520px) {
+  .artist-row {
+    --wall-max-height: 190px;
+  }
+
+  .artist-row__wall {
+    --wall-ratio: var(--wall-ratio-2);
+    --wall-count-gaps: var(--wall-count-gaps-2);
+  }
+
+  .artist-row__wall img:nth-child(n + 3) {
+    display: none;
+  }
+}
+
+.artist-row__meta,
 .artist-hero__meta {
   color: var(--color-muted);
   font-size: 0.72rem;
@@ -1130,15 +1248,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .artist-card__media img,
+  .artist-row__wall img,
+  .artist-row__cta span,
   .artist-featured__arrow,
   .artist-refine,
   .artist-refine[data-open] {
     transition: none;
   }
 
-  .artist-card:hover .artist-card__media img,
-  .artist-card:focus-visible .artist-card__media img {
+  .artist-row:hover .artist-row__wall img,
+  .artist-row:hover .artist-row__cta span {
     transform: none;
   }
 }
