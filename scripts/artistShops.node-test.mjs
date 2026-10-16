@@ -8,6 +8,7 @@ import {computeSellableHandles} from '../app/lib/catalogFilters.ts';
 import * as prints from '../app/lib/printCatalog.ts';
 import {CUSTOM_SITEMAP_PATHS} from '../app/lib/sitemap.ts';
 import sharp from 'sharp';
+import {existsSync} from 'node:fs';
 import path from 'node:path';
 import {
   buildProductSetInput,
@@ -678,5 +679,76 @@ test('the homepage artist feature lists public artists only, from data', () => {
   for (const artist of live.artists) {
     assert.ok(artist.works > 0 && artist.products >= artist.works);
     assert.ok(artist.image.startsWith('/images/'));
+  }
+});
+
+test('artist queries read every page, not only the first 100 products', async () => {
+  const pages = {
+    null: {nodes: [1, 2], pageInfo: {endCursor: 'a', hasNextPage: true}},
+    a: {nodes: [3], pageInfo: {endCursor: 'b', hasNextPage: true}},
+    b: {nodes: [4], pageInfo: {endCursor: null, hasNextPage: false}},
+  };
+  const asked = [];
+  const load = async (after) => {
+    asked.push(after);
+    return pages[after];
+  };
+  assert.deepEqual(await shops.collectPages(load), [1, 2, 3, 4]);
+  assert.deepEqual(asked, [null, 'a', 'b']);
+
+  // A runaway query stops at the page limit.
+  const endless = async () => ({
+    nodes: [0],
+    pageInfo: {endCursor: 'x', hasNextPage: true},
+  });
+  assert.equal((await shops.collectPages(endless, 3)).length, 3);
+});
+
+test('the artists index row shows the works as printed, one per artwork', () => {
+  const sources = releasedFixture();
+  const [{artist, products}] = shops.publicArtists(sources);
+  const entry = shops.artistIndexEntry(artist, products, sources.registry);
+  assert.equal(entry.name, 'Katsushika Hokusai');
+  assert.equal(entry.shortName, 'Hokusai');
+  assert.equal(entry.path, '/artists/hokusai');
+  assert.deepEqual(entry.families, ['Prints']);
+  assert.equal(entry.note, shops.firstSentence(artist.curatorNote));
+  assert.match(entry.note, /^We start with Hokusai's landscapes .*\.$/);
+  assert.deepEqual(entry.works, [
+    {
+      height: 448,
+      src: '/images/product-art/floating-world/the-great-wave-off-kanagawa.sheet-small.webp',
+      title: WAVE.shortTitle,
+      width: 560,
+    },
+  ]);
+
+  // The shipped data: never two pictures of one artwork in a row.
+  for (const {artist: shipped, products: listed} of shops.publicArtists()) {
+    const works = shops.artistIndexEntry(shipped, listed).works;
+    assert.equal(works.length, shops.artistArtworks(listed).length);
+    assert.equal(new Set(works.map((work) => work.src)).size, works.length);
+  }
+});
+
+test('every museum sheet has the small copy the artists index shows', async () => {
+  for (const collection of prints.PRINT_CATALOG.collections) {
+    if (prints.collectionKind(collection) !== 'museum') continue;
+    for (const print of collection.prints) {
+      const sheet = path.join(
+        REPO_ROOT,
+        'public',
+        roomArtworkRelativePath(collection, print),
+      );
+      if (!existsSync(sheet)) continue;
+      const small = prints.printSheetImage(collection, print);
+      const file = path.join(REPO_ROOT, 'public', small.src);
+      assert.ok(
+        existsSync(file),
+        `${small.src} is missing: run npm run product -- prepare ${collection.slug}`,
+      );
+      const {height, width} = await sharp(file).metadata();
+      assert.deepEqual({height, width}, {height: small.height, width: small.width});
+    }
   }
 });

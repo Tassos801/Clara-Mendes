@@ -22,6 +22,8 @@ import {
   artistPath,
   artistProductsQuery,
   artistShopView,
+  collectPages,
+  firstSentence,
   publicArtistBySlug,
   type ArtistFacetGroup,
 } from '~/lib/artistShops';
@@ -64,11 +66,14 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // Shopify returns only Active products published to this channel; the
   // release gate decides which may be listed, and the artist's own handles
   // decide which of the tagged collection members are theirs.
-  const data = await context.storefront.query(ARTIST_SHOP_QUERY, {
-    variables: {query: artistProductsQuery(entry.products)},
-  });
+  const query = artistProductsQuery(entry.products);
+  const nodes = await collectPages((after) =>
+    context.storefront
+      .query(ARTIST_SHOP_QUERY, {variables: {after, query}})
+      .then((page) => page.products),
+  );
   const live = new Map(
-    filterDemoProducts(data.products.nodes as ClaraCardProduct[]).map(
+    filterDemoProducts(nodes as ClaraCardProduct[]).map(
       (product) => [product.handle, product],
     ),
   );
@@ -899,20 +904,20 @@ function ArtistListing({
 
 const REFINE_FORM_ID = 'artist-refine-form';
 
-function firstSentence(text: string) {
-  const sentence = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
-  return sentence.length > 160 ? `${sentence.slice(0, 157)}…` : sentence;
-}
-
 const ARTIST_SHOP_QUERY = `#graphql
   query ArtistShop(
+    $after: String
     $country: CountryCode
     $language: LanguageCode
     $query: String!
   ) @inContext(country: $country, language: $language) {
-    products(first: 100, query: $query) {
+    products(first: 100, after: $after, query: $query) {
       nodes {
         ...ClaraProductCard
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }

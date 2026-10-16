@@ -664,3 +664,22 @@ swiped sideways, edge to edge, with the next card peeking in and a "See all"
 link to that type; wider screens show each section as a grid. Choosing a type,
 or another sort, lists one grid. On phones the cards drop the "By <artist>"
 line, which repeated the page's own artist.
+
+## 2026-10-16 - Artists index rows
+
+`/artists` lists one row per public artist (`artistIndexEntry` in
+`app/lib/artistShops.ts`): name, life dates and movement, the first sentence
+of the curator's note (or of the biography), the number of works and the
+lowest live price, the product types (named as the artist shop names them),
+and "Shop <name>". Beside it hang up to three of the artist's works, one per
+artwork with the representative one first, at their own shapes: museum
+prints show `<print>.sheet-small.webp` (the bordered sheet at 560 px long
+side, written by `prepare` next to `<print>.sheet.webp`); studio prints show
+their 4:5 artwork (`printSheetImage` in `app/lib/printCatalog.ts`). Phones
+up to 520px show two works. A test fails when a museum sheet has no small
+copy. The page emits BreadcrumbList and CollectionPage/ItemList JSON-LD, and
+its title names the artists while there are three or fewer.
+
+The index, artist shop and museum "Pair with" queries select whole
+collections by tag, so they read every page of results (`collectPages`, up to
+10 pages of 100) instead of the first 100 products only.
