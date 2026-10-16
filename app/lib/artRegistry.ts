@@ -53,7 +53,11 @@ export type Review = {
   status: ReviewStatus;
 };
 
-export type MuseumKey = 'met';
+/**
+ * Museums with an adapter in scripts/lib/museum-<key>.mjs: The Met, the Art
+ * Institute of Chicago and the Cleveland Museum of Art.
+ */
+export type MuseumKey = 'met' | 'aic' | 'cma';
 
 export type ArtworkSource = {
   apiUrl: string;
@@ -61,10 +65,20 @@ export type ArtworkSource = {
   /** Attribution exactly as the museum displays it, with any qualifier. */
   artistDisplayName: string;
   artistPrefix: string;
+  /**
+   * The credit the museum asks reproductions to carry. For the Met and
+   * Cleveland it follows the institution's name; AIC's ("Artist. Title,
+   * Date. The Art Institute of Chicago") names the institution itself.
+   */
   creditLine: string;
   /** Committed raw API response, relative to the repository root. */
   evidenceFile: string;
   fetchedAt: string;
+  /**
+   * The museum's full-resolution size when its image server caps what it
+   * serves (AIC: 3000 px on the long side). `original` is what was served.
+   */
+  fullResolution?: {height: number; width: number};
   imageUrl: string;
   institution: string;
   metadataSha256: string;
@@ -129,12 +143,31 @@ export const ART_REGISTRY = artRegistry as unknown as ArtRegistry;
 
 export const MUSEUMS: Record<
   MuseumKey,
-  {institution: string; shortName: string; rightsDesignation: string}
+  {
+    /** The credit line already names the institution (see creditLine). */
+    creditNamesInstitution?: boolean;
+    institution: string;
+    shortName: string;
+    rightsDesignation: string;
+  }
 > = {
   met: {
     institution: 'The Metropolitan Museum of Art',
     shortName: 'The Met',
     rightsDesignation: 'Public domain: The Met Open Access (CC0)',
+  },
+  aic: {
+    creditNamesInstitution: true,
+    institution: 'The Art Institute of Chicago',
+    shortName: 'Art Institute of Chicago',
+    rightsDesignation:
+      'Public domain: The Art Institute of Chicago Open Access (CC0)',
+  },
+  cma: {
+    institution: 'The Cleveland Museum of Art',
+    shortName: 'Cleveland Museum of Art',
+    rightsDesignation:
+      'Public domain: The Cleveland Museum of Art Open Access (CC0)',
   },
 };
 
@@ -220,10 +253,22 @@ export function lifeDatesLabel(artist: Pick<Artist, 'born' | 'died'>) {
   return `${artist.born?.display ?? ''}–${artist.died?.display ?? ''}`;
 }
 
+/**
+ * The institution and its credit: "The Metropolitan Museum of Art, H. O.
+ * Havemeyer Collection, …", or AIC's own form, which names itself.
+ */
+export function sourceCredit(
+  source: Pick<ArtworkSource, 'creditLine' | 'institution' | 'museum'>,
+) {
+  return MUSEUMS[source.museum].creditNamesInstitution
+    ? source.creditLine
+    : `${source.institution}, ${source.creditLine}`;
+}
+
 /** "Source: The Metropolitan Museum of Art, … Object 45434." */
 export function artworkCreditLine(artwork: Pick<Artwork, 'source'>) {
   const {source} = artwork;
-  return `Source: ${source.institution}, ${source.creditLine}. ${MUSEUMS[source.museum].rightsDesignation}. Object ${source.objectId}.`;
+  return `Source: ${sourceCredit(source)}. ${MUSEUMS[source.museum].rightsDesignation}. Object ${source.objectId}.`;
 }
 
 export function findArtist(id: string, registry: ArtRegistry = ART_REGISTRY) {
@@ -385,6 +430,17 @@ export function validateArtRegistry(
       )
         problems.push(`${at}: original needs pixel dimensions`);
     }
+    const full = source.fullResolution;
+    if (
+      full &&
+      !(
+        Number.isInteger(full.width) &&
+        Number.isInteger(full.height) &&
+        full.width > 0 &&
+        full.height > 0
+      )
+    )
+      problems.push(`${at}: source.fullResolution needs pixel dimensions`);
     for (const kind of ['rights', 'master'] as const) {
       const review = artwork.reviews?.[kind];
       if (!review || !['blocked', 'cleared', 'pending'].includes(review.status)) {

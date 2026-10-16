@@ -28,8 +28,8 @@ import {TOUGH_CASE_PHONES} from './toughCase.ts';
 
 /**
  * Museum works on other products (docs/artist-shops/status.md): a framed
- * print, a canvas, a greeting card, a postcard and a tough phone case per
- * artwork, each its own hidden Shopify Draft (one product per artwork per
+ * print, a canvas, a greeting card, a postcard, a tough phone case and a mug
+ * per artwork, each its own hidden Shopify Draft (one product per artwork per
  * type, Society6-style) — never variants of the live studio products.
  *
  * `data/art-product-catalog.json` is the single source, like the print
@@ -48,14 +48,26 @@ export const ART_PRODUCT_FAMILIES = [
   'greeting-card',
   'postcard',
   'phone-case',
+  'mug',
 ] as const;
 export type ArtProductFamily = (typeof ART_PRODUCT_FAMILIES)[number];
 
 /** Artist-shop product types, shared with app/lib/artistShops.ts. */
 export type ArtFamilyLabel =
-  'Framed prints' | 'Canvas' | 'Cards' | 'Postcards' | 'Phone cases';
+  'Framed prints' | 'Canvas' | 'Cards' | 'Postcards' | 'Phone cases' | 'Mugs';
 
 export type ShippingReach = 'eu' | 'selected' | 'worldwide';
+
+/**
+ * A panel of a file that holds the whole composition, fitted and centred,
+ * never cropped (the mug's two sides), in millimetres of the print area.
+ */
+export type WholePanel = {
+  centreX: number;
+  centreY: number;
+  height: number;
+  width: number;
+};
 
 type FileSpec = {
   /** Portrait pixel size; families that follow the artwork turn it. */
@@ -65,6 +77,8 @@ type FileSpec = {
   followsOrientation: boolean;
   /** Where the artwork sits inside a multi-panel file. */
   panel?: PixelBox;
+  /** Whole-composition panels; the family renders its own file from them. */
+  wholePanels?: WholePanel[];
 };
 
 export type ArtFamilySpec = {
@@ -75,13 +89,22 @@ export type ArtFamilySpec = {
   titleSuffix: string;
   /** Prodigi Shopify-channel mapping, or the orders/paid webhook (API). */
   route: 'channel' | 'api';
+  /**
+   * The one Prodigi SKU the file contract is drawn for, when the family
+   * has one; a collection offering the family must use it.
+   */
+  providerSku?: string;
   /** The approved crop (app/lib/museumCrops.ts); null keeps the work whole. */
   shape: CropShape | null;
   optionName: string;
   /** Single-variant families; phone cases have one variant per device. */
   single: {key: string; option: string; skuSuffix: string} | null;
   file: FileSpec;
-  /** Lowest native ppi accepted (owner decisions of 2026-10-13). */
+  /**
+   * Lowest native ppi accepted for every work (owner decisions of
+   * 2026-10-13: canvas 140, framed 200, the rest 300). One work goes lower
+   * only by a recorded owner exception (ArtFamilyConfig.ppiExceptions).
+   */
   minPpi: number;
   tags: string[];
   /** Product noun in running copy. */
@@ -271,7 +294,114 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
       'On a matte tough phone case, cropped from a public-domain museum image.',
     shippingReach: 'worldwide',
   },
+  mug: {
+    artistFamily: 'Mugs',
+    productType: 'Mugs',
+    titleSuffix: 'Mug',
+    route: 'channel',
+    providerSku: 'GLOBAL-MUG-W',
+    shape: null,
+    optionName: 'Size',
+    single: {key: '11oz', option: '11 oz', skuSuffix: 'MUG11'},
+    // Prodigi GLOBAL-MUG-W, 11 oz: a 229 × 95 mm print area at 300 dpi.
+    // The work is printed whole twice on white, each copy fitted in a
+    // 100 × 85 mm panel centred on a quarter of the wrap.
+    file: {
+      height: 1122,
+      width: 2705,
+      dpi: 300,
+      followsOrientation: false,
+      wholePanels: [
+        {centreX: 57.25, centreY: 47.5, height: 85, width: 100},
+        {centreX: 171.75, centreY: 47.5, height: 85, width: 100},
+      ],
+    },
+    minPpi: 300,
+    tags: ['Mugs'],
+    noun: 'mug',
+    reproduction:
+      'Printed whole, on each side, from a public-domain museum image; nothing is cropped or painted in.',
+    bullets: [
+      'White ceramic mug, 11 oz',
+      'The whole composition printed on white, once on each side',
+    ],
+    details: [
+      {
+        label: 'Mug',
+        text: `White ceramic mug, 11 oz. The whole composition is printed on white, once on each side of the mug. ${COLOURS}`,
+      },
+    ],
+    seoSuffix:
+      'On an 11 oz white ceramic mug, printed whole from a public-domain museum image.',
+    // Not yet decided: no shipping profile exists for mugs. The conservative
+    // wording until one does (see ProductShippingText).
+    shippingReach: 'selected',
+  },
 };
+
+export type WholePanelLayout = {
+  /** Printed size of the work in each panel. */
+  imageMm: {height: number; width: number};
+  /** Native pixels per printed inch of the master at that size. */
+  nativePpi: number;
+  /** Each panel, in file pixels. */
+  panels: PixelBox[];
+  /** The work fitted whole and centred in each panel, in file pixels. */
+  placements: PixelBox[];
+};
+
+/**
+ * Where a whole-composition family (the mug) puts the work: fitted inside
+ * each panel without cropping or stretching, centred on the panel. Null for
+ * families without whole panels. `size` is the master (original less trim).
+ */
+export function wholePanelLayout(
+  size: {height: number; width: number},
+  family: ArtProductFamily,
+): WholePanelLayout | null {
+  const {file} = FAMILY_SPECS[family];
+  if (!file.wholePanels?.length) return null;
+  const perMm = file.dpi / 25.4;
+  const boxes = file.wholePanels.map((panel) => {
+    const panelWidth = panel.width * perMm;
+    const panelHeight = panel.height * perMm;
+    const scale = Math.min(panelWidth / size.width, panelHeight / size.height);
+    const width = Math.floor(size.width * scale);
+    const height = Math.floor(size.height * scale);
+    const centreX = panel.centreX * perMm;
+    const centreY = panel.centreY * perMm;
+    return {
+      panel: {
+        height: Math.round(panelHeight),
+        left: Math.round(centreX - panelWidth / 2),
+        top: Math.round(centreY - panelHeight / 2),
+        width: Math.round(panelWidth),
+      },
+      placement: {
+        height,
+        left: Math.round(centreX - width / 2),
+        top: Math.round(centreY - height / 2),
+        width,
+      },
+    };
+  });
+  const {placement} = boxes[0];
+  const round1 = (value: number) => Math.round(value * 10) / 10;
+  return {
+    imageMm: {
+      height: round1(placement.height / perMm),
+      width: round1(placement.width / perMm),
+    },
+    nativePpi: round1(
+      Math.min(
+        (size.width * file.dpi) / placement.width,
+        (size.height * file.dpi) / placement.height,
+      ),
+    ),
+    panels: boxes.map((box) => box.panel),
+    placements: boxes.map((box) => box.placement),
+  };
+}
 
 export type ArtProductMapping = {
   verified: boolean;
@@ -286,12 +416,13 @@ export type ArtProductMapping = {
 };
 
 export type ArtProductVariant = {
-  /** "16x20", "card", "postcard" or a device code. */
+  /** "16x20", "card", "postcard", "11oz" or a device code. */
   key: string;
   /** The Shopify option value. */
   option: string;
   sku: string;
-  priceEUR: string;
+  /** The collection's price; absent while that price is pending. */
+  priceEUR?: string;
   providerSku: string;
   inventory: {policy: 'DENY'; quantity: number; tracked: boolean};
   mapping: ArtProductMapping;
@@ -333,12 +464,39 @@ export type ArtFamilyProduct = {
   variants: ArtProductVariant[];
 };
 
+/**
+ * The owner accepting one work's native ppi below its family's floor, as the
+ * canvas and framed floors were accepted for every work on 2026-10-13, but
+ * for a single artwork and with who decided, when and why. Only the owner
+ * grants one; the pipeline never does.
+ */
+export type PpiException = {
+  at: string;
+  by: string;
+  /** The lowest native ppi accepted for this work and family. */
+  minPpi: number;
+  /** The reason, e.g. "AIC serves 3000 px; owner accepts 288 ppi". */
+  note: string;
+};
+
+/**
+ * No exception goes below the museum verdicts' floor: under 150 ppi a size
+ * is unsupported (scripts/lib/museum-layout.mjs, app/lib/museumCrops.ts).
+ */
+export const MIN_EXCEPTION_PPI = 150;
+
 export type ArtFamilyConfig = {
-  priceEUR: string;
+  /**
+   * The owner-approved price. Absent while it waits for a supplier quote
+   * and the owner's approval: files can be prepared, nothing is staged.
+   */
+  priceEUR?: string;
   /** Prodigi SKU; phone cases take one per device from the case manifest. */
   providerSku: string;
   /** Prodigi dashboard settings for channel-mapped families (handoff). */
   providerSettings?: string;
+  /** Owner exceptions to the family's ppi floor, by artwork id. */
+  ppiExceptions?: Record<string, PpiException>;
 };
 
 export type ArtProductCollection = {
@@ -457,35 +615,68 @@ export function familySourceSignature(
   });
   const file = familyFileSize(product.family, product.orientation);
   const recorded = crops.crops[product.artworkId];
+  const master = masterSize(artwork);
+  const whole = master && wholePanelLayout(master, product.family);
+  let layout: unknown = 'bordered-16x20';
+  if (crop && spec.shape)
+    layout = {
+      area: recorded?.area,
+      box: [
+        crop.render.left,
+        crop.render.top,
+        crop.render.width,
+        crop.render.height,
+      ],
+      crop: recorded?.[spec.shape],
+    };
+  else if (whole)
+    layout = {
+      whole: whole.placements.map((box) => [
+        box.left,
+        box.top,
+        box.width,
+        box.height,
+      ]),
+    };
   return JSON.stringify({
     renderer: ART_ASSET_RENDERER,
     family: product.family,
     file: [file.width, file.height, spec.file.dpi],
     source: artwork.original.sha256,
     trim: trim ? [trim.left, trim.top, trim.right, trim.bottom] : [0, 0, 0, 0],
-    layout:
-      crop && spec.shape
-        ? {
-            area: recorded?.area,
-            box: [
-              crop.render.left,
-              crop.render.top,
-              crop.render.width,
-              crop.render.height,
-            ],
-            crop: recorded?.[spec.shape],
-          }
-        : 'bordered-16x20',
+    layout,
   });
+}
+
+/**
+ * The lowest native ppi a product's file may have: its family's floor, or
+ * the owner's recorded exception for that artwork in its collection.
+ */
+export function familyPpiFloor(
+  product: Pick<ArtFamilyProduct, 'artworkId' | 'collection' | 'family'>,
+  catalog: Pick<ArtProductCatalog, 'collections'> = ART_PRODUCT_CATALOG,
+) {
+  const exception = catalog.collections.find(
+    (entry) => entry.slug === product.collection,
+  )?.families[product.family]?.ppiExceptions?.[product.artworkId];
+  return {
+    minPpi: exception?.minPpi ?? FAMILY_SPECS[product.family].minPpi,
+    ppiException: exception ?? null,
+  };
 }
 
 /** What still blocks a product's release; empty when it may be released. */
 export function familyReleaseIssues(
   product: ArtFamilyProduct,
   {
+    catalog = ART_PRODUCT_CATALOG,
     crops = MUSEUM_CROPS,
     registry = ART_REGISTRY,
-  }: {crops?: MuseumCrops; registry?: ArtRegistry} = {},
+  }: {
+    catalog?: Pick<ArtProductCatalog, 'collections'>;
+    crops?: MuseumCrops;
+    registry?: ArtRegistry;
+  } = {},
 ): string[] {
   const artwork = findArtwork(product.artworkId, registry);
   const artist = artwork && findArtist(artwork.artistId, registry);
@@ -509,6 +700,12 @@ export function familyReleaseIssues(
       familySourceSignature(product, {crops, registry})
   )
     issues.push('current assets');
+  // An exception withdrawn after `prepare` must stop the release too.
+  if (
+    product.assets &&
+    !(product.assets.ppi >= familyPpiFloor(product, catalog).minPpi)
+  )
+    issues.push('native ppi at its floor or an owner ppi exception');
   if (
     !product.shopify?.productId ||
     product.variants.some(
@@ -693,10 +890,37 @@ export function validateArtProductCatalog(
     for (const [family, config] of Object.entries(entry.families ?? {})) {
       if (!ART_PRODUCT_FAMILIES.includes(family as ArtProductFamily))
         problems.push(`${at}: unknown family ${family}`);
-      if (!PRICE.test(config?.priceEUR ?? ''))
+      // Absent while the price waits for a quote and the owner's approval.
+      if (config?.priceEUR !== undefined && !PRICE.test(config.priceEUR))
         problems.push(`${at}: ${family} priceEUR must look like "29.99"`);
       if (!config?.providerSku?.trim())
         problems.push(`${at}: ${family} missing providerSku`);
+      for (const [artworkId, exception] of Object.entries(
+        config?.ppiExceptions ?? {},
+      )) {
+        const where = `${at}: ${family} ppi exception for ${artworkId}`;
+        const floor = FAMILY_SPECS[family as ArtProductFamily]?.minPpi ?? 0;
+        if (!source?.prints.some((print) => print.artworkId === artworkId))
+          problems.push(`${where}: not an artwork of this collection`);
+        if (
+          typeof exception?.minPpi !== 'number' ||
+          !(exception.minPpi >= MIN_EXCEPTION_PPI && exception.minPpi < floor)
+        )
+          problems.push(
+            `${where}: minPpi must be at least ${MIN_EXCEPTION_PPI} and below the family's ${floor}`,
+          );
+        if (
+          !exception?.by?.trim() ||
+          !exception.at?.trim() ||
+          !exception.note?.trim()
+        )
+          problems.push(`${where}: records who granted it, when and why`);
+      }
+      const contract = FAMILY_SPECS[family as ArtProductFamily]?.providerSku;
+      if (contract && config?.providerSku !== contract)
+        problems.push(
+          `${at}: ${family} providerSku must be ${contract}, the product its file is drawn for`,
+        );
     }
   }
 
@@ -805,11 +1029,11 @@ export function validateArtProductCatalog(
       if (want && variant.providerSku !== want.providerSku)
         problems.push(`${where}: provider SKU must be ${want.providerSku}`);
       if (
-        !PRICE.test(variant.priceEUR ?? '') ||
-        variant.priceEUR !== config?.priceEUR
+        variant.priceEUR !== config?.priceEUR ||
+        (variant.priceEUR !== undefined && !PRICE.test(variant.priceEUR))
       )
         problems.push(
-          `${where}: price must be the collection's ${config?.priceEUR}`,
+          `${where}: price must be the collection's ${config?.priceEUR ?? '(pending, none)'}`,
         );
       const inventory = variant.inventory;
       if (
@@ -825,9 +1049,17 @@ export function validateArtProductCatalog(
       if (typeof variant.mapping?.verified !== 'boolean')
         problems.push(`${where}: mapping.verified must be true or false`);
     }
+    if (
+      config &&
+      config.priceEUR === undefined &&
+      (product.shopify?.productId || product.released)
+    )
+      problems.push(
+        `${at}: staged or released without an approved ${product.family} price`,
+      );
     if (product.released === true)
       problems.push(
-        ...familyReleaseIssues(product, {crops, registry}).map(
+        ...familyReleaseIssues(product, {catalog, crops, registry}).map(
           (issue) => `${at}: released without ${issue}`,
         ),
       );

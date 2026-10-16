@@ -19,7 +19,7 @@ import {
  * would take over the first page of the shop. In the default order the
  * studio's own products keep their order and come first, and museum
  * products follow by product type — art prints, framed prints, canvas,
- * greeting cards, postcards, phone cases — and within a type by the
+ * greeting cards, postcards, phone cases, mugs — and within a type by the
  * catalog's artwork sequence. Explicit sorts (price, title) are untouched.
  *
  * Museum products are identified from the catalogs: every product of a

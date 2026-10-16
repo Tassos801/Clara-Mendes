@@ -57,6 +57,7 @@ export const ARTIST_PRODUCT_FAMILIES = [
   'Cards',
   'Postcards',
   'Phone cases',
+  'Mugs',
 ] as const;
 export type ArtistProductFamily = (typeof ARTIST_PRODUCT_FAMILIES)[number];
 
@@ -510,7 +511,8 @@ function productFacets(
     series: series ? {label: series, value: facetSlug(series)} : null,
     // `prints` keeps the `?type=Prints` links of the first artist pages
     // (TYPE_ALIASES also maps the old "Art prints" label); the others are
-    // `framed-prints`, `canvas`, `cards`, `postcards` and `phone-cases`.
+    // `framed-prints`, `canvas`, `cards`, `postcards`, `phone-cases` and
+    // `mugs`.
     type: {
       label: FAMILY_LABELS[product.family],
       value: facetSlug(product.family),
@@ -651,7 +653,7 @@ export function artistShopView(
   else if (sort === 'oldest') shown.sort(byYear(1));
   else if (sort === 'newest') shown.sort(byYear(-1));
   // Featured: museum works by product type (prints, framed prints, canvas,
-  // cards, postcards, phone cases), then artwork sequence; anything else
+  // cards, postcards, phone cases, mugs), then artwork sequence; anything else
   // keeps its place ahead of them.
   else
     shown.sort(

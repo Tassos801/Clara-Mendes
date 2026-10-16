@@ -5,7 +5,9 @@
  * postcard of prepare-art-product-extensions.py, the 16×20 150 dpi canvas,
  * and the 2000×2500 tough-case file of generate-tough-case-assets.mjs — but
  * the artwork comes from the owner-approved crop of the museum original:
- * pixels are only cut and resampled, never generated. Local files only.
+ * pixels are only cut and resampled, never generated. The mug's 2705×1122
+ * wrap (Prodigi GLOBAL-MUG-W) holds the whole work twice on white. Local
+ * files only.
  */
 
 import {execFileSync} from 'node:child_process';
@@ -17,6 +19,7 @@ import {caseMasks, renderPreview} from '../generate-tough-case-assets.mjs';
 import {REPO_ROOT} from './product-pipeline.mjs';
 
 const WARM_WHITE = {b: 230, g: 239, r: 244};
+const WHITE = {b: 255, g: 255, r: 255};
 const LINEN = {b: 227, g: 234, r: 238};
 /** The live postcard's address divider and stamp box. */
 const POSTCARD_RULE = '#cac2b5';
@@ -63,6 +66,36 @@ async function meanColour(buffer) {
  */
 export async function renderFamilyFile(plan) {
   const {output} = plan;
+  if (output.placements) {
+    // The whole work, fitted to each panel on white. Each placement has
+    // the master's aspect to the pixel, so `fill` neither crops nor bends.
+    const art = new Map();
+    const layers = [];
+    for (const box of output.placements) {
+      const key = `${box.width}x${box.height}`;
+      if (!art.has(key))
+        art.set(
+          key,
+          await cropped(plan)
+            .flatten({background: WHITE})
+            .resize(box.width, box.height, {fit: 'fill', kernel: 'lanczos3'})
+            .png()
+            .toBuffer(),
+        );
+      layers.push({input: art.get(key), left: box.left, top: box.top});
+    }
+    return jpeg(
+      sharp({
+        create: {
+          background: WHITE,
+          channels: 3,
+          height: output.height,
+          width: output.width,
+        },
+      }).composite(layers),
+      output.dpi,
+    );
+  }
   if (plan.family === 'canvas') {
     return jpeg(
       cropped(plan).resize(output.width, output.height, {
@@ -136,35 +169,50 @@ export async function renderFamilyFile(plan) {
  * Mean absolute difference (0–255) between the artwork region of a
  * production file and the approved crop of the original, both reduced to
  * 96 px wide. A small number proves the panel holds exactly that crop:
- * nothing generated, nothing shifted, nothing missing.
+ * nothing generated, nothing shifted, nothing missing. A mug is checked at
+ * both placements against the whole master; the worse one is returned.
  */
 export async function artMatchError(plan, file) {
-  const panel = plan.output.panel ?? {
-    height: plan.output.height,
-    left: 0,
-    top: 0,
-    width: plan.output.width,
-  };
-  const width = 96;
-  const height = Math.round((width * panel.height) / panel.width);
-  const reduce = (pipeline) =>
-    pipeline
-      .resize(width, height, {fit: 'fill', kernel: 'lanczos3'})
-      .removeAlpha()
-      .raw()
-      .toBuffer();
-  const ours = await reduce(sharp(file).extract(panel));
-  const theirs = await reduce(
-    cropped(plan).resize(panel.width, panel.height, {
-      fit: 'cover',
-      kernel: 'lanczos3',
-      position: 'centre',
-    }),
-  );
-  let total = 0;
-  for (let i = 0; i < ours.length; i += 1)
-    total += Math.abs(ours[i] - theirs[i]);
-  return Math.round((total / ours.length) * 100) / 100;
+  const whole = Boolean(plan.output.placements);
+  const regions = plan.output.placements ?? [
+    plan.output.panel ?? {
+      height: plan.output.height,
+      left: 0,
+      top: 0,
+      width: plan.output.width,
+    },
+  ];
+  let worst = 0;
+  for (const panel of regions) {
+    const width = 96;
+    const height = Math.round((width * panel.height) / panel.width);
+    const reduce = (pipeline) =>
+      pipeline
+        .resize(width, height, {fit: 'fill', kernel: 'lanczos3'})
+        .removeAlpha()
+        .raw()
+        .toBuffer();
+    const ours = await reduce(sharp(file).extract(panel));
+    const theirs = await reduce(
+      whole
+        ? cropped(plan)
+            .flatten({background: WHITE})
+            .resize(panel.width, panel.height, {
+              fit: 'fill',
+              kernel: 'lanczos3',
+            })
+        : cropped(plan).resize(panel.width, panel.height, {
+            fit: 'cover',
+            kernel: 'lanczos3',
+            position: 'centre',
+          }),
+    );
+    let total = 0;
+    for (let i = 0; i < ours.length; i += 1)
+      total += Math.abs(ours[i] - theirs[i]);
+    worst = Math.max(worst, Math.round((total / ours.length) * 100) / 100);
+  }
+  return worst;
 }
 
 /**
@@ -301,6 +349,7 @@ export async function renderFamilyPreview(plan, printFile, {masks} = {}) {
     const jpg = await renderPreview(printFile, masks);
     return sharp(jpg).webp({quality: 90}).toBuffer();
   }
+  if (plan.family === 'mug') return mugPreview(size, printFile);
   const file = await sharp(printFile).metadata();
   if (plan.family === 'framed-print') {
     const aspect = file.width / file.height;
@@ -427,6 +476,98 @@ export async function renderFamilyPreview(plan, printFile, {masks} = {}) {
     top: piece.top,
   });
   return onLinen(size, layers);
+}
+
+/** An 11 oz mug: 82 mm across, 95 mm tall; the wrap is 229 × 95 mm. */
+const MUG_MM = {diameter: 82, height: 95, wrap: 229};
+/** The wrap position facing the viewer: the first panel's centre. */
+const MUG_FRONT_MM = 57.25;
+
+/**
+ * The mug side-on with its first panel facing the viewer and the handle at
+ * the wrap's seam (left). Each column of the body samples the print file at
+ * the arc length its angle reaches on the cylinder, so the art curves away
+ * at the sides as on the mug; past the wrap's end the ceramic is white.
+ * Shading and the handle are drawn; nothing is added to the art.
+ */
+async function mugPreview(size, printFile) {
+  const perMm = 980 / MUG_MM.diameter;
+  const body = {
+    height: Math.round(MUG_MM.height * perMm),
+    width: Math.round(MUG_MM.diameter * perMm),
+  };
+  body.left = Math.round((size.width - body.width) / 2) + 70;
+  body.top = Math.round((size.height - body.height) / 2) - 30;
+  const wrapWidth = Math.round(MUG_MM.wrap * perMm);
+  const wrap = await sharp(printFile)
+    .resize(wrapWidth, body.height, {fit: 'fill', kernel: 'lanczos3'})
+    .removeAlpha()
+    .raw()
+    .toBuffer();
+  const out = Buffer.alloc(body.width * body.height * 3, 255);
+  const radius = MUG_MM.diameter / 2;
+  for (let x = 0; x < body.width; x += 1) {
+    const u = (x + 0.5 - body.width / 2) / (body.width / 2);
+    const mm = MUG_FRONT_MM + radius * Math.asin(Math.max(-1, Math.min(1, u)));
+    const column = mm * perMm - 0.5;
+    if (column < 0 || column > wrapWidth - 1) continue;
+    const left = Math.floor(column);
+    const right = Math.min(left + 1, wrapWidth - 1);
+    const t = column - left;
+    for (let y = 0; y < body.height; y += 1) {
+      const a = (y * wrapWidth + left) * 3;
+      const b = (y * wrapWidth + right) * 3;
+      const o = (y * body.width + x) * 3;
+      for (let c = 0; c < 3; c += 1)
+        out[o + c] = Math.round(wrap[a + c] * (1 - t) + wrap[b + c] * t);
+    }
+  }
+  const {height, width} = body;
+  const corner = Math.round(width * 0.06);
+  const outline = `M0 0 H${width} V${height - corner} Q${width} ${height} ${width - corner} ${height} H${corner} Q0 ${height} 0 ${height - corner} Z`;
+  const cylinder = await sharp(out, {raw: {channels: 3, height, width}})
+    .ensureAlpha()
+    .composite([
+      {
+        blend: 'dest-in',
+        input: svg(width, height, `<path d="${outline}" fill="#fff"/>`),
+      },
+      {
+        input: svg(
+          width,
+          height,
+          `<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="0">` +
+            `<stop offset="0" stop-color="rgb(40,32,24)" stop-opacity="0.34"/>` +
+            `<stop offset="0.18" stop-color="rgb(40,32,24)" stop-opacity="0.08"/>` +
+            `<stop offset="0.32" stop-color="#fff" stop-opacity="0.16"/>` +
+            `<stop offset="0.5" stop-color="#fff" stop-opacity="0"/>` +
+            `<stop offset="0.8" stop-color="rgb(40,32,24)" stop-opacity="0.1"/>` +
+            `<stop offset="1" stop-color="rgb(40,32,24)" stop-opacity="0.38"/>` +
+            `</linearGradient></defs>` +
+            `<path d="${outline}" fill="url(#g)"/>` +
+            `<rect width="${width}" height="6" fill="#fff" fill-opacity="0.7"/>`,
+        ),
+      },
+    ])
+    .png()
+    .toBuffer();
+  const handle = {
+    centreY: body.top + Math.round(height * 0.46),
+    rx: Math.round(width * 0.24),
+    ry: Math.round(height * 0.29),
+  };
+  const handleLayer = svg(
+    size.width,
+    size.height,
+    `<ellipse cx="${body.left + 8}" cy="${handle.centreY}" rx="${handle.rx}" ry="${handle.ry}" fill="none" stroke="rgb(150,140,128)" stroke-width="76"/>` +
+      `<ellipse cx="${body.left + 8}" cy="${handle.centreY}" rx="${handle.rx}" ry="${handle.ry}" fill="none" stroke="#f4f2ee" stroke-width="68"/>` +
+      `<ellipse cx="${body.left + 8}" cy="${handle.centreY}" rx="${handle.rx - 22}" ry="${handle.ry - 22}" fill="none" stroke="rgb(40,32,24)" stroke-opacity="0.12" stroke-width="10"/>`,
+  );
+  return onLinen(size, [
+    shadow(size.width, size.height, {...body, height, width}, {alpha: 0.24}),
+    {input: handleLayer, left: 0, top: 0},
+    {input: cylinder, left: body.left, top: body.top},
+  ]);
 }
 
 function worktrees() {

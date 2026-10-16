@@ -110,14 +110,33 @@ Known sizes and their verified Prodigi SKUs (current prices for the originals):
 Public-domain museum works use the same catalog and steps, plus a sourcing
 step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md).
 
-1. **Source:** `npm run museum -- search <artist> [--title|--anywhere]` lists
-   Met candidates (same-title rows may be different impressions; compare them).
-   `npm run museum -- fetch <object id> --artist <artist id> [--short-title "…"]`
-   records the work in [data/art-registry.json](../data/art-registry.json),
-   commits the raw Met record under `data/museum-evidence/` and caches the
-   original under `<launch folder>/museum/originals/` (re-fetchable on any PC,
-   checked by sha256). `qualify` prints each size's bordered layout: ≥300 ppi
-   qualifies; 150–299 needs an owner exception; <150 is omitted.
+1. **Source:** `npm run museum -- search <artist> [--museum met|aic|cma]
+   [--title|--anywhere] [--sizes]` lists candidates from The Met (default),
+   the Art Institute of Chicago (`aic`, public-domain works) or the Cleveland
+   Museum of Art (`cma`, CC0 works). Same-title rows may be different
+   impressions; compare them.
+   `npm run museum -- fetch <artwork id> --artist <artist id> [--short-title "…"]`
+   takes `met-45434` (or a bare Met object id), `aic-8991` or
+   `cma-1967.215` (Cleveland accession number). It records the work in
+   [data/art-registry.json](../data/art-registry.json), commits the museum
+   record under `data/museum-evidence/` (AIC and Cleveland: a fixed field
+   list, so the checksum does not drift) and caches the original under
+   `<launch folder>/museum/originals/` (re-fetchable on any PC, checked by
+   sha256). The artist must be registered first. `qualify` prints each size's
+   bordered layout and the mug: ≥300 ppi qualifies; 150–299 needs an owner
+   exception; <150 is omitted.
+   - **AIC** caps images at 3000 px on the long side (`full`/`max` are
+     refused), so the original is the served file and the museum's full
+     resolution is kept beside it (`source.fullResolution`; `status` and
+     `qualify` mark the work "capped"). A request never asks for more than
+     the full resolution, and a file larger than it is refused as upscaled.
+     Never stitch IIIF tiles to get round the cap. Requests carry
+     `AIC-User-Agent` (without it Cloudflare answers 403) at one a second.
+     The credit is AIC's requested form, "Artist. Title, Date. The Art
+     Institute of Chicago".
+   - **Cleveland** serves the full-resolution TIFF (`images.full`, e.g.
+     9856×9998 for 1967.215, hundreds of MB); the gate is
+     `share_license_status` CC0.
 2. **Owner reviews (the owner runs these or explicitly asks for them):**
    `npm run museum -- review <artwork id> --rights cleared --by "<name>"`,
    the same with `--master` after the prepared files are checked, and
@@ -153,12 +172,20 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    `Museum Reproduction` + the artist's name, never `Clara Mendes Original`.
    `release` refuses a museum print until both owner reviews are cleared.
 5. **Other products from the same works** (framed print, canvas, greeting
-   card, postcard, tough phone case): one hidden Draft per artwork per type,
-   never variants of the live studio extension products. Prices and Prodigi
-   SKUs per collection live in
+   card, postcard, tough phone case, mug): one hidden Draft per artwork per
+   type, never variants of the live studio extension products. Prices and
+   Prodigi SKUs per collection live in
    [data/art-product-catalog.json](../data/art-product-catalog.json)
    (`collections[].families`); its `products[]` are written by the pipeline.
-   The same verbs take `--families` (all five) or `--family <f>[,<f>]`:
+   A family may be offered before its price is approved: leave `priceEUR`
+   out and `prepare` builds and checks the files, while `stage` refuses.
+   Each family has a ppi floor (canvas 140, framed 200, the rest 300). Only
+   the owner can accept one work below it, by recording it in that family's
+   `ppiExceptions` (`"<artwork id>": {"minPpi", "by", "at", "note"}`, never
+   below 150). `prepare` then accepts that work at that floor, and release
+   stops if the file falls below its floor again.
+   The same verbs take `--families` (every family the collection offers)
+   or `--family <f>[,<f>]`:
    - `npm run product -- prepare <collection> --families [--only a,b]` adds
      the catalog entries and writes the files under
      `<launchDir>/<collection>/<family>/` (+ `web/` shopper previews,
@@ -166,7 +193,10 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
      art on the front panel, postcard 4323×1559 with the art half, canvas
      16×20 at 150 dpi in the work's orientation, case 2000×2500 (Prodigi
      centre-crops per device), each cut from the approved crop; the framed
-     print reuses the bordered 16×20 print file. It refuses a file below the
+     print reuses the bordered 16×20 print file; the mug (`GLOBAL-MUG-W`,
+     11 oz) is 2705×1122 at 300 dpi (229 × 95 mm) with the whole work on
+     white twice, each fitted in a 100 × 85 mm panel centred at 57.25 and
+     171.75 mm across, 47.5 mm down. Mugs have no shipping profile yet. It refuses a file below the
      family's accepted ppi or whose panel differs from its crop, and reuses
      current files byte for byte. The case preview needs the iPhone 16 Pro
      Prodigi template (found by checksum in any worktree's `output/`).

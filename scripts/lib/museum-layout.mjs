@@ -21,6 +21,13 @@ export const PILOT_TARGET_PPI = 300;
 export const BORDER_FRACTION = 0.06;
 const FILE_PPI = 300;
 
+/** ≥300 ppi qualifies; 150–299 needs an owner exception; below is omitted. */
+export function ppiVerdict(nativePpi) {
+  if (nativePpi >= PILOT_TARGET_PPI) return 'qualified';
+  if (nativePpi >= MIN_NATIVE_PPI) return 'exception-required';
+  return 'unsupported';
+}
+
 export function paperPixels(size, orientation) {
   const portrait = PRINT_SIZES[size];
   if (!portrait) throw new Error(`Unknown print size: ${size}`);
@@ -55,9 +62,7 @@ export function borderedLayout(
   };
   const nativePpi =
     Math.round(Math.min(original.width / inches(width), original.height / inches(height)) * 10) / 10;
-  let verdict = 'unsupported';
-  if (nativePpi >= PILOT_TARGET_PPI) verdict = 'qualified';
-  else if (nativePpi >= MIN_NATIVE_PPI) verdict = 'exception-required';
+  const verdict = ppiVerdict(nativePpi);
   return {
     borderPx: border,
     image,

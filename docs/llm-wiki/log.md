@@ -1773,6 +1773,18 @@ and structured data uses the default-market view. Store data and shipping
 zones are unchanged. See
 [fulfillment](modules/fulfillment.md#where-the-promises-render).
 
+## 2026-10-14 - Museum sources for the modern collection; mug family
+
+`npm run museum` now searches and fetches from the Art Institute of Chicago
+(`aic-<id>`, public-domain flag, images capped at 3000 px with the full
+resolution recorded beside them, `AIC-User-Agent`, 60 requests a minute)
+and the Cleveland Museum of Art (`cma-<accession>`, CC0, full-resolution
+TIFF) as well as the Met. Added the `mug` product family (Prodigi
+`GLOBAL-MUG-W`, whole work twice on white, price pending: `stage` refuses a
+family without `priceEUR`) and a per-artwork owner ppi-exception path
+(`ppiExceptions`, none granted). No Shopify, Prodigi or registry data
+changed. See [catalog and products](modules/catalog-and-products.md).
+
 ## 2026-10-15 - Artist shop categories on phones
 
 Artist shops show product-type chips (named as on the cards and Shop All)

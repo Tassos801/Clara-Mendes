@@ -9,10 +9,13 @@
  * here touches Shopify or Prodigi.
  *
  *   npm run museum -- status
- *   npm run museum -- search <query…> [--title|--anywhere] [--sizes] [--limit 20] [--offset 0]
- *     (matches artist names by default; --title matches titles; --sizes reads
- *     each original's pixel size from its first 256 KB)
- *   npm run museum -- fetch <met object id> --artist <artist id> [--short-title "…"]
+ *   npm run museum -- search <query…> [--museum met|aic|cma] [--title|--anywhere] [--sizes] [--limit 20] [--offset 0]
+ *     (The Met by default; aic is the Art Institute of Chicago, cma the
+ *     Cleveland Museum of Art. Matches artist names by default; --title
+ *     matches titles; --sizes reads each image's pixel size from its first
+ *     256 KB, or from the record where the museum states it)
+ *   npm run museum -- fetch <artwork id> --artist <artist id> [--short-title "…"]
+ *     (met-45434 or a bare Met object id, aic-8991, cma-1967.215)
  *   npm run museum -- qualify [artwork id …]
  *
  * Owner decisions — run only on the owner's explicit instruction:
@@ -53,17 +56,17 @@ import {
   validateMuseumCrops,
 } from '../app/lib/museumCrops.ts';
 import {PRINT_CATALOG, PRINT_SIZES} from '../app/lib/printCatalog.ts';
+import {FAMILY_SPECS, wholePanelLayout} from '../app/lib/artProductCatalog.ts';
 import {renderCropPreviews} from './lib/museum-crop-previews.mjs';
-import {qualifySizes} from './lib/museum-layout.mjs';
+import {ppiVerdict, qualifySizes} from './lib/museum-layout.mjs';
 import {
+  artworkRecord,
   attributionIssues,
   impressionKey,
   jpegDimensions,
-  metArtworkRecord,
-  metObjectUrl,
-  metSearchUrl,
-  normalizeMetObject,
-} from './lib/museum-met.mjs';
+  servedImageIssues,
+} from './lib/museum-record.mjs';
+import {museumSourceFor, parseArtworkRef} from './lib/museum-sources.mjs';
 import {
   CATALOG_PATH,
   REPO_ROOT,
@@ -75,9 +78,8 @@ const REGISTRY_PATH = path.join(REPO_ROOT, 'data/art-registry.json');
 const EVIDENCE_DIR = 'data/museum-evidence';
 const USER_AGENT =
   'ClaraMendesCatalogue/1.0 (+https://shopclaramendes.com; open-access sourcing)';
-/** Well under The Met's 80 requests per second. */
-const MIN_REQUEST_GAP_MS = 150;
-let lastRequestAt = 0;
+/** Per museum: requests wait for its adapter's `request.minGapMs`. */
+const lastRequestAt = new Map();
 
 const [step = 'status', ...rest] = process.argv.slice(2);
 const TRIM_EDGES = ['top', 'right', 'bottom', 'left'];
@@ -87,6 +89,7 @@ const VALUE_OPTIONS = [
   'by',
   'limit',
   'master',
+  'museum',
   'note',
   'offset',
   'rights',
@@ -183,7 +186,7 @@ function status() {
         artwork: artwork.id,
         title: truncate(artwork.shortTitle, 32),
         original: artwork.original
-          ? `${artwork.original.width}×${artwork.original.height}${artwork.trim ? ' (trimmed)' : ''}`
+          ? `${artwork.original.width}×${artwork.original.height}${artwork.trim ? ' (trimmed)' : ''}${capped(artwork) ? ' (capped)' : ''}`
           : 'not fetched',
         screen: screen.pass ? 'pass' : `fail (${screen.reasons.length})`,
         rights: artwork.reviews.rights.status,
@@ -266,28 +269,35 @@ async function search() {
   let match = 'artist';
   if (flags.has('title')) match = 'title';
   if (flags.has('anywhere')) match = 'anywhere';
+  const source = museumSourceFor(options.museum);
   const {json: found} = await getJson(
-    metSearchUrl({limit, match, offset, q: query}),
+    source.searchUrl({limit, match, offset, q: query}),
+    {source},
   );
-  const ids = found.objectIDs ?? [];
+  const page = source.searchPage(found);
+  const shown = (page.ids ?? page.records).length;
   console.log(
-    `\nThe Met: ${found.total} objects match "${query}"; showing ${offset + 1}–${offset + ids.length}.`,
+    `\n${source.label}: ${page.total} objects match "${query}"; showing ${offset + 1}–${offset + shown}.`,
   );
   const candidates = [];
   const skipped = [];
-  for (const id of ids) {
+  // The Met's search lists ids, read one by one; the others return records.
+  const records = page.records ?? [];
+  for (const id of page.ids ?? []) {
     // One unreadable record or dead image link must not end the search.
-    let candidate;
     try {
-      const {json} = await getJson(metObjectUrl(id), {cache: true});
-      candidate = normalizeMetObject(json);
+      records.push((await getJson(source.objectUrl(id), {cache: true, source})).json);
     } catch (error) {
       skipped.push(`${id}: ${error.message}`);
-      continue;
     }
-    if (flags.has('sizes') && candidate.imageUrl) {
+  }
+  for (const record of records) {
+    const candidate = source.normalize(record);
+    const recorded = source.sizeFromRecord(candidate);
+    if (flags.has('sizes') && recorded) candidate.pixels = recorded;
+    else if (flags.has('sizes') && candidate.imageUrl) {
       try {
-        candidate.pixels = await headerDimensions(candidate.imageUrl);
+        candidate.pixels = await headerDimensions(candidate.imageUrl, source);
       } catch (error) {
         candidate.imageError = error.message;
       }
@@ -303,12 +313,13 @@ async function search() {
   console.table(
     candidates.map((candidate) => {
       const key = impressionKey(candidate);
-      const id = artworkId('met', candidate.objectId);
+      const id = artworkId(candidate.museum, candidate.objectId);
       const otherRegistered = (registeredKeys.get(key) ?? []).filter(
         (registered) => registered !== id,
       );
+      const full = candidate.fullResolution;
       return {
-        id: candidate.objectId,
+        id,
         title: truncate(candidate.title, 56),
         artist: truncate(candidate.artistDisplayName, 24),
         date: candidate.date,
@@ -318,7 +329,13 @@ async function search() {
         ...(flags.has('sizes')
           ? {
               pixels: candidate.pixels
-                ? `${candidate.pixels.width}×${candidate.pixels.height}`
+                ? `${candidate.pixels.width}×${candidate.pixels.height}${
+                    full &&
+                    (full.width > candidate.pixels.width ||
+                      full.height > candidate.pixels.height)
+                      ? ` (capped; full ${full.width}×${full.height})`
+                      : ''
+                  }`
                 : candidate.imageError
                   ? 'image unavailable'
                   : '?',
@@ -349,27 +366,28 @@ async function search() {
   const file = path.join(
     museumRoot,
     'candidates',
-    `${slugify(query)}-${offset}.json`,
+    `${source.key}-${slugify(query)}-${offset}.json`,
   );
   mkdirSync(path.dirname(file), {recursive: true});
   writeJson(file, {
     candidates,
     fetchedAt: new Date().toISOString(),
+    museum: source.key,
     offset,
     query,
     skipped,
-    total: found.total,
+    total: page.total,
   });
   console.log(`Candidates: ${file}`);
   console.log('Search results are candidates, not a publication queue.');
 }
 
 async function fetchArtwork() {
-  const objectId = positional[0];
-  if (!/^\d+$/.test(objectId ?? ''))
+  if (!positional[0])
     throw new Error(
-      'Usage: npm run museum -- fetch <met object id> --artist <artist id>',
+      'Usage: npm run museum -- fetch <artwork id> --artist <artist id> (met-45434, aic-8991, cma-1967.215)',
     );
+  const {museum, objectId, source} = parseArtworkRef(positional[0]);
   const artist = findArtist(options.artist ?? '', registry);
   if (!artist)
     throw new Error(
@@ -378,14 +396,18 @@ async function fetchArtwork() {
   if (artist.kind !== 'historical')
     throw new Error(`${artist.id} is not a historical artist`);
 
-  const {json, raw} = await getJson(metObjectUrl(objectId));
-  const candidate = normalizeMetObject(json);
+  const {json, raw} = await getJson(source.objectUrl(objectId), {source});
+  const candidate = source.normalize(json);
   if (candidate.objectId !== objectId)
-    throw new Error(`The Met returned object ${candidate.objectId}`);
+    throw new Error(
+      `${source.label} returned object ${candidate.objectId}; fetch ${artworkId(museum, candidate.objectId)}`,
+    );
   if (!candidate.imageUrl)
-    throw new Error(`Object ${objectId} has no open-access primary image`);
+    throw new Error(
+      `${source.label} object ${objectId} has no open-access image${museum === 'aic' ? ' with a known full resolution' : ''}`,
+    );
 
-  const id = artworkId('met', objectId);
+  const id = artworkId(museum, objectId);
   const previous = registry.artworks.find((artwork) => artwork.id === id);
   if (previous && previous.artistId !== artist.id)
     throw new Error(`${id} is already registered to ${previous.artistId}`);
@@ -393,9 +415,11 @@ async function fetchArtwork() {
   const evidenceFile = `${EVIDENCE_DIR}/${id}.json`;
   mkdirSync(path.join(REPO_ROOT, EVIDENCE_DIR), {recursive: true});
   writeFileSync(path.join(REPO_ROOT, evidenceFile), raw);
-  const original = await downloadOriginal(candidate.imageUrl, id);
+  const original = await downloadOriginal(candidate.imageUrl, id, source);
+  const served = servedImageIssues(candidate, original);
+  if (served.length) throw new Error(`${id}: ${served.join('; ')}`);
 
-  const record = metArtworkRecord(candidate, {
+  const record = artworkRecord(candidate, {
     artistId: artist.id,
     evidenceFile,
     fetchedAt,
@@ -417,6 +441,13 @@ async function fetchArtwork() {
   console.log(
     `Original: ${original.width}×${original.height} ${original.contentType}, ${(original.bytes / 1e6).toFixed(1)} MB, sha256 ${original.sha256.slice(0, 12)}…`,
   );
+  const full = record.source.fullResolution;
+  if (full && (full.width > original.width || full.height > original.height))
+    console.log(
+      `Served at ${source.label}'s size cap; the museum's full resolution is ${full.width}×${full.height}.`,
+    );
+  if (candidate.copyright)
+    console.log(`Copyright text on the record: ${candidate.copyright}`);
   const issues = attributionIssues(candidate);
   if (issues.length) console.log(`Attribution: ${issues.join('; ')}`);
   const siblings = (
@@ -564,26 +595,57 @@ function approveArtist() {
 // -------------------------------------------------------------- helpers --
 
 function printQualification(artworks) {
-  const rows = artworks.flatMap((artwork) =>
-    artwork.original
-      ? qualifySizes(masterSize(artwork), Object.keys(PRINT_SIZES)).map(
-          (layout) => ({
-            artwork: artwork.id,
-            size: layout.size,
-            paper: `${layout.paperInches.width}×${layout.paperInches.height} in ${layout.orientation}`,
-            image: `${layout.imageInches.width}×${layout.imageInches.height} in`,
-            needs: `${layout.image.width}×${layout.image.height}px`,
-            original: artwork.trim
-              ? `${artwork.original.width}×${artwork.original.height} trimmed to ${masterSize(artwork).width}×${masterSize(artwork).height}`
-              : `${artwork.original.width}×${artwork.original.height}`,
-            ppi: layout.nativePpi,
-            verdict: layout.verdict,
-          }),
-        )
-      : [{artwork: artwork.id, verdict: 'original not fetched'}],
+  const rows = artworks.flatMap((artwork) => {
+    if (!artwork.original)
+      return [{artwork: artwork.id, verdict: 'original not fetched'}];
+    const master = masterSize(artwork);
+    const original = `${artwork.original.width}×${artwork.original.height}${
+      artwork.trim ? ` trimmed to ${master.width}×${master.height}` : ''
+    }${
+      capped(artwork)
+        ? ` (capped; full ${artwork.source.fullResolution.width}×${artwork.source.fullResolution.height})`
+        : ''
+    }`;
+    // The mug prints the whole work too, once in each of its two panels.
+    const mug = wholePanelLayout(master, 'mug');
+    return [
+      ...qualifySizes(master, Object.keys(PRINT_SIZES)).map((layout) => ({
+        artwork: artwork.id,
+        size: layout.size,
+        paper: `${layout.paperInches.width}×${layout.paperInches.height} in ${layout.orientation}`,
+        image: `${layout.imageInches.width}×${layout.imageInches.height} in`,
+        needs: `${layout.image.width}×${layout.image.height}px`,
+        original,
+        ppi: layout.nativePpi,
+        verdict: layout.verdict,
+      })),
+      {
+        artwork: artwork.id,
+        size: 'mug',
+        paper: `11 oz wrap, ${FAMILY_SPECS.mug.file.wholePanels.length} panels`,
+        image: `${mug.imageMm.width}×${mug.imageMm.height} mm`,
+        needs: `${mug.placements[0].width}×${mug.placements[0].height}px`,
+        original,
+        ppi: mug.nativePpi,
+        verdict: ppiVerdict(mug.nativePpi),
+      },
+    ];
+  });
+  console.log(
+    '\nSize qualification (full composition: prints on a white border, the mug twice on white; 300 ppi target)',
   );
-  console.log('\nSize qualification (full composition on a white border, 300 ppi target)');
   console.table(rows);
+}
+
+/** Served below the museum's full resolution (AIC's 3000 px cap). */
+function capped(artwork) {
+  const full = artwork.source.fullResolution;
+  return Boolean(
+    full &&
+      artwork.original &&
+      (full.width > artwork.original.width ||
+        full.height > artwork.original.height),
+  );
 }
 
 /** impression key → registered artwork ids, from their stored evidence. */
@@ -614,18 +676,24 @@ function catalogLinks() {
   return links;
 }
 
+/**
+ * One request under its museum's policy: the adapter's headers and at least
+ * `request.minGapMs` since that museum's previous request (retries too).
+ */
 async function request(
   url,
-  {attempts = 4, headers = {}, timeoutMs = 60_000} = {},
+  {attempts = 4, headers = {}, source, timeoutMs = 60_000},
 ) {
+  const policy = source.request;
   for (let attempt = 1; ; attempt++) {
-    const wait = lastRequestAt + MIN_REQUEST_GAP_MS - Date.now();
+    const wait =
+      (lastRequestAt.get(source.key) ?? 0) + policy.minGapMs - Date.now();
     if (wait > 0) await delay(wait);
-    lastRequestAt = Date.now();
+    lastRequestAt.set(source.key, Date.now());
     let response;
     try {
       response = await fetch(url, {
-        headers: {'User-Agent': USER_AGENT, ...headers},
+        headers: {'User-Agent': USER_AGENT, ...policy.headers, ...headers},
         signal: AbortSignal.timeout(timeoutMs),
       });
     } catch (error) {
@@ -646,7 +714,7 @@ async function request(
 }
 
 /** JSON plus its exact bytes; `cache` keeps search browsing polite. */
-async function getJson(url, {cache = false} = {}) {
+async function getJson(url, {cache = false, source}) {
   const cacheFile = path.join(
     museumRoot,
     'cache',
@@ -656,7 +724,7 @@ async function getJson(url, {cache = false} = {}) {
     const raw = readFileSync(cacheFile, 'utf8');
     return {json: JSON.parse(raw), raw};
   }
-  const raw = await (await request(url)).text();
+  const raw = await (await request(url, {source})).text();
   const json = JSON.parse(raw);
   if (cache) {
     mkdirSync(path.dirname(cacheFile), {recursive: true});
@@ -665,15 +733,21 @@ async function getJson(url, {cache = false} = {}) {
   return {json, raw};
 }
 
-/** An original's pixel size from its first 256 KB (cached by URL). */
-async function headerDimensions(url) {
+/**
+ * An image's pixel size from its first 256 KB (cached by URL). Servers that
+ * ignore the range (AIC's IIIF) are read as a stream and cancelled.
+ */
+async function headerDimensions(url, source) {
   const cacheFile = path.join(
     museumRoot,
     'cache',
     `${createHash('sha1').update(`dims:${url}`).digest('hex')}.json`,
   );
   if (existsSync(cacheFile)) return JSON.parse(readFileSync(cacheFile, 'utf8'));
-  const response = await request(url, {headers: {Range: 'bytes=0-262143'}});
+  const response = await request(url, {
+    headers: {Range: 'bytes=0-262143'},
+    source,
+  });
   const reader = response.body.getReader();
   const chunks = [];
   let size = 0;
@@ -690,13 +764,14 @@ async function headerDimensions(url) {
   return dimensions;
 }
 
-async function downloadOriginal(url, id) {
+async function downloadOriginal(url, id, source) {
   const extension = path.extname(new URL(url).pathname).toLowerCase() || '.jpg';
   const dir = path.join(museumRoot, 'originals');
   mkdirSync(dir, {recursive: true});
   const file = path.join(dir, `${id}${extension}`);
   const partial = `${file}.part`;
-  const response = await request(url, {timeoutMs: 300_000});
+  // Cleveland's full-resolution TIFFs run to hundreds of megabytes.
+  const response = await request(url, {source, timeoutMs: 1_800_000});
   const contentType = response.headers.get('content-type') ?? '';
   if (!contentType.startsWith('image/'))
     throw new Error(`${url} is ${contentType || 'not an image'}`);

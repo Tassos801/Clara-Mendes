@@ -1,7 +1,7 @@
 /**
  * Pure helpers for the family steps of scripts/product.mjs (`--family <f>` /
  * `--families`): museum works as framed prints, canvas, greeting cards,
- * postcards and tough phone cases, one Shopify Draft per artwork per family
+ * postcards, tough phone cases and mugs, one Shopify Draft per artwork per family
  * (data/art-product-catalog.json, app/lib/artProductCatalog.ts). Everything
  * here is decided from data without touching the network, so it is covered
  * by scripts/artProductPipeline.node-test.mjs.
@@ -9,16 +9,19 @@
 
 import path from 'node:path';
 import {
+  ART_PRODUCT_CATALOG,
   ART_PRODUCT_FAMILIES,
   casePrintUrlPath,
   FAMILY_SPECS,
   familyCrop,
   familyFileSize,
   familyHandle,
+  familyPpiFloor,
   familyReleaseIssues,
   familySku,
   familySourceSignature,
   familyTitle,
+  wholePanelLayout,
 } from '../../app/lib/artProductCatalog.ts';
 import {
   ART_REGISTRY,
@@ -27,6 +30,7 @@ import {
   masterSize,
   MUSEUMS,
   orientationOf,
+  sourceCredit,
 } from '../../app/lib/artRegistry.ts';
 import {MUSEUM_CROPS} from '../../app/lib/museumCrops.ts';
 import {TOUGH_CASE_PHONES} from '../../app/lib/toughCase.ts';
@@ -49,9 +53,14 @@ export const PREVIEW_SIZE = {height: 2000, width: 1600};
 /** The framed print reuses the bordered print file of this size. */
 export const FRAMED_PRINT_SIZE = '16x20';
 
-/** `--family a,b` or `--families` → the families a step works on. */
-export function selectFamilies({family, all}) {
-  if (all) return [...ART_PRODUCT_FAMILIES];
+/**
+ * `--family a,b` or `--families` → the families a step works on, in catalog
+ * order. `--families` is every family the collection offers (its entry in
+ * data/art-product-catalog.json); naming one it does not offer is an error.
+ */
+export function selectFamilies({family, all, offered = ART_PRODUCT_FAMILIES}) {
+  if (all)
+    return ART_PRODUCT_FAMILIES.filter((entry) => offered.includes(entry));
   const wanted = String(family ?? '')
     .split(',')
     .map((entry) => entry.trim())
@@ -66,6 +75,11 @@ export function selectFamilies({family, all}) {
   if (unknown.length)
     throw new Error(
       `Unknown family ${unknown.join(', ')}. Families: ${ART_PRODUCT_FAMILIES.join(', ')}`,
+    );
+  const missing = wanted.filter((entry) => !offered.includes(entry));
+  if (missing.length)
+    throw new Error(
+      `This collection does not offer ${missing.join(', ')}: add it to its entry in data/art-product-catalog.json first`,
     );
   return ART_PRODUCT_FAMILIES.filter((entry) => wanted.includes(entry));
 }
@@ -83,7 +97,9 @@ export function findArtCollection(artCatalog, slug) {
 export function expectedFamilyProduct(collection, print, family, config) {
   const spec = FAMILY_SPECS[family];
   if (!config)
-    throw new Error(`${collection.slug} does not offer ${family} (no price)`);
+    throw new Error(
+      `${collection.slug} does not offer ${family} (no entry in data/art-product-catalog.json)`,
+    );
   const inventory = {policy: 'DENY', quantity: 0, tracked: true};
   const variants = spec.single
     ? [
@@ -225,10 +241,11 @@ export function selectFamilyProducts(artCatalog, collection, {families, only}) {
 const relative = (launchRoot, file) =>
   path.relative(launchRoot, file).replaceAll('\\', '/');
 
-/** "16x20", "7x5" or "4x5" for file names. */
+/** "16x20", "7x5", "4x5" or "11oz" for file names. */
 function fileTag(family) {
   if (family === 'greeting-card' || family === 'postcard') return '7x5';
   if (family === 'phone-case') return '4x5';
+  if (family === 'mug') return '11oz';
   return FRAMED_PRINT_SIZE;
 }
 
@@ -236,13 +253,16 @@ function fileTag(family) {
  * Everything the renderer needs for one product, in absolute paths, plus
  * the values recorded in the catalog. The crop is mapped from master pixels
  * (original less trim) to original pixels, so the renderer cuts the
- * original once and never re-encodes an intermediate.
+ * original once and never re-encodes an intermediate. A whole-panel family
+ * (the mug) extracts the whole master and places it in each panel; the
+ * framed print reuses the bordered print file.
  */
 export function familyAssetPlan(
   product,
   {
     collection,
     launchRoot,
+    artCatalog = ART_PRODUCT_CATALOG,
     crops = MUSEUM_CROPS,
     registry = ART_REGISTRY,
     framedPpi,
@@ -264,16 +284,18 @@ export function familyAssetPlan(
       `${product.handle}: no ${spec.shape} crop for ${product.artworkId}`,
     );
   const trim = artwork.trim ?? {bottom: 0, left: 0, right: 0, top: 0};
-  const output = spec.shape
+  const whole = wholePanelLayout(master, product.family);
+  const reused = !spec.shape && !whole;
+  const output = reused
     ? path.join(
-        familyDir,
-        `${product.print}-${product.family}-${fileTag(product.family)}-${spec.file.dpi}dpi.jpg`,
-      )
-    : path.join(
         launchRoot,
         collection.slug,
         'print',
         printFileName(print, FRAMED_PRINT_SIZE),
+      )
+    : path.join(
+        familyDir,
+        `${product.print}-${product.family}-${fileTag(product.family)}-${spec.file.dpi}dpi.jpg`,
       );
   const preview = path.join(familyDir, 'web', `${product.handle}.webp`);
   return {
@@ -302,7 +324,7 @@ export function familyAssetPlan(
     },
     /** Master-pixel region rendered (the case renders its 4:5 file box). */
     box: crop ? crop.render : null,
-    /** The same region in original pixels. */
+    /** The same region in original pixels (the whole master for a mug). */
     extract: crop
       ? {
           height: crop.render.height,
@@ -310,14 +332,23 @@ export function familyAssetPlan(
           top: crop.render.top + trim.top,
           width: crop.render.width,
         }
-      : null,
+      : whole
+        ? {
+            height: master.height,
+            left: trim.left,
+            top: trim.top,
+            width: master.width,
+          }
+        : null,
     output: {
       dpi: spec.file.dpi,
       file: output,
       height: file.height,
       panel: spec.file.panel ?? null,
+      /** Where the whole work sits in each panel (mugs); null otherwise. */
+      placements: whole?.placements ?? null,
       path: relative(launchRoot, output),
-      reused: !spec.shape,
+      reused,
       width: file.width,
     },
     preview: {
@@ -326,8 +357,11 @@ export function familyAssetPlan(
       path: relative(launchRoot, preview),
       width: PREVIEW_SIZE.width,
     },
-    ppi: crop ? Math.round(crop.ppi * 10) / 10 : (framedPpi ?? null),
-    minPpi: spec.minPpi,
+    ppi: crop
+      ? Math.round(crop.ppi * 10) / 10
+      : (whole?.nativePpi ?? framedPpi ?? null),
+    // The family's floor, or the owner's recorded exception for this work.
+    ...familyPpiFloor(product, artCatalog),
     sourceSignature: familySourceSignature(product, {crops, registry}),
   };
 }
@@ -345,7 +379,7 @@ export function assetIssues(plan, file) {
     );
   if (!(plan.ppi >= plan.minPpi))
     issues.push(
-      `${plan.handle}: ${plan.ppi} ppi native is below the accepted ${plan.minPpi}`,
+      `${plan.handle}: ${plan.ppi} ppi native is below the accepted ${plan.minPpi}; only the owner can accept less (ppiExceptions in data/art-product-catalog.json)`,
     );
   if (plan.extract) {
     const {extract, source} = plan;
@@ -387,7 +421,7 @@ export function familyDescription(
     `<p>${escapeHtml(artist.name)}${dates ? ` (${escapeHtml(dates)})` : ''}, <em>${escapeHtml(artwork.title)}</em>, ${escapeHtml(artwork.date)}. ${escapeHtml(artwork.medium)}.</p>`,
     `<p>${escapeHtml(artCollection.copy)}</p>`,
     `<ul>${spec.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul>`,
-    `<p>${escapeHtml(spec.reproduction)} Source: ${escapeHtml(source.institution)}, ${escapeHtml(source.creditLine)}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
+    `<p>${escapeHtml(spec.reproduction)} Source: ${escapeHtml(sourceCredit(source))}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
     '<p>Printed to order. Screen and print colours can vary slightly.</p>',
   ].join('\n');
 }
@@ -417,6 +451,10 @@ export function buildFamilyProductInput(
   const spec = FAMILY_SPECS[product.family];
   const print = collection.prints.find((entry) => entry.slug === product.print);
   const {artist} = museumSource(print, registry);
+  if (product.variants.some((variant) => variant.priceEUR === undefined))
+    throw new Error(
+      `${product.handle}: no approved ${product.family} price yet — add priceEUR to the collection in data/art-product-catalog.json once the owner approves it`,
+    );
   return {
     descriptionHtml: familyDescription(product, {
       artCollection,

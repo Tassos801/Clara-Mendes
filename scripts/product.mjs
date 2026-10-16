@@ -18,7 +18,7 @@
  *   npm run product -- verify   <collection> [--origin https://…]
  *
  * Museum works as other products (framed print, canvas, greeting card,
- * postcard, tough phone case; data/art-product-catalog.json) use the same
+ * postcard, tough phone case, mug; data/art-product-catalog.json) use the same
  * verbs with `--families` or `--family <f>` — see scripts/lib/art-product-steps.mjs.
  *
  * Runbook: docs/add-products-runbook.md
@@ -73,7 +73,11 @@ import {
 } from './lib/print-room-scenes.mjs';
 import {borderedLayout, PILOT_TARGET_PPI} from './lib/museum-layout.mjs';
 import {createFamilySteps} from './lib/art-product-steps.mjs';
-import {selectFamilies} from './lib/art-product-pipeline.mjs';
+import {
+  ART_CATALOG_PATH,
+  findArtCollection,
+  selectFamilies,
+} from './lib/art-product-pipeline.mjs';
 
 const DEFAULT_ORIGIN = 'https://shopclaramendes.com';
 /** --color-soft in app/styles/app.css, behind museum prints' paper. */
@@ -1184,12 +1188,19 @@ async function runFamilyStep() {
     throw new Error(`${slug}: family products are for museum collections`);
   const launchDir = path.join(local.launchRoot, collection.slug);
   mkdirSync(launchDir, {recursive: true});
+  const offered = Object.keys(
+    findArtCollection(
+      JSON.parse(readFileSync(ART_CATALOG_PATH, 'utf8')),
+      collection.slug,
+    ).families,
+  );
   const familySteps = createFamilySteps({
     apply,
     collection,
     families: selectFamilies({
       all: flags.has('--families'),
       family: option('family'),
+      offered,
     }),
     helpers: {
       addToCart,
@@ -1234,7 +1245,7 @@ function museumPreparePlan(collection, print) {
   const {artwork} = museumSource(print);
   if (!artwork.original)
     throw new Error(
-      `${print.slug}: run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId} first`,
+      `${print.slug}: run npm run museum -- fetch ${artwork.id} --artist ${artwork.artistId} first`,
     );
   const source = path.join(
     local.launchRoot,
@@ -1244,7 +1255,7 @@ function museumPreparePlan(collection, print) {
   );
   if (!existsSync(source))
     throw new Error(
-      `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.source.objectId} --artist ${artwork.artistId}`,
+      `${print.slug}: ${source} is missing on this machine; re-run npm run museum -- fetch ${artwork.id} --artist ${artwork.artistId}`,
     );
   const master = masterSize(artwork);
   const layouts = collection.variants.map((variant) =>
