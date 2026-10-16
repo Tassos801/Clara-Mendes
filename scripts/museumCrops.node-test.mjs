@@ -28,8 +28,33 @@ test('the shipped crop data is valid and frames every Floating World work', () =
       crops.MUSEUM_CROPS.crops[print.artworkId],
       `${print.slug} has crops`,
     );
-  // Crops are proposals until the owner approves them.
-  assert.equal(typeof crops.MUSEUM_CROPS.approval.approved, 'boolean');
+  // Crops are proposals until the owner approves them, work by work.
+  for (const entry of Object.values(crops.MUSEUM_CROPS.crops))
+    assert.equal(typeof entry.approval.approved, 'boolean');
+});
+
+test('crop approval is per work, so a work added later starts unapproved', () => {
+  const id = FLOATING_WORLD.prints[0].artworkId;
+  assert.equal(crops.cropsApproved(id), true);
+  const data = structuredClone(crops.MUSEUM_CROPS);
+  data.crops[id].approval = {approved: false};
+  assert.equal(crops.cropsApproved(id, data), false);
+  assert.equal(crops.cropsApproved('aic-0', data), false);
+  // A work lists only the shapes its products use.
+  delete data.crops[id].card;
+  delete data.crops[id].postcard;
+  assert.deepEqual(
+    crops.cropPlan(id, {data}).shapes.map((entry) => entry.shape),
+    ['case', 'canvas'],
+  );
+  assert.deepEqual(
+    crops.validateMuseumCrops(data, registryModule.ART_REGISTRY),
+    [],
+  );
+  assert.throws(
+    () => crops.cropBox(SIZE, data.crops[id], 'card'),
+    /no card crop/,
+  );
 });
 
 test('every shipped crop has its exact aspect, stays printed, and prints sharp', () => {
@@ -139,11 +164,21 @@ test('the crop validator refuses unsafe data', () => {
     /met-0: unknown artwork/,
   );
   assert.match(
-    problems((d) => (d.approval = {approved: true})),
+    problems((d) => (d.crops[id].approval = {approved: true})),
     /records who approved and when/,
   );
   assert.match(
-    problems((d) => delete d.chosen),
+    problems((d) => delete d.crops[id].approval),
+    /approval\.approved must be true or false/,
+  );
+  assert.match(
+    problems((d) => delete d.crops[id].chosen),
     /who chose the crops/,
+  );
+  assert.match(
+    problems((d) => {
+      for (const shape of crops.CROP_SHAPES) delete d.crops[id][shape];
+    }),
+    /needs at least one shape/,
   );
 });

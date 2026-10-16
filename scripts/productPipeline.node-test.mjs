@@ -328,3 +328,55 @@ test('normalizeHtml ignores the whitespace Shopify adds between tags', () => {
     ),
   );
 });
+
+test('a print offered in fewer sizes stages, hands off and reports only those', () => {
+  const partial = structuredClone(collection);
+  const [small, large] = partial.prints;
+  small.sizes = ['8x10'];
+  const input = buildProductSetInput(partial, small);
+  assert.deepEqual(
+    input.variants.map((variant) => variant.sku),
+    ['CM-AA-01-8X10'],
+  );
+  assert.deepEqual(input.productOptions[0].values, [{name: '8 × 10 in'}]);
+  assert.match(input.descriptionHtml, /Unframed 8 × 10 inch portrait print/);
+  assert.equal(
+    buildProductSetInput(partial, large).variants.length,
+    2,
+    'a print without sizes keeps every collection size',
+  );
+
+  const rows = handoffRows(partial, partial.prints, {
+    printDir: '/launch/print',
+    sha256: () => 'sha',
+  });
+  assert.deepEqual(
+    rows.map((row) => row.sku),
+    ['CM-AA-01-8X10', 'CM-AA-02-8X10', 'CM-AA-02-16X20'],
+  );
+
+  small.shopify = {productId: 'gid://p', variantIds: {'8x10': 'gid://v'}};
+  small.prodigi = {'8x10': {channelProductId: '1', verified: true}};
+  const state = printStatus(partial, small);
+  assert.equal(state.staged, true);
+  assert.equal(state.mapped, true);
+
+  const plan = variantExpansionPlan(partial, small, {
+    handle: 'alpha-one-art-print',
+    id: 'gid://p',
+    variants: {nodes: []},
+  });
+  assert.deepEqual(
+    plan.map((row) => row.sku),
+    ['CM-AA-01-8X10'],
+  );
+  assert.throws(
+    () =>
+      variantExpansionPlan(partial, small, {
+        handle: 'alpha-one-art-print',
+        id: 'gid://p',
+        variants: {nodes: [{sku: 'CM-AA-01-16X20'}]},
+      }),
+    /unexpected SKU CM-AA-01-16X20/,
+  );
+});

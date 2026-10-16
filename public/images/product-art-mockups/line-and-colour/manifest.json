@@ -1,0 +1,1085 @@
+{
+  "collection": "line-and-colour",
+  "images": [
+    {
+      "print": "improvisation-no-30-cannons",
+      "room": "living-room",
+      "alt": "Improvisation No. 30 (Cannons) print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 420,
+        "top": 354,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/improvisation-no-30-cannons-living-room.png",
+        "sha256": "6c31fdc814f3a919c697abadd764578982928f33344f886ebcd555d96acc47ab"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/improvisation-no-30-cannons.sheet.webp",
+        "sha256": "69c4476b8880a1c78d9bb3f18374c7130bf86f43963d8e84cfeb7f1462b11993"
+      },
+      "output": {
+        "file": "line-and-colour/improvisation-no-30-cannons-living-room.jpg",
+        "sha256": "9a1ce5533962a0a0f8916565c74b36070cdf21fe553a3c6c87ab1d7b90655010"
+      }
+    },
+    {
+      "print": "improvisation-no-30-cannons",
+      "room": "bedroom",
+      "alt": "Improvisation No. 30 (Cannons) print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 259,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/improvisation-no-30-cannons-bedroom.png",
+        "sha256": "65bb196d97047941b09554d55d99b91e44f6dfca54e1c3c410900608523f72ec"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/improvisation-no-30-cannons.sheet.webp",
+        "sha256": "69c4476b8880a1c78d9bb3f18374c7130bf86f43963d8e84cfeb7f1462b11993"
+      },
+      "output": {
+        "file": "line-and-colour/improvisation-no-30-cannons-bedroom.jpg",
+        "sha256": "d026cb73b96572f586bf505185b78e886b7ed1eb3a5416541dc70118de9a4bb7"
+      }
+    },
+    {
+      "print": "improvisation-no-30-cannons",
+      "room": "study",
+      "alt": "Improvisation No. 30 (Cannons) print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 488,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/improvisation-no-30-cannons-study.png",
+        "sha256": "6cf0247f6303004972067dee60bad07339f409dda03b625913059eddf1d06233"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/improvisation-no-30-cannons.sheet.webp",
+        "sha256": "69c4476b8880a1c78d9bb3f18374c7130bf86f43963d8e84cfeb7f1462b11993"
+      },
+      "output": {
+        "file": "line-and-colour/improvisation-no-30-cannons-study.jpg",
+        "sha256": "a52b10ab29f8c94dbb51d4aef77d370a8aa3a6557a853c7204dc3b767408544d"
+      }
+    },
+    {
+      "print": "improvisation-no-30-cannons",
+      "room": "wide-interior",
+      "alt": "Improvisation No. 30 (Cannons) print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 460,
+        "top": 570,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/improvisation-no-30-cannons-wide-interior.png",
+        "sha256": "f33496e315a0a1519a972623c3f1138edb3c44429d07f508fa6a504b578cffa9"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/improvisation-no-30-cannons.sheet.webp",
+        "sha256": "69c4476b8880a1c78d9bb3f18374c7130bf86f43963d8e84cfeb7f1462b11993"
+      },
+      "output": {
+        "file": "line-and-colour/improvisation-no-30-cannons-wide-interior.jpg",
+        "sha256": "5bffc7d6d4f6d29eb4a6c976870fdf8c7536da1f883f72baeb31d95baf703cfa"
+      }
+    },
+    {
+      "print": "landscape-with-two-poplars",
+      "room": "living-room",
+      "alt": "Landscape with Two Poplars print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 380,
+        "top": 410,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/landscape-with-two-poplars-living-room.png",
+        "sha256": "892db9fae68bef44b962f759ca0040e18ac0690b16d36b4a2b8e913e302d592e"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/landscape-with-two-poplars.sheet.webp",
+        "sha256": "3ab99830ca020d97a66afd8a7fd69c56598e7414e176fbd9d65e07fa2a385c3a"
+      },
+      "output": {
+        "file": "line-and-colour/landscape-with-two-poplars-living-room.jpg",
+        "sha256": "8957eea5c167593872c63c6b73717432eb794ef8b5b63e797dc0f30b8245dfe0"
+      }
+    },
+    {
+      "print": "landscape-with-two-poplars",
+      "room": "bedroom",
+      "alt": "Landscape with Two Poplars print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 407,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/landscape-with-two-poplars-bedroom.png",
+        "sha256": "914d6a1cf768680b03bcfd936e5fe790c5700ecf689e7620acce8a2c18268ca6"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/landscape-with-two-poplars.sheet.webp",
+        "sha256": "3ab99830ca020d97a66afd8a7fd69c56598e7414e176fbd9d65e07fa2a385c3a"
+      },
+      "output": {
+        "file": "line-and-colour/landscape-with-two-poplars-bedroom.jpg",
+        "sha256": "c5d425b7ca6498e0481ed91d70a9e2e3946ae64dd76faa32326bf0b49b774502"
+      }
+    },
+    {
+      "print": "landscape-with-two-poplars",
+      "room": "study",
+      "alt": "Landscape with Two Poplars print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 415,
+        "top": 526,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/landscape-with-two-poplars-study.png",
+        "sha256": "aa47a4bf93733eb3dceb4090838b4cba4083dc313fcf9bc890fb6d7e636bc352"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/landscape-with-two-poplars.sheet.webp",
+        "sha256": "3ab99830ca020d97a66afd8a7fd69c56598e7414e176fbd9d65e07fa2a385c3a"
+      },
+      "output": {
+        "file": "line-and-colour/landscape-with-two-poplars-study.jpg",
+        "sha256": "c5d056db907e2e9041246bd6e1e9c95f33a02590919f5b310efdf2f708137ca7"
+      }
+    },
+    {
+      "print": "landscape-with-two-poplars",
+      "room": "wide-interior",
+      "alt": "Landscape with Two Poplars print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 480,
+        "top": 600,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/landscape-with-two-poplars-wide-interior.png",
+        "sha256": "695b274af5eaed51cb4a44efba94b159a8b3770406abfea20c2204d4937af1c9"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/landscape-with-two-poplars.sheet.webp",
+        "sha256": "3ab99830ca020d97a66afd8a7fd69c56598e7414e176fbd9d65e07fa2a385c3a"
+      },
+      "output": {
+        "file": "line-and-colour/landscape-with-two-poplars-wide-interior.jpg",
+        "sha256": "6ed9b1bcc3c00d188fadfeafe5d20f6ff207559d8f94fcb2a14f1c8bc5adf6be"
+      }
+    },
+    {
+      "print": "houses-at-murnau",
+      "room": "living-room",
+      "alt": "Houses at Murnau print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 380,
+        "top": 458,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/houses-at-murnau-living-room.png",
+        "sha256": "80d7d928bee78c277ca87f8a35448f60047bf61a8aebdca3d5d8999e6ad8f8be"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/houses-at-murnau.sheet.webp",
+        "sha256": "fc33ca119c9eedb5b897018be2d203f08098b0a6221dbde701faf16ea60b10ac"
+      },
+      "output": {
+        "file": "line-and-colour/houses-at-murnau-living-room.jpg",
+        "sha256": "712e4f0c85ec0092aa60034463d18ad37547152a9e8e6d4452de596f89f2a636"
+      }
+    },
+    {
+      "print": "houses-at-murnau",
+      "room": "bedroom",
+      "alt": "Houses at Murnau print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 411,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/houses-at-murnau-bedroom.png",
+        "sha256": "7a18968637e43ab145467414b40ebf0a6d10b79eabbbb11fe6c856283c855fbb"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/houses-at-murnau.sheet.webp",
+        "sha256": "fc33ca119c9eedb5b897018be2d203f08098b0a6221dbde701faf16ea60b10ac"
+      },
+      "output": {
+        "file": "line-and-colour/houses-at-murnau-bedroom.jpg",
+        "sha256": "41db70e11ddab414b8f7905ebcdb67acf04e47b1da131e523ecd8adebe428788"
+      }
+    },
+    {
+      "print": "houses-at-murnau",
+      "room": "study",
+      "alt": "Houses at Murnau print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 415,
+        "top": 554,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/houses-at-murnau-study.png",
+        "sha256": "2dadc30ac789f156cd3dd735bfdcdeb427cbabc49c141e73639bd7a440895ad7"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/houses-at-murnau.sheet.webp",
+        "sha256": "fc33ca119c9eedb5b897018be2d203f08098b0a6221dbde701faf16ea60b10ac"
+      },
+      "output": {
+        "file": "line-and-colour/houses-at-murnau-study.jpg",
+        "sha256": "31c009db4d6008b07b07072c38da631de46b908a497717a7047ad4882ad8dda7"
+      }
+    },
+    {
+      "print": "houses-at-murnau",
+      "room": "wide-interior",
+      "alt": "Houses at Murnau print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 500,
+        "top": 600,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/houses-at-murnau-wide-interior.png",
+        "sha256": "3cdfa22e3eea59e2335c704b6a40429e287da9743f434e5869fd414ead9ba88b"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/houses-at-murnau.sheet.webp",
+        "sha256": "fc33ca119c9eedb5b897018be2d203f08098b0a6221dbde701faf16ea60b10ac"
+      },
+      "output": {
+        "file": "line-and-colour/houses-at-murnau-wide-interior.jpg",
+        "sha256": "75562d2b37e9ecbf81a05db932c71e04dcdc9480786654fe0334bddb46b01f89"
+      }
+    },
+    {
+      "print": "painting-with-troika",
+      "room": "living-room",
+      "alt": "Painting with Troika print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 380,
+        "top": 410,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-troika-living-room.png",
+        "sha256": "0db4abccc32a16e90e5e5de19c09eb219ac90dee2d7d74801fcd602eeceae834"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-troika.sheet.webp",
+        "sha256": "8520538ec756a0f0f7ee42883f10428d5e3ddf11919ff0bcc4439c85cc39278a"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-troika-living-room.jpg",
+        "sha256": "7aa4a8689d2a5d428edcf526b1ee6c14906780d3b1c1a60a7ae050e7ea45ada9"
+      }
+    },
+    {
+      "print": "painting-with-troika",
+      "room": "bedroom",
+      "alt": "Painting with Troika print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 343,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-troika-bedroom.png",
+        "sha256": "0a6a35a00b123009119404711724092dd7aeba6ee34b48518f6510b06f45647c"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-troika.sheet.webp",
+        "sha256": "8520538ec756a0f0f7ee42883f10428d5e3ddf11919ff0bcc4439c85cc39278a"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-troika-bedroom.jpg",
+        "sha256": "5d7385f6728c963169fa650ea2733d447ec57abc35486dbc90fc369e2c0d4844"
+      }
+    },
+    {
+      "print": "painting-with-troika",
+      "room": "study",
+      "alt": "Painting with Troika print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 415,
+        "top": 550,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-troika-study.png",
+        "sha256": "0b3d93e41ad9717ea58625f13cc79fd78701878063a654306af6c42fe9cf2a73"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-troika.sheet.webp",
+        "sha256": "8520538ec756a0f0f7ee42883f10428d5e3ddf11919ff0bcc4439c85cc39278a"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-troika-study.jpg",
+        "sha256": "5ff5862074cb9eb6d1416f0edec2fbbbc7261773fc9de1572ded3de0eb453b98"
+      }
+    },
+    {
+      "print": "painting-with-troika",
+      "room": "wide-interior",
+      "alt": "Painting with Troika print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 420,
+        "top": 600,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-troika-wide-interior.png",
+        "sha256": "8756e2bd8379446ff803e39c21fa2cc4bf20e3e6b197ce1dc981c409323ea8c9"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-troika.sheet.webp",
+        "sha256": "8520538ec756a0f0f7ee42883f10428d5e3ddf11919ff0bcc4439c85cc39278a"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-troika-wide-interior.jpg",
+        "sha256": "6a918e2a05ae4018fba1525d895ed793317b8290c58f8eb9bf490cdf39dd80fa"
+      }
+    },
+    {
+      "print": "painting-with-green-center",
+      "room": "living-room",
+      "alt": "Painting with Green Center print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 380,
+        "top": 426,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-green-center-living-room.png",
+        "sha256": "c263a9d1a35ab39e491ec91048addfc7aa787a9babab84e2fe140d478b2f85bc"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-green-center.sheet.webp",
+        "sha256": "be78404174f0d5846bce5f7f2ce749c062148df3534bc12fc3166e833e94c25b"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-green-center-living-room.jpg",
+        "sha256": "64bdb30bc5351f641fddd1f656dc450a9b98c2f422d7372fab9857d02baad381"
+      }
+    },
+    {
+      "print": "painting-with-green-center",
+      "room": "bedroom",
+      "alt": "Painting with Green Center print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 435,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-green-center-bedroom.png",
+        "sha256": "f43d102f971409b283142dc61ba050d5bcc6a3e1ef8e1f5b2c53f3264ca9fc62"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-green-center.sheet.webp",
+        "sha256": "be78404174f0d5846bce5f7f2ce749c062148df3534bc12fc3166e833e94c25b"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-green-center-bedroom.jpg",
+        "sha256": "03afdc4c8c6ee3f3a94242ba120a8707eb7a4cdb285a4130984a68ca8535c1ca"
+      }
+    },
+    {
+      "print": "painting-with-green-center",
+      "room": "study",
+      "alt": "Painting with Green Center print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 415,
+        "top": 558,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-green-center-study.png",
+        "sha256": "ee9daeaa809e527c8695986e4ebc812fd944124a02febde5b4d4c923e4734ce2"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-green-center.sheet.webp",
+        "sha256": "be78404174f0d5846bce5f7f2ce749c062148df3534bc12fc3166e833e94c25b"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-green-center-study.jpg",
+        "sha256": "ae0483ab18b269e64caf3c95550530b8607f936e3031abef12082dd649244d62"
+      }
+    },
+    {
+      "print": "painting-with-green-center",
+      "room": "wide-interior",
+      "alt": "Painting with Green Center print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 440,
+        "top": 600,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/painting-with-green-center-wide-interior.png",
+        "sha256": "af83701b6cbb0673cda60492d87286a7a88db98aaf6393af818770337153b56f"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/painting-with-green-center.sheet.webp",
+        "sha256": "be78404174f0d5846bce5f7f2ce749c062148df3534bc12fc3166e833e94c25b"
+      },
+      "output": {
+        "file": "line-and-colour/painting-with-green-center-wide-interior.jpg",
+        "sha256": "19f50287b136ad7ae35b8a0dd2c783c71845a78fcb545cde6fdbcfe1de45177d"
+      }
+    },
+    {
+      "print": "composition-with-red-yellow-and-blue",
+      "room": "living-room",
+      "alt": "Composition with Red, Yellow, and Blue print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 420,
+        "top": 334,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-living-room.png",
+        "sha256": "3872619cdc7d4b3e20ef49058ef65612f8deffd7891a72cff747f9c51b75fd2f"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-with-red-yellow-and-blue.sheet.webp",
+        "sha256": "4577b1f279d45999fe345486b01359beba749d80789fb9b36368ac5c2faf304b"
+      },
+      "output": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-living-room.jpg",
+        "sha256": "98547cb921f54c8b74b634eaf4f7d481af8c6da2f1e305d3f9d47fb26cbda68c"
+      }
+    },
+    {
+      "print": "composition-with-red-yellow-and-blue",
+      "room": "bedroom",
+      "alt": "Composition with Red, Yellow, and Blue print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 235,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-bedroom.png",
+        "sha256": "8853688b08ffc88554a7746c9de7f5787a09abcce66fdde8dd4fa44be7d572ae"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-with-red-yellow-and-blue.sheet.webp",
+        "sha256": "4577b1f279d45999fe345486b01359beba749d80789fb9b36368ac5c2faf304b"
+      },
+      "output": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-bedroom.jpg",
+        "sha256": "bc1d5eef42b73495a2253e5918e1c46c4ef590b70796ebbf454cc21bae77b83e"
+      }
+    },
+    {
+      "print": "composition-with-red-yellow-and-blue",
+      "room": "study",
+      "alt": "Composition with Red, Yellow, and Blue print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 440,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-study.png",
+        "sha256": "c630b7bcaa70fd6a6acb32ea5e9d4a4f6ab8e3360d6d2f5b30145ee8e5083611"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-with-red-yellow-and-blue.sheet.webp",
+        "sha256": "4577b1f279d45999fe345486b01359beba749d80789fb9b36368ac5c2faf304b"
+      },
+      "output": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-study.jpg",
+        "sha256": "6f211d859ce2bd36eabf20e08a4c748633d7e2b807c09fb6117377def91e0e6f"
+      }
+    },
+    {
+      "print": "composition-with-red-yellow-and-blue",
+      "room": "wide-interior",
+      "alt": "Composition with Red, Yellow, and Blue print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 460,
+        "top": 586,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-wide-interior.png",
+        "sha256": "e160e7b2cd3c54274b7b84b2ea127ea3777dc113f8be8eec2c2de6803f7c38cd"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-with-red-yellow-and-blue.sheet.webp",
+        "sha256": "4577b1f279d45999fe345486b01359beba749d80789fb9b36368ac5c2faf304b"
+      },
+      "output": {
+        "file": "line-and-colour/composition-with-red-yellow-and-blue-wide-interior.jpg",
+        "sha256": "f18943bc81ca71e9380d94b02dbfb2b611ff93bb6fe258ee25ebb46b409645d3"
+      }
+    },
+    {
+      "print": "lozenge-composition",
+      "room": "living-room",
+      "alt": "Lozenge Composition print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 420,
+        "top": 362,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/lozenge-composition-living-room.png",
+        "sha256": "fb4da83d7dc59cb95327861066a35bda56ed696ed62dc3a8b761e388506628fb"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/lozenge-composition.sheet.webp",
+        "sha256": "86c63f15444f693295f4686404f23e7769d65ba9ca308eae328b79dd7ef50d7c"
+      },
+      "output": {
+        "file": "line-and-colour/lozenge-composition-living-room.jpg",
+        "sha256": "43904429784d2ab47a62d397297825cede37211cf9b3a8abb2e36a07541e86ae"
+      }
+    },
+    {
+      "print": "lozenge-composition",
+      "room": "bedroom",
+      "alt": "Lozenge Composition print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 295,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/lozenge-composition-bedroom.png",
+        "sha256": "58f8f50a26f750b916f56986823e1f2b1bfd57acd99211c5ccd7039e176808a8"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/lozenge-composition.sheet.webp",
+        "sha256": "86c63f15444f693295f4686404f23e7769d65ba9ca308eae328b79dd7ef50d7c"
+      },
+      "output": {
+        "file": "line-and-colour/lozenge-composition-bedroom.jpg",
+        "sha256": "a04dbdfa4d188122e7d92700a3ff6767a6049d85389ec3e0704b9ddf908754a7"
+      }
+    },
+    {
+      "print": "lozenge-composition",
+      "room": "study",
+      "alt": "Lozenge Composition print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 444,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/lozenge-composition-study.png",
+        "sha256": "88dfc840c06227f3d381181a1189b8562a6fd7ceaafe08772329474959cb6d79"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/lozenge-composition.sheet.webp",
+        "sha256": "86c63f15444f693295f4686404f23e7769d65ba9ca308eae328b79dd7ef50d7c"
+      },
+      "output": {
+        "file": "line-and-colour/lozenge-composition-study.jpg",
+        "sha256": "db115c5526f5fdffa2e0fd9cc9c990b18e624c50213f277859672ce25f2a8b48"
+      }
+    },
+    {
+      "print": "lozenge-composition",
+      "room": "wide-interior",
+      "alt": "Lozenge Composition print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 540,
+        "top": 600,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/lozenge-composition-wide-interior.png",
+        "sha256": "3f553698dc2c1b45af154f931f507fa63f93bb88bd288235456acb74c1d270db"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/lozenge-composition.sheet.webp",
+        "sha256": "86c63f15444f693295f4686404f23e7769d65ba9ca308eae328b79dd7ef50d7c"
+      },
+      "output": {
+        "file": "line-and-colour/lozenge-composition-wide-interior.jpg",
+        "sha256": "b77db2c94664a7bbf7d9065242717c4cb7b06ffbbab2311d5008bd2c78df8ace"
+      }
+    },
+    {
+      "print": "composition-no-1-gray-red",
+      "room": "living-room",
+      "alt": "Composition (No. 1) Gray-Red print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 420,
+        "top": 330,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-no-1-gray-red-living-room.png",
+        "sha256": "3ffaf438a106d4635fe4edf5cc86595f28dfddfd84d5b0c852a535aafb5a8068"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-no-1-gray-red.sheet.webp",
+        "sha256": "da7e87d7516f30b174161a35ac0ec741fb83406a638bf49d9fe29f01c906eb47"
+      },
+      "output": {
+        "file": "line-and-colour/composition-no-1-gray-red-living-room.jpg",
+        "sha256": "5676f5f4403cd5892282cb09a28aa545512ecd052f53e0e6fb7e85717caf9094"
+      }
+    },
+    {
+      "print": "composition-no-1-gray-red",
+      "room": "bedroom",
+      "alt": "Composition (No. 1) Gray-Red print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 480,
+        "top": 279,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-no-1-gray-red-bedroom.png",
+        "sha256": "b162883f1e911a94f969fc3072d298753fe35cbe1760591b73de808eca133152"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-no-1-gray-red.sheet.webp",
+        "sha256": "da7e87d7516f30b174161a35ac0ec741fb83406a638bf49d9fe29f01c906eb47"
+      },
+      "output": {
+        "file": "line-and-colour/composition-no-1-gray-red-bedroom.jpg",
+        "sha256": "9af8e75cb415c4c237c943775683283f98e6090a44e9d7bf30b313b883dfe487"
+      }
+    },
+    {
+      "print": "composition-no-1-gray-red",
+      "room": "study",
+      "alt": "Composition (No. 1) Gray-Red print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 424,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-no-1-gray-red-study.png",
+        "sha256": "290901d31ce03e0363ad8b344b91b87821a2a564496d4f22bf7ba8d27170f390"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-no-1-gray-red.sheet.webp",
+        "sha256": "da7e87d7516f30b174161a35ac0ec741fb83406a638bf49d9fe29f01c906eb47"
+      },
+      "output": {
+        "file": "line-and-colour/composition-no-1-gray-red-study.jpg",
+        "sha256": "da413256ac16c1853ff65f36bc6df3f7548dca47c606cb3f2a5407455f06e9cd"
+      }
+    },
+    {
+      "print": "composition-no-1-gray-red",
+      "room": "wide-interior",
+      "alt": "Composition (No. 1) Gray-Red print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 460,
+        "top": 530,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/composition-no-1-gray-red-wide-interior.png",
+        "sha256": "acdb6740cd390f6a7553eea8784765ca24006d6f90e3a97ba632dfa7c5ccb20a"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/composition-no-1-gray-red.sheet.webp",
+        "sha256": "da7e87d7516f30b174161a35ac0ec741fb83406a638bf49d9fe29f01c906eb47"
+      },
+      "output": {
+        "file": "line-and-colour/composition-no-1-gray-red-wide-interior.jpg",
+        "sha256": "f987ba33e1a47c1b89419249c15cb2aca2a5d410e5a1fed31b78047305a78b18"
+      }
+    },
+    {
+      "print": "chrysanthemum",
+      "room": "living-room",
+      "alt": "Chrysanthemum print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 420,
+        "top": 354,
+        "width": 240,
+        "height": 300
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/chrysanthemum-living-room.png",
+        "sha256": "bc40807a908cdf3bc5f25ee0240a52dbd95ef1f76f172b0e9cfec2ab0061a64d"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/chrysanthemum.sheet.webp",
+        "sha256": "5da6bc8cf03a05c1062244de4be71b5bee5cacd2209fd381e71cc864e47e5bb7"
+      },
+      "output": {
+        "file": "line-and-colour/chrysanthemum-living-room.jpg",
+        "sha256": "54e5e744bc69c6b41b17ae59319011bf8e58d36f633d567577c9ec9dc5440628"
+      }
+    },
+    {
+      "print": "chrysanthemum",
+      "room": "bedroom",
+      "alt": "Chrysanthemum print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 430,
+        "top": 263,
+        "width": 220,
+        "height": 275
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/chrysanthemum-bedroom.png",
+        "sha256": "c00cc6e02b5f77ac025c4b5bd571523baa0ad037ebfd54bdfb1727c915788025"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/chrysanthemum.sheet.webp",
+        "sha256": "5da6bc8cf03a05c1062244de4be71b5bee5cacd2209fd381e71cc864e47e5bb7"
+      },
+      "output": {
+        "file": "line-and-colour/chrysanthemum-bedroom.jpg",
+        "sha256": "a1f217daa2eb672dc9ccb23dde98f1ff04ca512ee2ad8385bfc1bc2dde6e7062"
+      }
+    },
+    {
+      "print": "chrysanthemum",
+      "room": "study",
+      "alt": "Chrysanthemum print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 440,
+        "top": 516,
+        "width": 200,
+        "height": 250
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/chrysanthemum-study.png",
+        "sha256": "1413341f395992e2ee361573015bf10fc061440a4f8c75dd6229ab62cc1f58c7"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/chrysanthemum.sheet.webp",
+        "sha256": "5da6bc8cf03a05c1062244de4be71b5bee5cacd2209fd381e71cc864e47e5bb7"
+      },
+      "output": {
+        "file": "line-and-colour/chrysanthemum-study.jpg",
+        "sha256": "1a100127712c873a05d99a75c2f14fe5159c4c31ff2e24c0891fbc11cf2a1ff8"
+      }
+    },
+    {
+      "print": "chrysanthemum",
+      "room": "wide-interior",
+      "alt": "Chrysanthemum print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 460,
+        "top": 530,
+        "width": 160,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/chrysanthemum-wide-interior.png",
+        "sha256": "87a1b43c63071fa6a1ea42df14c2a692d9f2836b41a0934a5e91d0c2e987ece8"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/chrysanthemum.sheet.webp",
+        "sha256": "5da6bc8cf03a05c1062244de4be71b5bee5cacd2209fd381e71cc864e47e5bb7"
+      },
+      "output": {
+        "file": "line-and-colour/chrysanthemum-wide-interior.jpg",
+        "sha256": "bd05779b8408cb5542e279df0dc3429a159061378ae2e4052022b6eda3b5aff5"
+      }
+    },
+    {
+      "print": "field-with-young-trees",
+      "room": "living-room",
+      "alt": "Field with Young Trees print above a low walnut sideboard in a bright, white-walled living room.",
+      "placement": {
+        "left": 380,
+        "top": 442,
+        "width": 320,
+        "height": 256
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/field-with-young-trees-living-room.png",
+        "sha256": "ef8852327b1a7eed2dcf3ff925f5ed4c7739ab41ea773e2e77674f15a405c793"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/field-with-young-trees.sheet.webp",
+        "sha256": "c7603bd7fe0c3a43f5e633bc9bb60c0dfde0ed5b7b68b02f64c50dbd54709ad5"
+      },
+      "output": {
+        "file": "line-and-colour/field-with-young-trees-living-room.jpg",
+        "sha256": "642f62a813960c17ebf6cd4789b2c32e098786874451b7e427a00d18045d31fb"
+      }
+    },
+    {
+      "print": "field-with-young-trees",
+      "room": "bedroom",
+      "alt": "Field with Young Trees print above a linen-covered bed in a calm, pale bedroom.",
+      "placement": {
+        "left": 400,
+        "top": 395,
+        "width": 280,
+        "height": 224
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/field-with-young-trees-bedroom.png",
+        "sha256": "191bab31837a5894f97aa3bf6aec8cc01ff20d90e8128064e9b5bf6f83fa26ef"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/field-with-young-trees.sheet.webp",
+        "sha256": "c7603bd7fe0c3a43f5e633bc9bb60c0dfde0ed5b7b68b02f64c50dbd54709ad5"
+      },
+      "output": {
+        "file": "line-and-colour/field-with-young-trees-bedroom.jpg",
+        "sha256": "9f3a8626cf01db841fd43988d23783b1733343730537baa09f45e55fa1f832ef"
+      }
+    },
+    {
+      "print": "field-with-young-trees",
+      "room": "study",
+      "alt": "Field with Young Trees print above an oak desk with a black steel lamp in a pared-back study.",
+      "placement": {
+        "left": 415,
+        "top": 546,
+        "width": 250,
+        "height": 200
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/field-with-young-trees-study.png",
+        "sha256": "ffa7388a1e615eaceb49f3303c269b17b3d805c1c63941d306b64ae928227430"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/field-with-young-trees.sheet.webp",
+        "sha256": "c7603bd7fe0c3a43f5e633bc9bb60c0dfde0ed5b7b68b02f64c50dbd54709ad5"
+      },
+      "output": {
+        "file": "line-and-colour/field-with-young-trees-study.jpg",
+        "sha256": "64a5a9d3e94acd56d88dcee2b60a1d8d47bf7c571fddbf2ee0c290c75cbfa6f9"
+      }
+    },
+    {
+      "print": "field-with-young-trees",
+      "room": "wide-interior",
+      "alt": "Field with Young Trees print shown at scale in a wide, airy interior with concrete floors.",
+      "placement": {
+        "left": 400,
+        "top": 600,
+        "width": 200,
+        "height": 160
+      },
+      "dimensions": {
+        "width": 1080,
+        "height": 1350
+      },
+      "background": {
+        "file": "line-and-colour/field-with-young-trees-wide-interior.png",
+        "sha256": "04d8b2cf2319ba7f783a2ad175b33ac117c7fe8858cb16a0a2941aa4f47e5285"
+      },
+      "artwork": {
+        "file": "images/product-art/line-and-colour/field-with-young-trees.sheet.webp",
+        "sha256": "c7603bd7fe0c3a43f5e633bc9bb60c0dfde0ed5b7b68b02f64c50dbd54709ad5"
+      },
+      "output": {
+        "file": "line-and-colour/field-with-young-trees-wide-interior.jpg",
+        "sha256": "98602f0e81ff32449d88452e0abee2d7f65ad7dfb0179504a62cc92e757ffc76"
+      }
+    }
+  ]
+}

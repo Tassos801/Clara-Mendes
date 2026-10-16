@@ -17,7 +17,10 @@ import {
  *
  * A crop is chosen by eye (AI-chosen, then the owner approves) and recorded
  * as data: the printed block of the sheet (`area`, so a crop never shows bare
- * museum paper) and, per shape, a centre and an optional zoom. The box itself
+ * museum paper) and, per shape, a centre and an optional zoom. Each artwork
+ * records who chose its framings and its own approval, so a work added later
+ * is never covered by an earlier approval. A work only needs the shapes its
+ * products use (new artists have no card or postcard). The box itself
  * is always computed — the largest box of the shape's aspect inside the area,
  * tightened by `zoom` and moved as little as possible to stay inside — so
  * every crop has the exact aspect its product needs. Pixels are only ever
@@ -74,16 +77,31 @@ export type CropArea = {
   right: number;
   top: number;
 };
-export type ArtworkCrops = {area: CropArea} & Record<CropShape, CropSpec>;
+export type ArtworkCrops = {
+  approval: {approved: boolean; at?: string; by?: string; note?: string};
+  area: CropArea;
+  chosen: {at: string; by: string; note?: string};
+} & Partial<Record<CropShape, CropSpec>>;
 
 export type MuseumCrops = {
   $comment?: string;
-  approval: {approved: boolean; at?: string; by?: string};
-  chosen: {at: string; by: string; note?: string};
   crops: Record<string, ArtworkCrops>;
 };
 
 export const MUSEUM_CROPS = museumCrops as unknown as MuseumCrops;
+
+/** The shapes an artwork has framings for, in CROP_SHAPES order. */
+export function artworkCropShapes(crops: ArtworkCrops) {
+  return CROP_SHAPES.filter((shape) => crops[shape]);
+}
+
+/** Whether the owner approved this artwork's framings. */
+export function cropsApproved(
+  artworkId: string,
+  data: MuseumCrops = MUSEUM_CROPS,
+) {
+  return data.crops[artworkId]?.approval?.approved === true;
+}
 
 export type PixelBox = {
   height: number;
@@ -127,6 +145,7 @@ export function cropBox(
   shape: CropShape,
 ): PixelBox {
   const spec = crops[shape];
+  if (!spec) throw new Error(`no ${shape} crop`);
   const area = areaBox(size, crops.area);
   const aspect = shapeAspect(shape, size);
   let height = Math.min(area.height, area.width / aspect);
@@ -198,7 +217,7 @@ export type CropPlan = {
   size: {height: number; width: number};
 };
 
-/** Every crop of one artwork with its ppi verdict. */
+/** Every crop an artwork has, with its ppi verdict. */
 export function cropPlan(
   artworkId: string,
   {
@@ -212,7 +231,7 @@ export function cropPlan(
   if (!artwork || !crops || !size) return null;
   return {
     artworkId,
-    shapes: CROP_SHAPES.map((shape) => {
+    shapes: artworkCropShapes(crops).map((shape) => {
       const box = cropBox(size, crops, shape);
       const ppi = cropPpi(shape, box);
       return {
@@ -246,15 +265,6 @@ export function validateMuseumCrops(
   registry: ArtRegistry = ART_REGISTRY,
 ): string[] {
   const problems: string[] = [];
-  if (!data.chosen?.by?.trim() || !data.chosen?.at?.trim())
-    problems.push('museum-crops: chosen records who chose the crops and when');
-  if (typeof data.approval?.approved !== 'boolean')
-    problems.push('museum-crops: approval.approved must be true or false');
-  if (
-    data.approval?.approved &&
-    (!data.approval.by?.trim() || !data.approval.at?.trim())
-  )
-    problems.push('museum-crops: an approval records who approved and when');
   for (const [id, crops] of Object.entries(data.crops ?? {})) {
     const at = `museum-crops ${id}`;
     const artwork = findArtwork(id, registry);
@@ -262,6 +272,15 @@ export function validateMuseumCrops(
       problems.push(`${at}: unknown artwork`);
       continue;
     }
+    if (!crops.chosen?.by?.trim() || !crops.chosen?.at?.trim())
+      problems.push(`${at}: chosen records who chose the crops and when`);
+    if (typeof crops.approval?.approved !== 'boolean')
+      problems.push(`${at}: approval.approved must be true or false`);
+    else if (
+      crops.approval.approved &&
+      (!crops.approval.by?.trim() || !crops.approval.at?.trim())
+    )
+      problems.push(`${at}: an approval records who approved and when`);
     if (!masterSize(artwork)) problems.push(`${at}: no fetched original`);
     const {area} = crops;
     if (
@@ -273,9 +292,11 @@ export function validateMuseumCrops(
       problems.push(
         `${at}: area must be fractions with right > left and bottom > top, at least half the sheet`,
       );
-    for (const shape of CROP_SHAPES) {
-      const spec = crops[shape];
-      if (!spec || !UNIT(spec.cx) || !UNIT(spec.cy))
+    if (!artworkCropShapes(crops).length)
+      problems.push(`${at}: needs at least one shape`);
+    for (const shape of artworkCropShapes(crops)) {
+      const spec = crops[shape]!;
+      if (!UNIT(spec.cx) || !UNIT(spec.cy))
         problems.push(`${at}: ${shape} needs cx and cy between 0 and 1`);
       else if (spec.zoom != null && !(spec.zoom >= 1 && spec.zoom <= 3))
         problems.push(`${at}: ${shape}.zoom must be between 1 and 3`);

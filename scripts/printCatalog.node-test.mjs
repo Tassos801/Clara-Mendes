@@ -194,6 +194,74 @@ test('releasedSizes keeps staged expansion sizes out of consumer copy', () => {
   assert.match(problems, /verified Prodigi mapping for 16x20/);
 });
 
+test('a print may be offered in fewer sizes than its collection', () => {
+  const catalog = fixture(['beta-one']);
+  const beta = catalog.collections[1];
+  const [print] = beta.prints;
+  assert.deepEqual(
+    prints.printVariants(beta, print).map((variant) => variant.size),
+    ['8x10', '16x20'],
+  );
+  print.sizes = ['8x10'];
+  assert.deepEqual(
+    prints.printVariants(beta, print).map((variant) => variant.size),
+    ['8x10'],
+  );
+  // Only its own sizes need Shopify ids and a mapping once released.
+  assert.deepEqual(prints.validatePrintCatalog(catalog), []);
+
+  print.releasedSizes.push('16x20');
+  assert.match(
+    prints.validatePrintCatalog(catalog).join('\n'),
+    /releasedSizes contains 16x20, not in its sizes/,
+  );
+  print.releasedSizes = ['8x10'];
+
+  const problems = (sizes) => {
+    print.sizes = sizes;
+    return prints.validatePrintCatalog(catalog).join('\n');
+  };
+  assert.match(problems([]), /sizes must list at least one size/);
+  assert.match(problems(['8x10', '8x10']), /sizes must not contain duplicates/);
+  assert.match(problems(['20x24']), /sizes contains unknown size 20x24/);
+});
+
+test('collection copy lists every released size and says when they vary', () => {
+  const catalog = fixture(['beta-one']);
+  const beta = catalog.collections[1];
+  const first = beta.prints[0];
+  first.releasedSizes = ['8x10', '16x20'];
+  first.shopify.variantIds['16x20'] = 'gid://v16';
+  first.prodigi['16x20'] = {channelProductId: '2', verified: true};
+  const second = structuredClone(first);
+  Object.assign(second, {
+    releasedSizes: ['8x10'],
+    sequence: 2,
+    sizes: ['8x10'],
+    slug: 'beta-two',
+    title: 'beta-two',
+  });
+  beta.prints.push(second);
+  assert.deepEqual(prints.validatePrintCatalog(catalog), []);
+  const capsule = capsules.getShopCapsuleBySlug('beta-set', catalog);
+  assert.deepEqual(capsule.sizeLabels, ['8 × 10 in', '16 × 20 in']);
+  assert.equal(capsule.sizesVary, true);
+  assert.ok(
+    capsules
+      .shopCapsuleDescription(capsule)
+      .endsWith(
+        'available unframed in 8 × 10 in and 16 × 20 in (sizes vary by work).',
+      ),
+  );
+  delete second.sizes;
+  second.releasedSizes = ['8x10', '16x20'];
+  second.shopify.variantIds['16x20'] = 'gid://v16b';
+  assert.equal(
+    capsules.getShopCapsuleBySlug('beta-set', catalog).sizesVary,
+    false,
+  );
+});
+
 test('the live Sci-fi & Cinema release offers all three sizes', () => {
   const handles = [
     'orbital-silence-art-print',
