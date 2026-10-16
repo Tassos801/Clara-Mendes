@@ -478,46 +478,206 @@ export async function renderFamilyPreview(plan, printFile, {masks} = {}) {
   return onLinen(size, layers);
 }
 
-/** An 11 oz mug: 82 mm across, 95 mm tall; the wrap is 229 × 95 mm. */
-const MUG_MM = {diameter: 82, height: 95, wrap: 229};
-/** The wrap position facing the viewer: the first panel's centre. */
-const MUG_FRONT_MM = 57.25;
+/** The hanger's wooden strips, by colour (the preview shows oak). */
+const OAK = ['#caa77a', '#a98458'];
 
 /**
- * The mug side-on with its first panel facing the viewer and the handle at
- * the wrap's seam (left). Each column of the body samples the print file at
- * the arc length its angle reaches on the cylinder, so the art curves away
- * at the sides as on the mug; past the wrap's end the ceramic is white.
- * Shading and the handle are drawn; nothing is added to the art.
+ * The shopper preview of a supplied-file family (suppliedAssetPlan), from
+ * its lead file: the product itself on linen, drawn plainly — the hanger's
+ * oak strips and cord, the acrylic's gloss, the metal panel's edge, the
+ * cushion's soft edge, the blanket flat. Nothing is added to the art.
  */
-async function mugPreview(size, printFile) {
-  const perMm = 980 / MUG_MM.diameter;
+export async function renderSuppliedPreview(plan, leadFile) {
+  const size = {height: plan.preview.height, width: plan.preview.width};
+  if (plan.family === 'printful-mug')
+    // An upright work is printed twice, centred on each quarter of the
+    // wrap: turn the first copy to the viewer.
+    return mugPreview(size, leadFile, {
+      ...PRINTFUL_MUG_MM,
+      front:
+        (plan.layout ?? plan.orientation) === 'portrait'
+          ? PRINTFUL_MUG_MM.wrap / 4
+          : PRINTFUL_MUG_MM.front,
+    });
+  const file = await sharp(leadFile).metadata();
+  const aspect = file.width / file.height;
+  const art = async (box) =>
+    sharp(leadFile)
+      .resize(box.width, box.height, {fit: 'fill', kernel: 'lanczos3'})
+      .png()
+      .toBuffer();
+
+  if (plan.family === 'hanger-print') {
+    const sheet = place(size, aspect, {
+      lift: 10,
+      maxHeight: 1460,
+      maxWidth: 1300,
+    });
+    // The strips are 1.5 cm deep and a little wider than the paper.
+    const dpi = plan.files[0]?.dpi ?? 300;
+    const mmToPx = sheet.height / ((file.height / dpi) * 25.4);
+    const strip = Math.max(18, Math.round(15 * mmToPx));
+    const overhang = Math.round(strip * 0.6);
+    const stripBox = (top) => ({
+      height: strip,
+      left: sheet.left - overhang,
+      top,
+      width: sheet.width + overhang * 2,
+    });
+    const top = stripBox(sheet.top - Math.round(strip * 0.15));
+    const bottom = stripBox(
+      sheet.top + sheet.height - strip + Math.round(strip * 0.15),
+    );
+    const wood = (box) =>
+      svg(
+        box.width,
+        box.height,
+        `<defs><linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${OAK[0]}"/><stop offset="1" stop-color="${OAK[1]}"/></linearGradient></defs>` +
+          `<rect width="${box.width}" height="${box.height}" rx="3" fill="url(#w)"/>` +
+          `<rect x="1" y="1" width="${box.width - 2}" height="${box.height - 2}" rx="3" fill="none" stroke="rgba(70,48,24,0.35)" stroke-width="2"/>`,
+      );
+    const apex = {
+      x: Math.round(size.width / 2),
+      y: Math.max(40, top.top - 210),
+    };
+    const cord = svg(
+      size.width,
+      size.height,
+      `<path d="M${top.left + Math.round(top.width * 0.12)} ${top.top + 4} L${apex.x} ${apex.y} L${top.left + Math.round(top.width * 0.88)} ${top.top + 4}" fill="none" stroke="rgb(120,96,70)" stroke-width="5" stroke-linejoin="round"/>` +
+        `<circle cx="${apex.x}" cy="${apex.y}" r="8" fill="rgb(90,80,70)"/>`,
+    );
+    return onLinen(size, [
+      {input: cord, left: 0, top: 0},
+      shadow(size.width, size.height, sheet, {alpha: 0.24}),
+      {input: await art(sheet), left: sheet.left, top: sheet.top},
+      {input: wood(top), left: top.left, top: top.top},
+      {input: wood(bottom), left: bottom.left, top: bottom.top},
+    ]);
+  }
+
+  if (plan.family === 'acrylic-print' || plan.family === 'metal-print') {
+    const panel = place(size, aspect, {
+      lift: 30,
+      maxHeight: 1480,
+      maxWidth: 1320,
+    });
+    const acrylic = plan.family === 'acrylic-print';
+    const finish = svg(
+      panel.width,
+      panel.height,
+      acrylic
+        ? // High gloss: a soft diagonal sheen and a bright polished edge.
+          `<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity="0.22"/><stop offset="0.35" stop-color="#fff" stop-opacity="0.04"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient></defs>` +
+            `<rect width="${panel.width}" height="${panel.height}" fill="url(#g)"/>` +
+            `<rect x="2" y="2" width="${panel.width - 4}" height="${panel.height - 4}" fill="none" stroke="rgba(255,255,255,0.75)" stroke-width="4"/>`
+        : // Matt metal: a thin brushed-grey edge.
+          `<rect x="1.5" y="1.5" width="${panel.width - 3}" height="${panel.height - 3}" fill="none" stroke="rgb(150,150,148)" stroke-width="3"/>`,
+    );
+    return onLinen(size, [
+      shadow(size.width, size.height, panel, {
+        alpha: acrylic ? 0.34 : 0.3,
+        blur: 30,
+        dx: 22,
+        dy: 34,
+      }),
+      {input: await art(panel), left: panel.left, top: panel.top},
+      {input: finish, left: panel.left, top: panel.top},
+    ]);
+  }
+
+  if (plan.family === 'cushion' || plan.family === 'blanket') {
+    const cushion = plan.family === 'cushion';
+    const piece = place(size, aspect, {
+      lift: 20,
+      maxHeight: cushion ? 1240 : 1500,
+      maxWidth: cushion ? 1240 : 1260,
+    });
+    const radius = Math.round(piece.width * (cushion ? 0.07 : 0.015));
+    const outline = svg(
+      piece.width,
+      piece.height,
+      `<rect width="${piece.width}" height="${piece.height}" rx="${radius}" fill="#fff"/>`,
+    );
+    // A cushion is fuller in the middle: darker towards its edges.
+    const shade = svg(
+      piece.width,
+      piece.height,
+      cushion
+        ? `<defs><radialGradient id="r" cx="0.5" cy="0.48" r="0.72"><stop offset="0.55" stop-color="rgb(40,32,24)" stop-opacity="0"/><stop offset="1" stop-color="rgb(40,32,24)" stop-opacity="0.32"/></radialGradient></defs><rect width="${piece.width}" height="${piece.height}" rx="${radius}" fill="url(#r)"/>`
+        : `<rect width="${piece.width}" height="${piece.height}" rx="${radius}" fill="none" stroke="rgba(60,48,36,0.18)" stroke-width="4"/>`,
+    );
+    const shaped = await sharp(await art(piece))
+      .ensureAlpha()
+      .composite([{blend: 'dest-in', input: outline}, {input: shade}])
+      .png()
+      .toBuffer();
+    return onLinen(size, [
+      shadow(size.width, size.height, piece, {alpha: cushion ? 0.3 : 0.2}),
+      {input: shaped, left: piece.left, top: piece.top},
+    ]);
+  }
+  throw new Error(`${plan.handle}: no preview for ${plan.family}`);
+}
+
+/**
+ * An 11 oz mug: 82 mm across, 95 mm tall; Prodigi's wrap is 229 × 95 mm
+ * and faces the viewer at its first panel's centre.
+ */
+const MUG_MM = {diameter: 82, front: 57.25, height: 95, wrap: 229};
+/**
+ * Printful's White Glossy Mug, 11 oz: 82 mm across, 96 mm tall, a 9 × 3.5 in
+ * (228.6 × 88.9 mm) print area. Its file holds a wide work once at the
+ * centre, so the preview turns the mug until most of it faces the viewer.
+ */
+const PRINTFUL_MUG_MM = {
+  diameter: 82,
+  front: 84,
+  height: 96,
+  printHeight: 88.9,
+  wrap: 228.6,
+};
+
+/**
+ * The mug side-on with the wrap position `front` facing the viewer and the
+ * handle at the wrap's seam (left). Each column of the body samples the
+ * print file at the arc length its angle reaches on the cylinder, so the art
+ * curves away at the sides as on the mug; past the wrap's end the ceramic
+ * is white. Shading and the handle are drawn; nothing is added to the art.
+ */
+async function mugPreview(size, printFile, mug = MUG_MM) {
+  const perMm = 980 / mug.diameter;
   const body = {
-    height: Math.round(MUG_MM.height * perMm),
-    width: Math.round(MUG_MM.diameter * perMm),
+    height: Math.round(mug.height * perMm),
+    width: Math.round(mug.diameter * perMm),
   };
   body.left = Math.round((size.width - body.width) / 2) + 70;
   body.top = Math.round((size.height - body.height) / 2) - 30;
-  const wrapWidth = Math.round(MUG_MM.wrap * perMm);
+  const wrapWidth = Math.round(mug.wrap * perMm);
+  // A print area shorter than the mug sits centred, white above and below.
+  const wrapHeight = Math.min(
+    body.height,
+    Math.round((mug.printHeight ?? mug.height) * perMm),
+  );
+  const offsetY = Math.round((body.height - wrapHeight) / 2);
   const wrap = await sharp(printFile)
-    .resize(wrapWidth, body.height, {fit: 'fill', kernel: 'lanczos3'})
+    .resize(wrapWidth, wrapHeight, {fit: 'fill', kernel: 'lanczos3'})
     .removeAlpha()
     .raw()
     .toBuffer();
   const out = Buffer.alloc(body.width * body.height * 3, 255);
-  const radius = MUG_MM.diameter / 2;
+  const radius = mug.diameter / 2;
   for (let x = 0; x < body.width; x += 1) {
     const u = (x + 0.5 - body.width / 2) / (body.width / 2);
-    const mm = MUG_FRONT_MM + radius * Math.asin(Math.max(-1, Math.min(1, u)));
+    const mm = mug.front + radius * Math.asin(Math.max(-1, Math.min(1, u)));
     const column = mm * perMm - 0.5;
     if (column < 0 || column > wrapWidth - 1) continue;
     const left = Math.floor(column);
     const right = Math.min(left + 1, wrapWidth - 1);
     const t = column - left;
-    for (let y = 0; y < body.height; y += 1) {
+    for (let y = 0; y < wrapHeight; y += 1) {
       const a = (y * wrapWidth + left) * 3;
       const b = (y * wrapWidth + right) * 3;
-      const o = (y * body.width + x) * 3;
+      const o = ((y + offsetY) * body.width + x) * 3;
       for (let c = 0; c < 3; c += 1)
         out[o + c] = Math.round(wrap[a + c] * (1 - t) + wrap[b + c] * t);
     }

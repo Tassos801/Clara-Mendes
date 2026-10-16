@@ -95,7 +95,7 @@ const option = (name) => {
   return index >= 0 ? rest[index + 1] : undefined;
 };
 const optionValues = new Set(
-  ['only', 'size', 'origin', 'family']
+  ['only', 'size', 'origin', 'family', 'printful']
     .map((name) => option(name))
     .filter(Boolean),
 );

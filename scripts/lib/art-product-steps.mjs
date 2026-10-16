@@ -31,10 +31,12 @@ import {
   writeFileSync,
 } from 'node:fs';
 import path from 'node:path';
+import sharp from 'sharp';
 import {
   casePrintUrlPath,
   FAMILY_SPECS,
   validateArtProductCatalog,
+  variantFile,
 } from '../../app/lib/artProductCatalog.ts';
 import {findArtwork, masterSize} from '../../app/lib/artRegistry.ts';
 import toughCaseManifest from '../../data/art-tough-phone-case.json' with {type: 'json'};
@@ -46,6 +48,7 @@ import {
   findCaseTemplate,
   renderFamilyFile,
   renderFamilyPreview,
+  renderSuppliedPreview,
   sha256 as hashBuffer,
 } from './art-product-assets.mjs';
 import {
@@ -66,8 +69,10 @@ import {
   formatArtProductCatalog,
   FRAMED_PRINT_SIZE,
   parseFamilyMappings,
+  printfulMappingFromReadback,
   recordFamilyIds,
   selectFamilyProducts,
+  suppliedAssetPlan,
   syncFamilyProducts,
   unverifyFamilyMappings,
 } from './art-product-pipeline.mjs';
@@ -133,17 +138,21 @@ export function createFamilySteps({
     return file;
   }
 
-  /** The recorded print file still exists with its recorded checksum. */
+  /** The recorded files still exist with their recorded checksums. */
+  const shaCache = new Map();
+  function onDisk(entry) {
+    const file = absolute(entry.path);
+    if (!existsSync(file)) return false;
+    if (!shaCache.has(file)) shaCache.set(file, fileSha(file));
+    return shaCache.get(file) === entry.sha256;
+  }
   function assetsOnDisk(product) {
     if (!product.assets) return false;
-    const files = [product.assets.print, product.assets.preview].map((entry) =>
-      absolute(entry.path),
-    );
-    return (
-      files.every((file) => existsSync(file)) &&
-      fileSha(files[0]) === product.assets.print.sha256 &&
-      fileSha(files[1]) === product.assets.preview.sha256
-    );
+    return [
+      product.assets.print,
+      product.assets.preview,
+      ...Object.values(product.assets.files ?? {}),
+    ].every(onDisk);
   }
 
   function requirePrepared(products) {
@@ -188,6 +197,186 @@ export function createFamilySteps({
 
   // -------------------------------------------------------------- prepare --
 
+  /**
+   * Supplied families: check each finished file against its manifest row
+   * (sha256, pixels, dpi, sRGB) and its master's AI-fill log (museum pixels
+   * pasted back unchanged), copy the row and the log into the catalog as
+   * the file's provenance, and draw the shopper preview. Native ppi below
+   * the family's floor is reported, not refused: Drafts can be staged, and
+   * release stays blocked until the owner accepts it or the file changes.
+   */
+  async function prepareSupplied(products, {plans, problems, rows}) {
+    const belowFloor = [];
+    if (!products.length) return belowFloor;
+    assert.ok(
+      artCollection.suppliedFiles,
+      `${collection.slug}: set "suppliedFiles" in data/art-product-catalog.json to the folder (under the launch folder) that holds products/manifest.json`,
+    );
+    const folder = absolute(artCollection.suppliedFiles);
+    const manifestFile = path.join(folder, 'products', 'manifest.json');
+    const assemblyFile = path.join(folder, 'masters', 'assembly.json');
+    for (const file of [manifestFile, assemblyFile])
+      assert.ok(existsSync(file), `${file} is missing`);
+    const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
+    const assembly = JSON.parse(readFileSync(assemblyFile, 'utf8'));
+    // A master logged without a canvas is the work itself: read its size.
+    const masterSizes = new Map();
+    for (const row of manifest) {
+      const key = row.source_master
+        .replace(/^masters\//, '')
+        .replace(/\.png$/, '');
+      if (
+        assembly[key] &&
+        !assembly[key].canvas &&
+        !masterSizes.has(row.source_master)
+      ) {
+        const meta = await sharp(
+          path.join(folder, ...row.source_master.split('/')),
+        ).metadata();
+        masterSizes.set(row.source_master, [meta.width, meta.height]);
+      }
+    }
+    for (const product of products) {
+      const plan = suppliedAssetPlan(product, {
+        artCatalog,
+        artCollection,
+        assembly,
+        collection,
+        launchRoot,
+        manifest,
+        masterPixels: (row) => masterSizes.get(row.source_master),
+      });
+      plans.push(plan);
+      problems.push(...plan.problems);
+      const buffers = new Map();
+      for (const file of plan.files) {
+        if (!existsSync(file.file)) {
+          problems.push(`${product.handle}: ${file.path} is missing`);
+          continue;
+        }
+        const buffer = readFileSync(file.file);
+        const facts = await describeFile(buffer);
+        buffers.set(file.key, buffer);
+        if (facts.sha256 !== file.sha256)
+          problems.push(
+            `${product.handle}: ${file.path} is not the file its manifest records (sha256)`,
+          );
+        if (facts.width !== file.width || facts.height !== file.height)
+          problems.push(
+            `${product.handle}: ${file.path} is ${facts.width}×${facts.height}, expected ${file.width}×${file.height}`,
+          );
+        if (Math.round(facts.dpi ?? 0) !== file.dpi)
+          problems.push(
+            `${product.handle}: ${file.path} is ${facts.dpi} dpi, expected ${file.dpi}`,
+          );
+        if (facts.space !== 'srgb' || facts.channels !== 3)
+          problems.push(
+            `${product.handle}: ${file.path} is not 3-channel sRGB`,
+          );
+        if (!(file.ppi >= plan.minPpi))
+          belowFloor.push({
+            file: file.key,
+            handle: product.handle,
+            minPpi: plan.minPpi,
+            ppi: file.ppi,
+          });
+        rows.push({
+          handle: product.handle,
+          family: product.family,
+          pixels: `${facts.width}×${facts.height}`,
+          dpi: Math.round(facts.dpi ?? 0),
+          ppi: file.ppi,
+          minPpi: plan.minPpi,
+          artMatch: file.provenance.aiFill.block_identical
+            ? 'museum pixels unchanged (log)'
+            : 'NOT CHECKED',
+          file: file.key,
+          sha256: facts.sha256.slice(0, 12),
+        });
+      }
+      if (buffers.size !== plan.files.length || !plan.files.length) continue;
+
+      const lead = plan.files.find(
+        (file) => file.key === product.variants[0].file,
+      );
+      const files = Object.fromEntries(
+        plan.files.map((file) => [
+          file.key,
+          {
+            dpi: file.dpi,
+            height: file.height,
+            path: file.path,
+            ppi: file.ppi,
+            provenance: file.provenance,
+            sha256: file.sha256,
+            width: file.width,
+          },
+        ]),
+      );
+      const unchanged =
+        product.assets?.sourceSignature === plan.sourceSignature &&
+        product.assets.print.sha256 === lead.sha256 &&
+        existsSync(plan.preview.file) &&
+        product.assets.preview.path === plan.preview.path;
+      let previewBuffer;
+      if (unchanged) previewBuffer = readFileSync(plan.preview.file);
+      else {
+        previewBuffer = await renderSuppliedPreview(
+          plan,
+          buffers.get(lead.key),
+        );
+        mkdirSync(path.dirname(plan.preview.file), {recursive: true});
+        writeFileSync(plan.preview.file, previewBuffer);
+      }
+      const preview = await describeFile(previewBuffer);
+      if (
+        preview.width !== plan.preview.width ||
+        preview.height !== plan.preview.height
+      )
+        problems.push(
+          `${product.handle}: preview is not ${plan.preview.width}×${plan.preview.height}`,
+        );
+      // A variant whose file changed must be mapped again.
+      for (const variant of product.variants) {
+        const before = variantFile(product, variant);
+        if (
+          before &&
+          before.sha256 !== files[variant.file]?.sha256 &&
+          variant.mapping.verified
+        )
+          variant.mapping = {
+            ...variant.mapping,
+            note: `print file changed ${new Date().toISOString().slice(0, 10)}; re-map`,
+            verified: false,
+          };
+      }
+      product.assets = {
+        box: null,
+        ppi: plan.ppi,
+        preparedAt:
+          unchanged && product.assets?.preparedAt
+            ? product.assets.preparedAt
+            : new Date().toISOString(),
+        preview: {
+          height: preview.height,
+          path: plan.preview.path,
+          sha256: preview.sha256,
+          width: preview.width,
+        },
+        print: {
+          dpi: lead.dpi,
+          height: lead.height,
+          path: lead.path,
+          sha256: lead.sha256,
+          width: lead.width,
+        },
+        files,
+        sourceSignature: plan.sourceSignature,
+      };
+    }
+    return belowFloor;
+  }
+
   async function prepare() {
     const prints = only?.length
       ? collection.prints.filter((print) => only.includes(print.slug))
@@ -200,7 +389,12 @@ export function createFamilySteps({
     for (const {family, print, reason} of skipped)
       console.log(`Skipped ${print} ${family}: ${reason}.`);
     assertValid();
-    const products = selected();
+    const products = selected().filter(
+      (product) => !FAMILY_SPECS[product.family].suppliedFiles,
+    );
+    const supplied = selected().filter(
+      (product) => FAMILY_SPECS[product.family].suppliedFiles,
+    );
 
     // The framed print reuses `prepare`'s bordered 16×20 file: it must be
     // the current one in its asset report.
@@ -353,17 +547,20 @@ export function createFamilySteps({
         sha256: file.sha256.slice(0, 12),
       });
     }
+    const belowFloor = await prepareSupplied(supplied, {plans, problems, rows});
     if (problems.length)
       throw new Error(
         `Assets failed their checks:\n- ${problems.join('\n- ')}`,
       );
     saveArtCatalog();
 
+    const prepared = [...products, ...supplied];
     const byFamily = families
       .map((family) => {
         const ppis = rows
           .filter((row) => row.family === family)
           .map((row) => row.ppi);
+        const lead = prepared.find((p) => p.family === family);
         return ppis.length
           ? {
               family,
@@ -374,42 +571,63 @@ export function createFamilySteps({
               ownerExceptions: Object.keys(
                 artCollection.families[family]?.ppiExceptions ?? {},
               ).length,
-              file: `${products.find((p) => p.family === family).assets.print.width}×${products.find((p) => p.family === family).assets.print.height} @ ${FAMILY_SPECS[family].file.dpi} dpi (${family === 'framed-print' || family === 'canvas' ? 'in the work’s orientation' : 'fixed'})`,
+              file: FAMILY_SPECS[family].suppliedFiles
+                ? `${Object.keys(FAMILY_SPECS[family].suppliedFiles).length} supplied file(s) per work`
+                : `${lead.assets.print.width}×${lead.assets.print.height} @ ${FAMILY_SPECS[family].file.dpi} dpi (${family === 'framed-print' || family === 'canvas' ? 'in the work’s orientation' : 'fixed'})`,
             }
           : null;
       })
       .filter(Boolean);
-    writeJson('families-plan.json', {
+    // A run of only supplied families keeps its own reports, so the
+    // rendered families' evidence is not overwritten.
+    const report = products.length ? 'families' : 'families-supplied';
+    const slash = (file) => file.replaceAll('\\', '/');
+    writeJson(`${report}-plan.json`, {
       collection: collection.slug,
       families,
-      launchRoot: launchRoot.replaceAll('\\', '/'),
-      plans: plans.map((plan) => ({
-        ...plan,
-        output: {...plan.output, file: plan.output.file.replaceAll('\\', '/')},
-        preview: {
-          ...plan.preview,
-          file: plan.preview.file.replaceAll('\\', '/'),
-        },
-        source: {...plan.source, file: plan.source.file.replaceAll('\\', '/')},
-      })),
+      launchRoot: slash(launchRoot),
+      plans: plans.map((plan) =>
+        plan.files
+          ? {
+              ...plan,
+              files: plan.files.map((file) => ({
+                ...file,
+                file: slash(file.file),
+              })),
+              preview: {...plan.preview, file: slash(plan.preview.file)},
+            }
+          : {
+              ...plan,
+              output: {...plan.output, file: slash(plan.output.file)},
+              preview: {...plan.preview, file: slash(plan.preview.file)},
+              source: {...plan.source, file: slash(plan.source.file)},
+            },
+      ),
     });
-    writeJson('families-assets.json', {
+    writeJson(`${report}-assets.json`, {
       collection: collection.slug,
       checkedAt: new Date().toISOString(),
       maxArtMatchError: MAX_ART_MATCH_ERROR,
       summary: byFamily,
       files: rows,
-      generatedPixels: false,
-      note: 'Cropped families cut the approved crop from the museum original and resample it; the framed print reuses the bordered 16x20 print file byte for byte.',
+      generatedPixels: supplied.length > 0,
+      belowPpiFloor: belowFloor,
+      note: supplied.length
+        ? 'Supplied families print finished files whose margins were filled outside the pipeline (plain paper or calm sky/water); each file is checked against its manifest sha256 and its AI-fill log (museum pixels unchanged). Rendered families cut the approved crop and resample it; nothing generated.'
+        : 'Cropped families cut the approved crop from the museum original and resample it; the framed print reuses the bordered 16x20 print file byte for byte.',
     });
     console.table(rows);
     console.table(byFamily);
+    if (belowFloor.length)
+      console.log(
+        `\n${belowFloor.length} supplied file(s) are below their family's ppi floor. Drafts can be staged; release stays blocked until the owner accepts each (ppiExceptions) or the file is replaced:\n${belowFloor.map((entry) => `- ${entry.handle} ${entry.file}: ${entry.ppi} ppi (floor ${entry.minPpi})`).join('\n')}`,
+      );
     if (added.length || refreshed.length)
       console.log(
         `Catalog: ${added.length} product(s) added, ${refreshed.length} refreshed in data/art-product-catalog.json.`,
       );
     console.log(
-      `Files: ${path.join(launchDir, '<family>')} (+ web/ previews). Plan and report: families-plan.json, families-assets.json. Next: stage --families (dry run).`,
+      `Files: ${path.join(launchDir, '<family>')} (+ web/ previews). Plan and report: ${report}-plan.json, ${report}-assets.json. Next: stage --families (dry run).`,
     );
   }
 
@@ -674,11 +892,29 @@ export function createFamilySteps({
 
   // -------------------------------------------------------------- handoff --
 
+  /**
+   * Handoff file names: a run of only supplied families keeps its own, so
+   * the rendered families' handoff is not overwritten.
+   */
+  const handoffSuffix = families.every(
+    (family) => FAMILY_SPECS[family].suppliedFiles,
+  )
+    ? 'families-supplied'
+    : 'families';
+
   function handoff() {
+    const printful = selected().filter(
+      (product) => FAMILY_SPECS[product.family].route === 'printful',
+    );
     const products = selected().filter(
       (product) => FAMILY_SPECS[product.family].route === 'channel',
     );
-    assert.ok(products.length, 'no channel-mapped family products selected');
+    assert.ok(
+      products.length || printful.length,
+      'no channel-mapped or Printful family products selected',
+    );
+    if (printful.length) printfulHandoff(printful);
+    if (!products.length) return;
     for (const product of products) {
       assert.ok(
         product.shopify?.productId,
@@ -705,29 +941,29 @@ export function createFamilySteps({
       `files changed since prepare: ${stale.map((row) => row.handle).join(', ')}`,
     );
     writeFileSync(
-      path.join(launchDir, 'prodigi-handoff-families.csv'),
+      path.join(launchDir, `prodigi-handoff-${handoffSuffix}.csv`),
       toCsv(rows),
     );
     writeFileSync(
-      path.join(launchDir, 'prodigi-handoff-families.md'),
+      path.join(launchDir, `prodigi-handoff-${handoffSuffix}.md`),
       [
         `# Prodigi mapping — ${collection.title} ${new Intl.ListFormat('en-GB').format(families.filter((family) => FAMILY_SPECS[family].route === 'channel').map((family) => FAMILY_SPECS[family].artistFamily.toLowerCase()))}`,
         '',
-        'Prodigi dashboard → Sales channels → Clara Mendes → Products. Each row is its',
-        'own Shopify product (one variant). Per row: the Prodigi SKU and settings',
-        'listed, its own file from the Image library, then "Fulfilled by Prodigi',
-        'automatically". Re-read on a fresh load, then record the channel product id:',
-        `\`npm run product -- mapped ${collection.slug} --family <family> <print>=<id> …\`.`,
+        'Prodigi dashboard → Sales channels → Clara Mendes → Products. Each row is a',
+        'variant of its own Shopify product. Per row: the Prodigi SKU, attributes and',
+        'settings listed, its own file from the Image library, then "Fulfilled by',
+        'Prodigi automatically". Re-read on a fresh load, then record the channel',
+        `product id: \`npm run product -- mapped ${collection.slug} --family <family> <print>=<id> …\`.`,
         'Phone cases are not mapped here (orders/paid webhook → Prodigi API).',
         '',
-        '| Product | SKU | Prodigi SKU | Settings | File | Pixels | Mapped |',
-        '| --- | --- | --- | --- | --- | --- | --- |',
+        '| Product | Option | SKU | Prodigi SKU | Attributes | Settings | File | Pixels | Mapped |',
+        '| --- | --- | --- | --- | --- | --- | --- | --- | --- |',
         ...rows.map(
           (row) =>
-            `| ${row.product} | ${row.sku} | ${row.providerSku} | ${row.settings} | ${path.basename(row.printFile)} | ${row.pixels} @ ${row.dpi} dpi | ${row.verified ? `yes (${row.prodigiChannelProductId})` : 'no'} |`,
+            `| ${row.product} | ${row.option} | ${row.sku} | ${row.providerSku} | ${row.providerAttributes} | ${row.settings} | ${path.basename(row.printFile)} | ${row.pixels} @ ${row.dpi} dpi | ${row.verified ? `yes (${row.prodigiChannelProductId})` : 'no'} |`,
         ),
         '',
-        `Files: \`${launchDir.replaceAll('\\', '/')}/<family>/\` (framed prints use \`print/*-16x20-300dpi.jpg\`, the same files as the 16×20 prints).`,
+        `Files: \`${launchDir.replaceAll('\\', '/')}/<family>/\` (framed prints use \`print/*-16x20-300dpi.jpg\`, the same files as the 16×20 prints; supplied families use the folder in \`suppliedFiles\`).`,
         '',
         'Known dashboard traps (docs/add-products-runbook.md §Prodigi): upload from the',
         'Image library page (files over 10 MB need the injected upload); both modals',
@@ -745,7 +981,68 @@ export function createFamilySteps({
       })),
     );
     console.log(
-      `Handoff written to ${launchDir} (prodigi-handoff-families.csv/.md)`,
+      `Handoff written to ${launchDir} (prodigi-handoff-${handoffSuffix}.csv/.md)`,
+    );
+  }
+
+  /** The Printful rows: each Shopify variant, its Printful variant and file. */
+  function printfulHandoff(products) {
+    for (const product of products)
+      assert.ok(
+        product.shopify?.productId && product.assets,
+        `${product.handle}: prepare and stage --apply first`,
+      );
+    const rows = familyHandoffRows(products, {
+      artCollection,
+      collection,
+      launchRoot,
+      route: 'printful',
+      sha256: (file) => {
+        assert.ok(existsSync(file), `Missing ${file} — run prepare`);
+        return fileSha(file);
+      },
+    });
+    const stale = rows.filter((row) => row.sha256 !== row.recordedSha256);
+    assert.equal(
+      stale.length,
+      0,
+      `files changed since prepare: ${stale.map((row) => row.handle).join(', ')}`,
+    );
+    writeFileSync(
+      path.join(launchDir, `printful-handoff-${handoffSuffix}.csv`),
+      toCsv(rows),
+    );
+    writeFileSync(
+      path.join(launchDir, `printful-handoff-${handoffSuffix}.md`),
+      [
+        `# Printful sync — ${collection.title}`,
+        '',
+        'Printful dashboard → Stores → Clara Mendes (Shopify) → the product → each',
+        'variant: the Printful product and variant listed, its own file (cushions:',
+        'the same file front and back). Then read the sync products back (they list',
+        'each Shopify variant id with its Printful variant and files) and record',
+        `them: \`npm run product -- mapped ${collection.slug} --family <family> --printful <readback.json>\`.`,
+        '',
+        '| Product | Option | SKU | Printful variant | Settings | File | Pixels | Synced |',
+        '| --- | --- | --- | --- | --- | --- | --- | --- |',
+        ...rows.map(
+          (row) =>
+            `| ${row.product} | ${row.option} | ${row.sku} | ${row.providerSku} | ${row.settings} | ${path.basename(row.printFile)} | ${row.pixels} @ ${row.dpi} dpi | ${row.verified ? `yes (${row.printfulSyncVariantId})` : 'no'} |`,
+        ),
+        '',
+      ].join('\n'),
+    );
+    console.table(
+      rows.map(({handle, option, providerSku, pixels, verified}) => ({
+        handle,
+        option,
+        providerSku,
+        pixels,
+        verified,
+      })),
+    );
+    console.log(
+      `Printful handoff written to ${launchDir} (printful-handoff-${handoffSuffix}.csv/.md)`,
     );
   }
 
@@ -759,6 +1056,10 @@ export function createFamilySteps({
     );
     const [family] = families;
     const today = new Date().toISOString().slice(0, 10);
+    if (FAMILY_SPECS[family].route === 'printful') {
+      mappedPrintful(family, today);
+      return;
+    }
     for (const {slug, id} of parseFamilyMappings(
       collection,
       family,
@@ -800,15 +1101,85 @@ export function createFamilySteps({
           `${product.handle}: ${product.variants.length} device SKUs → Prodigi API with ${casePrintUrlPath(product)} (commit public${casePrintUrlPath(product)})`,
         );
       } else {
+        // Each variant is verified on the file it prints (hangers and
+        // acrylics print a different file per size).
         for (const variant of product.variants)
           variant.mapping = {
-            assetSha256,
+            assetSha256: variantFile(product, variant).sha256,
             channelProductId: id,
             verified: true,
             verifiedAt: today,
           };
         console.log(`${product.handle} → Prodigi channel product ${id}`);
       }
+    }
+    saveArtCatalog();
+  }
+
+  /**
+   * Printful families: `--printful <readback.json>` holds the Printful sync
+   * products as read back after syncing (an array of `GET
+   * /sync/products/{id}` results). Every selected product of the family must
+   * be in it and pass printfulMappingFromReadback; nothing is recorded
+   * otherwise.
+   */
+  function mappedPrintful(family, today) {
+    const evidence = option('printful');
+    assert.ok(
+      evidence && existsSync(evidence),
+      'Pass --printful <readback.json> (the Printful sync products read back after syncing)',
+    );
+    const readbacks = JSON.parse(readFileSync(evidence, 'utf8'));
+    const products = selected().filter((product) => product.family === family);
+    assert.ok(products.length, `no ${family} products selected`);
+    const facts = new Map();
+    const fileFacts = (recorded) => {
+      if (!facts.has(recorded.path)) {
+        const buffer = readFileSync(absolute(recorded.path));
+        facts.set(recorded.path, {
+          md5: createHash('md5').update(buffer).digest('hex'),
+          name: path.basename(recorded.path),
+        });
+      }
+      return facts.get(recorded.path);
+    };
+    const problems = [];
+    const results = [];
+    for (const product of products) {
+      assert.ok(
+        product.shopify?.productId,
+        `${product.handle}: not staged in Shopify`,
+      );
+      assert.ok(
+        familyStatus(product).current && assetsOnDisk(product),
+        `${product.handle}: assets are stale — prepare and sync the current file`,
+      );
+      const shopifyId = product.shopify.productId.split('/').pop();
+      const readback = readbacks.find(
+        (entry) => String(entry?.sync_product?.external_id) === shopifyId,
+      );
+      if (!readback) {
+        problems.push(`${product.handle}: not in ${evidence}`);
+        continue;
+      }
+      const result = printfulMappingFromReadback(product, readback, {
+        fileFacts,
+        today,
+      });
+      problems.push(...result.problems);
+      results.push({product, result});
+    }
+    assert.equal(
+      problems.length,
+      0,
+      `Printful readback does not match the catalog; nothing recorded:\n- ${problems.join('\n- ')}`,
+    );
+    for (const {product, result} of results) {
+      for (const variant of product.variants)
+        variant.mapping = result.mappings[variant.key];
+      console.log(
+        `${product.handle} → Printful sync product ${result.mappings[product.variants[0].key].printfulSyncProductId} (${product.variants.length} variant(s))`,
+      );
     }
     saveArtCatalog();
   }
@@ -889,7 +1260,7 @@ export function createFamilySteps({
       })),
     );
     console.log(
-      'Before --apply: the products must be in the right Shopify shipping profile (cards and postcards: Letter post, EU only; canvas: the canvas profile; framed: a framed profile; cases: the phone-case profile; mugs: a mug profile, not set up yet) — new products land in General. See docs/add-products-runbook.md.',
+      'Before --apply: the products must be in the right Shopify shipping profile (cards and postcards: Letter post, EU only; canvas: the canvas profile; framed: a framed profile; cases: the phone-case profile; Prodigi mugs: a mug profile, not set up yet; hanger, acrylic and metal prints, Printful mugs, cushions and blankets: "Free EU shipping – artist products", which the owner sets up) — new products land in General. See docs/add-products-runbook.md.',
     );
     if (!apply) {
       console.log('Dry run — nothing written. Re-run with --apply to release.');

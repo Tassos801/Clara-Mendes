@@ -39,9 +39,21 @@ const FLOATING_WORLD = PRINT_CATALOG.collections.find(
 const ART_COLLECTION = family.ART_PRODUCT_CATALOG.collections.find(
   (collection) => collection.slug === 'floating-world',
 );
-/** The five families Floating World sells (no mug), in catalog order. */
+/**
+ * The five rendered families Floating World sells (no mug), in catalog
+ * order. The supplied-file families (hanger, acrylic, metal, Printful mug,
+ * cushion, blanket) have their own tests in artSuppliedFamilies.node-test.mjs.
+ */
 const FW_FAMILIES = family.ART_PRODUCT_FAMILIES.filter(
-  (kind) => kind in ART_COLLECTION.families,
+  (kind) =>
+    kind in ART_COLLECTION.families && !family.FAMILY_SPECS[kind].suppliedFiles,
+);
+const rendered = (product) => FW_FAMILIES.includes(product.family);
+/** Artist-shop types of the supplied-file families (staged, not released). */
+const SUPPLIED_LABELS = new Set(
+  family.ART_PRODUCT_FAMILIES.filter(
+    (kind) => family.FAMILY_SPECS[kind].suppliedFiles,
+  ).map((kind) => family.FAMILY_SPECS[kind].artistFamily),
 );
 const WAVE = 'the-great-wave-off-kanagawa';
 const LAUNCH = path.join('X:', 'launches');
@@ -78,7 +90,9 @@ function releasable({release = false} = {}) {
     rights: {...CLEARED},
   };
   crops.crops[wave].approval = {approved: true, at: '2026-10-13', by: 'Owner'};
-  for (const product of catalog.products.filter((p) => p.print === WAVE)) {
+  for (const product of catalog.products.filter(
+    (p) => p.print === WAVE && rendered(p),
+  )) {
     product.shopify = {
       productId: `gid://shopify/Product/${product.family}`,
       variantIds: Object.fromEntries(
@@ -104,7 +118,7 @@ function releasable({release = false} = {}) {
 test('the shipped family catalog is valid: 50 released products, 10 per family', () => {
   assert.deepEqual(family.validateArtProductCatalog(), []);
   const floatingWorld = family.ART_PRODUCT_CATALOG.products.filter(
-    (product) => product.collection === 'floating-world',
+    (product) => product.collection === 'floating-world' && rendered(product),
   );
   assert.deepEqual(familySummary(floatingWorld), [
     {
@@ -231,7 +245,9 @@ test('release is blocked until every owner, asset, Shopify and mapping gate pass
 
   const ready = releasable({release: true});
   assert.deepEqual(family.validateArtProductCatalog(ready.catalog, ready), []);
-  for (const product of ready.catalog.products.filter((p) => p.print === WAVE))
+  for (const product of ready.catalog.products.filter(
+    (p) => p.print === WAVE && rendered(p),
+  ))
     assert.deepEqual(family.familyReleaseIssues(product, ready), []);
 
   // An unapproved artist, unapproved crops, a stale file or a mapping of an
@@ -522,7 +538,7 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
   assert.deepEqual(
     empty.products.map((p) => p.handle),
     catalog.products
-      .filter((p) => p.collection === FLOATING_WORLD.slug)
+      .filter((p) => p.collection === FLOATING_WORLD.slug && rendered(p))
       .map((p) => p.handle),
   );
 
@@ -542,7 +558,9 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
 
 test('handoff covers channel-mapped families; cases go through the webhook', () => {
   const rows = familyHandoffRows(
-    family.ART_PRODUCT_CATALOG.products.filter((p) => p.print === WAVE),
+    family.ART_PRODUCT_CATALOG.products.filter(
+      (p) => p.print === WAVE && rendered(p),
+    ),
     {
       artCollection: ART_COLLECTION,
       collection: FLOATING_WORLD,
@@ -580,12 +598,17 @@ test('handoff covers channel-mapped families; cases go through the webhook', () 
     'postcard',
   ]);
   assert.throws(
-    () => selectFamilies({family: 'cushion'}),
-    /Unknown family cushion/,
+    () => selectFamilies({family: 'tote-bag'}),
+    /Unknown family tote-bag/,
   );
-  // `--families` is what the collection offers; Floating World has no mug.
+  // `--families` is what the collection offers, in catalog order;
+  // Floating World has no Prodigi mug.
   const offered = Object.keys(ART_COLLECTION.families);
-  assert.deepEqual(selectFamilies({all: true, offered}), FW_FAMILIES);
+  assert.deepEqual(
+    selectFamilies({all: true, offered}),
+    family.ART_PRODUCT_FAMILIES.filter((kind) => offered.includes(kind)),
+  );
+  assert.ok(!selectFamilies({all: true, offered}).includes('mug'));
   assert.equal(FW_FAMILIES.length, 5);
   assert.throws(
     () => selectFamilies({family: 'mug', offered}),
@@ -692,7 +715,10 @@ test('storefront: staged family products stay hidden; released ones join the art
 
   const products = shops
     .artistProducts({artProducts: catalog, catalog: prints, registry})
-    .filter((p) => p.artistId === 'katsushika-hokusai');
+    .filter(
+      (p) =>
+        p.artistId === 'katsushika-hokusai' && !SUPPLIED_LABELS.has(p.family),
+    );
   assert.equal(products.length, 6 * 6, 'six works as prints and five families');
   const view = shops.artistShopView(
     products.filter((p) => p.artworkId === 'met-39799'),
@@ -1047,7 +1073,17 @@ test('family sync adds a product only where its work qualifies', () => {
       prints: lineAndColour.prints,
     });
   // Everything that qualifies is already in the catalog.
-  const existing = sync(['framed-print', 'canvas', 'phone-case', 'mug']);
+  const existing = sync([
+    'framed-print',
+    'canvas',
+    'phone-case',
+    'hanger-print',
+    'acrylic-print',
+    'metal-print',
+    'printful-mug',
+    'cushion',
+    'blanket',
+  ]);
   assert.deepEqual(existing.added, []);
   assert.deepEqual(
     existing.skipped
@@ -1084,5 +1120,10 @@ test('family sync adds a product only where its work qualifies', () => {
       'composition-no-1-gray-red',
     ],
   );
-  assert.ok(existing.skipped.every((entry) => entry.family !== 'mug'));
+  // Supplied-file families fit every work.
+  assert.ok(
+    existing.skipped.every(
+      (entry) => !family.FAMILY_SPECS[entry.family].suppliedFiles,
+    ),
+  );
 });
