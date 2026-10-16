@@ -18,6 +18,68 @@ their room media earlier the same morning, then hit its usage limit; Claude
 committed its ids (`1c7d9e0`), redesigned the artist page, mapped all ten in
 Prodigi, proposed product crops (approved) and added the larger sizes.
 
+## Line and Colour, the second collection (2026-10-15, Claude Code)
+
+**Writer:** Claude Code on `claude/modern-collection` (owner's Mac), stacked
+on #134 (AIC/Cleveland importers, mug). Codex (Sol) generated the room
+backgrounds and reviewed the changes read-only. Nothing in Shopify or
+Prodigi was touched.
+
+**Built:** Kandinsky and Mondrian registered and approved; eleven works
+fetched; collection `line-and-colour` (SKU code `LC`) with ten prints
+prepared; framed (5), canvas (6), phone case (5) and mug (10) files prepared;
+crops approved; room backgrounds and placements. Two pipeline changes:
+per-print `sizes` and per-work crop approval (runbook, museum section).
+
+| Work | Prints | Framed | Canvas | Case | Mug |
+| --- | --- | --- | --- | --- | --- |
+| Kandinsky, Improvisation No. 30 (Cannons) (AIC 8991) | 8×10, 16×20 (212 ppi), 20×24 (170) | ✓ | 150 ppi | 388 ppi | ✓ |
+| Kandinsky, Landscape with Two Poplars (AIC 8980) | 8×10 | – | 148 ppi | 307 ppi | ✓ |
+| Kandinsky, Houses at Murnau (AIC 129849) | 8×10 | – | 141 ppi | – | ✓ |
+| Kandinsky, Painting with Troika (AIC 8983) | 8×10 | – | – | – | ✓ |
+| Kandinsky, Painting with Green Center (AIC 8987) | 8×10 | – | – | – | ✓ |
+| Mondrian, Composition with Red, Yellow, and Blue (CMA 1967.215) | all three | ✓ | 449 ppi | 1166 ppi | ✓ |
+| Mondrian, Lozenge Composition (AIC 109819) | all three (20×24 at 170) | ✓ | – | – | ✓ |
+| Mondrian, Composition (No. 1) Gray-Red (AIC 65821) | 8×10 | – | – | – | ✓ |
+| Mondrian, Chrysanthemum (CMA 1958.38) | all three (20×24 at 251) | ✓ | 235 ppi | 609 ppi | ✓ |
+| Mondrian, Field with Young Trees (CMA 1971.220) | all three (16×20 at 266, 20×24 at 213) | ✓ | 230 ppi | 477 ppi | ✓ |
+
+36 listings: Kandinsky 16, Mondrian 20. Prices reuse Floating World's.
+
+**Decided by the owner in chat (2026-10-15):** the name *Line and
+Colour*; the trims, recorded as Tassos (Troika: the grey photo backdrop
+outside Kandinsky's painted frame; Composition 1927: the wall and its shadow
+outside the white strip frame, which stays, after which its crop fractions
+were recomputed to the same pixels); approval of the case and canvas crops
+of all six cropped works; and downloading Prodigi's iPhone 16 Pro template
+(sha256 matches) so the five phone cases could be prepared.
+
+**Approved by the owner in chat (2026-10-15, later):** both artists
+(`approve-artist`, as Tassos); the rights and master reviews of all ten
+works; *Study for a Composition* stays out (its reviews stay pending); the
+Lozenge keeps prints, framed and mug only; and the print ppi below 300
+(Cannons and Lozenge 16×20 at 212–213 and 20×24 at 170, Chrysanthemum 20×24
+at 251, Field 16×20 at 266 and 20×24 at 213), as Floating World's were.
+Every owner gate on the 36 products is now clear.
+
+**Mug price (owner, 2026-10-15): €5.53**, "30% profit, no need for a
+quote": Prodigi's published wholesale price for the 11 oz white mug is from
+£3.59 (excluding tax and shipping), about €4.25 at 1.18 €/£, the top of
+2026's range; ×1.30 = €5.53. Shipping is charged through a shipping profile,
+which mugs do not have yet. Payment fees (about 2.9% + €0.30) come out of
+the margin. Check the real `GLOBAL-MUG-W` cost in the Prodigi dashboard when
+mapping.
+
+**Still open:** `stage` → `handoff` → Prodigi mapping → `mapped` →
+`media` → shipping profiles (a new one for mugs) → `release`, which needs
+the owner's separate go-ahead.
+
+**Machine notes:** this Mac's `.env.shopify-admin.local` has empty
+`SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET`, so `stage` (even a dry run)
+needs the Windows PC or those credentials. The Prodigi iPhone 16 Pro case
+template is now in the main checkout's
+`output/prodigi-assets/tough-phone-case/`.
+
 ## Storefront fixes for the dormant families (2026-10-14, Claude Code)
 
 Code only; no Shopify or Prodigi write. Checked locally with a temporary,

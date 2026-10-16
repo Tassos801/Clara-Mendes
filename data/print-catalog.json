@@ -1860,6 +1860,676 @@
           ]
         }
       ]
+    },
+    {
+      "slug": "line-and-colour",
+      "title": "Line and Colour",
+      "kind": "museum",
+      "note": "Early twentieth-century paintings by Kandinsky and Mondrian",
+      "skuCode": "LC",
+      "collectionCopy": "Part of Line and Colour, a Clara Mendes selection of early twentieth-century paintings by Kandinsky and Mondrian from museum open-access collections, each reproduced whole on archival fine-art paper.",
+      "seoSuffix": "A modern art print reproduced whole from a public-domain museum original.",
+      "publications": [
+        "Clara Mendes",
+        "Clara Mendes Headless"
+      ],
+      "variants": [
+        {
+          "size": "8x10",
+          "finish": "Unframed",
+          "priceEUR": "26.99",
+          "providerSku": "ART-FAP-EMA-8X10"
+        },
+        {
+          "size": "16x20",
+          "finish": "Unframed",
+          "priceEUR": "35.99",
+          "providerSku": "ART-FAP-EMA-16X20"
+        },
+        {
+          "size": "20x24",
+          "finish": "Unframed",
+          "priceEUR": "44.99",
+          "providerSku": "GLOBAL-FAP-20X24"
+        }
+      ],
+      "prints": [
+        {
+          "slug": "improvisation-no-30-cannons",
+          "title": "Improvisation No. 30 (Cannons)",
+          "sequence": 1,
+          "artworkId": "aic-8991",
+          "orientation": "portrait",
+          "description": "Cannons fire from the lower right of Kandinsky’s 1913 improvisation, through a storm of blue, red and cream with leaning towers and a hillside half dissolved above.",
+          "alt": "Kandinsky’s Improvisation No. 30 (Cannons): loose patches of blue, red, cream and pink crossed by black lines, two dark cannons at lower right and leaning towers in the centre, printed whole on a white border.",
+          "palette": "Ultramarine, vermilion, cream, rose pink, black",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Improvisation No. 30 (Cannons) print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "improvisation-no-30-cannons-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 354,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Improvisation No. 30 (Cannons) print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "improvisation-no-30-cannons-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 259,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Improvisation No. 30 (Cannons) print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "improvisation-no-30-cannons-study.png",
+              "placement": {
+                "left": 440,
+                "top": 488,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Improvisation No. 30 (Cannons) print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "improvisation-no-30-cannons-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 570,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3000,
+            "nativeWidth": 2987,
+            "sourceSha256": "af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11"
+          }
+        },
+        {
+          "slug": "landscape-with-two-poplars",
+          "title": "Landscape with Two Poplars",
+          "sequence": 2,
+          "artworkId": "aic-8980",
+          "orientation": "landscape",
+          "sizes": [
+            "8x10"
+          ],
+          "description": "Two tall poplars, one deep red and one dark green, rise over a yellow road, a red house and fields broken into blocks of saturated colour.",
+          "alt": "Kandinsky’s Landscape with Two Poplars: a dark green and a deep red poplar above a yellow path between red, green and blue fields, a pale blue gabled building at right, printed whole on a white border.",
+          "palette": "Viridian, crimson, ochre yellow, cobalt blue",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Landscape with Two Poplars print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "landscape-with-two-poplars-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Landscape with Two Poplars print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "landscape-with-two-poplars-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Landscape with Two Poplars print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "landscape-with-two-poplars-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Landscape with Two Poplars print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "landscape-with-two-poplars-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2364,
+            "nativeWidth": 3000,
+            "sourceSha256": "53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73"
+          }
+        },
+        {
+          "slug": "houses-at-murnau",
+          "title": "Houses at Murnau",
+          "sequence": 3,
+          "artworkId": "aic-129849",
+          "orientation": "landscape",
+          "sizes": [
+            "8x10"
+          ],
+          "description": "Yellow and violet houses line a ridge above a meadow dabbed in yellow and orange: the Bavarian village of Murnau in thick, bright strokes.",
+          "alt": "Kandinsky’s Houses at Murnau: yellow and violet houses along a dark road on a hillside, a yellow meadow sloping down in short strokes, printed whole on a white border.",
+          "palette": "Cadmium yellow, violet, emerald green, cobalt blue",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Houses at Murnau print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "houses-at-murnau-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 458,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Houses at Murnau print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "houses-at-murnau-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 411,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Houses at Murnau print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "houses-at-murnau-study.png",
+              "placement": {
+                "left": 415,
+                "top": 554,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Houses at Murnau print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "houses-at-murnau-wide-interior.png",
+              "placement": {
+                "left": 500,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2250,
+            "nativeWidth": 2920,
+            "sourceSha256": "116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3"
+          }
+        },
+        {
+          "slug": "painting-with-troika",
+          "title": "Painting with Troika",
+          "sequence": 4,
+          "artworkId": "aic-8983",
+          "orientation": "landscape",
+          "sizes": [
+            "8x10"
+          ],
+          "description": "A three-horse sleigh races along a red hilltop under a yellow sky striped with pink, inside the frame Kandinsky painted for it.",
+          "alt": "Kandinsky’s Painting with Troika: a small sleigh with white horses on a red and blue hill under a yellow sky with a pink arc, a blue tower at left, inside the artist’s painted frame, printed whole on a white border.",
+          "palette": "Ochre yellow, rose pink, ultramarine, crimson",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Painting with Troika print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "painting-with-troika-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Painting with Troika print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "painting-with-troika-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 343,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Painting with Troika print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "painting-with-troika-study.png",
+              "placement": {
+                "left": 415,
+                "top": 550,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Painting with Troika print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "painting-with-troika-wide-interior.png",
+              "placement": {
+                "left": 420,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2102,
+            "nativeWidth": 2906,
+            "sourceSha256": "1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8"
+          }
+        },
+        {
+          "slug": "painting-with-green-center",
+          "title": "Painting with Green Center",
+          "sequence": 5,
+          "artworkId": "aic-8987",
+          "orientation": "landscape",
+          "sizes": [
+            "8x10"
+          ],
+          "description": "A green form floats at the heart of sweeps of blue, red and white cut by thin black lines; no subject remains, only colour and movement.",
+          "alt": "Kandinsky’s Painting with Green Center: an abstract canvas with a green shape at the centre among patches of blue, red and ochre and sweeping black lines, printed whole on a white border.",
+          "palette": "Sap green, ultramarine, crimson, ochre",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Painting with Green Center print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "painting-with-green-center-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 426,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Painting with Green Center print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "painting-with-green-center-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 435,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Painting with Green Center print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "painting-with-green-center-study.png",
+              "placement": {
+                "left": 415,
+                "top": 558,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Painting with Green Center print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "painting-with-green-center-wide-interior.png",
+              "placement": {
+                "left": 440,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2250,
+            "nativeWidth": 2417,
+            "sourceSha256": "05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091"
+          }
+        },
+        {
+          "slug": "composition-with-red-yellow-and-blue",
+          "title": "Composition with Red, Yellow, and Blue",
+          "sequence": 6,
+          "artworkId": "cma-1967.215",
+          "orientation": "portrait",
+          "description": "A wide white square held by black lines, with two red blocks at the upper left, a blue bar along the bottom and a narrow strip of yellow at the right.",
+          "alt": "Mondrian’s Composition with Red, Yellow, and Blue: a large white field divided by black lines, red blocks top left, a blue rectangle at the bottom and a thin yellow strip at right, printed whole on a white border.",
+          "palette": "White, cadmium red, ultramarine, lemon yellow, black",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Composition with Red, Yellow, and Blue print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "composition-with-red-yellow-and-blue-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 334,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Composition with Red, Yellow, and Blue print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "composition-with-red-yellow-and-blue-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 235,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Composition with Red, Yellow, and Blue print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "composition-with-red-yellow-and-blue-study.png",
+              "placement": {
+                "left": 440,
+                "top": 440,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Composition with Red, Yellow, and Blue print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "composition-with-red-yellow-and-blue-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 586,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 9328,
+            "nativeWidth": 9328,
+            "sourceSha256": "9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252"
+          }
+        },
+        {
+          "slug": "lozenge-composition",
+          "title": "Lozenge Composition",
+          "sequence": 7,
+          "artworkId": "aic-109819",
+          "orientation": "portrait",
+          "description": "A square canvas turned on its point: a yellow triangle, a black square and a blue wedge sit among grey-white planes divided by black lines.",
+          "alt": "Mondrian’s Lozenge Composition with Yellow, Black, Blue, Red, and Gray: a diamond-shaped canvas with a yellow triangle top left, a black square, a blue triangle at right and a sliver of red at the bottom, on a pale grey ground, printed whole on a white border.",
+          "palette": "Yellow, black, blue, red, pale grey",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Lozenge Composition print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "lozenge-composition-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 362,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Lozenge Composition print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "lozenge-composition-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 295,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Lozenge Composition print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "lozenge-composition-study.png",
+              "placement": {
+                "left": 440,
+                "top": 444,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Lozenge Composition print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "lozenge-composition-wide-interior.png",
+              "placement": {
+                "left": 540,
+                "top": 600,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3000,
+            "nativeWidth": 3000,
+            "sourceSha256": "849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f"
+          }
+        },
+        {
+          "slug": "composition-no-1-gray-red",
+          "title": "Composition (No. 1) Gray-Red",
+          "sequence": 8,
+          "artworkId": "aic-65821",
+          "orientation": "portrait",
+          "sizes": [
+            "8x10"
+          ],
+          "description": "Paired black lines cross a field of white and pale grey, with a single bar of red along the bottom edge.",
+          "alt": "Mondrian’s Composition (No. 1) Gray-Red: white and grey rectangles crossed by paired black lines, a red bar at the bottom, printed whole on a white border.",
+          "palette": "White, pale grey, black, vermilion",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Composition (No. 1) Gray-Red print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "composition-no-1-gray-red-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 330,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Composition (No. 1) Gray-Red print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "composition-no-1-gray-red-bedroom.png",
+              "placement": {
+                "left": 480,
+                "top": 279,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Composition (No. 1) Gray-Red print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "composition-no-1-gray-red-study.png",
+              "placement": {
+                "left": 440,
+                "top": 424,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Composition (No. 1) Gray-Red print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "composition-no-1-gray-red-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 530,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2250,
+            "nativeWidth": 2182,
+            "sourceSha256": "75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa"
+          }
+        },
+        {
+          "slug": "chrysanthemum",
+          "title": "Chrysanthemum",
+          "sequence": 9,
+          "artworkId": "cma-1958.38",
+          "orientation": "portrait",
+          "description": "A single chrysanthemum, its head a tangle of pale petals, stands on a leafy stem against a warm ochre ground.",
+          "alt": "Mondrian’s Chrysanthemum: one pale yellow-green chrysanthemum bloom on a stem with grey-green leaves against an ochre background, printed whole on a white border.",
+          "palette": "Ochre, pale yellow, sage green, grey",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Chrysanthemum print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "chrysanthemum-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 354,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Chrysanthemum print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "chrysanthemum-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 263,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Chrysanthemum print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "chrysanthemum-study.png",
+              "placement": {
+                "left": 440,
+                "top": 516,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Chrysanthemum print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "chrysanthemum-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 530,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 4741,
+            "nativeWidth": 4420,
+            "sourceSha256": "da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691"
+          }
+        },
+        {
+          "slug": "field-with-young-trees",
+          "title": "Field with Young Trees",
+          "sequence": 10,
+          "artworkId": "cma-1971.220",
+          "orientation": "landscape",
+          "description": "Thin dark trees stand in the foreground of a flat Dutch field, with a low wooded horizon under a grey evening sky.",
+          "alt": "Mondrian’s Field with Young Trees in the Foreground: slender dark trees before a green field and a dark line of woods under a grey sky with streaks of pink, printed whole on a white border.",
+          "palette": "Olive green, umber, slate grey, dusty pink",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Field with Young Trees print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "field-with-young-trees-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 442,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Field with Young Trees print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "field-with-young-trees-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 395,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Field with Young Trees print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "field-with-young-trees-study.png",
+              "placement": {
+                "left": 415,
+                "top": 546,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Field with Young Trees print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "field-with-young-trees-wide-interior.png",
+              "placement": {
+                "left": 400,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3749,
+            "nativeWidth": 4611,
+            "sourceSha256": "1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e"
+          }
+        }
+      ]
     }
   ]
 }

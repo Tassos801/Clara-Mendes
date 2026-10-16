@@ -77,7 +77,7 @@ function releasable({release = false} = {}) {
     master: {...CLEARED},
     rights: {...CLEARED},
   };
-  crops.approval = {approved: true, at: '2026-10-13', by: 'Owner'};
+  crops.crops[wave].approval = {approved: true, at: '2026-10-13', by: 'Owner'};
   for (const product of catalog.products.filter((p) => p.print === WAVE)) {
     product.shopify = {
       productId: `gid://shopify/Product/${product.family}`,
@@ -103,7 +103,10 @@ function releasable({release = false} = {}) {
 
 test('the shipped family catalog is valid: 50 released products, 10 per family', () => {
   assert.deepEqual(family.validateArtProductCatalog(), []);
-  assert.deepEqual(familySummary(family.ART_PRODUCT_CATALOG.products), [
+  const floatingWorld = family.ART_PRODUCT_CATALOG.products.filter(
+    (product) => product.collection === 'floating-world',
+  );
+  assert.deepEqual(familySummary(floatingWorld), [
     {
       family: 'framed-print',
       priceEUR: '89.10',
@@ -141,7 +144,7 @@ test('the shipped family catalog is valid: 50 released products, 10 per family',
     },
   ]);
   // Released 2026-10-14: validation above also proves every release gate.
-  for (const product of family.ART_PRODUCT_CATALOG.products) {
+  for (const product of floatingWorld) {
     assert.equal(product.released, true, product.handle);
     assert.deepEqual(family.familyReleaseIssues(product), [], product.handle);
     assert.ok(product.assets, `${product.handle} has current assets`);
@@ -245,7 +248,12 @@ test('release is blocked until every owner, asset, Shopify and mapping gate pass
     ['artist approval'],
   );
   const unapproved = releasable({release: true});
-  unapproved.crops.approval = {approved: false};
+  const unapprovedWork = productOf(
+    unapproved.catalog,
+    WAVE,
+    'canvas',
+  ).artworkId;
+  unapproved.crops.crops[unapprovedWork].approval = {approved: false};
   assert.ok(
     family
       .familyReleaseIssues(
@@ -502,6 +510,7 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
   assert.deepEqual(syncFamilyProducts(catalog, FLOATING_WORLD, options), {
     added: [],
     refreshed: [],
+    skipped: [],
   });
   assert.equal(JSON.stringify(catalog), before);
 
@@ -512,7 +521,9 @@ test('catalog sync is idempotent and never rewrites a staged product', () => {
   );
   assert.deepEqual(
     empty.products.map((p) => p.handle),
-    catalog.products.map((p) => p.handle),
+    catalog.products
+      .filter((p) => p.collection === FLOATING_WORLD.slug)
+      .map((p) => p.handle),
   );
 
   const staged = structuredClone(catalog);
@@ -676,8 +687,7 @@ test('storefront: staged family products stay hidden; released ones join the art
     undefined,
     catalog,
   );
-  for (const kind of FW_FAMILIES)
-    assert.ok(released.has(`${WAVE}-${kind}`));
+  for (const kind of FW_FAMILIES) assert.ok(released.has(`${WAVE}-${kind}`));
   assert.ok(!released.has(`hodogaya-on-the-tokaido-canvas`));
 
   const products = shops
@@ -997,7 +1007,82 @@ test("curator's notes say which products keep the whole composition", () => {
     assert.doesNotMatch(note, /every print keeps/i);
     assert.match(
       note,
-      /Prints and framed prints keep the full composition .* set on a white border; cards, postcards, canvas and phone cases use a chosen detail\.$/,
+      /Prints(, framed prints and mugs| and framed prints) keep the full composition .* set on (a white border|white); (cards, postcards, )?canvas and phone cases use a chosen detail\.$/,
     );
   }
+});
+
+test('a framed print needs its work offered at 16×20, whose print file it reuses', () => {
+  const printCatalog = structuredClone(PRINT_CATALOG);
+  const collection = printCatalog.collections.find(
+    (entry) => entry.slug === 'floating-world',
+  );
+  const wave = collection.prints.find((print) => print.slug === WAVE);
+  wave.sizes = ['8x10'];
+  wave.releasedSizes = ['8x10'];
+  assert.match(
+    family
+      .validateArtProductCatalog(family.ART_PRODUCT_CATALOG, {printCatalog})
+      .join('\n'),
+    /the-great-wave-off-kanagawa-framed-print: the framed print reuses the 16x20 print file, which the-great-wave-off-kanagawa is not offered in/,
+  );
+  assert.throws(
+    () =>
+      familyAssetPlan(
+        productOf(family.ART_PRODUCT_CATALOG, WAVE, 'framed-print'),
+        {collection, framedPpi: 213.9, launchRoot: LAUNCH},
+      ),
+    /reuses the 16x20 print file/,
+  );
+});
+
+test('family sync adds a product only where its work qualifies', () => {
+  const catalog = structuredClone(family.ART_PRODUCT_CATALOG);
+  const lineAndColour = PRINT_CATALOG.collections.find(
+    (entry) => entry.slug === 'line-and-colour',
+  );
+  const sync = (families) =>
+    syncFamilyProducts(catalog, lineAndColour, {
+      families,
+      prints: lineAndColour.prints,
+    });
+  // Everything that qualifies is already in the catalog.
+  const existing = sync(['framed-print', 'canvas', 'phone-case', 'mug']);
+  assert.deepEqual(existing.added, []);
+  assert.deepEqual(
+    existing.skipped
+      .filter((entry) => entry.family === 'framed-print')
+      .map((entry) => entry.print),
+    [
+      'landscape-with-two-poplars',
+      'houses-at-murnau',
+      'painting-with-troika',
+      'painting-with-green-center',
+      'composition-no-1-gray-red',
+    ],
+  );
+  assert.deepEqual(
+    existing.skipped
+      .filter((entry) => entry.family === 'canvas')
+      .map((entry) => entry.print),
+    [
+      'painting-with-troika',
+      'painting-with-green-center',
+      'lozenge-composition',
+      'composition-no-1-gray-red',
+    ],
+  );
+  assert.deepEqual(
+    existing.skipped
+      .filter((entry) => entry.family === 'phone-case')
+      .map((entry) => entry.print),
+    [
+      'houses-at-murnau',
+      'painting-with-troika',
+      'painting-with-green-center',
+      'lozenge-composition',
+      'composition-no-1-gray-red',
+    ],
+  );
+  assert.ok(existing.skipped.every((entry) => entry.family !== 'mug'));
 });

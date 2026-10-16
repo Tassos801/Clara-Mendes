@@ -41,8 +41,12 @@ const MUSEUM_ORDER = FAMILIES.flatMap((family) =>
 /** Shopify lists newest first: the release created prints, then families. */
 const NEWEST_FIRST = [
   ...SEQUENCE.map((slug) => `${slug}-art-print`),
-  ...ART_PRODUCT_CATALOG.products.map((product) => product.handle),
+  ...ART_PRODUCT_CATALOG.products
+    .filter((product) => product.collection === FLOATING_WORLD.slug)
+    .map((product) => product.handle),
 ].reverse();
+/** The catalog as it was with one museum collection. */
+const FLOATING_WORLD_ONLY = {collections: [FLOATING_WORLD]};
 
 const product = (handle) => ({handle});
 
@@ -76,7 +80,11 @@ test('the catalogs rank all 60 Floating World products, prints first', () => {
 });
 
 test('museum products split the shop by the museum collection tags', () => {
-  assert.equal(museumTagClause(), '(tag:"Floating World")');
+  assert.equal(
+    museumTagClause(),
+    '(tag:"Floating World" OR tag:"Line and Colour")',
+  );
+  assert.equal(museumTagClause(FLOATING_WORLD_ONLY), '(tag:"Floating World")');
   assert.equal(
     studioSearchQuery(null, '(tag:"Floating World")'),
     'NOT (tag:"Floating World")',
@@ -93,7 +101,10 @@ test('museum products split the shop by the museum collection tags', () => {
 });
 
 test('explicit sorts keep Shopify order; only Featured reorders', () => {
-  assert.equal(featuredMuseumClause('featured'), '(tag:"Floating World")');
+  assert.equal(
+    featuredMuseumClause('featured', FLOATING_WORLD_ONLY),
+    '(tag:"Floating World")',
+  );
   for (const sort of ['price-asc', 'price-desc', 'alpha-asc', 'alpha-desc'])
     assert.equal(featuredMuseumClause(sort), null, sort);
 });

@@ -83,6 +83,87 @@
       }
     },
     {
+      "id": "vasily-kandinsky",
+      "slug": "kandinsky",
+      "name": "Vasily Kandinsky",
+      "sortName": "Kandinsky, Vasily",
+      "aliases": [
+        "Kandinsky",
+        "Wassily Kandinsky",
+        "Vassily Kandinsky",
+        "Wassily Wassiljewitsch Kandinsky",
+        "Василий Васильевич Кандинский"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1866",
+        "year": 1866
+      },
+      "died": {
+        "display": "1944",
+        "year": 1944
+      },
+      "nationality": "Russian",
+      "lifeDatesSource": "https://api.artic.edu/api/v1/agents/35188",
+      "bio": "Vasily Kandinsky (1866–1944) was a Russian-born painter and theorist who studied law in Moscow before moving to Munich in 1896 to train as an artist. There he co-founded the Blaue Reiter group in 1911, and by 1913 he was painting pictures with no recognisable subject; his book On the Spiritual in Art (1911) argued that colour and form could act on the viewer as directly as music. He later taught at the Bauhaus and spent his last years in France.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500021093",
+        "https://www.wikidata.org/wiki/Q61064",
+        "https://api.artic.edu/api/v1/agents/35188"
+      ],
+      "curatorNote": "These five paintings come from 1909 to 1913, the Murnau and Munich years in which Kandinsky's landscapes loosened into colour and line until the subject could hardly be read. Prints, framed prints and mugs keep the full composition as the museum photographed it, set on white; canvas and phone cases use a chosen detail.",
+      "approval": {
+        "approved": true,
+        "at": "2026-10-15T18:26:31.214Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "Russia",
+        "era": "Early 20th century",
+        "movement": "Abstract art"
+      }
+    },
+    {
+      "id": "piet-mondrian",
+      "slug": "mondrian",
+      "name": "Piet Mondrian",
+      "sortName": "Mondrian, Piet",
+      "aliases": [
+        "Mondrian",
+        "Piet Mondriaan",
+        "Pieter Cornelis Mondriaan",
+        "Pieter Cornelis Mondrian"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1872",
+        "year": 1872
+      },
+      "died": {
+        "display": "1944",
+        "year": 1944
+      },
+      "nationality": "Dutch",
+      "lifeDatesSource": "https://api.artic.edu/api/v1/agents/17549",
+      "bio": "Piet Mondrian (1872–1944) was a Dutch painter who began with landscapes and flower studies in the tradition of the Hague School, worked through Cubism in Paris from 1912, and arrived at a strict abstraction of black lines, white grounds and the three primary colours. In 1917 he was a founder of the De Stijl group with Theo van Doesburg, and he called his approach Neo-Plasticism. He lived in Paris and London before moving to New York in 1940, where he died in 1944.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500004972",
+        "https://www.wikidata.org/wiki/Q151803",
+        "https://api.artic.edu/api/v1/agents/17549"
+      ],
+      "curatorNote": "We show Mondrian's route as well as where it led: a Dutch field and a single chrysanthemum beside the 1921 lozenge and the grids of 1927 and 1935. Prints, framed prints and mugs keep the full composition as the museum photographed it, set on white; canvas and phone cases use a chosen detail.",
+      "approval": {
+        "approved": true,
+        "at": "2026-10-15T18:26:31.416Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "Netherlands",
+        "era": "Early 20th century",
+        "movement": "De Stijl"
+      }
+    },
+    {
       "id": "clara-mendes-studio",
       "slug": "clara-mendes-studio",
       "name": "Clara Mendes Studio",
@@ -743,6 +824,611 @@
           "at": "2026-10-14T11:00:59.552Z",
           "note": "Owner cleared in chat 2026-10-14 after reviewing the per-work production sheets (8x10, 16x20/framed, 20x24, canvas, card, postcard, case)."
         }
+      }
+    },
+    {
+      "id": "aic-8991",
+      "artistId": "vasily-kandinsky",
+      "title": "Improvisation No. 30 (Cannons)",
+      "shortTitle": "Improvisation No. 30 (Cannons)",
+      "date": "1913",
+      "medium": "Oil on canvas",
+      "dimensions": "111 × 111.3 cm (43 11/16 × 43 13/16 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "8991",
+        "accessionNumber": "1931.511",
+        "objectUrl": "https://www.artic.edu/artworks/8991",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/8991",
+        "imageUrl": "https://www.artic.edu/iiif/2/b5bc6b66-9e6e-fe57-dcec-fc49e820e904/full/3000,/0/default.jpg",
+        "fullResolution": {
+          "height": 10244,
+          "width": 10199
+        },
+        "artistDisplayName": "Vasily Kandinsky",
+        "artistPrefix": "",
+        "creditLine": "Vasily Kandinsky. Improvisation No. 30 (Cannons), 1913. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-8991.json",
+        "fetchedAt": "2026-10-15T17:28:53.131Z",
+        "metadataSha256": "85c37713534b17c541eb38f0fddb1b0bbe9aa52af2078bbc4bff9b0f3d934377"
+      },
+      "original": {
+        "fileName": "aic-8991.jpg",
+        "sha256": "af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11",
+        "bytes": 3076602,
+        "contentType": "image/jpeg",
+        "width": 2987,
+        "height": 3000
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:31.619Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:31.819Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "aic-8983",
+      "artistId": "vasily-kandinsky",
+      "title": "Painting with Troika",
+      "shortTitle": "Painting with Troika",
+      "date": "January 18, 1911",
+      "medium": "Oil on cardboard; in artist's painted frame",
+      "dimensions": "69.7 × 97.3 cm (27 3/8 × 38 5/16 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "8983",
+        "accessionNumber": "1931.509",
+        "objectUrl": "https://www.artic.edu/artworks/8983",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/8983",
+        "imageUrl": "https://www.artic.edu/iiif/2/a45e5f55-d02b-ce98-8bab-3af549684f58/full/3000,/0/default.jpg",
+        "fullResolution": {
+          "height": 7247,
+          "width": 9871
+        },
+        "artistDisplayName": "Vasily Kandinsky",
+        "artistPrefix": "",
+        "creditLine": "Vasily Kandinsky. Painting with Troika, January 18, 1911. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-8983.json",
+        "fetchedAt": "2026-10-15T17:28:56.199Z",
+        "metadataSha256": "e120c0450e5e4f87a142f65d1a3494f71a4f1aebc4dc8678631defcb9b8c34a9"
+      },
+      "original": {
+        "fileName": "aic-8983.jpg",
+        "sha256": "1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8",
+        "bytes": 2115654,
+        "contentType": "image/jpeg",
+        "width": 3000,
+        "height": 2202
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.828Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.027Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      },
+      "trim": {
+        "top": 50,
+        "right": 46,
+        "bottom": 50,
+        "left": 48,
+        "at": "2026-10-15T18:05:55.147Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-15: trim the grey photo backdrop outside Kandinsky's painted frame; the painted frame stays"
+      }
+    },
+    {
+      "id": "aic-8980",
+      "artistId": "vasily-kandinsky",
+      "title": "Landscape with Two Poplars",
+      "shortTitle": "Landscape with Two Poplars",
+      "date": "1912",
+      "medium": "Oil on canvas",
+      "dimensions": "78.8 × 100.4 cm (31 × 39 1/2 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "8980",
+        "accessionNumber": "1931.508",
+        "objectUrl": "https://www.artic.edu/artworks/8980",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/8980",
+        "imageUrl": "https://www.artic.edu/iiif/2/9694ca0c-c4c4-e48d-566f-4d248990cff4/full/3000,/0/default.jpg",
+        "fullResolution": {
+          "height": 6694,
+          "width": 8496
+        },
+        "artistDisplayName": "Vasily Kandinsky",
+        "artistPrefix": "",
+        "creditLine": "Vasily Kandinsky. Landscape with Two Poplars, 1912. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-8980.json",
+        "fetchedAt": "2026-10-15T17:28:57.770Z",
+        "metadataSha256": "bc6b735b3ba9cdb1babe5ba0935bb42bea5c77bae710b5037415af17cedbb87a"
+      },
+      "original": {
+        "fileName": "aic-8980.jpg",
+        "sha256": "53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73",
+        "bytes": 3334058,
+        "contentType": "image/jpeg",
+        "width": 3000,
+        "height": 2364
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.019Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.222Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "aic-129849",
+      "artistId": "vasily-kandinsky",
+      "title": "Houses at Murnau",
+      "shortTitle": "Houses at Murnau",
+      "date": "1909",
+      "medium": "Oil on cardboard",
+      "dimensions": "49 × 64 cm (19 1/4 × 25 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "129849",
+        "accessionNumber": "1994.33",
+        "objectUrl": "https://www.artic.edu/artworks/129849",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/129849",
+        "imageUrl": "https://www.artic.edu/iiif/2/3f732b69-0ae7-7d1e-ad53-e20b0cc2de72/full/2920,/0/default.jpg",
+        "fullResolution": {
+          "height": 2250,
+          "width": 2920
+        },
+        "artistDisplayName": "Vasily Kandinsky",
+        "artistPrefix": "",
+        "creditLine": "Vasily Kandinsky. Houses at Murnau, 1909. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-129849.json",
+        "fetchedAt": "2026-10-15T17:28:59.522Z",
+        "metadataSha256": "b5e7daa7137802e5a31774b0e16f60f4c3487f8a02a47f7e14339a24906741b3"
+      },
+      "original": {
+        "fileName": "aic-129849.jpg",
+        "sha256": "116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3",
+        "bytes": 1369359,
+        "contentType": "image/jpeg",
+        "width": 2920,
+        "height": 2250
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.423Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:32.625Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "aic-8987",
+      "artistId": "vasily-kandinsky",
+      "title": "Painting with Green Center",
+      "shortTitle": "Painting with Green Center",
+      "date": "1913",
+      "medium": "Oil on canvas",
+      "dimensions": "108.9 × 118.4 cm (43 1/4 × 47 1/2 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "8987",
+        "accessionNumber": "1931.510",
+        "objectUrl": "https://www.artic.edu/artworks/8987",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/8987",
+        "imageUrl": "https://www.artic.edu/iiif/2/c68f33ec-feb1-5277-334b-b71ac15ae394/full/2417,/0/default.jpg",
+        "fullResolution": {
+          "height": 2250,
+          "width": 2417
+        },
+        "artistDisplayName": "Vasily Kandinsky",
+        "artistPrefix": "",
+        "creditLine": "Vasily Kandinsky. Painting with Green Center, 1913. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-8987.json",
+        "fetchedAt": "2026-10-15T17:29:00.943Z",
+        "metadataSha256": "7347047121d5c358fb143ff7c96f50d3a78bdc57147d0550c488123c8faa2aee"
+      },
+      "original": {
+        "fileName": "aic-8987.jpg",
+        "sha256": "05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091",
+        "bytes": 1204768,
+        "contentType": "image/jpeg",
+        "width": 2417,
+        "height": 2250
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.228Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.428Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "aic-109819",
+      "artistId": "piet-mondrian",
+      "title": "Lozenge Composition with Yellow, Black, Blue, Red, and Gray",
+      "shortTitle": "Lozenge Composition",
+      "date": "1921",
+      "medium": "Oil on canvas",
+      "dimensions": "60 × 60 cm (23 5/8 × 23 5/8 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "109819",
+        "accessionNumber": "1957.307",
+        "objectUrl": "https://www.artic.edu/artworks/109819",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/109819",
+        "imageUrl": "https://www.artic.edu/iiif/2/25f660ee-f1db-d13b-42a5-56df97c98ba7/full/3000,/0/default.jpg",
+        "fullResolution": {
+          "height": 6578,
+          "width": 6578
+        },
+        "artistDisplayName": "Piet Mondrian",
+        "artistPrefix": "",
+        "creditLine": "Piet Mondrian. Lozenge Composition with Yellow, Black, Blue, Red, and Gray, 1921. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-109819.json",
+        "fetchedAt": "2026-10-15T17:29:03.017Z",
+        "metadataSha256": "2368b03d133c6687f68d405af4d43b87f3d97ffdf3263c26b7f6d261616f2f0a"
+      },
+      "original": {
+        "fileName": "aic-109819.jpg",
+        "sha256": "849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f",
+        "bytes": 703548,
+        "contentType": "image/jpeg",
+        "width": 3000,
+        "height": 3000
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.111Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.314Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "aic-142570",
+      "artistId": "piet-mondrian",
+      "title": "Study for a Composition",
+      "shortTitle": "Study for a Composition",
+      "date": "1940–41",
+      "medium": "Collage of cut and pasted papers, prepared with gouache and charcoal, on pieced cream wove newsprint in three parts with charcoal on verso",
+      "dimensions": "Max: 33 × 27 cm (13 × 10 11/16 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "142570",
+        "accessionNumber": "2013.984",
+        "objectUrl": "https://www.artic.edu/artworks/142570",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/142570",
+        "imageUrl": "https://www.artic.edu/iiif/2/7942129f-6b16-3b82-d727-14b71165b050/full/3000,/0/default.jpg",
+        "fullResolution": {
+          "height": 5616,
+          "width": 3950
+        },
+        "artistDisplayName": "Piet Mondrian",
+        "artistPrefix": "",
+        "creditLine": "Piet Mondrian. Study for a Composition, 1940–41. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-142570.json",
+        "fetchedAt": "2026-10-15T17:29:04.677Z",
+        "metadataSha256": "3887f2d6c7368c1ac5af6bb6c59b6a839fdc89bdc42c65cd5d0b9f501f55eb2f"
+      },
+      "original": {
+        "fileName": "aic-142570.jpg",
+        "sha256": "b688606684c7807b5f5f68dfe79e30eb7fa805847ea98aeeea3f126600c0e70d",
+        "bytes": 1674413,
+        "contentType": "image/jpeg",
+        "width": 2110,
+        "height": 3000
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "aic-65821",
+      "artistId": "piet-mondrian",
+      "title": "Composition (No. 1) Gray-Red",
+      "shortTitle": "Composition (No. 1) Gray-Red",
+      "date": "1935",
+      "medium": "Oil on canvas",
+      "dimensions": "57.5 × 55.6 cm (22 5/8 × 21 7/8 in.)",
+      "source": {
+        "museum": "aic",
+        "institution": "The Art Institute of Chicago",
+        "objectId": "65821",
+        "accessionNumber": "1949.518",
+        "objectUrl": "https://www.artic.edu/artworks/65821",
+        "apiUrl": "https://api.artic.edu/api/v1/artworks/65821",
+        "imageUrl": "https://www.artic.edu/iiif/2/254c654f-354a-0f4f-28b5-8eb01a02e95c/full/2182,/0/default.jpg",
+        "fullResolution": {
+          "height": 2250,
+          "width": 2182
+        },
+        "artistDisplayName": "Piet Mondrian",
+        "artistPrefix": "",
+        "creditLine": "Piet Mondrian. Composition (No. 1) Gray-Red, 1935. The Art Institute of Chicago",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Art Institute of Chicago Open Access (CC0)",
+          "evidenceUrl": "https://www.artic.edu/open-access/open-access-images"
+        },
+        "evidenceFile": "data/museum-evidence/aic-65821.json",
+        "fetchedAt": "2026-10-15T17:29:06.500Z",
+        "metadataSha256": "15fb5dc8605a567caf3fe0eafd88396f40b10da32e2088d9b9c0cd9828731476"
+      },
+      "original": {
+        "fileName": "aic-65821.jpg",
+        "sha256": "75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa",
+        "bytes": 723134,
+        "contentType": "image/jpeg",
+        "width": 2182,
+        "height": 2250
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.517Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.717Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "cma-1958.38",
+      "artistId": "piet-mondrian",
+      "title": "Chrysanthemum",
+      "shortTitle": "Chrysanthemum",
+      "date": "1906–42",
+      "medium": "Oil on canvas",
+      "dimensions": "Framed: 52.1 x 49.2 x 5.1 cm (20 1/2 x 19 3/8 x 2 in.); Unframed: 41.5 x 38.5 cm (16 5/16 x 15 3/16 in.); Former: 52.1 x 49.2 x 4.5 cm (20 1/2 x 19 3/8 x 1 3/4 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1958.38",
+        "accessionNumber": "1958.38",
+        "objectUrl": "https://clevelandart.org/art/1958.38",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1958.38",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1958.38/1958.38_full.tif",
+        "artistDisplayName": "Piet Mondrian",
+        "artistPrefix": "",
+        "creditLine": "Bequest of Leonard C. Hanna Jr.",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1958.38.json",
+        "fetchedAt": "2026-10-15T17:29:18.219Z",
+        "metadataSha256": "d2f7ccae3c63962f284b942d4e0cf7850614a3f8e831f077d33d6984456f9686"
+      },
+      "original": {
+        "fileName": "cma-1958.38.tif",
+        "sha256": "da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691",
+        "bytes": 62890352,
+        "contentType": "image/tiff",
+        "width": 4420,
+        "height": 4741
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:34.917Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:35.119Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "cma-1971.220",
+      "artistId": "piet-mondrian",
+      "title": "Field with Young Trees in the Foreground",
+      "shortTitle": "Field with Young Trees",
+      "date": "c. 1907",
+      "medium": "Oil on paper laid on board",
+      "dimensions": "Framed: 82.5 x 97 x 5.8 cm (32 1/2 x 38 3/16 x 2 5/16 in.); Unframed: 65.7 x 72 cm (25 7/8 x 28 3/8 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1971.220",
+        "accessionNumber": "1971.220",
+        "objectUrl": "https://clevelandart.org/art/1971.220",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1971.220",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1971.220/1971.220_full.tif",
+        "artistDisplayName": "Piet Mondrian",
+        "artistPrefix": "",
+        "creditLine": "Gift of Frank Stella",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1971.220.json",
+        "fetchedAt": "2026-10-15T17:29:22.621Z",
+        "metadataSha256": "8e36f2381b915cfd18c5cf3849e7914ab04cf1fd760f7049d1d1141ff670ef8b"
+      },
+      "original": {
+        "fileName": "cma-1971.220.tif",
+        "sha256": "1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e",
+        "bytes": 51886454,
+        "contentType": "image/tiff",
+        "width": 4611,
+        "height": 3749
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:35.321Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:35.522Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      }
+    },
+    {
+      "id": "cma-1967.215",
+      "artistId": "piet-mondrian",
+      "title": "Composition with Red, Yellow, and Blue",
+      "shortTitle": "Composition with Red, Yellow, and Blue",
+      "date": "1927",
+      "medium": "Oil on canvas",
+      "dimensions": "Framed: 62.2 x 62.6 x 10.8 cm (24 1/2 x 24 5/8 x 4 1/4 in.); Unframed: 49.5 x 49.5 cm (19 1/2 x 19 1/2 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1967.215",
+        "accessionNumber": "1967.215",
+        "objectUrl": "https://clevelandart.org/art/1967.215",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1967.215",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1967.215/1967.215_full.tif",
+        "artistDisplayName": "Piet Mondrian",
+        "artistPrefix": "",
+        "creditLine": "Contemporary Collection of The Cleveland Museum of Art",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1967.215.json",
+        "fetchedAt": "2026-10-15T17:29:37.640Z",
+        "metadataSha256": "deb5a2027cb9b355a631a3422ec97a60967dbbbdad3fdc481af6c0f4174fac66"
+      },
+      "original": {
+        "fileName": "cma-1967.215.tif",
+        "sha256": "9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252",
+        "bytes": 295637396,
+        "contentType": "image/tiff",
+        "width": 9856,
+        "height": 9998
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.628Z",
+          "note": "Owner cleared in chat 2026-10-15: museum open-access record (AIC public domain / Cleveland CC0) and artist died 1944."
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-10-15T18:26:33.831Z",
+          "note": "Owner cleared in chat 2026-10-15 after the trims, crops and prepared Line and Colour files were reviewed in the session."
+        }
+      },
+      "trim": {
+        "top": 196,
+        "right": 298,
+        "bottom": 474,
+        "left": 230,
+        "at": "2026-10-15T18:05:55.348Z",
+        "by": "Tassos",
+        "note": "Owner decision 2026-10-15: trim the wall and its shadow outside the white strip frame; the frame stays"
       }
     }
   ]
