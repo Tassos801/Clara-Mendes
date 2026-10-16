@@ -3091,6 +3091,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163624878414",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249148354894",
+          "a3-white": "gid://shopify/ProductVariant/61249148387662",
+          "a3-oak": "gid://shopify/ProductVariant/61249148420430",
+          "large-black": "gid://shopify/ProductVariant/61249148453198",
+          "large-white": "gid://shopify/ProductVariant/61249148485966",
+          "large-oak": "gid://shopify/ProductVariant/61249148518734"
+        }
       }
     },
     {
@@ -3148,6 +3159,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163624943950",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249149108558",
+          "a3-white": "gid://shopify/ProductVariant/61249149141326",
+          "a3-oak": "gid://shopify/ProductVariant/61249149174094",
+          "large-black": "gid://shopify/ProductVariant/61249149206862",
+          "large-white": "gid://shopify/ProductVariant/61249149239630",
+          "large-oak": "gid://shopify/ProductVariant/61249149272398"
+        }
       }
     },
     {
@@ -3205,6 +3227,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163625238862",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249150091598",
+          "a3-white": "gid://shopify/ProductVariant/61249150124366",
+          "a3-oak": "gid://shopify/ProductVariant/61249150157134",
+          "large-black": "gid://shopify/ProductVariant/61249150189902",
+          "large-white": "gid://shopify/ProductVariant/61249150222670",
+          "large-oak": "gid://shopify/ProductVariant/61249150255438"
+        }
       }
     },
     {
@@ -3262,6 +3295,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163625501006",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249151074638",
+          "a3-white": "gid://shopify/ProductVariant/61249151107406",
+          "a3-oak": "gid://shopify/ProductVariant/61249151140174",
+          "large-black": "gid://shopify/ProductVariant/61249151172942",
+          "large-white": "gid://shopify/ProductVariant/61249151205710",
+          "large-oak": "gid://shopify/ProductVariant/61249151238478"
+        }
       }
     },
     {
@@ -3319,6 +3363,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163625795918",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249152057678",
+          "a3-white": "gid://shopify/ProductVariant/61249152090446",
+          "a3-oak": "gid://shopify/ProductVariant/61249152123214",
+          "large-black": "gid://shopify/ProductVariant/61249152155982",
+          "large-white": "gid://shopify/ProductVariant/61249152188750",
+          "large-oak": "gid://shopify/ProductVariant/61249152221518"
+        }
       }
     },
     {
@@ -3376,6 +3431,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163626090830",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249153270094",
+          "a3-white": "gid://shopify/ProductVariant/61249153302862",
+          "a3-oak": "gid://shopify/ProductVariant/61249153335630",
+          "large-black": "gid://shopify/ProductVariant/61249153368398",
+          "large-white": "gid://shopify/ProductVariant/61249153401166",
+          "large-oak": "gid://shopify/ProductVariant/61249153433934"
+        }
       }
     },
     {
@@ -3433,6 +3499,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163626352974",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249154253134",
+          "a3-white": "gid://shopify/ProductVariant/61249154285902",
+          "a3-oak": "gid://shopify/ProductVariant/61249154318670",
+          "large-black": "gid://shopify/ProductVariant/61249154351438",
+          "large-white": "gid://shopify/ProductVariant/61249154384206",
+          "large-oak": "gid://shopify/ProductVariant/61249154416974"
+        }
       }
     },
     {
@@ -3490,6 +3567,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163626647886",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249155236174",
+          "a3-white": "gid://shopify/ProductVariant/61249155268942",
+          "a3-oak": "gid://shopify/ProductVariant/61249155301710",
+          "large-black": "gid://shopify/ProductVariant/61249155334478",
+          "large-white": "gid://shopify/ProductVariant/61249155367246",
+          "large-oak": "gid://shopify/ProductVariant/61249155400014"
+        }
       }
     },
     {
@@ -3547,6 +3635,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163627008334",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249156284750",
+          "a3-white": "gid://shopify/ProductVariant/61249156317518",
+          "a3-oak": "gid://shopify/ProductVariant/61249156350286",
+          "large-black": "gid://shopify/ProductVariant/61249156383054",
+          "large-white": "gid://shopify/ProductVariant/61249156415822",
+          "large-oak": "gid://shopify/ProductVariant/61249156448590"
+        }
       }
     },
     {
@@ -3604,6 +3703,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163627303246",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249157235022",
+          "a3-white": "gid://shopify/ProductVariant/61249157267790",
+          "a3-oak": "gid://shopify/ProductVariant/61249157300558",
+          "large-black": "gid://shopify/ProductVariant/61249157333326",
+          "large-white": "gid://shopify/ProductVariant/61249157366094",
+          "large-oak": "gid://shopify/ProductVariant/61249157398862"
+        }
       }
     },
     {
@@ -3667,6 +3777,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163627598158",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249158218062",
+          "12x16": "gid://shopify/ProductVariant/61249158250830",
+          "16x24": "gid://shopify/ProductVariant/61249158283598"
+        }
       }
     },
     {
@@ -3730,6 +3848,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163627893070",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249158611278",
+          "12x16": "gid://shopify/ProductVariant/61249158644046",
+          "16x24": "gid://shopify/ProductVariant/61249158676814"
+        }
       }
     },
     {
@@ -3793,6 +3919,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163628122446",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249158873422",
+          "12x16": "gid://shopify/ProductVariant/61249158906190",
+          "16x24": "gid://shopify/ProductVariant/61249158938958"
+        }
       }
     },
     {
@@ -3856,6 +3990,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163628515662",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249159070030",
+          "12x16": "gid://shopify/ProductVariant/61249159102798",
+          "16x24": "gid://shopify/ProductVariant/61249159135566"
+        }
       }
     },
     {
@@ -3919,6 +4061,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163628810574",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249159233870",
+          "12x16": "gid://shopify/ProductVariant/61249159266638",
+          "16x24": "gid://shopify/ProductVariant/61249159299406"
+        }
       }
     },
     {
@@ -3982,6 +4132,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163629138254",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249159463246",
+          "12x16": "gid://shopify/ProductVariant/61249159496014",
+          "16x24": "gid://shopify/ProductVariant/61249159528782"
+        }
       }
     },
     {
@@ -4045,6 +4203,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163629433166",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249159790926",
+          "12x16": "gid://shopify/ProductVariant/61249159823694",
+          "16x24": "gid://shopify/ProductVariant/61249159856462"
+        }
       }
     },
     {
@@ -4108,6 +4274,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163629793614",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249160151374",
+          "12x16": "gid://shopify/ProductVariant/61249160184142",
+          "16x24": "gid://shopify/ProductVariant/61249160216910"
+        }
       }
     },
     {
@@ -4171,6 +4345,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163630154062",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249162051918",
+          "12x16": "gid://shopify/ProductVariant/61249162084686",
+          "16x24": "gid://shopify/ProductVariant/61249162117454"
+        }
       }
     },
     {
@@ -4234,6 +4416,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163630514510",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249162379598",
+          "12x16": "gid://shopify/ProductVariant/61249162412366",
+          "16x24": "gid://shopify/ProductVariant/61249162445134"
+        }
       }
     },
     {
@@ -4277,6 +4467,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163630809422",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249163100494"
+        }
       }
     },
     {
@@ -4320,6 +4516,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163631104334",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249163592014"
+        }
       }
     },
     {
@@ -4363,6 +4565,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163631497550",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249164116302"
+        }
       }
     },
     {
@@ -4406,6 +4614,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163631792462",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249164443982"
+        }
       }
     },
     {
@@ -4449,6 +4663,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163632120142",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249165066574"
+        }
       }
     },
     {
@@ -4492,6 +4712,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163632382286",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249165328718"
+        }
       }
     },
     {
@@ -4535,6 +4761,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163632775502",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249165820238"
+        }
       }
     },
     {
@@ -4578,6 +4810,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163633037646",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249166180686"
+        }
       }
     },
     {
@@ -4621,6 +4859,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163633332558",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249166278990"
+        }
       }
     },
     {
@@ -4664,6 +4908,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163633693006",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249166475598"
+        }
       }
     },
     {
@@ -4707,6 +4957,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163633824078",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249166606670"
+        }
       }
     },
     {
@@ -4750,6 +5006,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163633922382",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249166901582"
+        }
       }
     },
     {
@@ -4793,6 +5055,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634053454",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249167130958"
+        }
       }
     },
     {
@@ -4836,6 +5104,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634151758",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249167393102"
+        }
       }
     },
     {
@@ -4879,6 +5153,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634282830",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249167851854"
+        }
       }
     },
     {
@@ -4922,6 +5202,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634381134",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249168048462"
+        }
       }
     },
     {
@@ -4965,6 +5251,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634413902",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249168277838"
+        }
       }
     },
     {
@@ -5008,6 +5300,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634512206",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249168376142"
+        }
       }
     },
     {
@@ -5051,6 +5349,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634577742",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249168441678"
+        }
       }
     },
     {
@@ -5094,6 +5398,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"printful-mug\",\"supplied\":[\"mug-11oz\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634643278",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249168539982"
+        }
       }
     },
     {
@@ -5140,6 +5450,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634708814",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249168605518",
+          "18-insert": "gid://shopify/ProductVariant/61249168638286",
+          "22-cover": "gid://shopify/ProductVariant/61249168671054",
+          "22-insert": "gid://shopify/ProductVariant/61249168703822"
+        }
       }
     },
     {
@@ -5186,6 +5505,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634839886",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249169031502",
+          "18-insert": "gid://shopify/ProductVariant/61249169064270",
+          "22-cover": "gid://shopify/ProductVariant/61249169097038",
+          "22-insert": "gid://shopify/ProductVariant/61249169129806"
+        }
       }
     },
     {
@@ -5232,6 +5560,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163634905422",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249169228110",
+          "18-insert": "gid://shopify/ProductVariant/61249169260878",
+          "22-cover": "gid://shopify/ProductVariant/61249169293646",
+          "22-insert": "gid://shopify/ProductVariant/61249169326414"
+        }
       }
     },
     {
@@ -5278,6 +5615,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163635069262",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249169621326",
+          "18-insert": "gid://shopify/ProductVariant/61249169654094",
+          "22-cover": "gid://shopify/ProductVariant/61249169686862",
+          "22-insert": "gid://shopify/ProductVariant/61249169719630"
+        }
       }
     },
     {
@@ -5324,6 +5670,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163635200334",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249169981774",
+          "18-insert": "gid://shopify/ProductVariant/61249170014542",
+          "22-cover": "gid://shopify/ProductVariant/61249170047310",
+          "22-insert": "gid://shopify/ProductVariant/61249170080078"
+        }
       }
     },
     {
@@ -5370,6 +5725,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163635495246",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249170407758",
+          "18-insert": "gid://shopify/ProductVariant/61249170440526",
+          "22-cover": "gid://shopify/ProductVariant/61249170473294",
+          "22-insert": "gid://shopify/ProductVariant/61249170506062"
+        }
       }
     },
     {
@@ -5416,6 +5780,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163635822926",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249171816782",
+          "18-insert": "gid://shopify/ProductVariant/61249171849550",
+          "22-cover": "gid://shopify/ProductVariant/61249171882318",
+          "22-insert": "gid://shopify/ProductVariant/61249171915086"
+        }
       }
     },
     {
@@ -5462,6 +5835,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163636085070",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249173422414",
+          "18-insert": "gid://shopify/ProductVariant/61249173455182",
+          "22-cover": "gid://shopify/ProductVariant/61249173487950",
+          "22-insert": "gid://shopify/ProductVariant/61249173520718"
+        }
       }
     },
     {
@@ -5508,6 +5890,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163636347214",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249175290190",
+          "18-insert": "gid://shopify/ProductVariant/61249175322958",
+          "22-cover": "gid://shopify/ProductVariant/61249175355726",
+          "22-insert": "gid://shopify/ProductVariant/61249175388494"
+        }
       }
     },
     {
@@ -5554,6 +5945,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163636805966",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249176830286",
+          "18-insert": "gid://shopify/ProductVariant/61249176863054",
+          "22-cover": "gid://shopify/ProductVariant/61249176895822",
+          "22-insert": "gid://shopify/ProductVariant/61249176928590"
+        }
       }
     },
     {
@@ -5597,6 +5997,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163637657934",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249178992974"
+        }
       }
     },
     {
@@ -5640,6 +6046,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163637821774",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179156814"
+        }
       }
     },
     {
@@ -5683,6 +6095,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163637887310",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179222350"
+        }
       }
     },
     {
@@ -5726,6 +6144,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163637985614",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179320654"
+        }
       }
     },
     {
@@ -5769,6 +6193,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163638182222",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179418958"
+        }
       }
     },
     {
@@ -5812,6 +6242,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163638411598",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179550030"
+        }
       }
     },
     {
@@ -5855,6 +6291,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163638640974",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179615566"
+        }
       }
     },
     {
@@ -5898,6 +6340,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163638870350",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179681102"
+        }
       }
     },
     {
@@ -5941,6 +6389,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163639099726",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179746638"
+        }
       }
     },
     {
@@ -5984,6 +6438,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163639394638",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249179812174"
+        }
       }
     },
     {
@@ -7474,6 +7934,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163642048846",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249181385038",
+          "a3-white": "gid://shopify/ProductVariant/61249181417806",
+          "a3-oak": "gid://shopify/ProductVariant/61249181450574",
+          "large-black": "gid://shopify/ProductVariant/61249181483342",
+          "large-white": "gid://shopify/ProductVariant/61249181516110",
+          "large-oak": "gid://shopify/ProductVariant/61249181548878"
+        }
       }
     },
     {
@@ -7531,6 +8002,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163642310990",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249181614414",
+          "a3-white": "gid://shopify/ProductVariant/61249181647182",
+          "a3-oak": "gid://shopify/ProductVariant/61249181679950",
+          "large-black": "gid://shopify/ProductVariant/61249181712718",
+          "large-white": "gid://shopify/ProductVariant/61249181745486",
+          "large-oak": "gid://shopify/ProductVariant/61249181778254"
+        }
       }
     },
     {
@@ -7588,6 +8070,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163642638670",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249182007630",
+          "a3-white": "gid://shopify/ProductVariant/61249182040398",
+          "a3-oak": "gid://shopify/ProductVariant/61249182073166",
+          "large-black": "gid://shopify/ProductVariant/61249182105934",
+          "large-white": "gid://shopify/ProductVariant/61249182138702",
+          "large-oak": "gid://shopify/ProductVariant/61249182171470"
+        }
       }
     },
     {
@@ -7645,6 +8138,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163642933582",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249182269774",
+          "a3-white": "gid://shopify/ProductVariant/61249182302542",
+          "a3-oak": "gid://shopify/ProductVariant/61249182335310",
+          "large-black": "gid://shopify/ProductVariant/61249182368078",
+          "large-white": "gid://shopify/ProductVariant/61249182400846",
+          "large-oak": "gid://shopify/ProductVariant/61249182433614"
+        }
       }
     },
     {
@@ -7702,6 +8206,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163643162958",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249182531918",
+          "a3-white": "gid://shopify/ProductVariant/61249182564686",
+          "a3-oak": "gid://shopify/ProductVariant/61249182597454",
+          "large-black": "gid://shopify/ProductVariant/61249182630222",
+          "large-white": "gid://shopify/ProductVariant/61249182662990",
+          "large-oak": "gid://shopify/ProductVariant/61249182695758"
+        }
       }
     },
     {
@@ -7759,6 +8274,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163643425102",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249182990670",
+          "a3-white": "gid://shopify/ProductVariant/61249183023438",
+          "a3-oak": "gid://shopify/ProductVariant/61249183056206",
+          "large-black": "gid://shopify/ProductVariant/61249183088974",
+          "large-white": "gid://shopify/ProductVariant/61249183121742",
+          "large-oak": "gid://shopify/ProductVariant/61249183154510"
+        }
       }
     },
     {
@@ -7816,6 +8342,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163643654478",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249183318350",
+          "a3-white": "gid://shopify/ProductVariant/61249183351118",
+          "a3-oak": "gid://shopify/ProductVariant/61249183383886",
+          "large-black": "gid://shopify/ProductVariant/61249183416654",
+          "large-white": "gid://shopify/ProductVariant/61249183449422",
+          "large-oak": "gid://shopify/ProductVariant/61249183482190"
+        }
       }
     },
     {
@@ -7873,6 +8410,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163643916622",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249183777102",
+          "a3-white": "gid://shopify/ProductVariant/61249183809870",
+          "a3-oak": "gid://shopify/ProductVariant/61249183842638",
+          "large-black": "gid://shopify/ProductVariant/61249183875406",
+          "large-white": "gid://shopify/ProductVariant/61249183908174",
+          "large-oak": "gid://shopify/ProductVariant/61249183940942"
+        }
       }
     },
     {
@@ -7930,6 +8478,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163644244302",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249184923982",
+          "a3-white": "gid://shopify/ProductVariant/61249184956750",
+          "a3-oak": "gid://shopify/ProductVariant/61249184989518",
+          "large-black": "gid://shopify/ProductVariant/61249185022286",
+          "large-white": "gid://shopify/ProductVariant/61249185055054",
+          "large-oak": "gid://shopify/ProductVariant/61249185087822"
+        }
       }
     },
     {
@@ -7987,6 +8546,17 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"hanger-print\",\"supplied\":[\"hanger-a3\",\"hanger-big\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163644440910",
+        "variantIds": {
+          "a3-black": "gid://shopify/ProductVariant/61249185153358",
+          "a3-white": "gid://shopify/ProductVariant/61249185186126",
+          "a3-oak": "gid://shopify/ProductVariant/61249185218894",
+          "large-black": "gid://shopify/ProductVariant/61249185251662",
+          "large-white": "gid://shopify/ProductVariant/61249185284430",
+          "large-oak": "gid://shopify/ProductVariant/61249185317198"
+        }
       }
     },
     {
@@ -8050,6 +8620,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163644703054",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249185415502",
+          "12x16": "gid://shopify/ProductVariant/61249185448270",
+          "16x24": "gid://shopify/ProductVariant/61249185481038"
+        }
       }
     },
     {
@@ -8113,6 +8691,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163644997966",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186005326",
+          "12x16": "gid://shopify/ProductVariant/61249186038094",
+          "16x24": "gid://shopify/ProductVariant/61249186070862"
+        }
       }
     },
     {
@@ -8176,6 +8762,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163645292878",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186169166",
+          "12x16": "gid://shopify/ProductVariant/61249186201934",
+          "16x24": "gid://shopify/ProductVariant/61249186234702"
+        }
       }
     },
     {
@@ -8239,6 +8833,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163645555022",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186398542",
+          "12x16": "gid://shopify/ProductVariant/61249186431310",
+          "16x24": "gid://shopify/ProductVariant/61249186464078"
+        }
       }
     },
     {
@@ -8302,6 +8904,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163645784398",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186529614",
+          "12x16": "gid://shopify/ProductVariant/61249186562382",
+          "16x24": "gid://shopify/ProductVariant/61249186595150"
+        }
       }
     },
     {
@@ -8365,6 +8975,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163646046542",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186693454",
+          "12x16": "gid://shopify/ProductVariant/61249186726222",
+          "16x24": "gid://shopify/ProductVariant/61249186758990"
+        }
       }
     },
     {
@@ -8428,6 +9046,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163646275918",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186857294",
+          "12x16": "gid://shopify/ProductVariant/61249186890062",
+          "16x24": "gid://shopify/ProductVariant/61249186922830"
+        }
       }
     },
     {
@@ -8491,6 +9117,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163646538062",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249186988366",
+          "12x16": "gid://shopify/ProductVariant/61249187021134",
+          "16x24": "gid://shopify/ProductVariant/61249187053902"
+        }
       }
     },
     {
@@ -8554,6 +9188,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163646767438",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249187348814",
+          "12x16": "gid://shopify/ProductVariant/61249187381582",
+          "16x24": "gid://shopify/ProductVariant/61249187414350"
+        }
       }
     },
     {
@@ -8617,6 +9259,14 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"acrylic-print\",\"supplied\":[\"acrylic-8x12\",\"acrylic-12x16\",\"acrylic-16x24\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647029582",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249187840334",
+          "12x16": "gid://shopify/ProductVariant/61249187873102",
+          "16x24": "gid://shopify/ProductVariant/61249187905870"
+        }
       }
     },
     {
@@ -8660,6 +9310,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647258958",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249188331854"
+        }
       }
     },
     {
@@ -8703,6 +9359,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647390030",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249188954446"
+        }
       }
     },
     {
@@ -8746,6 +9408,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647455566",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249189478734"
+        }
       }
     },
     {
@@ -8789,6 +9457,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647521102",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249189544270"
+        }
       }
     },
     {
@@ -8832,6 +9506,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647586638",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249189806414"
+        }
       }
     },
     {
@@ -8875,6 +9555,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647652174",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249190494542"
+        }
       }
     },
     {
@@ -8918,6 +9604,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647750478",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249190756686"
+        }
       }
     },
     {
@@ -8961,6 +9653,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647816014",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249191018830"
+        }
       }
     },
     {
@@ -9004,6 +9702,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163647914318",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249191543118"
+        }
       }
     },
     {
@@ -9047,6 +9751,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"metal-print\",\"supplied\":[\"metal-8x12\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648012622",
+        "variantIds": {
+          "8x12": "gid://shopify/ProductVariant/61249191936334"
+        }
       }
     },
     {
@@ -9093,6 +9803,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649192270",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249199800654",
+          "18-insert": "gid://shopify/ProductVariant/61249199833422",
+          "22-cover": "gid://shopify/ProductVariant/61249199866190",
+          "22-insert": "gid://shopify/ProductVariant/61249199898958"
+        }
       }
     },
     {
@@ -9139,6 +9858,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649257806",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249200259406",
+          "18-insert": "gid://shopify/ProductVariant/61249200292174",
+          "22-cover": "gid://shopify/ProductVariant/61249200324942",
+          "22-insert": "gid://shopify/ProductVariant/61249200357710"
+        }
       }
     },
     {
@@ -9185,6 +9913,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649388878",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249201078606",
+          "18-insert": "gid://shopify/ProductVariant/61249201111374",
+          "22-cover": "gid://shopify/ProductVariant/61249201144142",
+          "22-insert": "gid://shopify/ProductVariant/61249201176910"
+        }
       }
     },
     {
@@ -9231,6 +9968,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649487182",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249202225486",
+          "18-insert": "gid://shopify/ProductVariant/61249202258254",
+          "22-cover": "gid://shopify/ProductVariant/61249202291022",
+          "22-insert": "gid://shopify/ProductVariant/61249202323790"
+        }
       }
     },
     {
@@ -9277,6 +10023,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649618254",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249202684238",
+          "18-insert": "gid://shopify/ProductVariant/61249202717006",
+          "22-cover": "gid://shopify/ProductVariant/61249202749774",
+          "22-insert": "gid://shopify/ProductVariant/61249202782542"
+        }
       }
     },
     {
@@ -9323,6 +10078,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649913166",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249203503438",
+          "18-insert": "gid://shopify/ProductVariant/61249203536206",
+          "22-cover": "gid://shopify/ProductVariant/61249203568974",
+          "22-insert": "gid://shopify/ProductVariant/61249203601742"
+        }
       }
     },
     {
@@ -9369,6 +10133,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163650109774",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249203962190",
+          "18-insert": "gid://shopify/ProductVariant/61249203994958",
+          "22-cover": "gid://shopify/ProductVariant/61249204027726",
+          "22-insert": "gid://shopify/ProductVariant/61249204060494"
+        }
       }
     },
     {
@@ -9415,6 +10188,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163650404686",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249204748622",
+          "18-insert": "gid://shopify/ProductVariant/61249204781390",
+          "22-cover": "gid://shopify/ProductVariant/61249204814158",
+          "22-insert": "gid://shopify/ProductVariant/61249204846926"
+        }
       }
     },
     {
@@ -9461,6 +10243,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163650699598",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249205535054",
+          "18-insert": "gid://shopify/ProductVariant/61249205567822",
+          "22-cover": "gid://shopify/ProductVariant/61249205600590",
+          "22-insert": "gid://shopify/ProductVariant/61249205633358"
+        }
       }
     },
     {
@@ -9507,6 +10298,15 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"cushion\",\"supplied\":[\"cushion-22\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163650961742",
+        "variantIds": {
+          "18-cover": "gid://shopify/ProductVariant/61249206059342",
+          "18-insert": "gid://shopify/ProductVariant/61249206092110",
+          "22-cover": "gid://shopify/ProductVariant/61249206124878",
+          "22-insert": "gid://shopify/ProductVariant/61249206157646"
+        }
       }
     },
     {
@@ -9550,6 +10350,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163651191118",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249206518094"
+        }
       }
     },
     {
@@ -9593,6 +10399,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163651486030",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249208615246"
+        }
       }
     },
     {
@@ -9636,6 +10448,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163651748174",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249208975694"
+        }
       }
     },
     {
@@ -9679,6 +10497,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163652010318",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249209368910"
+        }
       }
     },
     {
@@ -9722,6 +10546,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163652239694",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249209729358"
+        }
       }
     },
     {
@@ -9765,6 +10595,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163652567374",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249210450254"
+        }
       }
     },
     {
@@ -9808,6 +10644,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163652763982",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249210515790"
+        }
       }
     },
     {
@@ -9851,6 +10693,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163652960590",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249212219726"
+        }
       }
     },
     {
@@ -9894,6 +10742,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163653222734",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249212252494"
+        }
       }
     },
     {
@@ -9937,6 +10791,12 @@
           }
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163653484878",
+        "variantIds": {
+          "50x60": "gid://shopify/ProductVariant/61249213301070"
+        }
       }
     }
   ]
