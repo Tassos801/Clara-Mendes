@@ -147,7 +147,8 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
 4. **Then the usual steps.** `prepare` lays the whole artwork on white paper in
    its own orientation (no crop, no stretch) and writes the card image (the
    sheet on the soft background) plus `<print>.sheet.webp`, which `rooms`
-   composites. `stage` writes museum copy (artist, full museum title, date,
+   composites, and `<print>.sheet-small.webp` (560 px long side), which the
+   artists index shows. `stage` writes museum copy (artist, full museum title, date,
    medium, credit, museum link, no-endorsement line) and tags
    `Museum Reproduction` + the artist's name, never `Clara Mendes Original`.
    `release` refuses a museum print until both owner reviews are cleared.

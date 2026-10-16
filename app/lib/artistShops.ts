@@ -29,6 +29,7 @@ import {
   printHandle,
   printImagePath,
   printOrientation,
+  printSheetImage,
   type PrintCatalog,
 } from './printCatalog.ts';
 
@@ -70,6 +71,8 @@ export type ArtistProduct = {
   image: string;
   orientation: Orientation;
   released: boolean;
+  /** The work as printed, for the artists index (see `printSheetImage`). */
+  sheet: {height: number; src: string; width: number};
   title: string;
 };
 
@@ -106,6 +109,7 @@ export function artistProducts({
           image: printImagePath(collection, print),
           orientation: printOrientation(print),
           released: print.released === true,
+          sheet: printSheetImage(collection, print),
           title: print.title,
         },
       ];
@@ -131,6 +135,7 @@ export function artistProducts({
         image: printImagePath(collection, print),
         orientation: product.orientation,
         released: product.released === true,
+        sheet: printSheetImage(collection, print),
         title: product.title,
       },
     ];
@@ -216,19 +221,89 @@ export function artistFeature(sources: Sources = {}): {
       return {
         image: lead.image,
         imageAlt: `${lead.title} by ${artist.name}`,
-        meta: [
-          lifeDatesLabel(artist),
-          artist.nationality,
-          artist.tags?.movement,
-        ].filter((value): value is string => Boolean(value)),
+        meta: artistMeta(artist),
         name: artist.name,
         path: artistPath(artist),
         products: products.length,
-        shortName: artist.sortName.split(',')[0].trim() || artist.name,
+        shortName: artistShortName(artist),
         works: artistArtworks(products, registry).length,
       };
     }),
     families: artistFamilies(artists.flatMap((entry) => entry.products)),
+  };
+}
+
+/** Life dates, nationality and movement, for the line under a name. */
+export function artistMeta(
+  artist: Pick<Artist, 'born' | 'died' | 'nationality' | 'tags'>,
+) {
+  return [
+    lifeDatesLabel(artist),
+    artist.nationality,
+    artist.tags?.movement,
+  ].filter((value): value is string => Boolean(value));
+}
+
+/** "Hokusai" from "Hokusai, Katsushika", for "Shop Hokusai". */
+export function artistShortName(artist: Pick<Artist, 'name' | 'sortName'>) {
+  return artist.sortName.split(',')[0].trim() || artist.name;
+}
+
+/** The first sentence of owner-approved text, kept to a card's length. */
+export function firstSentence(text: string) {
+  const sentence = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
+  return sentence.length > 160 ? `${sentence.slice(0, 157)}…` : sentence;
+}
+
+export type ArtistIndexWork = ArtistProduct['sheet'] & {title: string};
+
+export type ArtistIndexEntry = {
+  families: ArtistProductFamily[];
+  meta: string[];
+  name: string;
+  /** The curator's note, or else the biography, to its first sentence. */
+  note: string;
+  path: string;
+  shortName: string;
+  /** One per artwork, the representative work first. */
+  works: ArtistIndexWork[];
+};
+
+/**
+ * An artist's row on the artists index, from the products the route found
+ * live: their works as printed (one per artwork, the representative one
+ * first), the product types those come as, and why we chose them.
+ */
+export function artistIndexEntry(
+  artist: Artist,
+  listed: ArtistProduct[],
+  registry: ArtRegistry = ART_REGISTRY,
+): ArtistIndexEntry {
+  const representative = listed.filter(
+    (product) =>
+      product.artworkId &&
+      product.artworkId === artist.representativeArtworkId,
+  );
+  const seen = new Set<string>();
+  const works: ArtistIndexWork[] = [];
+  for (const product of [...representative, ...listed]) {
+    // Studio prints have no artwork record: each print is its own work.
+    const key = product.artworkId ?? product.handle;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    const artwork = product.artworkId
+      ? findArtwork(product.artworkId, registry)
+      : undefined;
+    works.push({...product.sheet, title: artwork?.shortTitle ?? product.title});
+  }
+  return {
+    families: artistFamilies(listed),
+    meta: artistMeta(artist),
+    name: artist.name,
+    note: firstSentence(artist.curatorNote.trim() || artist.bio),
+    path: artistPath(artist),
+    shortName: artistShortName(artist),
+    works,
   };
 }
 
@@ -240,6 +315,32 @@ export function artistFeature(sources: Sources = {}): {
 export function artistProductsQuery(products: ArtistProduct[]) {
   const tags = [...new Set(products.map((product) => product.collectionTag))];
   return tags.map((tag) => `tag:"${tag.replaceAll('"', '\\"')}"`).join(' OR ');
+}
+
+type ConnectionPage<T> = {
+  nodes: T[];
+  pageInfo: {endCursor?: string | null; hasNextPage: boolean};
+};
+
+/**
+ * Every node of a paged Storefront connection. One `products(query:)` page
+ * holds at most 100 products, and the artist queries select whole
+ * collections by tag, so a single page silently drops products once those
+ * collections pass 100. `maxPages` bounds the cost of a runaway query.
+ */
+export async function collectPages<T>(
+  load: (after: string | null) => Promise<ConnectionPage<T>>,
+  maxPages = 10,
+): Promise<T[]> {
+  const nodes: T[] = [];
+  let after: string | null = null;
+  for (let page = 0; page < maxPages; page += 1) {
+    const {nodes: pageNodes, pageInfo} = await load(after);
+    nodes.push(...pageNodes);
+    if (!pageInfo.hasNextPage || !pageInfo.endCursor) break;
+    after = pageInfo.endCursor;
+  }
+  return nodes;
 }
 
 /** Distinct artworks behind an artist's products, in product order. */
@@ -366,6 +467,10 @@ const FAMILY_LABELS = Object.fromEntries([
     spec.productType,
   ]),
 ]) as Record<ArtistProductFamily, string>;
+
+export function artistFamilyLabel(family: ArtistProductFamily) {
+  return FAMILY_LABELS[family];
+}
 
 /**
  * A series name for display: the Met records some with a romanised

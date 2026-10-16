@@ -44,7 +44,11 @@ import {
   shopCapsulePath,
 } from '~/lib/capsules';
 import {getCapsulePage} from '~/lib/capsulePages';
-import {museumPairings, productArtworkCredit} from '~/lib/artistShops';
+import {
+  collectPages,
+  museumPairings,
+  productArtworkCredit,
+} from '~/lib/artistShops';
 import {artProductPage, FAMILY_SPECS} from '~/lib/artProductCatalog';
 import {
   filterDemoProducts,
@@ -469,9 +473,13 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       },
     }),
     museumPairing?.products.length
-      ? context.storefront.query(MUSEUM_PAIR_QUERY, {
-          variables: {query: museumPairing.query},
-        })
+      ? collectPages((after) =>
+          context.storefront
+            .query(MUSEUM_PAIR_QUERY, {
+              variables: {after, query: museumPairing.query},
+            })
+            .then((page) => page.products),
+        )
       : Promise.resolve(null),
   ]);
 
@@ -572,7 +580,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // applies the release gate once more.
   const pairedByHandle = new Map(
     filterDemoProducts(
-      (pairData?.products.nodes ?? []) as ClaraCardProduct[],
+      (pairData ?? []) as ClaraCardProduct[],
     ).map((paired) => [paired.handle, paired]),
   );
   const museumRelated = museumPairing
@@ -2523,13 +2531,18 @@ function getStoreUrl(storeDomain: string) {
 // loader keeps the paired handles, in pairing order.
 const MUSEUM_PAIR_QUERY = `#graphql
   query MuseumPairs(
+    $after: String
     $country: CountryCode
     $language: LanguageCode
     $query: String!
   ) @inContext(country: $country, language: $language) {
-    products(first: 100, query: $query) {
+    products(first: 100, after: $after, query: $query) {
       nodes {
         ...ClaraProductCard
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }

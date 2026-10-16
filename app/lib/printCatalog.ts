@@ -147,6 +147,25 @@ export function printImagePath(
   return `/images/product-art/${collection.slug}/${print.slug}.webp`;
 }
 
+/**
+ * The work as it is printed, small, for showing it bare on a page: a museum
+ * print's bordered paper sheet (5:4 or 4:5, long side 560 px) or a studio
+ * print's 4:5 artwork. Sizes match scripts/prepare-print-assets.py.
+ */
+export function printSheetImage(
+  collection: Pick<PrintCatalogCollection, 'kind' | 'slug'>,
+  print: Pick<PrintCatalogPrint, 'orientation' | 'slug'>,
+) {
+  if (collectionKind(collection) !== 'museum')
+    return {height: 1400, src: printImagePath(collection, print), width: 1120};
+  const landscape = printOrientation(print) === 'landscape';
+  return {
+    height: landscape ? 448 : 560,
+    src: `/images/product-art/${collection.slug}/${print.slug}.sheet-small.webp`,
+    width: landscape ? 560 : 448,
+  };
+}
+
 export function releasedPrintHandles(
   catalog: PrintCatalog = PRINT_CATALOG,
 ): string[] {

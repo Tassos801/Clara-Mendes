@@ -25,6 +25,8 @@ PAPER_WHITE = (255, 255, 255)
 WEB_PAPER_MARGIN = 0.1
 # The bare bordered sheet that room mockups composite (museum prints only).
 SHEET_LONG_SIDE = 1600
+# A light copy of that sheet for small pictures, such as the artists index.
+SHEET_SMALL_LONG_SIDE = 560
 
 
 def sha256(path: Path) -> str:
@@ -148,6 +150,11 @@ def main() -> None:
                 sheet.resize((round(sheet.width * scale), round(sheet.height * scale)),
                              Image.Resampling.LANCZOS).save(
                     sheet_path, "WEBP", quality=90, method=6, icc_profile=icc)
+                small = SHEET_SMALL_LONG_SIDE / max(sheet.size)
+                sheet.resize((round(sheet.width * small), round(sheet.height * small)),
+                             Image.Resampling.LANCZOS).save(
+                    web_dir / (item["slug"] + ".sheet-small.webp"), "WEBP",
+                    quality=82, method=6, icc_profile=icc)
 
             sizes = []
             for size in item["sizes"]:
