@@ -34,6 +34,8 @@ const LINES = [
   {line: 'Art print 8×10', sku: 'ART-FAP-EMA-8X10'},
   {line: 'Art print 16×20', sku: 'ART-FAP-EMA-16X20'},
   {line: 'Art print 20×24', sku: 'GLOBAL-FAP-20X24'},
+  {line: 'Your Sky unframed 8×10', sku: 'GLOBAL-FAP-8X10'},
+  {line: 'Your Sky framed 8×10 (natural)', sku: 'GLOBAL-CFP-8X10', attributes: {color: 'natural'}},
   {line: 'Canvas 16×20', sku: 'GLOBAL-CAN-16X20', attributes: {wrap: 'MirrorWrap'}},
   {line: 'Framed 16×20 (natural)', sku: 'GLOBAL-CFP-16X20', attributes: {color: 'natural'}},
   {line: 'Framed 20×24 (natural)', sku: 'GLOBAL-CFP-20X24', attributes: {color: 'natural'}},
@@ -110,7 +112,9 @@ for (const entry of LINES) {
         outcome: result.outcome ?? null,
       });
       console.log(
-        `✔ ${country} ${entry.line} (${entry.sku}): item ${row.item} + ship ${row.shipping} = ${row.total} ${row.currency} · from ${row.lab ?? '?'} · ${row.carrier ?? '?'}${shipsTo ? '' : ' · (not in shipsTo)'}`,
+        quote
+          ? `✔ ${country} ${entry.line} (${entry.sku}): item ${row.item} + ship ${row.shipping} = ${row.total} ${row.currency} · from ${row.lab ?? '?'} · ${row.carrier ?? '?'}${shipsTo ? '' : ' · (not in shipsTo)'}`
+          : `✖ ${country} ${entry.line} (${entry.sku}): no quote (${row.outcome ?? 'no outcome'})${shipsTo ? '' : ' · not in shipsTo'}`,
       );
     } catch (error) {
       row.error = `quote: ${error.message}`;

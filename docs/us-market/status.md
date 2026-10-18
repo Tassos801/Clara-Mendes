@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-18  
 **Branch:** `claude/us-market`  
-**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). On 2026-10-18 the owner said "continue", so the read-only checks were done: C1, B4, the current US rates, and the US policy text drafted (A6). B1's quote script is ready but waits on the Prodigi key. Nothing has changed in Shopify, Prodigi or Merchant Center.  
+**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). The read-only checks C1 and B4 are done, B1 (Prodigi US quotes) is done, and the US policy text is drafted (A6). Nothing has changed in Shopify, Prodigi or Merchant Center.  
 **Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
@@ -13,8 +13,11 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    defaults for D2–D7 and start step A1 (the country pin), then A2."
 2. A1 and A2 are done (commit `1fb4c5f`). The other code steps are
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
-3. The owner paused the work ("Skip B1 for now…") and then resumed it
-   with "continue" on 2026-10-18. B1 is approved (owner, 2026-10-18: "Yes, run B1:
+3. **B1 is done (2026-10-18).** Results, proposed US rates and two side
+   findings are under B1 below. Next: the owner approves the D3 rates,
+   then A2b (code, now unblocked) and the B2 + B3 + C2 + C3 bundle.
+   History: the owner paused ("Skip B1 for now…"), resumed with
+   "continue", and saved the key on 2026-10-18. B1 was approved (owner, 2026-10-18: "Yes, run B1:
    read-only Prodigi US quotes, no orders") and is blocked only on the key: no
    `PRODIGI_API_KEY` exists on the Mac (no `.env.sky.local`; none of the
    shop `.env` files has it). Once the owner puts it in
@@ -182,7 +185,10 @@ test that asserts it.
   print (out of US reach). No new console errors.
 - [ ] **A2b Where US orders are made.** Confirm per line from the Prodigi
   quote's `shipments[].fulfillmentLocation` (B1) and the Printful product
-  info. Drop the import-duty sentence for US buyers only on lines made in
+  info. *B1 result:* prints, canvas and cases ship to US buyers from US
+  labs (prodigi_us, us7), so the import-duty sentence can go for US buyers
+  on those lines (PDP, case page, Your Sky unframed). Printful is still
+  unchecked. Drop the import-duty sentence for US buyers only on lines made in
   the US. Also confirm Printful's US transit for Quiet Current; if it fits
   7–15, drop `isApparel` from the PDP call. *Gate:* B1.
 - [ ] **A3 Money in fixed wording.** Replace hardcoded amounts with market-aware
@@ -208,13 +214,63 @@ test that asserts it.
 
 ### B. Shopify Admin and Prodigi (owner go-ahead per step, Claude in Chrome)
 
-- [ ] **B1 Prodigi US quotes (read-only).** `POST /v4.0/quotes`, Standard,
+- [x] **B1 Prodigi US quotes (read-only).** `POST /v4.0/quotes`, Standard,
   US address, never an order, for: ART-FAP-EMA-8X10 / 16X20 / 20X24,
   GLOBAL-CAN-16X20, framed 16×20 and GLOBAL-CFP-20X24, the iPhone 16 Pro
   tough case, the greeting card and the postcard. Record the cost and
   `fulfillmentLocation` here. The key is `PRODIGI_API_KEY` (set in Oxygen;
   ask the owner where the local copy is).
-  *Tooling ready:* `scripts/prodigi-market-quotes.mjs` (GET product + POST
+  **Done 2026-10-18** with the live key in
+  `Clara-Mendes-github/.env.sky.local`:
+  `node scripts/prodigi-market-quotes.mjs --country US,CY --env-dir ~/Desktop/shopify/Clara-Mendes-github --json output/us-market/prodigi-quotes-2026-10-18.json`.
+  Prodigi live, Standard, EUR, quotes only. US results:
+
+  | Line (SKU) | US item | US shipping | Made in (lab) · carrier | Store's US rate today | Proposed US rate (D3) |
+  | --- | --- | --- | --- | --- | --- |
+  | Print 8×10 (ART-FAP-EMA-8X10) | 8.01 | 10.55 | US/prodigi_us · USPS Priority | 17.99 | **11.99** |
+  | Print 16×20 (ART-FAP-EMA-16X20) | 11.57 | 11.52 | US/prodigi_us · USPS Priority | 17.99 | **11.99** |
+  | Print 20×24 (GLOBAL-FAP-20X24) | 15.13 | 11.52 | US/prodigi_us · USPS Priority | 17.99 | **11.99** |
+  | Your Sky unframed 8×10 (GLOBAL-FAP-8X10) | 8.01 | 10.55 | US/prodigi_us · USPS Priority | 17.99 | **11.99** |
+  | Your Sky framed 8×10 (GLOBAL-CFP-8X10) | 31.15 | 22.07 | US/prodigi_us · UPS Ground | not offered | see D5 below |
+  | Canvas 16×20 (GLOBAL-CAN-16X20) | 31.15 | 23.05 | US/prodigi_us · UPS Ground | 29.99 | **23.99** |
+  | Tough case (GLOBAL-TECH-IP16PR-TCB-CS-M) | 13.61 | 7.63 | US/us7 · DHL Parcel Expedited | 12.99 | **7.99** |
+  | Framed 16×20 (GLOBAL-CFP-16X20) | 42.72 | 23.05 | US/prodigi_us · UPS Ground | not offered | see D5 below |
+  | Framed 20×24 (GLOBAL-CFP-20X24) | 52.06 | 67.74 | **GB**/prodigi_gb3 · DHL Express | not offered | keep out |
+  | Greeting card (GLOBAL-GRE-MOH-7X5-BLA) | 2.00 | 8.63 | US/prodigi_us · USPS Priority Flat | not offered | keep EU-only |
+  | Postcard (GLOBAL-POST-MOH-7X5) | 1.29 | 8.63 | US/prodigi_us · USPS Priority Flat | not offered | keep EU-only |
+  | Mug 11 oz (GLOBAL-MUG-W) | 8.90 | 5.74 | US/us15 · USPS First Class | not live | 5.99 when released |
+  | Acrylic 12×16 (GLOBAL-MOU-ACRY-12X16) | 53.39 | 22.07 | US/prodigi_us · UPS Ground | not live | – |
+  | Hanger A3 (POSTER-HANGER-30-A3-PORT) | 12.46 | 13.44 | US/prodigi_us · USPS Priority | not live | – |
+  | Plant pot (PLANT-POT) | – | – | NotAvailable to the US | – | – |
+
+  The proposed rates follow the 2026-10-06 rule (round each line's highest
+  Prodigi shipping cost up to .99), are entered in EUR, and Shopify converts
+  them. They are flat per order like today's, so a multi-item US order can
+  cost Prodigi a little more than the rate (same trade-off as the EU).
+  Delivery: USPS Priority and UPS Ground are usually 1–5 days, so the
+  storefront's 7–15 business days stays conservative.
+
+  **For D5:** framed 16×20 is made in the US and fits a €23.99 rate. But
+  museum framed 16×20 shares the "Framed Your Sky" profile with framed
+  20×24, which ships from GB by DHL Express at €67.74 (artist-shops
+  status, 2026-10-14). A US zone there would sell 20×24 at a loss. Framed
+  Your Sky 8×10 is also made in the US (€22.07). Framed
+  to the US needs a separate 16×20 profile first, which is an owner
+  decision. Cards and postcards cost €8.63 to post in the US against a
+  €5.40–7.20 price, so keep them EU-only.
+
+  **Side findings (not US-only; tell the owner, change nothing here):**
+  - Prodigi returns **NotAvailable for the mug (GLOBAL-MUG-W) to
+    Cyprus**. The approved Line and Colour mug (€5.53) and the 20 staged
+    home-decor mugs would not reach Cyprus buyers via Prodigi; the US is
+    fine. Check before the mug release.
+  - The studio "Classic Framed Art Print — 16 × 20 in" sits in General
+    (artist-shops status, 2026-10-14). US buyers pay €17.99 shipping today
+    against Prodigi's €23.05 for a framed 16×20. At the proposed €11.99
+    the gap grows to about €11. Move it into the framed profile, or exclude
+    it from the US General rate, before B3.
+
+  *Tooling:* `scripts/prodigi-market-quotes.mjs` (GET product + POST
   quote only, never an order). It also covers the mug, acrylic, hanger and
   plant pot. It needs `.env.sky.local` with `PRODIGI_API_KEY` and
   `PRODIGI_API_BASE=https://api.prodigi.com`; without a key it exits 2
