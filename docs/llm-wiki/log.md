@@ -1856,3 +1856,11 @@ Cyprus/EU setting as is and makes each surface follow the buyer's country
 (owner rules). Steps, decisions and evidence:
 [us-market/status.md](../us-market/status.md). Nothing has changed in code
 or Admin yet.
+
+## 2026-10-18 - US market A1 + A2 built
+
+On `claude/us-market`: a `?country=` page pin (`app/lib/markets.ts`) and US
+delivery wording (7–15 business days after dispatch) for US buyers of items
+that reach them. Non-US wording is unchanged. See
+[fulfillment](modules/fulfillment.md#2026-10-18---us-delivery-wording-and-the-country-pin)
+and [us-market/status.md](../us-market/status.md).

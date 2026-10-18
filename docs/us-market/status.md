@@ -2,9 +2,8 @@
 
 **Updated:** 2026-10-18  
 **Branch:** `claude/us-market`  
-**State:** Planned. Nothing has changed in code, Shopify, Prodigi or Merchant Center.  
-**Current writer:** Claude Code (owner's Mac, 2026-10-18), on A1 then A2.
-Claude Code wrote this plan the same day.
+**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). Nothing has changed in Shopify, Prodigi or Merchant Center.  
+**Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
 
@@ -12,9 +11,11 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
 
 1. D2–D7 decided 2026-10-18: the owner said "Go with the proposed
    defaults for D2–D7 and start step A1 (the country pin), then A2."
-2. **A1** (country pin) and **A2** (US delivery wording) are in progress.
-3. In parallel, once the owner OKs it: **B1** (read-only Prodigi US quotes),
-   which feeds D3 and D5.
+2. A1 and A2 are done (commit `1fb4c5f`). The other code steps are
+   blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
+3. Next: **B1** (read-only Prodigi US quotes). It needs the owner's OK
+   and the Prodigi key's location. Then B2–B3, each with the owner's
+   go-ahead in chat.
 
 ## Decisions
 
@@ -97,14 +98,25 @@ US-only branches activate only for US buyers, so this can merge before the
 US market exists. Non-US output must stay byte-for-byte the same. Add a
 test that asserts it.
 
-- [ ] **A1 Country pin.** `?country=XX` (a valid `MARKET_COUNTRIES` code)
+- [x] **A1 Country pin.** `?country=XX` (a valid `MARKET_COUNTRIES` code)
   picks the market for that request only. Order: URL → saved choice →
   header → CY. It doesn't overwrite the visitor's saved choice. Files:
   `app/lib/markets.ts`, `app/lib/context.ts`, plus a node test.
   *Done when* `/products/<handle>?country=CY` renders the Cyprus view to a
   US visitor, the canonical is unchanged, and `npm test`, `npm run
   typecheck` and `npm run lint` pass. *Gate:* none.
-- [ ] **A2 US delivery wording.** Add `DELIVERY_US_BUSINESS_DAYS = '7–15'`
+  **Done 2026-10-18 (`1fb4c5f`):** `pinnedMarketCountry` and
+  `MARKET_URL_PARAM` in `app/lib/markets.ts`; `getLocaleFromRequest` reads
+  the pin. Root consent uses the new `visitorMarketCountry` (ignores the
+  pin), so the privacy banner follows the person. Tests are in
+  `scripts/googleCommerce.node-test.mjs`. Local check:
+  `/products/the-great-wave-off-kanagawa-art-print?country=CY` renders the
+  EU wording to the (US) local session, the next unpinned request is back
+  to US, and the canonical has no query. Known limits: links built from
+  scratch (e.g. the phone-case option links) drop the pin, and the cart
+  drawer on a pinned page is read in the pinned market. Neither matters
+  for feed landings.
+- [x] **A2 US delivery wording.** Add `DELIVERY_US_BUSINESS_DAYS = '7–15'`
   and one helper that returns the delivery promise for (buyer country,
   product line): EU, US or elsewhere. US buyers read "delivered in an
   estimated 7–15 business days within the US". EU and other countries keep
@@ -112,10 +124,23 @@ test that asserts it.
   A2b. Files: `app/lib/storefrontBasics.ts`,
   `app/components/ProductShippingText.tsx`, and the routes listed under
   Evidence. *Gate:* none.
+  **Done 2026-10-18 (`1fb4c5f`):** `DELIVERY_US_BUSINESS_DAYS` and
+  `readsUsDelivery()` in `app/lib/storefrontBasics.ts`. US wording appears
+  in `ProductShippingText` (PDP, only when some variant reaches the buyer),
+  the phone-case page, the gallery collection "Delivery" fact, the Your Sky
+  "how" item (`usBody` in `app/lib/featurePages.ts`) and `public/llms.txt`.
+  Quiet Current deliberately keeps the generic wording until Printful's US
+  transit is verified (add to A2b). Non-US wording is unchanged; tests are
+  in `scripts/usDelivery.node-test.mjs`. `npm test` (501 pass), typecheck
+  and eslint on the changed files are clean. The local preview (port 3142,
+  US session) showed the US text on a print, case, collection and Your
+  Sky, the EU text with `?country=CY`, and the generic text on a framed
+  print (out of US reach). No new console errors.
 - [ ] **A2b Where US orders are made.** Confirm per line from the Prodigi
   quote's `shipments[].fulfillmentLocation` (B1) and the Printful product
   info. Drop the import-duty sentence for US buyers only on lines made in
-  the US. *Gate:* B1.
+  the US. Also confirm Printful's US transit for Quiet Current; if it fits
+  7–15, drop `isApparel` from the PDP call. *Gate:* B1.
 - [ ] **A3 Money in fixed wording.** Replace hardcoded amounts with market-aware
   ones: the Your Sky price line from the live minimum price in the buyer's
   currency; the activewear rate table keyed by market (the US row must match
