@@ -26,6 +26,7 @@ import {
   DISPATCH_WINDOW_BUSINESS_DAYS,
   readsUsDelivery,
   RETURN_WINDOW_DAYS,
+  shipsWithinUs,
 } from '~/lib/storefrontBasics';
 import {
   TOUGH_CASE_ARTWORK_OPTION,
@@ -472,9 +473,10 @@ export default function ToughCasePage() {
                     Printed to order and dispatched within{' '}
                     {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After
                     dispatch, delivery within the US is estimated at{' '}
-                    {DELIVERY_US_BUSINESS_DAYS} business days. Import taxes,
-                    duties and carrier fees may be payable on delivery and are
-                    not included.
+                    {DELIVERY_US_BUSINESS_DAYS} business days.{' '}
+                    {shipsWithinUs(product.productType)
+                      ? 'US orders ship from within the US, so no import duties apply.'
+                      : 'Import taxes, duties and carrier fees may be payable on delivery and are not included.'}
                   </>
                 ) : (
                   <>

@@ -13,9 +13,14 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    defaults for D2–D7 and start step A1 (the country pin), then A2."
 2. A1 and A2 are done (commit `1fb4c5f`). The other code steps are
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
-3. **B1 is done (2026-10-18).** Results, proposed US rates and two side
-   findings are under B1 below. Next: the owner approves the D3 rates,
-   then A2b (code, now unblocked) and the B2 + B3 + C2 + C3 bundle.
+3. **B1 is done (2026-10-18)** and the owner approved the D3 rates the
+   same day (prints/Your Sky €11.99, canvas €23.99, cases €7.99). Next:
+   A2b is done too. Next: [launch-bundle.md](launch-bundle.md), the
+   ordered Admin runbook (0 merge PR #140 → 1 studio Classic Framed
+   profile choice → 2 US zones → 3 USD market + USD feed + EUR feed pin in
+   one session → 4 A3/A4/B5). Every step there needs the owner's go-ahead.
+   For 3b, building A5 (a dynamic USD feed route) first is recommended,
+   because the hand-kept feed files aren't on the Mac.
    History: the owner paused ("Skip B1 for now…"), resumed with
    "continue", and saved the key on 2026-10-18. B1 was approved (owner, 2026-10-18: "Yes, run B1:
    read-only Prodigi US quotes, no orders") and is blocked only on the key: no
@@ -36,7 +41,7 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
 | --- | --- | --- | --- |
 | D1 | Additive and dynamic? | **Decided 2026-10-18** by the owner: "dont erase anything. ideally the change would be dynamic" | – |
 | D2 | How are USD prices set? | **Decided 2026-10-18**: owner chose the default | Shopify's automatic conversion from EUR with a rounding rule (x.99), so prices follow the exchange rate. No fixed USD price list. |
-| D3 | US shipping rates | **Decided 2026-10-18**: owner chose the default | Give the US its own zone in each profile that reaches it, priced from B1's fresh Prodigi US quotes. Prints and canvas are made in Prodigi's US lab, so today's International print rate (€17.99 for most countries; B3 confirms which zone the US sits in) is probably far above cost. All other zones stay unchanged. |
+| D3 | US shipping rates | **Decided 2026-10-18**: owner chose the default; **rates approved 2026-10-18** ("aproove" to: prints and unframed Your Sky €11.99, canvas €23.99, phone cases €7.99; framed and cards stay out of the US) | Give the US its own zone in each profile that reaches it, priced from B1's fresh Prodigi US quotes. Prints and canvas are made in Prodigi's US lab, so today's International print rate (€17.99 for most countries; B3 confirms which zone the US sits in) is probably far above cost. All other zones stay unchanged. |
 | D4 | Book nooks for US buyers | **Decided 2026-10-18**: owner chose the default | Keep them listed, but don't promote them in the US until CJ's US route is checked (they ship from China, the US ended duty-free entry for small parcels in 2025, and the price includes delivery). |
 | D5 | Framed prints and cards for the US | **Decided 2026-10-18**: owner chose the default | Later. Re-quote first in B1: the 2026-10-06 sweep put US framed (GLOBAL-CFP-20X24) at about €67, and cards go by EU letter post. |
 | D6 | Structured data follows the page's market | **Decided 2026-10-18**: owner chose the default | Yes, for buyers whose market can buy the item (USD price plus US `shippingDetails` on US pages). The Cyprus fallback stays for items the US can't buy. This revisits the owner's 2026-10-14 choice. It's needed because Googlebot crawls as a US buyer and would otherwise see `$` on the page but `€` in the data. |
@@ -183,12 +188,21 @@ test that asserts it.
   US session) showed the US text on a print, case, collection and Your
   Sky, the EU text with `?country=CY`, and the generic text on a framed
   print (out of US reach). No new console errors.
-- [ ] **A2b Where US orders are made.** Confirm per line from the Prodigi
+- [x] **A2b Where US orders are made.** Confirm per line from the Prodigi
   quote's `shipments[].fulfillmentLocation` (B1) and the Printful product
   info. *B1 result:* prints, canvas and cases ship to US buyers from US
   labs (prodigi_us, us7), so the import-duty sentence can go for US buyers
   on those lines (PDP, case page, Your Sky unframed). Printful is still
-  unchecked. Drop the import-duty sentence for US buyers only on lines made in
+  unchecked.
+  **Done 2026-10-18:** `US_DOMESTIC_PRODUCT_TYPES` and `shipsWithinUs()` in
+  `app/lib/storefrontBasics.ts` (Art Prints, Canvas Art, Personalised Art,
+  Phone Cases). US buyers of those types read "US orders ship from within
+  the US, so no import duties apply." on the PDP and the case page. Every
+  other type, and every non-US buyer, keeps the duty wording. Tests are in
+  `scripts/usDelivery.node-test.mjs`; `npm test` (502), typecheck and
+  eslint are clean. The preview showed it on a print, canvas and case, the
+  EU text with `?country=CY`, and generic text on a framed print. Quiet
+  Current stays out until Printful's US origin and transit are checked. Drop the import-duty sentence for US buyers only on lines made in
   the US. Also confirm Printful's US transit for Quiet Current; if it fits
   7–15, drop `isApparel` from the PDP call. *Gate:* B1.
 - [ ] **A3 Money in fixed wording.** Replace hardcoded amounts with market-aware

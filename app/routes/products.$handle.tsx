@@ -139,6 +139,7 @@ import {
   isQuietCurrentProduct,
   readsUsDelivery,
   RETURN_WINDOW_DAYS,
+  shipsWithinUs,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
 import {parseApparelDescription} from '~/lib/apparelCopy';
@@ -1792,6 +1793,7 @@ function ProductPage() {
                     ? DELIVERY_US_BUSINESS_DAYS
                     : null
                 }
+                usDomestic={shipsWithinUs(product.productType)}
               /> : (
                 <>
                   Available destinations and shipping fees are confirmed at checkout.

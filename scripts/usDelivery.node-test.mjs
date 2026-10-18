@@ -7,6 +7,8 @@ import {
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DELIVERY_US_BUSINESS_DAYS,
   readsUsDelivery,
+  shipsWithinUs,
+  US_DOMESTIC_PRODUCT_TYPES,
 } from '../app/lib/storefrontBasics.ts';
 
 // docs/us-market/status.md, step A2: US buyers read Prodigi's US window;
@@ -38,4 +40,21 @@ test('Your Sky keeps its EU wording and adds a US one', () => {
   );
   assert.match(shipping.usBody, /within the US in 7–15\./);
   assert.match(shipping.usBody, /dispatched in 2–4 business days/);
+});
+
+// A2b: only types a live quote showed leaving a US lab drop the duty note.
+test('only quoted US-lab product types ship within the US', () => {
+  assert.deepEqual([...US_DOMESTIC_PRODUCT_TYPES], [
+    'Art Prints',
+    'Canvas Art',
+    'Personalised Art',
+    'Phone Cases',
+  ]);
+  for (const type of US_DOMESTIC_PRODUCT_TYPES) {
+    assert.equal(shipsWithinUs(type), true, type);
+    assert.equal(shipsWithinUs(` ${type.toLowerCase()} `), true, type);
+  }
+  for (const type of ['Framed Art', 'Book Nooks', 'Plant Pots', 'Cards', 'Postcards', 'Yoga Leggings', 'Mugs', '', null, undefined]) {
+    assert.equal(shipsWithinUs(type), false, String(type));
+  }
 });

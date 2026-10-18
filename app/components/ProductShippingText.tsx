@@ -15,6 +15,8 @@ type ProductShippingTextProps = {
   internationalDeliveryWindow: string;
   /** Set (with `readsUsDelivery`) only when a US buyer can order this item. */
   usDeliveryWindow?: string | null;
+  /** US orders ship from a US lab (`shipsWithinUs`): no import duties. */
+  usDomestic?: boolean;
 };
 
 export function ProductShippingText({
@@ -25,6 +27,7 @@ export function ProductShippingText({
   deliveryWindow,
   internationalDeliveryWindow,
   usDeliveryWindow,
+  usDomestic = false,
 }: ProductShippingTextProps) {
   if (curatedShipping) return <>{curatedShipping}</>;
 
@@ -39,8 +42,10 @@ export function ProductShippingText({
         {reach === 'selected'
           ? '; some options ship to selected countries only, and checkout confirms your address.'
           : '.'}{' '}
-        Delivery updates are emailed when available. Import taxes, duties and
-        carrier fees may be payable on delivery and are not included.
+        Delivery updates are emailed when available.{' '}
+        {usDomestic
+          ? 'US orders ship from within the US, so no import duties apply.'
+          : 'Import taxes, duties and carrier fees may be payable on delivery and are not included.'}
       </>
     );
   }
