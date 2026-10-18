@@ -6,12 +6,12 @@
 
 **State:** Line and Colour local preflight passed; Shopify staging awaits usable Admin credentials and supplier mapping awaits browser access. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
 
-**Current writer:** Codex (2026-10-18, owner's Mac), on
-`codex/line-and-colour-staging-2026-10-18`, continuing Line and Colour through
-Draft staging, supplier mapping, media and shipping. Products stay unpublished
-until the separate release checkpoint. The owner requested this continuation
-in chat on 2026-10-18. The Admin credential entries are blank; the owner is
-filling them while Codex audits the existing Shopify Drafts and prepared assets.
+**Current writer:** none; Codex saved the verified preflight in
+[draft PR #141](https://github.com/Tassos801/Clara-Mendes/pull/141), waiting on
+the owner to fill the Admin credentials and change saved browser permissions.
+The next writer must name themselves before continuing. The owner requested
+this continuation in chat on 2026-10-18; products stay unpublished until the
+separate release checkpoint.
 
 **Previous checkpoint:** Codex (Sol) completed the resumed twenty-variant
 Draft expansion from GitHub checkpoint `31a9d12` and returned writer control
