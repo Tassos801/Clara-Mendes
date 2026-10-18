@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-18  
 **Branch:** `claude/us-market`  
-**State:** Paused by the owner at this checkpoint (2026-10-18). A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged); the B1 quote script is ready but hasn't run. Nothing has changed in Shopify, Prodigi or Merchant Center.  
+**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). On 2026-10-18 the owner said "continue", so the read-only checks were done: C1, B4, the current US rates, and the US policy text drafted (A6). B1's quote script is ready but waits on the Prodigi key. Nothing has changed in Shopify, Prodigi or Merchant Center.  
 **Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
@@ -13,9 +13,8 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    defaults for D2–D7 and start step A1 (the country pin), then A2."
 2. A1 and A2 are done (commit `1fb4c5f`). The other code steps are
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
-3. **Paused by the owner on 2026-10-18** ("Skip B1 for now and leave the
-   US work at this checkpoint"). Don't resume without the owner asking.
-   When they do, B1 is already approved (owner, 2026-10-18: "Yes, run B1:
+3. The owner paused the work ("Skip B1 for now…") and then resumed it
+   with "continue" on 2026-10-18. B1 is approved (owner, 2026-10-18: "Yes, run B1:
    read-only Prodigi US quotes, no orders") and is blocked only on the key: no
    `PRODIGI_API_KEY` exists on the Mac (no `.env.sky.local`; none of the
    shop `.env` files has it). Once the owner puts it in
@@ -23,6 +22,10 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    `node scripts/prodigi-market-quotes.mjs --country US,CY --env-dir ~/Desktop/shopify/Clara-Mendes-github --json output/us-market/prodigi-quotes-<date>.json`
    from this branch and record the table under B1. Then B2–B3, each with
    the owner's go-ahead in chat.
+4. **Sequencing (from C1):** the EUR feed already targets the US. Do B2
+   (USD market) in the same session as C2 (USD feed for the US) and C3
+   (`?country=CY` on the EUR feed's links), with A1 merged and live first.
+   Otherwise Google sees USD on US pages against EUR in the feed.
 
 ## Decisions
 
@@ -91,6 +94,40 @@ inside the "International" market.
   ([your-sky-release.md](../your-sky-release.md)), and a Google & YouTube
   sales channel exists ([scifi-cinema-prints.md](../scifi-cinema-prints.md)).
   Its target countries and shipping settings haven't been read yet (C1).
+- **Admin and Merchant Center readback (2026-10-18, read-only, Claude in
+  Chrome):**
+  - *Markets:* Cyprus, European Union and International, all active.
+    International holds 178 countries including the US, uses the store
+    default currency (EUR) and all products. Its customer privacy is
+    "Cookie banner, Data sharing opt-out". A new US market needs its own
+    privacy setting checked at B2.
+  - *US shipping today*, from `scripts/audit-customer-purchase-path.mjs`
+    with a New York 10001 cart (cart only, no order):
+    - prints and unframed Your Sky: €17.99 ("International")
+    - canvas 16×20: €29.99
+    - phone case: €12.99
+    - book nook: "Delivery included", €0
+    - Quiet Current: €4.95 (from `APPAREL_SHIPPING_RATES`)
+  - *Taxes:* Shopify Tax is active. The United States row shows Collecting
+    "—" (no US registration), and so does the EU. "Include sales tax in
+    product price" is on at an assumed 0%, because the store has no tax
+    registration in its region. So EUR prices carry no VAT, and USD
+    conversion (D2) needs no tax adjustment. Duty collection at checkout is
+    not set up (no DDP). Country of origin and HS codes are set on 0 of
+    2337 variants, which matters for D4 (book nooks from China).
+  - *Merchant Center (account 5837804292), via the Google & YouTube app:*
+    - The app shows the account Active with 8,937 offers (8,919
+      approved, 20 not approved).
+    - App **product sync is Off**; shipping-information sync and
+      conversion measurement are On. Google Ads, YouTube store and
+      Analytics are inactive.
+    - Data sources (19): two manual file feeds under feed label
+      `CLARA-PRINTS-EUR`, `clara-mendes-google-feed.txt` (87 products) and
+      `clara-mendes-sky-feed.txt` (6), last updated 6 October, free
+      listings, 97 countries **including the United States**.
+    - "Found by Google" (shopclaramendes.com crawl, 12 products, countries
+      automatic).
+    - Shopify App API sources per currency, all with 0 products.
 - `origin/codex/fix-market-selection` (2026-08-13) is an old, unmerged
   cart-verification fix. It's unrelated to this work, so leave it alone.
 
@@ -163,7 +200,9 @@ test that asserts it.
   `/feeds/google/<country>.tsv` that lists live products at that market's
   prices with `?country=` links, so Merchant Center can fetch it daily
   instead of the hand-kept TSV. *Gate:* D7, owner prefers it over a TSV.
-- [ ] **A6 Docs.** Update [fulfillment](../llm-wiki/modules/fulfillment.md)
+- [ ] **A6 Docs.** *US policy text drafted 2026-10-18 in
+  [shipping-policy-us.md](shipping-policy-us.md), deliberately kept out of
+  `shopify-policies-drafts.md` until B5.* Update [fulfillment](../llm-wiki/modules/fulfillment.md)
   and the shipping-policy draft (`docs/shopify-policies-drafts.md`, add a
   US paragraph), and append to `docs/llm-wiki/log.md`.
 
@@ -189,10 +228,16 @@ test that asserts it.
   to the General (prints, unframed Your Sky), canvas and phone-case
   profiles. Quiet Current already has US €4.95. Leave every existing zone
   and rate untouched. Note whether Shopify lets the zone rate be entered in
-  USD; if not, A3 shows the converted figure.
-- [ ] **B4 US sales tax.** Confirm Shopify Tax is monitoring US thresholds.
+  USD; if not, A3 shows the converted figure. Today's US rates, which the
+  new zones replace for the US only: prints €17.99, canvas €29.99, case
+  €12.99 (Evidence). Shipping-information sync to Merchant Center is on, so
+  the new zones reach Merchant Center by themselves.
+- [x] **B4 US sales tax.** Confirm Shopify Tax is monitoring US thresholds.
   A foreign seller registers in a state only after crossing that state's
   threshold.
+  **Checked 2026-10-18 (read-only):** Shopify Tax is active and the US is
+  not collecting (no registration). Nothing to change now; Shopify Tax
+  flags a threshold when one is near. See Evidence.
 - [ ] **B5 Shipping policy.** Paste the A6 US paragraph (see the
   policy-editor notes in the wiki and the owner's memory). Additive only.
 - [ ] **B6 Verify.** The Storefront readback shows US `currency: USD`.
@@ -202,11 +247,15 @@ test that asserts it.
 
 ### C. Google Merchant Center (owner go-ahead per step)
 
-- [ ] **C1 Read the current setup:** feeds, the Google & YouTube channel's
+- [x] **C1 Read the current setup:** feeds, the Google & YouTube channel's
   markets, target countries, shipping services. Record it here.
+  **Done 2026-10-18 (read-only):** see Evidence. The EUR file feeds already
+  target the US, and app product sync is off.
 - [ ] **C2 Add the US:** a USD feed targeting the US (A5 route or a new TSV
   `CLARA-PRINTS-USD`) and a US shipping service (B3 rates, 2–4 handling,
-  7–15 transit).
+  7–15 transit). Then move the United States from the EUR feeds' country
+  list to the USD feed. The listings move rather than disappear, but
+  confirm this with the owner, since it edits the EUR feed's settings.
 - [ ] **C3 Pin the EUR feed's links** to `?country=CY` (after A1 is live).
 - [ ] **C4 Watch diagnostics** for 3–7 days and fix price or availability
   mismatches.

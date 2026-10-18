@@ -1864,3 +1864,18 @@ delivery wording (7–15 business days after dispatch) for US buyers of items
 that reach them. Non-US wording is unchanged. See
 [fulfillment](modules/fulfillment.md#2026-10-18---us-delivery-wording-and-the-country-pin)
 and [us-market/status.md](../us-market/status.md).
+
+## 2026-10-18 - US market: Admin and Merchant Center readback
+
+A read-only pass for the US work found:
+- The US sits in the 178-country EUR "International" market, at €17.99
+  shipping for prints, €29.99 for canvas and €12.99 for phone cases.
+- Shopify Tax is active, but no region collects tax (no registrations;
+  prices assume 0%). Duties at checkout aren't set up, and no variant has a
+  country of origin or HS code.
+- In Merchant Center (via the Google & YouTube app), app product sync is off
+  and shipping sync is on.
+- The two `CLARA-PRINTS-EUR` file feeds (87 + 6 products) target 97
+  countries, the US included.
+
+Details and the resulting step order are in [us-market/status.md](../us-market/status.md).
