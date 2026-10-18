@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-18  
 **Branch:** `claude/us-market`  
-**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). Nothing has changed in Shopify, Prodigi or Merchant Center.  
+**State:** Paused by the owner at this checkpoint (2026-10-18). A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged); the B1 quote script is ready but hasn't run. Nothing has changed in Shopify, Prodigi or Merchant Center.  
 **Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
@@ -13,8 +13,10 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    defaults for D2–D7 and start step A1 (the country pin), then A2."
 2. A1 and A2 are done (commit `1fb4c5f`). The other code steps are
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
-3. **B1 is approved** (owner, 2026-10-18: "Yes, run B1: read-only Prodigi
-   US quotes, no orders"). It's blocked only on the key: no
+3. **Paused by the owner on 2026-10-18** ("Skip B1 for now and leave the
+   US work at this checkpoint"). Don't resume without the owner asking.
+   When they do, B1 is already approved (owner, 2026-10-18: "Yes, run B1:
+   read-only Prodigi US quotes, no orders") and is blocked only on the key: no
    `PRODIGI_API_KEY` exists on the Mac (no `.env.sky.local`; none of the
    shop `.env` files has it). Once the owner puts it in
    `~/Desktop/shopify/Clara-Mendes-github/.env.sky.local`, run
