@@ -1,9 +1,10 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-14
+**Updated:** 2026-10-18
 
-**Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; five more product types per work built and dry-run verified (50 Drafts not yet created); artist shop redesigned and product crops approved; master reviews pending; no production release
+**Branch:** `codex/line-and-colour-staging-2026-10-18`
+
+**State:** Line and Colour local preflight passed; Shopify staging awaits usable Admin credentials and supplier mapping awaits browser access. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
 
 **Current writer:** Codex (2026-10-18, owner's Mac), on
 `codex/line-and-colour-staging-2026-10-18`, continuing Line and Colour through
@@ -24,6 +25,51 @@ on the owner's Windows PC and stopped at the owner's request that evening
 their room media earlier the same morning, then hit its usage limit; Claude
 committed its ids (`1c7d9e0`), redesigned the artist page, mapped all ten in
 Prodigi, proposed product crops (approved) and added the larger sizes.
+
+## Line and Colour continuation (2026-10-18, Codex)
+
+The owner asked to continue the second handoff from the handoff audit. Work
+starts from `origin/main` at `9fca667`, in the existing `modern-collection`
+worktree on the branch named above. No product has been created, changed,
+published or ordered in this continuation.
+
+**Local checks complete:**
+- Ten print products have twenty allowed size variants. Their twenty print
+  files match the recorded SHA-256 values.
+- Twenty-six family products (5 framed, 6 canvas, 5 cases, 10 mugs) have 221
+  variants. Every production file and preview matches its recorded hash and
+  its source signature is current. All 36 product release flags stay false.
+- The current pipeline builds the staging inputs, including the approved
+  EUR 5.53 mugs. `npm test` passes 498/498; `git diff --check` is clean.
+- [Preflight evidence](evidence/line-and-colour-local-preflight-2026-10-18.json)
+  records each file and hash. No Shopify IDs are recorded in this catalogue
+  for Line and Colour yet.
+
+**External-state reconciliation required:** the signed-in Shopify product
+list already contains Line and Colour mug Drafts, alongside newer hanger,
+acrylic, metal, cushion and blanket Drafts. The observed mug rows are Draft,
+zero stock, one variant and zero sales channels. The Prodigi tab also shows
+an existing Field with Young Trees Acrylic Print mapping. These observations
+do not verify the mugs' handles, SKUs, prices, exact files or mappings. Do not
+create duplicates or adopt their IDs without the staging pipeline's exact
+handle/SKU/readback checks; leave the newer decor families outside this scope.
+
+**Waiting on access:** both read-only `stage` commands stop at missing
+`SHOPIFY_ADMIN_ACCESS_TOKEN`: the existing client ID/secret entries in the
+main worktree's `.env.shopify-admin.local` are blank. The owner said they
+would fill them and reply ready. Browser approval gates subsequently declined
+access to Shopify Admin and Prodigi, so browser actions on those origins
+stopped. The owner approved browser access in chat, but a subsequent read was
+still rejected by a saved permission or managed policy. The owner was asked
+to change the saved site permissions; no further browser action should be
+attempted until that setting is changed.
+
+**Next:** after credentials are ready, run the existing print and family
+`stage` dry runs with `CLARA_ENV_DIR` pointing to the main worktree. Resolve
+any existing-product mismatch before `--apply`. Then stage Drafts, generate
+the supplier handoffs, map/read back exact files in Prodigi, finish print room
+galleries and shipping profiles (a new mug profile needs verified rates).
+Release/publication is a separate checkpoint.
 
 ## Line and Colour, the second collection (2026-10-15, Claude Code)
 

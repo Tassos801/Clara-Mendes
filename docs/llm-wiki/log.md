@@ -1843,3 +1843,23 @@ the footer's style links no longer shrink into overlapping 35px columns. See
 Sources: `app/routes/artists._index.tsx`, `app/lib/artistShops.ts`,
 `app/lib/printCatalog.ts`, `app/styles/artists.css`, `app/styles/app.css`,
 `scripts/prepare-print-assets.py`, `scripts/artistShops.node-test.mjs`.
+
+## 2026-10-18 - Line and Colour continuation preflight
+
+The owner requested the Line and Colour handoff continuation. A separate
+branch, `codex/line-and-colour-staging-2026-10-18`, starts at `9fca667`.
+All twenty print-file hashes and all production-file/preview hashes for
+26 family products match; source signatures are current. The 36 listings
+cover 241 variants and keep their release flags false. `npm test` passes
+498/498. See the committed
+[preflight evidence](../artist-shops/evidence/line-and-colour-local-preflight-2026-10-18.json).
+
+Shopify's product list already shows Line and Colour mug Drafts and newer
+decor Drafts; these are not recorded in the current product catalogues and
+must be reconciled before any staging write. Both staging dry runs stop
+before an Admin request because the local client-credential entries are
+blank. The owner is filling them. Browser approval gates declined Shopify
+and Prodigi access; even after chat approval, a saved permission or managed
+policy still blocks the browser. No Shopify/Prodigi change or publication
+was made. The current writer and precise resume steps are in
+[status](../artist-shops/status.md#line-and-colour-continuation-2026-10-18-codex).
