@@ -3,31 +3,30 @@
 **Updated:** 2026-10-18  
 **Branch:** `claude/us-market`  
 **State:** Planned. Nothing has changed in code, Shopify, Prodigi or Merchant Center.  
-**Current writer:** none. Claude Code wrote this plan on the owner's Mac on
-2026-10-18. The next writer names themselves here before editing.
+**Current writer:** Claude Code (owner's Mac, 2026-10-18), on A1 then A2.
+Claude Code wrote this plan the same day.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
 
 ## Stopped here
 
-1. Get the owner's answers to the open decisions (D2–D7). The defaults
-   proposed below can be used once the owner says "go with the defaults".
-2. Start **A1** (country pin). It is code only, ships safely before the US
-   market exists, and unblocks C3.
+1. D2–D7 decided 2026-10-18: the owner said "Go with the proposed
+   defaults for D2–D7 and start step A1 (the country pin), then A2."
+2. **A1** (country pin) and **A2** (US delivery wording) are in progress.
 3. In parallel, once the owner OKs it: **B1** (read-only Prodigi US quotes),
    which feeds D3 and D5.
 
 ## Decisions
 
-| # | Question | Status | Proposed default |
+| # | Question | Status | Default (chosen) |
 | --- | --- | --- | --- |
 | D1 | Additive and dynamic? | **Decided 2026-10-18** by the owner: "dont erase anything. ideally the change would be dynamic" | – |
-| D2 | How are USD prices set? | Open | Shopify's automatic conversion from EUR with a rounding rule (x.99), so prices follow the exchange rate. No fixed USD price list. |
-| D3 | US shipping rates | Open | Give the US its own zone in each profile that reaches it, priced from B1's fresh Prodigi US quotes. Prints and canvas are made in Prodigi's US lab, so today's International print rate (€17.99 for most countries; B3 confirms which zone the US sits in) is probably far above cost. All other zones stay unchanged. |
-| D4 | Book nooks for US buyers | Open | Keep them listed, but don't promote them in the US until CJ's US route is checked (they ship from China, the US ended duty-free entry for small parcels in 2025, and the price includes delivery). |
-| D5 | Framed prints and cards for the US | Open | Later. Re-quote first in B1: the 2026-10-06 sweep put US framed (GLOBAL-CFP-20X24) at about €67, and cards go by EU letter post. |
-| D6 | Structured data follows the page's market | Open | Yes, for buyers whose market can buy the item (USD price plus US `shippingDetails` on US pages). The Cyprus fallback stays for items the US can't buy. This revisits the owner's 2026-10-14 choice. It's needed because Googlebot crawls as a US buyer and would otherwise see `$` on the page but `€` in the data. |
-| D7 | Merchant Center landing links | Open | Append `?country=CY` to the EUR feed's links and use `?country=US` in the US feed. Nothing is removed. This prevents price-mismatch disapprovals once US visitors see USD. |
+| D2 | How are USD prices set? | **Decided 2026-10-18**: owner chose the default | Shopify's automatic conversion from EUR with a rounding rule (x.99), so prices follow the exchange rate. No fixed USD price list. |
+| D3 | US shipping rates | **Decided 2026-10-18**: owner chose the default | Give the US its own zone in each profile that reaches it, priced from B1's fresh Prodigi US quotes. Prints and canvas are made in Prodigi's US lab, so today's International print rate (€17.99 for most countries; B3 confirms which zone the US sits in) is probably far above cost. All other zones stay unchanged. |
+| D4 | Book nooks for US buyers | **Decided 2026-10-18**: owner chose the default | Keep them listed, but don't promote them in the US until CJ's US route is checked (they ship from China, the US ended duty-free entry for small parcels in 2025, and the price includes delivery). |
+| D5 | Framed prints and cards for the US | **Decided 2026-10-18**: owner chose the default | Later. Re-quote first in B1: the 2026-10-06 sweep put US framed (GLOBAL-CFP-20X24) at about €67, and cards go by EU letter post. |
+| D6 | Structured data follows the page's market | **Decided 2026-10-18**: owner chose the default | Yes, for buyers whose market can buy the item (USD price plus US `shippingDetails` on US pages). The Cyprus fallback stays for items the US can't buy. This revisits the owner's 2026-10-14 choice. It's needed because Googlebot crawls as a US buyer and would otherwise see `$` on the page but `€` in the data. |
+| D7 | Merchant Center landing links | **Decided 2026-10-18**: owner chose the default | Append `?country=CY` to the EUR feed's links and use `?country=US` in the US feed. Nothing is removed. This prevents price-mismatch disapprovals once US visitors see USD. |
 
 ## Evidence (2026-10-18)
 
