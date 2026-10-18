@@ -5,7 +5,14 @@
 **Branch:** `codex/artist-shops-pilot`  
 **State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; five more product types per work built and dry-run verified (50 Drafts not yet created); artist shop redesigned and product crops approved; master reviews pending; no production release
 
-**Current writer:** none. Codex (Sol) completed the resumed twenty-variant
+**Current writer:** Codex (2026-10-18, owner's Mac), on
+`codex/line-and-colour-staging-2026-10-18`, continuing Line and Colour through
+Draft staging, supplier mapping, media and shipping. Products stay unpublished
+until the separate release checkpoint. The owner requested this continuation
+in chat on 2026-10-18. The Admin credential entries are blank; the owner is
+filling them while Codex audits the existing Shopify Drafts and prepared assets.
+
+**Previous checkpoint:** Codex (Sol) completed the resumed twenty-variant
 Draft expansion from GitHub checkpoint `31a9d12` and returned writer control
 to the parent agent. The next writer must name themselves before editing.
 Claude Code then built the five product types for the ten works on the
