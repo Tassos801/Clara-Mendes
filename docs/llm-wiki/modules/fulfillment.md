@@ -245,3 +245,19 @@ day and saved. The new section was still there after reopening the editor.
 The live `/policies/shipping-policy` page showed it within about 20
 seconds. After that, the shipping, refund and terms bodies all matched
 their drafts exactly.
+
+## 2026-10-18 - US delivery wording and the `?country=` pin
+
+On branch `claude/us-market` (not merged; [US market status](../../us-market/status.md)):
+US buyers read Prodigi's documented US estimate, `DELIVERY_US_BUSINESS_DAYS`
+(7–15 business days after dispatch), wherever an item ships to them: the
+PDP shipping row, the phone-case page, the gallery collection "Delivery"
+fact, the Your Sky "how" item and `public/llms.txt`. `readsUsDelivery()`
+(`app/lib/storefrontBasics.ts`) decides. Out-of-reach items and Quiet
+Current (Printful's US transit isn't verified) keep the generic EU +
+elsewhere wording, and every non-US buyer's wording is unchanged.
+`?country=XX` on any page URL pins that request's market (URL > saved choice
+> geolocation > CY) for Merchant Center landings. The saved choice is
+untouched and the privacy banner keeps the visitor's own country
+(`visitorMarketCountry`, `app/lib/markets.ts`). The US is still inside the
+EUR "International" market until step B2.

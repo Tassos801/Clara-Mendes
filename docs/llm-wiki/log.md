@@ -1843,3 +1843,39 @@ the footer's style links no longer shrink into overlapping 35px columns. See
 Sources: `app/routes/artists._index.tsx`, `app/lib/artistShops.ts`,
 `app/lib/printCatalog.ts`, `app/styles/artists.css`, `app/styles/app.css`,
 `scripts/prepare-print-assets.py`, `scripts/artistShops.node-test.mjs`.
+
+## 2026-10-18 - US market planned
+
+The owner asked to sell properly to US buyers. A live Storefront readback
+shows US buyers can already buy prints, canvas, phone cases, book nooks and
+Your Sky, but in EUR, because the US sits inside the "International" market.
+Framed prints, cards, postcards and pots don't reach the US. The plan adds a
+USD "United States" market, US delivery wording (Prodigi US 7–15 business
+days), a `?country=` page pin and a US Merchant Center feed. It keeps every
+Cyprus/EU setting as is and makes each surface follow the buyer's country
+(owner rules). Steps, decisions and evidence:
+[us-market/status.md](../us-market/status.md). Nothing has changed in code
+or Admin yet.
+
+## 2026-10-18 - US market A1 + A2 built
+
+On `claude/us-market`: a `?country=` page pin (`app/lib/markets.ts`) and US
+delivery wording (7–15 business days after dispatch) for US buyers of items
+that reach them. Non-US wording is unchanged. See
+[fulfillment](modules/fulfillment.md#2026-10-18---us-delivery-wording-and-the-country-pin)
+and [us-market/status.md](../us-market/status.md).
+
+## 2026-10-18 - US market: Admin and Merchant Center readback
+
+A read-only pass for the US work found:
+- The US sits in the 178-country EUR "International" market, at €17.99
+  shipping for prints, €29.99 for canvas and €12.99 for phone cases.
+- Shopify Tax is active, but no region collects tax (no registrations;
+  prices assume 0%). Duties at checkout aren't set up, and no variant has a
+  country of origin or HS code.
+- In Merchant Center (via the Google & YouTube app), app product sync is off
+  and shipping sync is on.
+- The two `CLARA-PRINTS-EUR` file feeds (87 + 6 products) target 97
+  countries, the US included.
+
+Details and the resulting step order are in [us-market/status.md](../us-market/status.md).

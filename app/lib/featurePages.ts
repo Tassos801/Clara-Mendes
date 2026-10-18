@@ -4,6 +4,10 @@ import {
   PERSONALISED_RELEASE_FLAGS,
   SKY_PRODUCT_HANDLE,
 } from './catalogFilters.ts';
+import {
+  DELIVERY_US_BUSINESS_DAYS,
+  DISPATCH_WINDOW_BUSINESS_DAYS,
+} from './storefrontBasics.ts';
 
 export type FeaturePage = {
   handle: string;
@@ -27,7 +31,8 @@ export type FeaturePage = {
     /** Prefills the configurator title and local time. */
     preset: {title: string; time: string};
   }>;
-  how: Array<{title: string; body: string}>;
+  /** `usBody` replaces `body` for US buyers (docs/us-market/status.md, A2). */
+  how: Array<{title: string; body: string; usBody?: string}>;
   faq: Array<{q: string; a: string}>;
   closing: string;
 };
@@ -89,6 +94,7 @@ export const YOUR_SKY_PAGE: FeaturePage = {
     {
       title: 'Made to order, shipped worldwide',
       body: 'Each map is printed for you after checkout, dispatched in 2–4 business days and delivered across the EU in 5–10, elsewhere in 7–20. Framed maps ship outside the EU to selected countries; checkout confirms yours.',
+      usBody: `Each map is printed for you after checkout, dispatched in ${DISPATCH_WINDOW_BUSINESS_DAYS} business days and delivered within the US in ${DELIVERY_US_BUSINESS_DAYS}. Framed maps ship to selected countries only; checkout confirms yours.`,
     },
   ],
   faq: [
