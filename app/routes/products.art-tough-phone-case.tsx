@@ -22,7 +22,9 @@ import {breadcrumbSchema, buildSeoMeta, getCanonicalUrl, productSchema} from '~/
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
+  DELIVERY_US_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
+  readsUsDelivery,
   RETURN_WINDOW_DAYS,
 } from '~/lib/storefrontBasics';
 import {
@@ -130,6 +132,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
     artworkImage:
       artwork?.firstSelectableVariant?.image ?? product.featuredImage ?? null,
     artworks,
+    // Cases ship to the US (Storefront readback, 2026-10-18), so a US buyer
+    // reads the US window (docs/us-market/status.md, A2).
+    usDelivery: readsUsDelivery({buyerCountry: context.storefront.i18n.country}),
     phone,
     product,
     seoUrl: getCanonicalUrl(request, `/products/${TOUGH_CASE_HANDLE}`),
@@ -147,8 +152,17 @@ function caseUrl(artwork: string | null, phone: string | null) {
 }
 
 export default function ToughCasePage() {
-  const {artwork, artworkImage, artworks, phone, product, seoUrl, storeDomain, variant} =
-    useLoaderData<typeof loader>();
+  const {
+    artwork,
+    artworkImage,
+    artworks,
+    phone,
+    product,
+    seoUrl,
+    storeDomain,
+    usDelivery,
+    variant,
+  } = useLoaderData<typeof loader>();
   const {open} = useAside();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
@@ -453,6 +467,17 @@ export default function ToughCasePage() {
                 colours can vary slightly.
               </ProductDetail>
             <ProductDetail label="Shipping">
+                {usDelivery ? (
+                  <>
+                    Printed to order and dispatched within{' '}
+                    {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After
+                    dispatch, delivery within the US is estimated at{' '}
+                    {DELIVERY_US_BUSINESS_DAYS} business days. Import taxes,
+                    duties and carrier fees may be payable on delivery and are
+                    not included.
+                  </>
+                ) : (
+                  <>
                 Printed to order and dispatched within{' '}
                 {DISPATCH_WINDOW_BUSINESS_DAYS} business days. After dispatch,
                 delivery is estimated at {DELIVERY_EU_BUSINESS_DAYS} business
@@ -460,6 +485,8 @@ export default function ToughCasePage() {
                 {DELIVERY_INTERNATIONAL_BUSINESS_DAYS} business days
                 elsewhere. Outside the EU, import taxes, duties and carrier
                 fees may be payable on delivery and are not included.
+                  </>
+                )}
               </ProductDetail>
             <ProductDetail label="Returns">
                 {RETURN_WINDOW_DAYS}-day return window from delivery. Items must

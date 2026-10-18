@@ -33,6 +33,32 @@ export const DISPATCH_WINDOW_BUSINESS_DAYS = '2–4';
 export const DELIVERY_EU_BUSINESS_DAYS = '5–10';
 export const DELIVERY_INTERNATIONAL_BUSINESS_DAYS = '7–20';
 
+// US buyers (docs/us-market/status.md, step A2) read Prodigi's documented
+// US Standard estimate instead of the generic non-EU window. Everyone else
+// keeps the EU + elsewhere wording unchanged (owner rule: additive, keyed on
+// the buyer's country).
+export const DELIVERY_US_BUSINESS_DAYS = '7–15';
+
+/**
+ * True when this buyer should read the US delivery window: a US buyer, on a
+ * Prodigi line (not Printful activewear, whose US transit isn't verified
+ * yet), for an item that ships to them (an out-of-reach item keeps the
+ * generic wording beside its "Doesn't ship to the United States" notice).
+ */
+export function readsUsDelivery({
+  buyerCountry,
+  shipsToBuyer = true,
+  isApparel = false,
+}: {
+  buyerCountry?: string | null;
+  shipsToBuyer?: boolean;
+  isApparel?: boolean;
+}) {
+  return (
+    buyerCountry?.trim().toUpperCase() === 'US' && shipsToBuyer && !isApparel
+  );
+}
+
 // Printful all-over synthetic garments (Quiet Current activewear, matched by
 // exact released product handles). Printful publishes 2–5 business days in-house and
 // 3–7 at partner facilities for the technique, counted from the business day

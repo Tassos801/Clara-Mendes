@@ -4,8 +4,11 @@ import {
   getLocaleFromRequest,
   getMarketVaryHeader,
   MARKET_COUNTRIES,
+  MARKET_URL_PARAM,
   normalizeMarketCountry,
+  pinnedMarketCountry,
   resolveMarketCountry,
+  visitorMarketCountry,
 } from '../app/lib/markets.ts';
 import {
   applyMarketSelection,
@@ -50,6 +53,29 @@ assert.equal(resolveMarketCountry({}), 'CY');
 assert.equal(getLocaleFromRequest(request('US'), 'FR').country, 'FR');
 assert.equal(getLocaleFromRequest(request('GB')).country, 'GB');
 assert.equal(normalizeMarketCountry(' uk '), null);
+
+// A `?country=` pin (Merchant Center landing links) beats the saved choice
+// and geolocation for that request only; unknown or blocked codes are
+// ignored, and the visitor's own market (consent) never reads the pin.
+const pinned = (query, country) =>
+  new Request(
+    `https://shopclaramendes.com/products/quiet-form-i-art-print${query}`,
+    {headers: country ? {'oxygen-buyer-country': country} : {}},
+  );
+assert.equal(MARKET_URL_PARAM, 'country');
+assert.equal(pinnedMarketCountry('https://shopclaramendes.com/?country=cy'), 'CY');
+assert.equal(pinnedMarketCountry('https://shopclaramendes.com/?country=RU'), null);
+assert.equal(pinnedMarketCountry('https://shopclaramendes.com/?country='), null);
+assert.equal(pinnedMarketCountry('https://shopclaramendes.com/products/x'), null);
+assert.equal(pinnedMarketCountry('not a url'), null);
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'US')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=US', 'DE'), 'FR').country, 'US');
+assert.equal(getLocaleFromRequest(pinned('?Size=8x10&country=de', 'US')).country, 'DE');
+assert.equal(getLocaleFromRequest(pinned('?country=KP', 'US')).country, 'US');
+assert.equal(getLocaleFromRequest(pinned('?country=zz', 'US'), 'FR').country, 'FR');
+assert.equal(visitorMarketCountry(pinned('?country=US', 'DE')), 'DE');
+assert.equal(visitorMarketCountry(pinned('?country=US', 'DE'), 'FR'), 'FR');
+assert.equal(visitorMarketCountry(pinned('', 'KP')), 'CY');
 assert.ok(
   MARKET_COUNTRIES.some(
     ({code, currency}) => code === 'GB' && currency === 'GBP',

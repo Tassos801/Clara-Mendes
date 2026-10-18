@@ -261,18 +261,54 @@ export function marketCountryName(code: unknown): string | null {
     : null;
 }
 
+// `?country=XX` on a page URL pins that one request to a market country, so a
+// Merchant Center feed for one market (e.g. `?country=CY` for the EUR feed,
+// `?country=US` for the USD feed) lands on a page in its own currency even
+// though Googlebot crawls from the US. It never touches the visitor's saved
+// choice (`/locale`) and canonical URLs drop it (`getCanonicalUrl`).
+export const MARKET_URL_PARAM = 'country';
+
+/** The market a page URL pins, or null when it pins none (or an unknown one). */
+export function pinnedMarketCountry(url: string): MarketCountryCode | null {
+  try {
+    return normalizeMarketCountry(
+      new URL(url).searchParams.get(MARKET_URL_PARAM),
+    );
+  } catch {
+    return null;
+  }
+}
+
 export function resolveMarketCountry({
+  pinnedCountry,
   explicitCountry,
   oxygenCountry,
 }: {
+  pinnedCountry?: unknown;
   explicitCountry?: unknown;
   oxygenCountry?: unknown;
 }): MarketCountryCode {
   return (
+    normalizeMarketCountry(pinnedCountry) ??
     normalizeMarketCountry(explicitCountry) ??
     normalizeMarketCountry(oxygenCountry) ??
     DEFAULT_MARKET_COUNTRY
   );
+}
+
+/**
+ * The visitor's own market: saved choice, then geolocation, then Cyprus.
+ * Ignores the URL pin, so consent (privacy banner region) always follows the
+ * visitor, never a link they followed.
+ */
+export function visitorMarketCountry(
+  request: Request,
+  explicitCountry?: unknown,
+): MarketCountryCode {
+  return resolveMarketCountry({
+    explicitCountry,
+    oxygenCountry: request.headers.get('oxygen-buyer-country'),
+  });
 }
 
 export function getLocaleFromRequest(
@@ -282,6 +318,7 @@ export function getLocaleFromRequest(
   return {
     language: 'EN',
     country: resolveMarketCountry({
+      pinnedCountry: pinnedMarketCountry(request.url),
       explicitCountry,
       oxygenCountry: request.headers.get('oxygen-buyer-country'),
     }) as I18nBase['country'],

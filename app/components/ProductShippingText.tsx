@@ -13,6 +13,8 @@ type ProductShippingTextProps = {
   dispatchWindow: string;
   deliveryWindow: string;
   internationalDeliveryWindow: string;
+  /** Set (with `readsUsDelivery`) only when a US buyer can order this item. */
+  usDeliveryWindow?: string | null;
 };
 
 export function ProductShippingText({
@@ -22,8 +24,26 @@ export function ProductShippingText({
   dispatchWindow,
   deliveryWindow,
   internationalDeliveryWindow,
+  usDeliveryWindow,
 }: ProductShippingTextProps) {
   if (curatedShipping) return <>{curatedShipping}</>;
+
+  // US buyers: the US window only. Pots and EU-only lines never reach the
+  // US, so they keep the wording below.
+  if (usDeliveryWindow && !isPlantPot && reach !== 'eu') {
+    return (
+      <>
+        Printed to order and dispatched within {dispatchWindow} business days.
+        After dispatch, delivery within the US is estimated at{' '}
+        {usDeliveryWindow} business days
+        {reach === 'selected'
+          ? '; some options ship to selected countries only, and checkout confirms your address.'
+          : '.'}{' '}
+        Delivery updates are emailed when available. Import taxes, duties and
+        carrier fees may be payable on delivery and are not included.
+      </>
+    );
+  }
 
   const elsewhere =
     reach === 'eu'

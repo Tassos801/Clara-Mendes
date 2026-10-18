@@ -72,7 +72,9 @@ import {
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
+  DELIVERY_US_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
+  readsUsDelivery,
   RETURN_WINDOW_DAYS,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
@@ -98,6 +100,8 @@ type GalleryLoaderData = {
   relatedEdits: Array<{slug: string; title: string; subtitle: string}>;
   capsuleCards: Array<{slug: string; title: string; subtitle: string}>;
   seoUrl: string;
+  /** US buyer: the Delivery fact shows the US window (prints reach the US). */
+  usDelivery: boolean;
   wallSet: WallSetData;
 };
 
@@ -225,6 +229,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           title: other.title,
         })),
       seoUrl: getCanonicalUrl(request, galleryPagePath(galleryPage.slug)),
+      usDelivery: readsUsDelivery({
+        buyerCountry: context.storefront.i18n.country,
+      }),
       wallSet,
     } satisfies GalleryLoaderData;
   }
@@ -579,8 +586,14 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
             <div>
               <dt>Delivery</dt>
               <dd>
+                {data.usDelivery ? (
+                  <>US {DELIVERY_US_BUSINESS_DAYS} days after dispatch</>
+                ) : (
+                  <>
                 EU {DELIVERY_EU_BUSINESS_DAYS} · worldwide{' '}
                 {DELIVERY_INTERNATIONAL_BUSINESS_DAYS} days after dispatch
+                  </>
+                )}
               </dd>
             </div>
             <div>
