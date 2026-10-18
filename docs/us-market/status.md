@@ -13,9 +13,14 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    defaults for D2–D7 and start step A1 (the country pin), then A2."
 2. A1 and A2 are done (commit `1fb4c5f`). The other code steps are
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
-3. Next: **B1** (read-only Prodigi US quotes). It needs the owner's OK
-   and the Prodigi key's location. Then B2–B3, each with the owner's
-   go-ahead in chat.
+3. **B1 is approved** (owner, 2026-10-18: "Yes, run B1: read-only Prodigi
+   US quotes, no orders"). It's blocked only on the key: no
+   `PRODIGI_API_KEY` exists on the Mac (no `.env.sky.local`; none of the
+   shop `.env` files has it). Once the owner puts it in
+   `~/Desktop/shopify/Clara-Mendes-github/.env.sky.local`, run
+   `node scripts/prodigi-market-quotes.mjs --country US,CY --env-dir ~/Desktop/shopify/Clara-Mendes-github --json output/us-market/prodigi-quotes-<date>.json`
+   from this branch and record the table under B1. Then B2–B3, each with
+   the owner's go-ahead in chat.
 
 ## Decisions
 
@@ -168,6 +173,11 @@ test that asserts it.
   tough case, the greeting card and the postcard. Record the cost and
   `fulfillmentLocation` here. The key is `PRODIGI_API_KEY` (set in Oxygen;
   ask the owner where the local copy is).
+  *Tooling ready:* `scripts/prodigi-market-quotes.mjs` (GET product + POST
+  quote only, never an order). It also covers the mug, acrylic, hanger and
+  plant pot. It needs `.env.sky.local` with `PRODIGI_API_KEY` and
+  `PRODIGI_API_BASE=https://api.prodigi.com`; without a key it exits 2
+  with a message.
 - [ ] **B2 United States market.** Move US out of "International" (which
   keeps its other 177 countries) into a new "United States" market:
   currency USD, prices per D2, prices shown without tax. Check under
