@@ -54,7 +54,7 @@
           "providerSettings": "Not channel-mapped: the orders/paid webhook sends the deployed 4:5 file to the Prodigi API with sizing fillPrintArea, one Prodigi SKU per device from data/art-tough-phone-case.json"
         },
         "mug": {
-          "priceEUR": "5.53",
+          "priceEUR": "24.99",
           "providerSku": "GLOBAL-MUG-W",
           "providerSettings": "11 oz white mug; 2705×1122 wrap file at 100%, position 0/0 (the whole work twice, one either side of the handle); Standard shipping; fulfilled automatically"
         }
@@ -2952,7 +2952,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-01-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-01-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ac7db42df1b5a1fe571190c1ae402063a9a5d87dfb208f14af9e3cb52e6c84e9","channelProductId":"6378375","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -2972,6 +2972,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168786526542",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267630948686"
+        }
       }
     },
     {
@@ -2984,7 +2990,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-06-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-06-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"deccff585ae31081b20c39e316d3d807416b62fa0708e38f45723fe0a7df50c3","channelProductId":"6378376","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3004,6 +3010,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168786657614",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631079758"
+        }
       }
     },
     {
@@ -3016,7 +3028,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-07-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-07-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9cf7c334b5a229607fd10e801ec5a4b869dfcd92c34814bbbec223f48ce5b1ca","channelProductId":"6378377","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3036,6 +3048,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168786755918",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631210830"
+        }
       }
     },
     {
@@ -3048,7 +3066,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-09-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-09-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a5a938b8896012bf8e98304c3e0973f2f9345006825c233ce1f02a6081d4f6a2","channelProductId":"6378378","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3068,6 +3086,12 @@
           "width": 4800
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[4800,6000,300],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168786854222",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631341902"
+        }
       }
     },
     {
@@ -3080,7 +3104,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-10-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-10-CFP16X20","priceEUR":"89.10","providerSku":"GLOBAL-CFP-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9bfd44682d36309ec9753d13ba8765f7eeab49c36696662014d73c6e0cd3d76a","channelProductId":"6378379","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3100,6 +3124,12 @@
           "width": 6000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"framed-print\",\"file\":[6000,4800,300],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"layout\":\"bordered-16x20\"}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168786919758",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631440206"
+        }
       }
     },
     {
@@ -3112,7 +3142,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-01-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-01-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"50fcc50e61ccfdbd28c53c1dfc25f41bce5adb3236df66120827f74185dc1bea","channelProductId":"6378380","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3137,6 +3167,12 @@
           "width": 2400
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997},\"box\":[446,0,2393,2991],\"crop\":{\"cx\":0.55,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787083598",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631571278"
+        }
       }
     },
     {
@@ -3149,7 +3185,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-02-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-02-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"28b4d3915674828620f6fcc7dc7a9cb9bb1ad3e9cb549deb5736ffddb8343f31","channelProductId":"6378381","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3174,6 +3210,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1},\"box\":[23,0,2955,2364],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787214670",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631702350"
+        }
       }
     },
     {
@@ -3186,7 +3228,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-03-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-03-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2240b63185e2292897628b3571780743cef923b85e985357f955049879d8ca02","channelProductId":"6378382","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3211,6 +3253,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1},\"box\":[54,0,2813,2250],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787280206",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631767886"
+        }
       }
     },
     {
@@ -3223,7 +3271,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-06-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-06-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"5717775fc8a551070d6d53b7e3af5c392b831f1d6e76f1e118550a6ec15ee949","channelProductId":"6378383","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3248,6 +3296,12 @@
           "width": 2400
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"layout\":{\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844},\"box\":[220,204,7182,8978],\"crop\":{\"cx\":0.4086,\"cy\":0.5149}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787444046",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267631964494"
+        }
       }
     },
     {
@@ -3260,7 +3314,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-09-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-09-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c9844b53d8e4b7a8f8557fd29476fcd17fdaf45f0e94c1877fa2933585294bb1","channelProductId":"6378384","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3285,6 +3339,12 @@
           "width": 2400
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[2400,3000,150],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995},\"box\":[112,24,3754,4693],\"crop\":{\"cx\":0.45,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787542350",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267632062798"
+        }
       }
     },
     {
@@ -3297,7 +3357,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-10-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"16x20","option":"16 × 20 in","sku":"CM-LC-10-CAN16X20","priceEUR":"80.10","providerSku":"GLOBAL-CAN-16X20","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"fb71a9fc0f3095ba520e55e399f6775efbf95ec7e908baa88a58b9048cbf4e6a","channelProductId":"6378385","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3322,6 +3382,12 @@
           "width": 3000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"canvas\",\"file\":[3000,2400,150],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98},\"box\":[9,0,4593,3674],\"crop\":{\"cx\":0.5,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787640654",
+        "variantIds": {
+          "16x20": "gid://shopify/ProductVariant/61267632161102"
+        }
       }
     },
     {
@@ -3334,46 +3400,46 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-01-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-01-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-01-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-01-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-01-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-01-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-01-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-01-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-01-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-01-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-01-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-01-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-01-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-01-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-01-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-01-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-01-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-01-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-01-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-01-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-01-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-01-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-01-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-01-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-01-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-01-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-01-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-01-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-01-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-01-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-01-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-01-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-01-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-01-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-01-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-01-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-01-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-01-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-01-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-01-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-01-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-01-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-01-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-01-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-01-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-01-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c","printUrlPath":"/print-files/line-and-colour/improvisation-no-30-cannons-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3398,6 +3464,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997},\"box\":[594,0,2393,2991],\"crop\":{\"cx\":0.6,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787771726",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61267632292174",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61267632324942",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61267632357710",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61267632390478",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61267632423246",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61267632456014",
+          "IPHONE-14": "gid://shopify/ProductVariant/61267632488782",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61267632521550",
+          "IPHONE-15": "gid://shopify/ProductVariant/61267632554318",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61267632587086",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61267632619854",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61267632652622",
+          "IPHONE-16": "gid://shopify/ProductVariant/61267632685390",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61267632718158",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61267632750926",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61267632783694",
+          "IPHONE-17": "gid://shopify/ProductVariant/61267632816462",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61267632849230",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61267632881998",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61267632914766",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61267632947534",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61267632980302",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61267633013070",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61267633045838",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61267633078606",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61267633111374",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61267633144142",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61267633176910",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61267633209678",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61267633242446",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61267633275214",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61267633307982",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61267633340750",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61267633373518",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61267633406286",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61267633439054",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61267633471822",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61267633504590",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61267633537358",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61267633570126"
+        }
       }
     },
     {
@@ -3410,46 +3521,46 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-02-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-02-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-02-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-02-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-02-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-02-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-02-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-02-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-02-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-02-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-02-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-02-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-02-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-02-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-02-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-02-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-02-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-02-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-02-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-02-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-02-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-02-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-02-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-02-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-02-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-02-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-02-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-02-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-02-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-02-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-02-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-02-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-02-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-02-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-02-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-02-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-02-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-02-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-02-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-02-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-02-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-02-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-02-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-02-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-02-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-02-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549","printUrlPath":"/print-files/line-and-colour/landscape-with-two-poplars-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3474,6 +3585,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1},\"box\":[465,0,1891,2364],\"crop\":{\"cx\":0.47,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168787902798",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61267633701198",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61267633733966",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61267633766734",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61267633799502",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61267633832270",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61267633865038",
+          "IPHONE-14": "gid://shopify/ProductVariant/61267633897806",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61267633930574",
+          "IPHONE-15": "gid://shopify/ProductVariant/61267633963342",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61267633996110",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61267634028878",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61267634061646",
+          "IPHONE-16": "gid://shopify/ProductVariant/61267634094414",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61267634127182",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61267634159950",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61267634192718",
+          "IPHONE-17": "gid://shopify/ProductVariant/61267634225486",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61267634258254",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61267634291022",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61267634323790",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61267634356558",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61267634389326",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61267634422094",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61267634454862",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61267634487630",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61267634520398",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61267634553166",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61267634585934",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61267634618702",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61267634651470",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61267634684238",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61267634717006",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61267634749774",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61267634782542",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61267634815310",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61267634848078",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61267634880846",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61267634913614",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61267634946382",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61267634979150"
+        }
       }
     },
     {
@@ -3486,46 +3642,46 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-06-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-06-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-06-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-06-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-06-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-06-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-06-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-06-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-06-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-06-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-06-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-06-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-06-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-06-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-06-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-06-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-06-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-06-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-06-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-06-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-06-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-06-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-06-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-06-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-06-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-06-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-06-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-06-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-06-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-06-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-06-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-06-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-06-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-06-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-06-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-06-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-06-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-06-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-06-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-06-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-06-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-06-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-06-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-06-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-06-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-06-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c","printUrlPath":"/print-files/line-and-colour/composition-with-red-yellow-and-blue-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3550,6 +3706,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"layout\":{\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844},\"box\":[0,204,7182,8978],\"crop\":{\"cx\":0.324,\"cy\":0.5149}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168788033870",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61267635142990",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61267635175758",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61267635208526",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61267635241294",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61267635274062",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61267635306830",
+          "IPHONE-14": "gid://shopify/ProductVariant/61267635339598",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61267635372366",
+          "IPHONE-15": "gid://shopify/ProductVariant/61267635405134",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61267635437902",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61267635470670",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61267635503438",
+          "IPHONE-16": "gid://shopify/ProductVariant/61267635536206",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61267635568974",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61267635601742",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61267635634510",
+          "IPHONE-17": "gid://shopify/ProductVariant/61267635667278",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61267635700046",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61267635732814",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61267635765582",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61267635798350",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61267635831118",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61267635863886",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61267635896654",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61267635929422",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61267635962190",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61267635994958",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61267636027726",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61267636060494",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61267636093262",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61267636126030",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61267636158798",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61267636191566",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61267636224334",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61267636257102",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61267636289870",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61267636322638",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61267636355406",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61267636388174",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61267636420942"
+        }
       }
     },
     {
@@ -3562,46 +3763,46 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-09-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-09-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-09-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-09-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-09-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-09-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-09-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-09-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-09-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-09-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-09-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-09-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-09-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-09-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-09-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-09-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-09-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-09-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-09-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-09-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-09-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-09-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-09-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-09-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-09-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-09-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-09-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-09-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-09-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-09-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-09-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-09-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-09-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-09-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-09-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-09-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-09-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-09-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-09-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-09-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-09-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-09-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-09-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-09-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-09-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-09-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f","printUrlPath":"/print-files/line-and-colour/chrysanthemum-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3626,6 +3827,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995},\"box\":[112,24,3754,4693],\"crop\":{\"cx\":0.45,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168788132174",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61267636519246",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61267636552014",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61267636584782",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61267636617550",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61267636650318",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61267636683086",
+          "IPHONE-14": "gid://shopify/ProductVariant/61267636715854",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61267636748622",
+          "IPHONE-15": "gid://shopify/ProductVariant/61267636781390",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61267636814158",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61267636846926",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61267636879694",
+          "IPHONE-16": "gid://shopify/ProductVariant/61267636912462",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61267636945230",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61267636977998",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61267637010766",
+          "IPHONE-17": "gid://shopify/ProductVariant/61267637043534",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61267637076302",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61267637109070",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61267637141838",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61267637174606",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61267637207374",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61267637240142",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61267637272910",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61267637305678",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61267637338446",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61267637371214",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61267637403982",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61267637436750",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61267637469518",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61267637502286",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61267637535054",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61267637567822",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61267637600590",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61267637633358",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61267637666126",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61267637698894",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61267637731662",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61267637764430",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61267637797198"
+        }
       }
     },
     {
@@ -3638,46 +3884,46 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-10-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-10-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-10-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-10-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-10-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-10-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-10-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-10-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-10-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-10-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-10-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-10-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-10-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-10-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-10-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-10-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-10-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-10-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-10-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-10-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-10-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-10-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"IPHONE-13","option":"iPhone 13","sku":"CM-LC-10-CASE-IPHONE-13","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-MINI","option":"iPhone 13 Mini","sku":"CM-LC-10-CASE-IPHONE-13-MINI","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13MN-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO","option":"iPhone 13 Pro","sku":"CM-LC-10-CASE-IPHONE-13-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-13-PRO-MAX","option":"iPhone 13 Pro Max","sku":"CM-LC-10-CASE-IPHONE-13-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP13PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO-MAX","option":"iPhone 14 Pro Max","sku":"CM-LC-10-CASE-IPHONE-14-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PRO","option":"iPhone 14 Pro","sku":"CM-LC-10-CASE-IPHONE-14-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14","option":"iPhone 14","sku":"CM-LC-10-CASE-IPHONE-14","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-14-PLUS","option":"iPhone 14 Plus","sku":"CM-LC-10-CASE-IPHONE-14-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP14PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15","option":"iPhone 15","sku":"CM-LC-10-CASE-IPHONE-15","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PLUS","option":"iPhone 15 Plus","sku":"CM-LC-10-CASE-IPHONE-15-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO","option":"iPhone 15 Pro","sku":"CM-LC-10-CASE-IPHONE-15-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-15-PRO-MAX","option":"iPhone 15 Pro Max","sku":"CM-LC-10-CASE-IPHONE-15-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP15PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16","option":"iPhone 16","sku":"CM-LC-10-CASE-IPHONE-16","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO","option":"iPhone 16 Pro","sku":"CM-LC-10-CASE-IPHONE-16-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PRO-MAX","option":"iPhone 16 Pro Max","sku":"CM-LC-10-CASE-IPHONE-16-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16-PLUS","option":"iPhone 16 Plus","sku":"CM-LC-10-CASE-IPHONE-16-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16PL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17","option":"iPhone 17","sku":"CM-LC-10-CASE-IPHONE-17","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO","option":"iPhone 17 Pro","sku":"CM-LC-10-CASE-IPHONE-17-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-17-PRO-MAX","option":"iPhone 17 Pro Max","sku":"CM-LC-10-CASE-IPHONE-17-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP17PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-16E","option":"iPhone 16e","sku":"CM-LC-10-CASE-IPHONE-16E","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP16E-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO","option":"iPhone 18 Pro","sku":"CM-LC-10-CASE-IPHONE-18-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PR-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"IPHONE-18-PRO-MAX","option":"iPhone 18 Pro Max","sku":"CM-LC-10-CASE-IPHONE-18-PRO-MAX","priceEUR":"35.99","providerSku":"GLOBAL-TECH-IP18PM-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8","option":"Google Pixel 8","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-8","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-8-PRO","option":"Google Pixel 8 Pro","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-8-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP8P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9","option":"Google Pixel 9","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-9","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO","option":"Google Pixel 9 Pro","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-9-PRO","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"GOOGLE-PIXEL-9-PRO-XL","option":"Google Pixel 9 Pro XL","sku":"CM-LC-10-CASE-GOOGLE-PIXEL-9-PRO-XL","priceEUR":"35.99","providerSku":"GLOBAL-TECH-GP9PXL-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23","option":"Samsung Galaxy S23","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-PLUS","option":"Samsung Galaxy S23 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-ULTRA","option":"Samsung Galaxy S23 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24","option":"Samsung Galaxy S24","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S24","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-PLUS","option":"Samsung Galaxy S24 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S24-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S24-ULTRA","option":"Samsung Galaxy S24 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S24-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS24U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S23-FE","option":"Samsung Galaxy S23 FE","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S23-FE","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS23FE-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25","option":"Samsung Galaxy S25","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S25","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-PLUS","option":"Samsung Galaxy S25 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S25-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S25-ULTRA","option":"Samsung Galaxy S25 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S25-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS25U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26","option":"Samsung Galaxy S26","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S26","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-PLUS","option":"Samsung Galaxy S26 Plus","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S26-PLUS","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26P-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}},
+        {"key":"SAMSUNG-GALAXY-S26-ULTRA","option":"Samsung Galaxy S26 Ultra","sku":"CM-LC-10-CASE-SAMSUNG-GALAXY-S26-ULTRA","priceEUR":"35.99","providerSku":"GLOBAL-TECH-SGS26U-TCB-CS-M","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249","printUrlPath":"/print-files/line-and-colour/field-with-young-trees-phone-case.jpg","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": {
@@ -3702,6 +3948,51 @@
           "width": 2000
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"phone-case\",\"file\":[2000,2500,300],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"layout\":{\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98},\"box\":[1390,0,2939,3674],\"crop\":{\"cx\":0.62,\"cy\":0.5}}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16168788263246",
+        "variantIds": {
+          "IPHONE-13": "gid://shopify/ProductVariant/61267637928270",
+          "IPHONE-13-MINI": "gid://shopify/ProductVariant/61267637961038",
+          "IPHONE-13-PRO": "gid://shopify/ProductVariant/61267637993806",
+          "IPHONE-13-PRO-MAX": "gid://shopify/ProductVariant/61267638026574",
+          "IPHONE-14-PRO-MAX": "gid://shopify/ProductVariant/61267638059342",
+          "IPHONE-14-PRO": "gid://shopify/ProductVariant/61267638092110",
+          "IPHONE-14": "gid://shopify/ProductVariant/61267638124878",
+          "IPHONE-14-PLUS": "gid://shopify/ProductVariant/61267638157646",
+          "IPHONE-15": "gid://shopify/ProductVariant/61267638190414",
+          "IPHONE-15-PLUS": "gid://shopify/ProductVariant/61267638223182",
+          "IPHONE-15-PRO": "gid://shopify/ProductVariant/61267638255950",
+          "IPHONE-15-PRO-MAX": "gid://shopify/ProductVariant/61267638288718",
+          "IPHONE-16": "gid://shopify/ProductVariant/61267638321486",
+          "IPHONE-16-PRO": "gid://shopify/ProductVariant/61267638354254",
+          "IPHONE-16-PRO-MAX": "gid://shopify/ProductVariant/61267638387022",
+          "IPHONE-16-PLUS": "gid://shopify/ProductVariant/61267638419790",
+          "IPHONE-17": "gid://shopify/ProductVariant/61267638452558",
+          "IPHONE-17-PRO": "gid://shopify/ProductVariant/61267638485326",
+          "IPHONE-17-PRO-MAX": "gid://shopify/ProductVariant/61267638518094",
+          "IPHONE-16E": "gid://shopify/ProductVariant/61267638550862",
+          "IPHONE-18-PRO": "gid://shopify/ProductVariant/61267638583630",
+          "IPHONE-18-PRO-MAX": "gid://shopify/ProductVariant/61267638616398",
+          "GOOGLE-PIXEL-8": "gid://shopify/ProductVariant/61267638649166",
+          "GOOGLE-PIXEL-8-PRO": "gid://shopify/ProductVariant/61267638681934",
+          "GOOGLE-PIXEL-9": "gid://shopify/ProductVariant/61267638714702",
+          "GOOGLE-PIXEL-9-PRO": "gid://shopify/ProductVariant/61267638747470",
+          "GOOGLE-PIXEL-9-PRO-XL": "gid://shopify/ProductVariant/61267638780238",
+          "SAMSUNG-GALAXY-S23": "gid://shopify/ProductVariant/61267638813006",
+          "SAMSUNG-GALAXY-S23-PLUS": "gid://shopify/ProductVariant/61267638845774",
+          "SAMSUNG-GALAXY-S23-ULTRA": "gid://shopify/ProductVariant/61267638878542",
+          "SAMSUNG-GALAXY-S24": "gid://shopify/ProductVariant/61267638911310",
+          "SAMSUNG-GALAXY-S24-PLUS": "gid://shopify/ProductVariant/61267638944078",
+          "SAMSUNG-GALAXY-S24-ULTRA": "gid://shopify/ProductVariant/61267638976846",
+          "SAMSUNG-GALAXY-S23-FE": "gid://shopify/ProductVariant/61267639009614",
+          "SAMSUNG-GALAXY-S25": "gid://shopify/ProductVariant/61267639042382",
+          "SAMSUNG-GALAXY-S25-PLUS": "gid://shopify/ProductVariant/61267639075150",
+          "SAMSUNG-GALAXY-S25-ULTRA": "gid://shopify/ProductVariant/61267639107918",
+          "SAMSUNG-GALAXY-S26": "gid://shopify/ProductVariant/61267639140686",
+          "SAMSUNG-GALAXY-S26-PLUS": "gid://shopify/ProductVariant/61267639173454",
+          "SAMSUNG-GALAXY-S26-ULTRA": "gid://shopify/ProductVariant/61267639206222"
+        }
       }
     },
     {
@@ -3714,7 +4005,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-01-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-01-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"87f282c5208408a5457c4a6723d111ec53cc278d978b2f929c335b1bbb3bcef7","channelProductId":"6367932","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3734,6 +4025,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[177,60,999,1003],[1529,60,999,1003]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648143694",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249192722766"
+        }
       }
     },
     {
@@ -3746,7 +4043,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-02-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-02-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"03afbe8590beb3002b358eb455b714dd90a10b1c5d3af615ef1b4f135c79f19d","channelProductId":"6367933","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3766,6 +4063,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[86,96,1181,930],[1438,96,1181,930]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648241998",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249193115982"
+        }
       }
     },
     {
@@ -3778,7 +4081,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-03-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-03-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"502c0e02c38d0f39175e369cf6436eb4e410aeb30a5a452da4400b42ae9ef4d6","channelProductId":"6367934","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3798,6 +4101,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[86,106,1181,910],[1438,106,1181,910]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648307534",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249193476430"
+        }
       }
     },
     {
@@ -3810,7 +4119,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-04-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-04-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3ca8d7a2cd093261ddafa72038077930d7d5ac554a324b371f8e92a241e20ef1","channelProductId":"6367935","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3830,6 +4139,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"layout\":{\"whole\":[[86,134,1181,854],[1438,134,1181,854]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648471374",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249194295630"
+        }
       }
     },
     {
@@ -3842,7 +4157,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-05-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-05-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"91059be7d4120dd087c533910cfca27ce5a2f1c0cf846b55330dfbde618e27f2","channelProductId":"6367936","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3862,6 +4177,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[137,60,1078,1003],[1490,60,1078,1003]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648569678",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249195344206"
+        }
       }
     },
     {
@@ -3874,7 +4195,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-06-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-06-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"487e3d975418ef6c21e3042b3237f4440d579e0d0675c8c19c088d488bc20163","channelProductId":"6367937","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3894,6 +4215,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"layout\":{\"whole\":[[175,60,1003,1003],[1527,60,1003,1003]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648733518",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249196720462"
+        }
       }
     },
     {
@@ -3906,7 +4233,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-07-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-07-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"195f0459b446b01faaf4567f5f75e8f35e006790b00509bebc8c1405ec9cc129","channelProductId":"6367938","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3926,6 +4253,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[175,60,1003,1003],[1527,60,1003,1003]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648799054",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249197408590"
+        }
       }
     },
     {
@@ -3938,7 +4271,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-08-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-08-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"485ca89648cf16aaead89b795ad903299a3dcdf194b868a9e50887218c5c2875","channelProductId":"6367939","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3958,6 +4291,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[190,60,973,1003],[1542,60,973,1003]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648897358",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249197801806"
+        }
       }
     },
     {
@@ -3970,7 +4309,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-09-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-09-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"0e918326c06a95df31f49240f55fb57a61f455778be818266bbef98ed2958099","channelProductId":"6367940","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -3990,6 +4329,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[209,60,935,1003],[1561,60,935,1003]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163648995662",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249198195022"
+        }
       }
     },
     {
@@ -4002,7 +4347,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-LC-10-MUG11","priceEUR":"5.53","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-LC-10-MUG11","priceEUR":"24.99","providerSku":"GLOBAL-MUG-W","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6d120356ea283bfd70e345ab93d7ef0c60952dcfa4d58df27a9808674159da08","channelProductId":"6367941","verified":true,"verifiedAt":"2026-10-18"}}
       ],
       "assets": {
         "box": null,
@@ -4022,6 +4367,12 @@
           "width": 2705
         },
         "sourceSignature": "{\"renderer\":1,\"family\":\"mug\",\"file\":[2705,1122,300],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"layout\":{\"whole\":[[86,81,1181,960],[1438,81,1181,960]]}}"
+      },
+      "shopify": {
+        "productId": "gid://shopify/Product/16163649093966",
+        "variantIds": {
+          "11oz": "gid://shopify/ProductVariant/61249199112526"
+        }
       }
     }
   ]
