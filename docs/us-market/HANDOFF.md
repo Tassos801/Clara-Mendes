@@ -1,8 +1,10 @@
 # US market: start here on every PC
 
 **Repository:** https://github.com/Tassos801/Clara-Mendes  
-**Working branch:** `claude/us-market` (draft PR into `main`)  
-**Base:** `9fca667` (main after #139)  
+**Working branch:** `claude/us-market`. The first PR (#140) is merged into
+`main` (`e348c69`, 2026-10-18) and main is merged back into the branch.
+Open a new PR from it for each further code step.  
+**Base:** `9fca667` (main after #139); the branch now includes `e348c69`.  
 **Owner:** Tassos  
 **Agents:** Claude Code or Codex (Sol), one active writer at a time. The writer
 is named in [status.md](status.md).

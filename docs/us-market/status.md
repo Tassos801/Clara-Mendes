@@ -2,7 +2,7 @@
 
 **Updated:** 2026-10-18  
 **Branch:** `claude/us-market`  
-**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). The read-only checks C1 and B4 are done, B1 (Prodigi US quotes) is done, and the US policy text is drafted (A6). Nothing has changed in Shopify, Prodigi or Merchant Center.  
+**State:** A1 (country pin), A2 (US delivery wording) and A2b (no-duty wording) are **live on main** (#140, `e348c69`, deployed 2026-10-18). The read-only checks C1 and B4 are done, B1 (Prodigi US quotes) is done, and the US policy text is drafted (A6). Nothing has changed in Shopify, Prodigi or Merchant Center.  
 **Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
@@ -15,8 +15,13 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
 3. **B1 is done (2026-10-18)** and the owner approved the D3 rates the
    same day (prints/Your Sky €11.99, canvas €23.99, cases €7.99). Next:
-   A2b is done too. Next: [launch-bundle.md](launch-bundle.md), the
-   ordered Admin runbook (0 merge PR #140 → 1 studio Classic Framed
+   A2b is done too. **Step 0 is done:** #140 was squash-merged as
+   `e348c69` on 2026-10-18 at the owner's request ("mark PR #140 ready,
+   check CI, merge it into main and verify the live site"). The Oxygen run
+   39156549472 succeeded, and the live checks passed (see launch-bundle.md
+   § 0). This branch has main merged back in, so keep working here and open
+   a new PR for the next code step. Next: [launch-bundle.md](launch-bundle.md),
+   the ordered Admin runbook (~~0 merge PR #140~~ → 1 studio Classic Framed
    profile choice → 2 US zones → 3 USD market + USD feed + EUR feed pin in
    one session → 4 A3/A4/B5). Every step there needs the owner's go-ahead.
    For 3b, building A5 (a dynamic USD feed route) first is recommended,
