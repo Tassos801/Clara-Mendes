@@ -1843,3 +1843,16 @@ the footer's style links no longer shrink into overlapping 35px columns. See
 Sources: `app/routes/artists._index.tsx`, `app/lib/artistShops.ts`,
 `app/lib/printCatalog.ts`, `app/styles/artists.css`, `app/styles/app.css`,
 `scripts/prepare-print-assets.py`, `scripts/artistShops.node-test.mjs`.
+
+## 2026-10-18 - US market planned
+
+The owner asked to sell properly to US buyers. A live Storefront readback
+shows US buyers can already buy prints, canvas, phone cases, book nooks and
+Your Sky, but in EUR, because the US sits inside the "International" market.
+Framed prints, cards, postcards and pots don't reach the US. The plan adds a
+USD "United States" market, US delivery wording (Prodigi US 7–15 business
+days), a `?country=` page pin and a US Merchant Center feed. It keeps every
+Cyprus/EU setting as is and makes each surface follow the buyer's country
+(owner rules). Steps, decisions and evidence:
+[us-market/status.md](../us-market/status.md). Nothing has changed in code
+or Admin yet.
