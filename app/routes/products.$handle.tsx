@@ -133,10 +133,13 @@ import {
   DAMAGE_REPORT_WINDOW_DAYS,
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
+  DELIVERY_US_BUSINESS_DAYS,
   fulfilmentWindows,
   isPersonalisedProductType,
   isQuietCurrentProduct,
+  readsUsDelivery,
   RETURN_WINDOW_DAYS,
+  shipsWithinUs,
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
 import {parseApparelDescription} from '~/lib/apparelCopy';
@@ -1779,6 +1782,18 @@ function ProductPage() {
                 internationalDeliveryWindow={
                   DELIVERY_INTERNATIONAL_BUSINESS_DAYS
                 }
+                usDeliveryWindow={
+                  readsUsDelivery({
+                    buyerCountry: deliveryCountry.code,
+                    shipsToBuyer: !product.variants.nodes.every(
+                      (variant: ProductVariant) => variant.outOfReach,
+                    ),
+                    isApparel: isQuietCurrent,
+                  })
+                    ? DELIVERY_US_BUSINESS_DAYS
+                    : null
+                }
+                usDomestic={shipsWithinUs(product.productType)}
               /> : (
                 <>
                   Available destinations and shipping fees are confirmed at checkout.

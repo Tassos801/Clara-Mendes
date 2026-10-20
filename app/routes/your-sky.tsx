@@ -16,7 +16,7 @@ import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {breadcrumbSchema, buildSeoMeta, productSchema} from '~/lib/seo';
 import {countryPhrase, defaultMarketVariants} from '~/lib/deliveryReach';
 import {withVariantReach} from '~/lib/deliveryReach.server';
-import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {readsUsDelivery, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 const page = YOUR_SKY_PAGE;
 
@@ -61,11 +61,13 @@ export async function loader({context, request}: Route.LoaderArgs) {
   return {
     ...feature,
     deliveryCountry: countryPhrase(context.storefront.i18n.country),
+    // Unframed maps ship to the US (Storefront readback, 2026-10-18).
+    usDelivery: readsUsDelivery({buyerCountry: context.storefront.i18n.country}),
   };
 }
 
 export default function YourSkyPage() {
-  const {deliveryCountry, product, seoUrl, skyTheme} =
+  const {deliveryCountry, product, seoUrl, skyTheme, usDelivery} =
     useLoaderData<typeof loader>();
   // Structured data describes the default market (see products.$handle).
   const schemaVariants = defaultMarketVariants<StudioVariant>(
@@ -184,7 +186,7 @@ export default function YourSkyPage() {
           {page.how.map((item) => (
             <div key={item.title}>
               <dt>{item.title}</dt>
-              <dd>{item.body}</dd>
+              <dd>{usDelivery && item.usBody ? item.usBody : item.body}</dd>
             </div>
           ))}
         </dl>

@@ -33,6 +33,51 @@ export const DISPATCH_WINDOW_BUSINESS_DAYS = '2–4';
 export const DELIVERY_EU_BUSINESS_DAYS = '5–10';
 export const DELIVERY_INTERNATIONAL_BUSINESS_DAYS = '7–20';
 
+// US buyers (docs/us-market/status.md, step A2) read Prodigi's documented
+// US Standard estimate instead of the generic non-EU window. Everyone else
+// keeps the EU + elsewhere wording unchanged (owner rule: additive, keyed on
+// the buyer's country).
+export const DELIVERY_US_BUSINESS_DAYS = '7–15';
+
+/**
+ * True when this buyer should read the US delivery window: a US buyer, on a
+ * Prodigi line (not Printful activewear, whose US transit isn't verified
+ * yet), for an item that ships to them (an out-of-reach item keeps the
+ * generic wording beside its "Doesn't ship to the United States" notice).
+ */
+// Product types whose US orders Prodigi makes in its US labs and ships
+// within the US (live quotes, docs/us-market/status.md step B1, 2026-10-18:
+// prints, Your Sky, canvas and cases all quoted from prodigi_us / us7), so
+// US buyers owe no import duties on them. Add a type only after a quote shows
+// a US lab; framed 20×24 ships from GB.
+export const US_DOMESTIC_PRODUCT_TYPES = [
+  'Art Prints',
+  'Canvas Art',
+  'Personalised Art',
+  'Phone Cases',
+] as const;
+
+export function shipsWithinUs(productType?: string | null) {
+  const type = productType?.trim().toLowerCase();
+  return Boolean(
+    type && US_DOMESTIC_PRODUCT_TYPES.some((t) => t.toLowerCase() === type),
+  );
+}
+
+export function readsUsDelivery({
+  buyerCountry,
+  shipsToBuyer = true,
+  isApparel = false,
+}: {
+  buyerCountry?: string | null;
+  shipsToBuyer?: boolean;
+  isApparel?: boolean;
+}) {
+  return (
+    buyerCountry?.trim().toUpperCase() === 'US' && shipsToBuyer && !isApparel
+  );
+}
+
 // Printful all-over synthetic garments (Quiet Current activewear, matched by
 // exact released product handles). Printful publishes 2–5 business days in-house and
 // 3–7 at partner facilities for the technique, counted from the business day

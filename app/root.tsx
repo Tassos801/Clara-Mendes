@@ -21,6 +21,7 @@ import {GoogleCommerceAnalytics} from '~/components/GoogleCommerceAnalytics';
 import {MarketingAttributionCapture} from '~/components/MarketingAttribution';
 import {getCartOrNull} from '~/lib/cart';
 import {normalizeGtmContainerId} from '~/lib/googleCommerce';
+import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import clothingStyles from '~/styles/clothing.css?url';
@@ -86,7 +87,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
   );
 }
 
-export async function loader({context}: Route.LoaderArgs) {
+export async function loader({context, request}: Route.LoaderArgs) {
   const {env, storefront} = context;
 
   return {
@@ -105,7 +106,12 @@ export async function loader({context}: Route.LoaderArgs) {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN ?? env.PUBLIC_STORE_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: true,
-      country: storefront.i18n.country,
+      // The visitor's own country, not a `?country=` pin, so the banner's
+      // region rules follow the person (app/lib/markets.ts).
+      country: visitorMarketCountry(
+        request,
+        context.session.get(MARKET_SESSION_KEY),
+      ),
       language: storefront.i18n.language,
     },
     gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
