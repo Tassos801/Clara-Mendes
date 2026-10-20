@@ -1342,11 +1342,22 @@ export function createFamilySteps({
     for (const product of products)
       for (const row of plan(product).rows) {
         if (row.action === 'keep') continue;
-        const response = await api(
-          'PUT',
-          `/sync/variant/@${row.externalId}`,
-          {body: row.body, storeId},
-        );
+        let response;
+        // Printful allows few sync writes a minute; it says how long to wait.
+        for (let attempt = 0; attempt < 6; attempt += 1) {
+          response = await api('PUT', `/sync/variant/@${row.externalId}`, {
+            body: row.body,
+            storeId,
+          });
+          if (response.status !== 429) break;
+          const seconds = Number(
+            /after (\d+) seconds/.exec(response.error)?.[1],
+          );
+          console.log(
+            `Printful rate limit: waiting ${seconds || 60} s before ${row.handle} ${row.key}`,
+          );
+          await helpers.delay(((seconds || 60) + 2) * 1000);
+        }
         assert.ok(
           response.ok,
           `${row.handle} ${row.key}: Printful sync failed (HTTP ${response.status}): ${response.error}`,
