@@ -1980,3 +1980,14 @@ hanger and the Two Poplars and Chrysanthemum blankets (large files not with
 their suppliers yet). The shop's type tabs and the artist shops now list Hanger
 Prints, Acrylic Prints and Metal Prints after Canvas, and Mugs, Cushions and
 Blankets after Phone Cases; Kandinsky and Mondrian get artist pages.
+
+## [2026-10-20] pipeline | Printful read-back trusts the MD5
+
+`printfulMappingFromReadback` (`scripts/lib/art-product-pipeline.mjs`)
+accepted a Printful file whose MD5 differed from the local file when its name
+and pixel size matched, and its note said "matched by md5" if any other
+placement had matched. A regenerated supplied file keeps its name and size, so
+a stale file could have been recorded as verified. A hash Printful gives must
+now match; name and pixel size stand in only where Printful gives no hash, and
+the note names the weakest match per placement. The 2026-10-20 read-backs (48
+products, 108 variants) still pass, all by MD5.

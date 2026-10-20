@@ -264,7 +264,9 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
      `printful-readback-<family>-<stamp>.json`. A file over 20 MB is added in
      the Printful file library by hand and passed as `--files <json>`
      (`{"<file name>": <id>}`). Then `mapped <collection> --family <f>
-     --printful <readback.json>` records the sync ids. `handoff` writes
+     --printful <readback.json>` records the sync ids, only when every
+     placement's file in Printful has the local file's md5 (file name and
+     pixel size stand in only where Printful gives no hash). `handoff` writes
      `printful-handoff-<suffix>.csv/.md` for a check by eye.
    - Supplied-file products need the "Free EU shipping – artist products"
      shipping profile; the app token cannot set it, so the owner moves them
