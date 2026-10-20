@@ -1050,7 +1050,7 @@ export function printfulMappingFromReadback(
 
 /**
  * What `printful` would do for one product of a Printful family, given the
- * store's sync product as Printful reads it (`GET /store/products/@<Shopify
+ * store's sync product as Printful reads it (`GET /sync/products/@<Shopify
  * product id>`, null when the Printful app has not imported it) and the
  * Printful file-library id of each supplied file (`fileIds`, keyed by the
  * variant's `file`). A variant is kept when it is already synced to its

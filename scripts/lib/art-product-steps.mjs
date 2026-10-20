@@ -1242,7 +1242,7 @@ export function createFamilySteps({
       );
     const readProduct = async (product) => {
       const shopifyId = product.shopify.productId.split('/').pop();
-      const response = await api('GET', `/store/products/@${shopifyId}`, {
+      const response = await api('GET', `/sync/products/@${shopifyId}`, {
         storeId,
       });
       if (response.status === 404) return null;
@@ -1344,7 +1344,7 @@ export function createFamilySteps({
         if (row.action === 'keep') continue;
         const response = await api(
           'PUT',
-          `/store/variants/@${row.externalId}`,
+          `/sync/variant/@${row.externalId}`,
           {body: row.body, storeId},
         );
         assert.ok(
