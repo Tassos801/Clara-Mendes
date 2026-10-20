@@ -41,9 +41,10 @@ export const DELIVERY_US_BUSINESS_DAYS = '7–15';
 
 /**
  * True when this buyer should read the US delivery window: a US buyer, on a
- * Prodigi line (not Printful activewear, whose US transit isn't verified
- * yet), for an item that ships to them (an out-of-reach item keeps the
- * generic wording beside its "Doesn't ship to the United States" notice).
+ * Prodigi line (not a Printful one, activewear or the museum mugs, cushions
+ * and blankets, whose US transit isn't verified yet), for an item that ships
+ * to them (an out-of-reach item keeps the generic wording beside its
+ * "Doesn't ship to the United States" notice).
  */
 // Product types whose US orders Prodigi makes in its US labs and ships
 // within the US (live quotes, docs/us-market/status.md step B1, 2026-10-18:
@@ -68,13 +69,19 @@ export function readsUsDelivery({
   buyerCountry,
   shipsToBuyer = true,
   isApparel = false,
+  printful = false,
 }: {
   buyerCountry?: string | null;
   shipsToBuyer?: boolean;
   isApparel?: boolean;
+  /** A museum product Printful makes (`printfulTechnique` set). */
+  printful?: boolean;
 }) {
   return (
-    buyerCountry?.trim().toUpperCase() === 'US' && shipsToBuyer && !isApparel
+    buyerCountry?.trim().toUpperCase() === 'US' &&
+    shipsToBuyer &&
+    !isApparel &&
+    !printful
   );
 }
 
@@ -142,23 +149,51 @@ export const APPAREL_SHIPPING_FROM_EUR = APPAREL_SHIPPING_RATES.reduce(
   APPAREL_SHIPPING_RATES[0].eur as string,
 );
 
-/** Future garments have no supplier estimate until their merchant copy states it. */
+/**
+ * How Printful makes a museum product, by Printful's own technique: the mug
+ * and the blanket are sublimation; the cushion is "All-over synthetic"
+ * cut-and-sew, the technique of the Quiet Current activewear.
+ */
+export type PrintfulTechnique = 'sublimation' | 'cut-sew';
+
+// Printful's museum products (mug, cushion, blanket: the `printful` route in
+// app/lib/artProductCatalog.ts). Printful's average fulfilment for Mugs and
+// Sublimation is 2–5 business days at every facility, partners included
+// (printful.com/fulfillment-updates, read 2026-10-20). Orders wait for the
+// same manual confirmation as activewear, so dispatch lands 3–6 business days
+// from order. Cut-and-sew cushions run 3–7 at partner facilities and take the
+// activewear windows.
+export const PRINTFUL_SUBLIMATION_PRODUCTION_WINDOW_BUSINESS_DAYS = '2–5';
+export const PRINTFUL_SUBLIMATION_DISPATCH_WINDOW_BUSINESS_DAYS = '3–6';
+
+/**
+ * Production and dispatch windows: Prodigi's, unless Printful makes the
+ * product (Quiet Current, or a museum product with a `printfulTechnique`).
+ * Future garments have no supplier estimate until their merchant copy
+ * states it.
+ */
 export function fulfilmentWindows(
   productType?: string | null,
   handle?: string | null,
   tags?: string[] | null,
+  printfulTechnique?: PrintfulTechnique | null,
 ) {
   if (isClothingProduct({productType, tags}) && !isQuietCurrentProduct(handle))
     return null;
-  return isQuietCurrentProduct(handle)
-    ? {
-        production: APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
-        dispatch: APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
-      }
-    : {
-        production: PRODUCTION_WINDOW_BUSINESS_DAYS,
-        dispatch: DISPATCH_WINDOW_BUSINESS_DAYS,
-      };
+  if (isQuietCurrentProduct(handle) || printfulTechnique === 'cut-sew')
+    return {
+      production: APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
+      dispatch: APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
+    };
+  if (printfulTechnique === 'sublimation')
+    return {
+      production: PRINTFUL_SUBLIMATION_PRODUCTION_WINDOW_BUSINESS_DAYS,
+      dispatch: PRINTFUL_SUBLIMATION_DISPATCH_WINDOW_BUSINESS_DAYS,
+    };
+  return {
+    production: PRODUCTION_WINDOW_BUSINESS_DAYS,
+    dispatch: DISPATCH_WINDOW_BUSINESS_DAYS,
+  };
 }
 
 // The EU-27 countries, where every product line ships at the published EU

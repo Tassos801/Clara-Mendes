@@ -773,3 +773,60 @@ test('every museum sheet has the small copy the artists index shows', async () =
     }
   }
 });
+
+test('an artist page title leads with the first type the shop lists', () => {
+  const artist = {name: 'Vasily Kandinsky'};
+  assert.equal(
+    shops.artistPageTitle(artist, ['Prints', 'Canvas']),
+    'Vasily Kandinsky: art prints and more | Clara Mendes',
+  );
+  assert.equal(
+    shops.artistPageTitle(artist, ['Hanger prints', 'Cushions']),
+    'Vasily Kandinsky: hanger prints and more | Clara Mendes',
+  );
+  assert.equal(
+    shops.artistPageTitle(artist, ['Mugs']),
+    'Vasily Kandinsky: mugs | Clara Mendes',
+  );
+  // The shipped data: Line and Colour has no paper prints on sale yet.
+  const titles = Object.fromEntries(
+    shops
+      .publicArtists()
+      .map(({artist: shipped, products}) => [
+        shipped.slug,
+        shops.artistPageTitle(shipped, shops.artistFamilies(products)),
+      ]),
+  );
+  assert.match(titles.hokusai, /: art prints and more \|/);
+  assert.match(titles.kandinsky, /: hanger prints and more \|/);
+});
+
+// A note names products by their running-copy words; each must be on sale.
+const NOTE_WORDS = [
+  [/(^|\. )Prints\b/, 'Prints'],
+  [/framed prints/i, 'Framed prints'],
+  [/\bcanvas\b/i, 'Canvas'],
+  [/(?<!post)cards\b/i, 'Cards'],
+  [/postcards/i, 'Postcards'],
+  [/phone cases/i, 'Phone cases'],
+  [/\bhanger\b/i, 'Hanger prints'],
+  [/\bacrylic\b/i, 'Acrylic prints'],
+  [/\bmetal\b/i, 'Metal prints'],
+  [/\bmugs\b/i, 'Mugs'],
+  [/\bcushions\b/i, 'Cushions'],
+  [/\bblankets\b/i, 'Blankets'],
+];
+
+test("a curator's note names only product types the artist's shop lists", () => {
+  const checked = [];
+  for (const {artist, products} of shops.publicArtists()) {
+    if (!artist.curatorNote) continue;
+    const families = shops.artistFamilies(products);
+    for (const [pattern, family] of NOTE_WORDS) {
+      if (pattern.test(artist.curatorNote))
+        assert.ok(families.includes(family), `${artist.slug} names ${family}`);
+    }
+    checked.push(artist.slug);
+  }
+  assert.ok(checked.includes('kandinsky') && checked.includes('mondrian'));
+});

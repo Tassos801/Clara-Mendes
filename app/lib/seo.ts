@@ -7,6 +7,7 @@ import {
   RETURN_WINDOW_DAYS,
   SHIPPING_COUNTRY_CODES,
   STOREFRONT_ORIGIN,
+  type PrintfulTechnique,
 } from './storefrontBasics.ts';
 
 type MoneyAmount = {
@@ -35,6 +36,8 @@ type ProductSchemaInput = {
   productId?: string | null;
   productHandle?: string | null;
   productType?: string | null;
+  /** A museum product Printful makes: its windows, not Prodigi's. */
+  printfulTechnique?: PrintfulTechnique | null;
   tags?: string[] | null;
   reviewSummary?: {
     count: number;
@@ -200,6 +203,7 @@ export function productSchema({
   productId,
   productHandle,
   productType,
+  printfulTechnique,
   tags,
   reviewSummary,
   sku,
@@ -283,6 +287,7 @@ export function productSchema({
               price: minPrice,
               productType,
               productHandle,
+              printfulTechnique,
               tags,
               url,
             })
@@ -293,6 +298,7 @@ export function productSchema({
             parentTitle: title,
             productType,
             productHandle,
+            printfulTechnique,
             tags,
             url,
             variant,
@@ -334,8 +340,14 @@ function offerShippingDetails(
   productType?: string | null,
   productHandle?: string | null,
   tags?: string[] | null,
+  printfulTechnique?: PrintfulTechnique | null,
 ) {
-  const windows = fulfilmentWindows(productType, productHandle, tags);
+  const windows = fulfilmentWindows(
+    productType,
+    productHandle,
+    tags,
+    printfulTechnique,
+  );
   if (!windows) return undefined;
   return {
     '@type': 'OfferShippingDetails',
@@ -390,6 +402,7 @@ function offerFromPrice({
   price,
   productType,
   productHandle,
+  printfulTechnique,
   tags,
   url,
 }: {
@@ -398,6 +411,7 @@ function offerFromPrice({
   price: MoneyAmount;
   productType?: string | null;
   productHandle?: string | null;
+  printfulTechnique?: PrintfulTechnique | null;
   tags?: string[] | null;
   url: string;
 }) {
@@ -408,7 +422,12 @@ function offerFromPrice({
     availability: schemaAvailability(availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
     shippingDetails: includeCommerceDetails
-      ? offerShippingDetails(productType, productHandle, tags)
+      ? offerShippingDetails(
+          productType,
+          productHandle,
+          tags,
+          printfulTechnique,
+        )
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
       ? merchantReturnPolicy(productType)
@@ -421,6 +440,7 @@ function productVariantSchema({
   parentTitle,
   productType,
   productHandle,
+  printfulTechnique,
   tags,
   url,
   variant,
@@ -429,6 +449,7 @@ function productVariantSchema({
   parentTitle: string;
   productType?: string | null;
   productHandle?: string | null;
+  printfulTechnique?: PrintfulTechnique | null;
   tags?: string[] | null;
   url: string;
   variant: NonNullable<ProductSchemaInput['variants']>[number];
@@ -463,6 +484,7 @@ function productVariantSchema({
       price: variant.price,
       productType,
       productHandle,
+      printfulTechnique,
       tags,
       url: variantUrl.toString(),
     }),
