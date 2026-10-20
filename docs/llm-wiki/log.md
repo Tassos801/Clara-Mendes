@@ -1962,3 +1962,21 @@ files over 20 MB wait for a manual upload. Overall 302 of 310 seven-products
 variants now have verified mappings. Products stay Drafts or unreleased. See
 [status](../artist-shops/status.md) and the
 [read-back](../artist-shops/evidence/seven-products-printful-mapping-2026-10-20.json).
+
+## [2026-10-20] release | Seven products per artist released (107 of 110)
+
+At the owner's request the seven-products range went live. He accepted every
+supplied file below 150 ppi as it is (49 `ppiExceptions`; supplied families
+may now go down to 40 ppi, rendered families keep 150), approved the supplied
+files of Troika, Green Center, Lozenge Composition and Composition No. 1
+(`suppliedApprovals`, as these works have no approved crop) and chose to go
+live on the General shipping profile until "Free EU shipping – artist
+products" exists. `release` activated the Drafts (it now accepts products the
+owner already made Active), untracked stock and removed the pending tags;
+Claude added the 69 products without channels to "Clara Mendes" and "Clara
+Mendes Headless" in Admin; a second `release` confirmed every variant sellable
+through the Storefront API and set `released`. Not released: the Chrysanthemum
+hanger and the Two Poplars and Chrysanthemum blankets (large files not with
+their suppliers yet). The shop's type tabs and the artist shops now list Hanger
+Prints, Acrylic Prints and Metal Prints after Canvas, and Mugs, Cushions and
+Blankets after Phone Cases; Kandinsky and Mondrian get artist pages.

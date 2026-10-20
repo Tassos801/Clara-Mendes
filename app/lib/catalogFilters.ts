@@ -188,9 +188,15 @@ export const SHOP_PRODUCT_TYPE_ORDER: readonly string[] = [
   'Art Prints',
   'Framed Art',
   'Canvas Art',
+  'Hanger Prints',
+  'Acrylic Prints',
+  'Metal Prints',
   'Cards',
   'Postcards',
   'Phone Cases',
+  'Mugs',
+  'Cushions',
+  'Blankets',
   'Plant Pots',
   'Book Nooks',
 ];
@@ -512,7 +518,11 @@ export function isStoreThemeProduct(product: CatalogProductLike) {
  */
 export function pickVariedProducts<
   T extends {id: string; productType?: string | null},
->(products: readonly T[], count: number, exclude: readonly {id: string}[] = []) {
+>(
+  products: readonly T[],
+  count: number,
+  exclude: readonly {id: string}[] = [],
+) {
   const excluded = new Set(exclude.map((product) => product.id));
   const pool = products.filter((product) => !excluded.has(product.id));
   const category = (product: T) =>

@@ -441,6 +441,12 @@ test('artist shop types are named as on the cards and the Shop All tabs', () => 
       ['cards', 'Cards', 4],
       ['postcards', 'Postcards', 4],
       ['phone-cases', 'Phone Cases', 4],
+      ['hanger-prints', 'Hanger Prints', 4],
+      ['acrylic-prints', 'Acrylic Prints', 4],
+      ['metal-prints', 'Metal Prints', 4],
+      ['mugs', 'Mugs', 4],
+      ['cushions', 'Cushions', 4],
+      ['blankets', 'Blankets', 4],
     ],
   );
 });
@@ -457,6 +463,12 @@ test('artist shop Featured lists one section per type, in family order', () => {
       ['cards', 4],
       ['postcards', 4],
       ['phone-cases', 4],
+      ['hanger-prints', 4],
+      ['acrylic-prints', 4],
+      ['metal-prints', 4],
+      ['mugs', 4],
+      ['cushions', 4],
+      ['blankets', 4],
     ],
   );
   assert.ok(
@@ -480,7 +492,7 @@ test('artist shop Featured lists one section per type, in family order', () => {
   );
   assert.deepEqual(
     portrait.sections.map((section) => section.products.length),
-    [3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
   );
   // A chosen type, or another sort, lists one grid.
   for (const query of ['type=cards', 'type=cards&type=postcards', 'sort=title'])
@@ -493,7 +505,8 @@ test('artist shop Featured lists one section per type, in family order', () => {
 
 test('artist shop drops groups that cannot narrow it, and their URL values', () => {
   const range = floatingWorldRange('katsushika-hokusai');
-  assert.equal(range.length, 36);
+  // Six works × twelve product types.
+  assert.equal(range.length, 72);
   // Every Hokusai is a landscape Fuji view of Floating World.
   const view = shops.artistShopView(
     range,
@@ -506,7 +519,7 @@ test('artist shop drops groups that cannot narrow it, and their URL values', () 
     ['type'],
   );
   assert.equal(view.activeCount, 0);
-  assert.equal(view.products.length, 36);
+  assert.equal(view.products.length, 72);
 });
 
 test('artist shop filters AND across groups, OR within one, and drop stale values', () => {

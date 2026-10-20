@@ -5,7 +5,7 @@
 **Branch:** `claude/seven-products-drafts`, stacked on
 `codex/line-and-colour-staging-2026-10-18` (draft PR #141).
 
-**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment (#141). The seven-products range adds 110 more listings across both collections (below): 302 of 310 variants have verified Prodigi or Printful mappings; three large files wait for the owner's manual upload. All release flags remain false. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
+**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment (#141). The seven-products range adds 110 more listings across both collections (below): 302 of 310 variants have verified Prodigi or Printful mappings; three large files wait for the owner's manual upload. On 2026-10-20 the owner released 107 of the 110 (all but the Chrysanthemum hanger and the Two Poplars and Chrysanthemum blankets), accepting the low-ppi files, approving four Line and Colour layouts and keeping the General shipping profile for now. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
 
 **Current writer:** Claude Code on the owner's Windows PC (2026-10-20),
 seven-products session. Codex wrote #141 on 2026-10-18.

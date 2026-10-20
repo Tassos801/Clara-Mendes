@@ -421,14 +421,26 @@ assert.equal(
     'Cards',
     'Postcards',
     'Phone Cases',
+    'Hanger Prints',
+    'Acrylic Prints',
+    'Metal Prints',
+    'Mugs',
+    'Cushions',
+    'Blankets',
   ]);
-  assert.deepEqual(live.slice(0, 8), [
+  assert.deepEqual(live.slice(0, 14), [
     'Art Prints',
     'Framed Art',
     'Canvas Art',
+    'Hanger Prints',
+    'Acrylic Prints',
+    'Metal Prints',
     'Cards',
     'Postcards',
     'Phone Cases',
+    'Mugs',
+    'Cushions',
+    'Blankets',
     'Plant Pots',
     'Book Nooks',
   ]);

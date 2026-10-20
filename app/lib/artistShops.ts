@@ -57,10 +57,10 @@ export const ARTIST_PRODUCT_FAMILIES = [
   'Cards',
   'Postcards',
   'Phone cases',
-  'Mugs',
   'Hanger prints',
   'Acrylic prints',
   'Metal prints',
+  'Mugs',
   'Cushions',
   'Blankets',
 ] as const;

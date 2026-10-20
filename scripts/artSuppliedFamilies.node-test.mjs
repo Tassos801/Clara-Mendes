@@ -140,7 +140,7 @@ test('cushions: 18 or 22 inch, cover only or with insert, on Printful 215 and 21
   );
 });
 
-test('both museum collections offer the six at the page prices; nothing released', () => {
+test('both museum collections offer the six at the page prices; released but three', () => {
   // Line and Colour keeps its Prodigi mug (owner, 20 Oct 2026), so it has
   // five of the six; Floating World has the Printful mug.
   for (const [slug, mugs] of [
@@ -176,7 +176,20 @@ test('both museum collections offer the six at the page prices; nothing released
         product.collection === slug && SUPPLIED.includes(product.family),
     );
     assert.equal(products.length, 50 + 10 * mugs);
-    assert.ok(products.every((product) => product.released === false));
+    // Released on 2026-10-20, except the three whose large files are not
+    // with their supplier yet.
+    assert.deepEqual(
+      products
+        .filter((product) => !product.released)
+        .map((product) => product.handle),
+      slug === 'line-and-colour'
+        ? [
+            'chrysanthemum-hanger-print',
+            'landscape-with-two-poplars-blanket',
+            'chrysanthemum-blanket',
+          ]
+        : [],
+    );
     assert.equal(
       products.reduce((sum, product) => sum + product.variants.length, 0),
       10 * (6 + 3 + 1 + mugs + 4 + 1),

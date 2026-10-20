@@ -32,6 +32,12 @@ const FAMILIES = [
   'greeting-card',
   'postcard',
   'phone-case',
+  'hanger-print',
+  'acrylic-print',
+  'metal-print',
+  'mug',
+  'cushion',
+  'blanket',
 ];
 /** Expected listing: every type in order, each in artwork sequence. */
 const MUSEUM_ORDER = FAMILIES.flatMap((family) =>
@@ -56,7 +62,7 @@ const FLOATING_WORLD_ONLY = {collections: [FLOATING_WORLD]};
 
 const product = (handle) => ({handle});
 
-test('the catalogs rank all 60 Floating World products, prints first', () => {
+test('the catalogs rank all 120 Floating World products, prints first', () => {
   const ranks = museumListingRanks();
   for (const handle of MUSEUM_ORDER) assert.ok(ranks.has(handle), handle);
   assert.ok(!ranks.has('quiet-form-i-art-print'));
@@ -74,7 +80,7 @@ test('the catalogs rank all 60 Floating World products, prints first', () => {
   assert.equal(sorted[10], 'the-great-wave-off-kanagawa-framed-print');
   assert.equal(
     sorted.at(-1),
-    'sudden-shower-over-shin-ohashi-bridge-and-atake-phone-case',
+    'sudden-shower-over-shin-ohashi-bridge-and-atake-blanket',
   );
   // Products the catalogs do not rank keep their order after the ranked.
   assert.deepEqual(
@@ -325,9 +331,11 @@ test('the Floating World filter opens with its ten prints', async () => {
   );
   assert.equal(pages[0].pageInfo.hasPreviousPage, false);
   assert.equal(pages[0].pageInfo.startCursor, 'm.0');
+  const full = Math.floor(MUSEUM_ORDER.length / 24);
+  const rest = MUSEUM_ORDER.length % 24;
   assert.deepEqual(
     pages.map((page) => page.nodes.length),
-    [24, 24, 12],
+    [...Array(full).fill(24), ...(rest ? [rest] : [])],
   );
   // And back from the end.
   const back = await walkBackward(
@@ -335,9 +343,12 @@ test('the Floating World filter opens with its ten prints', async () => {
     24,
     pages.at(-1).pageInfo.startCursor,
   );
-  assert.equal(back.length, 2);
+  assert.equal(back.length, pages.length - 1);
   assert.equal(back[0].pageInfo.hasPreviousPage, false);
-  assert.deepEqual(handles(back), MUSEUM_ORDER.slice(0, 48));
+  assert.deepEqual(
+    handles(back),
+    MUSEUM_ORDER.slice(0, (pages.length - 1) * 24),
+  );
 });
 
 test('a studio-only search lists exactly as before', async () => {
@@ -402,11 +413,17 @@ test('cursors this listing did not issue are rejected', async () => {
     assert.throws(() => parseListingCursor(bad), ListingCursorError, bad);
   const source = sources(STUDIO, NEWEST_FIRST.map(product));
   await assert.rejects(
-    studioThenMuseumPage({endCursor: 'm.60', first: 24}, source),
+    studioThenMuseumPage(
+      {endCursor: `m.${MUSEUM_ORDER.length}`, first: 24},
+      source,
+    ),
     ListingCursorError,
   );
   await assert.rejects(
-    studioThenMuseumPage({last: 24, startCursor: 'm.61'}, source),
+    studioThenMuseumPage(
+      {last: 24, startCursor: `m.${MUSEUM_ORDER.length + 1}`},
+      source,
+    ),
     ListingCursorError,
   );
 });
