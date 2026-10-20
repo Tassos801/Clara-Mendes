@@ -1981,6 +1981,31 @@ their suppliers yet). The shop's type tabs and the artist shops now list Hanger
 Prints, Acrylic Prints and Metal Prints after Canvas, and Mugs, Cushions and
 Blankets after Phone Cases; Kandinsky and Mondrian get artist pages.
 
+## [2026-10-20] fix | Printful windows, artist page titles, blanket details
+
+A debug pass over the seven-products release found three content errors on
+the live site. The Printful mugs, cushions and blankets showed Prodigi's
+production and dispatch windows and, to US buyers, Prodigi's US delivery
+estimate; they now use Printful's windows per technique (see
+[Fulfillment](modules/fulfillment.md)). The Kandinsky and Mondrian pages were
+titled "art prints and more", and their curator's notes named prints, framed
+prints, mugs, canvas and phone cases, none of which are released for Line and
+Colour; the title now leads with the first product type the artist's shop
+lists (`artistPageTitle`), the notes name what is on sale, and a test fails
+if a note names a type the shop does not list. Restore the fuller sentence
+when Line and Colour's prints, framed prints, canvas, cases and mugs release.
+The museum blanket pages also showed the retired fleece blanket's
+"30 × 40 in" panel; it now shows only on that product.
+
+## [2026-10-20] perf | Slim art-product catalog in the browser
+
+The client chunk carrying `data/art-product-catalog.json` was 966,794 bytes
+(102,192 gzip) and loaded on every page through the root route; most of it
+was pipeline records the browser never reads. The client build now gets a
+slim copy (see [Catalog and products](modules/catalog-and-products.md)): the
+chunk is 225,565 bytes (30,838 gzip), and the build no longer warns about it.
+Server output is unchanged.
+
 ## [2026-10-20] pipeline | Printful read-back trusts the MD5
 
 `printfulMappingFromReadback` (`scripts/lib/art-product-pipeline.mjs`)

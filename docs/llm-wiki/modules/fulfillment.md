@@ -261,3 +261,19 @@ elsewhere wording, and every non-US buyer's wording is unchanged.
 untouched and the privacy banner keeps the visitor's own country
 (`visitorMarketCountry`, `app/lib/markets.ts`). The US is still inside the
 EUR "International" market until step B2.
+
+## 2026-10-20 - Printful museum products keep Printful's windows
+
+The museum mugs, cushions and blankets (the `printful` route in
+`app/lib/artProductCatalog.ts`) had inherited Prodigi's windows and, for US
+buyers, Prodigi's US 7–15 estimate. Each Printful family now names its
+technique (`printfulTechnique`), and `fulfilmentWindows`
+(`app/lib/storefrontBasics.ts`) uses it on the PDP and in the Offer
+`handlingTime`. Mugs and blankets are Sublimation: Printful publishes 2–5
+business days at every facility (printful.com/fulfillment-updates, read
+2026-10-20), so production 2–5 and dispatch 3–6 with the manual confirmation
+day. Cushions are "All-over synthetic" cut-and-sew (3–7 at partners) and take
+the activewear windows, 2–7 and 3–8. `readsUsDelivery` excludes them
+(`printful`), so US buyers read the generic EU + elsewhere wording until
+Printful's US transit is verified. The Line and Colour Prodigi mug keeps
+Prodigi's windows.

@@ -26,6 +26,7 @@ import {
   type PrintCatalogCollection,
   type PrintCatalogPrint,
 } from './printCatalog.ts';
+import type {PrintfulTechnique} from './storefrontBasics.ts';
 import {TOUGH_CASE_PHONES} from './toughCase.ts';
 
 /**
@@ -167,6 +168,8 @@ export type ArtFamilySpec = {
   suppliedFiles?: Record<string, SuppliedFileSpec>;
   /** Printful placements each variant prints its file on (route 'printful'). */
   printfulPlacements?: string[];
+  /** Printful's technique (route 'printful'): it sets the PDP's windows. */
+  printfulTechnique?: PrintfulTechnique;
   /** The lead file (the first variant's), for summaries and previews. */
   file: FileSpec;
   /**
@@ -671,6 +674,7 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
     // Printful's 11 oz print area: 9 × 3.5 in at 300 dpi.
     suppliedFiles: {'mug-11oz': fixed(2700, 1050, 300)},
     printfulPlacements: ['default'],
+    printfulTechnique: 'sublimation',
     file: {height: 1050, width: 2700, dpi: 300, followsOrientation: false},
     minPpi: 300,
     tags: ['Mugs'],
@@ -705,6 +709,7 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
     suppliedFiles: {'cushion-22': fixed(3300, 3300, 150)},
     // Front and back print the same file.
     printfulPlacements: ['front', 'back'],
+    printfulTechnique: 'cut-sew',
     file: {height: 3300, width: 3300, dpi: 150, followsOrientation: false},
     minPpi: 150,
     tags: ['Cushions'],
@@ -736,6 +741,7 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
     // 50 × 60 in at 150 dpi, portrait; wide works are turned on their side.
     suppliedFiles: {'blanket-50x60': fixed(7500, 9000, 150)},
     printfulPlacements: ['default'],
+    printfulTechnique: 'sublimation',
     file: {height: 9000, width: 7500, dpi: 150, followsOrientation: false},
     minPpi: 150,
     tags: ['Blankets'],
@@ -1428,6 +1434,8 @@ export function artProductByHandle(
 export type ArtProductPage = {
   details: Array<{label: string; text: string}>;
   family: ArtProductFamily;
+  /** Set when Printful makes it; null for Prodigi families. */
+  printfulTechnique: PrintfulTechnique | null;
   shippingReach: ShippingReach;
   /**
    * The one size of a single-variant product ("16 × 20 in", "5 × 7 in"),
@@ -1449,6 +1457,7 @@ export function artProductPage(
   return {
     details: spec.details,
     family: product.family,
+    printfulTechnique: spec.printfulTechnique ?? null,
     shippingReach: spec.shippingReach,
     size:
       spec.single?.option ?? (spec.variantDefs ? (only?.option ?? null) : null),

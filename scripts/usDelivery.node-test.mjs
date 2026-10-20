@@ -29,6 +29,8 @@ test('only US buyers of items that reach them read the US window', () => {
   assert.equal(readsUsDelivery({buyerCountry: 'US', shipsToBuyer: false}), false);
   // Printful activewear: US transit not verified yet.
   assert.equal(readsUsDelivery({buyerCountry: 'US', isApparel: true}), false);
+  // Printful museum mugs, cushions and blankets: not verified either.
+  assert.equal(readsUsDelivery({buyerCountry: 'US', printful: true}), false);
 });
 
 test('Your Sky keeps its EU wording and adds a US one', () => {
