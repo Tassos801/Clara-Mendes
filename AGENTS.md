@@ -13,6 +13,15 @@ both work on this branch, one active writer at a time (named in status.md).
 Push coherent checkpoints and update the handoff before changing machines. Never merge this work into main or publish products merely to share it.
 This branch notice does not redirect unrelated maintenance work.
 
+## Active US-market workstream (2026-10-18)
+
+Selling to US buyers in USD, with US delivery wording and US Merchant Center
+listings, is planned on `claude/us-market`. Before continuing it, read
+[`docs/us-market/HANDOFF.md`](docs/us-market/HANDOFF.md) and
+[`status.md`](docs/us-market/status.md). Owner rules: don't erase any
+Cyprus/EU setup, and make every change follow the buyer's country. One
+active writer at a time (named in status.md).
+
 This repository has a maintained Karpathy-style LLM wiki at:
 
 `docs/llm-wiki/index.md`
