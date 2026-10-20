@@ -234,6 +234,41 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
      ones sellable, in the sitemap, and case files deployed with their
      sha256). The artist shop lists released family products under Product
      type automatically.
+   - **Supplied-file families** (hanger, acrylic and metal prints from
+     Prodigi; mug, cushion and blanket from Printful) take ready-made files
+     from `<launchDir>/<suppliedFiles>/products/manifest.json` instead of
+     cutting them. Each file's AI-fill log (`masters/assembly.json`) is copied
+     whole into the catalog as `provenance`. `prepare` checks sha256, size,
+     dpi and sRGB, reports a file below 150 ppi (mug 300) instead of refusing
+     it, and renders the preview. Variants come from the family's
+     `variantDefs`: hanger 2 sizes × black, white or oak frame (oak is
+     Prodigi "Natural"), acrylic 3 sizes, metal 8 × 12 matte
+     (`MOU-DI-20X30`, finish `matte`), cushion 18 or 22 in × cover or
+     insert, mug 11 oz, blanket 50 × 60. A square work whose files are
+     landscape takes `suppliedLayout`.
+   - Prodigi maps these per variant: each size prints its own file (the
+     metal print reuses the 8 × 12 acrylic file). In the dashboard: Choose
+     product, search the SKU, set Frame colour or Finish, Select, Add image
+     (pick the processed copy, never a `-1×-1 px` duplicate), Save, and set
+     the product's Shipping to Standard. Acrylic print areas include about
+     5 mm bleed, so Prodigi's cover fill trims about 2% per edge (rated
+     Good). New products arrive with "Fulfil this item with Prodigi" on:
+     switch it off on every Printful-route product.
+   - Printful families go through the store's Printful app, with the owner's
+     private token in `.env.printful.local` (`PRINTFUL_API_TOKEN`).
+     `printful <collection> --family <f>` reads each product as Printful
+     lists it and prints the plan; `--apply` adds each file to the Printful
+     file library once (temporary staged-upload URL, md5 checked, ids kept in
+     `<launch>/museum/printful-files.json`), syncs every variant to its
+     Printful variant and placements, and writes
+     `printful-readback-<family>-<stamp>.json`. A file over 20 MB is added in
+     the Printful file library by hand and passed as `--files <json>`
+     (`{"<file name>": <id>}`). Then `mapped <collection> --family <f>
+     --printful <readback.json>` records the sync ids. `handoff` writes
+     `printful-handoff-<suffix>.csv/.md` for a check by eye.
+   - Supplied-file products need the "Free EU shipping – artist products"
+     shipping profile; the app token cannot set it, so the owner moves them
+     in Admin.
 
 The artist shop (`/artists/<slug>`), the artists index, the Artists nav link,
 search matches and sitemap entries appear automatically once an approved

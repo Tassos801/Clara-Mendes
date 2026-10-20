@@ -38,11 +38,17 @@ const MUSEUM_ORDER = FAMILIES.flatMap((family) =>
   SEQUENCE.map((slug) => `${slug}-${family}`),
 );
 
-/** Shopify lists newest first: the release created prints, then families. */
+/**
+ * Shopify lists newest first: the release created prints, then families.
+ * Staged Drafts are never listed, so only released families are here.
+ */
 const NEWEST_FIRST = [
   ...SEQUENCE.map((slug) => `${slug}-art-print`),
   ...ART_PRODUCT_CATALOG.products
-    .filter((product) => product.collection === FLOATING_WORLD.slug)
+    .filter(
+      (product) =>
+        product.collection === FLOATING_WORLD.slug && product.released,
+    )
     .map((product) => product.handle),
 ].reverse();
 /** The catalog as it was with one museum collection. */
@@ -406,9 +412,12 @@ test('cursors this listing did not issue are rejected', async () => {
 });
 
 test('artist shops list museum works by type, then artwork sequence', () => {
+  // What the shop can list: released products (Drafts never reach it).
   const hokusai = shops
     .artistProducts()
-    .filter((entry) => entry.artistId === 'katsushika-hokusai');
+    .filter(
+      (entry) => entry.artistId === 'katsushika-hokusai' && entry.released,
+    );
   assert.ok(hokusai.length >= 6);
   const expected = MUSEUM_ORDER.filter((handle) =>
     hokusai.some((entry) => entry.handle === handle),

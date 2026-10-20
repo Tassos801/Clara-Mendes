@@ -34,6 +34,13 @@ import {TOUGH_CASE_PHONES} from './toughCase.ts';
  * per artwork, each its own hidden Shopify Draft (one product per artwork per
  * type, Society6-style) — never variants of the live studio products.
  *
+ * The "seven products per artist" types (hanger print, acrylic, metal print,
+ * Printful mug, cushion, blanket; owner decision of 2026-10-16) print
+ * finished files made outside the pipeline: the work is unchanged and only
+ * the margins the shape needs were filled (`suppliedFiles`). Their files and
+ * the log of what was filled are recorded per variant, and some have more
+ * than one option (size and hanger colour, size and filling).
+ *
  * `data/art-product-catalog.json` is the single source, like the print
  * catalog: the product pipeline (`npm run product -- … --families`) writes
  * the asset records, Shopify ids and mappings into it, and a product is
@@ -51,12 +58,28 @@ export const ART_PRODUCT_FAMILIES = [
   'postcard',
   'phone-case',
   'mug',
+  'hanger-print',
+  'acrylic-print',
+  'metal-print',
+  'printful-mug',
+  'cushion',
+  'blanket',
 ] as const;
 export type ArtProductFamily = (typeof ART_PRODUCT_FAMILIES)[number];
 
 /** Artist-shop product types, shared with app/lib/artistShops.ts. */
 export type ArtFamilyLabel =
-  'Framed prints' | 'Canvas' | 'Cards' | 'Postcards' | 'Phone cases' | 'Mugs';
+  | 'Framed prints'
+  | 'Canvas'
+  | 'Cards'
+  | 'Postcards'
+  | 'Phone cases'
+  | 'Mugs'
+  | 'Hanger prints'
+  | 'Acrylic prints'
+  | 'Metal prints'
+  | 'Cushions'
+  | 'Blankets';
 
 export type ShippingReach = 'eu' | 'selected' | 'worldwide';
 
@@ -83,14 +106,42 @@ type FileSpec = {
   wholePanels?: WholePanel[];
 };
 
+/** A finished print file's pixel size in each orientation of the work. */
+export type SuppliedFileSpec = {
+  dpi: number;
+  landscape: {height: number; width: number};
+  portrait: {height: number; width: number};
+};
+
+/**
+ * One variant of a family with its own options: the option values (one per
+ * `optionNames`), the SKU suffix, which of the collection's `prices` it
+ * sells at, the supplied file it prints and the supplier's SKU (a Prodigi
+ * SKU, or a Printful catalog variant id) with any supplier attributes.
+ */
+export type ArtVariantDef = {
+  file: string;
+  key: string;
+  priceKey: string;
+  providerAttributes?: Record<string, string>;
+  providerSku: string;
+  skuSuffix: string;
+  values: string[];
+};
+
 export type ArtFamilySpec = {
   artistFamily: ArtFamilyLabel;
   /** Shopify productType, the same as the live studio product of the type. */
   productType: string;
   /** "<print title> <titleSuffix>", like "… Art Print" for prints. */
   titleSuffix: string;
-  /** Prodigi Shopify-channel mapping, or the orders/paid webhook (API). */
-  route: 'channel' | 'api';
+  /** "<print slug>-<handleSuffix>"; the family key when absent. */
+  handleSuffix?: string;
+  /**
+   * Prodigi Shopify-channel mapping, the orders/paid webhook (Prodigi API),
+   * or a Printful sync of the Shopify variant (Printful's Shopify app).
+   */
+  route: 'channel' | 'api' | 'printful';
   /**
    * The one Prodigi SKU the file contract is drawn for, when the family
    * has one; a collection offering the family must use it.
@@ -99,8 +150,24 @@ export type ArtFamilySpec = {
   /** The approved crop (app/lib/museumCrops.ts); null keeps the work whole. */
   shape: CropShape | null;
   optionName: string;
+  /** Option names of a multi-option family, in order; [optionName] otherwise. */
+  optionNames?: string[];
   /** Single-variant families; phone cases have one variant per device. */
   single: {key: string; option: string; skuSuffix: string} | null;
+  /**
+   * Families with their own variant list, per orientation of the work
+   * (sizes differ between portrait and landscape hangers).
+   */
+  variantDefs?: {landscape: ArtVariantDef[]; portrait: ArtVariantDef[]};
+  /**
+   * Families printed from finished files made outside the pipeline, by the
+   * file key of their manifest (products/manifest.json `product`). The
+   * pipeline checks and records them; it never renders them.
+   */
+  suppliedFiles?: Record<string, SuppliedFileSpec>;
+  /** Printful placements each variant prints its file on (route 'printful'). */
+  printfulPlacements?: string[];
+  /** The lead file (the first variant's), for summaries and previews. */
   file: FileSpec;
   /**
    * Lowest native ppi accepted for every work (owner decisions of
@@ -123,6 +190,148 @@ export type ArtFamilySpec = {
 
 const DEVICE_COUNT = TOUGH_CASE_PHONES.length;
 const COLOURS = 'Printed to order; screen and print colours can vary slightly.';
+
+/** How a supplied (margin-filled) file was made, for the artwork credit. */
+const SUPPLIED_REPRODUCTION =
+  'Printed from a public-domain museum image. The work itself is unchanged; where the shape needs more room, a plain margin was added around it, or on some prints more of a calm sky or sea, filled in digitally.';
+
+const HANGERS = [
+  {code: 'BLK', color: 'black', label: 'Black'},
+  {code: 'WHT', color: 'white', label: 'White'},
+  {code: 'OAK', color: 'natural', label: 'Oak'},
+] as const;
+
+/**
+ * Prodigi's art print with hanger: A3 and a large size per orientation
+ * (portrait 60 × 90 cm, landscape 76 × 51 cm), each with a black, white or
+ * oak hanger. One price per size.
+ */
+function hangerDefs(orientation: 'landscape' | 'portrait'): ArtVariantDef[] {
+  const sizes =
+    orientation === 'landscape'
+      ? [
+          {
+            file: 'hanger-a3',
+            key: 'a3',
+            label: 'A3 (42 × 29.7 cm)',
+            providerSku: 'POSTER-HANGER-40-A3-LAND',
+            sku: 'A3',
+          },
+          {
+            file: 'hanger-big',
+            key: 'large',
+            label: '76 × 51 cm',
+            providerSku: 'POSTER-HANGER-80-20X30-LAND',
+            sku: 'LG',
+          },
+        ]
+      : [
+          {
+            file: 'hanger-a3',
+            key: 'a3',
+            label: 'A3 (29.7 × 42 cm)',
+            providerSku: 'POSTER-HANGER-30-A3-PORT',
+            sku: 'A3',
+          },
+          {
+            file: 'hanger-big',
+            key: 'large',
+            label: '60 × 90 cm',
+            providerSku: 'POSTER-HANGER-60-24X36-PORT',
+            sku: 'LG',
+          },
+        ];
+  return sizes.flatMap((size) =>
+    HANGERS.map((hanger) => ({
+      file: size.file,
+      key: `${size.key}-${hanger.label.toLowerCase()}`,
+      priceKey: size.key,
+      providerAttributes: {color: hanger.color},
+      providerSku: size.providerSku,
+      skuSuffix: `HANG-${size.sku}-${hanger.code}`,
+      values: [size.label, hanger.label],
+    })),
+  );
+}
+
+const ACRYLIC_DEFS: ArtVariantDef[] = ['8x12', '12x16', '16x24'].map((size) => {
+  const [short, long] = size.split('x');
+  return {
+    file: `acrylic-${size}`,
+    key: size,
+    priceKey: size,
+    providerSku: `GLOBAL-MOU-ACRY-${size.toUpperCase()}`,
+    skuSuffix: `ACRY${size.toUpperCase()}`,
+    values: [`${short} × ${long} in`],
+  };
+});
+
+/** Prodigi MOU-DI-20X30 needs a finish: matt, as the owner chose. */
+const METAL_DEFS: ArtVariantDef[] = [
+  {
+    file: 'metal-8x12',
+    key: '8x12',
+    priceKey: '8x12',
+    providerAttributes: {finish: 'matte'},
+    providerSku: 'MOU-DI-20X30',
+    skuSuffix: 'METAL8X12',
+    values: ['8 × 12 in'],
+  },
+];
+
+/** Printful catalog variant 1320: White Glossy Mug, 11 oz. */
+const PRINTFUL_MUG_DEFS: ArtVariantDef[] = [
+  {
+    file: 'mug-11oz',
+    key: '11oz',
+    priceKey: '11oz',
+    providerSku: '1320',
+    skuSuffix: 'MUG11-PF',
+    values: ['11 oz'],
+  },
+];
+
+/**
+ * Printful Premium Pillow Case (cover, 215) and Premium Pillow (with
+ * insert, 214), 18 and 22 inch; one square file prints both sides.
+ */
+const CUSHION_DEFS: ArtVariantDef[] = [
+  {inch: 18, insert: false, providerSku: '9516'},
+  {inch: 18, insert: true, providerSku: '9515'},
+  {inch: 22, insert: false, providerSku: '11078'},
+  {inch: 22, insert: true, providerSku: '11077'},
+].map(({inch, insert, providerSku}) => ({
+  file: 'cushion-22',
+  key: `${inch}-${insert ? 'insert' : 'cover'}`,
+  priceKey: `${inch}-${insert ? 'insert' : 'cover'}`,
+  providerSku,
+  skuSuffix: `CUSH${inch}-${insert ? 'I' : 'C'}`,
+  values: [`${inch} × ${inch} in`, insert ? 'With insert' : 'Cover only'],
+}));
+
+/** Printful catalog variant 10986: Throw Blanket 50 × 60 in. */
+const BLANKET_DEFS: ArtVariantDef[] = [
+  {
+    file: 'blanket-50x60',
+    key: '50x60',
+    priceKey: '50x60',
+    providerSku: '10986',
+    skuSuffix: 'BLANKET50X60',
+    values: ['50 × 60 in'],
+  },
+];
+
+const both = (defs: ArtVariantDef[]) => ({landscape: defs, portrait: defs});
+const turns = (width: number, height: number, dpi: number) => ({
+  dpi,
+  landscape: {height: width, width: height},
+  portrait: {height, width},
+});
+const fixed = (width: number, height: number, dpi: number) => ({
+  dpi,
+  landscape: {height, width},
+  portrait: {height, width},
+});
 
 export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
   'framed-print': {
@@ -339,7 +548,273 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
     // wording until one does (see ProductShippingText).
     shippingReach: 'selected',
   },
+  // The seven products per artist (2026-10-16): free EU shipping in their
+  // own Shopify profile, which the owner sets up; until the storefront says
+  // so, they keep the conservative shipping wording.
+  'hanger-print': {
+    artistFamily: 'Hanger prints',
+    productType: 'Hanger Prints',
+    titleSuffix: 'Print with Hanger',
+    route: 'channel',
+    shape: null,
+    optionName: 'Size',
+    optionNames: ['Size', 'Hanger'],
+    single: null,
+    variantDefs: {
+      landscape: hangerDefs('landscape'),
+      portrait: hangerDefs('portrait'),
+    },
+    suppliedFiles: {
+      'hanger-a3': turns(3508, 4961, 300),
+      'hanger-big': {
+        dpi: 300,
+        landscape: {height: 6000, width: 9000},
+        portrait: {height: 10630, width: 7087},
+      },
+    },
+    file: {height: 4961, width: 3508, dpi: 300, followsOrientation: true},
+    minPpi: 150,
+    tags: ['Wall Art', 'Hanger Prints'],
+    noun: 'print with a wooden hanger',
+    reproduction: SUPPLIED_REPRODUCTION,
+    bullets: [
+      'Giclée print on 200gsm Enhanced Matte Art paper',
+      'Solid wood hanger in black, white or oak, held on by magnets, with a matching cord',
+      'The wooden strips cover about 1.5 cm at the top and bottom of the print',
+    ],
+    details: [
+      {
+        label: 'Print',
+        text: `Giclée print on 200gsm Enhanced Matte Art paper, natural white. ${COLOURS}`,
+      },
+      {
+        label: 'Hanger',
+        text: 'Solid wood strips in black, white or oak hold the print at the top and bottom with magnets, and a matching cord hangs it. The strips cover about 1.5 cm of the print at each end.',
+      },
+    ],
+    seoSuffix:
+      'As a print with a solid wood hanger, from a public-domain museum image.',
+    shippingReach: 'selected',
+  },
+  'acrylic-print': {
+    artistFamily: 'Acrylic prints',
+    productType: 'Acrylic Prints',
+    titleSuffix: 'Acrylic Print',
+    route: 'channel',
+    shape: null,
+    optionName: 'Size',
+    single: null,
+    variantDefs: both(ACRYLIC_DEFS),
+    suppliedFiles: {
+      'acrylic-8x12': turns(2400, 3600, 300),
+      'acrylic-12x16': turns(3600, 4800, 300),
+      'acrylic-16x24': turns(4800, 7200, 300),
+    },
+    file: {height: 3600, width: 2400, dpi: 300, followsOrientation: true},
+    minPpi: 150,
+    tags: ['Wall Art', 'Acrylic Prints'],
+    noun: 'acrylic print',
+    reproduction: SUPPLIED_REPRODUCTION,
+    bullets: [
+      'Giclée print hand-mounted on 10 mm high-gloss acrylic with polished edges',
+      'A hidden subframe floats it off the wall; ready to hang',
+    ],
+    details: [
+      {
+        label: 'Acrylic',
+        text: `Giclée print hand-mounted on 10 mm high-gloss acrylic with polished, clear edges. A hidden subframe floats it off the wall; ready to hang. ${COLOURS}`,
+      },
+    ],
+    seoSuffix:
+      'On 10 mm high-gloss acrylic, from a public-domain museum image.',
+    shippingReach: 'selected',
+  },
+  'metal-print': {
+    artistFamily: 'Metal prints',
+    productType: 'Metal Prints',
+    titleSuffix: 'Metal Print',
+    route: 'channel',
+    shape: null,
+    optionName: 'Size',
+    single: null,
+    variantDefs: both(METAL_DEFS),
+    suppliedFiles: {'metal-8x12': turns(2400, 3600, 300)},
+    file: {height: 3600, width: 2400, dpi: 300, followsOrientation: true},
+    minPpi: 150,
+    tags: ['Wall Art', 'Metal Prints'],
+    noun: 'metal print',
+    reproduction: SUPPLIED_REPRODUCTION,
+    bullets: [
+      'Matt print on a 3 mm aluminium composite panel (Dibond)',
+      'A hidden subframe holds it 15 mm off the wall; ready to hang',
+    ],
+    details: [
+      {
+        label: 'Metal',
+        text: `Matt giclée print on a 3 mm aluminium composite panel (Dibond), 8 × 12 in (20 × 30 cm). A hidden subframe holds it 15 mm off the wall; ready to hang. ${COLOURS}`,
+      },
+    ],
+    seoSuffix:
+      'On an 8 × 12 in matt metal panel, from a public-domain museum image.',
+    shippingReach: 'selected',
+  },
+  'printful-mug': {
+    artistFamily: 'Mugs',
+    productType: 'Mugs',
+    titleSuffix: 'Mug',
+    handleSuffix: 'mug',
+    route: 'printful',
+    shape: null,
+    optionName: 'Size',
+    single: null,
+    variantDefs: both(PRINTFUL_MUG_DEFS),
+    // Printful's 11 oz print area: 9 × 3.5 in at 300 dpi.
+    suppliedFiles: {'mug-11oz': fixed(2700, 1050, 300)},
+    printfulPlacements: ['default'],
+    file: {height: 1050, width: 2700, dpi: 300, followsOrientation: false},
+    minPpi: 300,
+    tags: ['Mugs'],
+    noun: 'mug',
+    reproduction: SUPPLIED_REPRODUCTION,
+    bullets: [
+      'White glossy ceramic mug, 11 oz',
+      'The whole work printed on the mug; an upright work is printed twice, once on each side',
+      'Dishwasher and microwave safe',
+    ],
+    details: [
+      {
+        label: 'Mug',
+        text: `White glossy ceramic mug, 11 oz (9.6 cm tall, 8.2 cm across). The whole work is printed on it; an upright work is printed twice, once on each side. Dishwasher and microwave safe. ${COLOURS}`,
+      },
+    ],
+    seoSuffix:
+      'On an 11 oz white glossy mug, from a public-domain museum image.',
+    shippingReach: 'selected',
+  },
+  cushion: {
+    artistFamily: 'Cushions',
+    productType: 'Cushions',
+    titleSuffix: 'Cushion',
+    route: 'printful',
+    shape: null,
+    optionName: 'Size',
+    optionNames: ['Size', 'Filling'],
+    single: null,
+    variantDefs: both(CUSHION_DEFS),
+    // 22 in at 150 dpi; Printful scales the same file to 18 in.
+    suppliedFiles: {'cushion-22': fixed(3300, 3300, 150)},
+    // Front and back print the same file.
+    printfulPlacements: ['front', 'back'],
+    file: {height: 3300, width: 3300, dpi: 150, followsOrientation: false},
+    minPpi: 150,
+    tags: ['Cushions'],
+    noun: 'cushion',
+    reproduction: SUPPLIED_REPRODUCTION,
+    bullets: [
+      'Linen-feel 100% polyester cover with a hidden zip, printed on both sides',
+      '18 × 18 or 22 × 22 in, as a cover only or with a polyester insert',
+      'Machine-washable cover; the insert is hand wash only',
+    ],
+    details: [
+      {
+        label: 'Cushion',
+        text: `Linen-feel 100% polyester cover (275 g/m²) with a hidden zip, printed on both sides. Choose the cover only, or the cover with a shape-retaining 100% polyester insert. The cover is machine-washable; the insert is hand wash only. ${COLOURS}`,
+      },
+    ],
+    seoSuffix: 'On a linen-feel cushion, from a public-domain museum image.',
+    shippingReach: 'selected',
+  },
+  blanket: {
+    artistFamily: 'Blankets',
+    productType: 'Blankets',
+    titleSuffix: 'Throw Blanket',
+    route: 'printful',
+    shape: null,
+    optionName: 'Size',
+    single: null,
+    variantDefs: both(BLANKET_DEFS),
+    // 50 × 60 in at 150 dpi, portrait; wide works are turned on their side.
+    suppliedFiles: {'blanket-50x60': fixed(7500, 9000, 150)},
+    printfulPlacements: ['default'],
+    file: {height: 9000, width: 7500, dpi: 150, followsOrientation: false},
+    minPpi: 150,
+    tags: ['Blankets'],
+    noun: 'throw blanket',
+    reproduction: SUPPLIED_REPRODUCTION,
+    bullets: [
+      'Silk-touch 100% polyester throw, 50 × 60 in (127 × 152 cm)',
+      'Printed on one side, white on the back',
+      'Machine-washable',
+    ],
+    details: [
+      {
+        label: 'Blanket',
+        text: `Soft silk-touch 100% polyester throw, 50 × 60 in (127 × 152 cm), printed on one side with a white back. Wide works are printed turned on their side. Machine-washable. ${COLOURS}`,
+      },
+    ],
+    seoSuffix:
+      'On a 50 × 60 in throw blanket, from a public-domain museum image.',
+    shippingReach: 'selected',
+  },
 };
+
+/** A family's option names, in order. */
+export function familyOptionNames(family: ArtProductFamily) {
+  const spec = FAMILY_SPECS[family];
+  return spec.optionNames ?? [spec.optionName];
+}
+
+/**
+ * Every variant a product of the family has, for a work of this
+ * orientation, in catalog order: the single variant, one per phone model,
+ * or the family's own list. `providerSku` is absent where the collection's
+ * entry supplies it (single-variant families) and `priceKey` is absent where
+ * the collection has one price for the family.
+ */
+export function familyVariantDefs(
+  family: ArtProductFamily,
+  orientation: 'landscape' | 'portrait',
+): Array<
+  Omit<ArtVariantDef, 'priceKey' | 'providerSku' | 'file'> &
+    Partial<Pick<ArtVariantDef, 'priceKey' | 'providerSku' | 'file'>>
+> {
+  const spec = FAMILY_SPECS[family];
+  if (spec.variantDefs) return spec.variantDefs[orientation];
+  if (spec.single)
+    return [
+      {
+        key: spec.single.key,
+        skuSuffix: spec.single.skuSuffix,
+        values: [spec.single.option],
+      },
+    ];
+  return TOUGH_CASE_PHONES.map((phone) => ({
+    key: phone.code,
+    providerSku: phone.prodigiSku,
+    skuSuffix: `CASE-${phone.code}`,
+    values: [phone.label],
+  }));
+}
+
+/** The price a variant sells at: its size's price, or the family's one price. */
+export function familyVariantPrice(
+  config: Pick<ArtFamilyConfig, 'priceEUR' | 'prices'> | undefined,
+  def: {priceKey?: string},
+) {
+  return def.priceKey !== undefined
+    ? config?.prices?.[def.priceKey]
+    : config?.priceEUR;
+}
+
+/** The recorded file a variant prints (its own supplied file, or the one file). */
+export function variantFile(
+  product: Pick<ArtFamilyProduct, 'assets'>,
+  variant: Pick<ArtProductVariant, 'file'>,
+): ArtAssetFile | undefined {
+  if (variant.file && product.assets?.files)
+    return product.assets.files[variant.file];
+  return product.assets?.print;
+}
 
 export type WholePanelLayout = {
   /** Printed size of the work in each panel. */
@@ -411,6 +886,9 @@ export type ArtProductMapping = {
   channelProductId?: string;
   /** API families: the deployed print-file path the webhook sends to Prodigi. */
   printUrlPath?: string;
+  /** Printful families: the sync product and variant of the Shopify variant. */
+  printfulSyncProductId?: string;
+  printfulSyncVariantId?: string;
   /** The print file the verified mapping uses. */
   assetSha256?: string;
   verifiedAt?: string;
@@ -418,14 +896,19 @@ export type ArtProductMapping = {
 };
 
 export type ArtProductVariant = {
-  /** "16x20", "card", "postcard", "11oz" or a device code. */
+  /** "16x20", "card", "postcard", "11oz", "a3-black" or a device code. */
   key: string;
-  /** The Shopify option value. */
+  /** The Shopify option value; values joined by " / " for several options. */
   option: string;
   sku: string;
   /** The collection's price; absent while that price is pending. */
   priceEUR?: string;
+  /** Prodigi SKU, or the Printful catalog variant id. */
   providerSku: string;
+  /** Supplier attributes, e.g. the hanger colour. */
+  providerAttributes?: Record<string, string>;
+  /** Supplied families: the file key (assets.files) the variant prints. */
+  file?: string;
   inventory: {policy: 'DENY'; quantity: number; tracked: boolean};
   mapping: ArtProductMapping;
 };
@@ -439,14 +922,41 @@ export type ArtAssetFile = {
   width: number;
 };
 
+/**
+ * A supplied file and what was done to make it, copied from the files' own
+ * logs when `prepare` checks them: the manifest row (supplier SKU, master,
+ * rotation, hanger strip) and the AI-fill log of its master (which side got
+ * plain paper or more scene, the paper colour, and the check that the
+ * museum pixels were pasted back unchanged).
+ */
+export type SuppliedAsset = ArtAssetFile & {
+  dpi: number;
+  /** Native pixels of the museum image per printed inch. */
+  ppi: number;
+  provenance: {
+    /** The master's AI-fill log entry, verbatim (masters/assembly.json). */
+    aiFill: Record<string, unknown> & {block_identical: boolean};
+    /** Manifest row fields, verbatim (products/manifest.json). */
+    aspectTrimPercent: number;
+    hangerStripMm: number;
+    manifestSku: string;
+    master: string;
+    masterSha256: string;
+    rotated90: boolean;
+  };
+};
+
 export type ArtProductAssets = {
   /** The rendered region in master pixels (original less trim); null when whole. */
   box: PixelBox | null;
-  /** Native pixels per printed inch. */
+  /** Native pixels per printed inch (the lowest file's, for supplied families). */
   ppi: number;
   preparedAt: string;
   preview: ArtAssetFile;
+  /** The print file (supplied families: the first variant's). */
   print: ArtAssetFile;
+  /** Supplied families: every file the variants print, by file key. */
+  files?: Record<string, SuppliedAsset>;
   sourceSignature: string;
 };
 
@@ -493,9 +1003,17 @@ export type ArtFamilyConfig = {
    * and the owner's approval: files can be prepared, nothing is staged.
    */
   priceEUR?: string;
-  /** Prodigi SKU; phone cases take one per device from the case manifest. */
+  /**
+   * Families with several sizes: the owner-approved price per `priceKey`
+   * (absent while pending, like `priceEUR`).
+   */
+  prices?: Record<string, string>;
+  /**
+   * Prodigi SKU; phone cases take one per device from the case manifest,
+   * and families with their own variant list name their SKU pattern here.
+   */
   providerSku: string;
-  /** Prodigi dashboard settings for channel-mapped families (handoff). */
+  /** Supplier settings for the mapping (handoff). */
   providerSettings?: string;
   /** Owner exceptions to the family's ppi floor, by artwork id. */
   ppiExceptions?: Record<string, PpiException>;
@@ -507,7 +1025,32 @@ export type ArtProductCollection = {
   families: Partial<Record<ArtProductFamily, ArtFamilyConfig>>;
   /** The print-catalog collection slug. */
   slug: string;
+  /**
+   * Where the supplied families' finished files live, relative to the
+   * machine's launch folder (it holds products/manifest.json and
+   * masters/assembly.json).
+   */
+  suppliedFiles?: string;
+  /**
+   * Square works only (within 2%): which way their supplied files are laid
+   * out, by artwork id. A square work reads either way, so its files decide
+   * the sizes and supplier SKUs; any other work follows its own orientation.
+   */
+  suppliedLayout?: Record<string, 'landscape' | 'portrait'>;
 };
+
+/**
+ * The orientation a product's variants follow: the work's own, except for
+ * a square work whose supplied files are laid out the other way.
+ */
+export function familyLayout(
+  product: Pick<ArtFamilyProduct, 'artworkId' | 'family' | 'orientation'>,
+  collection?: Pick<ArtProductCollection, 'suppliedLayout'>,
+): 'landscape' | 'portrait' {
+  const own = product.orientation === 'landscape' ? 'landscape' : 'portrait';
+  if (!FAMILY_SPECS[product.family]?.suppliedFiles) return own;
+  return collection?.suppliedLayout?.[product.artworkId] ?? own;
+}
 
 export type ArtProductCatalog = {
   $comment?: string;
@@ -526,7 +1069,7 @@ export function familyHandle(
   print: Pick<PrintCatalogPrint, 'slug'>,
   family: ArtProductFamily,
 ) {
-  return `${print.slug}-${family}`;
+  return `${print.slug}-${FAMILY_SPECS[family].handleSuffix ?? family}`;
 }
 
 export function familyTitle(
@@ -536,18 +1079,30 @@ export function familyTitle(
   return `${print.title} ${FAMILY_SPECS[family].titleSuffix}`;
 }
 
-/** CM-<collection>-<sequence>-<suffix>, the print SKU scheme. */
+/**
+ * CM-<collection>-<sequence>-<suffix>, the print SKU scheme. `variantKey`
+ * is the device code of a case or the key of a family's own variant.
+ */
 export function familySku(
   collection: Pick<PrintCatalogCollection, 'skuCode'>,
   print: Pick<PrintCatalogPrint, 'sequence'>,
   family: ArtProductFamily,
-  deviceCode?: string,
+  variantKey?: string,
 ) {
   const base = `CM-${collection.skuCode}-${String(print.sequence).padStart(2, '0')}`;
-  const single = FAMILY_SPECS[family].single;
-  if (single) return `${base}-${single.skuSuffix}`;
-  if (!deviceCode) throw new Error(`${family} SKUs need a device code`);
-  return `${base}-CASE-${deviceCode}`;
+  const spec = FAMILY_SPECS[family];
+  if (spec.single) return `${base}-${spec.single.skuSuffix}`;
+  if (!variantKey)
+    throw new Error(
+      `${family} SKUs need a ${spec.variantDefs ? 'variant key' : 'device code'}`,
+    );
+  if (!spec.variantDefs) return `${base}-CASE-${variantKey}`;
+  const def = [
+    ...spec.variantDefs.portrait,
+    ...spec.variantDefs.landscape,
+  ].find((entry) => entry.key === variantKey);
+  if (!def) throw new Error(`${family} has no variant "${variantKey}"`);
+  return `${base}-${def.skuSuffix}`;
 }
 
 /** Where the orders/paid webhook tells Prodigi to fetch a case file. */
@@ -636,6 +1191,20 @@ export function familySourceSignature(
   if (!artwork?.original) return '';
   const trim = artwork.trim;
   const spec = FAMILY_SPECS[product.family];
+  if (spec.suppliedFiles)
+    // The finished files were cut from this original, trim and printed
+    // area; if any of them changes, the files are stale. The files' own
+    // checksums are checked against the disk by every step.
+    return JSON.stringify({
+      renderer: ART_ASSET_RENDERER,
+      family: product.family,
+      supplied: Object.keys(spec.suppliedFiles),
+      source: artwork.original.sha256,
+      trim: trim
+        ? [trim.left, trim.top, trim.right, trim.bottom]
+        : [0, 0, 0, 0],
+      area: crops.crops[product.artworkId]?.area ?? null,
+    });
   const crop = familyCrop(product.family, product.artworkId, {
     crops,
     registry,
@@ -720,8 +1289,20 @@ export function familyReleaseIssues(
     issues.push('a cleared rights review');
   if (artwork?.reviews.master.status !== 'cleared')
     issues.push('a cleared master review');
-  if (spec?.shape && !cropsApproved(product.artworkId, crops))
+  // Supplied files are cut to the approved printed area too.
+  if (
+    (spec?.shape || spec?.suppliedFiles) &&
+    !cropsApproved(product.artworkId, crops)
+  )
     issues.push('crop approval');
+  if (
+    spec?.suppliedFiles &&
+    product.variants.some((variant) => {
+      const file = variantFile(product, variant) as SuppliedAsset | undefined;
+      return !file?.provenance?.aiFill?.block_identical;
+    })
+  )
+    issues.push('every file checked unchanged where the museum image sits');
   if (
     !product.assets ||
     product.assets.sourceSignature !==
@@ -742,18 +1323,32 @@ export function familyReleaseIssues(
   )
     issues.push('Shopify ids');
   if (
-    product.variants.some(
-      (variant) =>
-        !variant.mapping.verified ||
-        !product.assets ||
-        variant.mapping.assetSha256 !== product.assets.print.sha256 ||
-        (spec?.route === 'channel'
-          ? !variant.mapping.channelProductId
-          : variant.mapping.printUrlPath !== casePrintUrlPath(product)),
-    )
+    product.variants.some((variant) => !variantMappingCurrent(product, variant))
   )
     issues.push('a verified fulfilment mapping of the current file');
   return issues;
+}
+
+/**
+ * Whether a variant's fulfilment mapping is verified on the file it prints
+ * now: a Prodigi channel product, the deployed case file, or a Printful sync
+ * variant.
+ */
+export function variantMappingCurrent(
+  product: ArtFamilyProduct,
+  variant: ArtProductVariant,
+) {
+  const {mapping} = variant;
+  const file = variantFile(product, variant);
+  if (!mapping.verified || !file || mapping.assetSha256 !== file.sha256)
+    return false;
+  const route = FAMILY_SPECS[product.family]?.route;
+  if (route === 'channel') return Boolean(mapping.channelProductId);
+  if (route === 'printful')
+    return Boolean(
+      mapping.printfulSyncProductId && mapping.printfulSyncVariantId,
+    );
+  return mapping.printUrlPath === casePrintUrlPath(product);
 }
 
 export function releasedArtProductHandles(
@@ -826,11 +1421,14 @@ export function artProductPage(
   const product = artProductByHandle(handle, catalog);
   if (!product?.released) return null;
   const spec = FAMILY_SPECS[product.family];
+  // A family with one variant and no picker shows its size by the price.
+  const only = product.variants.length === 1 ? product.variants[0] : null;
   return {
     details: spec.details,
     family: product.family,
     shippingReach: spec.shippingReach,
-    size: spec.single?.option ?? null,
+    size:
+      spec.single?.option ?? (spec.variantDefs ? (only?.option ?? null) : null),
   };
 }
 
@@ -921,6 +1519,32 @@ export function validateArtProductCatalog(
       // Absent while the price waits for a quote and the owner's approval.
       if (config?.priceEUR !== undefined && !PRICE.test(config.priceEUR))
         problems.push(`${at}: ${family} priceEUR must look like "29.99"`);
+      const defs = FAMILY_SPECS[family as ArtProductFamily]?.variantDefs;
+      if (defs) {
+        const keys = new Set(
+          [...defs.portrait, ...defs.landscape].map((def) => def.priceKey),
+        );
+        if (config?.priceEUR !== undefined)
+          problems.push(
+            `${at}: ${family} sells at a price per size: use prices {${[...keys].join(', ')}}, not priceEUR`,
+          );
+        for (const [key, price] of Object.entries(config?.prices ?? {})) {
+          if (!keys.has(key))
+            problems.push(`${at}: ${family} has no size "${key}" to price`);
+          if (!PRICE.test(price))
+            problems.push(
+              `${at}: ${family} price ${key} must look like "29.99"`,
+            );
+        }
+      } else if (config?.prices)
+        problems.push(`${at}: ${family} has one price: use priceEUR`);
+      if (
+        FAMILY_SPECS[family as ArtProductFamily]?.suppliedFiles &&
+        !entry.suppliedFiles?.trim()
+      )
+        problems.push(
+          `${at}: ${family} prints supplied files: set suppliedFiles to their folder`,
+        );
       if (!config?.providerSku?.trim())
         problems.push(`${at}: ${family} missing providerSku`);
       for (const [artworkId, exception] of Object.entries(
@@ -948,6 +1572,31 @@ export function validateArtProductCatalog(
       if (contract && config?.providerSku !== contract)
         problems.push(
           `${at}: ${family} providerSku must be ${contract}, the product its file is drawn for`,
+        );
+    }
+    for (const [artworkId, layout] of Object.entries(
+      entry.suppliedLayout ?? {},
+    )) {
+      const artwork = source?.prints.some(
+        (print) => print.artworkId === artworkId,
+      )
+        ? findArtwork(artworkId, registry)
+        : undefined;
+      const size = artwork && masterSize(artwork);
+      if (!size)
+        problems.push(
+          `${at}: suppliedLayout ${artworkId} is not a fetched artwork of this collection`,
+        );
+      else if (
+        Math.max(size.width, size.height) >
+        Math.min(size.width, size.height) * 1.02
+      )
+        problems.push(
+          `${at}: suppliedLayout is for square works; ${artworkId} is ${orientationOf(size)}`,
+        );
+      if (layout !== 'landscape' && layout !== 'portrait')
+        problems.push(
+          `${at}: suppliedLayout ${artworkId} must be landscape or portrait`,
         );
     }
   }
@@ -1025,36 +1674,37 @@ export function validateArtProductCatalog(
     else if (master && orientationOf(master) !== product.orientation)
       problems.push(`${at}: orientation must be ${orientationOf(master)}`);
 
-    const expected = spec.single
-      ? [
-          {
-            key: spec.single.key,
-            option: spec.single.option,
-            providerSku: config?.providerSku,
-          },
-        ]
-      : TOUGH_CASE_PHONES.map((phone) => ({
-          key: phone.code,
-          option: phone.label,
-          providerSku: phone.prodigiSku,
-        }));
+    const expected = familyVariantDefs(
+      product.family,
+      familyLayout(product, collections.get(product.collection)),
+    ).map((def) => ({
+      file: def.file,
+      key: def.key,
+      option: def.values.join(' / '),
+      priceEUR: familyVariantPrice(config, def),
+      providerAttributes: def.providerAttributes,
+      providerSku: def.providerSku ?? config?.providerSku,
+    }));
     const variants = product.variants ?? [];
     if (
       variants.length !== expected.length ||
       variants.some((variant, index) => variant.key !== expected[index].key)
     )
       problems.push(
-        `${at}: variants must be ${expected.length === 1 ? expected[0].key : `the ${expected.length} case devices in manifest order`}`,
+        `${at}: variants must be ${spec.single ? expected[0].key : spec.variantDefs ? expected.map((want) => want.key).join(', ') : `the ${expected.length} case devices in manifest order`}`,
       );
     for (const [index, variant] of variants.entries()) {
       const want = expected[index];
       const where = `${at} ${variant.key}`;
-      const sku = familySku(
-        collection,
-        print,
-        product.family,
-        spec.single ? undefined : variant.key,
-      );
+      const sku = spec.single
+        ? familySku(collection, print, product.family)
+        : (() => {
+            try {
+              return familySku(collection, print, product.family, variant.key);
+            } catch {
+              return '(no such variant)';
+            }
+          })();
       if (variant.sku !== sku) problems.push(`${where}: SKU must be ${sku}`);
       if (skus.has(variant.sku) || printSkus.has(variant.sku))
         problems.push(`${where}: duplicate SKU ${variant.sku}`);
@@ -1064,12 +1714,31 @@ export function validateArtProductCatalog(
       if (want && variant.providerSku !== want.providerSku)
         problems.push(`${where}: provider SKU must be ${want.providerSku}`);
       if (
-        variant.priceEUR !== config?.priceEUR ||
+        want &&
+        JSON.stringify(variant.providerAttributes ?? null) !==
+          JSON.stringify(want.providerAttributes ?? null)
+      )
+        problems.push(
+          `${where}: provider attributes must be ${JSON.stringify(want.providerAttributes ?? null)}`,
+        );
+      if (want && (variant.file ?? undefined) !== want.file)
+        problems.push(`${where}: file must be ${want.file ?? '(none)'}`);
+      if (
+        (want && variant.priceEUR !== want.priceEUR) ||
         (variant.priceEUR !== undefined && !PRICE.test(variant.priceEUR))
       )
         problems.push(
-          `${where}: price must be the collection's ${config?.priceEUR ?? '(pending, none)'}`,
+          `${where}: price must be the collection's ${want?.priceEUR ?? '(pending, none)'}`,
         );
+      if (spec.suppliedFiles && product.assets) {
+        const file = variant.file && product.assets.files?.[variant.file];
+        if (!file)
+          problems.push(`${where}: no recorded ${variant.file ?? ''} file`);
+        else if (file.provenance?.aiFill?.block_identical !== true)
+          problems.push(
+            `${where}: ${variant.file} has no check that the museum image is unchanged`,
+          );
+      }
       const inventory = variant.inventory;
       if (
         inventory?.policy !== 'DENY' ||
@@ -1086,7 +1755,7 @@ export function validateArtProductCatalog(
     }
     if (
       config &&
-      config.priceEUR === undefined &&
+      expected.some((want) => want.priceEUR === undefined) &&
       (product.shopify?.productId || product.released)
     )
       problems.push(
