@@ -1048,6 +1048,68 @@ export function printfulMappingFromReadback(
   return {mappings: problems.length ? null : mappings, problems};
 }
 
+/**
+ * What `printful` would do for one product of a Printful family, given the
+ * store's sync product as Printful reads it (`GET /store/products/@<Shopify
+ * product id>`, null when the Printful app has not imported it) and the
+ * Printful file-library id of each supplied file (`fileIds`, keyed by the
+ * variant's `file`). A variant is kept when it is already synced to its
+ * catalogue variant with that file on every placement; otherwise it is
+ * synced with `body`.
+ */
+export function printfulSyncPlan(product, readback, fileIds = new Map()) {
+  const placements = FAMILY_SPECS[product.family].printfulPlacements ?? [
+    'default',
+  ];
+  const problems = [];
+  if (!readback?.sync_product)
+    problems.push(
+      `${product.handle}: not in Printful yet (the Printful app has not imported Shopify product ${numericId(product.shopify?.productId)})`,
+    );
+  const rows = product.variants.map((variant) => {
+    const externalId = numericId(product.shopify?.variantIds?.[variant.key]);
+    const sync = (readback?.sync_variants ?? []).find(
+      (entry) => String(entry.external_id) === externalId,
+    );
+    if (readback?.sync_product && !sync)
+      problems.push(
+        `${product.handle} ${variant.key}: Shopify variant ${externalId} is not in Printful`,
+      );
+    const fileId = fileIds.get(variant.file);
+    const current =
+      sync?.synced === true &&
+      String(sync.variant_id) === variant.providerSku &&
+      fileId !== undefined &&
+      placements.every((placement) =>
+        (sync.files ?? []).some(
+          (file) =>
+            (file.type === placement ||
+              (placement === 'front' && file.type === 'default')) &&
+            String(file.id) === String(fileId),
+        ),
+      );
+    return {
+      action: current ? 'keep' : 'sync',
+      body: {
+        files: placements.map((type) => ({id: fileId, type})),
+        variant_id: Number(variant.providerSku),
+      },
+      externalId,
+      file: variant.file,
+      handle: product.handle,
+      key: variant.key,
+      was: sync
+        ? {
+            files: (sync.files ?? []).map((file) => file.type),
+            synced: sync.synced,
+            variantId: sync.variant_id,
+          }
+        : null,
+    };
+  });
+  return {problems, rows};
+}
+
 /** Marks a product's mappings unverified because its print file changed. */
 export function unverifyFamilyMappings(product, reason) {
   let changed = false;

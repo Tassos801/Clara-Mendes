@@ -13,6 +13,8 @@
  *   npm run product -- handoff  <collection> --families
  *   npm run product -- mapped   <collection> --family <f> <print>=<prodigi id> …
  *   npm run product -- mapped   <collection> --family phone-case <print> …
+ *   npm run product -- printful <collection> --family <printful family> [--apply] [--files <json>]
+ *   npm run product -- mapped   <collection> --family <printful family> --printful <readback.json>
  *   npm run product -- release  <collection> --family <f> [--only a,b] [--apply]
  *   npm run product -- verify   <collection> --families [--origin https://…]
  *
@@ -70,6 +72,7 @@ import {
   FRAMED_PRINT_SIZE,
   parseFamilyMappings,
   printfulMappingFromReadback,
+  printfulSyncPlan,
   recordFamilyIds,
   selectFamilyProducts,
   suppliedAssetPlan,
@@ -1184,6 +1187,273 @@ export function createFamilySteps({
     saveArtCatalog();
   }
 
+  // ------------------------------------------------------------- printful --
+
+  /**
+   * Printful families go through the store's Printful app: Printful lists
+   * each Shopify product as a sync product, and this attaches every Shopify
+   * variant to its Printful catalogue variant and print file. Without
+   * `--apply` it only reads Printful and prints the plan. With it, each
+   * supplied file goes once into the Printful file library from a temporary
+   * Shopify staged-upload URL (Printful's md5 must match the local file;
+   * ids are kept in <launch>/museum/printful-files.json), the variants are
+   * synced, and the read-back is written to
+   * `printful-readback-<family>-<stamp>.json` for `mapped --printful`.
+   * A file over the 20 MB staged-upload limit must be added to the Printful
+   * file library by hand and passed as `--files <json>`
+   * ({"<file name>": <Printful file id>}).
+   */
+  async function printful() {
+    assert.equal(
+      families.length,
+      1,
+      'printful syncs one family at a time: pass --family <family>',
+    );
+    const [family] = families;
+    assert.equal(
+      FAMILY_SPECS[family].route,
+      'printful',
+      `${family} is not a Printful family`,
+    );
+    const products = selected().filter((product) => product.family === family);
+    assert.ok(products.length, `no ${family} products selected`);
+    for (const product of products) {
+      assert.ok(
+        product.shopify?.productId,
+        `${product.handle}: not staged in Shopify`,
+      );
+      assert.ok(
+        familyStatus(product).current && assetsOnDisk(product),
+        `${product.handle}: assets are stale — prepare first`,
+      );
+    }
+    const api = helpers.printfulApi();
+    const storeId = await printfulStoreId(api);
+    const cachePath = path.join(launchRoot, 'museum', 'printful-files.json');
+    const cache = existsSync(cachePath)
+      ? JSON.parse(readFileSync(cachePath, 'utf8'))
+      : {};
+    const fileIdsOf = (product) =>
+      new Map(
+        Object.entries(product.assets.files).map(([key, file]) => [
+          key,
+          cache[file.sha256]?.id,
+        ]),
+      );
+    const readProduct = async (product) => {
+      const shopifyId = product.shopify.productId.split('/').pop();
+      const response = await api('GET', `/store/products/@${shopifyId}`, {
+        storeId,
+      });
+      if (response.status === 404) return null;
+      assert.ok(
+        response.ok,
+        `${product.handle}: Printful read failed (HTTP ${response.status}): ${response.error}`,
+      );
+      return response.result;
+    };
+
+    const readbacks = new Map();
+    for (const product of products)
+      readbacks.set(product.handle, await readProduct(product));
+    const plan = (product) =>
+      printfulSyncPlan(
+        product,
+        readbacks.get(product.handle),
+        fileIdsOf(product),
+      );
+    const missingProducts = products.flatMap(
+      (product) => plan(product).problems,
+    );
+    const table = () =>
+      products.flatMap((product) =>
+        plan(product).rows.map((row) => ({
+          action: row.action,
+          file: row.body.files[0].id ?? 'to add',
+          handle: row.handle,
+          variant: row.key,
+          was: row.was
+            ? `${row.was.synced ? 'synced' : 'not synced'} ${row.was.variantId ?? '-'} [${row.was.files.join(',')}]`
+            : 'not in Printful',
+        })),
+      );
+    if (!apply) {
+      console.table(table());
+      if (missingProducts.length)
+        console.log(`\nNot ready:\n- ${missingProducts.join('\n- ')}`);
+      console.log(
+        `\nDry run (store ${storeId}). Re-run with --apply to add the files and sync the variants.`,
+      );
+      return;
+    }
+    assert.equal(
+      missingProducts.length,
+      0,
+      `Printful does not list every product yet; nothing synced:\n- ${missingProducts.join('\n- ')}`,
+    );
+
+    // Files: each supplied file once into the Printful file library.
+    const byHand = option('files')
+      ? JSON.parse(readFileSync(option('files'), 'utf8'))
+      : {};
+    const admin = await helpers.adminClient();
+    for (const product of products)
+      for (const recorded of Object.values(product.assets.files)) {
+        const name = path.basename(recorded.path);
+        const buffer = readFileSync(absolute(recorded.path));
+        const md5 = createHash('md5').update(buffer).digest('hex');
+        if (cache[recorded.sha256]?.md5 === md5) continue;
+        let id = byHand[name];
+        if (id === undefined) {
+          assert.ok(
+            buffer.length <= 20 * 1024 * 1024,
+            `${name} is ${(buffer.length / 1e6).toFixed(1)} MB, over the 20 MB staged-upload limit: add it to the Printful file library by hand and pass its id with --files`,
+          );
+          const url = await publicFileUrl(admin, buffer, name);
+          const added = await api('POST', '/files', {
+            body: {filename: name, url},
+            storeId,
+          });
+          assert.ok(
+            added.ok,
+            `${name}: Printful file upload failed (HTTP ${added.status}): ${added.error}`,
+          );
+          id = added.result.id;
+        }
+        const file = await printfulFileReady(api, storeId, id);
+        assert.equal(
+          file.hash,
+          md5,
+          `${name}: Printful file ${id} is not this file (md5 differs)`,
+        );
+        cache[recorded.sha256] = {
+          addedAt: new Date().toISOString(),
+          filename: name,
+          height: file.height,
+          id,
+          md5,
+          width: file.width,
+        };
+        helpers.writeJson(cachePath, cache);
+        console.log(`${name} → Printful file ${id}`);
+      }
+
+    // Variants.
+    for (const product of products)
+      for (const row of plan(product).rows) {
+        if (row.action === 'keep') continue;
+        const response = await api(
+          'PUT',
+          `/store/variants/@${row.externalId}`,
+          {body: row.body, storeId},
+        );
+        assert.ok(
+          response.ok,
+          `${row.handle} ${row.key}: Printful sync failed (HTTP ${response.status}): ${response.error}`,
+        );
+        console.log(
+          `${row.handle} ${row.key} → Printful variant ${row.body.variant_id}`,
+        );
+        await helpers.delay(600);
+      }
+
+    const readback = [];
+    for (const product of products) readback.push(await readProduct(product));
+    const file = writeJson(
+      `printful-readback-${family}-${helpers.stamp()}.json`,
+      readback,
+    );
+    console.log(
+      `\nRead-back written to ${file}\nRecord it: npm run product -- mapped ${collection.slug} --family ${family} --printful "${file}"`,
+    );
+  }
+
+  /** The Printful store that is this Shopify store's Printful app. */
+  async function printfulStoreId(api) {
+    const stores = await api('GET', '/stores');
+    if (stores.ok) {
+      const shopify = (stores.result ?? []).filter(
+        (store) => store.type === 'shopify',
+      );
+      assert.equal(
+        shopify.length,
+        1,
+        `expected one Shopify store in Printful, found: ${(stores.result ?? []).map((store) => `${store.name} (${store.type})`).join(', ') || 'none'}`,
+      );
+      return shopify[0].id;
+    }
+    // A store-level token reads only its own store.
+    const store = await api('GET', '/store');
+    assert.ok(
+      store.ok,
+      `Printful store read failed (HTTP ${store.status}): ${store.error}`,
+    );
+    assert.equal(
+      store.result?.type,
+      'shopify',
+      `the Printful token's store is ${store.result?.type}, not the Shopify app store`,
+    );
+    return store.result.id;
+  }
+
+  /** Waits until Printful has fetched and processed a library file. */
+  async function printfulFileReady(api, storeId, id) {
+    for (let attempt = 0; attempt < 40; attempt += 1) {
+      const response = await api('GET', `/files/${id}`, {storeId});
+      assert.ok(
+        response.ok,
+        `Printful file ${id} read failed (HTTP ${response.status}): ${response.error}`,
+      );
+      if (response.result.status === 'ok') return response.result;
+      assert.notEqual(
+        response.result.status,
+        'failed',
+        `Printful could not process file ${id}`,
+      );
+      await helpers.delay(3000);
+    }
+    throw new Error(`Printful file ${id} is still processing after 2 minutes`);
+  }
+
+  /**
+   * A temporary public URL for a local file (Shopify staged upload, 20 MB at
+   * most), read back and checked by sha256 before Printful fetches it.
+   */
+  async function publicFileUrl(admin, buffer, filename) {
+    const staged = await admin(
+      `mutation StageUpload($input: [StagedUploadInput!]!) {
+        stagedUploadsCreate(input: $input) { stagedTargets { url resourceUrl parameters { name value } } userErrors { field message } }
+      }`,
+      {
+        input: [
+          {
+            fileSize: String(buffer.length),
+            filename,
+            httpMethod: 'POST',
+            mimeType: 'image/jpeg',
+            resource: 'IMAGE',
+          },
+        ],
+      },
+    );
+    mutationErrors(staged.data.stagedUploadsCreate, `Stage upload ${filename}`);
+    const [target] = staged.data.stagedUploadsCreate.stagedTargets;
+    const form = new FormData();
+    for (const parameter of target.parameters)
+      form.append(parameter.name, parameter.value);
+    form.append('file', new Blob([buffer], {type: 'image/jpeg'}), filename);
+    const uploaded = await fetch(target.url, {body: form, method: 'POST'});
+    assert.ok(uploaded.ok, `${filename}: upload HTTP ${uploaded.status}`);
+    await uploaded.body?.cancel();
+    const back = await fetch(target.resourceUrl);
+    const got = Buffer.from(await back.arrayBuffer());
+    assert.ok(
+      back.ok && hashBuffer(got) === hashBuffer(buffer),
+      `${filename}: the public copy does not read back (HTTP ${back.status})`,
+    );
+    return target.resourceUrl;
+  }
+
   // -------------------------------------------------------------- release --
 
   async function release() {
@@ -1536,6 +1806,7 @@ export function createFamilySteps({
   return {
     handoff: checked(handoff),
     mapped: checked(mapped),
+    printful: checked(printful),
     prepare,
     release: checked(release),
     stage: checked(stage),

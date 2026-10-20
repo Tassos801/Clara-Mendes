@@ -14,6 +14,7 @@ import {
   familyStatus,
   parseFamilyMappings,
   printfulMappingFromReadback,
+  printfulSyncPlan,
   suppliedAssetPlan,
 } from './lib/art-product-pipeline.mjs';
 
@@ -662,6 +663,59 @@ test('the Printful readback must name each Shopify variant, its Printful variant
   assert.throws(
     () => parseFamilyMappings(FW, 'cushion', [WAVE.slug]),
     /Printful sync product id must be digits/,
+  );
+});
+
+test('the Printful sync plan attaches each variant to its catalogue variant and file', () => {
+  const {product} = staged('cushion');
+  // Not imported by the Printful app yet: nothing can be synced.
+  const missing = printfulSyncPlan(product, null);
+  assert.match(missing.problems[0], /not in Printful yet/);
+  assert.ok(missing.rows.every((row) => row.action === 'sync'));
+
+  const fileIds = new Map([['cushion-22', 321]]);
+  const unsynced = {
+    sync_product: {external_id: '900', id: 77},
+    sync_variants: product.variants.map((variant, index) => ({
+      external_id: product.shopify.variantIds[variant.key].split('/').pop(),
+      files: [],
+      id: 5000 + index,
+      synced: false,
+      variant_id: null,
+    })),
+  };
+  const first = printfulSyncPlan(product, unsynced, fileIds);
+  assert.deepEqual(first.problems, []);
+  assert.deepEqual(
+    first.rows.map((row) => [row.key, row.action, row.body.variant_id]),
+    [
+      ['18-cover', 'sync', 9516],
+      ['18-insert', 'sync', 9515],
+      ['22-cover', 'sync', 11078],
+      ['22-insert', 'sync', 11077],
+    ],
+  );
+  // Cushions print the same file on both sides.
+  assert.deepEqual(first.rows[0].body.files, [
+    {id: 321, type: 'front'},
+    {id: 321, type: 'back'},
+  ]);
+
+  // Synced to the right variant and file on both sides: kept; Printful may
+  // call the front "default".
+  const synced = structuredClone(unsynced);
+  for (const [index, entry] of synced.sync_variants.entries()) {
+    entry.synced = true;
+    entry.variant_id = first.rows[index].body.variant_id;
+    entry.files = [
+      {id: 321, type: 'default'},
+      {id: 321, type: 'back'},
+    ];
+  }
+  synced.sync_variants[3].files[1].id = 999;
+  assert.deepEqual(
+    printfulSyncPlan(product, synced, fileIds).rows.map((row) => row.action),
+    ['keep', 'keep', 'keep', 'sync'],
   );
 });
 

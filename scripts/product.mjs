@@ -95,7 +95,7 @@ const option = (name) => {
   return index >= 0 ? rest[index + 1] : undefined;
 };
 const optionValues = new Set(
-  ['only', 'size', 'origin', 'family', 'printful']
+  ['only', 'size', 'origin', 'family', 'printful', 'files']
     .map((name) => option(name))
     .filter(Boolean),
 );
@@ -109,6 +109,7 @@ const FAMILY_STEPS = [
   'handoff',
   'mapped',
   'prepare',
+  'printful',
   'release',
   'stage',
   'status',
@@ -121,6 +122,9 @@ const steps = {
   mapped,
   media,
   prepare,
+  printful: () => {
+    throw new Error('printful syncs a Printful family: pass --family <f>');
+  },
   release,
   rooms,
   stage,
@@ -1245,6 +1249,7 @@ async function runFamilyStep() {
       delay,
       htmlText,
       page,
+      printfulApi,
       publish,
       sitemapProductUrls,
       stamp,
@@ -1389,6 +1394,49 @@ function adminClient() {
   return resolveAdminClient(mergedEnv(['.env', '.env.shopify-admin.local']), {
     requiredScope: 'write_products',
   });
+}
+
+/**
+ * The Printful API with the owner's private token (PRINTFUL_API_TOKEN in
+ * .env.printful.local). Returns {ok, status, result, error}; the token never
+ * appears in an error.
+ */
+function printfulApi() {
+  const token = String(
+    mergedEnv(['.env', '.env.printful.local']).PRINTFUL_API_TOKEN || '',
+  ).trim();
+  if (!token)
+    throw new Error(
+      'PRINTFUL_API_TOKEN is not set: the owner saves it in .env.printful.local',
+    );
+  return async (method, pathname, {body, storeId} = {}) => {
+    const response = await fetch(`https://api.printful.com${pathname}`, {
+      body: body === undefined ? undefined : JSON.stringify(body),
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        ...(storeId ? {'X-PF-Store-Id': String(storeId)} : {}),
+      },
+      method,
+    });
+    const raw = await response.text();
+    let json = null;
+    try {
+      json = JSON.parse(raw);
+    } catch {
+      json = null;
+    }
+    return {
+      error: response.ok
+        ? null
+        : String(
+            json?.error?.message ?? json?.result ?? raw.replace(/\s+/g, ' '),
+          ).slice(0, 300),
+      ok: response.ok,
+      result: json?.result,
+      status: response.status,
+    };
+  };
 }
 
 async function printMediaProducts(admin, ids) {
