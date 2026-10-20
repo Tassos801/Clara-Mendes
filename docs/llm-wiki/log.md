@@ -1980,3 +1980,12 @@ hanger and the Two Poplars and Chrysanthemum blankets (large files not with
 their suppliers yet). The shop's type tabs and the artist shops now list Hanger
 Prints, Acrylic Prints and Metal Prints after Canvas, and Mugs, Cushions and
 Blankets after Phone Cases; Kandinsky and Mondrian get artist pages.
+
+## [2026-10-20] perf | Slim art-product catalog in the browser
+
+The client chunk carrying `data/art-product-catalog.json` was 966,794 bytes
+(102,192 gzip) and loaded on every page through the root route; most of it
+was pipeline records the browser never reads. The client build now gets a
+slim copy (see [Catalog and products](modules/catalog-and-products.md)): the
+chunk is 225,565 bytes (30,838 gzip), and the build no longer warns about it.
+Server output is unchanged.
