@@ -5966,7 +5966,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"0f45829825b39d006dbd5b76ce23c32540d521cfc229a77dc026fdb8c3166b7b","printfulSyncProductId":"482178366","printfulSyncVariantId":"5577603323","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6015,7 +6015,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-02-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-02-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9315142d4cd9eb157ae238f9fceb979c37dd329fd9a64d14ed749db4f5a39950","printfulSyncProductId":"482178372","printfulSyncVariantId":"5577603364","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6064,7 +6064,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"52e0bba5c35425ef94e75961a3d1ddf4cef9e9312e397d71a5f7daf867270ef9","printfulSyncProductId":"482178375","printfulSyncVariantId":"5577603367","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6113,7 +6113,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-04-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-04-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"653dbec6d274627e6347c138776ba9a5124caec21c0f06ec80bfb1e60f7b3140","printfulSyncProductId":"482178379","printfulSyncVariantId":"5577603371","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6162,7 +6162,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-05-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-05-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86b729594c7fc66df94db53733f1f3eafbf3819856e7826f2f5ef1038a4eec43","printfulSyncProductId":"482178385","printfulSyncVariantId":"5577603377","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6211,7 +6211,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-06-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-06-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9ec783cf217cc78d5b17b6d1bb621ee52f2518ec4d2e9b145cdcd08cc6ea3e13","printfulSyncProductId":"482178405","printfulSyncVariantId":"5577603487","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6260,7 +6260,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-07-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-07-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b15bb42a1b6af1ef701e460f8e2c367d9af80aa91a76908b2e0c6f35219dd564","printfulSyncProductId":"482178436","printfulSyncVariantId":"5577603558","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6309,7 +6309,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-08-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-08-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"593793709e0476a2fa3d788bdf929b55e02aa4ac45f9eff8bd46c127a6b5f3a0","printfulSyncProductId":"482178439","printfulSyncVariantId":"5577603561","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6358,7 +6358,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-09-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-09-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ac245f04b1e2e5afd313c4849c013bf589d8c582f3e447dc30be94338a68fba9","printfulSyncProductId":"482178461","printfulSyncVariantId":"5577603583","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -6407,7 +6407,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-10-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-FW-10-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"5f2dfae549839fee66377089b96365e5b746b13698101880c5157b9cbfe9b708","printfulSyncProductId":"482178467","printfulSyncVariantId":"5577603594","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10319,7 +10319,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"807a755c6a3bff060d42170aaf418d66c6b06581b5e5b26cdb27f324751a6074","printfulSyncProductId":"482179431","printfulSyncVariantId":"5577605572","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10417,7 +10417,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"86f716bb3c98fe96e7262fabf4d6ade61cf15dff8e6e949b50be18568e3edbc7","printfulSyncProductId":"482179489","printfulSyncVariantId":"5577605633","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10466,7 +10466,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-04-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-04-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b9fac32a4da16374f7e44be1ec1a8a5d5f0bca44b32bfb7842b3ff43591bd601","printfulSyncProductId":"482179502","printfulSyncVariantId":"5577605648","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10515,7 +10515,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-05-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-05-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"681b737aa906acc9cf34a366fb0ba3804fac64910f3ef11dba3fe51f22a042c3","printfulSyncProductId":"482179510","printfulSyncVariantId":"5577605657","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10564,7 +10564,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-06-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-06-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"96810dc02766071bc79df89999d58eca2e852c891360341d6f1eb9eae38b975a","printfulSyncProductId":"482179517","printfulSyncVariantId":"5577605664","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10613,7 +10613,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-07-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-07-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a6aa967a0ce8743ed48564d534429a8c2f0de05f74fba9bcbebc28612c0049b5","printfulSyncProductId":"482179522","printfulSyncVariantId":"5577605718","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10662,7 +10662,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-08-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-08-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"54a51b167be0a039e73a0732488eef0182cedbf3f3b287d87c18dff230baa63f","printfulSyncProductId":"482179529","printfulSyncVariantId":"5577605768","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10760,7 +10760,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-10-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-LC-10-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"acfc0b4a1a22fd432f9bca02e55d633ac659cda255420008e5e4f6283c7ffd86","printfulSyncProductId":"482179565","printfulSyncVariantId":"5577605825","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,

@@ -5,7 +5,7 @@
 **Branch:** `claude/seven-products-drafts`, stacked on
 `codex/line-and-colour-staging-2026-10-18` (draft PR #141).
 
-**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment (#141). The seven-products range adds 110 more listings across both collections (below): Prodigi mapping is recorded, Printful sync waits for the owner's API token. All release flags remain false. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
+**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment (#141). The seven-products range adds 110 more listings across both collections (below): 302 of 310 variants have verified Prodigi or Printful mappings; three large files wait for the owner's manual upload. All release flags remain false. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
 
 **Current writer:** Claude Code on the owner's Windows PC (2026-10-20),
 seven-products session. Codex wrote #141 on 2026-10-18.
@@ -42,6 +42,13 @@ acrylic products set Active on 2026-10-18 stay Active.
   works; acrylics Good (bleed); metal Excellent.
 - "Fulfil this item with Prodigi" is off on the 50 Printful products (Floating
   World mugs, all cushions and blankets).
+- Printful (store 18868484, the Shopify app store): 48 of 50 products synced
+  with the `printful` step on 2026-10-20 and recorded with `mapped --printful`
+  ([evidence](evidence/seven-products-printful-mapping-2026-10-20.json)):
+  10 mugs (1320), 20 cushions with the same file front and back (9515, 9516,
+  11077, 11078), 18 blankets (10986). 108 variants; each file's md5 in
+  Printful matches the local file. Printful sets synced variants to 9999 in
+  stock at its own location; the products stay Drafts.
 
 **Open:**
 
@@ -49,14 +56,12 @@ acrylic products set Active on 2026-10-18 stay Active.
   temporary-upload limit (and the 10 MB browser-upload limit). The owner
   uploads `cma-1958.38-hanger-big.jpg` as `chrysanthemum-hanger-big` in the
   Prodigi image library; then map its 3 large variants and re-run `mapped`.
-- Printful: the `printful` step is ready (runbook). Shopify lists Printful as
-  a fulfilment service, so the Printful app is connected. Waiting for the
-  owner to save `PRINTFUL_API_TOKEN` in `.env.printful.local` and to add two
-  blanket files over 20 MB to the Printful file library by hand:
-  `aic-8980-blanket-50x60.jpg` (21.0 MB) and
-  `cma-1958.38-blanket-50x60.jpg` (25.8 MB). Then: dry run, the owner's OK,
-  `--apply` for 50 products (Floating World mugs, cushions front and back,
-  blankets), and `mapped --printful`.
+- Printful, two blankets: their files are over 20 MB. The owner adds
+  `aic-8980-blanket-50x60.jpg` (Two Poplars, 21.0 MB) and
+  `cma-1958.38-blanket-50x60.jpg` (Chrysanthemum, 25.8 MB) to the Printful
+  file library by hand; then `printful line-and-colour --family blanket
+  --only landscape-with-two-poplars,chrysanthemum --apply --files <json>`
+  with their ids, and `mapped --printful` with the same `--only`.
 - Shipping profile "Free EU shipping – artist products": the owner creates it
   and moves the 110 products into it.
 - 49 files are below 150 ppi; release stays blocked until the owner accepts
