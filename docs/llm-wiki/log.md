@@ -1844,6 +1844,55 @@ Sources: `app/routes/artists._index.tsx`, `app/lib/artistShops.ts`,
 `app/lib/printCatalog.ts`, `app/styles/artists.css`, `app/styles/app.css`,
 `scripts/prepare-print-assets.py`, `scripts/artistShops.node-test.mjs`.
 
+## 2026-10-18 - Line and Colour continuation preflight
+
+The owner requested the Line and Colour handoff continuation. A separate
+branch, `codex/line-and-colour-staging-2026-10-18`, starts at `9fca667`.
+All twenty print-file hashes and all production-file/preview hashes for
+26 family products match; source signatures are current. The 36 listings
+cover 241 variants and keep their release flags false. `npm test` passes
+498/498. See the committed
+[preflight evidence](../artist-shops/evidence/line-and-colour-local-preflight-2026-10-18.json).
+
+Shopify's product list already shows Line and Colour mug Drafts and newer
+decor Drafts; these are not recorded in the current product catalogues and
+must be reconciled before any staging write. Both staging dry runs stop
+before an Admin request because the local client-credential entries are
+blank. The owner is filling them. Browser approval gates declined Shopify
+and Prodigi access; even after chat approval, a saved permission or managed
+policy still blocks the browser. No Shopify/Prodigi change or publication
+was made. The current writer and precise resume steps are in
+[status](../artist-shops/status.md#line-and-colour-continuation-2026-10-18-codex).
+
+## 2026-10-18 - Line and Colour Draft staging and supplier mapping complete
+
+The owner's continuation and completed local credentials enabled staging
+and mapping on `codex/line-and-colour-staging-2026-10-18` (draft PR #141).
+Created ten print and sixteen family Drafts, then reconciled/adopted the ten
+existing mug Drafts. The owner chose to retain EUR 24.99, superseding the
+earlier EUR 5.53 price. Existing mug product/variant IDs are preserved;
+obsolete `-PF` SKU suffixes and stale copy/SEO were reconciled with the
+pipeline. All 36 listings and 241 variants now have catalogue Shopify IDs.
+
+Mapped and reopened twenty print variants, five natural frames, six
+mirror-wrap canvases and ten mugs in Prodigi, all with Standard shipping.
+Canvas Fill is 201.87% dashboard scale for the 150 dpi files, covering the
+full face at 0/0, no border, rated Acceptable; numeric 100% leaves the image
+too small. Fifty print gallery images are READY in their approved order.
+The five case files and 200 device SKU mappings use the existing API route;
+all case sales-channel fulfilment switches are off. These files still need
+deployment with the future approved release checkpoint.
+
+Preservation readbacks compared 241, 251 and 257 pre-existing/unrelated
+products unchanged; unrelated catalogue entries are unchanged. Tests pass
+498/498, plus typecheck, lint and build. Unreleased live checks pass 20/20
+for prints and 52/52 for families (404 and absent from sitemap). Final
+staging dry runs recognize all listings as existing Drafts. Release flags
+remain false; no publication, rate change or order occurred. Delivery
+profile/rate checks and the owner's separate release go-ahead remain.
+See [readback](../artist-shops/evidence/line-and-colour-staging-mapping-2026-10-18.json)
+and [current handoff](../artist-shops/status.md).
+
 ## 2026-10-18 - US market planned
 
 The owner asked to sell properly to US buyers. A live Storefront readback

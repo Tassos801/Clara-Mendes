@@ -1,11 +1,19 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-14
+**Updated:** 2026-10-18
 
-**Branch:** `codex/artist-shops-pilot`  
-**State:** Ten Shopify Drafts with all thirty print variants staged; 8×10 mapped in Prodigi, larger-size mapping pending; five more product types per work built and dry-run verified (50 Drafts not yet created); artist shop redesigned and product crops approved; master reviews pending; no production release
+**Branch:** `codex/line-and-colour-staging-2026-10-18`
 
-**Current writer:** none. Codex (Sol) completed the resumed twenty-variant
+**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment; all release flags remain false. Delivery-profile checks, phone-case file deployment and a separate release approval remain. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
+
+**Current writer:** Codex, in the artist-mapping chat on the owner's Mac
+(2026-10-18). Continuing from [draft PR #141](https://github.com/Tassos801/Clara-Mendes/pull/141)
+at the owner's request. Shopify API and browser access now work. The owner
+chose to keep the existing EUR 24.99 mug price. Staging, mug reconciliation,
+room galleries and supplier mapping are complete. Products stay unpublished
+until the separate release checkpoint.
+
+**Previous checkpoint:** Codex (Sol) completed the resumed twenty-variant
 Draft expansion from GitHub checkpoint `31a9d12` and returned writer control
 to the parent agent. The next writer must name themselves before editing.
 Claude Code then built the five product types for the ten works on the
@@ -17,6 +25,57 @@ on the owner's Windows PC and stopped at the owner's request that evening
 their room media earlier the same morning, then hit its usage limit; Claude
 committed its ids (`1c7d9e0`), redesigned the artist page, mapped all ten in
 Prodigi, proposed product crops (approved) and added the larger sizes.
+
+## Line and Colour continuation (2026-10-18, Codex)
+
+The owner asked to continue the second handoff from the handoff audit: five
+Kandinsky works and five Mondrian works. This branch starts from `origin/main`
+at `9fca667`, in the existing `modern-collection` worktree.
+
+**Completed and verified:**
+
+- Created ten print Drafts with twenty size variants, plus sixteen family
+  Drafts (5 framed, 6 canvas, 5 phone cases). Adopted the ten existing mug
+  Drafts after exact handle/SKU/copy/SEO reconciliation. Their product and
+  variant IDs and EUR 24.99 prices are preserved; only the obsolete `-PF`
+  SKU suffix and stale copy/SEO were changed.
+- All 36 products and 241 variants have Shopify IDs in the catalogues. The
+  final read-only staging checks recognize every listing as an existing
+  Draft, with no create or preview-attachment action needed.
+- Prints have fifty READY images: the flat image first, followed by four
+  room images per product. Their twenty production-file hashes match.
+- Prodigi mappings cover twenty print variants, five natural classic frames
+  (EMA 200gsm, no mount, Perspex), six 38 mm mirror-wrap canvases and ten
+  white 11 oz mugs. All use Standard shipping. Each saved placement was
+  reopened and checked against its source file, dimensions and orientation.
+- Canvas **Fill** covers the full face at dashboard scale **201.87%**, 0/0,
+  rotation 0, border 0 cm, rated Acceptable. The handoff's "print area 100%"
+  describes coverage: entering a numeric scale of 100% makes the 150 dpi
+  artwork too small. Prints, frames and mugs use numeric scale 100%; their
+  rating is Excellent.
+- Five phone-case files are prepared under `public/print-files/line-and-colour/`
+  for the existing API route, with 200 device-specific SKU mappings. Their
+  Prodigi sales-channel fulfilment switches are off (all forty variants per
+  product), preventing duplicate channel/API fulfilment. File deployment is
+  still pending.
+- Staging preservation checks compared 241, 251 and 257 pre-existing/unrelated
+  products unchanged at the print, new-family and mug checkpoints. Unrelated
+  catalogue entries are also unchanged. Newer decor families remain outside
+  this work.
+- `npm test`: 498/498; typecheck, lint and build pass. The unreleased print
+  checks pass 20/20 and family checks 52/52: every scoped PDP returns 404 and
+  stays out of the sitemap. All local release flags remain false. No product
+  was published and no order was placed.
+
+Evidence: [staging and mapping readback](evidence/line-and-colour-staging-mapping-2026-10-18.json),
+[canvas browser proof](evidence/line-and-colour-canvas-2026-10-18.png) and
+[initial hash preflight](evidence/line-and-colour-local-preflight-2026-10-18.json).
+
+**Next:** verify delivery-profile membership and owner-approved rates,
+including a mug profile; no rates were changed here. Deploy and verify the
+five phone-case production files with the future release checkpoint. Obtain
+the owner's separate release/publication go-ahead, then verify artist pages,
+PDPs, cart and checkout. Do not release merely to share this draft PR.
 
 ## Line and Colour, the second collection (2026-10-15, Claude Code)
 
@@ -62,7 +121,8 @@ Lozenge keeps prints, framed and mug only; and the print ppi below 300
 at 251, Field 16×20 at 266 and 20×24 at 213), as Floating World's were.
 Every owner gate on the 36 products is now clear.
 
-**Mug price (owner, 2026-10-15): €5.53**, "30% profit, no need for a
+**Historical mug price (owner, 2026-10-15; superseded on 2026-10-18 by
+the decision to keep the existing €24.99 price): €5.53**, "30% profit, no need for a
 quote": Prodigi's published wholesale price for the 11 oz white mug is from
 £3.59 (excluding tax and shipping), about €4.25 at 1.18 €/£, the top of
 2026's range; ×1.30 = €5.53. Shipping is charged through a shipping profile,
@@ -70,11 +130,11 @@ which mugs do not have yet. Payment fees (about 2.9% + €0.30) come out of
 the margin. Check the real `GLOBAL-MUG-W` cost in the Prodigi dashboard when
 mapping.
 
-**Still open:** `stage` → `handoff` → Prodigi mapping → `mapped` →
-`media` → shipping profiles (a new one for mugs) → `release`, which needs
-the owner's separate go-ahead.
+**Historical next steps (now advanced by the 2026-10-18 checkpoint above):**
+staging, mapping and print media are complete. Delivery profiles, phone-case
+file deployment and the separate release go-ahead remain.
 
-**Machine notes:** this Mac's `.env.shopify-admin.local` has empty
+**Historical machine notes (resolved on 2026-10-18):** this Mac's `.env.shopify-admin.local` had empty
 `SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET`, so `stage` (even a dry run)
 needs the Windows PC or those credentials. The Prodigi iPhone 16 Pro case
 template is now in the main checkout's

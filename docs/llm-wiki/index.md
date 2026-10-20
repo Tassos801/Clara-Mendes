@@ -9,6 +9,9 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [Artist-shop pilot handoff](../artist-shops/HANDOFF.md) - Active work on
   `codex/artist-shops-pilot`; cross-PC setup, agreed scope and current status.
+- [Line and Colour staging and mapping](../artist-shops/evidence/line-and-colour-staging-mapping-2026-10-18.json) -
+  Kandinsky and Mondrian: 36 Shopify Drafts, 241 variants, 41 channel
+  mappings and 200 prepared API case mappings; EUR 24.99 mugs, release off.
 - [Floating World Draft readback](../artist-shops/evidence/draft-readback-2026-10-13.json) -
   Ten hidden Shopify Drafts and their 50 READY images verified on 13 October;
   product and variant IDs, print hashes, pending supplier mapping and scope limits.
