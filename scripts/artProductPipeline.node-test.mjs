@@ -1033,7 +1033,7 @@ test("curator's notes say which products keep the whole composition", () => {
     assert.doesNotMatch(note, /every print keeps/i);
     assert.match(
       note,
-      /Prints(, framed prints and mugs| and framed prints) keep the full composition .* set on (a white border|white); (cards, postcards, )?canvas and phone cases use a chosen detail\.$/,
+      /(Prints(, framed prints and mugs| and framed prints)|Hanger, acrylic and metal prints, cushions and blankets) keep the full composition .* set on (a white border|white)(; (cards, postcards, )?canvas and phone cases use a chosen detail)?\.$/,
     );
   }
 });
