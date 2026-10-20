@@ -39,7 +39,69 @@
             "large": "74.99"
           },
           "providerSku": "POSTER-HANGER-<size>-<LAND|PORT>",
-          "providerSettings": "Hanger colour from the variant (black, white or natural oak); print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically. The files keep 15 mm under each wooden strip."
+          "providerSettings": "Hanger colour from the variant (black, white or natural oak); print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically. The files keep 15 mm under each wooden strip.",
+          "ppiExceptions": {
+            "met-39799": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 127,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 127 ppi)."
+            },
+            "met-55458": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 125,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 125 ppi)."
+            },
+            "met-55291": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 123,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 123 ppi)."
+            },
+            "met-57000": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 127,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 127 ppi)."
+            },
+            "met-56239": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 127,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 127 ppi)."
+            },
+            "met-56360": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 128,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 128 ppi)."
+            },
+            "met-55993": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 117,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 117 ppi)."
+            },
+            "met-37093": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 105,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 105 ppi)."
+            },
+            "met-56689": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 95,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 95 ppi)."
+            },
+            "met-55433": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 96,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 96 ppi)."
+            }
+          }
         },
         "acrylic-print": {
           "prices": {
@@ -48,7 +110,21 @@
             "16x24": "159.99"
           },
           "providerSku": "GLOBAL-MOU-ACRY-<size>",
-          "providerSettings": "10 mm high-gloss acrylic panel; print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically"
+          "providerSettings": "10 mm high-gloss acrylic panel; print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically",
+          "ppiExceptions": {
+            "met-56689": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 141,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 141 ppi)."
+            },
+            "met-55433": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 141,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 141 ppi)."
+            }
+          }
         },
         "metal-print": {
           "prices": {
@@ -79,7 +155,69 @@
             "50x60": "64.99"
           },
           "providerSku": "Printful 395 Throw Blanket, variant 10986",
-          "providerSettings": "The 7500×9000 file fills the 50 × 60 in print area (wide works are already turned)"
+          "providerSettings": "The 7500×9000 file fills the 50 × 60 in print area (wide works are already turned)",
+          "ppiExceptions": {
+            "met-39799": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 62,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 62 ppi)."
+            },
+            "met-55458": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 62,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 62 ppi)."
+            },
+            "met-55291": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 62,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 62 ppi)."
+            },
+            "met-57000": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 63,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 63 ppi)."
+            },
+            "met-56239": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 61,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 61 ppi)."
+            },
+            "met-56360": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 62,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 62 ppi)."
+            },
+            "met-55993": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 60,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 60 ppi)."
+            },
+            "met-37093": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 62,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 62 ppi)."
+            },
+            "met-56689": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 56,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 56 ppi)."
+            },
+            "met-55433": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 56,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 56 ppi)."
+            }
+          }
         }
       }
     },
@@ -89,6 +227,28 @@
       "suppliedFiles": "museum/seven-products-lc",
       "suppliedLayout": {
         "aic-109819": "landscape"
+      },
+      "suppliedApprovals": {
+        "aic-8983": {
+          "at": "2026-10-20",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (AI-fitted) files as they are, in chat; the work has no approved crop."
+        },
+        "aic-8987": {
+          "at": "2026-10-20",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (AI-fitted) files as they are, in chat; the work has no approved crop."
+        },
+        "aic-109819": {
+          "at": "2026-10-20",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (AI-fitted) files as they are, in chat; the work has no approved crop."
+        },
+        "aic-65821": {
+          "at": "2026-10-20",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (AI-fitted) files as they are, in chat; the work has no approved crop."
+        }
       },
       "families": {
         "framed-print": {
@@ -117,7 +277,45 @@
             "large": "74.99"
           },
           "providerSku": "POSTER-HANGER-<size>-<LAND|PORT>",
-          "providerSettings": "Hanger colour from the variant (black, white or natural oak); print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically. The files keep 15 mm under each wooden strip."
+          "providerSettings": "Hanger colour from the variant (black, white or natural oak); print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically. The files keep 15 mm under each wooden strip.",
+          "ppiExceptions": {
+            "aic-8991": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 122,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 122 ppi)."
+            },
+            "aic-8980": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 118,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 118 ppi)."
+            },
+            "aic-129849": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 112,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 112 ppi)."
+            },
+            "aic-8983": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 105,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 105 ppi)."
+            },
+            "aic-8987": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 112,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 112 ppi)."
+            },
+            "aic-65821": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 89,
+              "note": "Owner accepted the supplied hanger print files below 150 ppi as they are, in chat (lowest file 89 ppi)."
+            }
+          }
         },
         "acrylic-print": {
           "prices": {
@@ -126,7 +324,39 @@
             "16x24": "159.99"
           },
           "providerSku": "GLOBAL-MOU-ACRY-<size>",
-          "providerSettings": "10 mm high-gloss acrylic panel; print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically"
+          "providerSettings": "10 mm high-gloss acrylic panel; print area 100%, position 0/0, no Prodigi border; Standard shipping; fulfilled automatically",
+          "ppiExceptions": {
+            "aic-8980": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 147,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 147 ppi)."
+            },
+            "aic-129849": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 140,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 140 ppi)."
+            },
+            "aic-8983": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 131,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 131 ppi)."
+            },
+            "aic-8987": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 140,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 140 ppi)."
+            },
+            "aic-65821": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 136,
+              "note": "Owner accepted the supplied acrylic print files below 150 ppi as they are, in chat (lowest file 136 ppi)."
+            }
+          }
         },
         "metal-print": {
           "prices": {
@@ -143,14 +373,114 @@
             "22-insert": "69.99"
           },
           "providerSku": "Printful 215 Premium Pillow Case (cover) / 214 Premium Pillow (with insert)",
-          "providerSettings": "The same 3300×3300 file on the front and the back; Printful scales it to 18 in"
+          "providerSettings": "The same 3300×3300 file on the front and the back; Printful scales it to 18 in",
+          "ppiExceptions": {
+            "aic-8991": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 136,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 136 ppi)."
+            },
+            "aic-8980": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 136,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 136 ppi)."
+            },
+            "aic-129849": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 132,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 132 ppi)."
+            },
+            "aic-8983": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 132,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 132 ppi)."
+            },
+            "aic-8987": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 109,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 109 ppi)."
+            },
+            "aic-109819": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 136,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 136 ppi)."
+            },
+            "aic-65821": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 102,
+              "note": "Owner accepted the supplied cushion files below 150 ppi as they are, in chat (lowest file 102 ppi)."
+            }
+          }
         },
         "blanket": {
           "prices": {
             "50x60": "64.99"
           },
           "providerSku": "Printful 395 Throw Blanket, variant 10986",
-          "providerSettings": "The 7500×9000 file fills the 50 × 60 in print area (wide works are already turned)"
+          "providerSettings": "The 7500×9000 file fills the 50 × 60 in print area (wide works are already turned)",
+          "ppiExceptions": {
+            "aic-8991": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 59,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 59 ppi)."
+            },
+            "aic-8980": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 50,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 50 ppi)."
+            },
+            "aic-129849": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 48,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 48 ppi)."
+            },
+            "aic-8983": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 48,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 48 ppi)."
+            },
+            "aic-8987": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 45,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 45 ppi)."
+            },
+            "aic-109819": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 60,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 60 ppi)."
+            },
+            "aic-65821": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 43,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 43 ppi)."
+            },
+            "cma-1958.38": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 87,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 87 ppi)."
+            },
+            "cma-1971.220": {
+              "at": "2026-10-20",
+              "by": "Tassos",
+              "minPpi": 76,
+              "note": "Owner accepted the supplied blanket files below 150 ppi as they are, in chat (lowest file 76 ppi)."
+            }
+          }
         }
       }
     }

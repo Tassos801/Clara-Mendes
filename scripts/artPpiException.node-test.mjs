@@ -34,14 +34,22 @@ function withException(exception = EXCEPTION, artworkId = WAVE.artworkId) {
   return catalog;
 }
 
-test('no ppi exception is granted in the shipped data', () => {
+test('the shipped data grants ppi exceptions only to supplied-file families', () => {
+  // The owner accepted every supplied file as it is on 2026-10-20; no
+  // pipeline-rendered family carries an exception.
   for (const collection of family.ART_PRODUCT_CATALOG.collections)
-    for (const [kind, config] of Object.entries(collection.families))
+    for (const [kind, config] of Object.entries(collection.families)) {
+      if (family.FAMILY_SPECS[kind].suppliedFiles) {
+        for (const exception of Object.values(config.ppiExceptions ?? {}))
+          assert.equal(exception.by, 'Tassos', `${collection.slug} ${kind}`);
+        continue;
+      }
       assert.equal(
         config.ppiExceptions,
         undefined,
         `${collection.slug} ${kind}`,
       );
+    }
   assert.equal(family.FAMILY_SPECS['phone-case'].minPpi, 300);
 });
 
