@@ -4926,7 +4926,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-01-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-01-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c3eac4a9be6211a8267610eef0dc433951e0d258901f4e4e1acef782ae8195ee","printfulSyncProductId":"482178158","printfulSyncVariantId":"5577602951","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -4975,7 +4975,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-02-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-02-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d414e64be15eb875697e3dcde7b4117c345c827d0cb29c37080e3dc1e6aa8198","printfulSyncProductId":"482178166","printfulSyncVariantId":"5577602959","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5024,7 +5024,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-03-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-03-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"29909319462a52e466e1c34a9d4b23c48df72be3d0110953eb2564bc70f9ef27","printfulSyncProductId":"482178171","printfulSyncVariantId":"5577602978","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5073,7 +5073,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-04-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-04-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"f1d3500cb0cdd9ec778f5b7f001381e9e06524e68548a7d381860e00c8d2a95b","printfulSyncProductId":"482178177","printfulSyncVariantId":"5577602988","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5122,7 +5122,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-05-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-05-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"efcd1ae43e12328207e5d9660b17a5c4e278905e04b093baa3baabef2c0f8ef6","printfulSyncProductId":"482178186","printfulSyncVariantId":"5577603003","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5171,7 +5171,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-06-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-06-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c760ecf501e00f24e1a05d00a22ce2006a7f1042a0a14c597018f734b3dc2bef","printfulSyncProductId":"482178189","printfulSyncVariantId":"5577603006","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5220,7 +5220,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-07-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-07-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"857a7e91cb29b6b7409f723b73bfc9a9205c816830be47e49880431dc82b1df8","printfulSyncProductId":"482178193","printfulSyncVariantId":"5577603010","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5269,7 +5269,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-08-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-08-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a3e745c7be9f68f00dc6dfeee7c33b4facfbd0434800fcfeb3db45837fb2e3bc","printfulSyncProductId":"482178207","printfulSyncVariantId":"5577603039","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5318,7 +5318,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-09-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-09-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9526c6cf11bae6c2ece23725f33a5e1df15e3960f9a555abd569102f9fe7a3c2","printfulSyncProductId":"482178215","printfulSyncVariantId":"5577603047","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5367,7 +5367,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-FW-10-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"11oz","option":"11 oz","sku":"CM-FW-10-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"34e230a9dc3efff4a1b278607681cb6ef936eb51d13d90023750da70db43b2ce","printfulSyncProductId":"482178221","printfulSyncVariantId":"5577603065","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5416,10 +5416,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-01-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-01-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-01-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-01-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-01-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"992212de81f25b1cb4d49c5ee01dec3c48421fc4802cc4cf430ac04a25b43a8c","printfulSyncProductId":"482178251","printfulSyncVariantId":"5577603095","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-01-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"992212de81f25b1cb4d49c5ee01dec3c48421fc4802cc4cf430ac04a25b43a8c","printfulSyncProductId":"482178251","printfulSyncVariantId":"5577603096","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-01-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"992212de81f25b1cb4d49c5ee01dec3c48421fc4802cc4cf430ac04a25b43a8c","printfulSyncProductId":"482178251","printfulSyncVariantId":"5577603097","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-01-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"992212de81f25b1cb4d49c5ee01dec3c48421fc4802cc4cf430ac04a25b43a8c","printfulSyncProductId":"482178251","printfulSyncVariantId":"5577603098","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5471,10 +5471,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-02-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-02-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-02-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-02-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-02-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b94f3f11ceaeaaaee901a15b81bb360538ddda2f0ee685c5b56d380e902f5f07","printfulSyncProductId":"482178257","printfulSyncVariantId":"5577603109","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-02-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b94f3f11ceaeaaaee901a15b81bb360538ddda2f0ee685c5b56d380e902f5f07","printfulSyncProductId":"482178257","printfulSyncVariantId":"5577603110","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-02-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b94f3f11ceaeaaaee901a15b81bb360538ddda2f0ee685c5b56d380e902f5f07","printfulSyncProductId":"482178257","printfulSyncVariantId":"5577603111","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-02-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b94f3f11ceaeaaaee901a15b81bb360538ddda2f0ee685c5b56d380e902f5f07","printfulSyncProductId":"482178257","printfulSyncVariantId":"5577603112","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5526,10 +5526,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-03-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-03-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-03-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-03-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-03-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a0e7dba638885e6a08bbcf3e5dbaf5f57e2644ffa6a06081d2997824c498bd7f","printfulSyncProductId":"482178275","printfulSyncVariantId":"5577603178","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-03-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a0e7dba638885e6a08bbcf3e5dbaf5f57e2644ffa6a06081d2997824c498bd7f","printfulSyncProductId":"482178275","printfulSyncVariantId":"5577603179","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-03-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a0e7dba638885e6a08bbcf3e5dbaf5f57e2644ffa6a06081d2997824c498bd7f","printfulSyncProductId":"482178275","printfulSyncVariantId":"5577603180","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-03-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a0e7dba638885e6a08bbcf3e5dbaf5f57e2644ffa6a06081d2997824c498bd7f","printfulSyncProductId":"482178275","printfulSyncVariantId":"5577603181","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5581,10 +5581,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-04-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-04-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-04-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-04-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-04-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2ca4d4492e8485a9c4b9442922f7dd36be6b05a8aac08709cae660aaacb188ca","printfulSyncProductId":"482178296","printfulSyncVariantId":"5577603202","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-04-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2ca4d4492e8485a9c4b9442922f7dd36be6b05a8aac08709cae660aaacb188ca","printfulSyncProductId":"482178296","printfulSyncVariantId":"5577603203","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-04-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2ca4d4492e8485a9c4b9442922f7dd36be6b05a8aac08709cae660aaacb188ca","printfulSyncProductId":"482178296","printfulSyncVariantId":"5577603204","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-04-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2ca4d4492e8485a9c4b9442922f7dd36be6b05a8aac08709cae660aaacb188ca","printfulSyncProductId":"482178296","printfulSyncVariantId":"5577603205","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5636,10 +5636,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-05-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-05-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-05-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-05-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-05-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4f2ec389d2e2d068d5668836f607e13ff614e1b17d88ddfd77feecbb063ccf59","printfulSyncProductId":"482178314","printfulSyncVariantId":"5577603232","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-05-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4f2ec389d2e2d068d5668836f607e13ff614e1b17d88ddfd77feecbb063ccf59","printfulSyncProductId":"482178314","printfulSyncVariantId":"5577603233","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-05-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4f2ec389d2e2d068d5668836f607e13ff614e1b17d88ddfd77feecbb063ccf59","printfulSyncProductId":"482178314","printfulSyncVariantId":"5577603234","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-05-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4f2ec389d2e2d068d5668836f607e13ff614e1b17d88ddfd77feecbb063ccf59","printfulSyncProductId":"482178314","printfulSyncVariantId":"5577603235","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5691,10 +5691,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-06-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-06-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-06-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-06-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-06-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"22a355c7af3bfe64a564a5d81b0ec26e672f3cf5f3b7ecb00c4d90d61e9349b0","printfulSyncProductId":"482178320","printfulSyncVariantId":"5577603242","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-06-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"22a355c7af3bfe64a564a5d81b0ec26e672f3cf5f3b7ecb00c4d90d61e9349b0","printfulSyncProductId":"482178320","printfulSyncVariantId":"5577603243","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-06-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"22a355c7af3bfe64a564a5d81b0ec26e672f3cf5f3b7ecb00c4d90d61e9349b0","printfulSyncProductId":"482178320","printfulSyncVariantId":"5577603244","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-06-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"22a355c7af3bfe64a564a5d81b0ec26e672f3cf5f3b7ecb00c4d90d61e9349b0","printfulSyncProductId":"482178320","printfulSyncVariantId":"5577603245","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5746,10 +5746,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-07-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-07-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-07-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-07-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-07-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d7ff066a6624512674993124e4813a6205e7edaade7ee3c8bc5ca7acea1a03e9","printfulSyncProductId":"482178325","printfulSyncVariantId":"5577603250","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-07-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d7ff066a6624512674993124e4813a6205e7edaade7ee3c8bc5ca7acea1a03e9","printfulSyncProductId":"482178325","printfulSyncVariantId":"5577603251","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-07-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d7ff066a6624512674993124e4813a6205e7edaade7ee3c8bc5ca7acea1a03e9","printfulSyncProductId":"482178325","printfulSyncVariantId":"5577603252","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-07-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d7ff066a6624512674993124e4813a6205e7edaade7ee3c8bc5ca7acea1a03e9","printfulSyncProductId":"482178325","printfulSyncVariantId":"5577603253","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5801,10 +5801,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-08-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-08-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-08-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-08-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-08-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"549b5a7c0b9c5eb96756be050afd0525a46af1687f3faefd6dc5d91a22b8b8d1","printfulSyncProductId":"482178337","printfulSyncVariantId":"5577603267","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-08-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"549b5a7c0b9c5eb96756be050afd0525a46af1687f3faefd6dc5d91a22b8b8d1","printfulSyncProductId":"482178337","printfulSyncVariantId":"5577603268","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-08-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"549b5a7c0b9c5eb96756be050afd0525a46af1687f3faefd6dc5d91a22b8b8d1","printfulSyncProductId":"482178337","printfulSyncVariantId":"5577603269","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-08-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"549b5a7c0b9c5eb96756be050afd0525a46af1687f3faefd6dc5d91a22b8b8d1","printfulSyncProductId":"482178337","printfulSyncVariantId":"5577603270","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5856,10 +5856,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-09-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-09-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-09-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-09-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-09-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7e6a2e2b6ad771f69f012561d8f14e5617e5af0de5dd6926522ddf6b82fff0eb","printfulSyncProductId":"482178338","printfulSyncVariantId":"5577603271","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-09-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7e6a2e2b6ad771f69f012561d8f14e5617e5af0de5dd6926522ddf6b82fff0eb","printfulSyncProductId":"482178338","printfulSyncVariantId":"5577603272","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-09-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7e6a2e2b6ad771f69f012561d8f14e5617e5af0de5dd6926522ddf6b82fff0eb","printfulSyncProductId":"482178338","printfulSyncVariantId":"5577603273","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-09-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7e6a2e2b6ad771f69f012561d8f14e5617e5af0de5dd6926522ddf6b82fff0eb","printfulSyncProductId":"482178338","printfulSyncVariantId":"5577603274","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -5911,10 +5911,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-10-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-10-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-10-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-10-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-FW-10-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b0fb807c5078e026ec30eab4cc1c7cf4d4fa8752c77754d69f8237fcc0c706e4","printfulSyncProductId":"482178361","printfulSyncVariantId":"5577603315","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-FW-10-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b0fb807c5078e026ec30eab4cc1c7cf4d4fa8752c77754d69f8237fcc0c706e4","printfulSyncProductId":"482178361","printfulSyncVariantId":"5577603316","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-FW-10-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b0fb807c5078e026ec30eab4cc1c7cf4d4fa8752c77754d69f8237fcc0c706e4","printfulSyncProductId":"482178361","printfulSyncVariantId":"5577603317","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-FW-10-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b0fb807c5078e026ec30eab4cc1c7cf4d4fa8752c77754d69f8237fcc0c706e4","printfulSyncProductId":"482178361","printfulSyncVariantId":"5577603318","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -9769,10 +9769,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-01-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-01-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-01-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-01-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-01-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a125c62267e92c2536b149c47603a91f807da8aa6ceea9446ccba955a359322","printfulSyncProductId":"482179301","printfulSyncVariantId":"5577605310","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-01-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a125c62267e92c2536b149c47603a91f807da8aa6ceea9446ccba955a359322","printfulSyncProductId":"482179301","printfulSyncVariantId":"5577605311","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-01-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a125c62267e92c2536b149c47603a91f807da8aa6ceea9446ccba955a359322","printfulSyncProductId":"482179301","printfulSyncVariantId":"5577605312","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-01-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a125c62267e92c2536b149c47603a91f807da8aa6ceea9446ccba955a359322","printfulSyncProductId":"482179301","printfulSyncVariantId":"5577605313","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -9824,10 +9824,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-02-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-02-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-02-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-02-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-02-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"49a39c09880470f515d02dc7490e3eea799a7cfef5406fb48bc0304fef1a9522","printfulSyncProductId":"482179325","printfulSyncVariantId":"5577605349","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-02-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"49a39c09880470f515d02dc7490e3eea799a7cfef5406fb48bc0304fef1a9522","printfulSyncProductId":"482179325","printfulSyncVariantId":"5577605350","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-02-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"49a39c09880470f515d02dc7490e3eea799a7cfef5406fb48bc0304fef1a9522","printfulSyncProductId":"482179325","printfulSyncVariantId":"5577605351","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-02-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"49a39c09880470f515d02dc7490e3eea799a7cfef5406fb48bc0304fef1a9522","printfulSyncProductId":"482179325","printfulSyncVariantId":"5577605352","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -9879,10 +9879,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-03-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-03-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-03-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-03-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-03-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ebe3f3422e2fd3e6e37dc1ed6b657bb6461b38848d60a4b29542108c3ca1aa64","printfulSyncProductId":"482179352","printfulSyncVariantId":"5577605419","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-03-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ebe3f3422e2fd3e6e37dc1ed6b657bb6461b38848d60a4b29542108c3ca1aa64","printfulSyncProductId":"482179352","printfulSyncVariantId":"5577605420","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-03-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ebe3f3422e2fd3e6e37dc1ed6b657bb6461b38848d60a4b29542108c3ca1aa64","printfulSyncProductId":"482179352","printfulSyncVariantId":"5577605421","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-03-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"ebe3f3422e2fd3e6e37dc1ed6b657bb6461b38848d60a4b29542108c3ca1aa64","printfulSyncProductId":"482179352","printfulSyncVariantId":"5577605422","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -9934,10 +9934,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-04-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-04-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-04-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-04-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-04-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"30703f8c9d7f4250cef2320e0fbf4425556298fae825ecc204d7da1a83426aeb","printfulSyncProductId":"482179361","printfulSyncVariantId":"5577605431","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-04-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"30703f8c9d7f4250cef2320e0fbf4425556298fae825ecc204d7da1a83426aeb","printfulSyncProductId":"482179361","printfulSyncVariantId":"5577605432","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-04-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"30703f8c9d7f4250cef2320e0fbf4425556298fae825ecc204d7da1a83426aeb","printfulSyncProductId":"482179361","printfulSyncVariantId":"5577605433","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-04-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"30703f8c9d7f4250cef2320e0fbf4425556298fae825ecc204d7da1a83426aeb","printfulSyncProductId":"482179361","printfulSyncVariantId":"5577605434","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -9989,10 +9989,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-05-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-05-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-05-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-05-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-05-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b3a5cde851c9ed4f4f2b272f86f9526a215b17703ae6f52c5e91b6705d685d77","printfulSyncProductId":"482179385","printfulSyncVariantId":"5577605470","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-05-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b3a5cde851c9ed4f4f2b272f86f9526a215b17703ae6f52c5e91b6705d685d77","printfulSyncProductId":"482179385","printfulSyncVariantId":"5577605471","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-05-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b3a5cde851c9ed4f4f2b272f86f9526a215b17703ae6f52c5e91b6705d685d77","printfulSyncProductId":"482179385","printfulSyncVariantId":"5577605472","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-05-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"b3a5cde851c9ed4f4f2b272f86f9526a215b17703ae6f52c5e91b6705d685d77","printfulSyncProductId":"482179385","printfulSyncVariantId":"5577605473","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10044,10 +10044,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-06-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-06-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-06-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-06-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-06-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"bf2e3596d6d6e43dceba7dd28376f76c1f6f2922785a084a7de3f1a5b16141ef","printfulSyncProductId":"482179403","printfulSyncVariantId":"5577605505","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-06-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"bf2e3596d6d6e43dceba7dd28376f76c1f6f2922785a084a7de3f1a5b16141ef","printfulSyncProductId":"482179403","printfulSyncVariantId":"5577605506","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-06-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"bf2e3596d6d6e43dceba7dd28376f76c1f6f2922785a084a7de3f1a5b16141ef","printfulSyncProductId":"482179403","printfulSyncVariantId":"5577605507","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-06-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"bf2e3596d6d6e43dceba7dd28376f76c1f6f2922785a084a7de3f1a5b16141ef","printfulSyncProductId":"482179403","printfulSyncVariantId":"5577605508","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10099,10 +10099,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-07-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-07-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-07-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-07-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-07-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8fa5068d6d7f22d1530a907b35e093905a27c9091e008f4c79e71e5a122b9a8a","printfulSyncProductId":"482179405","printfulSyncVariantId":"5577605510","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-07-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8fa5068d6d7f22d1530a907b35e093905a27c9091e008f4c79e71e5a122b9a8a","printfulSyncProductId":"482179405","printfulSyncVariantId":"5577605511","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-07-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8fa5068d6d7f22d1530a907b35e093905a27c9091e008f4c79e71e5a122b9a8a","printfulSyncProductId":"482179405","printfulSyncVariantId":"5577605512","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-07-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8fa5068d6d7f22d1530a907b35e093905a27c9091e008f4c79e71e5a122b9a8a","printfulSyncProductId":"482179405","printfulSyncVariantId":"5577605513","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10154,10 +10154,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-08-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-08-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-08-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-08-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-08-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6826f44e9b27ef863eb0ae2588bc1d0f2297b7d287a83d630ca86feea26efda1","printfulSyncProductId":"482179411","printfulSyncVariantId":"5577605528","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-08-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6826f44e9b27ef863eb0ae2588bc1d0f2297b7d287a83d630ca86feea26efda1","printfulSyncProductId":"482179411","printfulSyncVariantId":"5577605529","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-08-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6826f44e9b27ef863eb0ae2588bc1d0f2297b7d287a83d630ca86feea26efda1","printfulSyncProductId":"482179411","printfulSyncVariantId":"5577605530","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-08-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6826f44e9b27ef863eb0ae2588bc1d0f2297b7d287a83d630ca86feea26efda1","printfulSyncProductId":"482179411","printfulSyncVariantId":"5577605531","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10209,10 +10209,10 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-09-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-09-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-09-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-09-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-09-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4d5cb99ad6d85fd53fb3eca7e45da6081d18d7d8017edfec8cbedde031630dba","printfulSyncProductId":"482179416","printfulSyncVariantId":"5577605536","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-09-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4d5cb99ad6d85fd53fb3eca7e45da6081d18d7d8017edfec8cbedde031630dba","printfulSyncProductId":"482179416","printfulSyncVariantId":"5577605537","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-09-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4d5cb99ad6d85fd53fb3eca7e45da6081d18d7d8017edfec8cbedde031630dba","printfulSyncProductId":"482179416","printfulSyncVariantId":"5577605538","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-09-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4d5cb99ad6d85fd53fb3eca7e45da6081d18d7d8017edfec8cbedde031630dba","printfulSyncProductId":"482179416","printfulSyncVariantId":"5577605539","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -10264,10 +10264,10 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-10-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-10-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-10-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-10-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-LC-10-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a3770e97a65307f723bc2542eeeac1d6e4ade9a6527a34200b39edc57cf6257","printfulSyncProductId":"482179427","printfulSyncVariantId":"5577605565","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-LC-10-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a3770e97a65307f723bc2542eeeac1d6e4ade9a6527a34200b39edc57cf6257","printfulSyncProductId":"482179427","printfulSyncVariantId":"5577605566","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-LC-10-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a3770e97a65307f723bc2542eeeac1d6e4ade9a6527a34200b39edc57cf6257","printfulSyncProductId":"482179427","printfulSyncVariantId":"5577605567","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-LC-10-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7a3770e97a65307f723bc2542eeeac1d6e4ade9a6527a34200b39edc57cf6257","printfulSyncProductId":"482179427","printfulSyncVariantId":"5577605568","verified":true,"verifiedAt":"2026-10-20","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
