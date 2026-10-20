@@ -17,11 +17,17 @@ import {
   familyFileSize,
   familyHandle,
   familyIneligibility,
+  familyLayout,
+  familyOptionNames,
   familyPpiFloor,
   familyReleaseIssues,
   familySku,
   familySourceSignature,
   familyTitle,
+  familyVariantDefs,
+  familyVariantPrice,
+  variantFile,
+  variantMappingCurrent,
   wholePanelLayout,
 } from '../../app/lib/artProductCatalog.ts';
 import {
@@ -34,7 +40,6 @@ import {
   sourceCredit,
 } from '../../app/lib/artRegistry.ts';
 import {MUSEUM_CROPS} from '../../app/lib/museumCrops.ts';
-import {TOUGH_CASE_PHONES} from '../../app/lib/toughCase.ts';
 import {
   MUSEUM_TAG,
   museumSource,
@@ -94,35 +99,46 @@ export function findArtCollection(artCatalog, slug) {
   return entry;
 }
 
-/** The catalog entry a print and family should have, with no state yet. */
-export function expectedFamilyProduct(collection, print, family, config) {
+/**
+ * The catalog entry a print and family should have, with no state yet.
+ * `artCollection` (its data/art-product-catalog.json entry) names the
+ * layout of a square work's supplied files.
+ */
+export function expectedFamilyProduct(
+  collection,
+  print,
+  family,
+  config,
+  artCollection,
+) {
   const spec = FAMILY_SPECS[family];
   if (!config)
     throw new Error(
       `${collection.slug} does not offer ${family} (no entry in data/art-product-catalog.json)`,
     );
   const inventory = {policy: 'DENY', quantity: 0, tracked: true};
-  const variants = spec.single
-    ? [
-        {
-          key: spec.single.key,
-          option: spec.single.option,
-          sku: familySku(collection, print, family),
-          priceEUR: config.priceEUR,
-          providerSku: config.providerSku,
-          inventory: {...inventory},
-          mapping: {verified: false},
-        },
-      ]
-    : TOUGH_CASE_PHONES.map((phone) => ({
-        key: phone.code,
-        option: phone.label,
-        sku: familySku(collection, print, family, phone.code),
-        priceEUR: config.priceEUR,
-        providerSku: phone.prodigiSku,
-        inventory: {...inventory},
-        mapping: {verified: false},
-      }));
+  const orientation = familyLayout(
+    {artworkId: print.artworkId, family, orientation: print.orientation},
+    artCollection,
+  );
+  const variants = familyVariantDefs(family, orientation).map((def) => ({
+    key: def.key,
+    option: def.values.join(' / '),
+    sku: familySku(
+      collection,
+      print,
+      family,
+      spec.single ? undefined : def.key,
+    ),
+    priceEUR: familyVariantPrice(config, def),
+    providerSku: def.providerSku ?? config.providerSku,
+    ...(def.providerAttributes
+      ? {providerAttributes: {...def.providerAttributes}}
+      : {}),
+    ...(def.file ? {file: def.file} : {}),
+    inventory: {...inventory},
+    mapping: {verified: false},
+  }));
   return {
     handle: familyHandle(print, family),
     family,
@@ -160,7 +176,8 @@ export function syncFamilyProducts(
   collection,
   {families, prints, crops = MUSEUM_CROPS},
 ) {
-  const config = findArtCollection(artCatalog, collection.slug).families;
+  const artCollection = findArtCollection(artCatalog, collection.slug);
+  const config = artCollection.families;
   const added = [];
   const refreshed = [];
   const skipped = [];
@@ -176,6 +193,7 @@ export function syncFamilyProducts(
         print,
         family,
         config[family],
+        artCollection,
       );
       const existing = artCatalog.products.find(
         (product) => product.handle === expected.handle,
@@ -197,7 +215,10 @@ export function syncFamilyProducts(
             variant.option !== want.option ||
             variant.sku !== want.sku ||
             variant.priceEUR !== want.priceEUR ||
-            variant.providerSku !== want.providerSku
+            variant.providerSku !== want.providerSku ||
+            variant.file !== want.file ||
+            JSON.stringify(variant.providerAttributes ?? null) !==
+              JSON.stringify(want.providerAttributes ?? null)
           );
         })
           ? ['variants']
@@ -282,6 +303,10 @@ export function familyAssetPlan(
   },
 ) {
   const spec = FAMILY_SPECS[product.family];
+  if (spec.suppliedFiles)
+    throw new Error(
+      `${product.handle}: ${product.family} prints supplied files (suppliedAssetPlan)`,
+    );
   const print = collection.prints.find((entry) => entry.slug === product.print);
   const {artwork} = museumSource(print, registry);
   if (!artwork.original)
@@ -414,6 +439,151 @@ export function assetIssues(plan, file) {
   return issues;
 }
 
+/**
+ * The checks and records for a family printed from supplied files (the
+ * AI-fitted files of the seven-products standard). `manifest` is the
+ * folder's products/manifest.json, `assembly` its masters/assembly.json and
+ * `masterPixels(master)` the [width, height] of a master whose log has no
+ * canvas (a master that is the work itself). Returns one entry per file the
+ * variants print, each with its expected size, the manifest row, its AI-fill
+ * log and the native ppi of the museum image in it, plus the problems found
+ * in the logs themselves (the files on disk are checked by the caller).
+ */
+export function suppliedAssetPlan(
+  product,
+  {
+    collection,
+    artCollection,
+    launchRoot,
+    manifest,
+    assembly,
+    masterPixels,
+    artCatalog = ART_PRODUCT_CATALOG,
+    crops = MUSEUM_CROPS,
+    registry = ART_REGISTRY,
+  },
+) {
+  const spec = FAMILY_SPECS[product.family];
+  if (!spec.suppliedFiles)
+    throw new Error(`${product.handle}: ${product.family} is rendered here`);
+  if (!artCollection.suppliedFiles)
+    throw new Error(
+      `${collection.slug}: set suppliedFiles in data/art-product-catalog.json to the folder of the finished files`,
+    );
+  // A square work's files may run the other way (suppliedLayout).
+  const orientation = familyLayout(product, artCollection);
+  const folder = artCollection.suppliedFiles.replace(/\/+$/, '');
+  const problems = [];
+  const keys = [
+    ...new Set(product.variants.map((variant) => variant.file)),
+  ].filter(Boolean);
+  const files = keys.map((key) => {
+    const want = spec.suppliedFiles[key];
+    if (!want) throw new Error(`${product.handle}: no file spec for ${key}`);
+    const rows = manifest.filter(
+      (row) => row.work === product.artworkId && row.product === key,
+    );
+    if (rows.length !== 1) {
+      problems.push(
+        `${product.handle}: ${rows.length} manifest rows for ${product.artworkId} ${key}, expected 1`,
+      );
+      return null;
+    }
+    const [row] = rows;
+    const size = want[orientation];
+    if (row.pixels[0] !== size.width || row.pixels[1] !== size.height)
+      problems.push(
+        `${product.handle}: manifest says ${key} is ${row.pixels.join('×')}, the ${orientation} file must be ${size.width}×${size.height}`,
+      );
+    if (row.dpi !== want.dpi)
+      problems.push(
+        `${product.handle}: manifest says ${key} is ${row.dpi} dpi, expected ${want.dpi}`,
+      );
+    // The manifest names the supplier SKU each file was drawn for.
+    const skus = product.variants
+      .filter((variant) => variant.file === key)
+      .map((variant) => variant.providerSku);
+    if (spec.route === 'channel' && skus.some((sku) => sku !== row.sku))
+      problems.push(
+        `${product.handle}: ${key} was drawn for ${row.sku}, the variants use ${[...new Set(skus)].join(', ')}`,
+      );
+    const namedVariant = /\(variant (\d+)\)/.exec(row.sku)?.[1];
+    if (
+      spec.route === 'printful' &&
+      (!row.sku.startsWith('Printful') ||
+        (namedVariant && skus.some((sku) => sku !== namedVariant)))
+    )
+      problems.push(
+        `${product.handle}: ${key} was drawn for "${row.sku}", the variants use Printful variants ${skus.join(', ')}`,
+      );
+    const masterKey = row.source_master
+      .replace(/^masters\//, '')
+      .replace(/\.png$/, '');
+    const aiFill = assembly[masterKey];
+    if (!aiFill) {
+      problems.push(`${product.handle}: no AI-fill log for ${masterKey}`);
+      return null;
+    }
+    if (aiFill.block_identical !== true || aiFill.status !== 'ok')
+      problems.push(
+        `${product.handle}: ${masterKey} is not logged as ok with the museum image unchanged`,
+      );
+    let [canvasWidth, canvasHeight] = aiFill.canvas ?? masterPixels(row);
+    if (row.rotated_90)
+      [canvasWidth, canvasHeight] = [canvasHeight, canvasWidth];
+    const ppi =
+      Math.round(
+        Math.min(
+          canvasWidth / (row.pixels[0] / row.dpi),
+          canvasHeight / (row.pixels[1] / row.dpi),
+        ) * 10,
+      ) / 10;
+    const relativePath = `${folder}/${row.file}`;
+    return {
+      dpi: want.dpi,
+      file: path.join(launchRoot, ...relativePath.split('/')),
+      height: size.height,
+      key,
+      path: relativePath,
+      ppi,
+      provenance: {
+        aiFill: structuredClone(aiFill),
+        aspectTrimPercent: row.aspect_trim_percent,
+        hangerStripMm: row.hanger_strip_mm,
+        manifestSku: row.sku,
+        master: `${folder}/${row.source_master}`,
+        masterSha256: row.source_sha256,
+        rotated90: row.rotated_90 === true,
+      },
+      sha256: row.sha256,
+      width: size.width,
+    };
+  });
+  const familyDir = path.join(launchRoot, collection.slug, product.family);
+  const preview = path.join(familyDir, 'web', `${product.handle}.webp`);
+  const ppis = files.filter(Boolean).map((file) => file.ppi);
+  return {
+    artworkId: product.artworkId,
+    family: product.family,
+    files: files.filter(Boolean),
+    handle: product.handle,
+    /** The files' layout (a square work's may differ from the work's own). */
+    layout: orientation,
+    orientation: product.orientation,
+    ppi: ppis.length ? Math.min(...ppis) : 0,
+    preview: {
+      file: preview,
+      height: PREVIEW_SIZE.height,
+      path: relative(launchRoot, preview),
+      width: PREVIEW_SIZE.width,
+    },
+    print: product.print,
+    problems,
+    ...familyPpiFloor(product, artCatalog),
+    sourceSignature: familySourceSignature(product, {crops, registry}),
+  };
+}
+
 const escapeHtml = (text) =>
   String(text)
     .replaceAll('&', '&amp;')
@@ -473,8 +643,18 @@ export function buildFamilyProductInput(
   const {artist} = museumSource(print, registry);
   if (product.variants.some((variant) => variant.priceEUR === undefined))
     throw new Error(
-      `${product.handle}: no approved ${product.family} price yet — add priceEUR to the collection in data/art-product-catalog.json once the owner approves it`,
+      `${product.handle}: no approved ${product.family} price yet — add ${spec.variantDefs ? 'its prices' : 'priceEUR'} to the collection in data/art-product-catalog.json once the owner approves it`,
     );
+  const names = familyOptionNames(product.family);
+  const valuesOf = (variant) => {
+    const values =
+      names.length > 1 ? variant.option.split(' / ') : [variant.option];
+    if (values.length !== names.length)
+      throw new Error(
+        `${product.handle} ${variant.key}: option "${variant.option}" needs ${names.length} values`,
+      );
+    return values;
+  };
   return {
     descriptionHtml: familyDescription(product, {
       artCollection,
@@ -482,13 +662,13 @@ export function buildFamilyProductInput(
       registry,
     }),
     handle: product.handle,
-    productOptions: [
-      {
-        name: spec.optionName,
-        position: 1,
-        values: product.variants.map((variant) => ({name: variant.option})),
-      },
-    ],
+    productOptions: names.map((name, index) => ({
+      name,
+      position: index + 1,
+      values: [
+        ...new Set(product.variants.map((variant) => valuesOf(variant)[index])),
+      ].map((value) => ({name: value})),
+    })),
     productType: spec.productType,
     seo: {
       description: `${print.description} ${spec.seoSuffix}`,
@@ -502,7 +682,10 @@ export function buildFamilyProductInput(
       // activated by accident; `release` switches tracking off.
       inventoryItem: {requiresShipping: true, tracked: true},
       inventoryPolicy: 'DENY',
-      optionValues: [{name: variant.option, optionName: spec.optionName}],
+      optionValues: valuesOf(variant).map((value, index) => ({
+        name: value,
+        optionName: names[index],
+      })),
       price: variant.priceEUR,
       sku: variant.sku,
       taxable: true,
@@ -578,11 +761,15 @@ export function familyReadbackIssues(input, live) {
       issues.push(`${at}: missing ${want.sku}`);
       continue;
     }
-    const option = got.selectedOptions?.find(
-      (entry) => entry.name === want.optionValues[0].optionName,
-    );
-    if (option?.value !== want.optionValues[0].name)
-      issues.push(`${at} ${want.sku}: option is ${option?.value}`);
+    for (const value of want.optionValues) {
+      const option = got.selectedOptions?.find(
+        (entry) => entry.name === value.optionName,
+      );
+      if (option?.value !== value.name)
+        issues.push(
+          `${at} ${want.sku}: ${value.optionName} is ${option?.value}`,
+        );
+    }
     if (got.price !== want.price)
       issues.push(`${at} ${want.sku}: price is ${got.price}`);
     if (got.inventoryPolicy !== 'DENY')
@@ -664,19 +851,20 @@ export function familyStatus(product, {fileSha256, crops, registry} = {}) {
     product.variants.every(
       (variant) => product.shopify.variantIds?.[variant.key],
     );
-  const mapped = product.variants.every(
-    (variant) =>
-      variant.mapping.verified &&
-      variant.mapping.assetSha256 === assets?.print.sha256,
+  const mapped = product.variants.every((variant) =>
+    variantMappingCurrent(product, variant),
   );
+  const route = FAMILY_SPECS[product.family].route;
   let next = 'verify';
   if (!current) next = 'prepare --families';
   else if (!staged) next = 'stage --families';
   else if (!mapped)
     next =
-      FAMILY_SPECS[product.family].route === 'channel'
+      route === 'channel'
         ? 'handoff → map in Prodigi → mapped --family'
-        : 'mapped --family phone-case';
+        : route === 'printful'
+          ? 'handoff → sync in Printful → mapped --family'
+          : 'mapped --family phone-case';
   else if (!product.released) next = 'owner reviews → release --family';
   return {current, mapped, next, released: product.released === true, staged};
 }
@@ -686,19 +874,24 @@ export function familyImageAlt(product, {collection, registry = ART_REGISTRY}) {
   const print = collection.prints.find((entry) => entry.slug === product.print);
   const {artist} = museumSource(print, registry);
   const noun = FAMILY_SPECS[product.family].noun;
-  return `${print.title} by ${artist.name} as a ${product.family === 'phone-case' ? 'matte tough phone case, shown on iPhone 16 Pro' : noun}`;
+  return `${print.title} by ${artist.name} as ${/^[aeiou]/i.test(noun) ? 'an' : 'a'} ${product.family === 'phone-case' ? 'matte tough phone case, shown on iPhone 16 Pro' : noun}`;
 }
 
-/** One handoff row per channel-mapped product (single-variant families). */
+/**
+ * One handoff row per variant of the products mapped in a supplier's
+ * dashboard: Prodigi channel families (`route` 'channel', the default) or
+ * Printful families ('printful'). Each row names the variant's own file.
+ */
 export function familyHandoffRows(
   products,
-  {launchRoot, collection, sha256, artCollection},
+  {launchRoot, collection, sha256, artCollection, route = 'channel'},
 ) {
   return products
-    .filter((product) => FAMILY_SPECS[product.family].route === 'channel')
+    .filter((product) => FAMILY_SPECS[product.family].route === route)
     .flatMap((product) =>
       product.variants.map((variant) => {
-        const file = path.join(launchRoot, product.assets.print.path);
+        const recorded = variantFile(product, variant);
+        const file = path.join(launchRoot, recorded.path);
         return {
           product: product.title,
           family: product.family,
@@ -708,15 +901,29 @@ export function familyHandoffRows(
           shopifyVariantId: product.shopify?.variantIds?.[variant.key] ?? '',
           option: variant.option,
           providerSku: variant.providerSku,
+          providerAttributes: variant.providerAttributes
+            ? Object.entries(variant.providerAttributes)
+                .map(([name, value]) => `${name}=${value}`)
+                .join(' ')
+            : '',
           settings:
             artCollection.families[product.family]?.providerSettings ?? '',
           printFile: file.replaceAll('\\', '/'),
-          pixels: `${product.assets.print.width}x${product.assets.print.height}`,
-          dpi: product.assets.print.dpi ?? '',
-          ppi: product.assets.ppi,
+          pixels: `${recorded.width}x${recorded.height}`,
+          dpi: recorded.dpi ?? '',
+          ppi: recorded.ppi ?? product.assets.ppi,
           sha256: sha256(file),
-          recordedSha256: product.assets.print.sha256,
-          prodigiChannelProductId: variant.mapping.channelProductId ?? '',
+          recordedSha256: recorded.sha256,
+          ...(route === 'printful'
+            ? {
+                printfulSyncProductId:
+                  variant.mapping.printfulSyncProductId ?? '',
+                printfulSyncVariantId:
+                  variant.mapping.printfulSyncVariantId ?? '',
+              }
+            : {
+                prodigiChannelProductId: variant.mapping.channelProductId ?? '',
+              }),
           verified: variant.mapping.verified === true,
           collection: collection.slug,
         };
@@ -743,10 +950,164 @@ export function parseFamilyMappings(collection, family, pairs) {
       throw new Error(
         `"${pair}": the Prodigi channel product id must be digits`,
       );
+    if (FAMILY_SPECS[family].route === 'printful' && !/^\d+$/.test(id ?? ''))
+      throw new Error(`"${pair}": the Printful sync product id must be digits`);
     if (FAMILY_SPECS[family].route === 'api' && id !== undefined)
       throw new Error(`"${pair}": phone cases have no channel product id`);
     return {id: id ?? null, slug};
   });
+}
+
+const numericId = (gid) =>
+  String(gid ?? '')
+    .split('/')
+    .pop();
+
+/**
+ * Checks a Printful readback of one product (the Printful API's
+ * `GET /sync/products/{id}` result: `sync_product` plus `sync_variants`)
+ * against the catalog: the sync product is this Shopify product, every
+ * Shopify variant is synced to the Printful catalog variant it should be,
+ * and prints its own file on every placement the family needs. A file is
+ * recognised by its MD5 (`hash`) when Printful gives one that matches, else
+ * by file name and pixel size. Returns the problems and, when there are
+ * none, the mapping each variant gets.
+ */
+export function printfulMappingFromReadback(
+  product,
+  readback,
+  {fileFacts, today},
+) {
+  const spec = FAMILY_SPECS[product.family];
+  const at = product.handle;
+  const problems = [];
+  const syncProduct = readback?.sync_product;
+  if (!syncProduct)
+    return {
+      mappings: null,
+      problems: [`${at}: no sync_product in the readback`],
+    };
+  if (String(syncProduct.external_id) !== numericId(product.shopify?.productId))
+    problems.push(
+      `${at}: Printful sync product ${syncProduct.id} is Shopify product ${syncProduct.external_id}, expected ${numericId(product.shopify?.productId)}`,
+    );
+  const mappings = {};
+  for (const variant of product.variants) {
+    const shopifyId = numericId(product.shopify?.variantIds?.[variant.key]);
+    const sync = (readback.sync_variants ?? []).find(
+      (entry) => String(entry.external_id) === shopifyId,
+    );
+    const where = `${at} ${variant.key}`;
+    if (!sync) {
+      problems.push(
+        `${where}: Shopify variant ${shopifyId} is not in the readback`,
+      );
+      continue;
+    }
+    if (sync.synced !== true) problems.push(`${where}: not synced in Printful`);
+    if (String(sync.variant_id) !== variant.providerSku)
+      problems.push(
+        `${where}: synced to Printful variant ${sync.variant_id}, expected ${variant.providerSku}`,
+      );
+    const recorded = product.assets?.files?.[variant.file];
+    const facts = recorded && fileFacts(recorded);
+    let method = null;
+    for (const placement of spec.printfulPlacements ?? ['default']) {
+      // Printful names the front placement "default" on some products.
+      const file = (sync.files ?? []).find(
+        (entry) =>
+          entry.type === placement ||
+          (placement === 'front' && entry.type === 'default'),
+      );
+      if (!file) {
+        problems.push(`${where}: no ${placement} file in Printful`);
+        continue;
+      }
+      if (facts && file.hash && file.hash === facts.md5) method ??= 'md5';
+      else if (
+        facts &&
+        file.filename === facts.name &&
+        Number(file.width) === recorded.width &&
+        Number(file.height) === recorded.height
+      )
+        method = method === 'md5' ? 'md5' : 'name and pixels';
+      else
+        problems.push(
+          `${where}: the ${placement} file in Printful (${file.filename ?? file.id}, ${file.width}×${file.height}) is not ${facts?.name ?? variant.file}`,
+        );
+    }
+    mappings[variant.key] = {
+      assetSha256: recorded?.sha256,
+      printfulSyncProductId: String(syncProduct.id),
+      printfulSyncVariantId: String(sync.id),
+      verified: true,
+      verifiedAt: today,
+      ...(method ? {note: `Printful file matched by ${method}`} : {}),
+    };
+  }
+  return {mappings: problems.length ? null : mappings, problems};
+}
+
+/**
+ * What `printful` would do for one product of a Printful family, given the
+ * store's sync product as Printful reads it (`GET /sync/products/@<Shopify
+ * product id>`, null when the Printful app has not imported it) and the
+ * Printful file-library id of each supplied file (`fileIds`, keyed by the
+ * variant's `file`). A variant is kept when it is already synced to its
+ * catalogue variant with that file on every placement; otherwise it is
+ * synced with `body`.
+ */
+export function printfulSyncPlan(product, readback, fileIds = new Map()) {
+  const placements = FAMILY_SPECS[product.family].printfulPlacements ?? [
+    'default',
+  ];
+  const problems = [];
+  if (!readback?.sync_product)
+    problems.push(
+      `${product.handle}: not in Printful yet (the Printful app has not imported Shopify product ${numericId(product.shopify?.productId)})`,
+    );
+  const rows = product.variants.map((variant) => {
+    const externalId = numericId(product.shopify?.variantIds?.[variant.key]);
+    const sync = (readback?.sync_variants ?? []).find(
+      (entry) => String(entry.external_id) === externalId,
+    );
+    if (readback?.sync_product && !sync)
+      problems.push(
+        `${product.handle} ${variant.key}: Shopify variant ${externalId} is not in Printful`,
+      );
+    const fileId = fileIds.get(variant.file);
+    const current =
+      sync?.synced === true &&
+      String(sync.variant_id) === variant.providerSku &&
+      fileId !== undefined &&
+      placements.every((placement) =>
+        (sync.files ?? []).some(
+          (file) =>
+            (file.type === placement ||
+              (placement === 'front' && file.type === 'default')) &&
+            String(file.id) === String(fileId),
+        ),
+      );
+    return {
+      action: current ? 'keep' : 'sync',
+      body: {
+        files: placements.map((type) => ({id: fileId, type})),
+        variant_id: Number(variant.providerSku),
+      },
+      externalId,
+      file: variant.file,
+      handle: product.handle,
+      key: variant.key,
+      was: sync
+        ? {
+            files: (sync.files ?? []).map((file) => file.type),
+            synced: sync.synced,
+            variantId: sync.variant_id,
+          }
+        : null,
+    };
+  });
+  return {problems, rows};
 }
 
 /** Marks a product's mappings unverified because its print file changed. */
@@ -817,10 +1178,14 @@ export function formatArtProductCatalog(catalog) {
       );
       if (!entries.length) return '{}';
       const inner = entries.map(([key, entry]) => {
+        // A supplied file's provenance (its manifest row and AI-fill log)
+        // is kept whole but on one line, like a variant.
         const rendered =
           key === 'variants' && Array.isArray(entry) && entry.length
             ? `[\n${entry.map((variant) => `${indent}    ${JSON.stringify(variant)}`).join(',\n')}\n${indent}  ]`
-            : write(entry, `${indent}  `);
+            : key === 'provenance' && entry && typeof entry === 'object'
+              ? JSON.stringify(entry)
+              : write(entry, `${indent}  `);
         return `${indent}  ${JSON.stringify(key)}: ${rendered}`;
       });
       return `{\n${inner.join(',\n')}\n${indent}}`;

@@ -58,6 +58,11 @@ export const ARTIST_PRODUCT_FAMILIES = [
   'Postcards',
   'Phone cases',
   'Mugs',
+  'Hanger prints',
+  'Acrylic prints',
+  'Metal prints',
+  'Cushions',
+  'Blankets',
 ] as const;
 export type ArtistProductFamily = (typeof ARTIST_PRODUCT_FAMILIES)[number];
 
@@ -282,8 +287,7 @@ export function artistIndexEntry(
 ): ArtistIndexEntry {
   const representative = listed.filter(
     (product) =>
-      product.artworkId &&
-      product.artworkId === artist.representativeArtworkId,
+      product.artworkId && product.artworkId === artist.representativeArtworkId,
   );
   const seen = new Set<string>();
   const works: ArtistIndexWork[] = [];

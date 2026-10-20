@@ -32,18 +32,33 @@ const LAUNCH = path.join('X:', 'launches');
 const PENDING = {providerSku: 'GLOBAL-MUG-W'};
 const MUG = family.FAMILY_SPECS.mug;
 
-/** The shipped catalog with Floating World offering a price-pending mug. */
+/**
+ * The shipped catalog with Floating World offering a price-pending Prodigi
+ * mug instead of its Printful mug (both are "<print>-mug", so a collection
+ * offers one or the other).
+ */
 function withMug(config = PENDING) {
   const catalog = structuredClone(family.ART_PRODUCT_CATALOG);
   const collection = catalog.collections.find(
     (entry) => entry.slug === 'floating-world',
+  );
+  delete collection.families['printful-mug'];
+  catalog.products = catalog.products.filter(
+    (product) =>
+      !(
+        product.collection === 'floating-world' &&
+        product.family === 'printful-mug'
+      ),
   );
   collection.families.mug = config;
   return {catalog, collection};
 }
 
 test('the mug is Prodigi GLOBAL-MUG-W: 229 × 95 mm at 300 dpi, two whole-work panels', () => {
-  assert.equal(family.ART_PRODUCT_FAMILIES.at(-1), 'mug');
+  assert.equal(
+    family.ART_PRODUCT_FAMILIES.indexOf('mug'),
+    family.ART_PRODUCT_FAMILIES.indexOf('phone-case') + 1,
+  );
   assert.equal(MUG.providerSku, 'GLOBAL-MUG-W');
   assert.equal(MUG.route, 'channel');
   assert.equal(MUG.shape, null, 'the whole composition, never a crop');

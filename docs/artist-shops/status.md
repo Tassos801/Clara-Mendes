@@ -1,17 +1,73 @@
 # Artist-shop pilot status
 
-**Updated:** 2026-10-18
+**Updated:** 2026-10-20
 
-**Branch:** `codex/line-and-colour-staging-2026-10-18`
+**Branch:** `claude/seven-products-drafts`, stacked on
+`codex/line-and-colour-staging-2026-10-18` (draft PR #141).
 
-**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment; all release flags remain false. Delivery-profile checks, phone-case file deployment and a separate release approval remain. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
+**State:** Line and Colour's 36 listings are staged as Shopify Drafts and mapped for fulfilment (#141). The seven-products range adds 110 more listings across both collections (below): 302 of 310 variants have verified Prodigi or Printful mappings; three large files wait for the owner's manual upload. All release flags remain false. Floating World was released on 2026-10-14; its older checkpoints below are historical (see the wiki log).
 
-**Current writer:** Codex, in the artist-mapping chat on the owner's Mac
-(2026-10-18). Continuing from [draft PR #141](https://github.com/Tassos801/Clara-Mendes/pull/141)
-at the owner's request. Shopify API and browser access now work. The owner
-chose to keep the existing EUR 24.99 mug price. Staging, mug reconciliation,
-room galleries and supplier mapping are complete. Products stay unpublished
-until the separate release checkpoint.
+**Current writer:** Claude Code on the owner's Windows PC (2026-10-20),
+seven-products session. Codex wrote #141 on 2026-10-18.
+
+## Seven products per artist (2026-10-16 to 2026-10-20, Claude Code)
+
+Hanger, acrylic and metal prints (Prodigi) plus mug, cushion and blanket
+(Printful) for both museum collections, from the AI-fitted files in
+`<launchDir>/museum/seven-products(-lc)`. Pipeline: supplied-file families
+(runbook, museum section).
+
+**Owner decisions:** metal print kept (matte); Mondrian *Composition with Red,
+Yellow, and Blue* files kept as they are; shopper picks the hanger frame
+(black, white, oak); page prices; cushion 18 or 22 in, cover or with insert;
+Drafts even below 150 ppi (release decided later); acrylic accepts Prodigi's
+cover fill (about 2% trimmed per edge); Prodigi mapping by clicking through
+the dashboard. On 2026-10-20: Line and Colour mugs stay with Prodigi (the
+#141 mapping), so the Printful mug is Floating World only; the 38 hanger and
+acrylic products set Active on 2026-10-18 stay Active.
+
+**Done and verified:**
+
+- 110 Shopify products: Floating World 60, Line and Colour 50, ids in the
+  catalog. 38 are Active (all hangers and acrylics except the Troika and
+  Chrysanthemum hangers): on 2026-10-18 between 19:11 and 19:17 UTC the
+  "Clara Mendes Catalog Sync" app switched them from Draft. From 19:15 the
+  owner added them to the Headless and Clara Mendes channels in Admin. Stock
+  0 with DENY, so nothing can be bought. Their product pages redirect to
+  `/collections/all` while the families stay unreleased.
+- Prodigi (channel `99660041-…`): 59 of 60 products mapped and read back
+  ([evidence](evidence/seven-products-prodigi-mapping-2026-10-20.json)),
+  194 of 200 variants recorded with `mapped`. Standard shipping everywhere.
+  Ratings: hangers Excellent, except Good on the large size of the upright
+  works; acrylics Good (bleed); metal Excellent.
+- "Fulfil this item with Prodigi" is off on the 50 Printful products (Floating
+  World mugs, all cushions and blankets).
+- Printful (store 18868484, the Shopify app store): 48 of 50 products synced
+  with the `printful` step on 2026-10-20 and recorded with `mapped --printful`
+  ([evidence](evidence/seven-products-printful-mapping-2026-10-20.json)):
+  10 mugs (1320), 20 cushions with the same file front and back (9515, 9516,
+  11077, 11078), 18 blankets (10986). 108 variants; each file's md5 in
+  Printful matches the local file. Printful sets synced variants to 9999 in
+  stock at its own location; the products stay Drafts.
+
+**Open:**
+
+- Chrysanthemum hanger, large size: its 24.8 MB file is over the 20 MB
+  temporary-upload limit (and the 10 MB browser-upload limit). The owner
+  uploads `cma-1958.38-hanger-big.jpg` as `chrysanthemum-hanger-big` in the
+  Prodigi image library; then map its 3 large variants and re-run `mapped`.
+- Printful, two blankets: their files are over 20 MB. The owner adds
+  `aic-8980-blanket-50x60.jpg` (Two Poplars, 21.0 MB) and
+  `cma-1958.38-blanket-50x60.jpg` (Chrysanthemum, 25.8 MB) to the Printful
+  file library by hand; then `printful line-and-colour --family blanket
+  --only landscape-with-two-poplars,chrysanthemum --apply --files <json>`
+  with their ids, and `mapped --printful` with the same `--only`.
+- Shipping profile "Free EU shipping – artist products": the owner creates it
+  and moves the 110 products into it.
+- 49 files are below 150 ppi; release stays blocked until the owner accepts
+  them.
+- The Prodigi image library holds 27 unprocessed `-1×-1 px` duplicates
+  (plus one for the Troika A3 file); they can be deleted in the dashboard.
 
 **Previous checkpoint:** Codex (Sol) completed the resumed twenty-variant
 Draft expansion from GitHub checkpoint `31a9d12` and returned writer control
