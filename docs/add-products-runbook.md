@@ -254,10 +254,18 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
      5 mm bleed, so Prodigi's cover fill trims about 2% per edge (rated
      Good). New products arrive with "Fulfil this item with Prodigi" on:
      switch it off on every Printful-route product.
-   - Printful families: `handoff` writes `printful-handoff-<suffix>.csv/.md`;
-     after syncing in Printful, `mapped <collection> --family <f> --printful
-     <readback.json>` records the sync ids from `GET /sync/products/{id}`
-     readbacks.
+   - Printful families go through the store's Printful app, with the owner's
+     private token in `.env.printful.local` (`PRINTFUL_API_TOKEN`).
+     `printful <collection> --family <f>` reads each product as Printful
+     lists it and prints the plan; `--apply` adds each file to the Printful
+     file library once (temporary staged-upload URL, md5 checked, ids kept in
+     `<launch>/museum/printful-files.json`), syncs every variant to its
+     Printful variant and placements, and writes
+     `printful-readback-<family>-<stamp>.json`. A file over 20 MB is added in
+     the Printful file library by hand and passed as `--files <json>`
+     (`{"<file name>": <id>}`). Then `mapped <collection> --family <f>
+     --printful <readback.json>` records the sync ids. `handoff` writes
+     `printful-handoff-<suffix>.csv/.md` for a check by eye.
    - Supplied-file products need the "Free EU shipping – artist products"
      shipping profile; the app token cannot set it, so the owner moves them
      in Admin.

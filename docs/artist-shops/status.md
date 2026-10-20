@@ -46,12 +46,17 @@ acrylic products set Active on 2026-10-18 stay Active.
 **Open:**
 
 - Chrysanthemum hanger, large size: its 24.8 MB file is over the 20 MB
-  temporary-upload limit. The owner uploads `chrysanthemum-hanger-big.jpg`
-  in the Prodigi image library; then map its 3 large variants and re-run
-  `mapped`.
-- Printful: the owner saves `PRINTFUL_API_TOKEN` in `.env.printful.local`;
-  then sync 50 products (Floating World mugs, cushions front and back,
-  blankets) and record them with `mapped --printful`.
+  temporary-upload limit (and the 10 MB browser-upload limit). The owner
+  uploads `cma-1958.38-hanger-big.jpg` as `chrysanthemum-hanger-big` in the
+  Prodigi image library; then map its 3 large variants and re-run `mapped`.
+- Printful: the `printful` step is ready (runbook). Shopify lists Printful as
+  a fulfilment service, so the Printful app is connected. Waiting for the
+  owner to save `PRINTFUL_API_TOKEN` in `.env.printful.local` and to add two
+  blanket files over 20 MB to the Printful file library by hand:
+  `aic-8980-blanket-50x60.jpg` (21.0 MB) and
+  `cma-1958.38-blanket-50x60.jpg` (25.8 MB). Then: dry run, the owner's OK,
+  `--apply` for 50 products (Floating World mugs, cushions front and back,
+  blankets), and `mapped --printful`.
 - Shipping profile "Free EU shipping – artist products": the owner creates it
   and moves the 110 products into it.
 - 49 files are below 150 ppi; release stays blocked until the owner accepts
