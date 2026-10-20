@@ -1892,3 +1892,24 @@ remain false; no publication, rate change or order occurred. Delivery
 profile/rate checks and the owner's separate release go-ahead remain.
 See [readback](../artist-shops/evidence/line-and-colour-staging-mapping-2026-10-18.json)
 and [current handoff](../artist-shops/status.md).
+
+## [2026-10-20] catalog | Seven products per artist: Drafts and Prodigi mapping
+
+Added six supplied-file families to the art-product pipeline (hanger, acrylic
+and metal prints from Prodigi; mug, cushion and blanket from Printful). They
+take the AI-fitted files from `museum/seven-products(-lc)` and copy each
+file's AI-fill log into the catalog as `provenance`. Staged 110 Shopify
+products (Floating World 60, Line and Colour 50); the Line and Colour mug stays
+the Prodigi mug from #141, by the owner's choice on 2026-10-20. This branch is
+rebased on #141.
+
+Mapped 59 of 60 Prodigi channel products by clicking through the dashboard
+(hanger frame colour, metal finish matte, Standard shipping), read them back
+and recorded 194 of 200 variants with `mapped`. The Chrysanthemum hanger's
+large size waits for its 24.8 MB file. Switched Prodigi fulfilment off on the
+50 Printful products. Printful sync waits for the owner's API token. 38 hanger
+and acrylic products were set Active on 2026-10-18 by the catalog-sync app
+and added to sales channels by the owner; the owner keeps them Active. Stock
+is 0, release flags stay false. See
+[status](../artist-shops/status.md) and the
+[readback](../artist-shops/evidence/seven-products-prodigi-mapping-2026-10-20.json).
