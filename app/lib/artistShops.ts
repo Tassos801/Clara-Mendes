@@ -261,6 +261,20 @@ export function firstSentence(text: string) {
   return sentence.length > 160 ? `${sentence.slice(0, 157)}…` : sentence;
 }
 
+/**
+ * An artist page's title, led by the first product type the shop lists for
+ * them: "art prints and more", or "hanger prints and more" while an
+ * artist's paper prints are not released.
+ */
+export function artistPageTitle(
+  artist: Pick<Artist, 'name'>,
+  families: ArtistProductFamily[],
+) {
+  const lead = artistFamilyLabel(families[0] ?? 'Prints').toLowerCase();
+  const more = families.length > 1 ? ' and more' : '';
+  return `${artist.name}: ${lead}${more} | Clara Mendes`;
+}
+
 export type ArtistIndexWork = ArtistProduct['sheet'] & {title: string};
 
 export type ArtistIndexEntry = {

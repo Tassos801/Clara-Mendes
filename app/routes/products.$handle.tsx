@@ -883,8 +883,14 @@ function ProductPage() {
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
-  // Printful activewear runs on its own production clock, not Prodigi's.
-  const windows = fulfilmentWindows(product.productType, product.handle, product.tags);
+  // Printful activewear and the museum mugs, cushions and blankets run on
+  // Printful's production clock, not Prodigi's.
+  const windows = fulfilmentWindows(
+    product.productType,
+    product.handle,
+    product.tags,
+    artProduct?.printfulTechnique,
+  );
   // Activewear copy is structured HTML (intro, features, fabric, size table);
   // the plain-text description would run those blocks together.
   const isApparel = isClothingProduct(product);
@@ -893,7 +899,9 @@ function ProductPage() {
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
-  const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
+  // The fleece extension blanket; museum blankets carry their own details.
+  const isBlanket =
+    !artProduct && (product.productType || '').toLowerCase() === 'blankets';
   const potDesign = pastelPots.designs.find(
     (design) => design.handle === product.handle,
   );
@@ -1074,6 +1082,7 @@ function ProductPage() {
             productId: product.id,
             productHandle: product.handle,
             productType: product.productType,
+            printfulTechnique: artProduct?.printfulTechnique,
             tags: product.tags,
             reviewSummary:
               reviews.summary.total > 0
@@ -1789,6 +1798,7 @@ function ProductPage() {
                       (variant: ProductVariant) => variant.outOfReach,
                     ),
                     isApparel: isQuietCurrent,
+                    printful: Boolean(artProduct?.printfulTechnique),
                   })
                     ? DELIVERY_US_BUSINESS_DAYS
                     : null
