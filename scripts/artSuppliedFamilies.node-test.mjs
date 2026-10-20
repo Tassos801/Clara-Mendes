@@ -140,7 +140,12 @@ test('cushions: 18 or 22 inch, cover only or with insert, on Printful 215 and 21
 });
 
 test('both museum collections offer the six at the page prices; nothing released', () => {
-  for (const slug of ['floating-world', 'line-and-colour']) {
+  // Line and Colour keeps its Prodigi mug (owner, 20 Oct 2026), so it has
+  // five of the six; Floating World has the Printful mug.
+  for (const [slug, mugs] of [
+    ['floating-world', 1],
+    ['line-and-colour', 0],
+  ]) {
     const entry = artCollectionOf(slug);
     assert.ok(entry.suppliedFiles.startsWith('museum/seven-products'));
     assert.deepEqual(entry.families['hanger-print'].prices, {
@@ -153,7 +158,11 @@ test('both museum collections offer the six at the page prices; nothing released
       '16x24': '159.99',
     });
     assert.deepEqual(entry.families['metal-print'].prices, {'8x12': '79.99'});
-    assert.deepEqual(entry.families['printful-mug'].prices, {'11oz': '24.99'});
+    if (mugs)
+      assert.deepEqual(entry.families['printful-mug'].prices, {
+        '11oz': '24.99',
+      });
+    else assert.ok(!('printful-mug' in entry.families));
     assert.deepEqual(entry.families.cushion.prices, {
       '18-cover': '44.99',
       '18-insert': '64.99',
@@ -165,20 +174,15 @@ test('both museum collections offer the six at the page prices; nothing released
       (product) =>
         product.collection === slug && SUPPLIED.includes(product.family),
     );
-    assert.equal(products.length, 60);
+    assert.equal(products.length, 50 + 10 * mugs);
     assert.ok(products.every((product) => product.released === false));
     assert.equal(
       products.reduce((sum, product) => sum + product.variants.length, 0),
-      10 * (6 + 3 + 1 + 1 + 4 + 1),
+      10 * (6 + 3 + 1 + mugs + 4 + 1),
     );
   }
-  // Line and Colour's Prodigi mug gave way to the Printful mug.
-  assert.ok(!('mug' in artCollectionOf('line-and-colour').families));
-  assert.ok(
-    family.ART_PRODUCT_CATALOG.products.every(
-      (product) => product.family !== 'mug',
-    ),
-  );
+  assert.ok('mug' in artCollectionOf('line-and-colour').families);
+  assert.ok(!('mug' in artCollectionOf('floating-world').families));
   const wave = productOf(family.ART_PRODUCT_CATALOG, WAVE, 'acrylic-print');
   assert.deepEqual(
     wave.variants.map((variant) => [variant.sku, variant.priceEUR]),

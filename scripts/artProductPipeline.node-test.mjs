@@ -1080,7 +1080,7 @@ test('family sync adds a product only where its work qualifies', () => {
     'hanger-print',
     'acrylic-print',
     'metal-print',
-    'printful-mug',
+    'mug',
     'cushion',
     'blanket',
   ]);
