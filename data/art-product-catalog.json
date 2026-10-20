@@ -4436,7 +4436,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-01-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-01-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4485,7 +4485,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-02-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-02-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4534,7 +4534,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-03-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-03-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4583,7 +4583,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-04-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-04-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4632,7 +4632,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-05-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-05-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4681,7 +4681,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-06-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-06-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4730,7 +4730,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-07-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-07-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4779,7 +4779,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-08-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-08-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4828,7 +4828,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-09-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-09-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -4877,7 +4877,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-10-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-FW-10-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9279,7 +9279,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-01-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-01-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9328,7 +9328,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-02-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-02-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9377,7 +9377,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-03-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-03-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9426,7 +9426,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-04-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-04-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9475,7 +9475,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-05-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-05-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9524,7 +9524,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-06-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-06-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9573,7 +9573,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-07-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-07-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9622,7 +9622,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-08-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-08-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9671,7 +9671,7 @@
       "orientation": "portrait",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-09-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-09-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,
@@ -9720,7 +9720,7 @@
       "orientation": "landscape",
       "released": false,
       "variants": [
-        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-10-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
+        {"key":"8x12","option":"8 × 12 in","sku":"CM-LC-10-METAL8X12","priceEUR":"79.99","providerSku":"MOU-DI-20X30","providerAttributes":{"finish":"matte"},"file":"metal-8x12","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"verified":false}}
       ],
       "assets": {
         "box": null,

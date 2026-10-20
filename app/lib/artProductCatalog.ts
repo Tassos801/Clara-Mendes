@@ -266,11 +266,13 @@ const ACRYLIC_DEFS: ArtVariantDef[] = ['8x12', '12x16', '16x24'].map((size) => {
   };
 });
 
+/** Prodigi MOU-DI-20X30 needs a finish: matt, as the owner chose. */
 const METAL_DEFS: ArtVariantDef[] = [
   {
     file: 'metal-8x12',
     key: '8x12',
     priceKey: '8x12',
+    providerAttributes: {finish: 'matte'},
     providerSku: 'MOU-DI-20X30',
     skuSuffix: 'METAL8X12',
     values: ['8 × 12 in'],
