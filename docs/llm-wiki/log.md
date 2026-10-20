@@ -1928,3 +1928,37 @@ A read-only pass for the US work found:
   countries, the US included.
 
 Details and the resulting step order are in [us-market/status.md](../us-market/status.md).
+
+## [2026-10-20] catalog | Seven products per artist: Drafts and Prodigi mapping
+
+Added six supplied-file families to the art-product pipeline (hanger, acrylic
+and metal prints from Prodigi; mug, cushion and blanket from Printful). They
+take the AI-fitted files from `museum/seven-products(-lc)` and copy each
+file's AI-fill log into the catalog as `provenance`. Staged 110 Shopify
+products (Floating World 60, Line and Colour 50); the Line and Colour mug stays
+the Prodigi mug from #141, by the owner's choice on 2026-10-20. This branch is
+rebased on #141.
+
+Mapped 59 of 60 Prodigi channel products by clicking through the dashboard
+(hanger frame colour, metal finish matte, Standard shipping), read them back
+and recorded 194 of 200 variants with `mapped`. The Chrysanthemum hanger's
+large size waits for its 24.8 MB file. Switched Prodigi fulfilment off on the
+50 Printful products. Printful sync waits for the owner's API token. 38 hanger
+and acrylic products were set Active on 2026-10-18 by the catalog-sync app
+and added to sales channels by the owner; the owner keeps them Active. Stock
+is 0, release flags stay false. See
+[status](../artist-shops/status.md) and the
+[readback](../artist-shops/evidence/seven-products-prodigi-mapping-2026-10-20.json).
+
+## [2026-10-20] catalog | Printful sync for the seven-products range
+
+Added the `printful` step to the product pipeline. It works through the
+store's Printful app (Printful's platform sync API, `/sync/products` and
+`/sync/variant`), adds each file to the Printful file library once with an md5
+check, waits out Printful's rate limit, and writes the read-back for
+`mapped --printful`. Synced 48 of 50 Printful products (10 Floating World
+mugs, 20 cushions, 18 blankets; 108 variants) and recorded them. Two blanket
+files over 20 MB wait for a manual upload. Overall 302 of 310 seven-products
+variants now have verified mappings. Products stay Drafts or unreleased. See
+[status](../artist-shops/status.md) and the
+[read-back](../artist-shops/evidence/seven-products-printful-mapping-2026-10-20.json).

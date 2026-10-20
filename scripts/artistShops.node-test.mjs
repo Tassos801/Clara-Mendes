@@ -379,12 +379,17 @@ function floatingWorldProducts(artistId) {
     .filter((product) => !artistId || product.artistId === artistId);
 }
 
-/** An artist's whole Floating World range: prints and every family. */
+/**
+ * An artist's released Floating World range: prints and every released
+ * family (staged Drafts never reach the shop, which lists what the
+ * Storefront API returns).
+ */
 function floatingWorldRange(artistId) {
   return shops
     .artistProducts()
     .filter((product) => product.collectionTag === 'Floating World')
-    .filter((product) => product.artistId === artistId);
+    .filter((product) => product.artistId === artistId)
+    .filter((product) => product.released);
 }
 
 test('artist shop Refine groups come from data, with counts per choice', () => {
@@ -748,7 +753,10 @@ test('every museum sheet has the small copy the artists index shows', async () =
         `${small.src} is missing: run npm run product -- prepare ${collection.slug}`,
       );
       const {height, width} = await sharp(file).metadata();
-      assert.deepEqual({height, width}, {height: small.height, width: small.width});
+      assert.deepEqual(
+        {height, width},
+        {height: small.height, width: small.width},
+      );
     }
   }
 });
