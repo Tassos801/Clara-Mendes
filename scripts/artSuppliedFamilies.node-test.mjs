@@ -679,6 +679,67 @@ test('the Printful readback must name each Shopify variant, its Printful variant
   );
 });
 
+test('a Printful file with an MD5 must be the local file; name and size stand in only without one', () => {
+  const {product} = staged('cushion');
+  const name = path.basename(product.assets.files['cushion-22'].path);
+  const md5 = 'f'.repeat(32);
+  const side = (type, hash, filename = name) => ({
+    filename,
+    height: 3300,
+    type,
+    width: 3300,
+    ...(hash === undefined ? {} : {hash}),
+  });
+  const check = (front, back) =>
+    printfulMappingFromReadback(
+      product,
+      {
+        sync_product: {external_id: '900', id: 77},
+        sync_variants: product.variants.map((variant, index) => ({
+          external_id: String(9000 + index),
+          files: [front, back],
+          id: 5000 + index,
+          synced: true,
+          variant_id: Number(variant.providerSku),
+        })),
+      },
+      {fileFacts: () => ({md5, name}), today: '2026-10-20'},
+    );
+
+  // A stale back file keeps the name and size of the current one.
+  const stale = check(side('default', md5), side('back', 'e'.repeat(32)));
+  assert.equal(stale.mappings, null);
+  assert.match(
+    stale.problems[0],
+    /18-cover: the back file in Printful \(.+\) has MD5 e{32}, not f{32}/,
+  );
+
+  // No hash at all: the file name and pixel size identify it.
+  const unhashed = check(side('default'), side('back'));
+  assert.deepEqual(unhashed.problems, []);
+  assert.equal(
+    unhashed.mappings['18-cover'].note,
+    'Printful file matched by name and pixels',
+  );
+  // ...but never another file of the same size.
+  assert.match(
+    check(side('default'), side('back', undefined, 'other.jpg')).problems[0],
+    /18-cover: the back file in Printful \(other\.jpg, 3300×3300\) is not /,
+  );
+
+  // Mixed: the note names the weakest match, placement by placement.
+  const mixed = check(side('default', md5.toUpperCase()), side('back'));
+  assert.deepEqual(mixed.problems, []);
+  assert.equal(
+    mixed.mappings['22-insert'].note,
+    'Printful file matched by name and pixels (front: md5, back: name and pixels)',
+  );
+  assert.equal(
+    check(side('default', md5), side('back', md5)).mappings['18-cover'].note,
+    'Printful file matched by md5',
+  );
+});
+
 test('the Printful sync plan attaches each variant to its catalogue variant and file', () => {
   const {product} = staged('cushion');
   // Not imported by the Printful app yet: nothing can be synced.

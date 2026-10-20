@@ -2005,3 +2005,14 @@ was pipeline records the browser never reads. The client build now gets a
 slim copy (see [Catalog and products](modules/catalog-and-products.md)): the
 chunk is 225,565 bytes (30,838 gzip), and the build no longer warns about it.
 Server output is unchanged.
+
+## [2026-10-20] pipeline | Printful read-back trusts the MD5
+
+`printfulMappingFromReadback` (`scripts/lib/art-product-pipeline.mjs`)
+accepted a Printful file whose MD5 differed from the local file when its name
+and pixel size matched, and its note said "matched by md5" if any other
+placement had matched. A regenerated supplied file keeps its name and size, so
+a stale file could have been recorded as verified. A hash Printful gives must
+now match; name and pixel size stand in only where Printful gives no hash, and
+the note names the weakest match per placement. The 2026-10-20 read-backs (48
+products, 108 variants) still pass, all by MD5.

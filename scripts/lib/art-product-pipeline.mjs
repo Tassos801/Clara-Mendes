@@ -968,9 +968,11 @@ const numericId = (gid) =>
  * `GET /sync/products/{id}` result: `sync_product` plus `sync_variants`)
  * against the catalog: the sync product is this Shopify product, every
  * Shopify variant is synced to the Printful catalog variant it should be,
- * and prints its own file on every placement the family needs. A file is
- * recognised by its MD5 (`hash`) when Printful gives one that matches, else
- * by file name and pixel size. Returns the problems and, when there are
+ * and prints its own file on every placement the family needs. A file
+ * Printful gives an MD5 (`hash`) for must have the local file's MD5: a
+ * regenerated file keeps its name and size, so those never outvote the hash.
+ * Only a file without a hash is recognised by file name and pixel size, and
+ * the note names the weakest match. Returns the problems and, when there are
  * none, the mapping each variant gets.
  */
 export function printfulMappingFromReadback(
@@ -1011,7 +1013,8 @@ export function printfulMappingFromReadback(
       );
     const recorded = product.assets?.files?.[variant.file];
     const facts = recorded && fileFacts(recorded);
-    let method = null;
+    // How each placement's file was recognised, in placement order.
+    const matched = [];
     for (const placement of spec.printfulPlacements ?? ['default']) {
       // Printful names the front placement "default" on some products.
       const file = (sync.files ?? []).find(
@@ -1023,26 +1026,42 @@ export function printfulMappingFromReadback(
         problems.push(`${where}: no ${placement} file in Printful`);
         continue;
       }
-      if (facts && file.hash && file.hash === facts.md5) method ??= 'md5';
-      else if (
+      const shown = `${file.filename ?? file.id}, ${file.width}×${file.height}`;
+      if (facts && file.hash) {
+        if (String(file.hash).toLowerCase() === facts.md5)
+          matched.push({method: 'md5', placement});
+        else
+          problems.push(
+            `${where}: the ${placement} file in Printful (${shown}) has MD5 ${file.hash}, not ${facts.md5} of ${facts.name}`,
+          );
+      } else if (
         facts &&
         file.filename === facts.name &&
         Number(file.width) === recorded.width &&
         Number(file.height) === recorded.height
       )
-        method = method === 'md5' ? 'md5' : 'name and pixels';
+        matched.push({method: 'name and pixels', placement});
       else
         problems.push(
-          `${where}: the ${placement} file in Printful (${file.filename ?? file.id}, ${file.width}×${file.height}) is not ${facts?.name ?? variant.file}`,
+          `${where}: the ${placement} file in Printful (${shown}) is not ${facts?.name ?? variant.file}`,
         );
     }
+    const methods = [...new Set(matched.map((entry) => entry.method))];
+    const weakest = methods.includes('name and pixels')
+      ? 'name and pixels'
+      : methods[0];
+    const note = !weakest
+      ? null
+      : methods.length > 1
+        ? `Printful file matched by ${weakest} (${matched.map((entry) => `${entry.placement}: ${entry.method}`).join(', ')})`
+        : `Printful file matched by ${weakest}`;
     mappings[variant.key] = {
       assetSha256: recorded?.sha256,
       printfulSyncProductId: String(syncProduct.id),
       printfulSyncVariantId: String(sync.id),
       verified: true,
       verifiedAt: today,
-      ...(method ? {note: `Printful file matched by ${method}`} : {}),
+      ...(note ? {note} : {}),
     };
   }
   return {mappings: problems.length ? null : mappings, problems};
