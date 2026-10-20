@@ -899,7 +899,9 @@ function ProductPage() {
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
-  const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
+  // The fleece extension blanket; museum blankets carry their own details.
+  const isBlanket =
+    !artProduct && (product.productType || '').toLowerCase() === 'blankets';
   const potDesign = pastelPots.designs.find(
     (design) => design.handle === product.handle,
   );
