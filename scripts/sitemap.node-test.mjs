@@ -95,6 +95,8 @@ assert.deepEqual(
     '/artists',
     '/artists/hiroshige',
     '/artists/hokusai',
+    '/artists/kandinsky',
+    '/artists/mondrian',
     '/collections/quiet-form',
     '/collections/patina-blue',
     '/collections/neo-deco',

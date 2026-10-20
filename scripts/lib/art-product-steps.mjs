@@ -1497,10 +1497,12 @@ export function createFamilySteps({
       );
       assert.ok(live, `${product.handle}: Shopify product not found`);
       assert.equal(live.handle, product.handle);
+      // An unreleased product may already be Active: the owner activated
+      // 38 hanger and acrylic Drafts on 2026-10-18 and kept them so. The
+      // handle and every SKU and price are still checked below.
       assert.ok(
-        live.status === 'DRAFT' ||
-          (live.status === 'ACTIVE' && product.released),
-        `${product.handle}: expected DRAFT before release, found ${live.status}`,
+        live.status === 'DRAFT' || live.status === 'ACTIVE',
+        `${product.handle}: expected DRAFT or ACTIVE before release, found ${live.status}`,
       );
       assert.equal(
         live.featuredMedia?.status,

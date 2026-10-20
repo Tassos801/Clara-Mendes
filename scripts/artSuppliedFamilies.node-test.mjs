@@ -140,7 +140,7 @@ test('cushions: 18 or 22 inch, cover only or with insert, on Printful 215 and 21
   );
 });
 
-test('both museum collections offer the six at the page prices; nothing released', () => {
+test('both museum collections offer the six at the page prices; released but three', () => {
   // Line and Colour keeps its Prodigi mug (owner, 20 Oct 2026), so it has
   // five of the six; Floating World has the Printful mug.
   for (const [slug, mugs] of [
@@ -176,7 +176,20 @@ test('both museum collections offer the six at the page prices; nothing released
         product.collection === slug && SUPPLIED.includes(product.family),
     );
     assert.equal(products.length, 50 + 10 * mugs);
-    assert.ok(products.every((product) => product.released === false));
+    // Released on 2026-10-20, except the three whose large files are not
+    // with their supplier yet.
+    assert.deepEqual(
+      products
+        .filter((product) => !product.released)
+        .map((product) => product.handle),
+      slug === 'line-and-colour'
+        ? [
+            'chrysanthemum-hanger-print',
+            'landscape-with-two-poplars-blanket',
+            'chrysanthemum-blanket',
+          ]
+        : [],
+    );
     assert.equal(
       products.reduce((sum, product) => sum + product.variants.length, 0),
       10 * (6 + 3 + 1 + mugs + 4 + 1),
@@ -763,14 +776,50 @@ test('release needs the owner to accept a file below its ppi floor', () => {
       printfulSyncVariantId: '2',
       verified: true,
     };
-  const issues = family.familyReleaseIssues(product, {
-    catalog,
-    crops,
-    registry,
-  });
+  const blankets = artCollectionOf('floating-world', catalog).families.blanket;
+  const accepted = blankets.ppiExceptions[product.artworkId];
+  const issuesOf = () =>
+    family.familyReleaseIssues(product, {catalog, crops, registry});
+  const ppiIssue = 'native ppi at its floor or an owner ppi exception';
+
+  delete blankets.ppiExceptions[product.artworkId];
   assert.ok(product.assets.ppi < 150);
-  assert.ok(
-    issues.includes('native ppi at its floor or an owner ppi exception'),
-    issues.join(', '),
+  assert.ok(issuesOf().includes(ppiIssue), issuesOf().join(', '));
+
+  // The owner accepted it as it is (2026-10-20): supplied files may go down
+  // to MIN_SUPPLIED_EXCEPTION_PPI, other families stay at MIN_EXCEPTION_PPI.
+  blankets.ppiExceptions[product.artworkId] = accepted;
+  assert.ok(accepted.minPpi < 150 && accepted.minPpi <= product.assets.ppi);
+  assert.ok(!issuesOf().includes(ppiIssue));
+  assert.deepEqual(family.validateArtProductCatalog(catalog), []);
+  blankets.ppiExceptions[product.artworkId] = {
+    ...accepted,
+    minPpi: family.MIN_SUPPLIED_EXCEPTION_PPI - 1,
+  };
+  assert.match(
+    family.validateArtProductCatalog(catalog).join('\n'),
+    /blanket ppi exception for met-39799: minPpi must be at least 40 and below the family's 150/,
+  );
+});
+
+test('the owner can approve the supplied files of a work with no approved crop', () => {
+  const catalog = structuredClone(family.ART_PRODUCT_CATALOG);
+  const lc = artCollectionOf('line-and-colour', catalog);
+  const troika = catalog.products.find(
+    (p) =>
+      p.collection === 'line-and-colour' &&
+      p.family === 'metal-print' &&
+      p.artworkId === 'aic-8983',
+  );
+  assert.equal(MUSEUM_CROPS.crops['aic-8983'], undefined);
+  const issues = () => family.familyReleaseIssues(troika, {catalog});
+  assert.ok(lc.suppliedApprovals['aic-8983']);
+  assert.ok(!issues().includes('crop approval'), issues().join(', '));
+  delete lc.suppliedApprovals['aic-8983'];
+  assert.ok(issues().includes('crop approval'));
+  lc.suppliedApprovals['aic-8983'] = {at: '2026-10-20', by: '', note: 'x'};
+  assert.match(
+    family.validateArtProductCatalog(catalog).join('\n'),
+    /suppliedApprovals aic-8983 records who approved, when and why/,
   );
 });

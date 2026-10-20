@@ -997,6 +997,16 @@ export type PpiException = {
  */
 export const MIN_EXCEPTION_PPI = 150;
 
+/**
+ * Supplied files are finished outside the pipeline at their product's full
+ * size, so the owner may accept them lower: on 2026-10-20 he accepted every
+ * supplied file as it is, the lowest a 50 × 60 in blanket at 44 ppi.
+ */
+export const MIN_SUPPLIED_EXCEPTION_PPI = 40;
+
+/** The owner's go-ahead for one work's supplied files as they are. */
+export type SuppliedApproval = {at: string; by: string; note: string};
+
 export type ArtFamilyConfig = {
   /**
    * The owner-approved price. Absent while it waits for a supplier quote
@@ -1037,6 +1047,12 @@ export type ArtProductCollection = {
    * the sizes and supplier SKUs; any other work follows its own orientation.
    */
   suppliedLayout?: Record<string, 'landscape' | 'portrait'>;
+  /**
+   * Works with no approved crop whose supplied files the owner approved as
+   * they are, by artwork id. Stands in for crop approval for the supplied
+   * families only.
+   */
+  suppliedApprovals?: Record<string, SuppliedApproval>;
 };
 
 /**
@@ -1289,10 +1305,17 @@ export function familyReleaseIssues(
     issues.push('a cleared rights review');
   if (artwork?.reviews.master.status !== 'cleared')
     issues.push('a cleared master review');
-  // Supplied files are cut to the approved printed area too.
+  // Supplied files are cut to the approved printed area too, unless the
+  // owner approved a work's supplied files as they are.
+  const suppliedApproved = Boolean(
+    spec?.suppliedFiles &&
+    catalog.collections.find((entry) => entry.slug === product.collection)
+      ?.suppliedApprovals?.[product.artworkId],
+  );
   if (
     (spec?.shape || spec?.suppliedFiles) &&
-    !cropsApproved(product.artworkId, crops)
+    !cropsApproved(product.artworkId, crops) &&
+    !suppliedApproved
   )
     issues.push('crop approval');
   if (
@@ -1552,14 +1575,17 @@ export function validateArtProductCatalog(
       )) {
         const where = `${at}: ${family} ppi exception for ${artworkId}`;
         const floor = FAMILY_SPECS[family as ArtProductFamily]?.minPpi ?? 0;
+        const lowest = FAMILY_SPECS[family as ArtProductFamily]?.suppliedFiles
+          ? MIN_SUPPLIED_EXCEPTION_PPI
+          : MIN_EXCEPTION_PPI;
         if (!source?.prints.some((print) => print.artworkId === artworkId))
           problems.push(`${where}: not an artwork of this collection`);
         if (
           typeof exception?.minPpi !== 'number' ||
-          !(exception.minPpi >= MIN_EXCEPTION_PPI && exception.minPpi < floor)
+          !(exception.minPpi >= lowest && exception.minPpi < floor)
         )
           problems.push(
-            `${where}: minPpi must be at least ${MIN_EXCEPTION_PPI} and below the family's ${floor}`,
+            `${where}: minPpi must be at least ${lowest} and below the family's ${floor}`,
           );
         if (
           !exception?.by?.trim() ||
@@ -1597,6 +1623,22 @@ export function validateArtProductCatalog(
       if (layout !== 'landscape' && layout !== 'portrait')
         problems.push(
           `${at}: suppliedLayout ${artworkId} must be landscape or portrait`,
+        );
+    }
+    for (const [artworkId, approval] of Object.entries(
+      entry.suppliedApprovals ?? {},
+    )) {
+      if (!source?.prints.some((print) => print.artworkId === artworkId))
+        problems.push(
+          `${at}: suppliedApprovals ${artworkId} is not an artwork of this collection`,
+        );
+      if (
+        !approval?.by?.trim() ||
+        !approval.at?.trim() ||
+        !approval.note?.trim()
+      )
+        problems.push(
+          `${at}: suppliedApprovals ${artworkId} records who approved, when and why`,
         );
     }
   }
