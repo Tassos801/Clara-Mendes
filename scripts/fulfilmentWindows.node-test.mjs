@@ -2,6 +2,11 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  ART_PRODUCT_FAMILIES,
+  artProductPage,
+  FAMILY_SPECS,
+} from '../app/lib/artProductCatalog.ts';
+import {
   APPAREL_PRODUCT_TYPES,
   DISPATCH_WINDOW_BUSINESS_DAYS,
   fulfilmentWindows,
@@ -45,4 +50,47 @@ test('every other product keeps the Prodigi windows', () => {
       dispatch: DISPATCH_WINDOW_BUSINESS_DAYS,
     });
   }
+});
+
+// printful.com/fulfillment-updates (2026-10-20): Mugs and Sublimation 2–5 at
+// every facility; All-over synthetic (cut-and-sew) 3–7 at partners. Each
+// order then waits a business day for manual confirmation in Printful.
+test('Printful museum products use Printful’s windows for their technique', () => {
+  assert.deepEqual(fulfilmentWindows('Mugs', 'x-mug', [], 'sublimation'), {
+    production: '2–5',
+    dispatch: '3–6',
+  });
+  assert.deepEqual(fulfilmentWindows('Cushions', 'x-cushion', [], 'cut-sew'), {
+    production: '2–7',
+    dispatch: '3–8',
+  });
+  // The Prodigi mug family (Line and Colour) keeps Prodigi's windows.
+  assert.deepEqual(fulfilmentWindows('Mugs', 'x-mug', [], null), {
+    production: PRODUCTION_WINDOW_BUSINESS_DAYS,
+    dispatch: DISPATCH_WINDOW_BUSINESS_DAYS,
+  });
+});
+
+test('every Printful family names its technique, and only those do', () => {
+  for (const family of ART_PRODUCT_FAMILIES) {
+    const spec = FAMILY_SPECS[family];
+    assert.equal(
+      Boolean(spec.printfulTechnique),
+      spec.route === 'printful',
+      family,
+    );
+  }
+  assert.equal(FAMILY_SPECS['printful-mug'].printfulTechnique, 'sublimation');
+  assert.equal(FAMILY_SPECS.blanket.printfulTechnique, 'sublimation');
+  assert.equal(FAMILY_SPECS.cushion.printfulTechnique, 'cut-sew');
+  // The product page reads it from the shipped catalog.
+  assert.equal(
+    artProductPage('the-great-wave-off-kanagawa-mug')?.printfulTechnique,
+    'sublimation',
+  );
+  assert.equal(
+    artProductPage('the-great-wave-off-kanagawa-hanger-print')
+      ?.printfulTechnique,
+    null,
+  );
 });

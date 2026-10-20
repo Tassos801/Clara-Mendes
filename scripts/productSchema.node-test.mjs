@@ -88,6 +88,25 @@ test('offer handling time follows the exact released product dispatch window', (
   );
 });
 
+test('Printful museum products carry Printful’s window, not Prodigi’s', () => {
+  const handling = (printfulTechnique) => {
+    const schema = productSchema({
+      ...base,
+      productType: 'Cushions',
+      productHandle: 'the-great-wave-off-kanagawa-cushion',
+      printfulTechnique,
+      variants: [variant(1, '18 × 18 in', '44.99'), variant(2, '22 × 22 in', '49.99')],
+    });
+    return [schema.offers, ...schema.hasVariant.map((node) => node.offers)]
+      .map((offer) => offer.shippingDetails?.deliveryTime.handlingTime)
+      .filter(Boolean)
+      .map((time) => [time.minValue, time.maxValue]);
+  };
+  assert.deepEqual(handling('cut-sew'), [[3, 8], [3, 8]]);
+  assert.deepEqual(handling('sublimation'), [[3, 6], [3, 6]]);
+  assert.deepEqual(handling(undefined), [[2, 4], [2, 4]]);
+});
+
 test('every variant offer of a garment carries the Printful window', () => {
   const schema = productSchema({
     ...base,
