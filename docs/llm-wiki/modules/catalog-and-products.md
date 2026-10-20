@@ -707,3 +707,17 @@ its title names the artists while there are three or fewer.
 The index, artist shop and museum "Pair with" queries select whole
 collections by tag, so they read every page of results (`collectPages`, up to
 10 pages of 100) instead of the first 100 products only.
+
+## 2026-10-20 - The browser gets a slim art-product catalog
+
+`data/art-product-catalog.json` holds the pipeline's records (supplier
+mappings, file provenance and hashes, Shopify ids, inventory) and had grown to
+about 1 MB of JavaScript that the root route made every page download. A Vite
+plugin in `app/lib/artProductCatalogForBrowser.ts` (registered in
+`vite.config.ts`) gives the client build only each product's identity and
+release state and its variants' options; server builds, the scripts and the
+tests keep the whole file. Storefront code that runs in the browser must not
+read the other fields: `scripts/artProductCatalogForBrowser.node-test.mjs`
+checks that every storefront reader answers the same from both copies, so a
+new reader belongs in that test. The orders/paid webhook reads variant
+mappings and runs on the server only.

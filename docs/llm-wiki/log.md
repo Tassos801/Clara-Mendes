@@ -1996,3 +1996,12 @@ if a note names a type the shop does not list. Restore the fuller sentence
 when Line and Colour's prints, framed prints, canvas, cases and mugs release.
 The museum blanket pages also showed the retired fleece blanket's
 "30 × 40 in" panel; it now shows only on that product.
+
+## [2026-10-20] perf | Slim art-product catalog in the browser
+
+The client chunk carrying `data/art-product-catalog.json` was 966,794 bytes
+(102,192 gzip) and loaded on every page through the root route; most of it
+was pipeline records the browser never reads. The client build now gets a
+slim copy (see [Catalog and products](modules/catalog-and-products.md)): the
+chunk is 225,565 bytes (30,838 gzip), and the build no longer warns about it.
+Server output is unchanged.
