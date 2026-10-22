@@ -772,7 +772,12 @@ html:has(.home-root) main {
 .hm-nav-group {
   align-items: center;
   display: flex;
-  gap: clamp(1.2rem, 3vw, 3rem);
+  gap: clamp(1rem, 1.6vw, 3rem);
+}
+
+/* One line per link; narrower desktops tighten the type below instead. */
+.hm-nav-group .hm-nav-text {
+  white-space: nowrap;
 }
 
 .hm-header-top .market-selector select {
@@ -835,6 +840,8 @@ html:has(.home-root) main {
   letter-spacing: -0.02em;
   font-style: italic;
   text-transform: none;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .hm-hero-text {
@@ -854,12 +861,13 @@ html:has(.home-root) main {
   font-weight: 400;
   letter-spacing: -0.02em;
   margin: 0 0 2rem;
+  margin-inline: auto;
+  max-width: 16ch;
+  text-wrap: balance;
   color: var(--hm-text-main);
   opacity: 0;
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 0.5s;
 }
-
-.hm-prompt-main i { font-style: italic; }
 
 .hm-prompt-sub {
   font-family: var(--hm-font-serif);
@@ -1040,6 +1048,9 @@ html:has(.home-root) main {
   font-variant-numeric: tabular-nums;
   font-size: 0.7rem;
   letter-spacing: 0.1em;
+  line-height: 1.6;
+  /* Stops short of the centred "Enter the shop" label. */
+  max-width: calc(50% - 10rem);
   color: rgba(255,255,255,0.35);
   opacity: 0;
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2s;
@@ -1198,6 +1209,45 @@ html:has(.home-root) main {
   50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
 }
 
+/* Narrower desktops: the full navigation list still fits the header pill
+   on one line (measured with the brand at 769-1360px). Scoped to the nav
+   group so the brand keeps its own size. */
+@media (max-width: 1360px) {
+  .hm-ui-layer {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .hm-nav-group {
+    gap: 12px;
+  }
+
+  .hm-nav-group .hm-nav-text {
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+  }
+}
+
+@media (max-width: 960px) {
+  .hm-ui-layer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .hm-nav-group {
+    gap: 8px;
+  }
+
+  .hm-nav-group .hm-nav-text {
+    font-size: 0.6rem;
+    letter-spacing: 0.06em;
+  }
+
+  .hm-brand {
+    font-size: 1.45rem;
+  }
+}
+
 @media (max-width: 768px) {
   .home-root,
   .home-root * {
@@ -1301,8 +1351,9 @@ html:has(.home-root) main {
   .hm-coords {
     bottom: 1.8rem;
     color: rgba(255, 255, 255, 0.72);
-    left: 0;
-    right: 0;
+    left: 1.25rem;
+    max-width: none;
+    right: 1.25rem;
     text-align: center;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   }
