@@ -93,6 +93,12 @@ export const BRAND = {
     footnote:
       "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
   },
+  /** The block under the full-screen hero: the curiosity grid. */
+  curiosity: {
+    eyebrow: 'So far',
+    title: "A few of the things we've made.",
+    line: "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
+  },
   collection: {
     eyebrow: 'The collection',
     title: 'The collection so far.',

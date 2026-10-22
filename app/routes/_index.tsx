@@ -1,4 +1,5 @@
-import {Link, useLoaderData} from 'react-router';
+import {useEffect, useRef} from 'react';
+import {Link, useLoaderData, useNavigate} from 'react-router';
 import type {Route} from './+types/_index';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {HeroTiles} from '~/components/HeroTiles';
@@ -67,6 +68,8 @@ import {
   releasedBookNooks,
 } from '~/lib/bookNooks';
 
+const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
+
 // Artist shops from catalog data, like the site header's Artists link.
 const ARTIST_FEATURE = artistFeature();
 const MUSEUM_COLLECTIONS = listShopCapsules()
@@ -84,8 +87,25 @@ export const meta: Route.MetaFunction = ({data}) => {
   });
 };
 
+// The hero background is a CSS image, which browsers discover only after
+// the stylesheet parses — preloading it moves LCP earlier. Phones get a
+// 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
+// the media queries match the stylesheet so only one file is fetched.
 export const links: Route.LinksFunction = () => [
   {rel: 'stylesheet', href: artistFeatureStyles},
+  {
+    as: 'image',
+    href: '/images/backdrops/hero-interior.jpg',
+    media: '(min-width: 721px)',
+    rel: 'preload',
+  },
+  {
+    as: 'image',
+    href: HERO_INTERIOR_MOBILE,
+    media: '(max-width: 720px)',
+    rel: 'preload',
+    type: 'image/webp',
+  },
 ];
 
 export async function loader({context, request}: Route.LoaderArgs) {
@@ -198,6 +218,125 @@ export default function Homepage() {
     seoUrl,
   } = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
+  const navigate = useNavigate();
+  const blurRef = useRef<HTMLDivElement | null>(null);
+  const dotRef = useRef<HTMLDivElement | null>(null);
+  const outlineRef = useRef<HTMLDivElement | null>(null);
+  const orbRef = useRef<HTMLButtonElement | null>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const subRef = useRef<HTMLParagraphElement | null>(null);
+
+  useEffect(() => {
+    const blur = blurRef.current;
+    const dot = dotRef.current;
+    const outline = outlineRef.current;
+    if (!blur || !dot || !outline) return;
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let cursorX = mouseX;
+    let cursorY = mouseY;
+    let raf = 0;
+    let isVisible = false;
+
+    const showCursor = () => {
+      if (!isVisible) {
+        isVisible = true;
+        dot.style.opacity = '1';
+        outline.style.opacity = '1';
+      }
+    };
+
+    const onMove = (event: MouseEvent) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+      dot.style.left = `${mouseX}px`;
+      dot.style.top = `${mouseY}px`;
+      showCursor();
+    };
+
+    const onResize = () => {
+      mouseX = window.innerWidth / 2;
+      mouseY = window.innerHeight / 2;
+    };
+
+    const tick = () => {
+      cursorX += (mouseX - cursorX) * 0.1;
+      cursorY += (mouseY - cursorY) * 0.1;
+      outline.style.left = `${cursorX}px`;
+      outline.style.top = `${cursorY}px`;
+      blur.style.setProperty('--x', `${(cursorX / window.innerWidth) * 100}%`);
+      blur.style.setProperty('--y', `${(cursorY / window.innerHeight) * 100}%`);
+      raf = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('resize', onResize);
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('resize', onResize);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  useEffect(() => {
+    const orb = orbRef.current;
+    const outline = outlineRef.current;
+    const title = titleRef.current;
+    const sub = subRef.current;
+    if (!orb || !outline || !title || !sub) return;
+
+    let pressTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const down = () => {
+      outline.style.width = '20px';
+      outline.style.height = '20px';
+      outline.style.backgroundColor = 'rgba(255,255,255,0.1)';
+      outline.style.borderColor = 'rgba(255,255,255,0.6)';
+      title.style.transition = 'opacity 1s ease';
+      title.style.opacity = '0';
+      sub.style.transition = 'opacity 1s ease';
+      sub.style.opacity = '0';
+      pressTimer = setTimeout(() => {
+        void navigate('/collections/all');
+      }, 950);
+    };
+
+    const up = () => {
+      if (pressTimer) clearTimeout(pressTimer);
+      outline.style.width = '32px';
+      outline.style.height = '32px';
+      outline.style.backgroundColor = 'transparent';
+      outline.style.borderColor = 'rgba(255,255,255,0.3)';
+      title.style.opacity = '1';
+      sub.style.opacity = '1';
+    };
+
+    const enterOrb = () => {
+      outline.style.width = '48px';
+      outline.style.height = '48px';
+      outline.style.borderColor = 'rgba(255,255,255,0.5)';
+    };
+
+    orb.addEventListener('mousedown', down);
+    orb.addEventListener('mouseup', up);
+    orb.addEventListener('mouseenter', enterOrb);
+    orb.addEventListener('mouseleave', up);
+    orb.addEventListener('touchstart', down);
+    orb.addEventListener('touchend', up);
+
+    return () => {
+      orb.removeEventListener('mousedown', down);
+      orb.removeEventListener('mouseup', up);
+      orb.removeEventListener('mouseenter', enterOrb);
+      orb.removeEventListener('mouseleave', up);
+      orb.removeEventListener('touchstart', down);
+      orb.removeEventListener('touchend', up);
+      if (pressTimer) clearTimeout(pressTimer);
+    };
+  }, [navigate]);
 
   return (
     <div className="commerce-home">
@@ -207,6 +346,11 @@ export default function Homepage() {
       />
 
       <section className="home-root" aria-labelledby="home-title">
+        <div className="hm-layer-sharp" />
+        <div ref={blurRef} className="hm-layer-blur" />
+        <div className="hm-noise-overlay" />
+        <div className="hm-vignette" />
+
         <div className="hm-ui-layer">
           <header className="hm-header-top">
             {/* Phones get one calm row (menu, name, search, cart); the
@@ -264,28 +408,60 @@ export default function Homepage() {
             </div>
           </header>
 
-          <div className="hm-hero-body">
-            <div className="hm-hero-text">
-              <h1 id="home-title" className="hm-prompt-main">
-                {BRAND.hero.headline}
-              </h1>
-              <p className="hm-prompt-sub">{BRAND.hero.line}</p>
-              <div className="hm-hero-actions">
-                <Link
-                  className="hm-hero-action hm-hero-action--primary"
-                  to={BRAND.hero.primaryCta.href}
-                >
-                  {BRAND.hero.primaryCta.label}
-                </Link>
-                <Link className="hm-hero-action" to={BRAND.hero.secondaryCta.href}>
-                  {BRAND.hero.secondaryCta.label}
-                </Link>
-              </div>
-              <p className="hm-hero-foot">{BRAND.hero.footnote}</p>
+          <div className="hm-hero-text">
+            <h1 ref={titleRef} id="home-title" className="hm-prompt-main">
+              {BRAND.hero.headline}
+            </h1>
+            <p ref={subRef} className="hm-prompt-sub">
+              {BRAND.hero.line}
+            </p>
+            <div className="hm-hero-actions">
+              <Link
+                className="hm-hero-action hm-hero-action--primary"
+                to={BRAND.hero.primaryCta.href}
+              >
+                {BRAND.hero.primaryCta.label}
+              </Link>
+              <Link className="hm-hero-action" to={BRAND.hero.secondaryCta.href}>
+                {BRAND.hero.secondaryCta.label}
+              </Link>
             </div>
-
-            <HeroTiles />
           </div>
+
+          <div className="hm-coords">{BRAND.hero.footnote}</div>
+
+          <div className="hm-interaction-anchor">
+            <button
+              ref={orbRef}
+              type="button"
+              className="hm-orb-btn"
+              aria-label="Enter the shop"
+              onClick={() => {
+                void navigate('/collections/all');
+              }}
+            />
+            <span className="hm-label-enter">Enter the shop</span>
+          </div>
+        </div>
+
+        <div ref={dotRef} className="hm-cursor-dot" />
+        <div ref={outlineRef} className="hm-cursor-outline" />
+      </section>
+
+      <section
+        className="home-curiosity"
+        aria-labelledby="home-curiosity-title"
+      >
+        <div className="hc-body">
+          <div className="hc-text">
+            <p className="eyebrow">{BRAND.curiosity.eyebrow}</p>
+            <h2 id="home-curiosity-title" className="hc-title">
+              {BRAND.curiosity.title}
+            </h2>
+            <p className="hc-line">{BRAND.curiosity.line}</p>
+          </div>
+
+          <HeroTiles />
         </div>
       </section>
 
@@ -470,28 +646,93 @@ html:has(.home-root) main {
 }
 
 .home-root {
-  --hm-text-main: #26231f;
-  --hm-text-muted: rgba(38, 35, 31, 0.8);
+  --hm-bg-base: #6B655B;
+  --hm-bg-overlay: rgba(107, 101, 91, 0.85);
+  --hm-text-main: #ffffff;
+  --hm-text-muted: rgba(255, 255, 255, 0.7);
   --hm-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
   --hm-font-serif: Georgia, 'Times New Roman', serif;
   --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   position: relative;
-  background-color: var(--color-soft);
+  min-height: 94svh;
+  overflow: hidden;
+  background-color: var(--hm-bg-base);
   color: var(--hm-text-main);
   font-family: var(--hm-font-sans);
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
 }
 
+@media (hover: hover) and (pointer: fine) {
+  .home-root,
+  .home-root * {
+    cursor: none;
+  }
+}
+
+.hm-layer-sharp {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url(/images/backdrops/hero-interior.jpg);
+  background-size: cover;
+  background-position: center;
+  z-index: 1;
+  filter: sepia(0.2) grayscale(0.2);
+}
+
+.hm-layer-blur {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-image: url(/images/backdrops/hero-interior.jpg);
+  background-size: cover;
+  background-position: center;
+  filter: blur(30px) brightness(0.8) sepia(0.3);
+  transform: scale(1.1);
+  z-index: 2;
+  mask-image: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+  -webkit-mask-image: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
+}
+
+@media (max-width: 720px) {
+  .hm-layer-sharp,
+  .hm-layer-blur {
+    background-image: url(/images/backdrops/hero-interior-mobile.webp);
+  }
+}
+
+.hm-noise-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 3;
+  opacity: 0.08;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.8%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
+}
+
+.hm-noise-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: var(--hm-bg-overlay);
+  mix-blend-mode: multiply;
+}
+
 .hm-ui-layer {
   position: relative;
   z-index: 10;
   width: 100%;
+  min-height: 94svh;
   display: flex;
   flex-direction: column;
-  gap: clamp(36px, 6vw, 84px);
-  padding: 2rem 5rem clamp(48px, 7vw, 96px);
+  justify-content: space-between;
+  padding: 4rem 5rem;
+  pointer-events: none;
 }
 
 .hm-nav-text {
@@ -501,8 +742,10 @@ html:has(.home-root) main {
   text-transform: uppercase;
   font-weight: 500;
   color: var(--hm-text-main);
+  pointer-events: auto;
   transition: opacity 0.3s ease;
   text-decoration: none;
+  mix-blend-mode: normal;
 }
 
 .hm-nav-text:hover { opacity: 0.6; }
@@ -511,13 +754,14 @@ html:has(.home-root) main {
   backdrop-filter: blur(24px) saturate(1.25);
   -webkit-backdrop-filter: blur(24px) saturate(1.25);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.6), transparent 48%),
-    rgba(255, 255, 255, 0.34);
-  border: 1px solid rgba(38, 35, 31, 0.14);
+    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 48%),
+    rgba(24, 22, 18, 0.24);
+  border: 1px solid rgba(255,255,255,0.24);
   border-radius: 24px;
   box-shadow:
-    0 18px 46px rgba(38, 35, 31, 0.08),
-    inset 0 1px 0 rgba(255,255,255,0.7);
+    0 18px 46px rgba(10, 9, 7, 0.2),
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    inset 0 -1px 0 rgba(0,0,0,0.12);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -535,8 +779,8 @@ html:has(.home-root) main {
   background:
     linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top 50% / 4px 4px no-repeat,
     linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top 50% / 4px 4px no-repeat,
-    rgba(255, 255, 255, 0.4);
-  border-color: rgba(38, 35, 31, 0.3);
+    rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.28);
   color: var(--hm-text-main);
   max-width: 104px;
   min-height: 32px;
@@ -563,17 +807,18 @@ html:has(.home-root) main {
   height: 44px;
   justify-content: center;
   padding: 0;
+  pointer-events: auto;
   transition: background 0.3s ease;
   width: 44px;
 }
 
 .hm-icon-button:hover,
 .hm-icon-button:focus-visible {
-  background: rgba(38, 35, 31, 0.08);
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .hm-icon-button:focus-visible {
-  outline: 2px solid #26231f;
+  outline: 2px solid rgba(255, 255, 255, 0.9);
   outline-offset: 1px;
 }
 
@@ -592,52 +837,64 @@ html:has(.home-root) main {
   text-transform: none;
 }
 
-.hm-hero-body {
-  align-items: center;
-  display: grid;
-  gap: clamp(32px, 5vw, 80px);
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-}
-
 .hm-hero-text {
-  max-width: 34rem;
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  width: 100%;
+  pointer-events: none;
 }
 
 .hm-prompt-main {
   font-family: var(--hm-font-serif);
-  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
-  line-height: 1.02;
+  font-size: clamp(3.2rem, 7vw, 5rem);
+  line-height: 1.1;
   font-weight: 400;
-  letter-spacing: -0.025em;
-  margin: 0 0 1.2rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 2rem;
   color: var(--hm-text-main);
-  text-wrap: balance;
+  opacity: 0;
+  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 0.5s;
 }
+
+.hm-prompt-main i { font-style: italic; }
 
 .hm-prompt-sub {
   font-family: var(--hm-font-serif);
   font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  text-transform: none;
+  letter-spacing: 0;
   line-height: 1.5;
   color: var(--hm-text-muted);
-  margin: 0;
-  max-width: 30ch;
+  max-width: 34ch;
+  margin: 0 auto;
+  opacity: 0;
+  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 1.5s;
 }
 
 .hm-hero-actions {
   align-items: center;
   display: flex;
-  flex-wrap: wrap;
   gap: 12px;
-  margin-top: clamp(24px, 3vw, 36px);
+  justify-content: center;
+  margin-top: clamp(28px, 4vw, 44px);
+  pointer-events: auto;
 }
 
 .hm-hero-action {
   align-items: center;
   backdrop-filter: blur(18px) saturate(1.25);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  background: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(38, 35, 31, 0.28);
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 52%),
+    rgba(20, 18, 15, 0.26);
+  border: 1px solid rgba(255,255,255,0.42);
   border-radius: 999px;
+  box-shadow:
+    0 12px 30px rgba(10, 9, 7, 0.18),
+    inset 0 1px 0 rgba(255,255,255,0.28);
   color: var(--hm-text-main);
   display: inline-flex;
   font-size: 0.72rem;
@@ -653,34 +910,192 @@ html:has(.home-root) main {
 }
 
 .hm-hero-action:hover {
-  background: rgba(255, 255, 255, 0.78);
-  border-color: rgba(38, 35, 31, 0.5);
+  background: rgba(20, 18, 15, 0.38);
+  border-color: rgba(255,255,255,0.72);
 }
 
 .hm-hero-action--primary {
-  background: #26231f;
-  border-color: #26231f;
-  color: #f6f1e8;
+  background:
+    linear-gradient(135deg, rgba(255,255,255,0.82), transparent 58%),
+    rgba(251,250,246,0.84);
+  border-color: rgba(255,255,255,0.76);
+  color: #26231f;
 }
 
 .hm-hero-action--primary:hover {
-  background: #000;
-  border-color: #000;
-  color: #fff;
+  background: white;
+  color: #26231f;
 }
 
-.hm-hero-foot {
-  color: var(--hm-text-muted);
+.hm-interaction-anchor {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  pointer-events: auto;
+}
+
+.hm-orb-btn {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.6);
+  transition: all 0.6s var(--hm-ease-fluid);
+  position: relative;
+  overflow: visible;
+  padding: 0;
+}
+
+.hm-orb-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50%;
+  animation: hmOrbPulse 2.8s var(--hm-ease-fluid) infinite;
+}
+
+.hm-orb-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: white;
+  transform: scale(0);
+  transition: transform 1.5s var(--hm-ease-fluid);
+}
+
+.hm-orb-btn:active::after { transform: scale(1); }
+
+.hm-orb-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.9);
+}
+
+.hm-orb-btn:hover::before {
+  animation: none;
+  width: 50px; height: 50px;
+  border-color: rgba(255,255,255,0.4);
+}
+
+.hm-label-enter {
   font-family: var(--hm-font-sans);
-  font-size: 0.68rem;
-  letter-spacing: 0.14em;
-  margin: clamp(20px, 3vw, 32px) 0 0;
+  font-size: 0.7rem;
   text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--hm-text-muted);
+  opacity: 0;
+  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2.2s;
 }
 
-/* ── The curiosity grid ── four columns, the Hokusai and the book nook
-   each two wide, so the eye reads a cabinet of very different things. */
-.hm-tiles {
+.hm-cursor-dot,
+.hm-cursor-outline {
+  position: fixed;
+  top: 0; left: 0;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.hm-cursor-dot {
+  width: 4px; height: 4px;
+  background-color: white;
+}
+
+.hm-cursor-outline {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: width 0.25s var(--hm-ease-fluid), height 0.25s var(--hm-ease-fluid),
+              background-color 0.2s ease, border-color 0.2s ease, opacity 0.4s ease;
+}
+
+.hm-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 120% 100% at 50% 50%,
+    transparent 40%,
+    rgba(30, 28, 24, 0.55) 100%
+  );
+}
+
+.hm-coords {
+  position: absolute;
+  bottom: 4rem;
+  left: 5rem;
+  font-family: var(--hm-font-sans);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.35);
+  opacity: 0;
+  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2s;
+}
+
+/* ── So far: the curiosity grid ── directly under the full-screen hero.
+   Four columns, the Hokusai and the book nook each two wide, so the eye
+   reads a cabinet of very different things. */
+.home-curiosity {
+  --hm-text-main: #26231f;
+  --hm-text-muted: rgba(38, 35, 31, 0.8);
+  --hm-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
+  --hm-font-serif: Georgia, 'Times New Roman', serif;
+  --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  position: relative;
+  background-color: var(--color-soft);
+  color: var(--hm-text-main);
+  font-family: var(--hm-font-sans);
+  -webkit-font-smoothing: antialiased;
+  isolation: isolate;
+  padding: clamp(48px, 7vw, 96px) 5rem;
+}
+
+.hc-body {
+  align-items: center;
+  display: grid;
+  gap: clamp(32px, 5vw, 80px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
+.hc-text {
+  max-width: 34rem;
+}
+
+.hc-title {
+  font-family: var(--hm-font-serif);
+  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+  line-height: 1.02;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  margin: 0 0 1.2rem;
+  color: var(--hm-text-main);
+  text-wrap: balance;
+}
+
+.hc-line {
+  font-family: var(--hm-font-serif);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.5;
+  color: var(--hm-text-muted);
+  margin: 0;
+  max-width: 30ch;
+}
+
+.hc-tiles {
   display: grid;
   gap: 14px;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -689,11 +1104,11 @@ html:has(.home-root) main {
   padding: 0;
 }
 
-.hm-tile {
+.hc-tile {
   min-width: 0;
 }
 
-.hm-tile a {
+.hc-tile a {
   aspect-ratio: 4 / 5;
   background: #ded7cb;
   border-radius: 6px;
@@ -702,17 +1117,17 @@ html:has(.home-root) main {
   position: relative;
 }
 
-.hm-tile:nth-child(2) a,
-.hm-tile:nth-child(6) a {
+.hc-tile:nth-child(2) a,
+.hc-tile:nth-child(6) a {
   aspect-ratio: 8 / 5;
 }
 
-.hm-tile:nth-child(2),
-.hm-tile:nth-child(6) {
+.hc-tile:nth-child(2),
+.hc-tile:nth-child(6) {
   grid-column: span 2;
 }
 
-.hm-tile img {
+.hc-tile img {
   display: block;
   height: 100%;
   object-fit: cover;
@@ -720,17 +1135,17 @@ html:has(.home-root) main {
   width: 100%;
 }
 
-.hm-tile a:hover img,
-.hm-tile a:focus-visible img {
+.hc-tile a:hover img,
+.hc-tile a:focus-visible img {
   transform: scale(1.03);
 }
 
-.hm-tile a:focus-visible {
+.hc-tile a:focus-visible {
   outline: 2px solid #26231f;
   outline-offset: 3px;
 }
 
-.hm-tile-tag {
+.hc-tile-tag {
   background: rgba(251, 250, 246, 0.94);
   border-radius: 3px;
   bottom: 10px;
@@ -773,7 +1188,26 @@ html:has(.home-root) main {
   margin-top: 0;
 }
 
+@keyframes hmFadeInSlow {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hmOrbPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+}
+
 @media (max-width: 768px) {
+  .home-root,
+  .home-root * {
+    cursor: auto;
+  }
+
+  .hm-ui-layer {
+    padding: 2rem;
+  }
+
   .hm-header-top {
     border-radius: 999px;
     gap: 2px;
@@ -801,6 +1235,7 @@ html:has(.home-root) main {
     max-width: none;
   }
 
+
   .hm-header-top .market-selector select {
     max-width: 74px;
     min-height: 30px;
@@ -818,48 +1253,96 @@ html:has(.home-root) main {
     padding-left: 4px;
   }
 
-  .hm-ui-layer {
-    gap: 28px;
-    padding: 1rem 1.25rem 2.4rem;
+  .hm-hero-text {
+    left: 50%;
+    max-width: 340px;
+    top: 46%;
+    width: calc(100% - 4rem);
   }
 
-  .hm-hero-body {
+  .hm-prompt-main {
+    font-size: 2.72rem;
+    letter-spacing: -0.01em;
+    line-height: 1.04;
+    margin-bottom: 1.35rem;
+    text-wrap: balance;
+  }
+
+  .hm-prompt-sub {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.02rem;
+    letter-spacing: 0;
+    line-height: 1.5;
+    margin-inline: auto;
+    max-width: 30ch;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
+  }
+
+  .hm-prompt-main {
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .hm-hero-actions {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .hm-hero-action {
+    min-height: 46px;
+    width: min(240px, 100%);
+  }
+
+  /* "Enter the shop" repeats "See what we made"; phones keep one action. */
+  .hm-interaction-anchor {
+    display: none;
+  }
+
+  .hm-coords {
+    bottom: 1.8rem;
+    color: rgba(255, 255, 255, 0.72);
+    left: 0;
+    right: 0;
+    text-align: center;
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .hm-cursor-dot,
+  .hm-cursor-outline {
+    display: none;
+  }
+
+  .home-curiosity {
+    padding: 2.4rem 1.25rem;
+  }
+
+  .hc-body {
     gap: 26px;
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .hm-prompt-main {
+  .hc-title {
     font-size: clamp(2.2rem, 10.5vw, 2.8rem);
   }
 
-  .hm-hero-actions {
-    gap: 10px;
-  }
-
-  .hm-hero-action {
-    flex: 1 1 140px;
-    min-height: 44px;
-    min-width: 0;
-  }
-
   /* Phones show the first four tiles, square, two across. */
-  .hm-tiles {
+  .hc-tiles {
     gap: 10px;
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .hm-tile:nth-child(2),
-  .hm-tile:nth-child(6) {
+  .hc-tile:nth-child(2),
+  .hc-tile:nth-child(6) {
     grid-column: auto;
   }
 
-  .hm-tile a,
-  .hm-tile:nth-child(2) a,
-  .hm-tile:nth-child(6) a {
+  .hc-tile a,
+  .hc-tile:nth-child(2) a,
+  .hc-tile:nth-child(6) a {
     aspect-ratio: 1 / 1;
   }
 
-  .hm-tile:nth-child(n + 5) {
+  .hc-tile:nth-child(n + 5) {
     display: none;
   }
 
@@ -871,14 +1354,87 @@ html:has(.home-root) main {
 }
 
 @media (max-width: 768px) and (max-height: 680px) {
+  .hm-ui-layer {
+    display: grid;
+    /* One full-width column; the flex layout's space-between would
+       otherwise shrink it to its content. */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding: 1rem 1.25rem 2.2rem;
+    row-gap: 8px;
+  }
+
   .hm-brand,
   .hm-brand.hm-nav-text {
     font-size: 1.25rem;
   }
+
+  .hm-hero-text {
+    align-self: center;
+    grid-row: 2;
+    justify-self: center;
+    left: auto;
+    max-width: 300px;
+    position: static;
+    top: auto;
+    transform: none;
+    width: 100%;
+  }
+
+  .hm-prompt-main {
+    font-size: clamp(2.3rem, 14vw, 2.65rem);
+    line-height: 1;
+    margin-bottom: 0.8rem;
+  }
+
+  .hm-prompt-sub {
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+
+  .hm-hero-actions {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .hm-hero-action {
+    min-height: 38px;
+    padding-inline: 16px;
+  }
+
+  .hm-interaction-anchor {
+    align-self: end;
+    bottom: auto;
+    gap: 0.85rem;
+    grid-row: 3;
+    justify-self: center;
+    left: auto;
+    position: static;
+    transform: none;
+  }
+
+  .hm-label-enter {
+    font-size: 0.62rem;
+  }
+
+  .hm-coords {
+    bottom: 0.75rem;
+    font-size: 0.62rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hm-tile img {
+  .hm-prompt-main,
+  .hm-prompt-sub,
+  .hm-coords,
+  .hm-label-enter,
+  .hm-orb-btn::before {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .hc-tile img {
     transition: none;
   }
 }
