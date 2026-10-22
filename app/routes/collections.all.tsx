@@ -197,9 +197,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
     .filter(Boolean)
     .join(' ');
 
-  // "Featured" lists the studio's products first and museum reproductions
-  // after them, prints first (app/lib/museumListingOrder.ts); explicit
-  // sorts keep Shopify's order across the whole shop.
+  // "Featured" lists the studio's products first, rotated by product line
+  // (app/lib/listingLines.ts), and museum reproductions after them, prints
+  // first (app/lib/museumListingOrder.ts); explicit sorts keep Shopify's
+  // order across the whole shop.
   const museumClause = featuredMuseumClause(sort);
   const data = museumClause
     ? await loadFeaturedListing({

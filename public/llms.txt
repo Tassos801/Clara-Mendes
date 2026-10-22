@@ -1,9 +1,9 @@
 # Clara Mendes — shopclaramendes.com
 
 > Independent art studio shop. We like art and follow it wherever it goes.
-> Twenty-four works of our own across
-> seven capsules, giclée-printed to order on 200gsm Enhanced Matte Art paper
-> in 8 × 10, 16 × 20, and 20 × 24 in. Around the art: museum prints of
+> Twenty-four works of our own across seven capsules, giclée-printed to order
+> on 200gsm Enhanced Matte Art paper in 8 × 10, 16 × 20, and 20 × 24 in.
+> Around the art: museum prints of
 > Hokusai and Hiroshige, greeting cards, postcards, stretched canvas, tough
 > phone cases, personalised star maps, activewear, ceramic plant pots and DIY
 > book nook kits. Ships to the EU and most countries; not the United Kingdom.
@@ -30,7 +30,7 @@ Key facts
   replies within one business day.
 - Prices in EUR; secure Shopify checkout.
 
-## Original art capsules
+## Our own capsules
 
 - [Quiet Form](https://shopclaramendes.com/collections/quiet-form): warm
   architectural abstracts in ivory, oat, terracotta, and charcoal.
@@ -63,7 +63,7 @@ Key facts
   the five founding capsules on greeting cards, postcards and stretched
   canvas.
 - [Art Tough Phone Case](https://shopclaramendes.com/products/art-tough-phone-case):
-  all twenty-four original works on a matte, dual-layer case for iPhone,
+  all twenty-four of our own works on a matte, dual-layer case for iPhone,
   Samsung Galaxy and Google Pixel.
 - [Your Sky](https://shopclaramendes.com/your-sky): a personalised star map of
   a chosen place and minute, unframed or framed.
