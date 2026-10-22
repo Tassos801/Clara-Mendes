@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
   useLoaderData,
   useRouteError,
+  useRouteLoaderData,
 } from 'react-router';
 import {
   Analytics,
@@ -158,14 +159,22 @@ export function ErrorBoundary() {
     detail = error.message;
   }
 
-  return (
-    <main className="error-page">
+  const page = (
+    <div className="error-page">
       <p className="eyebrow">Clara Mendes</p>
       <h1>{title}</h1>
       <p>{detail}</p>
       <a className="text-link" href="/collections/all">
         Back to the shop
       </a>
-    </main>
+    </div>
   );
+
+  // A 404 from a child route still has the root data, so it gets the
+  // normal header, footer and menus instead of a dead end. When the root
+  // loader itself failed there is no cart to hand the shell, so the bare
+  // page stands alone.
+  const rootData = useRouteLoaderData<typeof loader>('root');
+  if (!rootData) return <main>{page}</main>;
+  return <ClaraShell cart={rootData.cart}>{page}</ClaraShell>;
 }

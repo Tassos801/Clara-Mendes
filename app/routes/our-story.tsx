@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router';
 import type {Route} from './+types/our-story';
+import {NAV_LINKS} from '~/lib/navLinks';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
@@ -178,18 +179,18 @@ export default function OurStory() {
               Clara Mendes
             </Link>
             <nav className="os-nav-group" aria-label="Site navigation">
-              <Link to="/collections/all" className="os-nav-text">
-                Shop
-              </Link>
-              <Link to="/our-story" className="os-nav-text os-active-tab">
-                Our Story
-              </Link>
-              <Link to="/search" className="os-nav-text">
-                Search
-              </Link>
-              <Link to="/contact" className="os-nav-text">
-                Contact
-              </Link>
+              {NAV_LINKS.map(({to, label}) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  prefetch="intent"
+                  className={({isActive}) =>
+                    `os-nav-text${isActive ? ' os-active-tab' : ''}`
+                  }
+                >
+                  {label}
+                </NavLink>
+              ))}
               <button
                 className="os-nav-text os-cart-link"
                 type="button"
@@ -486,8 +487,6 @@ html:has(.our-story-root) main {
   font-weight: 400;
   font-style: italic;
   margin: 0 0 2.5rem;
-  opacity: 0;
-  animation: osFadeInSlow 2.5s var(--os-ease-fluid) forwards 0.4s;
   line-height: 1.15;
 }
 
@@ -497,8 +496,6 @@ html:has(.our-story-root) main {
   line-height: 1.8;
   font-weight: 300;
   color: var(--os-text-muted);
-  opacity: 0;
-  animation: osFadeInSlow 2.5s var(--os-ease-fluid) forwards 0.8s;
 }
 
 .os-story-body p { margin: 0 0 1.5rem; }
@@ -512,8 +509,6 @@ html:has(.our-story-root) main {
   gap: 10px;
   letter-spacing: 0.2em;
   margin-top: 1rem;
-  opacity: 0;
-  animation: osFadeInSlow 2.5s var(--os-ease-fluid) forwards 1.2s;
   text-decoration: none;
   text-transform: uppercase;
   width: fit-content;
@@ -731,11 +726,6 @@ html:has(.our-story-root) main {
   background: #3a352f;
 }
 
-@keyframes osFadeInSlow {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @media (max-width: 768px) {
   .os-ui-layer { padding: 2rem; }
 
@@ -781,14 +771,6 @@ html:has(.our-story-root) main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .os-story-title,
-  .os-story-body,
-  .os-scroll-cue {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
   .os-scroll-cue { scroll-behavior: auto; }
 
   .os-capsule-item,
