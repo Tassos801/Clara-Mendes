@@ -9,6 +9,7 @@
  * into a friendly 503 rather than crashing the page.
  */
 
+// Relative import keeps this module loadable by the plain-Node test runner.
 import {
   MAX_REVIEW_PHOTOS,
   MAX_REVIEW_PHOTO_BYTES,
@@ -16,7 +17,7 @@ import {
   REVIEW_PHOTO_CONTENT_TYPES,
   REVIEWS_METAFIELD_KEY,
   REVIEWS_METAFIELD_NAMESPACE,
-} from '~/lib/reviewTypes';
+} from './reviewTypes.ts';
 
 // 2025-01 left Shopify's support window, so requests were silently served by
 // the oldest supported version. Kept in step with scripts/lib/admin.mjs.

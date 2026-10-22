@@ -16,6 +16,8 @@ declare global {
   interface Env {
     PUBLIC_GTM_CONTAINER_ID?: string;
     SHOPIFY_ADMIN_ACCESS_TOKEN?: string;
+    /** Shown to subscribers once the owner has created the code in Shopify. */
+    NEWSLETTER_WELCOME_CODE?: string;
     /**
      * "Your Sky" personalised star map (docs/your-sky-release.md).
      * All optional so the storefront runs before they are provisioned; the
