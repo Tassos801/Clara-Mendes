@@ -27,7 +27,9 @@ test('product types map to the lines the shop rotates through', () => {
   assert.equal(productLine(p(1, 'Plant Pots')), 'pots');
   assert.equal(productLine(p(1, 'Cards')), 'cards');
   assert.equal(productLine(p(1, 'Postcards')), 'cards');
+  assert.equal(productLine(p(1, 'Personalised Art')), 'sky');
   assert.equal(productLine(p(1, 'Canvas Art')), 'other');
+  assert.equal(productLine(p(1, 'constructor')), 'other');
   assert.equal(productLine(p(1, null)), 'other');
   assert.equal(productLine({id: 1}), 'other');
 });

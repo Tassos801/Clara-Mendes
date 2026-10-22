@@ -67,5 +67,7 @@ test('cursors this listing did not issue are rejected', () => {
   }
   // Past the end (the list shrank since the cursor was issued).
   assert.throws(() => pageByIndex({first: 4, endCursor: 'i.10'}, ITEMS), ListingCursorError);
+  assert.throws(() => pageByIndex({first: 4, endCursor: 'i.9'}, ITEMS), ListingCursorError);
+  assert.throws(() => pageByIndex({first: 4, endCursor: 'i.0'}, []), ListingCursorError);
   assert.throws(() => pageByIndex({last: 4, startCursor: 'i.11'}, ITEMS), ListingCursorError);
 });

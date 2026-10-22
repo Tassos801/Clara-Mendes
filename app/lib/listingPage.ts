@@ -25,7 +25,8 @@ function parseIndexCursor(cursor: string): number {
  * forward from after the cursor, `{last, startCursor}` pages backward
  * from before it, and no cursor means the first or the last page.
  * Cursors are positions, so forward and backward paging never repeat or
- * skip a product. A position past the end (the list shrank) is a
+ * skip a product. A forward cursor at or past the last product, or a
+ * backward cursor past the end, means the list shrank: that is a
  * ListingCursorError, which the route turns into a redirect to page one.
  */
 export function pageByIndex<T>(
@@ -37,8 +38,8 @@ export function pageByIndex<T>(
   if ('first' in variables) {
     const after =
       variables.endCursor ? parseIndexCursor(variables.endCursor) : -1;
-    if (after >= items.length && items.length > 0)
-      throw new ListingCursorError(`Cursor ${after} is past the end`);
+    if (after >= 0 && after >= items.length - 1)
+      throw new ListingCursorError(`Cursor ${after} has nothing after it`);
     start = after + 1;
     end = Math.min(items.length, start + variables.first);
   } else {

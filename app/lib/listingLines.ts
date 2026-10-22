@@ -34,7 +34,7 @@ const TYPE_LINES: Record<string, Line> = {
 export function productLine(product: {productType?: string | null}): Line {
   const type = product.productType?.trim();
   if (!type) return 'other';
-  if (TYPE_LINES[type]) return TYPE_LINES[type];
+  if (Object.hasOwn(TYPE_LINES, type)) return TYPE_LINES[type];
   if (isClothingProductType(type)) return 'clothing';
   if (isPersonalisedProductType(type)) return 'sky';
   return 'other';
@@ -56,7 +56,7 @@ export function rotateByLine<T extends {productType?: string | null}>(
     took = false;
     for (const line of LINE_ORDER) {
       const next = buckets.get(line)!.shift();
-      if (next) {
+      if (next !== undefined) {
         out.push(next);
         took = true;
       }
