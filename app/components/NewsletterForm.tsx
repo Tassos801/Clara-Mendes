@@ -39,6 +39,7 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
         : undefined;
   const reply = fetcher.data ?? fromRedirect;
   const text = message(reply, code);
+  const isError = Boolean(reply && !reply.ok);
   const busy = fetcher.state !== 'idle';
   const formRef = useRef<HTMLFormElement>(null);
   const [hydrated, setHydrated] = useState(false);
@@ -79,11 +80,14 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
           </button>
         </div>
       </fetcher.Form>
-      {text ? (
-        <p className={`newsletter__message${reply?.ok ? '' : ' is-error'}`} role={reply?.ok ? 'status' : 'alert'}>
-          {text}
-        </p>
-      ) : null}
+      {/* Always mounted so screen readers announce each new message. */}
+      <p
+        className={`newsletter__message${isError ? ' is-error' : ''}`}
+        role={isError ? 'alert' : 'status'}
+        aria-live="polite"
+      >
+        {text}
+      </p>
       <p className="newsletter__consent">
         {COPY.consent}{' '}
         <Link to="/policies/privacy-policy">{COPY.privacyLabel}</Link>

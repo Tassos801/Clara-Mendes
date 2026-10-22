@@ -14,7 +14,7 @@ test('emails are trimmed and lower-cased, then validated', () => {
   assert.equal(NEWSLETTER_HONEYPOT_FIELD, 'website');
   for (const ok of ['a@b.co', 'first.last+tag@sub.example.org'])
     assert.equal(isValidEmail(ok), true, ok);
-  for (const bad of ['', 'ab.co', 'a@b', 'a b@c.co', 'a@@b.co', `${'x'.repeat(250)}@b.co`])
+  for (const bad of ['', 'ab.co', 'a@b', 'a b@c.co', 'a@@b.co', `${'x'.repeat(250)}@b.co`, 'a"b@c.co', 'a\\b@c.co', 'a(b)@c.co'])
     assert.equal(isValidEmail(bad), false, bad || '(empty)');
 });
 
@@ -56,7 +56,7 @@ test('a new address is created as a subscribed customer', async () => {
 test('an existing address gets its consent updated', async () => {
   const {calls, client} = fakeClient([
     {customerCreate: {customer: null, userErrors: [{field: ['input', 'email'], message: 'Email has already been taken'}]}},
-    {customers: {nodes: [{id: 'gid://shopify/Customer/9', emailMarketingConsent: {marketingState: 'NOT_SUBSCRIBED'}}]}},
+    {customers: {nodes: [{id: 'gid://shopify/Customer/9', email: 'old@example.com', emailMarketingConsent: {marketingState: 'NOT_SUBSCRIBED'}}]}},
     {customerEmailMarketingConsentUpdate: {customer: {id: 'gid://shopify/Customer/9'}, userErrors: []}},
   ]);
   const result = await subscribeEmail(env, {email: 'old@example.com'}, {client});
@@ -68,10 +68,19 @@ test('an existing address gets its consent updated', async () => {
 test('an address that is already subscribed is reported as such', async () => {
   const {client} = fakeClient([
     {customerCreate: {customer: null, userErrors: [{field: ['input', 'email'], message: 'Email has already been taken'}]}},
-    {customers: {nodes: [{id: 'gid://shopify/Customer/9', emailMarketingConsent: {marketingState: 'SUBSCRIBED'}}]}},
+    {customers: {nodes: [{id: 'gid://shopify/Customer/9', email: 'old@example.com', emailMarketingConsent: {marketingState: 'SUBSCRIBED'}}]}},
   ]);
   const result = await subscribeEmail(env, {email: 'old@example.com'}, {client});
   assert.equal(result.status, 'already');
+});
+
+test('a lookup that finds a different address does not touch consent', async () => {
+  const {calls, client} = fakeClient([
+    {customerCreate: {customer: null, userErrors: [{field: ['input', 'email'], message: 'Email has already been taken'}]}},
+    {customers: {nodes: [{id: 'gid://shopify/Customer/7', email: 'other@example.com', emailMarketingConsent: {marketingState: 'NOT_SUBSCRIBED'}}]}},
+  ]);
+  await assert.rejects(() => subscribeEmail(env, {email: 'old@example.com'}, {client}), /lookup mismatch/);
+  assert.equal(calls.length, 2);
 });
 
 test('other user errors and access problems throw', async () => {

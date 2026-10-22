@@ -19,6 +19,7 @@ const lastSubmit = new Map<string, number>();
 
 function clientIp(request: Request) {
   return (
+    request.headers.get('oxygen-buyer-ip') ??
     request.headers.get('cf-connecting-ip') ??
     request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
     'unknown'
@@ -32,8 +33,20 @@ function throttled(ip: string, now = Date.now()) {
   return last !== undefined && now - last < WINDOW_MS;
 }
 
+/**
+ * Site-relative paths only. Parsed as a URL against a placeholder origin so
+ * tricks like `/\evil.com` or `/<tab>/evil.com`, which browsers resolve
+ * off-site, fall back to `/`.
+ */
 function safeRedirect(target: FormDataEntryValue | null) {
-  return typeof target === 'string' && /^\/(?!\/)/.test(target) ? target : '/';
+  if (typeof target !== 'string') return '/';
+  try {
+    const url = new URL(target, 'https://x.invalid');
+    if (url.origin !== 'https://x.invalid' || /[\\\s]/.test(target)) return '/';
+    return url.pathname + url.search;
+  } catch {
+    return '/';
+  }
 }
 
 export async function action({request, context}: Route.ActionArgs) {

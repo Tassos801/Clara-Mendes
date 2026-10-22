@@ -117,7 +117,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
     },
     gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
     newsletter: {
-      enabled: Boolean(env.SHOPIFY_ADMIN_ACCESS_TOKEN),
       welcomeCode: env.NEWSLETTER_WELCOME_CODE?.trim() || null,
     },
   };

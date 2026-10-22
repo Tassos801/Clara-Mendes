@@ -2790,6 +2790,7 @@ button {
 .newsletter__button:focus-visible { outline: 2px solid var(--color-paper); outline-offset: 2px; }
 .newsletter--footer .newsletter__message { font-size: 0.9rem; line-height: 1.5; margin: 10px 0 0; }
 .newsletter__message.is-error { color: #f3c9b8; }
+.newsletter__message:empty { margin: 0; }
 .newsletter--footer .newsletter__consent { font-size: 0.74rem; line-height: 1.5; margin: 10px 0 0; opacity: 0.75; }
 .newsletter__consent a { color: inherit; text-decoration: underline; }
 @media (max-width: 560px) {

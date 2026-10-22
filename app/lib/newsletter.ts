@@ -8,9 +8,17 @@ export function normalizeEmail(raw: string) {
   return raw.trim().toLowerCase();
 }
 
-/** RFC-lite: one @, something before it, a dot in the domain, no spaces, ≤ 254. */
+/** Quotes, brackets, separators and control characters never belong in a sign-up address. */
+// eslint-disable-next-line no-control-regex
+const FORBIDDEN_EMAIL_CHARS = /["'\\():;,<>*[\]\u0000-\u001f\u007f]/;
+
+/**
+ * RFC-lite: one @, something before it, a dot in the domain, no spaces,
+ * none of FORBIDDEN_EMAIL_CHARS, ≤ 254.
+ */
 export function isValidEmail(email: string) {
   if (!email || email.length > 254 || /\s/.test(email)) return false;
+  if (FORBIDDEN_EMAIL_CHARS.test(email)) return false;
   const at = email.indexOf('@');
   if (at < 1 || at !== email.lastIndexOf('@')) return false;
   const domain = email.slice(at + 1);

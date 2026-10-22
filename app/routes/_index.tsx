@@ -1606,6 +1606,7 @@ html:has(.home-root) main {
 .journal-teaser-copy .newsletter__button:focus-visible { outline: 2px solid #fbfaf6; outline-offset: 2px; }
 .journal-teaser-copy .newsletter__message { font-size: 0.95rem; margin: 10px 0 0; }
 .journal-teaser-copy .newsletter__message.is-error { color: #f3c9b8; }
+.journal-teaser-copy .newsletter__message:empty { margin: 0; }
 .journal-teaser-copy .newsletter__consent { font-size: 0.76rem; margin: 8px 0 0; opacity: 0.8; }
 .journal-teaser-copy .newsletter__consent a { color: inherit; text-decoration: underline; }
 .journal-teaser-copy .newsletter__label,

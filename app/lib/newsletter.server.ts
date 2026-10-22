@@ -23,7 +23,11 @@ type CreateResult = {
 };
 type LookupResult = {
   customers: {
-    nodes: Array<{id: string; emailMarketingConsent?: {marketingState?: string | null} | null}>;
+    nodes: Array<{
+      id: string;
+      email?: string | null;
+      emailMarketingConsent?: {marketingState?: string | null} | null;
+    }>;
   };
 };
 type ConsentResult = {
@@ -36,7 +40,7 @@ const CREATE = `#graphql
   }`;
 const LOOKUP = `#graphql
   query NewsletterCustomerByEmail($query: String!) {
-    customers(first: 1, query: $query) { nodes { id emailMarketingConsent { marketingState } } }
+    customers(first: 1, query: $query) { nodes { id email emailMarketingConsent { marketingState } } }
   }`;
 const CONSENT = `#graphql
   mutation NewsletterConsent($input: CustomerEmailMarketingConsentUpdateInput!) {
@@ -80,6 +84,10 @@ export async function subscribeEmail(
   const found = await client<LookupResult>(LOOKUP, {query: `email:${JSON.stringify(email)}`});
   const customer = found.customers.nodes[0];
   if (!customer) raise(createErrors, 'customerCreate (taken but not found)');
+  // Admin search is fuzzy; never touch consent on a customer whose address differs.
+  if (normalizeEmail(customer.email ?? '') !== email) {
+    raise(createErrors, 'customerCreate (taken but lookup mismatch)');
+  }
   if (customer.emailMarketingConsent?.marketingState === 'SUBSCRIBED') return {status: 'already'};
 
   const updated = await client<ConsentResult>(CONSENT, {
