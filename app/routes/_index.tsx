@@ -1,10 +1,6 @@
-import {useRef} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/_index';
-import {
-  ClaraProductCard,
-  type ClaraCardProduct,
-} from '~/components/ClaraProductCard';
+import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {HeroTiles} from '~/components/HeroTiles';
 import {BRAND} from '~/content/brand';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
@@ -12,7 +8,6 @@ import {ClothingFeature} from '~/components/ClothingFeature';
 import {ArtistShopsFeature} from '~/components/ArtistShopsFeature';
 import {artistFeature} from '~/lib/artistShops';
 import {listShopCapsules, shopCapsulePath} from '~/lib/capsules';
-import {museumTagClause, studioSearchQuery} from '~/lib/museumListingOrder';
 import artistFeatureStyles from '~/styles/artist-feature.css?url';
 import {
   loadClothingProducts,
@@ -35,22 +30,20 @@ import {
 } from '~/components/ToughCaseTeaser';
 import {useAside} from '~/components/Aside';
 import {
-  filterDemoCollections,
-  filterDemoProducts,
   isDemoProduct,
   isReleasedExtensionHandle,
   isReleasedProductHandle,
-  ORIGINAL_ART_COLLECTIONS,
-  pickVariedProducts,
 } from '~/lib/catalogFilters';
-import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {
-  buildOriginalArtQuery,
   buildOriginalArtProductMap,
-  ORIGINAL_ART_QUERY_FIRST,
   type OriginalArtProductMap,
 } from '~/lib/originalArt';
+import {
+  LEAD_PRINT_HANDLES,
+  LEAD_PRINTS_QUERY_FIRST,
+  leadPrintsQuery,
+} from '~/lib/leadPrints';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {type MoneyAmount} from '~/lib/money';
 import {
@@ -65,7 +58,6 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {catalogCounts, countWord} from '~/lib/catalogSummary';
 import {
   BOOK_NOOK_PRODUCT_TYPE,
   BOOK_NOOKS_PATH,
@@ -82,33 +74,6 @@ const MUSEUM_COLLECTIONS = listShopCapsules()
     path: shopCapsulePath(capsule.slug),
     title: capsule.title,
   }));
-
-// "More from the edit" shows the studio's own products; museum
-// reproductions have the artist feature instead, and would otherwise fill
-// it, being the newest products in Shopify's best-selling order.
-const MUSEUM_CLAUSE = museumTagClause();
-const EDIT_QUERY = MUSEUM_CLAUSE ? studioSearchQuery(null, MUSEUM_CLAUSE) : null;
-
-// Read from the catalog data so a new collection release updates the copy.
-const CATALOG = catalogCounts();
-const CAPSULE_COUNT_WORD = countWord(CATALOG.capsules);
-const WORK_COUNT_WORD = countWord(CATALOG.works);
-
-type HomeCollection = {
-  id: string;
-  handle: string;
-  title: string;
-  description?: string | null;
-  products?: {
-    nodes?: Array<{
-      handle?: string | null;
-      productType?: string | null;
-      tags?: string[] | null;
-      title?: string | null;
-      vendor?: string | null;
-    }>;
-  };
-};
 
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
@@ -130,12 +95,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
   try {
     const data = await context.storefront.query(HOMEPAGE_QUERY, {
       variables: {
-        // Availability for the original-art section is resolved with a
-        // dedicated catalog-tag query covering every expected print — the
-        // best-selling slice below is presentation-only and must never
-        // decide which prints exist.
-        artFirst: ORIGINAL_ART_QUERY_FIRST,
-        artQuery: buildOriginalArtQuery(),
+        // Live state for the lead print of every studio capsule, by catalog
+        // tag; the catalog, not this query, decides which prints exist.
+        artFirst: LEAD_PRINTS_QUERY_FIRST,
+        artQuery: leadPrintsQuery(),
         // The sentinel tag matches nothing until a nook is released.
         bookNookQuery: releasedBookNooks().length
           ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
@@ -143,10 +106,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
         frameHandle: isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
           ? CLASSIC_FRAME_HANDLE
           : '__frame-not-released__',
-        // Headroom above the 7 cards rendered, since demo/off-theme
-        // products are filtered out after fetching
-        first: 24,
-        productsQuery: EDIT_QUERY,
         toughCaseHandle: isReleasedProductHandle(TOUGH_CASE_HANDLE)
           ? TOUGH_CASE_HANDLE
           : '__tough-case-not-released__',
@@ -159,25 +118,14 @@ export async function loader({context, request}: Route.LoaderArgs) {
         (data.bookNooks?.nodes ?? []) as BookNookStorefrontProduct[],
       ) as BookNookShelfItem[],
       bookNookDelivery: bookNookDeliveryPhrase(),
-      collections: filterDemoCollections(
-        data.collections.nodes as HomeCollection[],
-      ),
-      originalArtProducts: buildOriginalArtProductMap(
-        (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
-      ),
-      featuredPrints: pickFeaturedPrints(
-        filterDemoProducts(
-          (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
-        ),
+      leadPrintProducts: buildOriginalArtProductMap(
+        (data.leadPrints?.nodes ?? []) as ClaraCardProduct[],
+        LEAD_PRINT_HANDLES,
       ),
       frameProduct:
         data.frameProduct && !isDemoProduct(data.frameProduct)
           ? (data.frameProduct as ClaraCardProduct)
           : null,
-      products: await withDeliveryReach(
-        context.storefront,
-        filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
-      ),
       caseTeaser: buildCaseTeaser(
         data.toughCase as ToughCaseTeaserProduct | null,
       ),
@@ -189,11 +137,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
       bookNookShelf: [] as BookNookShelfItem[],
       bookNookDelivery: '',
       caseTeaser: null as CaseTeaser | null,
-      collections: [] as HomeCollection[],
       frameProduct: null as ClaraCardProduct | null,
-      originalArtProducts: {} as OriginalArtProductMap,
-      featuredPrints: [] as ClaraCardProduct[],
-      products: [] as ClaraCardProduct[],
+      leadPrintProducts: {} as OriginalArtProductMap,
       seoUrl: getCanonicalUrl(request, '/'),
     };
   }
@@ -241,81 +186,17 @@ function buildCaseTeaser(
     : null;
 }
 
-/** One work per temperament — calm, cool, night — for the "Ready now" block. */
-const FEATURED_PRINT_HANDLES = [
-  'quiet-form-i-art-print',
-  'patina-blue-i-art-print',
-  'midnight-garden-i-art-print',
-];
-
-function pickFeaturedPrints(products: ClaraCardProduct[]): ClaraCardProduct[] {
-  const byHandle = new Map(
-    products.map(
-      (product) => [product.handle?.toLowerCase(), product] as const,
-    ),
-  );
-  return FEATURED_PRINT_HANDLES.map((handle) => byHandle.get(handle)).filter(
-    (product): product is ClaraCardProduct => Boolean(product),
-  );
-}
-
 export default function Homepage() {
   const {
     bookNookDelivery,
     bookNookShelf,
     caseTeaser,
     clothingPicks,
-    collections,
-    featuredPrints,
     frameProduct,
-    originalArtProducts,
-    products,
+    leadPrintProducts,
     seoUrl,
   } = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
-  const quickShopProducts =
-    featuredPrints.length === FEATURED_PRINT_HANDLES.length
-      ? featuredPrints
-      : products.slice(0, 3);
-  const featuredProducts = pickVariedProducts(
-    products,
-    4,
-    products.length > 3 ? quickShopProducts : [],
-  );
-  const collectionTrackRef = useRef<HTMLDivElement | null>(null);
-  const hasLiveCollections = collections.length > 0;
-  const categoryItems = hasLiveCollections
-    ? collections
-    : ORIGINAL_ART_COLLECTIONS;
-
-  const scrollCollectionCarousel = (direction: -1 | 1) => {
-    const track = collectionTrackRef.current;
-    if (!track) return;
-
-    const cards = Array.from(
-      track.querySelectorAll<HTMLElement>('.category-carousel-card'),
-    );
-    if (cards.length === 0) return;
-
-    const getCardLeft = (card: HTMLElement) =>
-      card.offsetLeft - track.offsetLeft;
-    const currentIndex = cards.reduce((closestIndex, card, index) => {
-      const closestDistance = Math.abs(
-        getCardLeft(cards[closestIndex]) - track.scrollLeft,
-      );
-      const distance = Math.abs(getCardLeft(card) - track.scrollLeft);
-      return distance < closestDistance ? index : closestIndex;
-    }, 0);
-    const nextIndex = Math.min(
-      Math.max(currentIndex + direction, 0),
-      cards.length - 1,
-    );
-
-    track.scrollTo({
-      behavior: 'smooth',
-      left: getCardLeft(cards[nextIndex]),
-    });
-  };
 
   return (
     <div className="commerce-home">
@@ -439,152 +320,19 @@ export default function Homepage() {
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
 
+      <OriginalArtPreview products={leadPrintProducts} compact />
+
       <ArtistShopsFeature
         artists={ARTIST_FEATURE.artists}
         collections={MUSEUM_COLLECTIONS}
         families={ARTIST_FEATURE.families}
       />
 
+      <YourSkyTeaser />
+
       <ClothingFeature picks={clothingPicks} />
 
-      <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
-
-      {quickShopProducts.length > 0 ? (
-        <section
-          className="home-shop-accelerator"
-          aria-labelledby="home-shop-accelerator-title"
-          data-chapter="linen"
-        >
-          <div className="home-shop-accelerator-copy" data-reveal>
-            <p className="eyebrow">Ready now</p>
-            <h2 id="home-shop-accelerator-title">
-              Start with an original piece.
-            </h2>
-            <p>
-              One work from each temperament — calm, cool, and night. Giclée on
-              200 gsm matte paper, printed to order and shipped worldwide.
-            </p>
-            <div className="home-shop-accelerator-actions">
-              <Link className="primary-button" to="/collections/all">
-                Shop all products
-              </Link>
-              <Link className="text-link" to="/policies">
-                View policies
-              </Link>
-            </div>
-          </div>
-
-          <div
-            className="home-shop-accelerator-products"
-            aria-label="Ready to shop products"
-            data-reveal
-          >
-            {quickShopProducts.map((product, index) => (
-              <ClaraProductCard
-                key={product.id}
-                product={product}
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       <BookNookShelf delivery={bookNookDelivery} items={bookNookShelf} />
-
-      <section
-        className="collection-intro home-commerce-intro"
-        data-chapter="clay"
-      >
-        <div data-reveal>
-          <p className="eyebrow">The collection</p>
-          <h2>Original work, ready to live with.</h2>
-        </div>
-        <p>
-          The art comes first: {WORK_COUNT_WORD} original works across{' '}
-          {CAPSULE_COUNT_WORD} capsules, printed to order. The founding capsules
-          also come as cards, postcards and canvas, and every work as a phone
-          case.
-        </p>
-      </section>
-
-      <section
-        className={`featured-collections featured-collections--carousel${
-          categoryItems.length === 1 ? ' featured-collections--solo' : ''
-        }`}
-        aria-label={hasLiveCollections ? 'Collections' : 'Art capsules'}
-        data-chapter="clay"
-      >
-        <div className="category-carousel-toolbar featured-collections-toolbar">
-          <div
-            className="category-carousel-controls"
-            aria-label="Collection carousel controls"
-          >
-            <button
-              aria-label="Previous collections"
-              className="category-carousel-button"
-              disabled={categoryItems.length <= 1}
-              onClick={() => scrollCollectionCarousel(-1)}
-              type="button"
-            >
-              <span aria-hidden="true">&larr;</span>
-            </button>
-            <button
-              aria-label="Next collections"
-              className="category-carousel-button"
-              disabled={categoryItems.length <= 1}
-              onClick={() => scrollCollectionCarousel(1)}
-              type="button"
-            >
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>
-        </div>
-
-        <div
-          className="category-carousel-track featured-collections-track"
-          ref={collectionTrackRef}
-        >
-          {categoryItems.map((collection) =>
-            hasLiveCollections ? (
-              <Link
-                className="featured-collection-card category-carousel-card"
-                key={collection.id}
-                to={`/collections/${collection.handle}`}
-              >
-                <small className="eyebrow">Collection</small>
-                <h2 className="featured-collection-title">
-                  {collection.title}
-                </h2>
-                {'description' in collection && collection.description ? (
-                  <p className="featured-collection-desc">
-                    {collection.description}
-                  </p>
-                ) : null}
-                <span className="text-link">Explore collection</span>
-              </Link>
-            ) : (
-              <Link
-                className="featured-collection-card category-carousel-card"
-                key={collection.id}
-                to={`/collections/${collection.handle}`}
-                prefetch="intent"
-              >
-                <small className="eyebrow">Art capsule</small>
-                <h2 className="featured-collection-title">
-                  {collection.title}
-                </h2>
-                {'note' in collection && collection.note ? (
-                  <p className="featured-collection-desc">{collection.note}</p>
-                ) : null}
-                <span className="text-link">Explore capsule</span>
-              </Link>
-            ),
-          )}
-        </div>
-      </section>
-
-      <YourSkyTeaser />
 
       {caseTeaser ? <ToughCaseTeaser {...caseTeaser} /> : null}
 
@@ -615,67 +363,20 @@ export default function Homepage() {
         </Link>
       </section>
 
+      <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
+
       <HomepageEditorial />
 
-      <OriginalArtPreview products={originalArtProducts} compact />
-
       {frameProduct ? <FramedArtFeature product={frameProduct} /> : null}
-
-      {featuredProducts.length > 0 ? (
-        <section
-          className="featured-grid-section"
-          aria-labelledby="featured"
-          data-chapter="linen"
-        >
-          <div className="section-heading-row" data-reveal>
-            <div>
-              <p className="eyebrow">Featured edit</p>
-              <h2 id="featured">
-                {products.length > 3
-                  ? 'More from the edit'
-                  : 'Products available now'}
-              </h2>
-            </div>
-            <Link className="text-link" to="/collections/all">
-              Shop all
-            </Link>
-          </div>
-          <div className="product-grid">
-            {featuredProducts.map((product, index) => (
-              <ClaraProductCard
-                key={product.id}
-                product={product}
-                loading={index < 2 ? 'eager' : 'lazy'}
-              />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="empty-state home-empty-catalog">
-          <p className="eyebrow">The shop</p>
-          <h2>Browse the full collection.</h2>
-          <p>
-            Every available print and product is in the shop, each with its
-            details and secure checkout.
-          </p>
-          <Link className="primary-button" to="/collections/all">
-            Browse the shop
-          </Link>
-        </section>
-      )}
 
       <section className="story-section home-story-return" data-chapter="ink">
         <div className="story-image" aria-hidden />
         <div className="story-copy" data-reveal>
-          <p className="eyebrow">Our story</p>
-          <h2>Original art first, then the things around it.</h2>
-          <p>
-            What began as fifteen prints now takes in clothing, ceramics, phone
-            cases and book nooks. Every product page sets out how it is made
-            and how it ships.
-          </p>
+          <p className="eyebrow">{BRAND.storyBand.eyebrow}</p>
+          <h2>{BRAND.storyBand.title}</h2>
+          <p>{BRAND.storyBand.body}</p>
           <Link className="text-link" to="/our-story">
-            Read the story
+            {BRAND.storyBand.cta}
           </Link>
         </div>
       </section>
@@ -717,18 +418,11 @@ const HOMEPAGE_QUERY = `#graphql
     $artQuery: String!
     $bookNookQuery: String!
     $country: CountryCode
-    $first: Int!
     $frameHandle: String!
     $language: LanguageCode
-    $productsQuery: String
     $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, sortKey: BEST_SELLING, query: $productsQuery) {
-      nodes {
-        ...ClaraProductCard
-      }
-    }
-    originalArtProducts: products(first: $artFirst, query: $artQuery) {
+    leadPrints: products(first: $artFirst, query: $artQuery) {
       nodes {
         ...ClaraProductCard
       }
@@ -772,23 +466,6 @@ const HOMEPAGE_QUERY = `#graphql
               url(transform: {crop: CENTER, maxWidth: 440, maxHeight: 800})
               altText
             }
-          }
-        }
-      }
-    }
-    collections(first: 12) {
-      nodes {
-        id
-        handle
-        title
-        description
-        products(first: 4) {
-          nodes {
-            handle
-            productType
-            tags
-            title
-            vendor
           }
         }
       }
@@ -882,7 +559,7 @@ html:has(.home-root) main {
     linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top 50% / 4px 4px no-repeat,
     linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top 50% / 4px 4px no-repeat,
     rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.28);
+  border-color: rgba(38, 35, 31, 0.3);
   color: var(--hm-text-main);
   max-width: 104px;
   min-height: 32px;
@@ -916,11 +593,11 @@ html:has(.home-root) main {
 
 .hm-icon-button:hover,
 .hm-icon-button:focus-visible {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(38, 35, 31, 0.08);
 }
 
 .hm-icon-button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline: 2px solid #26231f;
   outline-offset: 1px;
 }
 
@@ -1091,10 +768,6 @@ html:has(.home-root) main {
   position: absolute;
 }
 
-.home-commerce-intro {
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
-}
-
 .home-trust-band {
   background: var(--color-deep);
   color: rgba(255,255,255,0.78);
@@ -1120,247 +793,8 @@ html:has(.home-root) main {
   border-right: 0;
 }
 
-.home-shop-accelerator {
-  align-items: start;
-  background:
-    linear-gradient(90deg, var(--color-page) 0%, var(--color-soft) 58%, #c2c9bb 100%);
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
-  display: grid;
-  gap: clamp(28px, 4vw, 58px);
-  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
-  padding: clamp(44px, 6vw, 88px) clamp(18px, 4vw, 70px);
-}
-
-.home-shop-accelerator-copy {
-  display: grid;
-  gap: clamp(18px, 2vw, 28px);
-  position: sticky;
-  top: 96px;
-}
-
-.home-shop-accelerator-copy h2 {
-  color: var(--color-ink);
-  font-family: var(--serif);
-  font-size: clamp(2.7rem, 5.4vw, 5.6rem);
-  font-weight: 400;
-  letter-spacing: -0.055em;
-  line-height: 0.93;
-  margin: 0;
-  text-wrap: balance;
-}
-
-.home-shop-accelerator-copy p:not(.eyebrow) {
-  color: var(--color-muted);
-  font-size: 1.04rem;
-  line-height: 1.72;
-  margin: 0;
-  max-width: 44ch;
-}
-
-.home-shop-accelerator-actions {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-
-.home-shop-accelerator-products {
-  display: grid;
-  gap: clamp(16px, 2vw, 28px);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.featured-collections {
-  background: var(--color-deep);
-  color: var(--color-paper);
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-}
-
-.featured-collections--solo {
-  grid-template-columns: 1fr;
-}
-
-.featured-collections--carousel {
-  background: linear-gradient(180deg, var(--color-soft) 0%, var(--color-page) 100%);
-  color: var(--color-ink);
-  display: block;
-  overflow: hidden;
-  position: relative;
-}
-
-.featured-collections-toolbar {
-  border-bottom-color: transparent;
-  padding-bottom: 14px;
-  padding-top: 14px;
-}
-
-.featured-collections--carousel .category-carousel-controls {
-  gap: 10px;
-}
-
-.featured-collections--carousel .category-carousel-button {
-  background: transparent;
-  border-color: rgba(38, 35, 31, 0.22);
-  border-radius: 999px;
-  color: rgba(38, 35, 31, 0.55);
-  height: 44px;
-  transition: border-color 0.3s ease, color 0.3s ease;
-  width: 44px;
-}
-
-.featured-collections--carousel .category-carousel-button:hover {
-  background: transparent;
-  border-color: var(--color-ink);
-  color: var(--color-ink);
-}
-
-.featured-collections-track {
-  background: transparent;
-  display: flex;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-behavior: smooth;
-  scroll-padding-inline: clamp(18px, 4vw, 70px);
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  /* pan-y must stay allowed: with pan-x alone, a vertical swipe that
-     starts on this strip cannot scroll the page at all. */
-  touch-action: pan-x pan-y;
-  -webkit-overflow-scrolling: touch;
-}
-
-.featured-collections-track::-webkit-scrollbar {
-  display: none;
-}
-
-.featured-collections-track .featured-collection-card {
-  border-right: none;
-  flex: 0 0 clamp(250px, 28vw, 380px);
-  min-height: clamp(240px, 24vw, 320px);
-  padding: clamp(28px, 4vw, 52px) clamp(22px, 3vw, 38px);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-.featured-collections--solo .featured-collections-track .featured-collection-card {
-  border-right: 0;
-  flex-basis: 100%;
-}
-
-.featured-collection-card {
-  background: var(--color-deep);
-  color: var(--color-paper);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(18px, 2.5vw, 36px);
-  padding: clamp(52px, 8vw, 104px) clamp(24px, 4vw, 70px);
-  text-decoration: none;
-  transition: background 0.5s ease;
-}
-
-.featured-collections--carousel .featured-collection-card {
-  background: transparent;
-  color: var(--color-ink);
-}
-
-.featured-collections--solo .featured-collection-card {
-  align-items: center;
-  text-align: center;
-}
-
-.featured-collection-card:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.featured-collections--carousel .featured-collection-card:hover {
-  background: rgba(38, 35, 31, 0.025);
-}
-
-.featured-collection-title {
-  font-family: var(--serif);
-  font-size: clamp(3.2rem, 6.5vw, 6rem);
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.92;
-  margin: 0;
-}
-
-.featured-collections-track .featured-collection-title {
-  font-size: clamp(2rem, 3.4vw, 3.4rem);
-  letter-spacing: -0.012em;
-  line-height: 1;
-  overflow-wrap: anywhere;
-}
-
-.featured-collection-desc {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.05rem;
-  line-height: 1.72;
-  margin: 0;
-  max-width: 460px;
-}
-
-.featured-collections--carousel .featured-collection-desc {
-  color: var(--color-muted);
-  font-size: 0.95rem;
-  line-height: 1.65;
-  max-width: 320px;
-}
-
-.featured-collection-card .eyebrow {
-  color: rgba(255, 255, 255, 0.45);
-  margin: 0;
-}
-
-.featured-collections--carousel .featured-collection-card .eyebrow {
-  color: var(--color-muted);
-  opacity: 0.7;
-}
-
-.featured-collection-card .text-link {
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: clamp(6px, 1.5vw, 18px);
-  transition: color 0.3s ease;
-}
-
-.featured-collections--carousel .featured-collection-card .text-link {
-  color: var(--color-ink);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  margin-top: auto;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.featured-collections--carousel .featured-collection-card .text-link::after {
-  display: none;
-}
-
-.featured-collection-card:hover .text-link {
-  color: var(--color-paper);
-}
-
-.featured-collections--carousel .featured-collection-card:hover .text-link {
-  color: var(--color-ink);
-  opacity: 1;
-}
-
-.featured-grid-section {
-  background:
-    linear-gradient(180deg, var(--color-page-warm) 0%, var(--color-page) 28%);
-}
-
 .home-story-return {
   margin-top: 0;
-}
-
-.home-empty-catalog {
-  margin-left: clamp(18px, 4vw, 70px);
-  margin-right: clamp(18px, 4vw, 70px);
-  max-width: min(680px, calc(100vw - 36px));
 }
 
 @media (max-width: 768px) {
@@ -1454,93 +888,17 @@ html:has(.home-root) main {
     display: none;
   }
 
-  .featured-collections {
-    grid-template-columns: 1fr;
-  }
-
-  .featured-collections-toolbar {
-    padding: 14px 18px;
-  }
-
-  .featured-collections-track {
-    scroll-padding-inline: 18px;
-  }
-
   .home-trust-band p {
     font-size: 0.6rem;
     letter-spacing: 0.12em;
     padding: 14px 6px;
   }
-
-  .home-shop-accelerator {
-    grid-template-columns: 1fr;
-    padding-bottom: 54px;
-    padding-top: 48px;
-  }
-
-  .home-shop-accelerator-copy {
-    position: static;
-  }
-
-  .home-shop-accelerator-copy h2 {
-    font-size: clamp(2.35rem, 11vw, 4rem);
-  }
-
-  .home-shop-accelerator-products {
-    display: flex;
-    gap: 14px;
-    margin: 0 -18px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    padding: 0 18px 6px;
-    scroll-padding-inline: 18px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .home-shop-accelerator-products::-webkit-scrollbar {
-    display: none;
-  }
-
-  .home-shop-accelerator-products > * {
-    flex: 0 0 min(74vw, 300px);
-    scroll-snap-align: start;
-  }
-
-
-  .featured-collection-card {
-    padding: 42px 24px;
-  }
-
-  .featured-collections-track .featured-collection-card {
-    flex-basis: min(82vw, 340px);
-    gap: 20px;
-    min-height: 220px;
-    padding: 28px 22px;
-  }
-
-  .featured-collection-title {
-    font-size: clamp(2.4rem, 10vw, 3.6rem);
-  }
-
-  .featured-collections-track .featured-collection-title {
-    font-size: clamp(2rem, 10vw, 2.85rem);
-  }
-
 }
 
 @media (max-width: 768px) and (max-height: 680px) {
   .hm-brand,
   .hm-brand.hm-nav-text {
     font-size: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .featured-collections-track .featured-collection-card {
-    flex-basis: min(calc(100vw - 36px), 340px);
-    min-height: 210px;
   }
 }
 

@@ -164,10 +164,6 @@ const previewCss = `
   max-width: 12ch;
 }
 
-.original-art-preview__heading h2 i {
-  font-weight: 400;
-}
-
 .original-art-preview__intro {
   border-left: 1px solid rgba(39, 35, 31, 0.2);
   padding-left: clamp(20px, 3vw, 42px);

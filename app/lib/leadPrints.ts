@@ -50,7 +50,7 @@ export function leadPrints(printCatalog: PrintCatalog = PRINT_CATALOG): LeadPrin
       if (!lead) return [];
       return [
         {
-          alt: lead.alt ?? lead.title,
+          alt: lead.alt,
           capsule: collection.title,
           description: lead.description,
           handle: printHandle(lead),
