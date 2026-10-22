@@ -492,7 +492,7 @@ html:has(.home-root) main {
 
 .home-root {
   --hm-text-main: #26231f;
-  --hm-text-muted: rgba(38, 35, 31, 0.68);
+  --hm-text-muted: rgba(38, 35, 31, 0.8);
   --hm-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
   --hm-font-serif: Georgia, 'Times New Roman', serif;
   --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -522,10 +522,8 @@ html:has(.home-root) main {
   text-transform: uppercase;
   font-weight: 500;
   color: var(--hm-text-main);
-  pointer-events: auto;
   transition: opacity 0.3s ease;
   text-decoration: none;
-  mix-blend-mode: normal;
 }
 
 .hm-nav-text:hover { opacity: 0.6; }
@@ -558,7 +556,7 @@ html:has(.home-root) main {
   background:
     linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top 50% / 4px 4px no-repeat,
     linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top 50% / 4px 4px no-repeat,
-    rgba(255,255,255,0.12);
+    rgba(255, 255, 255, 0.4);
   border-color: rgba(38, 35, 31, 0.3);
   color: var(--hm-text-main);
   max-width: 104px;
@@ -586,7 +584,6 @@ html:has(.home-root) main {
   height: 44px;
   justify-content: center;
   padding: 0;
-  pointer-events: auto;
   transition: background 0.3s ease;
   width: 44px;
 }
@@ -824,7 +821,6 @@ html:has(.home-root) main {
     line-height: 1.08;
     max-width: none;
   }
-
 
   .hm-header-top .market-selector select {
     max-width: 74px;
