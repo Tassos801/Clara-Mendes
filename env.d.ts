@@ -9,13 +9,21 @@ import '@total-typescript/ts-reset';
 declare global {
   /**
    * Additional environment variables merged into Hydrogen's `Env`.
-   * `SHOPIFY_ADMIN_ACCESS_TOKEN` powers the server-side reviews feature
-   * (app/lib/reviews.server.ts). It is optional so the storefront still
+   * `SHOPIFY_ADMIN_ACCESS_TOKEN` (or `SHOPIFY_CLIENT_ID`/`SHOPIFY_CLIENT_SECRET`)
+   * powers the server-side reviews and newsletter features
+   * (app/lib/reviews.server.ts). They are optional so the storefront still
    * type-checks and runs before the token is provisioned.
    */
   interface Env {
     PUBLIC_GTM_CONTAINER_ID?: string;
     SHOPIFY_ADMIN_ACCESS_TOKEN?: string;
+    /**
+     * Dev Dashboard app credentials. When set, the server mints short-lived
+     * Admin tokens itself (client-credentials grant, app/lib/adminToken.server.ts);
+     * SHOPIFY_ADMIN_ACCESS_TOKEN remains an override for a static token.
+     */
+    SHOPIFY_CLIENT_ID?: string;
+    SHOPIFY_CLIENT_SECRET?: string;
     /** Shown to subscribers once the owner has created the code in Shopify. */
     NEWSLETTER_WELCOME_CODE?: string;
     /**

@@ -2031,3 +2031,13 @@ memory (`app/lib/listingPage.ts`) with an exact count.
 `scripts/brand.node-test.mjs` blocks the old claim in `app/`. Removed the dead
 `buildOriginalArtQuery`, `ORIGINAL_ART_QUERY_FIRST`, `ORIGINAL_ART_TAG`
 and `pickVariedProducts`. See [Brand voice](brand-voice.md).
+
+## [2026-10-22] auth | Admin tokens minted from client credentials
+
+The Dev Dashboard app's tokens expire after 24 h, so the server now mints its
+own: `app/lib/adminToken.server.ts` exchanges `SHOPIFY_CLIENT_ID` +
+`SHOPIFY_CLIENT_SECRET` for an Admin token and caches it until five minutes
+before expiry; `SHOPIFY_ADMIN_ACCESS_TOKEN` stays as a static override.
+`ReviewsNotConfiguredError` moved there and is re-exported from
+`reviews.server.ts`. Tests: `scripts/adminToken.node-test.mjs`. See
+[Local development and launch](operations/local-development-and-launch.md).
