@@ -6,8 +6,11 @@
  * 1. SHOPIFY_ADMIN_ACCESS_TOKEN — a static token, used as-is (override).
  * 2. SHOPIFY_CLIENT_ID + SHOPIFY_CLIENT_SECRET — the Dev Dashboard app's
  *    credentials, exchanged with Shopify's client-credentials grant for a
- *    short-lived token (24 h). The token is cached per isolate until five
- *    minutes before it expires; concurrent callers share one exchange.
+ *    short-lived token (24 h). The resolved token is cached per isolate
+ *    until five minutes before it expires. There is deliberately no shared
+ *    in-flight promise: on Oxygen/workerd a request must not await a promise
+ *    created by another request, so a request without a fresh cached token
+ *    does its own exchange (a rare double exchange on a cold start is fine).
  * 3. Neither — ReviewsNotConfiguredError, which routes turn into a 503 or a
  *    "disabled" status.
  *
@@ -34,14 +37,21 @@ export type AdminTokenEnv = Pick<
 
 type FetchLike = (
   input: string,
-  init: {body: URLSearchParams; headers: Record<string, string>; method: string},
+  init: {
+    body: URLSearchParams;
+    headers: Record<string, string>;
+    method: string;
+    signal?: AbortSignal;
+  },
 ) => Promise<Response>;
 
 /** Refresh this long before Shopify's stated expiry. */
 const EXPIRY_MARGIN_SECONDS = 300;
+/** Floor for the cache lifetime when Shopify's expires_in is unusable. */
+const MIN_CACHE_SECONDS = 60;
+const EXCHANGE_TIMEOUT_MS = 10_000;
 
 const cache = new Map<string, {token: string; expiresAt: number}>();
-const inFlight = new Map<string, Promise<{token: string; expiresAt: number}>>();
 
 /** True when either a static token or a full credential pair is present. */
 export function hasAdminCredentials(env: AdminTokenEnv): boolean {
@@ -73,17 +83,9 @@ export async function getAdminAccessToken(
   const cached = cache.get(key);
   if (cached && now() < cached.expiresAt) return cached.token;
 
-  let pending = inFlight.get(key);
-  if (!pending) {
-    pending = exchange({clientId, clientSecret, storeDomain, fetchImpl, now})
-      .then((entry) => {
-        cache.set(key, entry);
-        return entry;
-      })
-      .finally(() => inFlight.delete(key));
-    inFlight.set(key, pending);
-  }
-  return (await pending).token;
+  const entry = await exchange({clientId, clientSecret, storeDomain, fetchImpl, now});
+  cache.set(key, entry);
+  return entry.token;
 }
 
 async function exchange({
@@ -110,6 +112,10 @@ async function exchange({
       }),
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       method: 'POST',
+      ...(typeof AbortSignal !== 'undefined' &&
+      typeof AbortSignal.timeout === 'function'
+        ? {signal: AbortSignal.timeout(EXCHANGE_TIMEOUT_MS)}
+        : {}),
     },
   );
 
@@ -130,15 +136,29 @@ async function exchange({
     throw new Error(message.split(clientSecret).join('[redacted]'));
   }
 
-  const expiresIn = Number(body.expires_in);
-  const lifetimeSeconds = Number.isFinite(expiresIn)
-    ? Math.max(0, expiresIn - EXPIRY_MARGIN_SECONDS)
-    : 0;
-  return {token: body.access_token, expiresAt: startedAt + lifetimeSeconds * 1000};
+  return {
+    token: body.access_token,
+    expiresAt: startedAt + cacheLifetimeSeconds(body.expires_in) * 1000,
+  };
 }
 
-/** Test hook: forget cached and in-flight tokens. */
+/**
+ * Seconds to keep a token: expires_in minus the margin, or, when expires_in
+ * is missing, non-numeric or within the margin, half of it (at least 60 s).
+ */
+function cacheLifetimeSeconds(expiresInRaw: unknown): number {
+  const expiresIn =
+    typeof expiresInRaw === 'number' || typeof expiresInRaw === 'string'
+      ? Number(expiresInRaw)
+      : Number.NaN;
+  if (Number.isFinite(expiresIn) && expiresIn > EXPIRY_MARGIN_SECONDS) {
+    return expiresIn - EXPIRY_MARGIN_SECONDS;
+  }
+  const usable = Number.isFinite(expiresIn) ? expiresIn : 0;
+  return Math.max(MIN_CACHE_SECONDS, Math.floor(usable / 2));
+}
+
+/** Test hook: forget cached tokens. */
 export function __resetAdminTokenCacheForTests(): void {
   cache.clear();
-  inFlight.clear();
 }

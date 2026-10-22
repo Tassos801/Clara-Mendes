@@ -69,13 +69,41 @@ test('the token is re-exchanged five minutes before it expires', async () => {
   assert.equal(calls.length, 2);
 });
 
-test('concurrent callers share one exchange', async () => {
-  const {calls, fetchImpl} = fakeFetch([grant('fake-token-1')]);
+test('concurrent callers each get a token without sharing a promise', async () => {
+  const {calls, fetchImpl} = fakeFetch(Array.from({length: 5}, () => grant('fake-token-1')));
   const tokens = await Promise.all(
     Array.from({length: 5}, () => getAdminAccessToken(credentials, fetchImpl)),
   );
   assert.deepEqual(tokens, Array(5).fill('fake-token-1'));
-  assert.equal(calls.length, 1);
+  assert.ok(calls.length >= 1 && calls.length <= 5, `${calls.length} exchanges`);
+  // Once they have landed, later callers use the cache.
+  const exchanges = calls.length;
+  assert.equal(await getAdminAccessToken(credentials, fetchImpl), 'fake-token-1');
+  assert.equal(calls.length, exchanges);
+});
+
+test('the exchange carries a timeout signal', async () => {
+  const {calls, fetchImpl} = fakeFetch([grant('fake-token-1')]);
+  await getAdminAccessToken(credentials, fetchImpl);
+  assert.ok(calls[0].init.signal instanceof AbortSignal);
+});
+
+test('an unusable expires_in caches for half of it, at least 60 s', async () => {
+  for (const [expiresIn, seconds] of [[undefined, 60], ['soon', 60], [100, 60], [300, 150], [0, 60]]) {
+    __resetAdminTokenCacheForTests();
+    let clock = 5_000_000;
+    const now = () => clock;
+    const {calls, fetchImpl} = fakeFetch([
+      {body: {access_token: 'fake-token-a', ...(expiresIn === undefined ? {} : {expires_in: expiresIn})}},
+      grant('fake-token-b'),
+    ]);
+    await getAdminAccessToken(credentials, fetchImpl, now);
+    clock += (seconds - 1) * 1000;
+    assert.equal(await getAdminAccessToken(credentials, fetchImpl, now), 'fake-token-a', String(expiresIn));
+    clock += 1000;
+    assert.equal(await getAdminAccessToken(credentials, fetchImpl, now), 'fake-token-b', String(expiresIn));
+    assert.equal(calls.length, 2);
+  }
 });
 
 test('a rejected exchange throws with the status and error, never the secret', async () => {

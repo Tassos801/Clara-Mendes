@@ -83,7 +83,7 @@ export async function action({request, context}: Route.ActionArgs) {
     const detail = error instanceof Error ? error.message : String(error);
     if (/ACCESS_DENIED|not approved to access/i.test(detail)) {
       console.error(
-        'Newsletter sign-up: the Admin token lacks read_customers/write_customers. Add both scopes to the custom app and update SHOPIFY_ADMIN_ACCESS_TOKEN.',
+        'Admin token lacks customer scopes: add read_customers and write_customers to the app (the Dev Dashboard app behind SHOPIFY_CLIENT_ID/SHOPIFY_CLIENT_SECRET, or the app behind SHOPIFY_ADMIN_ACCESS_TOKEN), then approve the update in Shopify Admin.',
       );
     }
     console.error('Newsletter sign-up failed.', error);
