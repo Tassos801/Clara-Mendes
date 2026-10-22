@@ -94,7 +94,7 @@ export const BRAND = {
       "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
   },
   collection: {
-    eyebrow: 'Our own work',
+    eyebrow: 'The collection',
     title: 'The collection so far.',
     /** `${works}` and `${capsules}` are number words from catalogSummary. */
     intro: (works: string, capsules: string) =>

@@ -2016,3 +2016,18 @@ a stale file could have been recorded as verified. A hash Printful gives must
 now match; name and pixel size stand in only where Printful gives no hash, and
 the note names the weakest match per placement. The 2026-10-20 read-backs (48
 products, 108 variants) still pass, all by MD5.
+
+## [2026-10-22] brand | The owner's line replaces "original art"
+
+On `claude/brand-line` the umbrella claim "original art" gave way to the
+owner's line, "We don't know what we'll make next. We like art, and we promise
+it won't be boring." All brand copy now lives in `app/content/brand.ts`; the
+capsules are "our own work" and the artist shops "borrowed from museums". The
+homepage opens on a six-tile curiosity grid (`HERO_TILES`), shows the lead
+print of every studio capsule (`app/lib/leadPrints.ts`) and drops the capsule
+carousel and "More from the edit". Shop All's Featured order rotates studio
+products by line (`app/lib/listingLines.ts`), museum products after, paged in
+memory (`app/lib/listingPage.ts`) with an exact count.
+`scripts/brand.node-test.mjs` blocks the old claim in `app/`. Removed the dead
+`buildOriginalArtQuery`, `ORIGINAL_ART_QUERY_FIRST`, `ORIGINAL_ART_TAG`
+and `pickVariedProducts`. See [Brand voice](brand-voice.md).

@@ -72,10 +72,8 @@ promotes every public artist with a card linking to their shop, plus
 reads `artistFeature()` from `app/lib/artistShops.ts` — the same gate as the
 header's Artists link (owner-approved artist with a released product) — so
 it needs no Storefront query and renders nothing until an artist is public.
-The homepage's own header also links Artists. "More from the edit" lists
-studio products only (museum products, the newest in Shopify's best-selling
-order, used to fill it) and takes one product per shop category first via
-`pickVariedProducts` in `app/lib/catalogFilters.ts`.
+The homepage's own header also links Artists. The hero, "The collection so
+far" and the section order are described in [Brand voice](../brand-voice.md).
 
 The mobile hero keeps its expansive composition on standard phone screens. On
 viewports no wider than 768 pixels and no taller than 680 pixels, the UI layer

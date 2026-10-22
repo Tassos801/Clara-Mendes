@@ -1,7 +1,7 @@
 import artCatalog from '../../data/original-art-catalog.json';
 import {Link} from 'react-router';
 import {BRAND} from '~/content/brand';
-import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
+import {catalogCounts, countWord} from '~/lib/catalogSummary';
 import {LEAD_PRINTS, type LeadPrint} from '~/lib/leadPrints';
 import {
   formatOriginalArtPrice,
@@ -53,11 +53,9 @@ export function OriginalArtPreview({
         </div>
         <div className="original-art-preview__intro">
           <p>
-            {capitalize(
-              BRAND.collection.intro(
-                countWord(CATALOG.works),
-                countWord(CATALOG.capsules),
-              ),
+            {BRAND.collection.intro(
+              countWord(CATALOG.works),
+              countWord(CATALOG.capsules),
             )}
           </p>
           {compact ? (
