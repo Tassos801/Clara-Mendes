@@ -17,6 +17,7 @@ import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
 import {publicArtists} from '~/lib/artistShops';
 import {cartItemCountLabel} from '~/lib/cartPresentation';
+import {BRAND} from '~/content/brand';
 
 const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
 const HAS_ARTISTS = publicArtists().length > 0;
@@ -210,9 +211,8 @@ function ClaraFooter() {
           Clara Mendes
         </Link>
         <p>
-          Original art, museum prints and everyday objects, with secure
-          checkout. We ship across the EU and to most other countries; each
-          product page shows how its item is delivered.
+          {BRAND.footer.blurb} We ship across the EU and to most other
+          countries; each product page shows how its item is delivered.
         </p>
       </div>
       <nav className="footer-style-nav" aria-label="Shop wall art by style">

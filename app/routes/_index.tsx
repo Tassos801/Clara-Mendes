@@ -1,16 +1,13 @@
-import {useEffect, useRef} from 'react';
-import {Link, useLoaderData, useNavigate} from 'react-router';
+import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/_index';
-import {
-  ClaraProductCard,
-  type ClaraCardProduct,
-} from '~/components/ClaraProductCard';
+import type {ClaraCardProduct} from '~/components/ClaraProductCard';
+import {HeroTiles} from '~/components/HeroTiles';
+import {BRAND} from '~/content/brand';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {ClothingFeature} from '~/components/ClothingFeature';
 import {ArtistShopsFeature} from '~/components/ArtistShopsFeature';
 import {artistFeature} from '~/lib/artistShops';
 import {listShopCapsules, shopCapsulePath} from '~/lib/capsules';
-import {museumTagClause, studioSearchQuery} from '~/lib/museumListingOrder';
 import artistFeatureStyles from '~/styles/artist-feature.css?url';
 import {
   loadClothingProducts,
@@ -33,22 +30,20 @@ import {
 } from '~/components/ToughCaseTeaser';
 import {useAside} from '~/components/Aside';
 import {
-  filterDemoCollections,
-  filterDemoProducts,
   isDemoProduct,
   isReleasedExtensionHandle,
   isReleasedProductHandle,
-  ORIGINAL_ART_COLLECTIONS,
-  pickVariedProducts,
 } from '~/lib/catalogFilters';
-import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {
-  buildOriginalArtQuery,
   buildOriginalArtProductMap,
-  ORIGINAL_ART_QUERY_FIRST,
   type OriginalArtProductMap,
 } from '~/lib/originalArt';
+import {
+  LEAD_PRINT_HANDLES,
+  LEAD_PRINTS_QUERY_FIRST,
+  leadPrintsQuery,
+} from '~/lib/leadPrints';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {type MoneyAmount} from '~/lib/money';
 import {
@@ -63,7 +58,6 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
 import {
   BOOK_NOOK_PRODUCT_TYPE,
   BOOK_NOOKS_PATH,
@@ -71,8 +65,6 @@ import {
   buildBookNookShelf,
   releasedBookNooks,
 } from '~/lib/bookNooks';
-
-const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
 
 // Artist shops from catalog data, like the site header's Artists link.
 const ARTIST_FEATURE = artistFeature();
@@ -83,61 +75,16 @@ const MUSEUM_COLLECTIONS = listShopCapsules()
     title: capsule.title,
   }));
 
-// "More from the edit" shows the studio's own products; museum
-// reproductions have the artist feature instead, and would otherwise fill
-// it, being the newest products in Shopify's best-selling order.
-const MUSEUM_CLAUSE = museumTagClause();
-const EDIT_QUERY = MUSEUM_CLAUSE ? studioSearchQuery(null, MUSEUM_CLAUSE) : null;
-
-// Read from the catalog data so a new collection release updates the copy.
-const CATALOG = catalogCounts();
-const CAPSULE_COUNT_WORD = countWord(CATALOG.capsules);
-const WORK_COUNT_WORD = countWord(CATALOG.works);
-
-type HomeCollection = {
-  id: string;
-  handle: string;
-  title: string;
-  description?: string | null;
-  products?: {
-    nodes?: Array<{
-      handle?: string | null;
-      productType?: string | null;
-      tags?: string[] | null;
-      title?: string | null;
-      vendor?: string | null;
-    }>;
-  };
-};
-
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
-    description:
-      'Original Clara Mendes art, museum prints of Hokusai and Hiroshige, cards, canvas, phone cases, ceramic plant pots, book nook kits and activewear.',
-    title: 'Original Art Prints & Everyday Objects | Clara Mendes',
+    description: BRAND.seo.homeDescription,
+    title: BRAND.seo.homeTitle,
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
   });
 };
 
-// The hero background is a CSS image, which browsers discover only after
-// the stylesheet parses — preloading it moves LCP earlier. Phones get a
-// 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
-// the media queries match the stylesheet so only one file is fetched.
 export const links: Route.LinksFunction = () => [
   {rel: 'stylesheet', href: artistFeatureStyles},
-  {
-    as: 'image',
-    href: '/images/backdrops/hero-interior.jpg',
-    media: '(min-width: 721px)',
-    rel: 'preload',
-  },
-  {
-    as: 'image',
-    href: HERO_INTERIOR_MOBILE,
-    media: '(max-width: 720px)',
-    rel: 'preload',
-    type: 'image/webp',
-  },
 ];
 
 export async function loader({context, request}: Route.LoaderArgs) {
@@ -148,12 +95,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
   try {
     const data = await context.storefront.query(HOMEPAGE_QUERY, {
       variables: {
-        // Availability for the original-art section is resolved with a
-        // dedicated catalog-tag query covering every expected print — the
-        // best-selling slice below is presentation-only and must never
-        // decide which prints exist.
-        artFirst: ORIGINAL_ART_QUERY_FIRST,
-        artQuery: buildOriginalArtQuery(),
+        // Live state for the lead print of every studio capsule, by catalog
+        // tag; the catalog, not this query, decides which prints exist.
+        artFirst: LEAD_PRINTS_QUERY_FIRST,
+        artQuery: leadPrintsQuery(),
         // The sentinel tag matches nothing until a nook is released.
         bookNookQuery: releasedBookNooks().length
           ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
@@ -161,10 +106,6 @@ export async function loader({context, request}: Route.LoaderArgs) {
         frameHandle: isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
           ? CLASSIC_FRAME_HANDLE
           : '__frame-not-released__',
-        // Headroom above the 7 cards rendered, since demo/off-theme
-        // products are filtered out after fetching
-        first: 24,
-        productsQuery: EDIT_QUERY,
         toughCaseHandle: isReleasedProductHandle(TOUGH_CASE_HANDLE)
           ? TOUGH_CASE_HANDLE
           : '__tough-case-not-released__',
@@ -177,25 +118,14 @@ export async function loader({context, request}: Route.LoaderArgs) {
         (data.bookNooks?.nodes ?? []) as BookNookStorefrontProduct[],
       ) as BookNookShelfItem[],
       bookNookDelivery: bookNookDeliveryPhrase(),
-      collections: filterDemoCollections(
-        data.collections.nodes as HomeCollection[],
-      ),
-      originalArtProducts: buildOriginalArtProductMap(
-        (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
-      ),
-      featuredPrints: pickFeaturedPrints(
-        filterDemoProducts(
-          (data.originalArtProducts?.nodes ?? []) as ClaraCardProduct[],
-        ),
+      leadPrintProducts: buildOriginalArtProductMap(
+        (data.leadPrints?.nodes ?? []) as ClaraCardProduct[],
+        LEAD_PRINT_HANDLES,
       ),
       frameProduct:
         data.frameProduct && !isDemoProduct(data.frameProduct)
           ? (data.frameProduct as ClaraCardProduct)
           : null,
-      products: await withDeliveryReach(
-        context.storefront,
-        filterDemoProducts(data.products.nodes as ClaraCardProduct[]),
-      ),
       caseTeaser: buildCaseTeaser(
         data.toughCase as ToughCaseTeaserProduct | null,
       ),
@@ -207,11 +137,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
       bookNookShelf: [] as BookNookShelfItem[],
       bookNookDelivery: '',
       caseTeaser: null as CaseTeaser | null,
-      collections: [] as HomeCollection[],
       frameProduct: null as ClaraCardProduct | null,
-      originalArtProducts: {} as OriginalArtProductMap,
-      featuredPrints: [] as ClaraCardProduct[],
-      products: [] as ClaraCardProduct[],
+      leadPrintProducts: {} as OriginalArtProductMap,
       seoUrl: getCanonicalUrl(request, '/'),
     };
   }
@@ -259,200 +186,17 @@ function buildCaseTeaser(
     : null;
 }
 
-/** One work per temperament — calm, cool, night — for the "Ready now" block. */
-const FEATURED_PRINT_HANDLES = [
-  'quiet-form-i-art-print',
-  'patina-blue-i-art-print',
-  'midnight-garden-i-art-print',
-];
-
-function pickFeaturedPrints(products: ClaraCardProduct[]): ClaraCardProduct[] {
-  const byHandle = new Map(
-    products.map(
-      (product) => [product.handle?.toLowerCase(), product] as const,
-    ),
-  );
-  return FEATURED_PRINT_HANDLES.map((handle) => byHandle.get(handle)).filter(
-    (product): product is ClaraCardProduct => Boolean(product),
-  );
-}
-
 export default function Homepage() {
   const {
     bookNookDelivery,
     bookNookShelf,
     caseTeaser,
     clothingPicks,
-    collections,
-    featuredPrints,
     frameProduct,
-    originalArtProducts,
-    products,
+    leadPrintProducts,
     seoUrl,
   } = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
-  const navigate = useNavigate();
-  const quickShopProducts =
-    featuredPrints.length === FEATURED_PRINT_HANDLES.length
-      ? featuredPrints
-      : products.slice(0, 3);
-  const featuredProducts = pickVariedProducts(
-    products,
-    4,
-    products.length > 3 ? quickShopProducts : [],
-  );
-  const blurRef = useRef<HTMLDivElement | null>(null);
-  const dotRef = useRef<HTMLDivElement | null>(null);
-  const outlineRef = useRef<HTMLDivElement | null>(null);
-  const orbRef = useRef<HTMLButtonElement | null>(null);
-  const titleRef = useRef<HTMLHeadingElement | null>(null);
-  const subRef = useRef<HTMLParagraphElement | null>(null);
-  const collectionTrackRef = useRef<HTMLDivElement | null>(null);
-  const hasLiveCollections = collections.length > 0;
-  const categoryItems = hasLiveCollections
-    ? collections
-    : ORIGINAL_ART_COLLECTIONS;
-
-  const scrollCollectionCarousel = (direction: -1 | 1) => {
-    const track = collectionTrackRef.current;
-    if (!track) return;
-
-    const cards = Array.from(
-      track.querySelectorAll<HTMLElement>('.category-carousel-card'),
-    );
-    if (cards.length === 0) return;
-
-    const getCardLeft = (card: HTMLElement) =>
-      card.offsetLeft - track.offsetLeft;
-    const currentIndex = cards.reduce((closestIndex, card, index) => {
-      const closestDistance = Math.abs(
-        getCardLeft(cards[closestIndex]) - track.scrollLeft,
-      );
-      const distance = Math.abs(getCardLeft(card) - track.scrollLeft);
-      return distance < closestDistance ? index : closestIndex;
-    }, 0);
-    const nextIndex = Math.min(
-      Math.max(currentIndex + direction, 0),
-      cards.length - 1,
-    );
-
-    track.scrollTo({
-      behavior: 'smooth',
-      left: getCardLeft(cards[nextIndex]),
-    });
-  };
-
-  useEffect(() => {
-    const blur = blurRef.current;
-    const dot = dotRef.current;
-    const outline = outlineRef.current;
-    if (!blur || !dot || !outline) return;
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let cursorX = mouseX;
-    let cursorY = mouseY;
-    let raf = 0;
-    let isVisible = false;
-
-    const showCursor = () => {
-      if (!isVisible) {
-        isVisible = true;
-        dot.style.opacity = '1';
-        outline.style.opacity = '1';
-      }
-    };
-
-    const onMove = (event: MouseEvent) => {
-      mouseX = event.clientX;
-      mouseY = event.clientY;
-      dot.style.left = `${mouseX}px`;
-      dot.style.top = `${mouseY}px`;
-      showCursor();
-    };
-
-    const onResize = () => {
-      mouseX = window.innerWidth / 2;
-      mouseY = window.innerHeight / 2;
-    };
-
-    const tick = () => {
-      cursorX += (mouseX - cursorX) * 0.1;
-      cursorY += (mouseY - cursorY) * 0.1;
-      outline.style.left = `${cursorX}px`;
-      outline.style.top = `${cursorY}px`;
-      blur.style.setProperty('--x', `${(cursorX / window.innerWidth) * 100}%`);
-      blur.style.setProperty('--y', `${(cursorY / window.innerHeight) * 100}%`);
-      raf = requestAnimationFrame(tick);
-    };
-
-    window.addEventListener('mousemove', onMove);
-    window.addEventListener('resize', onResize);
-    raf = requestAnimationFrame(tick);
-
-    return () => {
-      window.removeEventListener('mousemove', onMove);
-      window.removeEventListener('resize', onResize);
-      cancelAnimationFrame(raf);
-    };
-  }, []);
-
-  useEffect(() => {
-    const orb = orbRef.current;
-    const outline = outlineRef.current;
-    const title = titleRef.current;
-    const sub = subRef.current;
-    if (!orb || !outline || !title || !sub) return;
-
-    let pressTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const down = () => {
-      outline.style.width = '20px';
-      outline.style.height = '20px';
-      outline.style.backgroundColor = 'rgba(255,255,255,0.1)';
-      outline.style.borderColor = 'rgba(255,255,255,0.6)';
-      title.style.transition = 'opacity 1s ease';
-      title.style.opacity = '0';
-      sub.style.transition = 'opacity 1s ease';
-      sub.style.opacity = '0';
-      pressTimer = setTimeout(() => {
-        void navigate('/collections/all');
-      }, 950);
-    };
-
-    const up = () => {
-      if (pressTimer) clearTimeout(pressTimer);
-      outline.style.width = '32px';
-      outline.style.height = '32px';
-      outline.style.backgroundColor = 'transparent';
-      outline.style.borderColor = 'rgba(255,255,255,0.3)';
-      title.style.opacity = '1';
-      sub.style.opacity = '1';
-    };
-
-    const enterOrb = () => {
-      outline.style.width = '48px';
-      outline.style.height = '48px';
-      outline.style.borderColor = 'rgba(255,255,255,0.5)';
-    };
-
-    orb.addEventListener('mousedown', down);
-    orb.addEventListener('mouseup', up);
-    orb.addEventListener('mouseenter', enterOrb);
-    orb.addEventListener('mouseleave', up);
-    orb.addEventListener('touchstart', down);
-    orb.addEventListener('touchend', up);
-
-    return () => {
-      orb.removeEventListener('mousedown', down);
-      orb.removeEventListener('mouseup', up);
-      orb.removeEventListener('mouseenter', enterOrb);
-      orb.removeEventListener('mouseleave', up);
-      orb.removeEventListener('touchstart', down);
-      orb.removeEventListener('touchend', up);
-      if (pressTimer) clearTimeout(pressTimer);
-    };
-  }, [navigate]);
 
   return (
     <div className="commerce-home">
@@ -462,11 +206,6 @@ export default function Homepage() {
       />
 
       <section className="home-root" aria-labelledby="home-title">
-        <div className="hm-layer-sharp" />
-        <div ref={blurRef} className="hm-layer-blur" />
-        <div className="hm-noise-overlay" />
-        <div className="hm-vignette" />
-
         <div className="hm-ui-layer">
           <header className="hm-header-top">
             {/* Phones get one calm row (menu, name, search, cart); the
@@ -546,47 +285,29 @@ export default function Homepage() {
             </div>
           </header>
 
-          <div className="hm-hero-text">
-            <h1 ref={titleRef} id="home-title" className="hm-prompt-main">
-              <i>Objects</i> with soul
-            </h1>
-            <p ref={subRef} className="hm-prompt-sub">
-              Original art and everyday objects for calm, collected spaces.
-            </p>
-            <div className="hm-hero-actions">
-              <Link
-                className="hm-hero-action hm-hero-action--primary"
-                to="/collections/all"
-              >
-                Shop the edit
-              </Link>
-              <Link className="hm-hero-action" to="/our-story">
-                Our story
-              </Link>
+          <div className="hm-hero-body">
+            <div className="hm-hero-text">
+              <h1 id="home-title" className="hm-prompt-main">
+                {BRAND.hero.headline}
+              </h1>
+              <p className="hm-prompt-sub">{BRAND.hero.line}</p>
+              <div className="hm-hero-actions">
+                <Link
+                  className="hm-hero-action hm-hero-action--primary"
+                  to={BRAND.hero.primaryCta.href}
+                >
+                  {BRAND.hero.primaryCta.label}
+                </Link>
+                <Link className="hm-hero-action" to={BRAND.hero.secondaryCta.href}>
+                  {BRAND.hero.secondaryCta.label}
+                </Link>
+              </div>
+              <p className="hm-hero-foot">{BRAND.hero.footnote}</p>
             </div>
-          </div>
 
-          <div className="hm-coords">
-            {capitalize(CAPSULE_COUNT_WORD)} capsules · {WORK_COUNT_WORD}{' '}
-            original works
-          </div>
-
-          <div className="hm-interaction-anchor">
-            <button
-              ref={orbRef}
-              type="button"
-              className="hm-orb-btn"
-              aria-label="Enter the shop"
-              onClick={() => {
-                void navigate('/collections/all');
-              }}
-            />
-            <span className="hm-label-enter">Enter the shop</span>
+            <HeroTiles />
           </div>
         </div>
-
-        <div ref={dotRef} className="hm-cursor-dot" />
-        <div ref={outlineRef} className="hm-cursor-outline" />
       </section>
 
       <section
@@ -599,152 +320,19 @@ export default function Homepage() {
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
 
+      <OriginalArtPreview products={leadPrintProducts} compact />
+
       <ArtistShopsFeature
         artists={ARTIST_FEATURE.artists}
         collections={MUSEUM_COLLECTIONS}
         families={ARTIST_FEATURE.families}
       />
 
+      <YourSkyTeaser />
+
       <ClothingFeature picks={clothingPicks} />
 
-      <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
-
-      {quickShopProducts.length > 0 ? (
-        <section
-          className="home-shop-accelerator"
-          aria-labelledby="home-shop-accelerator-title"
-          data-chapter="linen"
-        >
-          <div className="home-shop-accelerator-copy" data-reveal>
-            <p className="eyebrow">Ready now</p>
-            <h2 id="home-shop-accelerator-title">
-              Start with an original piece.
-            </h2>
-            <p>
-              One work from each temperament — calm, cool, and night. Giclée on
-              200 gsm matte paper, printed to order and shipped worldwide.
-            </p>
-            <div className="home-shop-accelerator-actions">
-              <Link className="primary-button" to="/collections/all">
-                Shop all products
-              </Link>
-              <Link className="text-link" to="/policies">
-                View policies
-              </Link>
-            </div>
-          </div>
-
-          <div
-            className="home-shop-accelerator-products"
-            aria-label="Ready to shop products"
-            data-reveal
-          >
-            {quickShopProducts.map((product, index) => (
-              <ClaraProductCard
-                key={product.id}
-                product={product}
-                loading={index === 0 ? 'eager' : 'lazy'}
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
       <BookNookShelf delivery={bookNookDelivery} items={bookNookShelf} />
-
-      <section
-        className="collection-intro home-commerce-intro"
-        data-chapter="clay"
-      >
-        <div data-reveal>
-          <p className="eyebrow">The collection</p>
-          <h2>Original work, ready to live with.</h2>
-        </div>
-        <p>
-          The art comes first: {WORK_COUNT_WORD} original works across{' '}
-          {CAPSULE_COUNT_WORD} capsules, printed to order. The founding capsules
-          also come as cards, postcards and canvas, and every work as a phone
-          case.
-        </p>
-      </section>
-
-      <section
-        className={`featured-collections featured-collections--carousel${
-          categoryItems.length === 1 ? ' featured-collections--solo' : ''
-        }`}
-        aria-label={hasLiveCollections ? 'Collections' : 'Art capsules'}
-        data-chapter="clay"
-      >
-        <div className="category-carousel-toolbar featured-collections-toolbar">
-          <div
-            className="category-carousel-controls"
-            aria-label="Collection carousel controls"
-          >
-            <button
-              aria-label="Previous collections"
-              className="category-carousel-button"
-              disabled={categoryItems.length <= 1}
-              onClick={() => scrollCollectionCarousel(-1)}
-              type="button"
-            >
-              <span aria-hidden="true">&larr;</span>
-            </button>
-            <button
-              aria-label="Next collections"
-              className="category-carousel-button"
-              disabled={categoryItems.length <= 1}
-              onClick={() => scrollCollectionCarousel(1)}
-              type="button"
-            >
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>
-        </div>
-
-        <div
-          className="category-carousel-track featured-collections-track"
-          ref={collectionTrackRef}
-        >
-          {categoryItems.map((collection) =>
-            hasLiveCollections ? (
-              <Link
-                className="featured-collection-card category-carousel-card"
-                key={collection.id}
-                to={`/collections/${collection.handle}`}
-              >
-                <small className="eyebrow">Collection</small>
-                <h2 className="featured-collection-title">
-                  {collection.title}
-                </h2>
-                {'description' in collection && collection.description ? (
-                  <p className="featured-collection-desc">
-                    {collection.description}
-                  </p>
-                ) : null}
-                <span className="text-link">Explore collection</span>
-              </Link>
-            ) : (
-              <Link
-                className="featured-collection-card category-carousel-card"
-                key={collection.id}
-                to={`/collections/${collection.handle}`}
-                prefetch="intent"
-              >
-                <small className="eyebrow">Art capsule</small>
-                <h2 className="featured-collection-title">
-                  {collection.title}
-                </h2>
-                {'note' in collection && collection.note ? (
-                  <p className="featured-collection-desc">{collection.note}</p>
-                ) : null}
-                <span className="text-link">Explore capsule</span>
-              </Link>
-            ),
-          )}
-        </div>
-      </section>
-
-      <YourSkyTeaser />
 
       {caseTeaser ? <ToughCaseTeaser {...caseTeaser} /> : null}
 
@@ -775,67 +363,20 @@ export default function Homepage() {
         </Link>
       </section>
 
+      <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
+
       <HomepageEditorial />
 
-      <OriginalArtPreview products={originalArtProducts} compact />
-
       {frameProduct ? <FramedArtFeature product={frameProduct} /> : null}
-
-      {featuredProducts.length > 0 ? (
-        <section
-          className="featured-grid-section"
-          aria-labelledby="featured"
-          data-chapter="linen"
-        >
-          <div className="section-heading-row" data-reveal>
-            <div>
-              <p className="eyebrow">Featured edit</p>
-              <h2 id="featured">
-                {products.length > 3
-                  ? 'More from the edit'
-                  : 'Products available now'}
-              </h2>
-            </div>
-            <Link className="text-link" to="/collections/all">
-              Shop all
-            </Link>
-          </div>
-          <div className="product-grid">
-            {featuredProducts.map((product, index) => (
-              <ClaraProductCard
-                key={product.id}
-                product={product}
-                loading={index < 2 ? 'eager' : 'lazy'}
-              />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <section className="empty-state home-empty-catalog">
-          <p className="eyebrow">The shop</p>
-          <h2>Browse the full collection.</h2>
-          <p>
-            Every available print and product is in the shop, each with its
-            details and secure checkout.
-          </p>
-          <Link className="primary-button" to="/collections/all">
-            Browse the shop
-          </Link>
-        </section>
-      )}
 
       <section className="story-section home-story-return" data-chapter="ink">
         <div className="story-image" aria-hidden />
         <div className="story-copy" data-reveal>
-          <p className="eyebrow">Our story</p>
-          <h2>Original art first, then the things around it.</h2>
-          <p>
-            What began as fifteen prints now takes in clothing, ceramics, phone
-            cases and book nooks. Every product page sets out how it is made
-            and how it ships.
-          </p>
+          <p className="eyebrow">{BRAND.storyBand.eyebrow}</p>
+          <h2>{BRAND.storyBand.title}</h2>
+          <p>{BRAND.storyBand.body}</p>
           <Link className="text-link" to="/our-story">
-            Read the story
+            {BRAND.storyBand.cta}
           </Link>
         </div>
       </section>
@@ -877,18 +418,11 @@ const HOMEPAGE_QUERY = `#graphql
     $artQuery: String!
     $bookNookQuery: String!
     $country: CountryCode
-    $first: Int!
     $frameHandle: String!
     $language: LanguageCode
-    $productsQuery: String
     $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, sortKey: BEST_SELLING, query: $productsQuery) {
-      nodes {
-        ...ClaraProductCard
-      }
-    }
-    originalArtProducts: products(first: $artFirst, query: $artQuery) {
+    leadPrints: products(first: $artFirst, query: $artQuery) {
       nodes {
         ...ClaraProductCard
       }
@@ -936,23 +470,6 @@ const HOMEPAGE_QUERY = `#graphql
         }
       }
     }
-    collections(first: 12) {
-      nodes {
-        id
-        handle
-        title
-        description
-        products(first: 4) {
-          nodes {
-            handle
-            productType
-            tags
-            title
-            vendor
-          }
-        }
-      }
-    }
   }
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
@@ -974,93 +491,28 @@ html:has(.home-root) main {
 }
 
 .home-root {
-  --hm-bg-base: #6B655B;
-  --hm-bg-overlay: rgba(107, 101, 91, 0.85);
-  --hm-text-main: #ffffff;
-  --hm-text-muted: rgba(255, 255, 255, 0.7);
+  --hm-text-main: #26231f;
+  --hm-text-muted: rgba(38, 35, 31, 0.8);
   --hm-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
   --hm-font-serif: Georgia, 'Times New Roman', serif;
   --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   position: relative;
-  min-height: 94svh;
-  overflow: hidden;
-  background-color: var(--hm-bg-base);
+  background-color: var(--color-soft);
   color: var(--hm-text-main);
   font-family: var(--hm-font-sans);
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .home-root,
-  .home-root * {
-    cursor: none;
-  }
-}
-
-.hm-layer-sharp {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-image: url(/images/backdrops/hero-interior.jpg);
-  background-size: cover;
-  background-position: center;
-  z-index: 1;
-  filter: sepia(0.2) grayscale(0.2);
-}
-
-.hm-layer-blur {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-image: url(/images/backdrops/hero-interior.jpg);
-  background-size: cover;
-  background-position: center;
-  filter: blur(30px) brightness(0.8) sepia(0.3);
-  transform: scale(1.1);
-  z-index: 2;
-  mask-image: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-  -webkit-mask-image: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
-}
-
-@media (max-width: 720px) {
-  .hm-layer-sharp,
-  .hm-layer-blur {
-    background-image: url(/images/backdrops/hero-interior-mobile.webp);
-  }
-}
-
-.hm-noise-overlay {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 3;
-  opacity: 0.08;
-  pointer-events: none;
-  mix-blend-mode: overlay;
-  background-image: url(data:image/svg+xml,%3Csvg%20viewBox=%220%200%20200%20200%22%20xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter%20id=%22noiseFilter%22%3E%3CfeTurbulence%20type=%22fractalNoise%22%20baseFrequency=%220.8%22%20numOctaves=%223%22%20stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect%20width=%22100%25%22%20height=%22100%25%22%20filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E);
-}
-
-.hm-noise-overlay::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: var(--hm-bg-overlay);
-  mix-blend-mode: multiply;
-}
-
 .hm-ui-layer {
   position: relative;
   z-index: 10;
   width: 100%;
-  min-height: 94svh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding: 4rem 5rem;
-  pointer-events: none;
+  gap: clamp(36px, 6vw, 84px);
+  padding: 2rem 5rem clamp(48px, 7vw, 96px);
 }
 
 .hm-nav-text {
@@ -1070,10 +522,8 @@ html:has(.home-root) main {
   text-transform: uppercase;
   font-weight: 500;
   color: var(--hm-text-main);
-  pointer-events: auto;
   transition: opacity 0.3s ease;
   text-decoration: none;
-  mix-blend-mode: normal;
 }
 
 .hm-nav-text:hover { opacity: 0.6; }
@@ -1082,14 +532,13 @@ html:has(.home-root) main {
   backdrop-filter: blur(24px) saturate(1.25);
   -webkit-backdrop-filter: blur(24px) saturate(1.25);
   background:
-    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 48%),
-    rgba(24, 22, 18, 0.24);
-  border: 1px solid rgba(255,255,255,0.24);
+    linear-gradient(135deg, rgba(255,255,255,0.6), transparent 48%),
+    rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(38, 35, 31, 0.14);
   border-radius: 24px;
   box-shadow:
-    0 18px 46px rgba(10, 9, 7, 0.2),
-    inset 0 1px 0 rgba(255,255,255,0.28),
-    inset 0 -1px 0 rgba(0,0,0,0.12);
+    0 18px 46px rgba(38, 35, 31, 0.08),
+    inset 0 1px 0 rgba(255,255,255,0.7);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1107,8 +556,8 @@ html:has(.home-root) main {
   background:
     linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top 50% / 4px 4px no-repeat,
     linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top 50% / 4px 4px no-repeat,
-    rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.28);
+    rgba(255, 255, 255, 0.4);
+  border-color: rgba(38, 35, 31, 0.3);
   color: var(--hm-text-main);
   max-width: 104px;
   min-height: 32px;
@@ -1135,18 +584,17 @@ html:has(.home-root) main {
   height: 44px;
   justify-content: center;
   padding: 0;
-  pointer-events: auto;
   transition: background 0.3s ease;
   width: 44px;
 }
 
 .hm-icon-button:hover,
 .hm-icon-button:focus-visible {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(38, 35, 31, 0.08);
 }
 
 .hm-icon-button:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline: 2px solid #26231f;
   outline-offset: 1px;
 }
 
@@ -1165,62 +613,52 @@ html:has(.home-root) main {
   text-transform: none;
 }
 
+.hm-hero-body {
+  align-items: center;
+  display: grid;
+  gap: clamp(32px, 5vw, 80px);
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+}
+
 .hm-hero-text {
-  position: absolute;
-  top: 48%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  width: 100%;
-  pointer-events: none;
+  max-width: 34rem;
 }
 
 .hm-prompt-main {
   font-family: var(--hm-font-serif);
-  font-size: clamp(3.2rem, 7vw, 5rem);
-  line-height: 1.1;
+  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
+  line-height: 1.02;
   font-weight: 400;
-  letter-spacing: -0.02em;
-  margin: 0 0 2rem;
+  letter-spacing: -0.025em;
+  margin: 0 0 1.2rem;
   color: var(--hm-text-main);
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 0.5s;
+  text-wrap: balance;
 }
 
-.hm-prompt-main i { font-style: italic; }
-
 .hm-prompt-sub {
-  font-family: var(--hm-font-sans);
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
+  font-family: var(--hm-font-serif);
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+  line-height: 1.5;
   color: var(--hm-text-muted);
   margin: 0;
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 1.5s;
+  max-width: 30ch;
 }
 
 .hm-hero-actions {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
-  justify-content: center;
-  margin-top: clamp(28px, 4vw, 44px);
-  pointer-events: auto;
+  margin-top: clamp(24px, 3vw, 36px);
 }
 
 .hm-hero-action {
   align-items: center;
   backdrop-filter: blur(18px) saturate(1.25);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 52%),
-    rgba(20, 18, 15, 0.26);
-  border: 1px solid rgba(255,255,255,0.42);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(38, 35, 31, 0.28);
   border-radius: 999px;
-  box-shadow:
-    0 12px 30px rgba(10, 9, 7, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.28);
   color: var(--hm-text-main);
   display: inline-flex;
   font-size: 0.72rem;
@@ -1236,143 +674,95 @@ html:has(.home-root) main {
 }
 
 .hm-hero-action:hover {
-  background: rgba(20, 18, 15, 0.38);
-  border-color: rgba(255,255,255,0.72);
+  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(38, 35, 31, 0.5);
 }
 
 .hm-hero-action--primary {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.82), transparent 58%),
-    rgba(251,250,246,0.84);
-  border-color: rgba(255,255,255,0.76);
-  color: #26231f;
+  background: #26231f;
+  border-color: #26231f;
+  color: #f6f1e8;
 }
 
 .hm-hero-action--primary:hover {
-  background: white;
-  color: #26231f;
+  background: #000;
+  border-color: #000;
+  color: #fff;
 }
 
-.hm-interaction-anchor {
-  position: absolute;
-  bottom: 4rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  pointer-events: auto;
+.hm-hero-foot {
+  color: var(--hm-text-muted);
+  font-family: var(--hm-font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  margin: clamp(20px, 3vw, 32px) 0 0;
+  text-transform: uppercase;
 }
 
-.hm-orb-btn {
-  width: 12px;
-  height: 12px;
-  background: transparent;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.6);
-  transition: all 0.6s var(--hm-ease-fluid);
-  position: relative;
-  overflow: visible;
+/* ── The curiosity grid ── four columns, the Hokusai and the book nook
+   each two wide, so the eye reads a cabinet of very different things. */
+.hm-tiles {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  list-style: none;
+  margin: 0;
   padding: 0;
 }
 
-.hm-orb-btn::before {
-  content: '';
+.hm-tile {
+  min-width: 0;
+}
+
+.hm-tile a {
+  aspect-ratio: 4 / 5;
+  background: #ded7cb;
+  border-radius: 6px;
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+
+.hm-tile:nth-child(2) a,
+.hm-tile:nth-child(6) a {
+  aspect-ratio: 8 / 5;
+}
+
+.hm-tile:nth-child(2),
+.hm-tile:nth-child(6) {
+  grid-column: span 2;
+}
+
+.hm-tile img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 900ms var(--hm-ease-fluid);
+  width: 100%;
+}
+
+.hm-tile a:hover img,
+.hm-tile a:focus-visible img {
+  transform: scale(1.03);
+}
+
+.hm-tile a:focus-visible {
+  outline: 2px solid #26231f;
+  outline-offset: 3px;
+}
+
+.hm-tile-tag {
+  background: rgba(251, 250, 246, 0.94);
+  border-radius: 3px;
+  bottom: 10px;
+  color: #26231f;
+  font-family: var(--hm-font-serif);
+  font-size: 0.86rem;
+  font-style: italic;
+  left: 10px;
+  line-height: 1;
+  padding: 6px 9px;
   position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40px; height: 40px;
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 50%;
-  animation: hmOrbPulse 2.8s var(--hm-ease-fluid) infinite;
-}
-
-.hm-orb-btn::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  background: white;
-  transform: scale(0);
-  transition: transform 1.5s var(--hm-ease-fluid);
-}
-
-.hm-orb-btn:active::after { transform: scale(1); }
-
-.hm-orb-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.9);
-}
-
-.hm-orb-btn:hover::before {
-  animation: none;
-  width: 50px; height: 50px;
-  border-color: rgba(255,255,255,0.4);
-}
-
-.hm-label-enter {
-  font-family: var(--hm-font-sans);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--hm-text-muted);
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2.2s;
-}
-
-.hm-cursor-dot,
-.hm-cursor-outline {
-  position: fixed;
-  top: 0; left: 0;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.hm-cursor-dot {
-  width: 4px; height: 4px;
-  background-color: white;
-}
-
-.hm-cursor-outline {
-  width: 32px; height: 32px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: width 0.25s var(--hm-ease-fluid), height 0.25s var(--hm-ease-fluid),
-              background-color 0.2s ease, border-color 0.2s ease, opacity 0.4s ease;
-}
-
-.hm-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse 120% 100% at 50% 50%,
-    transparent 40%,
-    rgba(30, 28, 24, 0.55) 100%
-  );
-}
-
-.hm-coords {
-  position: absolute;
-  bottom: 4rem;
-  left: 5rem;
-  font-family: var(--hm-font-sans);
-  font-variant-numeric: tabular-nums;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.35);
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2s;
-}
-
-.home-commerce-intro {
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
 }
 
 .home-trust-band {
@@ -1400,269 +790,11 @@ html:has(.home-root) main {
   border-right: 0;
 }
 
-.home-shop-accelerator {
-  align-items: start;
-  background:
-    linear-gradient(90deg, var(--color-page) 0%, var(--color-soft) 58%, #c2c9bb 100%);
-  border-bottom: 1px solid rgba(38, 35, 31, 0.12);
-  display: grid;
-  gap: clamp(28px, 4vw, 58px);
-  grid-template-columns: minmax(280px, 0.78fr) minmax(0, 1.22fr);
-  padding: clamp(44px, 6vw, 88px) clamp(18px, 4vw, 70px);
-}
-
-.home-shop-accelerator-copy {
-  display: grid;
-  gap: clamp(18px, 2vw, 28px);
-  position: sticky;
-  top: 96px;
-}
-
-.home-shop-accelerator-copy h2 {
-  color: var(--color-ink);
-  font-family: var(--serif);
-  font-size: clamp(2.7rem, 5.4vw, 5.6rem);
-  font-weight: 400;
-  letter-spacing: -0.055em;
-  line-height: 0.93;
-  margin: 0;
-  text-wrap: balance;
-}
-
-.home-shop-accelerator-copy p:not(.eyebrow) {
-  color: var(--color-muted);
-  font-size: 1.04rem;
-  line-height: 1.72;
-  margin: 0;
-  max-width: 44ch;
-}
-
-.home-shop-accelerator-actions {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-}
-
-.home-shop-accelerator-products {
-  display: grid;
-  gap: clamp(16px, 2vw, 28px);
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.featured-collections {
-  background: var(--color-deep);
-  color: var(--color-paper);
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-}
-
-.featured-collections--solo {
-  grid-template-columns: 1fr;
-}
-
-.featured-collections--carousel {
-  background: linear-gradient(180deg, var(--color-soft) 0%, var(--color-page) 100%);
-  color: var(--color-ink);
-  display: block;
-  overflow: hidden;
-  position: relative;
-}
-
-.featured-collections-toolbar {
-  border-bottom-color: transparent;
-  padding-bottom: 14px;
-  padding-top: 14px;
-}
-
-.featured-collections--carousel .category-carousel-controls {
-  gap: 10px;
-}
-
-.featured-collections--carousel .category-carousel-button {
-  background: transparent;
-  border-color: rgba(38, 35, 31, 0.22);
-  border-radius: 999px;
-  color: rgba(38, 35, 31, 0.55);
-  height: 44px;
-  transition: border-color 0.3s ease, color 0.3s ease;
-  width: 44px;
-}
-
-.featured-collections--carousel .category-carousel-button:hover {
-  background: transparent;
-  border-color: var(--color-ink);
-  color: var(--color-ink);
-}
-
-.featured-collections-track {
-  background: transparent;
-  display: flex;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-behavior: smooth;
-  scroll-padding-inline: clamp(18px, 4vw, 70px);
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  /* pan-y must stay allowed: with pan-x alone, a vertical swipe that
-     starts on this strip cannot scroll the page at all. */
-  touch-action: pan-x pan-y;
-  -webkit-overflow-scrolling: touch;
-}
-
-.featured-collections-track::-webkit-scrollbar {
-  display: none;
-}
-
-.featured-collections-track .featured-collection-card {
-  border-right: none;
-  flex: 0 0 clamp(250px, 28vw, 380px);
-  min-height: clamp(240px, 24vw, 320px);
-  padding: clamp(28px, 4vw, 52px) clamp(22px, 3vw, 38px);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-.featured-collections--solo .featured-collections-track .featured-collection-card {
-  border-right: 0;
-  flex-basis: 100%;
-}
-
-.featured-collection-card {
-  background: var(--color-deep);
-  color: var(--color-paper);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(18px, 2.5vw, 36px);
-  padding: clamp(52px, 8vw, 104px) clamp(24px, 4vw, 70px);
-  text-decoration: none;
-  transition: background 0.5s ease;
-}
-
-.featured-collections--carousel .featured-collection-card {
-  background: transparent;
-  color: var(--color-ink);
-}
-
-.featured-collections--solo .featured-collection-card {
-  align-items: center;
-  text-align: center;
-}
-
-.featured-collection-card:hover {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.featured-collections--carousel .featured-collection-card:hover {
-  background: rgba(38, 35, 31, 0.025);
-}
-
-.featured-collection-title {
-  font-family: var(--serif);
-  font-size: clamp(3.2rem, 6.5vw, 6rem);
-  font-weight: 400;
-  letter-spacing: -0.045em;
-  line-height: 0.92;
-  margin: 0;
-}
-
-.featured-collections-track .featured-collection-title {
-  font-size: clamp(2rem, 3.4vw, 3.4rem);
-  letter-spacing: -0.012em;
-  line-height: 1;
-  overflow-wrap: anywhere;
-}
-
-.featured-collection-desc {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 1.05rem;
-  line-height: 1.72;
-  margin: 0;
-  max-width: 460px;
-}
-
-.featured-collections--carousel .featured-collection-desc {
-  color: var(--color-muted);
-  font-size: 0.95rem;
-  line-height: 1.65;
-  max-width: 320px;
-}
-
-.featured-collection-card .eyebrow {
-  color: rgba(255, 255, 255, 0.45);
-  margin: 0;
-}
-
-.featured-collections--carousel .featured-collection-card .eyebrow {
-  color: var(--color-muted);
-  opacity: 0.7;
-}
-
-.featured-collection-card .text-link {
-  color: rgba(255, 255, 255, 0.6);
-  margin-top: clamp(6px, 1.5vw, 18px);
-  transition: color 0.3s ease;
-}
-
-.featured-collections--carousel .featured-collection-card .text-link {
-  color: var(--color-ink);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  margin-top: auto;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.featured-collections--carousel .featured-collection-card .text-link::after {
-  display: none;
-}
-
-.featured-collection-card:hover .text-link {
-  color: var(--color-paper);
-}
-
-.featured-collections--carousel .featured-collection-card:hover .text-link {
-  color: var(--color-ink);
-  opacity: 1;
-}
-
-.featured-grid-section {
-  background:
-    linear-gradient(180deg, var(--color-page-warm) 0%, var(--color-page) 28%);
-}
-
 .home-story-return {
   margin-top: 0;
 }
 
-.home-empty-catalog {
-  margin-left: clamp(18px, 4vw, 70px);
-  margin-right: clamp(18px, 4vw, 70px);
-  max-width: min(680px, calc(100vw - 36px));
-}
-
-@keyframes hmFadeInSlow {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes hmOrbPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
-  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
-}
-
 @media (max-width: 768px) {
-  .home-root,
-  .home-root * {
-    cursor: auto;
-  }
-
-  .hm-ui-layer {
-    padding: 2rem;
-  }
-
   .hm-header-top {
     border-radius: 999px;
     gap: 2px;
@@ -1690,7 +822,6 @@ html:has(.home-root) main {
     max-width: none;
   }
 
-
   .hm-header-top .market-selector select {
     max-width: 74px;
     min-height: 30px;
@@ -1708,75 +839,49 @@ html:has(.home-root) main {
     padding-left: 4px;
   }
 
-  .hm-hero-text {
-    left: 50%;
-    max-width: 340px;
-    top: 46%;
-    width: calc(100% - 4rem);
+  .hm-ui-layer {
+    gap: 28px;
+    padding: 1rem 1.25rem 2.4rem;
+  }
+
+  .hm-hero-body {
+    gap: 26px;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .hm-prompt-main {
-    font-size: 2.72rem;
-    letter-spacing: -0.01em;
-    line-height: 1.04;
-    margin-bottom: 1.35rem;
-    text-wrap: balance;
-  }
-
-  .hm-prompt-sub {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 0.66rem;
-    letter-spacing: 0.18em;
-    line-height: 1.8;
-    margin-inline: auto;
-    max-width: 30ch;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
-  }
-
-  .hm-prompt-main {
-    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.18);
+    font-size: clamp(2.2rem, 10.5vw, 2.8rem);
   }
 
   .hm-hero-actions {
-    flex-direction: column;
     gap: 10px;
-    margin-top: 24px;
   }
 
   .hm-hero-action {
-    min-height: 46px;
-    width: min(240px, 100%);
+    flex: 1 1 140px;
+    min-height: 44px;
+    min-width: 0;
   }
 
-  /* "Enter the shop" repeats "Shop the edit"; phones keep one action. */
-  .hm-interaction-anchor {
+  /* Phones show the first four tiles, square, two across. */
+  .hm-tiles {
+    gap: 10px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hm-tile:nth-child(2),
+  .hm-tile:nth-child(6) {
+    grid-column: auto;
+  }
+
+  .hm-tile a,
+  .hm-tile:nth-child(2) a,
+  .hm-tile:nth-child(6) a {
+    aspect-ratio: 1 / 1;
+  }
+
+  .hm-tile:nth-child(n + 5) {
     display: none;
-  }
-
-  .hm-coords {
-    bottom: 1.8rem;
-    color: rgba(255, 255, 255, 0.72);
-    left: 0;
-    right: 0;
-    text-align: center;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
-  }
-
-  .hm-cursor-dot,
-  .hm-cursor-outline {
-    display: none;
-  }
-
-  .featured-collections {
-    grid-template-columns: 1fr;
-  }
-
-  .featured-collections-toolbar {
-    padding: 14px 18px;
-  }
-
-  .featured-collections-track {
-    scroll-padding-inline: 18px;
   }
 
   .home-trust-band p {
@@ -1784,152 +889,18 @@ html:has(.home-root) main {
     letter-spacing: 0.12em;
     padding: 14px 6px;
   }
-
-  .home-shop-accelerator {
-    grid-template-columns: 1fr;
-    padding-bottom: 54px;
-    padding-top: 48px;
-  }
-
-  .home-shop-accelerator-copy {
-    position: static;
-  }
-
-  .home-shop-accelerator-copy h2 {
-    font-size: clamp(2.35rem, 11vw, 4rem);
-  }
-
-  .home-shop-accelerator-products {
-    display: flex;
-    gap: 14px;
-    margin: 0 -18px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    padding: 0 18px 6px;
-    scroll-padding-inline: 18px;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .home-shop-accelerator-products::-webkit-scrollbar {
-    display: none;
-  }
-
-  .home-shop-accelerator-products > * {
-    flex: 0 0 min(74vw, 300px);
-    scroll-snap-align: start;
-  }
-
-
-  .featured-collection-card {
-    padding: 42px 24px;
-  }
-
-  .featured-collections-track .featured-collection-card {
-    flex-basis: min(82vw, 340px);
-    gap: 20px;
-    min-height: 220px;
-    padding: 28px 22px;
-  }
-
-  .featured-collection-title {
-    font-size: clamp(2.4rem, 10vw, 3.6rem);
-  }
-
-  .featured-collections-track .featured-collection-title {
-    font-size: clamp(2rem, 10vw, 2.85rem);
-  }
-
 }
 
 @media (max-width: 768px) and (max-height: 680px) {
-  .hm-ui-layer {
-    display: grid;
-    /* One full-width column; the flex layout's space-between would
-       otherwise shrink it to its content. */
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    padding: 1rem 1.25rem 2.2rem;
-    row-gap: 8px;
-  }
-
   .hm-brand,
   .hm-brand.hm-nav-text {
     font-size: 1.25rem;
   }
-
-  .hm-hero-text {
-    align-self: center;
-    grid-row: 2;
-    justify-self: center;
-    left: auto;
-    max-width: 300px;
-    position: static;
-    top: auto;
-    transform: none;
-    width: 100%;
-  }
-
-  .hm-prompt-main {
-    font-size: clamp(2.3rem, 14vw, 2.65rem);
-    line-height: 1;
-    margin-bottom: 0.8rem;
-  }
-
-  .hm-prompt-sub {
-    font-size: 0.58rem;
-    letter-spacing: 0.18em;
-    line-height: 1.55;
-  }
-
-  .hm-hero-actions {
-    gap: 8px;
-    margin-top: 14px;
-  }
-
-  .hm-hero-action {
-    min-height: 38px;
-    padding-inline: 16px;
-  }
-
-  .hm-interaction-anchor {
-    align-self: end;
-    bottom: auto;
-    gap: 0.85rem;
-    grid-row: 3;
-    justify-self: center;
-    left: auto;
-    position: static;
-    transform: none;
-  }
-
-  .hm-label-enter {
-    font-size: 0.62rem;
-  }
-
-  .hm-coords {
-    bottom: 0.75rem;
-    font-size: 0.62rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .featured-collections-track .featured-collection-card {
-    flex-basis: min(calc(100vw - 36px), 340px);
-    min-height: 210px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hm-prompt-main,
-  .hm-prompt-sub,
-  .hm-coords,
-  .hm-label-enter,
-  .hm-orb-btn::before {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
+  .hm-tile img {
+    transition: none;
   }
 }
 

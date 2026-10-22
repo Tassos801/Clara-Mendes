@@ -1,5 +1,6 @@
 import type {ClaraCardProduct} from '../components/ClaraProductCard.tsx';
 import {deriveCardPricing} from './productCardPricing.ts';
+import {BRAND} from '../content/brand.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   fulfilmentWindows,
@@ -69,8 +70,7 @@ type BreadcrumbInput = {
 };
 
 export const SITE_NAME = 'Clara Mendes';
-export const DEFAULT_META_DESCRIPTION =
-  'Clara Mendes presents original art and considered products for calm, collected spaces.';
+export const DEFAULT_META_DESCRIPTION = BRAND.seo.defaultDescription;
 // Owned 1200x630 crop of Quiet Form I — never a stock photo: the share
 // card is often the first impression of the brand's actual work.
 export const DEFAULT_SHARE_IMAGE = `${STOREFRONT_ORIGIN}/images/share/og-default.jpg`;

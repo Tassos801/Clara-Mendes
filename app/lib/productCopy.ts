@@ -22,15 +22,15 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
   // Device list must stay in sync with data/art-product-extensions.json
   // deviceVariants — enforced by scripts/productCopy.node-test.mjs.
   'art-premium-fleece-blanket-30x40':
-    'The full capsule composition printed across a premium fleece blanket, 30 × 40 in. Soft-touch fleece with an all-over print of the original Clara Mendes artwork, made to order for sofas, reading chairs, and slow evenings.',
+    'The full capsule composition printed across a premium fleece blanket, 30 × 40 in. Soft-touch fleece with an all-over print of the Clara Mendes artwork, made to order for sofas, reading chairs, and slow evenings.',
   'art-snap-phone-case':
-    'Original Clara Mendes artwork wrapped edge to edge around a slim snap phone case. Impact-resistant polycarbonate with an all-over matte print, made to order for iPhone 15, iPhone 15 Pro, iPhone 15 Plus and iPhone 15 Pro Max.',
+    'Clara Mendes artwork wrapped edge to edge around a slim snap phone case. Impact-resistant polycarbonate with an all-over matte print, made to order for iPhone 15, iPhone 15 Pro, iPhone 15 Plus and iPhone 15 Pro Max.',
   'classic-framed-art-print-16x20':
     'A Natural classic picture frame sold without artwork, available in 8 × 10, 16 × 20, and 20 × 24 inch sizes. Satin-laminated solid wood, a 20 mm face, shatterproof clear Perspex, removable backing, and a wall hanger are included; print and decorative mat are not included.',
   'fine-art-greeting-card':
-    'Original Clara Mendes artwork on a blank 5 × 7 inch greeting card, printed to order. Heavyweight 324gsm Mohawk fine-art card with a kraft envelope, left blank inside for your own words; choose the art capsule that suits the occasion. Sent by letter post.',
+    'Clara Mendes artwork on a blank 5 × 7 inch greeting card, printed to order. Heavyweight 324gsm Mohawk fine-art card with a kraft envelope, left blank inside for your own words; choose the art capsule that suits the occasion. Sent by letter post.',
   'fine-art-postcard':
-    'Original Clara Mendes artwork as a 7 × 5 inch postcard, printed to order. Premium 324gsm Mohawk card with a smooth white surface; choose the art capsule that suits your space, send it, or pin it where you will see it every day. Sent by letter post.',
+    'Clara Mendes artwork as a 7 × 5 inch postcard, printed to order. Premium 324gsm Mohawk card with a smooth white surface; choose the art capsule that suits your space, send it, or pin it where you will see it every day. Sent by letter post.',
   'alba-cotton-linen-cushion':
     'A thick cotton-linen cushion for everyday comfort, sofa layering, and quiet bedroom styling. Choose the cover for an existing insert or the full cushion when building a room from scratch.',
   'ayla-cotton-bath-towel':

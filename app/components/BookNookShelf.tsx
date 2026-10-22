@@ -32,7 +32,7 @@ const SPINES = [
   {title: 'Midnight Garden', color: '#2f3a33', ink: '#d9cbb2', h: 0.88, w: 34},
   {title: '', color: '#b08a6e', ink: '', h: 0.8, w: 22},
   {
-    title: 'Objects with Soul',
+    title: 'Floating World',
     color: '#6f7769',
     ink: '#f2ece1',
     h: 0.93,
