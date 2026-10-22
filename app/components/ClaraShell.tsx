@@ -6,6 +6,7 @@ import {Aside, useAside} from './Aside';
 import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
+import {NewsletterForm} from './NewsletterForm';
 import {isReleasedProductHandle} from '~/lib/catalogFilters';
 import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
@@ -190,6 +191,7 @@ function ClaraFooter() {
           {BRAND.footer.blurb} We ship across the EU and to most other
           countries; each product page shows how its item is delivered.
         </p>
+        <NewsletterForm variant="footer" />
       </div>
       <nav className="footer-style-nav" aria-label="Shop wall art by style">
         <Link to="/collections/all?type=Art+Prints">Unframed Art Prints</Link>

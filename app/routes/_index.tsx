@@ -1,10 +1,17 @@
 import {useEffect, useRef} from 'react';
-import {Link, useLoaderData, useNavigate} from 'react-router';
+import {
+  Link,
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from 'react-router';
 import type {Route} from './+types/_index';
+import type {loader as rootLoader} from '~/root';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {HeroTiles} from '~/components/HeroTiles';
 import {NAV_LINKS} from '~/lib/navLinks';
 import {BRAND} from '~/content/brand';
+import {NewsletterForm} from '~/components/NewsletterForm';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {ClothingFeature} from '~/components/ClothingFeature';
 import {ArtistShopsFeature} from '~/components/ArtistShopsFeature';
@@ -217,6 +224,9 @@ export default function Homepage() {
     leadPrintProducts,
     seoUrl,
   } = useLoaderData<typeof loader>();
+  const welcomeCode =
+    useRouteLoaderData<typeof rootLoader>('root')?.newsletter.welcomeCode ??
+    null;
   const {open, type: asideType} = useAside();
   const navigate = useNavigate();
   const blurRef = useRef<HTMLDivElement | null>(null);
@@ -539,29 +549,22 @@ export default function Homepage() {
       <section
         className="home-journal-teaser"
         data-chapter="ink"
-        aria-label="Karina of Time — the journal"
+        aria-label="Letters from Nicosia — sign up"
       >
-        <Link
-          className="journal-teaser-card"
-          to="/blogs/karina-of-time"
-          prefetch="intent"
-          data-reveal
-        >
+        <div className="journal-teaser-card" data-reveal>
           <div className="journal-teaser-sky" aria-hidden>
             <div className="journal-teaser-cloud" />
           </div>
-          <span className="journal-teaser-copy">
-            <span className="journal-teaser-eyebrow">The journal</span>
-            <span className="journal-teaser-title">
-              Karina <i>of</i> Time
-            </span>
-            <span className="journal-teaser-line">
-              <span lang="el">καρίνα</span> — Greek, the keel. Notes on the
-              prints, the capsules, and the rooms they live in.
-            </span>
-            <span className="journal-teaser-cta">Enter the journal →</span>
-          </span>
-        </Link>
+          <div className="journal-teaser-copy">
+            <span className="journal-teaser-eyebrow">{BRAND.newsletter.eyebrow}</span>
+            <span className="journal-teaser-title">{BRAND.newsletter.title}</span>
+            <span className="journal-teaser-line">{BRAND.newsletter.body(welcomeCode)}</span>
+            <NewsletterForm variant="feature" />
+            <Link className="journal-teaser-cta" to="/blogs/karina-of-time" prefetch="intent">
+              {BRAND.newsletter.journalLink}
+            </Link>
+          </div>
+        </div>
       </section>
     </div>
   );
@@ -1490,9 +1493,10 @@ html:has(.home-root) main {
   }
 }
 
-/* ── Karina of Time teaser ──
-   A pocket dusk sky linking to the journal; the drifting cloud tile is
-   the journal's own procedural billow layer. */
+/* ── Letters from Nicosia ──
+   A pocket dusk sky holding the email sign-up, with a link on to the
+   journal; the drifting cloud tile is the journal's own procedural billow
+   layer. The card is a div, not a link: a form cannot live in an anchor. */
 .home-journal-teaser {
   padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 70px);
 }
@@ -1508,18 +1512,6 @@ html:has(.home-root) main {
   max-width: 1060px;
   overflow: hidden;
   position: relative;
-  text-decoration: none;
-  transition: transform 300ms ease, box-shadow 300ms ease;
-}
-
-.journal-teaser-card:hover {
-  box-shadow: 0 36px 84px rgba(20, 15, 10, 0.45);
-  transform: translateY(-3px);
-}
-
-.journal-teaser-card:focus-visible {
-  outline: 2px solid #f2ece1;
-  outline-offset: 4px;
 }
 
 .journal-teaser-sky {
@@ -1593,17 +1585,41 @@ html:has(.home-root) main {
   transition: opacity 240ms ease;
 }
 
-.journal-teaser-card:hover .journal-teaser-cta {
+.journal-teaser-card:hover .journal-teaser-cta,
+.journal-teaser-cta:focus-visible {
   opacity: 1;
 }
+
+.journal-teaser-cta:focus-visible {
+  outline: 2px solid #f2ece1;
+  outline-offset: 4px;
+}
+
+.journal-teaser-copy .newsletter--feature { margin: 22px 0 6px; max-width: 520px; width: 100%; }
+.journal-teaser-copy .newsletter__row { display: flex; gap: 8px; }
+.journal-teaser-copy .newsletter__input {
+  background: rgba(251, 250, 246, 0.14); border: 1px solid rgba(251, 250, 246, 0.45);
+  border-radius: 999px; color: #fbfaf6; flex: 1 1 auto; font-size: 1rem; margin: 0; min-height: 46px; min-width: 0; padding: 0 18px;
+}
+.journal-teaser-copy .newsletter__input::placeholder { color: rgba(251, 250, 246, 0.6); }
+.journal-teaser-copy .newsletter__button {
+  background: #fbfaf6; border: 0; border-radius: 999px; color: #26231f; cursor: pointer;
+  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.14em; min-height: 46px; padding: 0 20px; text-transform: uppercase; white-space: nowrap;
+}
+.journal-teaser-copy .newsletter__button:disabled { opacity: 0.7; cursor: default; }
+.journal-teaser-copy .newsletter__input:focus-visible,
+.journal-teaser-copy .newsletter__button:focus-visible { outline: 2px solid #fbfaf6; outline-offset: 2px; }
+.journal-teaser-copy .newsletter__message { font-size: 0.95rem; margin: 10px 0 0; }
+.journal-teaser-copy .newsletter__message.is-error { color: #f3c9b8; }
+.journal-teaser-copy .newsletter__consent { font-size: 0.76rem; margin: 8px 0 0; opacity: 0.8; }
+.journal-teaser-copy .newsletter__consent a { color: inherit; text-decoration: underline; }
+.journal-teaser-copy .newsletter__label,
+.journal-teaser-copy .newsletter__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+@media (max-width: 560px) { .journal-teaser-copy .newsletter__row { flex-direction: column; } }
 
 @media (prefers-reduced-motion: reduce) {
   .journal-teaser-cloud {
     animation: none;
-  }
-
-  .journal-teaser-card {
-    transition: none;
   }
 }
 `;
