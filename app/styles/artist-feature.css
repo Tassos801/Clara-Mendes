@@ -6,13 +6,14 @@
   --af-muted: rgba(243, 239, 230, 0.72);
   --af-line: rgba(243, 239, 230, 0.22);
   align-items: center;
-  background:
-    radial-gradient(
-      120% 90% at 0% 0%,
-      rgba(84, 112, 150, 0.28),
-      transparent 60%
-    ),
-    #1d2633;
+  /* The same night as the Your Sky band that follows it (.sky-teaser in
+     app.css), so the two dark sections read as one. */
+  background: radial-gradient(
+    ellipse at 68% 50%,
+    #22304a 0,
+    #141b2b 46%,
+    #0c111c 100%
+  );
   color: var(--af-ink);
   display: grid;
   gap: clamp(28px, 5vw, 72px);
