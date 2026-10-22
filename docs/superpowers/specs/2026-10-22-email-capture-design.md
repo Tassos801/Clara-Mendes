@@ -7,13 +7,13 @@ Approved by the owner on 2026-10-22. It covers the review item "no email sign-up
 - Subscribers are **Shopify customers** with email-marketing consent, created through the Admin API. No external email service.
 - Placement: a one-line form in the **footer of every page**, and a fuller **"Letters from Nicosia" section on the homepage** that takes over the journal teaser card (the journal link stays as a secondary link). No pop-ups.
 - Promise: new work first, a letter now and then, and a **10 % welcome code**. The code is shown only when the owner has created it and configured it (see Owner actions).
-- Double opt-in follows the store's own setting; the code does not force or bypass it.
+- Consent is recorded as single opt-in (`SUBSCRIBED` / `SINGLE_OPT_IN`) at the moment of sign-up, with the consent text shown under the form. Admin API writes are not subject to the store's "require confirmation" setting, so there is no confirmation email in this flow; if the owner wants double opt-in later, it is a separate change (pending state + a confirmation link).
 
 ## Server
 
 `app/lib/newsletter.server.ts` (server-only, never imported by client code). It reuses `createAdminClient` from `app/lib/reviews.server.ts` rather than building a second Admin caller:
 
-- `subscribeEmail(env, {email, source}) → {status: 'subscribed' | 'already' | 'disabled', message?}`.
+- `subscribeEmail(env, {email}) → {status: 'subscribed' | 'already' | 'disabled'}` (the source is the fixed tag `source:storefront`).
   - If `createAdminClient` throws `ReviewsNotConfiguredError` (no `SHOPIFY_ADMIN_ACCESS_TOKEN`) → `disabled`.
   - `customerCreate` with `{email, tags: ['newsletter', 'source:storefront'], emailMarketingConsent: {marketingState: SUBSCRIBED, marketingOptInLevel: SINGLE_OPT_IN, consentUpdatedAt: <now ISO>}}`.
   - If the mutation's `userErrors` say the email is taken (`field` includes `email` and message matches /taken|already/i): `customers(first: 1, query: "email:<email>")`, then `customerEmailMarketingConsentUpdate` with the same consent → `already` when that customer was already subscribed, else `subscribed`.
@@ -69,9 +69,7 @@ Styling: the feature form is an input + button pair at least 44 px tall on a tra
 1. Shopify Admin → Settings → Apps and sales channels → Develop apps → the storefront's custom app → Configuration → Admin API scopes: add `read_customers`, `write_customers`; save; reinstall if prompted; copy the token to Oxygen as `SHOPIFY_ADMIN_ACCESS_TOKEN` (production environment).
 2. Shopify Admin → Discounts → Create → Amount off order → code `WELCOME10`, 10 % off, Eligibility: all customers, Limit to one use per customer, no minimum, no end date. Then Oxygen env `NEWSLETTER_WELCOME_CODE=WELCOME10`.
 3. Optional: Shopify Email → Automations → Welcome new subscribers, repeating the code.
-4. Settings → Notifications → Customer marketing: decide whether "require confirmation" (double opt-in) is on.
-
-Until 1 is done the forms show the "Sign-ups aren't open yet" message; until 2 is done they omit the code.
+Until 1 is done the forms show the "Sign-ups aren't open yet" message; until 2 is done they omit the code. The store's "require confirmation" setting does not apply to these Admin API sign-ups (see Decisions).
 
 ## Tests
 
