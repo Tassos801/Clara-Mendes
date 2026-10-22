@@ -49,18 +49,18 @@ import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import type {CollectionHero} from '~/lib/collectionHeroes';
-import {releasedPrintHandles} from '~/lib/printCatalog';
 import {
   ListingCursorError,
   featuredMuseumClause,
   museumSearchQuery,
   sortMuseumProducts,
-  studioConnection,
-  studioPageVariables,
   studioSearchQuery,
-  studioThenMuseumPage,
+  type ListingConnection,
   type ListingPaginationVariables,
 } from '~/lib/museumListingOrder';
+import {rotateByLine} from '~/lib/listingLines';
+import {pageByIndex} from '~/lib/listingPage';
+import {BRAND} from '~/content/brand';
 import {releasedCuratedProductTypes} from '~/lib/curatedProducts';
 import {bookNookDeliveryPhrase} from '~/lib/bookNooks';
 import {loadClothingProducts} from '~/lib/clothing.server';
@@ -139,6 +139,8 @@ export type CollectionViewData = {
   products: CollectionProductConnection;
   seoUrl?: string;
   shareImage?: string | null;
+  /** Size of the whole listing when it is known (the in-memory Featured order). */
+  totalCount?: number;
 };
 
 export const meta: Route.MetaFunction = ({data}) => {
@@ -147,12 +149,9 @@ export const meta: Route.MetaFunction = ({data}) => {
 
   return buildSeoMeta({
     description:
-      data?.description ??
-      'Shop Clara Mendes art and museum prints, canvas, cards, phone cases, ceramic plant pots, book nook kits and activewear.',
+      data?.description ?? BRAND.shopAll.description,
     image: `${STOREFRONT_ORIGIN}${data?.shareImage || '/images/product-art/quiet-form/quiet-form-01.webp'}`,
-    title: isCapsule
-      ? `${heading} Capsule`
-      : 'Shop Original Art & Considered Objects',
+    title: isCapsule ? `${heading} Capsule` : BRAND.shopAll.heading,
     // Other facets canonicalize to the unfiltered page. Launch capsules use
     // their landing pages; print-catalog collections keep their shop filter
     // URL because they have no separate landing page.
@@ -237,15 +236,17 @@ export async function loader({context, request}: Route.LoaderArgs) {
       : isBookNooks
         ? `Miniature worlds for your bookshelf. Explore DIY book nook kits curated by Clara Mendes, with delivery included ${bookNookDeliveryPhrase()}.`
         : releasedCuratedProductTypes().length > 0
-          ? 'Shop Clara Mendes art and museum prints, canvas, cards, phone cases, ceramic plant pots, book nook kits and activewear.'
-          : releasedPrintHandles().length > 0
-            ? 'Shop original Clara Mendes art prints, from quiet geometry to cinematic imagined worlds.'
-            : 'Shop 15 original Clara Mendes art prints across five coordinated capsules in 8 × 10, 16 × 20, and 20 × 24 in.',
+          ? BRAND.shopAll.description
+          : BRAND.shopAll.printsOnlyDescription,
     facets: {
       productTypes: productTypes.map((label) => ({label})),
       vendors: [] as Array<{label: string}>,
     },
-    heading: capsule ? capsule.title : isBookNooks ? 'Book Nooks' : 'Shop All',
+    heading: capsule
+      ? capsule.title
+      : isBookNooks
+        ? 'Book Nooks'
+        : BRAND.shopAll.heading,
     shareImage: capsule?.image ?? null,
     products: await filterProductConnection(
       context.storefront,
@@ -255,6 +256,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       request,
       capsule ? shopCapsulePath(capsule.slug) : '/collections/all',
     ),
+    totalCount: 'totalCount' in data ? data.totalCount : undefined,
   } satisfies CollectionViewData;
 }
 
@@ -513,7 +515,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
               ? data.hero.eyebrow
               : data.clothingOnly
                 ? 'Clara Mendes Clothing'
-                : 'Original art & considered products'}
+                : BRAND.shopAll.eyebrow}
           </p>
           <h1 id="cv-hero-title" className="cv-title">
             <i>{splitTitle(data.heading).italic}</i>
@@ -717,9 +719,13 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         }) => (
           <>
             <p className="cv-count">
-              {nodes.length}
-              {hasNextPage ? '+' : ''}{' '}
-              {nodes.length === 1 && !hasNextPage ? 'product' : 'products'}
+              {typeof data.totalCount === 'number'
+                ? `Showing ${nodes.length} of ${data.totalCount} ${
+                    data.totalCount === 1 ? 'product' : 'products'
+                  }`
+                : `${nodes.length}${hasNextPage ? '+' : ''} ${
+                    nodes.length === 1 && !hasNextPage ? 'product' : 'products'
+                  }`}
             </p>
 
             {nodes.length > 0 ? (
@@ -893,9 +899,11 @@ function splitTitle(str: string): {italic: string; rest: string} {
 type ListingStorefront = Route.LoaderArgs['context']['storefront'];
 
 /**
- * The default listing: studio products in Shopify's order, then museum
- * products in listing order, with cursors from app/lib/museumListingOrder.ts.
- * Returns the same shape as ALL_COLLECTION_QUERY.
+ * The default listing, in memory: the studio's own products rotated by
+ * product line (app/lib/listingLines.ts), then museum products in
+ * listing order (app/lib/museumListingOrder.ts), paged by index
+ * (app/lib/listingPage.ts). Both sets are small enough to hold (a few
+ * hundred cards); a page is one slice, and the count is exact.
  */
 async function loadFeaturedListing({
   museumClause,
@@ -911,61 +919,42 @@ async function loadFeaturedListing({
   storefront: ListingStorefront;
 }) {
   const sortInput = getProductsSortInput('featured');
-  const studioQuery = studioSearchQuery(searchQuery, museumClause);
-  let museum: Promise<ClaraCardProduct[]> | null = null;
-  const loadMuseum = async () => {
+  const loadAll = async (query: string) => {
     const products: ClaraCardProduct[] = [];
     let after: string | null = null;
-    // A safety cap: 20 pages of 100 is far beyond any museum release.
+    // A safety cap: 20 pages of 100 is far beyond any release.
     for (let page = 0; page < 20; page += 1) {
       const result: ShopListingProductsQuery = await storefront.query(
         SHOP_LISTING_PRODUCTS_QUERY,
-        {
-          variables: {
-            ...sortInput,
-            endCursor: after,
-            first: 100,
-            query: museumSearchQuery(searchQuery, museumClause),
-          },
-        },
+        {variables: {...sortInput, endCursor: after, first: 100, query}},
       );
       ensurePaginatedData(request, result);
       products.push(...(result.products.nodes as ClaraCardProduct[]));
       if (!result.products.pageInfo.hasNextPage) break;
       after = result.products.pageInfo.endCursor ?? null;
     }
-    return sortMuseumProducts(filterDemoProducts(products));
+    return filterDemoProducts(products);
   };
 
-  const [links, products] = await Promise.all([
+  const [links, studio, museum] = await Promise.all([
     storefront.query(SHOP_COLLECTION_LINKS_QUERY),
-    studioThenMuseumPage<ClaraCardProduct>(paginationVariables, {
-      museum: () => (museum ??= loadMuseum()),
-      studio: async (page) => {
-        const result = await storefront.query(SHOP_LISTING_PRODUCTS_QUERY, {
-          variables: {
-            ...studioPageVariables(page, sortInput.reverse),
-            query: studioQuery,
-            sortKey: sortInput.sortKey,
-          },
-        });
-        ensurePaginatedData(request, result);
-        return studioConnection(
-          page,
-          result.products.nodes as ClaraCardProduct[],
-          result.products.pageInfo,
-        );
-      },
-    }).catch((error: unknown) => {
-      if (!(error instanceof ListingCursorError)) throw error;
-      // A cursor this listing did not issue: start from the first page.
-      const url = new URL(request.url);
-      url.searchParams.delete('cursor');
-      url.searchParams.delete('direction');
-      throw redirect(`${url.pathname}${url.search}`);
-    }),
+    loadAll(studioSearchQuery(searchQuery, museumClause)),
+    loadAll(museumSearchQuery(searchQuery, museumClause)),
   ]);
-  return {collections: links.collections, products};
+  const items = [...rotateByLine(studio), ...sortMuseumProducts(museum)];
+
+  let products: ListingConnection<ClaraCardProduct>;
+  try {
+    products = pageByIndex(paginationVariables, items);
+  } catch (error) {
+    if (!(error instanceof ListingCursorError)) throw error;
+    // A cursor this listing did not issue: start from the first page.
+    const url = new URL(request.url);
+    url.searchParams.delete('cursor');
+    url.searchParams.delete('direction');
+    throw redirect(`${url.pathname}${url.search}`);
+  }
+  return {collections: links.collections, products, totalCount: items.length};
 }
 
 /** Released products only, labelled where they don't ship to the buyer. */
