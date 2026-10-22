@@ -6,41 +6,17 @@ import {Aside, useAside} from './Aside';
 import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
-import {
-  isReleasedProductHandle,
-  NATAL_PRODUCT_HANDLE,
-  PERSONALISED_RELEASE_FLAGS,
-  SKY_PRODUCT_HANDLE,
-} from '~/lib/catalogFilters';
+import {isReleasedProductHandle} from '~/lib/catalogFilters';
 import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
-import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
 import {publicArtists} from '~/lib/artistShops';
+import {NAV_LINKS} from '~/lib/navLinks';
 import {cartItemCountLabel} from '~/lib/cartPresentation';
 import {BRAND} from '~/content/brand';
 
 const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
 const HAS_ARTISTS = publicArtists().length > 0;
 const HAS_PHONE_CASES = isReleasedProductHandle(TOUGH_CASE_HANDLE);
-
-const NAV_LINKS = [
-  {to: '/collections/all', label: 'Shop'},
-  ...(HAS_ARTISTS ? [{to: '/artists', label: 'Artists'}] : []),
-  {to: '/clothing', label: 'Clothing'},
-  ...(HAS_BOOK_NOOKS ? [{to: BOOK_NOOKS_PATH, label: 'Book Nooks'}] : []),
-  // Each personalised product gets its own entry once its flag flips.
-  // Your Sky is a feature page, not a product URL.
-  ...(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]
-    ? [{to: YOUR_SKY_PAGE.path, label: YOUR_SKY_PAGE.navLabel}]
-    : []),
-  ...(PERSONALISED_RELEASE_FLAGS[NATAL_PRODUCT_HANDLE]
-    ? [{to: `/products/${NATAL_PRODUCT_HANDLE}`, label: 'First Light'}]
-    : []),
-  {to: '/our-story', label: 'Our Story'},
-  {to: '/blogs/karina-of-time', label: 'Journal'},
-  {to: '/contact', label: 'Contact'},
-  {to: '/search', label: 'Search'},
-] as const;
 
 export function ClaraShell({
   cart,

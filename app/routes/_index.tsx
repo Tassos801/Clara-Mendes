@@ -2,6 +2,7 @@ import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/_index';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {HeroTiles} from '~/components/HeroTiles';
+import {NAV_LINKS} from '~/lib/navLinks';
 import {BRAND} from '~/content/brand';
 import {HomepageEditorial} from '~/components/HomepageEditorial';
 import {ClothingFeature} from '~/components/ClothingFeature';
@@ -228,33 +229,11 @@ export default function Homepage() {
               Clara Mendes
             </Link>
             <nav className="hm-nav-group" aria-label="Home navigation">
-              <Link to="/collections/all" className="hm-nav-text">
-                Shop
-              </Link>
-              {ARTIST_FEATURE.artists.length ? (
-                <Link to="/artists" className="hm-nav-text">
-                  Artists
+              {NAV_LINKS.map(({to, label}) => (
+                <Link key={to} to={to} className="hm-nav-text" prefetch="intent">
+                  {label}
                 </Link>
-              ) : null}
-              {clothingPicks.length ? (
-                <Link to="/clothing" className="hm-nav-text">
-                  Clothing
-                </Link>
-              ) : null}
-              {bookNookShelf.length ? (
-                <Link to={BOOK_NOOKS_PATH} className="hm-nav-text">
-                  Book Nooks
-                </Link>
-              ) : null}
-              <Link to="/our-story" className="hm-nav-text">
-                Our Story
-              </Link>
-              <Link to="/blogs/karina-of-time" className="hm-nav-text">
-                Journal
-              </Link>
-              <Link to="/search" className="hm-nav-text">
-                Search
-              </Link>
+              ))}
               <button
                 className="hm-nav-text hm-cart-link"
                 type="button"

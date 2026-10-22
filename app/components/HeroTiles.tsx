@@ -17,7 +17,8 @@ export function HeroTiles() {
               alt={tile.image.alt}
               decoding="async"
               height={tile.image.height}
-              loading={index === 0 ? 'eager' : 'lazy'}
+              // All six sit above the fold; lazy tiles painted late on live.
+              loading="eager"
               // React 18 passes unknown lower-case attributes through.
               {...(index === 0 ? {fetchpriority: 'high'} : {})}
               src={tile.image.src}

@@ -156,7 +156,9 @@ export function BookNookShelf({
                   style={
                     {
                       '--spine-color': slot.spine.color,
-                      '--spine-ink': slot.spine.ink,
+                      // Blank spines have no ink; an empty custom property
+                      // serialises differently on server and client.
+                      ...(slot.spine.ink ? {'--spine-ink': slot.spine.ink} : {}),
                       '--spine-h': slot.spine.h,
                       '--spine-w': `${slot.spine.w}px`,
                     } as CSSProperties
