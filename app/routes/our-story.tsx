@@ -16,13 +16,14 @@ import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
 import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
+import {BRAND} from '~/content/brand';
 
 const CATALOG = catalogCounts();
 const WORKS = countWord(CATALOG.works);
 const CAPSULES = countWord(CATALOG.capsules);
 const PAGE_URL = `${STOREFRONT_ORIGIN}/our-story`;
 // Kept under the 155-char meta truncation in buildSeoMeta.
-const PAGE_DESCRIPTION = `Clara Mendes began with original art: now ${WORKS} works in ${CAPSULES} capsules, with cards, canvas, clothing, ceramics and book nooks around them.`;
+const PAGE_DESCRIPTION = BRAND.ourStory.description;
 
 // Clara Mendes' own capsules; museum collections appear with the range below.
 const SHOP_CAPSULES = listShopCapsules();
@@ -44,7 +45,7 @@ const RANGE = [
   },
   {
     name: 'Phone cases',
-    note: 'Every original work on a matte, dual-layer tough case for iPhone, Samsung Galaxy and Google Pixel.',
+    note: BRAND.ourStory.caseNote,
     released: isReleasedProductHandle(TOUGH_CASE_HANDLE),
     to: `/products/${TOUGH_CASE_HANDLE}`,
   },
@@ -201,21 +202,12 @@ export default function OurStory() {
 
           <div className="os-content-container">
             <h1 id="os-title" className="os-story-title">
-              The quiet pursuit of <i>permanence</i>.
+              {BRAND.ourStory.title}
             </h1>
             <div className="os-story-body">
-              <p>
-                Clara Mendes was born from a singular belief: the art and
-                objects we live with should bring character, calm, and a point
-                of view to everyday spaces.
-              </p>
-              <p>
-                It began with fifteen original works in five coordinated
-                capsules. Today there are {WORKS} works across {CAPSULES}{' '}
-                capsules, each made to hold its own on a wall and to sit
-                comfortably beside the others — and around them, a small range
-                of things to live with.
-              </p>
+              {BRAND.ourStory.intro.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
             <a className="os-scroll-cue" href="#os-collection">
               Read the story
@@ -238,12 +230,7 @@ export default function OurStory() {
           {capitalize(WORKS)} works. {capitalize(CAPSULES)} capsules. One
           considered whole.
         </h2>
-        <p className="os-section-lede">
-          Each capsule is a small family of original works, composed so a single
-          print carries a room and a pair or trio reads as one intentional
-          arrangement. Buy one now and add its companions later — they are
-          designed to keep belonging together.
-        </p>
+        <p className="os-section-lede">{BRAND.ourStory.capsulesLede}</p>
         <ul className="os-capsule-list">
           {STUDIO_CAPSULES.map((capsule) => (
             <li key={capsule.slug}>
@@ -331,7 +318,7 @@ export default function OurStory() {
       </section>
 
       <section className="os-section os-section--cta" aria-label="Continue">
-        <h2>Live with something original.</h2>
+        <h2>{BRAND.ourStory.closing}</h2>
         <div className="os-cta-row">
           <Link className="os-cta os-cta--primary" to="/collections/all">
             Shop the collection
