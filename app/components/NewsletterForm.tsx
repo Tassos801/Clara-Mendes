@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Link, useFetcher, useLocation, useRouteLoaderData} from 'react-router';
 import type {loader as rootLoader} from '~/root';
 import {BRAND} from '~/content/brand';
@@ -41,6 +41,8 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
   const text = message(reply, code);
   const busy = fetcher.state !== 'idle';
   const formRef = useRef<HTMLFormElement>(null);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
 
   useEffect(() => {
     if (fetcher.data?.ok) formRef.current?.reset();
@@ -53,7 +55,8 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
         <p className="newsletter__line">{COPY.footerLine(code)}</p>
       ) : null}
       <fetcher.Form ref={formRef} method="post" action={NEWSLETTER_ACTION} className="newsletter__form">
-        <input type="hidden" name="_fetcher" value="1" />
+        {/* Only once hydrated: a plain no-JS post must get the ?subscribed= redirect, not JSON. */}
+        {hydrated ? <input type="hidden" name="_fetcher" value="1" /> : null}
         <input type="hidden" name="redirectTo" value={location.pathname} />
         <div className="newsletter__trap" aria-hidden="true">
           <label htmlFor={`${id}-${NEWSLETTER_HONEYPOT_FIELD}`}>Website</label>

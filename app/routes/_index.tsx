@@ -1570,11 +1570,6 @@ html:has(.home-root) main {
   opacity: 0.78;
 }
 
-.journal-teaser-line [lang='el'] {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-style: italic;
-}
-
 .journal-teaser-cta {
   font-family: 'Courier Prime', 'Courier New', ui-monospace, monospace;
   font-size: 0.7rem;

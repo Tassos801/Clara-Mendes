@@ -99,6 +99,7 @@ test('the newsletter copy and forms are wired', () => {
   const form = readFileSync(path.join(ROOT, 'app/components/NewsletterForm.tsx'), 'utf8');
   assert.match(form, /action=\{NEWSLETTER_ACTION\}|action="\/api\/subscribe"/);
   assert.match(form, /NEWSLETTER_HONEYPOT_FIELD/);
+  assert.match(form, /hydrated \? <input type="hidden" name="_fetcher"/);
   const shell = readFileSync(path.join(ROOT, 'app/components/ClaraShell.tsx'), 'utf8');
   assert.match(shell, /<NewsletterForm variant="footer"/);
   const home = readFileSync(path.join(ROOT, 'app/routes/_index.tsx'), 'utf8');
