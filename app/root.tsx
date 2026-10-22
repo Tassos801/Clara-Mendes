@@ -116,6 +116,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
       language: storefront.i18n.language,
     },
     gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
+    newsletter: {
+      welcomeCode: env.NEWSLETTER_WELCOME_CODE?.trim() || null,
+    },
   };
 }
 
