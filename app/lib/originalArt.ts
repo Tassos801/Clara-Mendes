@@ -64,8 +64,9 @@ export function buildOriginalArtQuery() {
  */
 export function buildOriginalArtProductMap(
   products: Array<ClaraCardProduct | null | undefined>,
+  expected: readonly string[] = ORIGINAL_ART_HANDLES,
 ): OriginalArtProductMap {
-  const expectedHandles = new Set(ORIGINAL_ART_HANDLES);
+  const expectedHandles = new Set(expected.map((handle) => handle.toLowerCase()));
   const map: OriginalArtProductMap = {};
 
   for (const product of products) {

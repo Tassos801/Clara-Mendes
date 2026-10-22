@@ -1,5 +1,8 @@
 import artCatalog from '../../data/original-art-catalog.json';
 import {Link} from 'react-router';
+import {BRAND} from '~/content/brand';
+import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
+import {LEAD_PRINTS, type LeadPrint} from '~/lib/leadPrints';
 import {
   formatOriginalArtPrice,
   type OriginalArtProductMap,
@@ -10,13 +13,28 @@ type OriginalArtPreviewProps = {
   compact?: boolean;
 };
 
+const CATALOG = catalogCounts();
+
+/** The founding catalog's rows, in the lead-print shape. */
+const FOUNDING: LeadPrint[] = artCatalog.map((item) => ({
+  alt: item.alt,
+  capsule: item.capsule,
+  description: item.description,
+  handle: item.handle,
+  image: item.image,
+  palette: item.palette,
+  shortTitle: item.shortTitle,
+}));
+
+/**
+ * Compact (homepage): "The collection so far", the lead print of every
+ * studio capsule. Full (shop fallback): the fifteen founding prints.
+ */
 export function OriginalArtPreview({
   products = {},
   compact = false,
 }: OriginalArtPreviewProps) {
-  const items = compact
-    ? artCatalog.filter((item) => item.sequence === 1)
-    : artCatalog;
+  const items = compact ? LEAD_PRINTS : FOUNDING;
   const hasAvailableProducts = Object.keys(products).length > 0;
 
   return (
@@ -30,21 +48,25 @@ export function OriginalArtPreview({
 
       <header className="original-art-preview__heading">
         <div>
-          <p className="eyebrow">The founding capsules</p>
-          <h2 id="original-art-preview-title">
-            Five moods. One <i>considered</i> collection.
-          </h2>
+          <p className="eyebrow">{BRAND.collection.eyebrow}</p>
+          <h2 id="original-art-preview-title">{BRAND.collection.title}</h2>
         </div>
         <div className="original-art-preview__intro">
           <p>
-            {hasAvailableProducts
-              ? 'The fifteen original works that started Clara Mendes, in five capsules of three, each print with full details and secure checkout.'
-              : 'The fifteen original works that started Clara Mendes, in five coordinated capsules of three.'}
+            {capitalize(
+              BRAND.collection.intro(
+                countWord(CATALOG.works),
+                countWord(CATALOG.capsules),
+              ),
+            )}
           </p>
           {compact ? (
-            <Link className="text-link" to="/collections/all">
+            <Link
+              className="text-link"
+              to="/collections/all?type=Art+Prints"
+            >
               {hasAvailableProducts
-                ? 'Shop available prints'
+                ? BRAND.collection.cta
                 : 'Browse the print collection'}
             </Link>
           ) : null}
@@ -80,7 +102,7 @@ export function OriginalArtPreview({
                 <h3>{item.shortTitle}</h3>
                 <p>{item.description}</p>
                 <div className="original-art-card__meta">
-                  <span>{item.palette}</span>
+                  {item.palette ? <span>{item.palette}</span> : <span />}
                   <span>
                     {liveProduct
                       ? (price ?? 'View product')
@@ -110,11 +132,7 @@ export function OriginalArtPreview({
       </div>
 
       {compact ? (
-        <p className="original-art-preview__note">
-          Each capsule contains three complementary works — unframed giclée
-          prints in three sizes up to 20 × 24 in, on 200gsm Enhanced Matte Art
-          paper, printed to order.
-        </p>
+        <p className="original-art-preview__note">{BRAND.collection.note}</p>
       ) : null}
     </section>
   );
@@ -263,7 +281,7 @@ const previewCss = `
 
 @media (min-width: 981px) {
   .original-art-preview--compact .original-art-preview__grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   }
 }
 
@@ -297,12 +315,6 @@ const previewCss = `
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .original-art-preview--compact .original-art-card:last-child {
-    grid-column: 1 / -1;
-    margin: 0 auto;
-    width: calc(50% - 5px);
-  }
-
   .original-art-card__copy {
     padding-top: 12px;
   }
@@ -322,11 +334,6 @@ const previewCss = `
 @media (max-width: 390px) {
   .original-art-preview__grid {
     grid-template-columns: 1fr;
-  }
-
-  .original-art-preview--compact .original-art-card:last-child {
-    grid-column: auto;
-    width: auto;
   }
 }
 
