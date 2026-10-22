@@ -21,6 +21,7 @@ import {
   WallSetPurchase,
   type WallSetPurchaseProduct,
 } from '~/components/WallSetPurchase';
+import {BRAND} from '~/content/brand';
 import {buildCapsuleTagQuery} from '~/lib/capsules';
 import {
   capsulePagePath,
@@ -126,8 +127,7 @@ export const meta: Route.MetaFunction = ({data}) => {
   const collection = data as ShopifyCollectionLoaderData | undefined;
   return buildSeoMeta({
     description:
-      collection?.description ??
-      'A focused Clara Mendes collection of original art and considered products.',
+      collection?.description ?? BRAND.shopAll.collectionFallback,
     title: collection?.heading ?? 'Collection',
     url: collection?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
@@ -316,8 +316,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       data.collections.nodes as CollectionLink[],
     ),
     description:
-      data.collection.description ||
-      'A focused Clara Mendes collection of original art and considered products.',
+      data.collection.description || BRAND.shopAll.collectionFallback,
     facets,
     heading: data.collection.title,
     hero: collectionHero(data.collection.handle),
@@ -430,7 +429,7 @@ function CapsuleLandingView({data}: {data: CapsuleLoaderData}) {
       </nav>
 
       <header className="capsule-hero">
-        <p className="eyebrow">Original art prints — a capsule of three</p>
+        <p className="eyebrow">Our own prints — a capsule of three</p>
         <h1>{page.capsule.title}</h1>
         <p className="capsule-subtitle">{page.subtitle}</p>
       </header>

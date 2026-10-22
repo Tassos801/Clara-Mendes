@@ -1,6 +1,28 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import {readdirSync, readFileSync, statSync} from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import {BRAND, HERO_TILES} from '../app/content/brand.ts';
+
+const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+
+function sourceFiles(dir) {
+  return readdirSync(dir).flatMap((name) => {
+    const full = path.join(dir, name);
+    if (statSync(full).isDirectory()) return sourceFiles(full);
+    return /\.(ts|tsx)$/.test(name) && !/\.d\.ts$/.test(name) ? [full] : [];
+  });
+}
+
+const BANNED = [
+  /original art\b/i,
+  /original works?\b/i,
+  /original piece/i,
+  /something original/i,
+  /original clara mendes/i,
+  /objects with soul/i,
+];
 
 test('the hero carries the owner line, visible word for word', () => {
   assert.equal(BRAND.hero.headline, "We don't know what we'll make next.");
@@ -33,4 +55,19 @@ test('SEO descriptions fit the 155-character truncation', () => {
   assert.ok(BRAND.seo.defaultDescription.length <= 155);
   assert.ok(BRAND.seo.homeDescription.length <= 155);
   assert.ok(BRAND.ourStory.description.length <= 155);
+});
+
+test('no page claims "original art" as the brand again', () => {
+  const offenders = [];
+  for (const file of sourceFiles(path.join(ROOT, 'app'))) {
+    const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+    lines.forEach((line, index) => {
+      const trimmed = line.trim();
+      // Comments may describe history; shoppers never read them.
+      if (/^(\/\/|\*|\/\*)/.test(trimmed)) return;
+      if (BANNED.some((pattern) => pattern.test(line)))
+        offenders.push(`${path.relative(ROOT, file)}:${index + 1}: ${trimmed}`);
+    });
+  }
+  assert.deepEqual(offenders, []);
 });

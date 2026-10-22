@@ -1,10 +1,12 @@
+import {BRAND} from './brand.ts';
+
 export const HOME_EDITORIAL_COPY = {
   body: 'A composed room begins with one strong piece. The edit pairs Clara Mendes artwork with linen, timber, and quiet everyday objects so every product enters a world, not just a grid.',
   ctaHref: '/collections/all',
   ctaLabel: 'Explore the collection',
   eyebrow: 'The living edit',
-  footer: ['Original art', 'Tactile materials', 'Everyday living'],
-  title: 'Original art, made to live with.',
+  footer: BRAND.livingEdit.footer,
+  title: BRAND.livingEdit.title,
 } as const;
 
 export type HomeEditorialItem = {
