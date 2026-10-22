@@ -3,13 +3,22 @@
  * Shopify Admin GraphQL API. See app/lib/reviewTypes.ts for the storage
  * contract and scripts/setup-reviews.mjs for the definitions this relies on.
  *
- * This module must never be imported into client code — it uses the Admin
- * access token. Runtime code degrades gracefully when the token is missing:
- * createAdminClient throws ReviewsNotConfiguredError, which routes translate
- * into a friendly 503 rather than crashing the page.
+ * This module must never be imported into client code — it uses Admin API
+ * credentials. Each request gets its token from getAdminAccessToken
+ * (app/lib/adminToken.server.ts): a static SHOPIFY_ADMIN_ACCESS_TOKEN if set,
+ * otherwise a short-lived token minted from SHOPIFY_CLIENT_ID +
+ * SHOPIFY_CLIENT_SECRET. Runtime code degrades gracefully when neither is
+ * configured: createAdminClient throws ReviewsNotConfiguredError, which routes
+ * translate into a friendly 503 rather than crashing the page. A failed token
+ * exchange surfaces at request time as an ordinary Error.
  */
 
-// Relative import keeps this module loadable by the plain-Node test runner.
+// Relative imports keep this module loadable by the plain-Node test runner.
+import {
+  getAdminAccessToken,
+  hasAdminCredentials,
+  ReviewsNotConfiguredError,
+} from './adminToken.server.ts';
 import {
   MAX_REVIEW_PHOTOS,
   MAX_REVIEW_PHOTO_BYTES,
@@ -23,15 +32,8 @@ import {
 // the oldest supported version. Kept in step with scripts/lib/admin.mjs.
 const ADMIN_API_VERSION = '2026-07';
 
-/** Thrown when the Admin token is absent so reviews cannot be written. */
-export class ReviewsNotConfiguredError extends Error {
-  constructor(
-    message = 'Reviews are not enabled yet: SHOPIFY_ADMIN_ACCESS_TOKEN is not set.',
-  ) {
-    super(message);
-    this.name = 'ReviewsNotConfiguredError';
-  }
-}
+// Defined beside the token logic; re-exported so existing imports keep working.
+export {ReviewsNotConfiguredError};
 
 /** Thrown for user-correctable validation problems (maps to HTTP 400). */
 export class ReviewValidationError extends Error {
@@ -63,14 +65,14 @@ export type SubmitReviewInput = {
 
 /**
  * Build a small fetch-based Admin GraphQL caller. Throws
- * ReviewsNotConfiguredError if the token is missing so callers can degrade
- * gracefully.
+ * ReviewsNotConfiguredError synchronously when neither a static token nor
+ * client credentials (or no store domain) are configured, so callers can
+ * degrade gracefully. The token itself is resolved before each request.
  */
 export function createAdminClient(env: Env): AdminClient {
-  const accessToken = env.SHOPIFY_ADMIN_ACCESS_TOKEN;
   const storeDomain = env.PUBLIC_STORE_DOMAIN;
 
-  if (!accessToken) {
+  if (!hasAdminCredentials(env)) {
     throw new ReviewsNotConfiguredError();
   }
   if (!storeDomain) {
@@ -85,6 +87,7 @@ export function createAdminClient(env: Env): AdminClient {
     query: string,
     variables: AdminGraphqlVariables = {},
   ): Promise<T> {
+    const accessToken = await getAdminAccessToken(env);
     const response = await fetch(endpoint, {
       body: JSON.stringify({query, variables}),
       headers: {

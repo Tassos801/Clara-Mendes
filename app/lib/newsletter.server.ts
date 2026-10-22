@@ -1,8 +1,9 @@
 /**
  * Email sign-up → Shopify customer with marketing consent, through the
  * Admin API. Server-only: never import from client code. Reuses the
- * reviews feature's Admin caller, so the same SHOPIFY_ADMIN_ACCESS_TOKEN
- * (now also needing read_customers + write_customers) powers both.
+ * reviews feature's Admin caller, so the same Admin credentials
+ * (SHOPIFY_CLIENT_ID/SECRET, or a static SHOPIFY_ADMIN_ACCESS_TOKEN; the app
+ * also needs read_customers + write_customers) power both.
  */
 import {
   createAdminClient,
@@ -58,7 +59,13 @@ function raise(errors: UserError[], label: string): never {
 }
 
 export async function subscribeEmail(
-  env: Pick<Env, 'SHOPIFY_ADMIN_ACCESS_TOKEN' | 'PUBLIC_STORE_DOMAIN'>,
+  env: Pick<
+    Env,
+    | 'SHOPIFY_ADMIN_ACCESS_TOKEN'
+    | 'SHOPIFY_CLIENT_ID'
+    | 'SHOPIFY_CLIENT_SECRET'
+    | 'PUBLIC_STORE_DOMAIN'
+  >,
   {email: rawEmail}: {email: string},
   deps: {client?: AdminClient; now?: Date} = {},
 ): Promise<{status: SubscribeStatus}> {
