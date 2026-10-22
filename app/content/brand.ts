@@ -99,6 +99,22 @@ export const BRAND = {
     title: "A few of the things we've made.",
     line: "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
   },
+  letter: {
+    eyebrow: 'The person behind the name',
+    title: 'A letter from Nicosia.',
+    paragraphs: [
+      "Clara Mendes is a name I chose for a feeling, not a person. I'm Tassos Dimitriou, and I run it from Nicosia.",
+      'It began with fifteen prints, five small families of three, made because I wanted walls that felt calm and alive at the same time. I compose each piece on screen, live with it for a while, edit, set most of it aside, and prepare the few that survive for paper that does them justice.',
+      'Then it got interesting. The same eye went onto phone cases, a tank top, four pastel pots, a shelf of tiny worlds, and a borrowed wave from Hokusai. Every product page tells you how a thing is made and how it reaches you.',
+      "I don't know what we'll make next. I know it will be chosen with care, printed to order, and never boring.",
+    ],
+    signature: '— Tassos',
+    /** Site-relative; 640 × 800 head-and-shoulders crop supplied by the owner. */
+    portrait: '/images/our-story/tassos-dimitriou.webp',
+    portraitAlt:
+      'Tassos Dimitriou, who runs Clara Mendes, smiling in front of a bookshelf',
+    founder: {name: 'Tassos Dimitriou', city: 'Nicosia', country: 'CY'},
+  },
   collection: {
     eyebrow: 'The collection',
     title: 'The collection so far.',

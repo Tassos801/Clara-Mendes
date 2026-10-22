@@ -125,6 +125,7 @@ export function organizationSchema(url: string) {
     name: SITE_NAME,
     url: origin,
     description: DEFAULT_META_DESCRIPTION,
+    founder: {'@type': 'Person', name: BRAND.letter.founder.name},
   };
 }
 
