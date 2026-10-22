@@ -165,6 +165,23 @@ export default function OurStory() {
             description: PAGE_DESCRIPTION,
             url: PAGE_URL,
           },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: BRAND.letter.founder.name,
+            jobTitle: 'Founder',
+            image: `${STOREFRONT_ORIGIN}${BRAND.letter.portrait}`,
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: BRAND.letter.founder.city,
+              addressCountry: BRAND.letter.founder.country,
+            },
+            worksFor: {
+              '@type': 'Organization',
+              name: 'Clara Mendes',
+              url: STOREFRONT_ORIGIN,
+            },
+          },
         ]}
       />
 
@@ -210,7 +227,7 @@ export default function OurStory() {
                 <p key={paragraph}>{paragraph}</p>
               ))}
             </div>
-            <a className="os-scroll-cue" href="#os-collection">
+            <a className="os-scroll-cue" href="#os-letter">
               Read the story
               <span aria-hidden>↓</span>
             </a>
@@ -219,6 +236,31 @@ export default function OurStory() {
 
         <div ref={dotRef} className="os-cursor-dot" />
         <div ref={outlineRef} className="os-cursor-outline" />
+      </section>
+
+      <section
+        id="os-letter"
+        className="os-section os-section--letter"
+        aria-labelledby="os-letter-title"
+      >
+        <figure className="os-letter-portrait">
+          <img
+            alt={BRAND.letter.portraitAlt}
+            decoding="async"
+            height={800}
+            loading="lazy"
+            src={BRAND.letter.portrait}
+            width={640}
+          />
+        </figure>
+        <div className="os-letter-copy">
+          <p className="os-eyebrow">{BRAND.letter.eyebrow}</p>
+          <h2 id="os-letter-title">{BRAND.letter.title}</h2>
+          {BRAND.letter.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+          <p className="os-letter-sign">{BRAND.letter.signature}</p>
+        </div>
       </section>
 
       <section
@@ -585,6 +627,42 @@ html:has(.our-story-root) main {
   max-width: 62ch;
 }
 
+.os-section--letter {
+  align-items: start;
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+}
+
+.os-letter-portrait {
+  margin: 0;
+}
+
+.os-letter-portrait img {
+  aspect-ratio: 4 / 5;
+  border-radius: 10px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.os-letter-copy p:not(.os-eyebrow) {
+  color: var(--os-muted);
+  font-size: 1.06rem;
+  line-height: 1.75;
+  margin: 0 0 1.15em;
+  max-width: 60ch;
+}
+
+.os-letter-copy p.os-letter-sign {
+  color: inherit;
+  font-family: var(--os-font-serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  margin-top: 1.6em;
+}
+
 .os-capsule-list {
   border-top: 1px solid rgba(38, 35, 31, 0.14);
   list-style: none;
@@ -728,6 +806,14 @@ html:has(.our-story-root) main {
 
 @media (max-width: 768px) {
   .os-ui-layer { padding: 2rem; }
+
+  .os-section--letter {
+    grid-template-columns: 1fr;
+  }
+
+  .os-letter-portrait {
+    max-width: 320px;
+  }
 
   .os-header-top {
     align-items: flex-start;

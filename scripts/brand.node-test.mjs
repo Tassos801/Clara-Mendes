@@ -71,3 +71,21 @@ test('no page claims "original art" as the brand again', () => {
   }
   assert.deepEqual(offenders, []);
 });
+
+test('the founder letter is complete and the portrait exists', () => {
+  assert.equal(BRAND.letter.title, 'A letter from Nicosia.');
+  assert.equal(BRAND.letter.paragraphs.length, 4);
+  assert.match(BRAND.letter.paragraphs[0], /Tassos Dimitriou/);
+  assert.equal(BRAND.letter.signature, '— Tassos');
+  assert.ok(BRAND.letter.portraitAlt.length > 10);
+  const text = JSON.stringify(BRAND.letter);
+  assert.doesNotMatch(text, /\bAI\b|artificial|generated|painted|hand-drawn/i);
+  assert.ok(
+    statSync(path.join(ROOT, 'public', BRAND.letter.portrait)).size > 10_000,
+    'portrait file exists',
+  );
+  const story = readFileSync(path.join(ROOT, 'app/routes/our-story.tsx'), 'utf8');
+  assert.match(story, /BRAND\.letter\.paragraphs\.map/);
+  assert.match(story, /href="#os-letter"/);
+  assert.match(story, /'@type': 'Person'/);
+});
