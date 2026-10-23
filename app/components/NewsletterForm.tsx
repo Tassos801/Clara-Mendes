@@ -22,8 +22,9 @@ function message(reply: Reply | undefined, code: string | null) {
 /**
  * Email sign-up, posted to /api/subscribe through a fetcher (JSON reply) or,
  * without JavaScript, as a plain form whose redirect carries ?subscribed=.
- * `footer` is the one-line version on every page; `feature` is the fuller
- * homepage block. Copy lives in BRAND.newsletter.
+ * `footer` is the one-line version on every page, the homepage included;
+ * `feature` is a bare form for a page that writes its own lead-in. Copy
+ * lives in BRAND.newsletter.
  */
 export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
   const fetcher = useFetcher<Reply>();

@@ -1,17 +1,10 @@
 import {useEffect, useRef} from 'react';
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useRouteLoaderData,
-} from 'react-router';
+import {Link, useLoaderData, useNavigate} from 'react-router';
 import type {Route} from './+types/_index';
-import type {loader as rootLoader} from '~/root';
 import {LineRail} from '~/components/LineRail';
-import {NAV_LINKS} from '~/lib/navLinks';
+import {PRIMARY_LINKS} from '~/lib/navLinks';
 import {LINE_RAIL_ENTRIES} from '~/lib/lineRail';
 import {BRAND} from '~/content/brand';
-import {NewsletterForm} from '~/components/NewsletterForm';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
@@ -55,18 +48,15 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-// Every section is static (the rail is release-gated data, the letters
-// form posts to /api/subscribe), so the homepage makes no Storefront call;
-// the loader only resolves the canonical URL.
+// Every section is static (the rail is release-gated data; the sign-up is
+// the footer's), so the homepage makes no Storefront call; the loader only
+// resolves the canonical URL.
 export function loader({request}: Route.LoaderArgs) {
   return {seoUrl: getCanonicalUrl(request, '/')};
 }
 
 export default function Homepage() {
   const {seoUrl} = useLoaderData<typeof loader>();
-  const welcomeCode =
-    useRouteLoaderData<typeof rootLoader>('root')?.newsletter.welcomeCode ??
-    null;
   const {open, type: asideType} = useAside();
   const navigate = useNavigate();
   const blurRef = useRef<HTMLDivElement | null>(null);
@@ -231,8 +221,9 @@ export default function Homepage() {
 
         <div className="hm-ui-layer">
           <header ref={headerRef} className="hm-header-top">
-            {/* Phones get one calm row (menu, name, search, cart); the
-                site's own mobile menu lists every page. */}
+            {/* Desktops show the three main links beside search and the
+                cart; phones get one calm row (menu, name, search, cart)
+                and the site's own mobile menu lists every page. */}
             <button
               className="hm-icon-button hm-menu-button"
               type="button"
@@ -251,18 +242,11 @@ export default function Homepage() {
               Clara Mendes
             </Link>
             <nav className="hm-nav-group" aria-label="Home navigation">
-              {NAV_LINKS.map(({to, label}) => (
+              {PRIMARY_LINKS.map(({to, label}) => (
                 <Link key={to} to={to} className="hm-nav-text" prefetch="intent">
                   {label}
                 </Link>
               ))}
-              <button
-                className="hm-nav-text hm-cart-link"
-                type="button"
-                onClick={() => open('cart')}
-              >
-                Cart
-              </button>
             </nav>
             <div className="hm-header-icons">
               <Link className="hm-icon-button" to="/search" aria-label="Search">
@@ -300,13 +284,8 @@ export default function Homepage() {
               >
                 {BRAND.hero.primaryCta.label}
               </Link>
-              <Link className="hm-hero-action" to={BRAND.hero.secondaryCta.href}>
-                {BRAND.hero.secondaryCta.label}
-              </Link>
             </div>
           </div>
-
-          <div className="hm-coords">{BRAND.hero.footnote}</div>
 
           <div className="hm-interaction-anchor">
             <button
@@ -328,47 +307,18 @@ export default function Homepage() {
 
       <LineRail entries={LINE_RAIL_ENTRIES} />
 
-      <section
-        className="home-trust-band"
-        aria-label="Store service"
-        data-chapter="linen"
-      >
-        <p>Secure checkout</p>
-        <p>International delivery</p>
-        <p>{RETURN_WINDOW_DAYS}-day returns</p>
-      </section>
-
-      <section
-        className="home-journal-teaser"
-        data-chapter="ink"
-        aria-label="Letters from Nicosia — sign up"
-      >
-        <div className="journal-teaser-card" data-reveal>
-          <div className="journal-teaser-sky" aria-hidden>
-            <div className="journal-teaser-cloud" />
-          </div>
-          <div className="journal-teaser-copy">
-            <span className="journal-teaser-eyebrow">{BRAND.newsletter.eyebrow}</span>
-            <span className="journal-teaser-title">{BRAND.newsletter.title}</span>
-            <span className="journal-teaser-line">{BRAND.newsletter.body(welcomeCode)}</span>
-            <NewsletterForm variant="feature" />
-            <Link className="journal-teaser-cta" to="/blogs/karina-of-time" prefetch="intent">
-              {BRAND.newsletter.journalLink}
-            </Link>
-          </div>
-        </div>
-      </section>
+      <p className="home-trust-line" data-chapter="linen">
+        <Link to="/policies/shipping-policy">International delivery</Link>
+        <span aria-hidden="true"> · </span>
+        <Link to="/policies/refund-policy">
+          {RETURN_WINDOW_DAYS}-day returns
+        </Link>
+      </p>
     </div>
   );
 }
 
 const homeCss = `
-/* The Letters card above the footer already carries the sign-up form, so
-   the footer's copy of it stays off the homepage. */
-html:has(.home-root) .newsletter--footer {
-  display: none;
-}
-
 /* The hero's own glass pill stands in for the site header; the fixed
    header returns once that pill has scrolled away (home-past-hero). */
 html:has(.home-root):not(.home-past-hero) .site-header {
@@ -533,10 +483,9 @@ html:has(.home-root) main {
   white-space: nowrap;
 }
 
-.hm-cart-link {
-  background: transparent;
-  border: 0;
-  padding: 0;
+.hm-header-icons {
+  align-items: center;
+  display: inline-flex;
 }
 
 .hm-icon-button {
@@ -564,9 +513,8 @@ html:has(.home-root) main {
   outline-offset: 1px;
 }
 
-/* Phone-only controls; the 768px query shows them. */
-.hm-menu-button,
-.hm-header-icons {
+/* Phone-only control; the 768px query shows it. */
+.hm-menu-button {
   display: none;
 }
 
@@ -777,45 +725,27 @@ html:has(.home-root) main {
   );
 }
 
-.hm-coords {
-  position: absolute;
-  bottom: 4rem;
-  left: 5rem;
-  font-family: var(--hm-font-sans);
-  font-variant-numeric: tabular-nums;
-  font-size: 0.7rem;
-  letter-spacing: 0.1em;
-  line-height: 1.6;
-  /* Stops short of the centred "Enter the shop" label. */
-  max-width: calc(50% - 10rem);
-  color: rgba(255,255,255,0.35);
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2s;
-}
-
-.home-trust-band {
-  background: var(--color-deep);
-  color: rgba(255,255,255,0.78);
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.home-trust-band p {
-  background: var(--color-deep);
-  border-right: 1px solid rgba(255,255,255,0.12);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  line-height: 1.45;
+/* One quiet line under the rail; each half opens its policy. */
+.home-trust-line {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
   margin: 0;
-  padding: clamp(18px, 2.5vw, 30px);
+  padding: clamp(16px, 2.5vw, 28px) 20px;
   text-align: center;
-  text-transform: uppercase;
 }
 
-.home-trust-band p:last-child {
-  border-right: 0;
+.home-trust-line a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(82, 77, 69, 0.35);
+  text-underline-offset: 3px;
+}
+
+.home-trust-line a:hover,
+.home-trust-line a:focus-visible {
+  color: var(--color-ink);
+  text-decoration-color: currentColor;
 }
 
 @keyframes hmFadeInSlow {
@@ -828,22 +758,12 @@ html:has(.home-root) main {
   50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
 }
 
-/* Narrower desktops: the full navigation list still fits the header pill
-   on one line (measured with the brand at 769-1360px). Scoped to the nav
-   group so the brand keeps its own size. */
+/* Narrower desktops: the three links keep their size; only the page
+   padding and the brand tighten. */
 @media (max-width: 1360px) {
   .hm-ui-layer {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
-  }
-
-  .hm-nav-group {
-    gap: 12px;
-  }
-
-  .hm-nav-group .hm-nav-text {
-    font-size: 0.66rem;
-    letter-spacing: 0.12em;
   }
 }
 
@@ -851,15 +771,6 @@ html:has(.home-root) main {
   .hm-ui-layer {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
-  }
-
-  .hm-nav-group {
-    gap: 8px;
-  }
-
-  .hm-nav-group .hm-nav-text {
-    font-size: 0.6rem;
-    letter-spacing: 0.06em;
   }
 
   .hm-brand {
@@ -873,16 +784,16 @@ html:has(.home-root) main {
     cursor: auto;
   }
 
-  /* Phones keep the hero in flow: pill, words, footnote as grid rows, so
-     the hero can never be shorter than its content and the centred words
-     never slide under the pill (an absolute block at 46% did, on phones
-     whose browser reported a short small-viewport height). */
+  /* Phones keep the hero in flow: pill and words as grid rows, so the hero
+     can never be shorter than its content and the centred words never
+     slide under the pill (an absolute block at 46% did, on phones whose
+     browser reported a short small-viewport height). */
   .hm-ui-layer {
     display: grid;
     /* One full-width column; the flex layout's space-between would
        otherwise shrink it to its content. */
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, 1fr);
     padding: 1.25rem 1.25rem 1.5rem;
     row-gap: 16px;
   }
@@ -978,26 +889,9 @@ html:has(.home-root) main {
     display: none;
   }
 
-  .hm-coords {
-    bottom: auto;
-    color: rgba(255, 255, 255, 0.72);
-    grid-row: 3;
-    left: auto;
-    max-width: none;
-    position: static;
-    text-align: center;
-    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
-  }
-
   .hm-cursor-dot,
   .hm-cursor-outline {
     display: none;
-  }
-
-  .home-trust-band p {
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-    padding: 14px 6px;
   }
 }
 
@@ -1054,16 +948,11 @@ html:has(.home-root) main {
   .hm-label-enter {
     font-size: 0.62rem;
   }
-
-  .hm-coords {
-    font-size: 0.62rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .hm-prompt-main,
   .hm-prompt-sub,
-  .hm-coords,
   .hm-label-enter,
   .hm-orb-btn::before {
     animation: none !important;
@@ -1072,132 +961,6 @@ html:has(.home-root) main {
   }
 
   html.home-past-hero .site-header {
-    animation: none;
-  }
-}
-
-/* ── Letters from Nicosia ──
-   A pocket dusk sky holding the email sign-up, with a link on to the
-   journal; the drifting cloud tile is the journal's own procedural billow
-   layer. The card is a div, not a link: a form cannot live in an anchor. */
-.home-journal-teaser {
-  padding: clamp(48px, 8vw, 96px) clamp(20px, 5vw, 70px);
-}
-
-.journal-teaser-card {
-  background: linear-gradient(180deg, #100d0a 0%, #3a2b1e 55%, #9a6b52 100%);
-  border-radius: 28px;
-  box-shadow: 0 30px 70px rgba(20, 15, 10, 0.35);
-  color: #f2ece1;
-  display: block;
-  isolation: isolate;
-  margin: 0 auto;
-  max-width: 1060px;
-  overflow: hidden;
-  position: relative;
-}
-
-.journal-teaser-sky {
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  position: absolute;
-}
-
-.journal-teaser-cloud {
-  animation: homeTeaserDrift 140s linear infinite;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='1600'%20height='900'%3E%3Cfilter%20id='b'%20x='0'%20y='0'%20width='100%25'%20height='100%25'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.0011%200.0032'%20numOctaves='5'%20seed='9'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20type='matrix'%20values='0%200%200%200%200.94%200%200%200%200%200.78%200%200%200%200%200.62%201.15%201.15%201.15%200%20-1.02'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url(%23b)'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 1600px 900px;
-  inset: 0 -1600px 0 0;
-  opacity: 0.55;
-  position: absolute;
-  will-change: transform;
-}
-
-@keyframes homeTeaserDrift {
-  to { transform: translate3d(-1600px, 0, 0); }
-}
-
-.journal-teaser-copy {
-  align-content: center;
-  display: grid;
-  gap: 14px;
-  justify-items: center;
-  min-height: 300px;
-  padding: clamp(32px, 5vw, 56px);
-  position: relative;
-  text-align: center;
-  z-index: 1;
-}
-
-.journal-teaser-eyebrow {
-  font-family: 'Courier Prime', 'Courier New', ui-monospace, monospace;
-  font-size: 0.68rem;
-  letter-spacing: 0.32em;
-  opacity: 0.7;
-  text-transform: uppercase;
-}
-
-.journal-teaser-title {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(2rem, 4.4vw, 3.2rem);
-  line-height: 1.05;
-  text-shadow: 0 2px 24px rgba(10, 8, 6, 0.4);
-}
-
-.journal-teaser-line {
-  font-size: 0.98rem;
-  line-height: 1.65;
-  max-width: 52ch;
-  opacity: 0.78;
-}
-
-.journal-teaser-cta {
-  font-family: 'Courier Prime', 'Courier New', ui-monospace, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.24em;
-  margin-top: 8px;
-  opacity: 0.85;
-  text-transform: uppercase;
-  transition: opacity 240ms ease;
-}
-
-.journal-teaser-card:hover .journal-teaser-cta,
-.journal-teaser-cta:focus-visible {
-  opacity: 1;
-}
-
-.journal-teaser-cta:focus-visible {
-  outline: 2px solid #f2ece1;
-  outline-offset: 4px;
-}
-
-.journal-teaser-copy .newsletter--feature { margin: 22px 0 6px; max-width: 520px; width: 100%; }
-.journal-teaser-copy .newsletter__row { display: flex; gap: 8px; }
-.journal-teaser-copy .newsletter__input {
-  background: rgba(251, 250, 246, 0.14); border: 1px solid rgba(251, 250, 246, 0.45);
-  border-radius: 999px; color: #fbfaf6; flex: 1 1 auto; font-size: 1rem; margin: 0; min-height: 46px; min-width: 0; padding: 0 18px;
-}
-.journal-teaser-copy .newsletter__input::placeholder { color: rgba(251, 250, 246, 0.6); }
-.journal-teaser-copy .newsletter__button {
-  background: #fbfaf6; border: 0; border-radius: 999px; color: #26231f; cursor: pointer;
-  font-size: 0.74rem; font-weight: 600; letter-spacing: 0.14em; min-height: 46px; padding: 0 20px; text-transform: uppercase; white-space: nowrap;
-}
-.journal-teaser-copy .newsletter__button:disabled { opacity: 0.7; cursor: default; }
-.journal-teaser-copy .newsletter__input:focus-visible,
-.journal-teaser-copy .newsletter__button:focus-visible { outline: 2px solid #fbfaf6; outline-offset: 2px; }
-.journal-teaser-copy .newsletter__message { font-size: 0.95rem; margin: 10px 0 0; }
-.journal-teaser-copy .newsletter__message.is-error { color: #f3c9b8; }
-.journal-teaser-copy .newsletter__message:empty { margin: 0; }
-.journal-teaser-copy .newsletter__consent { font-size: 0.76rem; margin: 8px 0 0; opacity: 0.8; }
-.journal-teaser-copy .newsletter__consent a { color: inherit; text-decoration: underline; }
-.journal-teaser-copy .newsletter__label,
-.journal-teaser-copy .newsletter__trap { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
-@media (max-width: 560px) { .journal-teaser-copy .newsletter__row { flex-direction: column; } }
-
-@media (prefers-reduced-motion: reduce) {
-  .journal-teaser-cloud {
     animation: none;
   }
 }

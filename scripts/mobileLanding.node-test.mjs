@@ -30,12 +30,12 @@ function getShortMobileCss() {
 test('phone landing pages keep the hero in flow so the words never meet the pill', () => {
   const css = getPhoneCss();
 
-  // Pill, words, footnote as grid rows at every phone height: the hero can
-  // never be shorter than its content (an absolute block at 46% slid under
-  // the pill on phones whose browser reported a short viewport).
+  // Pill and words as grid rows at every phone height: the hero can never
+  // be shorter than its content (an absolute block at 46% slid under the
+  // pill on phones whose browser reported a short viewport).
   assert.match(
     css,
-    /\.hm-ui-layer\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\) auto;/s,
+    /\.hm-ui-layer\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\);/s,
   );
   // One full-width column (the flex layout's space-between would shrink it).
   assert.match(css, /\.hm-ui-layer\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
@@ -43,7 +43,8 @@ test('phone landing pages keep the hero in flow so the words never meet the pill
     css,
     /\.hm-hero-text\s*\{[^}]*grid-row:\s*2;[^}]*position:\s*static;[^}]*transform:\s*none;/s,
   );
-  assert.match(css, /\.hm-coords\s*\{[^}]*grid-row:\s*3;[^}]*position:\s*static;/s);
+  // The product footnote left the hero on 2026-10-23.
+  assert.doesNotMatch(homepageSource, /hm-coords/);
 });
 
 test('short mobile landing pages compact the hero without hiding its actions', () => {
@@ -68,6 +69,7 @@ test('phones get one calm header row that opens the site menu', () => {
   assert.match(homepageSource, /aria-label="Open menu"/);
 });
 
-test('the hero header renders the shared navigation list', () => {
-  assert.match(homepageSource, /NAV_LINKS\.map/);
+test('the hero header renders the short shared navigation list', () => {
+  assert.match(homepageSource, /PRIMARY_LINKS\.map/);
+  assert.doesNotMatch(homepageSource, /NAV_LINKS|hm-cart-link/);
 });

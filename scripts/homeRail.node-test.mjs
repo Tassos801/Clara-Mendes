@@ -26,8 +26,7 @@ test('the short homepage renders its sections in order', () => {
   const order = [
     'className="home-root"',
     '<LineRail',
-    'className="home-trust-band"',
-    'className="home-journal-teaser"',
+    'className="home-trust-line"',
   ].map((marker) => {
     const index = homepageSource.indexOf(marker);
     assert.notEqual(index, -1, `missing ${marker}`);
@@ -39,10 +38,13 @@ test('the short homepage renders its sections in order', () => {
     'sections out of order',
   );
   assert.match(homepageSource, /<LineRail entries=\{LINE_RAIL_ENTRIES\} \/>/);
-  // The Letters card carries the sign-up; the footer's copy stays off `/`.
-  assert.match(
+  // One quiet service line, each half linking to its policy; the sign-up
+  // is the footer's, as on every other page.
+  assert.match(homepageSource, /to="\/policies\/shipping-policy"/);
+  assert.match(homepageSource, /to="\/policies\/refund-policy"/);
+  assert.doesNotMatch(
     homepageSource,
-    /html:has\(\.home-root\) \.newsletter--footer\s*\{[^}]*display:\s*none/,
+    /Secure checkout|home-trust-band|home-journal-teaser|newsletter--footer/,
   );
 });
 
