@@ -405,6 +405,7 @@ html:has(.home-root) main {
   --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
   position: relative;
+  min-height: 94vh;
   min-height: 94svh;
   overflow: hidden;
   background-color: var(--hm-bg-base);
@@ -478,6 +479,7 @@ html:has(.home-root) main {
   position: relative;
   z-index: 10;
   width: 100%;
+  min-height: 94vh;
   min-height: 94svh;
   display: flex;
   flex-direction: column;
@@ -871,8 +873,18 @@ html:has(.home-root) main {
     cursor: auto;
   }
 
+  /* Phones keep the hero in flow: pill, words, footnote as grid rows, so
+     the hero can never be shorter than its content and the centred words
+     never slide under the pill (an absolute block at 46% did, on phones
+     whose browser reported a short small-viewport height). */
   .hm-ui-layer {
-    padding: 2rem;
+    display: grid;
+    /* One full-width column; the flex layout's space-between would
+       otherwise shrink it to its content. */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    padding: 1.25rem 1.25rem 1.5rem;
+    row-gap: 16px;
   }
 
   .hm-header-top {
@@ -915,10 +927,17 @@ html:has(.home-root) main {
   }
 
   .hm-hero-text {
-    left: 50%;
+    align-self: center;
+    grid-row: 2;
+    justify-self: center;
+    left: auto;
     max-width: 340px;
-    top: 46%;
-    width: calc(100% - 4rem);
+    /* A little more room below than above, as the old 46% centre had. */
+    padding-bottom: 6vh;
+    position: static;
+    top: auto;
+    transform: none;
+    width: 100%;
   }
 
   .hm-prompt-main {
@@ -960,11 +979,12 @@ html:has(.home-root) main {
   }
 
   .hm-coords {
-    bottom: 1.8rem;
+    bottom: auto;
     color: rgba(255, 255, 255, 0.72);
-    left: 1.25rem;
+    grid-row: 3;
+    left: auto;
     max-width: none;
-    right: 1.25rem;
+    position: static;
     text-align: center;
     text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
   }
@@ -981,14 +1001,11 @@ html:has(.home-root) main {
   }
 }
 
+/* Short phones (landscape, small viewports): tighter type and spacing on
+   the same grid. */
 @media (max-width: 768px) and (max-height: 680px) {
   .hm-ui-layer {
-    display: grid;
-    /* One full-width column; the flex layout's space-between would
-       otherwise shrink it to its content. */
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto;
-    padding: 1rem 1.25rem 2.2rem;
+    padding: 1rem 1.25rem 1.25rem;
     row-gap: 8px;
   }
 
@@ -998,15 +1015,8 @@ html:has(.home-root) main {
   }
 
   .hm-hero-text {
-    align-self: center;
-    grid-row: 2;
-    justify-self: center;
-    left: auto;
     max-width: 300px;
-    position: static;
-    top: auto;
-    transform: none;
-    width: 100%;
+    padding-bottom: 0;
   }
 
   .hm-prompt-main {
@@ -1046,7 +1056,6 @@ html:has(.home-root) main {
   }
 
   .hm-coords {
-    bottom: 0.75rem;
     font-size: 0.62rem;
   }
 }
