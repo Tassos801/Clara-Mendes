@@ -10,6 +10,12 @@ const homepageSource = readFileSync(
   'utf8',
 );
 
+function getPhoneCss() {
+  const start = homepageSource.indexOf('@media (max-width: 768px) {');
+  assert.notEqual(start, -1, 'missing the phone viewport treatment');
+  return homepageSource.slice(start, homepageSource.indexOf('@media', start + 10));
+}
+
 function getShortMobileCss() {
   const start = homepageSource.indexOf(
     '@media (max-width: 768px) and (max-height: 680px)',
@@ -21,28 +27,31 @@ function getShortMobileCss() {
   return homepageSource.slice(start, end);
 }
 
-test('short mobile landing pages use a collision-free grid composition', () => {
-  const css = getShortMobileCss();
+test('phone landing pages keep the hero in flow so the words never meet the pill', () => {
+  const css = getPhoneCss();
 
+  // Pill, words, footnote as grid rows at every phone height: the hero can
+  // never be shorter than its content (an absolute block at 46% slid under
+  // the pill on phones whose browser reported a short viewport).
   assert.match(
     css,
     /\.hm-ui-layer\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\) auto;/s,
   );
+  // One full-width column (the flex layout's space-between would shrink it).
+  assert.match(css, /\.hm-ui-layer\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
   assert.match(
     css,
-    /\.hm-hero-text\s*\{[^}]*position:\s*static;[^}]*transform:\s*none;/s,
+    /\.hm-hero-text\s*\{[^}]*grid-row:\s*2;[^}]*position:\s*static;[^}]*transform:\s*none;/s,
   );
-  assert.match(
-    css,
-    /\.hm-interaction-anchor\s*\{[^}]*position:\s*static;[^}]*transform:\s*none;/s,
-  );
+  assert.match(css, /\.hm-coords\s*\{[^}]*grid-row:\s*3;[^}]*position:\s*static;/s);
 });
 
 test('short mobile landing pages compact the hero without hiding its actions', () => {
   const css = getShortMobileCss();
 
-  // One full-width column (the flex layout's space-between would shrink it).
-  assert.match(css, /\.hm-ui-layer\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
+  // The grid itself comes from the phone rules; this query only tightens it.
+  assert.doesNotMatch(css, /display:\s*grid;/);
+  assert.match(css, /\.hm-ui-layer\s*\{[^}]*row-gap:\s*8px;/s);
   // The one-row phone header from the 768px rules is not overridden here.
   assert.doesNotMatch(css, /\.hm-header-top\s*\{/);
   assert.match(css, /\.hm-hero-actions\s*\{[^}]*margin-top:\s*14px;/s);
@@ -50,9 +59,7 @@ test('short mobile landing pages compact the hero without hiding its actions', (
 });
 
 test('phones get one calm header row that opens the site menu', () => {
-  const start = homepageSource.indexOf('@media (max-width: 768px) {');
-  assert.notEqual(start, -1);
-  const css = homepageSource.slice(start, homepageSource.indexOf('@media', start + 10));
+  const css = getPhoneCss();
   assert.match(css, /\.hm-nav-group\s*\{[^}]*display:\s*none;/s);
   assert.match(css, /\.hm-menu-button,\s*\.hm-header-icons\s*\{[^}]*display:\s*inline-flex;/s);
   // "Enter the shop" repeats "See what we made" on phones.
