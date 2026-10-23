@@ -2041,3 +2041,31 @@ before expiry; `SHOPIFY_ADMIN_ACCESS_TOKEN` stays as a static override.
 `ReviewsNotConfiguredError` moved there and is re-exported from
 `reviews.server.ts`. Tests: `scripts/adminToken.node-test.mjs`. See
 [Local development and launch](operations/local-development-and-launch.md).
+
+## [2026-10-23] home | Short homepage: hero, line rail, priced tiles, collection, letters
+
+On `claude/home-rail` the homepage became short: hero, line rail, six
+curiosity tiles with price chips, trust strip, "The collection so far",
+Letters from Nicosia, footer. New modules: `app/lib/lineRail.ts` +
+`app/components/LineRail.tsx` (one circle per released line, gated like the
+navigation) and `app/lib/homeTilePrices.ts` (one `@inContext` query for the
+tiles' `priceHandle` products, labelled with the card rules, sale-only). The
+loader runs the lead prints and the tile prices in parallel, each allowed to
+fail. Removed with their bands: `ArtistShopsFeature`, `YourSkyTeaser`,
+`ClothingFeature`, `BookNookShelf`, `ToughCaseTeaser`, `FramedArtFeature`,
+`HomepageEditorial`, `BrandFilm` (components), `app/styles/artist-feature.css`,
+`app/content/homeEditorial.ts`, the pastel-pot and story bands,
+`CLOTHING_HOME_FEATURE` and `CLOTHING_HERO_ACCENT`, `BRAND.livingEdit`
+and `BRAND.storyBand`, and their CSS (`.sky-teaser`, `.case-teaser`,
+`.pastel-pot-teaser`, `.brand-film-*`, `.home-film`, the homepage
+`.clothing-feature` rules, the dead `.market-selector` rules). The global
+header now returns once the hero's glass pill scrolls away: an
+IntersectionObserver toggles `html.home-past-hero`, and the homepage CSS
+shows the fixed header with a fade-down (none under reduced motion). The
+custom cursor runs only with a fine pointer and without reduced motion.
+`--color-oat` joined the tokens. Tests: `scripts/lineRail.node-test.mjs`,
+`scripts/homeTilePrices.node-test.mjs`, `scripts/homeRail.node-test.mjs`
+(order, header rules, chip CSS, cursor gate, removed-band guard);
+`scripts/brandFilm.node-test.mjs` keeps only the CDN check. See
+[Routes and pages](modules/routes-and-pages.md) and
+[Brand voice](brand-voice.md).

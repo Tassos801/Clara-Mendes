@@ -12,6 +12,11 @@
 export type HeroTile = {
   href: string;
   image: {alt: string; height: number; src: string; width: number};
+  /**
+   * Shopify handle whose lowest purchasable price the tile shows; the
+   * link may go somewhere wider (an artist shop, the clothing page).
+   */
+  priceHandle: string;
   /** Short italic chip on the tile. Lower case, no full stop. */
   tag: string;
 };
@@ -30,6 +35,7 @@ export const HERO_TILES: readonly HeroTile[] = [
       src: '/images/home-hero/quiet-form-i.webp',
       width: 720,
     },
+    priceHandle: 'quiet-form-i-art-print',
     tag: 'our own print',
   },
   {
@@ -40,6 +46,7 @@ export const HERO_TILES: readonly HeroTile[] = [
       src: '/images/home-hero/great-wave.webp',
       width: 900,
     },
+    priceHandle: 'the-great-wave-off-kanagawa-art-print',
     tag: 'a borrowed Hokusai',
   },
   {
@@ -50,6 +57,7 @@ export const HERO_TILES: readonly HeroTile[] = [
       src: '/images/home-hero/phone-case.webp',
       width: 588,
     },
+    priceHandle: 'art-tough-phone-case',
     tag: 'a phone case',
   },
   {
@@ -60,6 +68,7 @@ export const HERO_TILES: readonly HeroTile[] = [
       src: 'https://cdn.shopify.com/s/files/1/1027/6533/0766/files/01-moss-flat-front_e847210a-10f9-4c6c-b296-0eedb07b5afd.jpg?width=900',
       width: 900,
     },
+    priceHandle: 'quiet-current-studio-tank',
     tag: 'a tank top?',
   },
   {
@@ -70,6 +79,7 @@ export const HERO_TILES: readonly HeroTile[] = [
       src: '/images/home-hero/butter-sun.webp',
       width: 900,
     },
+    priceHandle: 'butter-sun-pastel-plant-pot',
     tag: 'yes, a pot',
   },
   {
@@ -80,6 +90,7 @@ export const HERO_TILES: readonly HeroTile[] = [
       src: '/images/home-hero/book-nook.webp',
       width: 720,
     },
+    priceHandle: 'twilight-library-diy-book-nook-kit',
     tag: 'a tiny world for your shelf',
   },
 ];
@@ -151,16 +162,6 @@ export const BRAND = {
     cta: 'Shop the prints',
     note:
       'Unframed giclée prints in up to three sizes, on 200gsm Enhanced Matte Art paper, printed to order.',
-  },
-  livingEdit: {
-    title: 'Art, made to live with.',
-    footer: ['Our own prints', 'Tactile materials', 'Everyday living'],
-  },
-  storyBand: {
-    eyebrow: 'Our story',
-    title: 'It started with fifteen prints. Then it got interesting.',
-    body: "Now there's clothing, ceramics, phone cases and book nooks. Next? We honestly don't know.",
-    cta: 'Read the story',
   },
   ourStory: {
     title: "We like art. That's the plan.",

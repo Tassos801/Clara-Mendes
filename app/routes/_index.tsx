@@ -9,57 +9,26 @@ import type {Route} from './+types/_index';
 import type {loader as rootLoader} from '~/root';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {HeroTiles} from '~/components/HeroTiles';
+import {LineRail} from '~/components/LineRail';
 import {NAV_LINKS} from '~/lib/navLinks';
+import {LINE_RAIL_ENTRIES} from '~/lib/lineRail';
+import {
+  HOME_TILE_PRICES_QUERY,
+  homeTilePriceVariables,
+  tilePriceLabels,
+} from '~/lib/homeTilePrices';
 import {BRAND} from '~/content/brand';
 import {NewsletterForm} from '~/components/NewsletterForm';
-import {HomepageEditorial} from '~/components/HomepageEditorial';
-import {ClothingFeature} from '~/components/ClothingFeature';
-import {ArtistShopsFeature} from '~/components/ArtistShopsFeature';
-import {artistFeature} from '~/lib/artistShops';
-import {listShopCapsules, shopCapsulePath} from '~/lib/capsules';
-import artistFeatureStyles from '~/styles/artist-feature.css?url';
-import {
-  loadClothingProducts,
-  type ClothingProduct,
-} from '~/lib/clothing.server';
-import {clothingFeaturePicks} from '~/lib/clothingPresentation';
-import {FramedArtFeature} from '~/components/FramedArtFeature';
 import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
-import {BrandFilm} from '~/components/BrandFilm';
-import {YourSkyTeaser} from '~/components/YourSkyTeaser';
-import {
-  BookNookShelf,
-  type BookNookShelfItem,
-} from '~/components/BookNookShelf';
-import type {BookNookStorefrontProduct} from '~/components/BookNookCard';
-import {
-  ToughCaseTeaser,
-  type ToughCaseTeaserCase,
-} from '~/components/ToughCaseTeaser';
 import {useAside} from '~/components/Aside';
-import {
-  isDemoProduct,
-  isReleasedExtensionHandle,
-  isReleasedProductHandle,
-} from '~/lib/catalogFilters';
-import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
-import {
-  buildOriginalArtProductMap,
-  type OriginalArtProductMap,
-} from '~/lib/originalArt';
+import {buildOriginalArtProductMap} from '~/lib/originalArt';
 import {
   LEAD_PRINT_HANDLES,
   LEAD_PRINTS_QUERY_FIRST,
   leadPrintsQuery,
 } from '~/lib/leadPrints';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
-import {type MoneyAmount} from '~/lib/money';
-import {
-  TOUGH_CASE_ARTWORK_OPTION,
-  TOUGH_CASE_HANDLE,
-  TOUGH_CASE_TEASER_ARTWORKS,
-} from '~/lib/toughCase';
 import {
   buildSeoMeta,
   getCanonicalUrl,
@@ -67,24 +36,11 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-import {
-  BOOK_NOOK_PRODUCT_TYPE,
-  BOOK_NOOKS_PATH,
-  bookNookDeliveryPhrase,
-  buildBookNookShelf,
-  releasedBookNooks,
-} from '~/lib/bookNooks';
 
 const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
 
-// Artist shops from catalog data, like the site header's Artists link.
-const ARTIST_FEATURE = artistFeature();
-const MUSEUM_COLLECTIONS = listShopCapsules()
-  .filter((capsule) => capsule.kind === 'museum')
-  .map((capsule) => ({
-    path: shopCapsulePath(capsule.slug),
-    title: capsule.title,
-  }));
+/** Set on <html> once the hero's glass pill has scrolled out of view. */
+const HOME_PAST_HERO_CLASS = 'home-past-hero';
 
 export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
@@ -99,7 +55,6 @@ export const meta: Route.MetaFunction = ({data}) => {
 // 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
 // the media queries match the stylesheet so only one file is fetched.
 export const links: Route.LinksFunction = () => [
-  {rel: 'stylesheet', href: artistFeatureStyles},
   {
     as: 'image',
     href: '/images/backdrops/hero-interior.jpg',
@@ -116,114 +71,38 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export async function loader({context, request}: Route.LoaderArgs) {
-  // The homepage never fails because clothing could not load.
-  const clothing = loadClothingProducts(context.storefront)
-    .catch(() => [] as ClothingProduct[])
-    .then(clothingFeaturePicks);
-  try {
-    const data = await context.storefront.query(HOMEPAGE_QUERY, {
-      variables: {
-        // Live state for the lead print of every studio capsule, by catalog
-        // tag; the catalog, not this query, decides which prints exist.
-        artFirst: LEAD_PRINTS_QUERY_FIRST,
-        artQuery: leadPrintsQuery(),
-        // The sentinel tag matches nothing until a nook is released.
-        bookNookQuery: releasedBookNooks().length
-          ? `product_type:"${BOOK_NOOK_PRODUCT_TYPE}"`
-          : 'tag:"__no-book-nooks__"',
-        frameHandle: isReleasedExtensionHandle(CLASSIC_FRAME_HANDLE)
-          ? CLASSIC_FRAME_HANDLE
-          : '__frame-not-released__',
-        toughCaseHandle: isReleasedProductHandle(TOUGH_CASE_HANDLE)
-          ? TOUGH_CASE_HANDLE
-          : '__tough-case-not-released__',
-      },
-    });
+  // Two reads in parallel, each allowed to fail on its own: the homepage
+  // never fails because the lead prints or the tile prices could not load.
+  // The prices only decorate the tiles; a tile without one shows no chip.
+  const [home, tiles] = await Promise.all([
+    context.storefront
+      .query(HOMEPAGE_QUERY, {
+        variables: {
+          // Live state for the lead print of every studio capsule, by catalog
+          // tag; the catalog, not this query, decides which prints exist.
+          artFirst: LEAD_PRINTS_QUERY_FIRST,
+          artQuery: leadPrintsQuery(),
+        },
+      })
+      .catch(() => null),
+    context.storefront
+      .query(HOME_TILE_PRICES_QUERY, {variables: homeTilePriceVariables()})
+      .catch(() => null),
+  ]);
 
-    return {
-      clothingPicks: await clothing,
-      bookNookShelf: buildBookNookShelf(
-        (data.bookNooks?.nodes ?? []) as BookNookStorefrontProduct[],
-      ) as BookNookShelfItem[],
-      bookNookDelivery: bookNookDeliveryPhrase(),
-      leadPrintProducts: buildOriginalArtProductMap(
-        (data.leadPrints?.nodes ?? []) as ClaraCardProduct[],
-        LEAD_PRINT_HANDLES,
-      ),
-      frameProduct:
-        data.frameProduct && !isDemoProduct(data.frameProduct)
-          ? (data.frameProduct as ClaraCardProduct)
-          : null,
-      caseTeaser: buildCaseTeaser(
-        data.toughCase as ToughCaseTeaserProduct | null,
-      ),
-      seoUrl: getCanonicalUrl(request, '/'),
-    };
-  } catch {
-    return {
-      clothingPicks: await clothing,
-      bookNookShelf: [] as BookNookShelfItem[],
-      bookNookDelivery: '',
-      caseTeaser: null as CaseTeaser | null,
-      frameProduct: null as ClaraCardProduct | null,
-      leadPrintProducts: {} as OriginalArtProductMap,
-      seoUrl: getCanonicalUrl(request, '/'),
-    };
-  }
-}
-
-type ToughCaseTeaserProduct = {
-  handle: string;
-  productType?: string | null;
-  tags?: string[] | null;
-  title?: string | null;
-  vendor?: string | null;
-  priceRange: {minVariantPrice: MoneyAmount};
-  options: Array<{
-    name: string;
-    optionValues: Array<{
-      name: string;
-      firstSelectableVariant?: {
-        availableForSale: boolean;
-        image?: {url: string; altText?: string | null} | null;
-      } | null;
-    }>;
-  }>;
-};
-
-type CaseTeaser = {cases: ToughCaseTeaserCase[]; price: MoneyAmount | null};
-
-/** The released case's curated previews; null hides the section. */
-function buildCaseTeaser(
-  product: ToughCaseTeaserProduct | null,
-): CaseTeaser | null {
-  if (!product || isDemoProduct(product)) return null;
-  const values =
-    product.options.find((option) => option.name === TOUGH_CASE_ARTWORK_OPTION)
-      ?.optionValues ?? [];
-  const cases = TOUGH_CASE_TEASER_ARTWORKS.flatMap((artwork) => {
-    const variant = values.find(
-      (value) => value.name === artwork,
-    )?.firstSelectableVariant;
-    return variant?.availableForSale && variant.image
-      ? [{artwork, image: variant.image}]
-      : [];
-  });
-  return cases.length >= 3
-    ? {cases, price: product.priceRange.minVariantPrice}
-    : null;
+  return {
+    leadPrintProducts: buildOriginalArtProductMap(
+      (home?.leadPrints?.nodes ?? []) as ClaraCardProduct[],
+      LEAD_PRINT_HANDLES,
+    ),
+    seoUrl: getCanonicalUrl(request, '/'),
+    tilePrices: tilePriceLabels(tiles),
+  };
 }
 
 export default function Homepage() {
-  const {
-    bookNookDelivery,
-    bookNookShelf,
-    caseTeaser,
-    clothingPicks,
-    frameProduct,
-    leadPrintProducts,
-    seoUrl,
-  } = useLoaderData<typeof loader>();
+  const {leadPrintProducts, seoUrl, tilePrices} =
+    useLoaderData<typeof loader>();
   const welcomeCode =
     useRouteLoaderData<typeof rootLoader>('root')?.newsletter.welcomeCode ??
     null;
@@ -231,12 +110,22 @@ export default function Homepage() {
   const navigate = useNavigate();
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
   const outlineRef = useRef<HTMLDivElement | null>(null);
   const orbRef = useRef<HTMLButtonElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
+    // The custom cursor follows a mouse. Touch screens and reduced motion
+    // keep the system cursor (homeCss matches) and skip the frame loop.
+    if (
+      !window.matchMedia('(hover: hover) and (pointer: fine)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+
     const blur = blurRef.current;
     const dot = dotRef.current;
     const outline = outlineRef.current;
@@ -288,6 +177,24 @@ export default function Homepage() {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('resize', onResize);
       cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  // The hero carries its own glass pill, so the global header stays hidden
+  // until that pill has scrolled away; then the class on <html> brings the
+  // fixed site header back (homeCss), and scrolling up hides it again.
+  // Without JavaScript the class never lands and the page is as before.
+  useEffect(() => {
+    const pill = headerRef.current;
+    if (!pill || typeof IntersectionObserver === 'undefined') return;
+    const root = document.documentElement;
+    const observer = new IntersectionObserver(([entry]) => {
+      root.classList.toggle(HOME_PAST_HERO_CLASS, !entry.isIntersecting);
+    });
+    observer.observe(pill);
+    return () => {
+      observer.disconnect();
+      root.classList.remove(HOME_PAST_HERO_CLASS);
     };
   }, []);
 
@@ -362,7 +269,7 @@ export default function Homepage() {
         <div className="hm-vignette" />
 
         <div className="hm-ui-layer">
-          <header className="hm-header-top">
+          <header ref={headerRef} className="hm-header-top">
             {/* Phones get one calm row (menu, name, search, cart); the
                 site's own mobile menu lists every page. */}
             <button
@@ -458,6 +365,8 @@ export default function Homepage() {
         <div ref={outlineRef} className="hm-cursor-outline" />
       </section>
 
+      <LineRail entries={LINE_RAIL_ENTRIES} />
+
       <section
         className="home-curiosity"
         aria-labelledby="home-curiosity-title"
@@ -471,7 +380,7 @@ export default function Homepage() {
             <p className="hc-line">{BRAND.curiosity.line}</p>
           </div>
 
-          <HeroTiles />
+          <HeroTiles prices={tilePrices} />
         </div>
       </section>
 
@@ -486,65 +395,6 @@ export default function Homepage() {
       </section>
 
       <OriginalArtPreview products={leadPrintProducts} compact />
-
-      <ArtistShopsFeature
-        artists={ARTIST_FEATURE.artists}
-        collections={MUSEUM_COLLECTIONS}
-        families={ARTIST_FEATURE.families}
-      />
-
-      <YourSkyTeaser />
-
-      <ClothingFeature picks={clothingPicks} />
-
-      <BookNookShelf delivery={bookNookDelivery} items={bookNookShelf} />
-
-      {caseTeaser ? <ToughCaseTeaser {...caseTeaser} /> : null}
-
-      <section
-        className="pastel-pot-teaser"
-        aria-labelledby="pastel-pot-teaser-title"
-      >
-        <div className="section-heading-row">
-          <div>
-            <p className="eyebrow">Ceramic plant pots</p>
-            <h2 id="pastel-pot-teaser-title">Pastel Forms</h2>
-          </div>
-          <Link className="text-link" to="/pastel-forms">
-            Explore the series
-          </Link>
-        </div>
-        <Link
-          to="/pastel-forms"
-          aria-label="Explore the Pastel Forms plant pots"
-        >
-          <img
-            src="/images/pastel-plant-pots/series.webp"
-            alt="Design mockups of four minimal pastel ceramic plant pots"
-            width={1536}
-            height={1024}
-            loading="lazy"
-          />
-        </Link>
-      </section>
-
-      <BrandFilm className="home-film" chapter="linen" eyebrow="The film" />
-
-      <HomepageEditorial />
-
-      {frameProduct ? <FramedArtFeature product={frameProduct} /> : null}
-
-      <section className="story-section home-story-return" data-chapter="ink">
-        <div className="story-image" aria-hidden />
-        <div className="story-copy" data-reveal>
-          <p className="eyebrow">{BRAND.storyBand.eyebrow}</p>
-          <h2>{BRAND.storyBand.title}</h2>
-          <p>{BRAND.storyBand.body}</p>
-          <Link className="text-link" to="/our-story">
-            {BRAND.storyBand.cta}
-          </Link>
-        </div>
-      </section>
 
       <section
         className="home-journal-teaser"
@@ -574,58 +424,12 @@ const HOMEPAGE_QUERY = `#graphql
   query Homepage(
     $artFirst: Int!
     $artQuery: String!
-    $bookNookQuery: String!
     $country: CountryCode
-    $frameHandle: String!
     $language: LanguageCode
-    $toughCaseHandle: String!
   ) @inContext(country: $country, language: $language) {
     leadPrints: products(first: $artFirst, query: $artQuery) {
       nodes {
         ...ClaraProductCard
-      }
-    }
-    frameProduct: product(handle: $frameHandle) {
-      ...ClaraProductCard
-    }
-    bookNooks: products(first: 50, query: $bookNookQuery) {
-      nodes {
-        handle
-        title
-        availableForSale
-        priceRange {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-    toughCase: product(handle: $toughCaseHandle) {
-      handle
-      productType
-      tags
-      title
-      vendor
-      priceRange {
-        minVariantPrice {
-          amount
-          currencyCode
-        }
-      }
-      options {
-        name
-        optionValues {
-          name
-          firstSelectableVariant {
-            availableForSale
-            image {
-              # Tight portrait crop: the previews carry linen either side.
-              url(transform: {crop: CENTER, maxWidth: 440, maxHeight: 800})
-              altText
-            }
-          }
-        }
       }
     }
   }
@@ -633,8 +437,19 @@ const HOMEPAGE_QUERY = `#graphql
 ` as const;
 
 const homeCss = `
-html:has(.home-root) .site-header {
+/* The hero's own glass pill stands in for the site header; the fixed
+   header returns once that pill has scrolled away (home-past-hero). */
+html:has(.home-root):not(.home-past-hero) .site-header {
   display: none !important;
+}
+
+html.home-past-hero .site-header {
+  animation: homeHeaderIn 320ms cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+@keyframes homeHeaderIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: none; }
 }
 
 html:has(.home-root) main {
@@ -667,7 +482,8 @@ html:has(.home-root) main {
   isolation: isolate;
 }
 
-@media (hover: hover) and (pointer: fine) {
+/* Hidden only where the custom cursor runs (the same gate as its effect). */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   .home-root,
   .home-root * {
     cursor: none;
@@ -781,22 +597,6 @@ html:has(.home-root) main {
 /* One line per link; narrower desktops tighten the type below instead. */
 .hm-nav-group .hm-nav-text {
   white-space: nowrap;
-}
-
-.hm-header-top .market-selector select {
-  background:
-    linear-gradient(45deg, transparent 50%, currentColor 50%) right 11px top 50% / 4px 4px no-repeat,
-    linear-gradient(135deg, currentColor 50%, transparent 50%) right 7px top 50% / 4px 4px no-repeat,
-    rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.28);
-  color: var(--hm-text-main);
-  max-width: 104px;
-  min-height: 32px;
-}
-
-.hm-header-top .market-selector option {
-  background: #fbfaf6;
-  color: #26231f;
 }
 
 .hm-cart-link {
@@ -1173,6 +973,24 @@ html:has(.home-root) main {
   position: absolute;
 }
 
+/* The lowest purchasable price of the product in the picture, top right,
+   clear of the italic tag. */
+.hc-tile-price {
+  background: rgba(251, 250, 246, 0.94);
+  border-radius: 3px;
+  color: #26231f;
+  font-family: var(--hm-font-sans);
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 6px 8px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
 .home-trust-band {
   background: var(--color-deep);
   color: rgba(255,255,255,0.78);
@@ -1196,10 +1014,6 @@ html:has(.home-root) main {
 
 .home-trust-band p:last-child {
   border-right: 0;
-}
-
-.home-story-return {
-  margin-top: 0;
 }
 
 @keyframes hmFadeInSlow {
@@ -1286,12 +1100,6 @@ html:has(.home-root) main {
     font-size: 1.38rem;
     line-height: 1.08;
     max-width: none;
-  }
-
-
-  .hm-header-top .market-selector select {
-    max-width: 74px;
-    min-height: 30px;
   }
 
   .hm-nav-text {
@@ -1490,6 +1298,10 @@ html:has(.home-root) main {
 
   .hc-tile img {
     transition: none;
+  }
+
+  html.home-past-hero .site-header {
+    animation: none;
   }
 }
 

@@ -14,8 +14,7 @@ nooks. The homepage hero shows it word for word (`BRAND.hero.headline`,
 ## Where copy lives
 
 All brand sentences are in `app/content/brand.ts` (`BRAND`: hero, collection,
-living edit, story band, Our Story, Shop All, footer, SEO and manifest
-descriptions). Pages import them instead of holding their own strings, so a
+Our Story, Shop All, footer, SEO and manifest descriptions). Pages import them instead of holding their own strings, so a
 wording change is one edit. The module uses relative imports only, so plain
 Node tests can load it.
 
@@ -36,15 +35,44 @@ piece", "something original", "original Clara Mendes" or "objects with soul".
 It also pins the hero line and links, the six hero tiles, and the 155-character
 limit on the home, default and Our Story descriptions.
 
+## Homepage order
+
+Since 2026-10-23 the homepage is short: the full-screen hero, the line rail,
+the six curiosity tiles with price chips, the trust strip, "The collection so
+far", then Letters from Nicosia and the site footer. Every other band left the
+page; each line keeps its own page, and the rail and the tiles lead there.
+Design: [home rail spec](../superpowers/specs/2026-10-23-home-rail-design.md).
+
+## Line rail
+
+`app/lib/lineRail.ts` lists the product lines as circles under the hero
+(Prints, Artists, Clothing, Book Nooks, Cases, Your Sky, Pots), each with a
+link and a decorative picture; `app/components/LineRail.tsx` renders them, one
+centred row on desktop and a snap-scrolling row on phones. A line shows only
+when released, with the navigation's gates (`publicArtists`,
+`releasedBookNooks`, `PRODUCT_RELEASE_FLAGS`, `PERSONALISED_RELEASE_FLAGS`).
+Tests: `scripts/lineRail.node-test.mjs`.
+
 ## Homepage hero tiles
 
 `HERO_TILES` in `app/content/brand.ts` is static data (href, image src, width,
-height, alt, tag), so the hero adds no Storefront query. Six tiles: our own
-print, a borrowed Hokusai, a phone case, a tank top, a pot, a book nook.
+height, alt, tag, `priceHandle`). Six tiles: our own print, a borrowed
+Hokusai, a phone case, a tank top, a pot, a book nook.
 `app/components/HeroTiles.tsx` renders them; the first loads eagerly with high
-fetch priority. Phones show the first four (`.hm-tile:nth-child(n + 5)` is
+fetch priority. Phones show the first four (`.hc-tile:nth-child(n + 5)` is
 hidden in `app/routes/_index.tsx`, locked by
 `scripts/mobileLanding.node-test.mjs`), so those four must stand alone.
+
+## Tile prices
+
+Each tile's `priceHandle` names the product in the picture; the tile may link
+somewhere wider. `app/lib/homeTilePrices.ts` fetches the six in one
+`@inContext` query and `tilePriceLabels` turns them into chips with the card
+rules ("From €26.99", "€39.99"). Only variants on sale count: a product with
+nothing on sale, or one the listing gate rejects, gets no chip. The currency
+follows the buyer's market, so `?country=` changes it. Tests:
+`scripts/homeTilePrices.node-test.mjs`; `scripts/brand.node-test.mjs` pins
+every `priceHandle` to a sellable product.
 
 ## The collection so far
 
