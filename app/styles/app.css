@@ -2812,14 +2812,42 @@ button {
   }
 }
 
+/* Phones: the three columns share one row, the rows tighten, and the
+   blurb and links drop a size, so the footer stays short. */
 @media (max-width: 720px) {
+  .site-footer {
+    row-gap: 22px;
+  }
+
+  .footer-brand p {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
   .footer-columns {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .footer-heading {
+    margin-bottom: 8px;
+  }
+
+  .footer-column li + li {
+    margin-top: 2px;
+  }
+
+  .footer-column a {
+    font-size: 0.86rem;
+    padding: 6px 0;
   }
 
   .footer-bottom {
     align-items: flex-start;
     flex-direction: column;
+    gap: 8px;
+    padding-top: 14px;
   }
 }
 
@@ -3380,9 +3408,9 @@ button {
   }
 
   .site-footer {
-    padding-bottom: 32px;
-    padding-top: 28px;
-    row-gap: 32px;
+    padding-bottom: 24px;
+    padding-top: 24px;
+    row-gap: 22px;
   }
 
   .section-heading-row {

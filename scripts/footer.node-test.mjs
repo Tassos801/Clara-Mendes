@@ -65,15 +65,22 @@ test('the bottom row carries the year and the social links', () => {
   }
 });
 
-test('the footer columns are a three-up grid that goes two-up on phones', () => {
+test('the footer columns are a three-up grid that tightens on phones', () => {
   assert.match(
     CSS,
     /\.footer-columns \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);/,
   );
-  assert.match(
-    CSS,
-    /@media \(max-width: 720px\) \{\s*\.footer-columns \{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+  const phone = CSS.slice(
+    CSS.indexOf(
+      '@media (max-width: 720px) {\n  .site-footer {\n    row-gap: 22px;',
+    ),
   );
+  assert.ok(phone.length > 0, 'the phone footer block exists');
+  assert.match(
+    phone,
+    /\.footer-columns \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);/,
+  );
+  assert.match(phone, /\.footer-column a \{[^}]*font-size: 0\.86rem;/);
   // The old wrapping flex row left "Facebook" alone on its own line.
   assert.doesNotMatch(CSS, /\.site-footer nav \{[^}]*flex-wrap/);
   assert.doesNotMatch(CSS, /\.site-footer nav\b/);
