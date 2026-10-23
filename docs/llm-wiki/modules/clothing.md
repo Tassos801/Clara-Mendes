@@ -53,8 +53,9 @@ Before/after map and prepared Shopify changes:
   gets a generic block. Copy rules and evidence:
   [Copy evidence](../../clothing-destination.md#copy-evidence).
 - `app/routes/collections.clothing.tsx` redirects `/collections/clothing` to
-  `/clothing` (301, query string kept). The homepage section is
-  `app/components/ClothingFeature.tsx`; header, mobile menu and footer links are
+  `/clothing` (301, query string kept). The homepage section
+  (`app/components/ClothingFeature.tsx`) is no longer on the homepage
+  (2026-10-23); header, mobile menu and footer links are
   in `app/components/ClaraShell.tsx`. `/clothing` is in the custom sitemap
   (`app/lib/sitemap.ts`), and the product and collection sitemaps check real
   eligibility with `no-store` caching.

@@ -2,6 +2,8 @@
 
 Snapshot: 2026-09-02
 
+**No longer on the homepage (2026-10-23):** `app/components/BrandFilm.tsx` and its `.brand-film-*` / `.home-film` styles were removed; the film is embedded nowhere on the storefront and stays on the Shopify CDN (`app/lib/brandFilm.ts`) and in `video/`.
+
 "Introducing Clara Mendes" is a silent 45-second launch film (1920 × 1080,
 24 fps, H.264) in the register of Anthropic's Fable 5.1 announcement:
 one plain first-person line per shot, cutaways to the prints and rooms,

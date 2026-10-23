@@ -30,7 +30,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 
 | Route                                           | File                                 | Purpose                                                                         |
 | ----------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------- |
-| `/`                                             | `app/routes/_index.tsx`              | Home page, featured products, collection previews, trust band, structured data. |
+| `/`                                             | `app/routes/_index.tsx`              | Home page: hero, line rail, priced tiles, trust band, lead prints, letters sign-up, structured data. |
 | `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
 | `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all.          |
 | `/clothing`                                     | `app/routes/clothing.tsx`            | Clothing destination: eligible garments; category links and sort above 8 pieces, capsule filter from 2 capsules, "Show more" past 12, colourway looks. See [Clothing](clothing.md). |
@@ -48,52 +48,50 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 
 ## Home Page
 
-The home page queries products and collections, filters out demo/off-theme
-catalog entries, and renders a high-touch commerce landing experience for Clara
-Mendes. The original-art preview accepts the handles that are actually
-available through the Storefront API; matching cards link to their product
-pages, while unavailable Draft works remain non-interactive previews.
+Since 2026-10-23 the home page is short, in this order: the full-screen hero
+(its own glass pill and navigation), the line rail
+(`app/components/LineRail.tsx`, entries from `app/lib/lineRail.ts`), the six
+curiosity tiles with price chips (`app/components/HeroTiles.tsx`), the trust
+strip, "The collection so far" (`OriginalArtPreview`, compact), Letters from
+Nicosia (`NewsletterForm variant="feature"`), then the shell's footer. The
+artist-shops, Your Sky, clothing, book-nook, tough-case, pastel-pot, brand-film,
+living-edit, framed-art and story bands were removed with their components;
+each line keeps its own page. Design:
+[home rail spec](../../superpowers/specs/2026-10-23-home-rail-design.md).
 
-The homepage editorial ("the living edit") is static curated content, not
-product-aware. It always renders the three styled art-in-room photographs in
-`public/images/home-editorial/` (Quiet Form above a linen sofa, Patina Blue
-with stoneware, Sunlit Mosaic over a timber table), each linking to its
-capsule landing page. The previous `homepage-editorial` Shopify-collection
-override and best-selling substitution were removed 2026-08-11: whenever any
-products loaded they replaced the styled scenes with raw print files — three
-same-capsule images that repeated the adjacent grids and collided in the
-layout. Changing this section is a code change to
-`app/content/homeEditorial.ts` (items) and the images directory.
+The loader runs two Storefront queries in parallel, each caught on its own so
+neither can take the page down: `HOMEPAGE_QUERY` (the lead prints only) and
+`HOME_TILE_PRICES_QUERY` (`app/lib/homeTilePrices.ts`). It returns
+`{leadPrintProducts, seoUrl, tilePrices}`. The lead prints go through
+`buildOriginalArtProductMap`; matching cards link to their product pages,
+while unreleased works stay non-interactive previews. Tile prices are labels
+keyed by tile `href`, in the buyer's market currency.
 
-Directly under the hero, the artist-shops feature
-(`app/components/ArtistShopsFeature.tsx`, `app/styles/artist-feature.css`)
-promotes every public artist with a card linking to their shop, plus
-"Meet the artists" (`/artists`) and the museum collection's shop filter. It
-reads `artistFeature()` from `app/lib/artistShops.ts` — the same gate as the
-header's Artists link (owner-approved artist with a released product) — so
-it needs no Storefront query and renders nothing until an artist is public.
-The homepage's own header also links Artists. The hero, "The collection so
-far" and the section order are described in [Brand voice](../brand-voice.md).
+The global `header.site-header` is hidden on the home page while the hero's
+pill (`.hm-header-top`) is in view. An IntersectionObserver on the pill sets
+`html.home-past-hero` once it scrolls away, which shows the fixed header with
+a 320 ms fade-down (none under reduced motion); scrolling back hides it. The
+custom hero cursor runs only with a fine pointer and without reduced motion.
 
 The mobile hero keeps its expansive composition on standard phone screens. On
 viewports no wider than 768 pixels and no taller than 680 pixels, the UI layer
 switches to a compact three-row grid so the glass navigation, hero copy and
 actions, and enter-shop control cannot overlap. Focused source regression tests
-lock that short-viewport composition.
+lock that short-viewport composition. Copy, tiles and lead prints are
+described in [Brand voice](../brand-voice.md).
 
 Important dependencies:
 
-- `filterDemoProducts`
-- `filterDemoCollections`
 - `PRODUCT_CARD_FRAGMENT`
+- `buildOriginalArtProductMap` and `LEAD_PRINT_HANDLES`
+- `LINE_RAIL_ENTRIES`, `HOME_TILE_PRICES_QUERY`, `tilePriceLabels`
 - SEO helpers and structured data helpers
-- `ClaraProductCard`
-- `HomepageEditorial`
-- `HOME_EDITORIAL_ITEMS`
 
-Sources: `app/routes/_index.tsx`, `app/components/HomepageEditorial.tsx`,
-`app/content/homeEditorial.ts`, `app/components/ArtistShopsFeature.tsx`,
-`scripts/mobileLanding.node-test.mjs`, `scripts/artistShops.node-test.mjs`.
+Sources: `app/routes/_index.tsx`, `app/components/LineRail.tsx`,
+`app/lib/lineRail.ts`, `app/components/HeroTiles.tsx`,
+`app/lib/homeTilePrices.ts`, `scripts/homeRail.node-test.mjs`,
+`scripts/lineRail.node-test.mjs`, `scripts/homeTilePrices.node-test.mjs`,
+`scripts/mobileLanding.node-test.mjs`, `scripts/liquidGlass.node-test.mjs`.
 
 ## Product Page
 

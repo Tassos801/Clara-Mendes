@@ -37,13 +37,6 @@ export const CLOTHING_PAGE_HERO = {
   text: 'Leggings, a sports bra, biker shorts and a tank top, printed with a soft watercolour-style design in two colourways.',
 };
 
-export const CLOTHING_HOME_FEATURE = {
-  eyebrow: 'New · Clara Mendes Clothing',
-  title: 'Clothing, with an',
-  titleEmphasis: 'artistic touch.',
-  text: 'Quiet Current: leggings, a sports bra, biker shorts and a tank top with a soft watercolour-style print.',
-};
-
 const CAPSULE_STORIES: Record<string, CapsuleStory> = {
   'quiet-current': {
     intro:
@@ -69,10 +62,7 @@ export function capsuleStory(handle?: string | null): CapsuleStory | null {
   return handle ? (CAPSULE_STORIES[handle] ?? null) : null;
 }
 
-/** Homepage feature accent (full size). */
-export const CLOTHING_HERO_ACCENT = '/images/clothing/olive-mineral.webp';
-
-/** Smaller copy of the same olive watercolour for the /clothing hero. */
+/** A 720 px copy of the olive watercolour for the /clothing hero. */
 export const CLOTHING_PAGE_ACCENT = {
   src: '/images/clothing/olive-mineral-720.webp',
   width: 720,

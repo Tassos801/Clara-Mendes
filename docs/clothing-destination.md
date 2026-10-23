@@ -32,7 +32,7 @@ Tops, all in the capsule Quiet Current.
 | Page copy and artwork, one entry per capsule | [`app/lib/clothingEditorial.ts`](../app/lib/clothingEditorial.ts) |
 | The page | [`app/routes/clothing.tsx`](../app/routes/clothing.tsx), [`app/components/ClothingProductCard.tsx`](../app/components/ClothingProductCard.tsx), [`app/styles/clothing.css`](../app/styles/clothing.css) |
 | Permanent (301) redirect `/collections/clothing` to `/clothing`, query string kept | [`app/routes/collections.clothing.tsx`](../app/routes/collections.clothing.tsx) |
-| Homepage section (not shown when there are no garments) | [`app/components/ClothingFeature.tsx`](../app/components/ClothingFeature.tsx), loaded in [`app/routes/_index.tsx`](../app/routes/_index.tsx) |
+| Homepage section | No longer on the homepage (2026-10-23): `app/components/ClothingFeature.tsx` was removed; the homepage line rail links `/clothing` |
 | Header, mobile menu and footer link (always shown) | [`app/components/ClaraShell.tsx`](../app/components/ClaraShell.tsx) |
 | The rule that decides if a product may be shown, on every page | `isListedProduct` and `isStoreThemeProduct` in [`app/lib/catalogFilters.ts`](../app/lib/catalogFilters.ts) |
 | Delivery windows | `fulfilmentWindows` in [`app/lib/storefrontBasics.ts`](../app/lib/storefrontBasics.ts) |

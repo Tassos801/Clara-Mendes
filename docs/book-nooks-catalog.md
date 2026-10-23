@@ -8,7 +8,7 @@ checks for each kit follow the [CJ book nook launch](book-nooks-launch.md).
 
 | Surface                                    | Source                                                                      |
 | ------------------------------------------ | --------------------------------------------------------------------------- |
-| Homepage "Night Shelf" (after _Ready now_) | `app/components/BookNookShelf.tsx` — cut-outs between titled book spines    |
+| Homepage "Night Shelf" (after _Ready now_) | No longer on the homepage (2026-10-23); `BookNookShelf.tsx` was removed     |
 | `/book-nooks` landing page                 | `app/routes/book-nooks.tsx`, `app/styles/book-nooks.css`                    |
 | Product page                               | `app/routes/products.$handle.tsx` — name, theme, spec grid, related nooks   |
 | Shop grid, search, cart, recommendations   | `withCuratedImages` / `curatedDisplayTitle` in `app/lib/curatedProducts.ts` |
@@ -134,8 +134,7 @@ changed by this refinement. Google Merchant feed refresh timing was not tested.
    `npm test`. `scripts/bookNooks.node-test.mjs` requires a name, known theme,
    tagline, processing estimate, size, lighting, a studio-first image set at
    1000 × 1250 and a transparent cut-out for every released nook.
-7. Check `/book-nooks`, the homepage shelf and the product page at desktop and
-   phone widths.
+7. Check `/book-nooks` and the product page at desktop and phone widths.
 
 `npm run curated:images -- --check` confirms every declared file exists at
 the right size.

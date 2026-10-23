@@ -25,7 +25,7 @@ export function HeroTiles({prices = {}}: {prices?: HomeTilePrices}) {
             <Link
               to={tile.href}
               prefetch="intent"
-              aria-label={`${tile.image.alt} — ${tile.tag}${price ? `, ${price}` : ''}`}
+              aria-label={`${tile.image.alt} — ${tile.tag}${price ? ` — ${price}` : ''}`}
             >
               <img
                 alt={tile.image.alt}

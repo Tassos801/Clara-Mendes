@@ -85,7 +85,7 @@ inside the "International" market.
   `app/components/ApparelShipping.tsx`, `app/routes/clothing.tsx`,
   `app/lib/collectionHeroes.ts` (activewear "from €3.99");
   `app/lib/featurePages.ts` (Your Sky "From €35.99"),
-  `app/components/YourSkyTeaser.tsx`;
+  `app/components/YourSkyTeaser.tsx` (no longer on the homepage, removed 2026-10-23);
   `app/components/ProductShippingText.tsx`,
   `app/routes/products.$handle.tsx`,
   `app/routes/products.art-tough-phone-case.tsx`,
@@ -209,7 +209,7 @@ test that asserts it.
   ones: the Your Sky price line from the live minimum price in the buyer's
   currency; the activewear rate table keyed by market (the US row must match
   checkout, see B3). Files: `app/lib/featurePages.ts`,
-  `app/components/YourSkyTeaser.tsx`, `app/lib/storefrontBasics.ts`,
+  `app/components/YourSkyTeaser.tsx` (no longer on the homepage, removed 2026-10-23), `app/lib/storefrontBasics.ts`,
   `app/components/ApparelShipping.tsx`, `app/routes/clothing.tsx`,
   `app/lib/collectionHeroes.ts`. *Gate:* B2 for the USD figures.
 - [ ] **A4 Structured data follows the market.** In `app/lib/seo.ts`, use

@@ -163,16 +163,6 @@ export const BRAND = {
     note:
       'Unframed giclée prints in up to three sizes, on 200gsm Enhanced Matte Art paper, printed to order.',
   },
-  livingEdit: {
-    title: 'Art, made to live with.',
-    footer: ['Our own prints', 'Tactile materials', 'Everyday living'],
-  },
-  storyBand: {
-    eyebrow: 'Our story',
-    title: 'It started with fifteen prints. Then it got interesting.',
-    body: "Now there's clothing, ceramics, phone cases and book nooks. Next? We honestly don't know.",
-    cta: 'Read the story',
-  },
   ourStory: {
     title: "We like art. That's the plan.",
     intro: [
