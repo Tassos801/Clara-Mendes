@@ -2089,3 +2089,14 @@ deleted files; the tile tests left `scripts/brand.node-test.mjs` and
 copyright and social links; `scripts/footer.node-test.mjs` pins it. See
 [Routes and pages](modules/routes-and-pages.md) and
 [Brand voice](brand-voice.md).
+
+## [2026-10-23] home | Footer loses the "Wall art by style" column
+
+The owner asked for a shorter footer, so the nine style landing-page links
+(`/collections/abstract-wall-art` and friends, `app/lib/galleryPages.ts`)
+left `ClaraFooter` in `app/components/ClaraShell.tsx`; the footer is now
+three columns (Shop, Clara Mendes, Help) over the bottom bar, two per row on
+phones (`.footer-columns` in `app/styles/app.css`). The pages themselves are
+unchanged and still link to each other through their related-page rows and
+appear in the collections sitemap. `scripts/footer.node-test.mjs` pins the
+three columns and guards the column from returning.

@@ -223,51 +223,6 @@ function ClaraFooter() {
             </li>
           </ul>
         </nav>
-        {/* SEO landing pages: keep these texts and paths as they are. */}
-        <nav className="footer-column" aria-label="Shop wall art by style">
-          <h2 className="footer-heading">Wall art by style</h2>
-          <ul>
-            <li>
-              <Link to="/collections/all?type=Art+Prints">
-                Unframed Art Prints
-              </Link>
-            </li>
-            <li>
-              <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
-            </li>
-            <li>
-              <Link to="/collections/terracotta-wall-art">
-                Terracotta Wall Art
-              </Link>
-            </li>
-            <li>
-              <Link to="/collections/blue-abstract-wall-art">
-                Blue Abstract Art
-              </Link>
-            </li>
-            <li>
-              <Link to="/collections/geometric-wall-art">
-                Geometric Wall Art
-              </Link>
-            </li>
-            <li>
-              <Link to="/collections/dark-botanical-wall-art">
-                Dark Botanicals
-              </Link>
-            </li>
-            <li>
-              <Link to="/collections/living-room-wall-art">
-                Living Room Art
-              </Link>
-            </li>
-            <li>
-              <Link to="/collections/bedroom-wall-art">Bedroom Art</Link>
-            </li>
-            <li>
-              <Link to="/collections/wall-art-sets-of-3">Sets of 3</Link>
-            </li>
-          </ul>
-        </nav>
         <nav className="footer-column" aria-label="Clara Mendes">
           <h2 className="footer-heading">Clara Mendes</h2>
           <ul>

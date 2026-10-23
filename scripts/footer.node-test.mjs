@@ -23,42 +23,19 @@ test('the footer keeps the sign-up form', () => {
   assert.match(FOOTER, /<NewsletterForm variant="footer"/);
 });
 
-test('the footer links sit in four headed columns', () => {
-  for (const heading of ['Shop', 'Wall art by style', 'Clara Mendes', 'Help']) {
+test('the footer links sit in three headed columns', () => {
+  for (const heading of ['Shop', 'Clara Mendes', 'Help']) {
     assert.match(
       FOOTER,
       new RegExp(`<h2 className="footer-heading">${escape(heading)}</h2>`),
       heading,
     );
   }
-  assert.equal(FOOTER.match(/className="footer-column"/g)?.length, 4);
+  assert.equal(FOOTER.match(/className="footer-column"/g)?.length, 3);
   assert.doesNotMatch(FOOTER, /aria-label="Footer navigation"/);
-});
-
-test('the style links keep their texts and paths', () => {
-  const styleLinks = [
-    ['/collections/all?type=Art+Prints', 'Unframed Art Prints'],
-    ['/collections/abstract-wall-art', 'Abstract Wall Art'],
-    ['/collections/terracotta-wall-art', 'Terracotta Wall Art'],
-    ['/collections/blue-abstract-wall-art', 'Blue Abstract Art'],
-    ['/collections/geometric-wall-art', 'Geometric Wall Art'],
-    ['/collections/dark-botanical-wall-art', 'Dark Botanicals'],
-    ['/collections/living-room-wall-art', 'Living Room Art'],
-    ['/collections/bedroom-wall-art', 'Bedroom Art'],
-    ['/collections/wall-art-sets-of-3', 'Sets of 3'],
-  ];
-  const column = FOOTER.slice(
-    FOOTER.indexOf('aria-label="Shop wall art by style"'),
-    FOOTER.indexOf('aria-label="Clara Mendes"'),
-  );
-  let last = -1;
-  for (const [href, label] of styleLinks) {
-    const at = column.search(
-      new RegExp(`<Link to="${escape(href)}">\\s*${escape(label)}\\s*</Link>`),
-    );
-    assert.ok(at > last, `${label} → ${href}, in order`);
-    last = at;
-  }
+  // The style landing pages left the footer on 2026-10-23 to keep it short;
+  // they stay reachable through the sitemap and their related-page links.
+  assert.doesNotMatch(FOOTER, /Wall art by style|abstract-wall-art/);
 });
 
 test('the help links point at the four policies', () => {
@@ -88,15 +65,22 @@ test('the bottom row carries the year and the social links', () => {
   }
 });
 
-test('the footer columns are a four-up grid that goes two-up on phones', () => {
+test('the footer columns are a three-up grid that tightens on phones', () => {
   assert.match(
     CSS,
-    /\.footer-columns \{[^}]*grid-template-columns: repeat\(4, minmax\(0, 1fr\)\);/,
+    /\.footer-columns \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);/,
   );
+  const phone = CSS.slice(
+    CSS.indexOf(
+      '@media (max-width: 720px) {\n  .site-footer {\n    row-gap: 22px;',
+    ),
+  );
+  assert.ok(phone.length > 0, 'the phone footer block exists');
   assert.match(
-    CSS,
-    /@media \(max-width: 720px\) \{\s*\.footer-columns \{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\);/,
+    phone,
+    /\.footer-columns \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);/,
   );
+  assert.match(phone, /\.footer-column a \{[^}]*font-size: 0\.86rem;/);
   // The old wrapping flex row left "Facebook" alone on its own line.
   assert.doesNotMatch(CSS, /\.site-footer nav \{[^}]*flex-wrap/);
   assert.doesNotMatch(CSS, /\.site-footer nav\b/);
