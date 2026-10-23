@@ -61,15 +61,6 @@ test('phones get one calm header row that opens the site menu', () => {
   assert.match(homepageSource, /aria-label="Open menu"/);
 });
 
-test('phones show the curiosity grid as four square tiles, two across', () => {
-  const start = homepageSource.indexOf('@media (max-width: 768px) {');
-  assert.notEqual(start, -1);
-  const css = homepageSource.slice(start, homepageSource.indexOf('@media', start + 10));
-  assert.match(css, /\.hc-tiles\s*\{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\);/s);
-  assert.match(css, /\.hc-tile:nth-child\(n \+ 5\)\s*\{[^}]*display:\s*none;/s);
-  assert.match(css, /\.hc-body\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
-});
-
 test('the hero header renders the shared navigation list', () => {
   assert.match(homepageSource, /NAV_LINKS\.map/);
 });

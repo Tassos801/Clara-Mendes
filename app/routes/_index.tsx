@@ -7,28 +7,13 @@ import {
 } from 'react-router';
 import type {Route} from './+types/_index';
 import type {loader as rootLoader} from '~/root';
-import type {ClaraCardProduct} from '~/components/ClaraProductCard';
-import {HeroTiles} from '~/components/HeroTiles';
 import {LineRail} from '~/components/LineRail';
 import {NAV_LINKS} from '~/lib/navLinks';
 import {LINE_RAIL_ENTRIES} from '~/lib/lineRail';
-import {
-  HOME_TILE_PRICES_QUERY,
-  homeTilePriceVariables,
-  tilePriceLabels,
-} from '~/lib/homeTilePrices';
 import {BRAND} from '~/content/brand';
 import {NewsletterForm} from '~/components/NewsletterForm';
-import {OriginalArtPreview} from '~/components/OriginalArtPreview';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
-import {buildOriginalArtProductMap} from '~/lib/originalArt';
-import {
-  LEAD_PRINT_HANDLES,
-  LEAD_PRINTS_QUERY_FIRST,
-  leadPrintsQuery,
-} from '~/lib/leadPrints';
-import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {
   buildSeoMeta,
   getCanonicalUrl,
@@ -70,39 +55,15 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
-export async function loader({context, request}: Route.LoaderArgs) {
-  // Two reads in parallel, each allowed to fail on its own: the homepage
-  // never fails because the lead prints or the tile prices could not load.
-  // The prices only decorate the tiles; a tile without one shows no chip.
-  const [home, tiles] = await Promise.all([
-    context.storefront
-      .query(HOMEPAGE_QUERY, {
-        variables: {
-          // Live state for the lead print of every studio capsule, by catalog
-          // tag; the catalog, not this query, decides which prints exist.
-          artFirst: LEAD_PRINTS_QUERY_FIRST,
-          artQuery: leadPrintsQuery(),
-        },
-      })
-      .catch(() => null),
-    context.storefront
-      .query(HOME_TILE_PRICES_QUERY, {variables: homeTilePriceVariables()})
-      .catch(() => null),
-  ]);
-
-  return {
-    leadPrintProducts: buildOriginalArtProductMap(
-      (home?.leadPrints?.nodes ?? []) as ClaraCardProduct[],
-      LEAD_PRINT_HANDLES,
-    ),
-    seoUrl: getCanonicalUrl(request, '/'),
-    tilePrices: tilePriceLabels(tiles),
-  };
+// Every section is static (the rail is release-gated data, the letters
+// form posts to /api/subscribe), so the homepage makes no Storefront call;
+// the loader only resolves the canonical URL.
+export function loader({request}: Route.LoaderArgs) {
+  return {seoUrl: getCanonicalUrl(request, '/')};
 }
 
 export default function Homepage() {
-  const {leadPrintProducts, seoUrl, tilePrices} =
-    useLoaderData<typeof loader>();
+  const {seoUrl} = useLoaderData<typeof loader>();
   const welcomeCode =
     useRouteLoaderData<typeof rootLoader>('root')?.newsletter.welcomeCode ??
     null;
@@ -368,23 +329,6 @@ export default function Homepage() {
       <LineRail entries={LINE_RAIL_ENTRIES} />
 
       <section
-        className="home-curiosity"
-        aria-labelledby="home-curiosity-title"
-      >
-        <div className="hc-body">
-          <div className="hc-text">
-            <p className="eyebrow">{BRAND.curiosity.eyebrow}</p>
-            <h2 id="home-curiosity-title" className="hc-title">
-              {BRAND.curiosity.title}
-            </h2>
-            <p className="hc-line">{BRAND.curiosity.line}</p>
-          </div>
-
-          <HeroTiles prices={tilePrices} />
-        </div>
-      </section>
-
-      <section
         className="home-trust-band"
         aria-label="Store service"
         data-chapter="linen"
@@ -393,8 +337,6 @@ export default function Homepage() {
         <p>International delivery</p>
         <p>{RETURN_WINDOW_DAYS}-day returns</p>
       </section>
-
-      <OriginalArtPreview products={leadPrintProducts} compact />
 
       <section
         className="home-journal-teaser"
@@ -420,23 +362,13 @@ export default function Homepage() {
   );
 }
 
-const HOMEPAGE_QUERY = `#graphql
-  query Homepage(
-    $artFirst: Int!
-    $artQuery: String!
-    $country: CountryCode
-    $language: LanguageCode
-  ) @inContext(country: $country, language: $language) {
-    leadPrints: products(first: $artFirst, query: $artQuery) {
-      nodes {
-        ...ClaraProductCard
-      }
-    }
-  }
-  ${PRODUCT_CARD_FRAGMENT}
-` as const;
-
 const homeCss = `
+/* The Letters card above the footer already carries the sign-up form, so
+   the footer's copy of it stays off the homepage. */
+html:has(.home-root) .newsletter--footer {
+  display: none;
+}
+
 /* The hero's own glass pill stands in for the site header; the fixed
    header returns once that pill has scrolled away (home-past-hero). */
 html:has(.home-root):not(.home-past-hero) .site-header {
@@ -859,138 +791,6 @@ html:has(.home-root) main {
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2s;
 }
 
-/* ── So far: the curiosity grid ── directly under the full-screen hero.
-   Four columns, the Hokusai and the book nook each two wide, so the eye
-   reads a cabinet of very different things. */
-.home-curiosity {
-  --hm-text-main: #26231f;
-  --hm-text-muted: rgba(38, 35, 31, 0.8);
-  --hm-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
-  --hm-font-serif: Georgia, 'Times New Roman', serif;
-  --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-
-  position: relative;
-  background-color: var(--color-soft);
-  color: var(--hm-text-main);
-  font-family: var(--hm-font-sans);
-  -webkit-font-smoothing: antialiased;
-  isolation: isolate;
-  padding: clamp(48px, 7vw, 96px) 5rem;
-}
-
-.hc-body {
-  align-items: center;
-  display: grid;
-  gap: clamp(32px, 5vw, 80px);
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-}
-
-.hc-text {
-  max-width: 34rem;
-}
-
-.hc-title {
-  font-family: var(--hm-font-serif);
-  font-size: clamp(2.6rem, 5.2vw, 4.6rem);
-  line-height: 1.02;
-  font-weight: 400;
-  letter-spacing: -0.025em;
-  margin: 0 0 1.2rem;
-  color: var(--hm-text-main);
-  text-wrap: balance;
-}
-
-.hc-line {
-  font-family: var(--hm-font-serif);
-  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-  line-height: 1.5;
-  color: var(--hm-text-muted);
-  margin: 0;
-  max-width: 30ch;
-}
-
-.hc-tiles {
-  display: grid;
-  gap: 14px;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.hc-tile {
-  min-width: 0;
-}
-
-.hc-tile a {
-  aspect-ratio: 4 / 5;
-  background: #ded7cb;
-  border-radius: 6px;
-  display: block;
-  overflow: hidden;
-  position: relative;
-}
-
-.hc-tile:nth-child(2) a,
-.hc-tile:nth-child(6) a {
-  aspect-ratio: 8 / 5;
-}
-
-.hc-tile:nth-child(2),
-.hc-tile:nth-child(6) {
-  grid-column: span 2;
-}
-
-.hc-tile img {
-  display: block;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 900ms var(--hm-ease-fluid);
-  width: 100%;
-}
-
-.hc-tile a:hover img,
-.hc-tile a:focus-visible img {
-  transform: scale(1.03);
-}
-
-.hc-tile a:focus-visible {
-  outline: 2px solid #26231f;
-  outline-offset: 3px;
-}
-
-.hc-tile-tag {
-  background: rgba(251, 250, 246, 0.94);
-  border-radius: 3px;
-  bottom: 10px;
-  color: #26231f;
-  font-family: var(--hm-font-serif);
-  font-size: 0.86rem;
-  font-style: italic;
-  left: 10px;
-  line-height: 1;
-  padding: 6px 9px;
-  position: absolute;
-}
-
-/* The lowest purchasable price of the product in the picture, top right,
-   clear of the italic tag. */
-.hc-tile-price {
-  background: rgba(251, 250, 246, 0.94);
-  border-radius: 3px;
-  color: #26231f;
-  font-family: var(--hm-font-sans);
-  font-size: 0.72rem;
-  font-variant-numeric: tabular-nums;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  padding: 6px 8px;
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-
 .home-trust-band {
   background: var(--color-deep);
   color: rgba(255,255,255,0.78);
@@ -1174,40 +974,6 @@ html:has(.home-root) main {
     display: none;
   }
 
-  .home-curiosity {
-    padding: 2.4rem 1.25rem;
-  }
-
-  .hc-body {
-    gap: 26px;
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .hc-title {
-    font-size: clamp(2.2rem, 10.5vw, 2.8rem);
-  }
-
-  /* Phones show the first four tiles, square, two across. */
-  .hc-tiles {
-    gap: 10px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .hc-tile:nth-child(2),
-  .hc-tile:nth-child(6) {
-    grid-column: auto;
-  }
-
-  .hc-tile a,
-  .hc-tile:nth-child(2) a,
-  .hc-tile:nth-child(6) a {
-    aspect-ratio: 1 / 1;
-  }
-
-  .hc-tile:nth-child(n + 5) {
-    display: none;
-  }
-
   .home-trust-band p {
     font-size: 0.6rem;
     letter-spacing: 0.12em;
@@ -1294,10 +1060,6 @@ html:has(.home-root) main {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
-  }
-
-  .hc-tile img {
-    transition: none;
   }
 
   html.home-past-hero .site-header {

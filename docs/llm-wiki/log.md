@@ -2069,3 +2069,23 @@ custom cursor runs only with a fine pointer and without reduced motion.
 `scripts/brandFilm.node-test.mjs` keeps only the CDN check. See
 [Routes and pages](modules/routes-and-pages.md) and
 [Brand voice](brand-voice.md).
+
+## [2026-10-23] home | Homepage cut to hero, rail, letters; footer in columns
+
+The homepage is now hero → line rail → trust strip → Letters from Nicosia →
+footer. The curiosity grid ("So far", six tiles with price chips) and "The
+collection so far" (`OriginalArtPreview`, compact) left the page, with their
+CSS. Deleted: `app/components/HeroTiles.tsx`, `app/lib/homeTilePrices.ts`,
+`scripts/homeTilePrices.node-test.mjs`, and `HeroTile`, `HERO_TILES` and
+`BRAND.curiosity` from `app/content/brand.ts` (`BRAND.collection` stays for
+Shop All's fallback block). The loader makes no Storefront call and returns
+`{seoUrl}` only; codegen dropped `HomepageQuery`, `HomeTilePricesQuery` and
+`HomeTilePriceFragment`. Tests: `scripts/homeRail.node-test.mjs` pins the new
+order and guards against the cut sections, the Storefront query and the
+deleted files; the tile tests left `scripts/brand.node-test.mjs` and
+`scripts/mobileLanding.node-test.mjs`. The site footer (`ClaraFooter` in
+`app/components/ClaraShell.tsx`) is now brand + sign-up, four link columns
+(Shop, Wall art by style, Clara Mendes, Help) and a bottom bar with the
+copyright and social links; `scripts/footer.node-test.mjs` pins it. See
+[Routes and pages](modules/routes-and-pages.md) and
+[Brand voice](brand-voice.md).
