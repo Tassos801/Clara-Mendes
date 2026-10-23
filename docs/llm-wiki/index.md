@@ -38,7 +38,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Fulfillment And Delivery Promises](modules/fulfillment.md) - Prodigi windows, delivery estimates, and every surface that states them.
 - [Clothing](modules/clothing.md) - The `/clothing` destination: what counts as clothing, categories vs capsules, the approval rule, 8 Oct 2026 catalogue state, and prepared Shopify changes.
 - [Analytics And Attribution](modules/analytics-and-attribution.md) - Shopify analytics, ad platform events, UTM/click ID capture, and cart attributes.
-- [Brand Voice](brand-voice.md) - The owner's brand line, `app/content/brand.ts`, our-own/borrowed labels, copy guard, hero tiles, lead prints and the Shop All line rotation.
+- [Brand Voice](brand-voice.md) - The owner's brand line, `app/content/brand.ts`, our-own/borrowed labels, copy guard, homepage order, line rail, lead prints and the Shop All line rotation.
 - [Brand Film](modules/brand-film.md) - The silent 45-second launch film: Remotion package, render check, Shopify Files upload, Our Story embed.
 
 ## Operations

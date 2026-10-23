@@ -30,7 +30,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 
 | Route                                           | File                                 | Purpose                                                                         |
 | ----------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------- |
-| `/`                                             | `app/routes/_index.tsx`              | Home page: hero, line rail, priced tiles, trust band, lead prints, letters sign-up, structured data. |
+| `/`                                             | `app/routes/_index.tsx`              | Home page: hero, line rail, trust band, letters sign-up, structured data; no Storefront query. |
 | `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
 | `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all.          |
 | `/clothing`                                     | `app/routes/clothing.tsx`            | Clothing destination: eligible garments; category links and sort above 8 pieces, capsule filter from 2 capsules, "Show more" past 12, colourway looks. See [Clothing](clothing.md). |
@@ -50,22 +50,18 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 
 Since 2026-10-23 the home page is short, in this order: the full-screen hero
 (its own glass pill and navigation), the line rail
-(`app/components/LineRail.tsx`, entries from `app/lib/lineRail.ts`), the six
-curiosity tiles with price chips (`app/components/HeroTiles.tsx`), the trust
-strip, "The collection so far" (`OriginalArtPreview`, compact), Letters from
-Nicosia (`NewsletterForm variant="feature"`), then the shell's footer. The
-artist-shops, Your Sky, clothing, book-nook, tough-case, pastel-pot, brand-film,
-living-edit, framed-art and story bands were removed with their components;
-each line keeps its own page. Design:
+(`app/components/LineRail.tsx`, entries from `app/lib/lineRail.ts`), the trust
+strip, Letters from Nicosia (`NewsletterForm variant="feature"`), then the
+shell's footer. The curiosity tiles with price chips and "The collection so
+far" were cut on 2026-10-23 (`HeroTiles.tsx` and `homeTilePrices.ts` deleted);
+the artist-shops, Your Sky, clothing, book-nook, tough-case, pastel-pot,
+brand-film, living-edit, framed-art and story bands went before them. Each
+line keeps its own page. Design:
 [home rail spec](../../superpowers/specs/2026-10-23-home-rail-design.md).
 
-The loader runs two Storefront queries in parallel, each caught on its own so
-neither can take the page down: `HOMEPAGE_QUERY` (the lead prints only) and
-`HOME_TILE_PRICES_QUERY` (`app/lib/homeTilePrices.ts`). It returns
-`{leadPrintProducts, seoUrl, tilePrices}`. The lead prints go through
-`buildOriginalArtProductMap`; matching cards link to their product pages,
-while unreleased works stay non-interactive previews. Tile prices are labels
-keyed by tile `href`, in the buyer's market currency.
+Every section is static, so the loader makes no Storefront call: it returns
+`{seoUrl}` (the canonical URL) only. The rail's entries are release-gated
+data, and the letters form posts to `/api/subscribe`.
 
 The global `header.site-header` is hidden on the home page while the hero's
 pill (`.hm-header-top`) is in view. An IntersectionObserver on the pill sets
@@ -77,21 +73,20 @@ The mobile hero keeps its expansive composition on standard phone screens. On
 viewports no wider than 768 pixels and no taller than 680 pixels, the UI layer
 switches to a compact three-row grid so the glass navigation, hero copy and
 actions, and enter-shop control cannot overlap. Focused source regression tests
-lock that short-viewport composition. Copy, tiles and lead prints are
-described in [Brand voice](../brand-voice.md).
+lock that short-viewport composition. Copy and the line rail are described in
+[Brand voice](../brand-voice.md).
 
 Important dependencies:
 
-- `PRODUCT_CARD_FRAGMENT`
-- `buildOriginalArtProductMap` and `LEAD_PRINT_HANDLES`
-- `LINE_RAIL_ENTRIES`, `HOME_TILE_PRICES_QUERY`, `tilePriceLabels`
+- `LINE_RAIL_ENTRIES`
+- `BRAND` (`app/content/brand.ts`) and `NewsletterForm`
 - SEO helpers and structured data helpers
 
 Sources: `app/routes/_index.tsx`, `app/components/LineRail.tsx`,
-`app/lib/lineRail.ts`, `app/components/HeroTiles.tsx`,
-`app/lib/homeTilePrices.ts`, `scripts/homeRail.node-test.mjs`,
-`scripts/lineRail.node-test.mjs`, `scripts/homeTilePrices.node-test.mjs`,
-`scripts/mobileLanding.node-test.mjs`, `scripts/liquidGlass.node-test.mjs`.
+`app/lib/lineRail.ts`, `scripts/homeRail.node-test.mjs` (section order, no
+Storefront query, deleted files stay gone, header return, cursor gate),
+`scripts/lineRail.node-test.mjs`, `scripts/mobileLanding.node-test.mjs`,
+`scripts/liquidGlass.node-test.mjs`, `scripts/brand.node-test.mjs`.
 
 ## Product Page
 

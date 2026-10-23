@@ -111,14 +111,10 @@ button {
   white-space: nowrap;
 }
 
-.site-nav,
-.site-footer nav {
+.site-nav {
   align-items: center;
   display: flex;
   gap: clamp(18px, 3vw, 42px);
-}
-
-.site-nav {
   justify-content: center;
 }
 
@@ -2687,68 +2683,144 @@ button {
   padding: 36px 0;
 }
 
+/* Footer: brand and sign-up on the left, four link columns on the right,
+   a thin bottom row for the copyright and social links. Below 1100 px the
+   brand sits on top; below 720 px the columns go two by two. */
 .site-footer {
-  align-items: end;
+  align-items: start;
   background: var(--color-deep);
   color: var(--color-paper);
-  display: flex;
-  gap: 34px;
-  justify-content: space-between;
+  column-gap: clamp(32px, 5vw, 80px);
+  display: grid;
+  grid-template-columns: minmax(260px, 1.25fr) minmax(0, 2.75fr);
   padding-bottom: clamp(30px, 4vw, 62px);
   padding-top: clamp(34px, 4vw, 64px);
+  row-gap: 40px;
 }
 
-.site-footer p {
+.footer-brand p {
   color: rgba(251, 250, 246, 0.64);
   margin: 16px 0 0;
 }
 
-.site-footer nav {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-.site-footer .footer-style-nav {
+.footer-columns {
   display: grid;
-  gap: 9px 22px;
-  grid-template-columns: repeat(2, max-content);
-  justify-content: flex-start;
+  gap: 28px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
-/* Wider screens: a grid, so the style links keep their width (in the old
-   flex row they shrank to about 35 px columns and overlapped). Tablets put
-   the page links on their own row; from 1100 px all three sit side by side. */
-@media (min-width: 721px) {
-  .site-footer {
-    display: grid;
-    gap: 34px clamp(28px, 4vw, 64px);
-    grid-template-columns: minmax(0, 1fr) max-content;
-  }
-
-  .site-footer > nav:last-child {
-    grid-column: 1 / -1;
-    justify-content: flex-start;
-  }
-}
-
-@media (min-width: 1100px) {
-  .site-footer {
-    grid-template-columns: minmax(240px, 1fr) max-content minmax(0, 1.4fr);
-  }
-
-  .site-footer > nav:last-child {
-    grid-column: auto;
-    justify-content: flex-end;
-  }
-}
-
-.site-footer .footer-style-nav a {
-  color: rgba(251, 250, 246, 0.64);
-  font-size: 0.8rem;
-}
-
-.site-footer .footer-style-nav a:hover {
+.footer-heading {
   color: var(--color-paper);
+  font: 600 0.72rem/1 var(--sans);
+  letter-spacing: 0.14em;
+  margin: 0 0 14px;
+  opacity: 0.7;
+  text-transform: uppercase;
+}
+
+.footer-column ul,
+.footer-social ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* reset.css puts 0.5rem under every li; set the spacing here instead. */
+.footer-column li,
+.footer-social li {
+  margin: 0;
+}
+
+.footer-column li + li {
+  margin-top: 8px;
+}
+
+.footer-column a {
+  color: var(--color-paper);
+  display: inline-block;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  opacity: 0.85;
+  padding: 4px 0;
+  text-decoration: none;
+}
+
+.footer-column a:hover,
+.footer-column a:focus-visible,
+.footer-social a:hover,
+.footer-social a:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-bottom {
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  gap: 16px;
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  opacity: 0.75;
+  padding-top: 18px;
+}
+
+/* reset.css gives every p 1rem; keep the bottom row one size. */
+.footer-copyright {
+  font-size: inherit;
+  margin: 0;
+}
+
+.footer-social ul {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.footer-social li {
+  align-items: center;
+  display: flex;
+}
+
+.footer-social li + li::before {
+  content: '·';
+  margin: 0 10px;
+}
+
+.footer-social a {
+  color: var(--color-paper);
+  display: inline-block;
+  padding: 4px 0;
+  text-decoration: none;
+}
+
+@media (pointer: coarse) {
+  .footer-column a,
+  .footer-social a {
+    padding: 8px 0;
+  }
+}
+
+@media (max-width: 1100px) {
+  .site-footer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .footer-brand {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 720px) {
+  .footer-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 }
 
 /* ── Footer sign-up ── */
@@ -2958,14 +3030,9 @@ button {
     min-height: 150px;
   }
 
-  .section-heading-row,
-  .site-footer {
+  .section-heading-row {
     align-items: start;
     flex-direction: column;
-  }
-
-  .site-footer nav {
-    justify-content: flex-start;
   }
 
   .cart-line-item {
@@ -3313,13 +3380,9 @@ button {
   }
 
   .site-footer {
-    gap: 22px;
     padding-bottom: 32px;
     padding-top: 28px;
-  }
-
-  .site-footer nav {
-    gap: 14px 22px;
+    row-gap: 32px;
   }
 
   .section-heading-row {
@@ -3457,12 +3520,6 @@ button {
   }
 
   .category-filter a {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .site-footer nav a {
     min-height: 44px;
     display: inline-flex;
     align-items: center;

@@ -39,7 +39,7 @@ Sources: `app/root.tsx`, `app/components/ClaraShell.tsx`,
 
 | Area | Data source | Main files |
 | --- | --- | --- |
-| Storefront products/collections | Shopify Storefront API | `app/routes/_index.tsx`, `app/routes/collections.all.tsx`, `app/routes/products.$handle.tsx` |
+| Storefront products/collections | Shopify Storefront API | `app/routes/collections.all.tsx`, `app/routes/products.$handle.tsx` |
 | Cart | Hydrogen cart handler | `app/routes/cart.tsx`, `app/components/CartMain.tsx`, `app/lib/fragments.ts` |
 | Customer account | Customer Account API | `app/routes/account.tsx`, `app/routes/account.orders.$orderId.tsx`, `app/graphql/customer-account/*` |
 | Policies/pages/blogs | Shopify Storefront API | `app/routes/policies.*.tsx`, `app/routes/pages.$handle.tsx`, `app/routes/blogs.*.tsx` |

@@ -11,7 +11,7 @@ const readSource = (relativePath) =>
 const homepageSource = readSource('app/routes/_index.tsx');
 const appCss = readSource('app/styles/app.css');
 
-/** The homepage's first reduced-motion block (hero, tiles, header). */
+/** The homepage's first reduced-motion block (hero, header). */
 function getReducedMotionCss() {
   const start = homepageSource.indexOf(
     '@media (prefers-reduced-motion: reduce)',
@@ -26,9 +26,7 @@ test('the short homepage renders its sections in order', () => {
   const order = [
     'className="home-root"',
     '<LineRail',
-    'className="home-curiosity"',
     'className="home-trust-band"',
-    '<OriginalArtPreview',
     'className="home-journal-teaser"',
   ].map((marker) => {
     const index = homepageSource.indexOf(marker);
@@ -41,15 +39,29 @@ test('the short homepage renders its sections in order', () => {
     'sections out of order',
   );
   assert.match(homepageSource, /<LineRail entries=\{LINE_RAIL_ENTRIES\} \/>/);
-  assert.match(homepageSource, /<HeroTiles prices=\{tilePrices\} \/>/);
+  // The Letters card carries the sign-up; the footer's copy stays off `/`.
+  assert.match(
+    homepageSource,
+    /html:has\(\.home-root\) \.newsletter--footer\s*\{[^}]*display:\s*none/,
+  );
 });
 
-test('the loader reads the tile prices beside the lead prints, each allowed to fail', () => {
-  assert.match(homepageSource, /HOME_TILE_PRICES_QUERY/);
-  assert.match(homepageSource, /homeTilePriceVariables\(\)/);
-  assert.match(homepageSource, /tilePrices: tilePriceLabels\(tiles\)/);
-  assert.match(homepageSource, /Promise\.all\(/);
-  assert.equal(homepageSource.match(/\.catch\(\(\) => null\)/g)?.length, 2);
+test('the homepage makes no Storefront call and the cut sections stay gone', () => {
+  assert.match(
+    homepageSource,
+    /return \{seoUrl: getCanonicalUrl\(request, '\/'\)\};/,
+  );
+  assert.doesNotMatch(
+    homepageSource,
+    /home-curiosity|HeroTiles|OriginalArtPreview|HOMEPAGE_QUERY|HOME_TILE_PRICES_QUERY|storefront\.query|hc-tile/,
+  );
+  for (const file of [
+    'app/components/HeroTiles.tsx',
+    'app/lib/homeTilePrices.ts',
+    'scripts/homeTilePrices.node-test.mjs',
+  ]) {
+    assert.equal(existsSync(path.join(ROOT, file)), false, `${file} is back`);
+  }
 });
 
 test('links() only preloads the hero images', () => {
@@ -84,11 +96,7 @@ test('the site header returns once the hero pill scrolls away', () => {
   );
 });
 
-test('the tiles carry a price chip and the custom cursor needs a mouse', () => {
-  assert.match(
-    homepageSource,
-    /\.hc-tile-price\s*\{[^}]*position:\s*absolute;/,
-  );
+test('the custom cursor needs a mouse', () => {
   assert.match(
     homepageSource,
     /matchMedia\('\(hover: hover\) and \(pointer: fine\)'\)/,

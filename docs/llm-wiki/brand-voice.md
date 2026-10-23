@@ -32,16 +32,16 @@ Labels:
 `scripts/brand.node-test.mjs` fails when any `.ts`/`.tsx` line under `app/`
 (comment lines excepted) says "original art", "original work(s)", "original
 piece", "something original", "original Clara Mendes" or "objects with soul".
-It also pins the hero line and links, the six hero tiles, and the 155-character
-limit on the home, default and Our Story descriptions.
+It also pins the hero line and links and the 155-character limit on the home,
+default and Our Story descriptions.
 
 ## Homepage order
 
-Since 2026-10-23 the homepage is short: the full-screen hero, the line rail,
-the six curiosity tiles with price chips, the trust strip, "The collection so
-far", then Letters from Nicosia and the site footer. Every other band left the
-page; each line keeps its own page, and the rail and the tiles lead there.
-Design: [home rail spec](../superpowers/specs/2026-10-23-home-rail-design.md).
+Since 2026-10-23 the homepage is hero → line rail → trust strip → Letters from
+Nicosia, then the site footer. The curiosity tiles (with their price chips) and
+"The collection so far" left with every other band; each line keeps its own
+page, and the rail leads there. Design:
+[home rail spec](../superpowers/specs/2026-10-23-home-rail-design.md).
 
 ## Line rail
 
@@ -53,39 +53,19 @@ when released, with the navigation's gates (`publicArtists`,
 `releasedBookNooks`, `PRODUCT_RELEASE_FLAGS`, `PERSONALISED_RELEASE_FLAGS`).
 Tests: `scripts/lineRail.node-test.mjs`.
 
-## Homepage hero tiles
-
-`HERO_TILES` in `app/content/brand.ts` is static data (href, image src, width,
-height, alt, tag, `priceHandle`). Six tiles: our own print, a borrowed
-Hokusai, a phone case, a tank top, a pot, a book nook.
-`app/components/HeroTiles.tsx` renders them; the first loads eagerly with high
-fetch priority. Phones show the first four (`.hc-tile:nth-child(n + 5)` is
-hidden in `app/routes/_index.tsx`, locked by
-`scripts/mobileLanding.node-test.mjs`), so those four must stand alone.
-
-## Tile prices
-
-Each tile's `priceHandle` names the product in the picture; the tile may link
-somewhere wider. `app/lib/homeTilePrices.ts` fetches the six in one
-`@inContext` query and `tilePriceLabels` turns them into chips with the card
-rules ("From €26.99", "€39.99"). Only variants on sale count: a product with
-nothing on sale, or one the listing gate rejects, gets no chip. The currency
-follows the buyer's market, so `?country=` changes it. Tests:
-`scripts/homeTilePrices.node-test.mjs`; `scripts/brand.node-test.mjs` pins
-every `priceHandle` to a sellable product.
-
 ## The collection so far
 
 `app/lib/leadPrints.ts` lists the first work of every capsule of our own: the
 founding capsules (`sequence === 1` in `data/original-art-catalog.json`), then
 the first released print of each released studio collection in
-`data/print-catalog.json`. The homepage fetches their live state with
-`leadPrintsQuery()` (capsule tags AND `product_type:"Art Prints"`,
-`LEAD_PRINTS_QUERY_FIRST` = 60) and keys it by `LEAD_PRINT_HANDLES` through
-`buildOriginalArtProductMap` (`app/lib/originalArt.ts`).
-`app/components/OriginalArtPreview.tsx` renders the lead prints when compact
-(homepage) and the fifteen founding prints otherwise. Tests:
-`scripts/leadPrints.node-test.mjs`.
+`data/print-catalog.json`, plus `leadPrintsQuery()` (capsule tags AND
+`product_type:"Art Prints"`, `LEAD_PRINTS_QUERY_FIRST` = 60) and
+`LEAD_PRINT_HANDLES` for `buildOriginalArtProductMap`
+(`app/lib/originalArt.ts`). `app/components/OriginalArtPreview.tsx` renders
+the lead prints when compact and the fifteen founding prints otherwise. Since
+the homepage cut (2026-10-23) no route renders the compact block or runs that
+query; Shop All shows the full block, with the `BRAND.collection` copy, as its
+empty-listing fallback. Tests: `scripts/leadPrints.node-test.mjs`.
 
 ## Shop All "Featured" order
 

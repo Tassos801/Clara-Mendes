@@ -9,92 +9,6 @@
  * plain Node, which cannot resolve the Vite "~" alias.
  */
 
-export type HeroTile = {
-  href: string;
-  image: {alt: string; height: number; src: string; width: number};
-  /**
-   * Shopify handle whose lowest purchasable price the tile shows; the
-   * link may go somewhere wider (an artist shop, the clothing page).
-   */
-  priceHandle: string;
-  /** Short italic chip on the tile. Lower case, no full stop. */
-  tag: string;
-};
-
-/**
- * The curiosity grid. Six very different things we make, each with a
- * small aside. Desktop shows all six; phones show the first four, so
- * the first four must stand on their own.
- */
-export const HERO_TILES: readonly HeroTile[] = [
-  {
-    href: '/products/quiet-form-i-art-print',
-    image: {
-      alt: 'Quiet Form I: warm ivory arches and a charcoal circle, an art print of our own',
-      height: 900,
-      src: '/images/home-hero/quiet-form-i.webp',
-      width: 720,
-    },
-    priceHandle: 'quiet-form-i-art-print',
-    tag: 'our own print',
-  },
-  {
-    href: '/artists/hokusai',
-    image: {
-      alt: 'The Great Wave off Kanagawa by Hokusai, printed on a white-bordered sheet',
-      height: 720,
-      src: '/images/home-hero/great-wave.webp',
-      width: 900,
-    },
-    priceHandle: 'the-great-wave-off-kanagawa-art-print',
-    tag: 'a borrowed Hokusai',
-  },
-  {
-    href: '/products/art-tough-phone-case?Artwork=Midnight+Garden+II',
-    image: {
-      alt: 'A phone case printed edge to edge with the Midnight Garden II artwork',
-      height: 900,
-      src: '/images/home-hero/phone-case.webp',
-      width: 588,
-    },
-    priceHandle: 'art-tough-phone-case',
-    tag: 'a phone case',
-  },
-  {
-    href: '/clothing',
-    image: {
-      alt: 'The Quiet Current studio tank in Moss / Mist, laid flat',
-      height: 1125,
-      src: 'https://cdn.shopify.com/s/files/1/1027/6533/0766/files/01-moss-flat-front_e847210a-10f9-4c6c-b296-0eedb07b5afd.jpg?width=900',
-      width: 900,
-    },
-    priceHandle: 'quiet-current-studio-tank',
-    tag: 'a tank top?',
-  },
-  {
-    href: '/pastel-forms',
-    image: {
-      alt: 'The Butter Sun ceramic plant pot, pale yellow with a soft sun mark',
-      height: 900,
-      src: '/images/home-hero/butter-sun.webp',
-      width: 900,
-    },
-    priceHandle: 'butter-sun-pastel-plant-pot',
-    tag: 'yes, a pot',
-  },
-  {
-    href: '/book-nooks',
-    image: {
-      alt: 'The Twilight Library book nook, a lit miniature room between books',
-      height: 900,
-      src: '/images/home-hero/book-nook.webp',
-      width: 720,
-    },
-    priceHandle: 'twilight-library-diy-book-nook-kit',
-    tag: 'a tiny world for your shelf',
-  },
-];
-
 export const BRAND = {
   hero: {
     headline: "We don't know what we'll make next.",
@@ -103,12 +17,6 @@ export const BRAND = {
     secondaryCta: {href: '/our-story', label: 'Our story'},
     footnote:
       "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
-  },
-  /** The block under the full-screen hero: the curiosity grid. */
-  curiosity: {
-    eyebrow: 'So far',
-    title: "A few of the things we've made.",
-    line: "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
   },
   letter: {
     eyebrow: 'The person behind the name',

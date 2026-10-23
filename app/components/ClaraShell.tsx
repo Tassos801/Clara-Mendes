@@ -183,7 +183,7 @@ function CartItemCount() {
 function ClaraFooter() {
   return (
     <footer className="site-footer">
-      <div>
+      <div className="footer-brand">
         <Link className="brand-mark" to="/">
           Clara Mendes
         </Link>
@@ -193,55 +193,149 @@ function ClaraFooter() {
         </p>
         <NewsletterForm variant="footer" />
       </div>
-      <nav className="footer-style-nav" aria-label="Shop wall art by style">
-        <Link to="/collections/all?type=Art+Prints">Unframed Art Prints</Link>
-        <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
-        <Link to="/collections/terracotta-wall-art">Terracotta Wall Art</Link>
-        <Link to="/collections/blue-abstract-wall-art">Blue Abstract Art</Link>
-        <Link to="/collections/geometric-wall-art">Geometric Wall Art</Link>
-        <Link to="/collections/dark-botanical-wall-art">Dark Botanicals</Link>
-        <Link to="/collections/living-room-wall-art">Living Room Art</Link>
-        <Link to="/collections/bedroom-wall-art">Bedroom Art</Link>
-        <Link to="/collections/wall-art-sets-of-3">Sets of 3</Link>
-      </nav>
-      <nav aria-label="Footer navigation">
-        <Link to="/collections/all">Shop</Link>
-        {HAS_ARTISTS ? <Link to="/artists">Artists</Link> : null}
-        <Link to="/clothing">Clothing</Link>
-        {HAS_BOOK_NOOKS ? <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link> : null}
-        {HAS_PHONE_CASES ? (
-          <Link to="/collections/all?type=Phone+Cases">Phone Cases</Link>
-        ) : null}
-        <Link to="/pastel-forms">Pastel Forms</Link>
-        <Link to="/our-story">Our Story</Link>
-        <Link to="/blogs/karina-of-time">Karina of Time</Link>
-        <Link to="/contact">Contact</Link>
-        <Link to="/policies/shipping-policy">Shipping</Link>
-        <Link to="/policies/refund-policy">Returns</Link>
-        <Link to="/policies/privacy-policy">Privacy</Link>
-        <Link to="/policies/terms-of-service">Terms</Link>
-        <a
-          href="https://www.instagram.com/shopclaramendes/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Instagram
-        </a>
-        <a
-          href="https://www.pinterest.com/shopclaramendes/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Pinterest
-        </a>
-        <a
-          href="https://www.facebook.com/shopclaramendes"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Facebook
-        </a>
-      </nav>
+      <div className="footer-columns">
+        <nav className="footer-column" aria-label="Shop">
+          <h2 className="footer-heading">Shop</h2>
+          <ul>
+            <li>
+              <Link to="/collections/all">Shop all</Link>
+            </li>
+            {HAS_ARTISTS ? (
+              <li>
+                <Link to="/artists">Artists</Link>
+              </li>
+            ) : null}
+            <li>
+              <Link to="/clothing">Clothing</Link>
+            </li>
+            {HAS_BOOK_NOOKS ? (
+              <li>
+                <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link>
+              </li>
+            ) : null}
+            {HAS_PHONE_CASES ? (
+              <li>
+                <Link to="/collections/all?type=Phone+Cases">Phone Cases</Link>
+              </li>
+            ) : null}
+            <li>
+              <Link to="/pastel-forms">Pastel Forms</Link>
+            </li>
+          </ul>
+        </nav>
+        {/* SEO landing pages: keep these texts and paths as they are. */}
+        <nav className="footer-column" aria-label="Shop wall art by style">
+          <h2 className="footer-heading">Wall art by style</h2>
+          <ul>
+            <li>
+              <Link to="/collections/all?type=Art+Prints">
+                Unframed Art Prints
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
+            </li>
+            <li>
+              <Link to="/collections/terracotta-wall-art">
+                Terracotta Wall Art
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections/blue-abstract-wall-art">
+                Blue Abstract Art
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections/geometric-wall-art">
+                Geometric Wall Art
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections/dark-botanical-wall-art">
+                Dark Botanicals
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections/living-room-wall-art">
+                Living Room Art
+              </Link>
+            </li>
+            <li>
+              <Link to="/collections/bedroom-wall-art">Bedroom Art</Link>
+            </li>
+            <li>
+              <Link to="/collections/wall-art-sets-of-3">Sets of 3</Link>
+            </li>
+          </ul>
+        </nav>
+        <nav className="footer-column" aria-label="Clara Mendes">
+          <h2 className="footer-heading">Clara Mendes</h2>
+          <ul>
+            <li>
+              <Link to="/our-story">Our Story</Link>
+            </li>
+            <li>
+              <Link to="/blogs/karina-of-time">Karina of Time</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </nav>
+        <nav className="footer-column" aria-label="Help">
+          <h2 className="footer-heading">Help</h2>
+          <ul>
+            <li>
+              <Link to="/policies/shipping-policy">Shipping</Link>
+            </li>
+            <li>
+              <Link to="/policies/refund-policy">Returns</Link>
+            </li>
+            <li>
+              <Link to="/policies/privacy-policy">Privacy</Link>
+            </li>
+            <li>
+              <Link to="/policies/terms-of-service">Terms</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div className="footer-bottom">
+        <p className="footer-copyright">
+          © {new Date().getFullYear()} Clara Mendes · Nicosia, Cyprus
+        </p>
+        <nav className="footer-social" aria-label="Social">
+          <ul>
+            <li>
+              <a
+                href="https://www.instagram.com/shopclaramendes/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.pinterest.com/shopclaramendes/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Pinterest
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.facebook.com/shopclaramendes"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Facebook
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </footer>
   );
 }

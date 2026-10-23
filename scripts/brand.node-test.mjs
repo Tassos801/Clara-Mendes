@@ -3,9 +3,7 @@ import test from 'node:test';
 import {readdirSync, readFileSync, statSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {BRAND, HERO_TILES} from '../app/content/brand.ts';
-import {computeSellableHandles} from '../app/lib/catalogFilters.ts';
-import {TOUGH_CASE_HANDLE} from '../app/lib/toughCase.ts';
+import {BRAND} from '../app/content/brand.ts';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -31,25 +29,6 @@ test('the hero carries the owner line, visible word for word', () => {
   assert.equal(BRAND.hero.line, "We like art, and we promise it won't be boring.");
   assert.equal(BRAND.hero.primaryCta.href, '/collections/all');
   assert.equal(BRAND.hero.secondaryCta.href, '/our-story');
-});
-
-test('six hero tiles, each with an image, a tag, a site-relative link and a released price handle', () => {
-  assert.equal(HERO_TILES.length, 6);
-  const sellable = computeSellableHandles();
-  for (const tile of HERO_TILES) {
-    assert.match(tile.href, /^\//, `${tile.tag} links inside the site`);
-    assert.ok(tile.image.src.length > 0);
-    assert.ok(tile.image.width > 0 && tile.image.height > 0);
-    assert.ok(tile.image.alt.length > 10, `${tile.tag} has a real alt text`);
-    assert.ok(tile.tag.length > 0);
-    assert.match(tile.priceHandle, /^[a-z0-9-]+$/);
-    assert.ok(sellable.has(tile.priceHandle), `${tile.priceHandle} is released`);
-  }
-  const handles = new Set(HERO_TILES.map((tile) => tile.priceHandle));
-  assert.equal(handles.size, 6, 'each tile prices a different product');
-  assert.equal(HERO_TILES[0].tag, 'our own print');
-  assert.equal(HERO_TILES[1].tag, 'a borrowed Hokusai');
-  assert.equal(HERO_TILES[2].priceHandle, TOUGH_CASE_HANDLE);
 });
 
 test('no brand sentence falls back on "original" as the umbrella word', () => {
