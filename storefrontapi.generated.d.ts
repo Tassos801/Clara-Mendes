@@ -624,6 +624,180 @@ export type CartApiMutationFragment = Pick<
   };
 };
 
+export type HomeTilePricesQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  tile0: StorefrontAPI.Scalars['String']['input'];
+  tile1: StorefrontAPI.Scalars['String']['input'];
+  tile2: StorefrontAPI.Scalars['String']['input'];
+  tile3: StorefrontAPI.Scalars['String']['input'];
+  tile4: StorefrontAPI.Scalars['String']['input'];
+  tile5: StorefrontAPI.Scalars['String']['input'];
+}>;
+
+export type HomeTilePricesQuery = {
+  tile0?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      storefrontApproved?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      fulfillmentVerified?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+    }
+  >;
+  tile1?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      storefrontApproved?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      fulfillmentVerified?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+    }
+  >;
+  tile2?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      storefrontApproved?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      fulfillmentVerified?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+    }
+  >;
+  tile3?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      storefrontApproved?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      fulfillmentVerified?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+    }
+  >;
+  tile4?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      storefrontApproved?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      fulfillmentVerified?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+    }
+  >;
+  tile5?: StorefrontAPI.Maybe<
+    Pick<
+      StorefrontAPI.Product,
+      'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+    > & {
+      storefrontApproved?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      fulfillmentVerified?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+      >;
+      priceRange: {
+        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      };
+      sizeVariants: {
+        nodes: Array<
+          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+          }
+        >;
+      };
+    }
+  >;
+};
+
+export type HomeTilePriceFragment = Pick<
+  StorefrontAPI.Product,
+  'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+> & {
+  storefrontApproved?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+  >;
+  fulfillmentVerified?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+  >;
+  priceRange: {
+    minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+  };
+  sizeVariants: {
+    nodes: Array<
+      Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+        price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      }
+    >;
+  };
+};
+
 export type AvailableMarketCountriesQueryVariables = StorefrontAPI.Exact<{
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
@@ -3421,6 +3595,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query Footer(\n    $country: CountryCode\n    $footerMenuHandle: String!\n    $language: LanguageCode\n  ) @inContext(language: $language, country: $country) {\n    menu(handle: $footerMenuHandle) {\n      ...Menu\n    }\n  }\n  #graphql\n  fragment MenuItem on MenuItem {\n    id\n    resourceId\n    tags\n    title\n    type\n    url\n  }\n  fragment ChildMenuItem on MenuItem {\n    ...MenuItem\n  }\n  fragment ParentMenuItem on MenuItem {\n    ...MenuItem\n    items {\n      ...ChildMenuItem\n    }\n  }\n  fragment Menu on Menu {\n    id\n    items {\n      ...ParentMenuItem\n    }\n  }\n\n': {
     return: FooterQuery;
     variables: FooterQueryVariables;
+  };
+  '#graphql\n  query HomeTilePrices(\n    $country: CountryCode\n    $language: LanguageCode\n    $tile0: String!\n    $tile1: String!\n    $tile2: String!\n    $tile3: String!\n    $tile4: String!\n    $tile5: String!\n  ) @inContext(country: $country, language: $language) {\n    tile0: product(handle: $tile0) {\n      ...HomeTilePrice\n    }\n    tile1: product(handle: $tile1) {\n      ...HomeTilePrice\n    }\n    tile2: product(handle: $tile2) {\n      ...HomeTilePrice\n    }\n    tile3: product(handle: $tile3) {\n      ...HomeTilePrice\n    }\n    tile4: product(handle: $tile4) {\n      ...HomeTilePrice\n    }\n    tile5: product(handle: $tile5) {\n      ...HomeTilePrice\n    }\n  }\n  fragment HomeTilePrice on Product {\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample: staged variants sit in Shopify at full price\n    # with availableForSale=false, so the chip prices only what can be\n    # bought (same sample as the product card fragment).\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n  }\n': {
+    return: HomeTilePricesQuery;
+    variables: HomeTilePricesQueryVariables;
   };
   '#graphql\n  query AvailableMarketCountries(\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    localization {\n      availableCountries {\n        isoCode\n      }\n    }\n  }\n': {
     return: AvailableMarketCountriesQuery;
