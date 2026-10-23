@@ -11,7 +11,12 @@ import {isReleasedProductHandle} from '~/lib/catalogFilters';
 import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
 import {publicArtists} from '~/lib/artistShops';
-import {NAV_LINKS} from '~/lib/navLinks';
+import {
+  NAV_LINKS,
+  PRIMARY_LINKS,
+  SHOP_LINKS,
+  SHOP_PATH,
+} from '~/lib/navLinks';
 import {cartItemCountLabel} from '~/lib/cartPresentation';
 import {BRAND} from '~/content/brand';
 
@@ -92,11 +97,28 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
         </Link>
       </div>
       <nav className="site-nav" aria-label="Primary navigation">
-        {NAV_LINKS.map(({to, label}) => (
-          <NavLink key={to} to={to} prefetch="intent">
-            {label}
-          </NavLink>
-        ))}
+        {PRIMARY_LINKS.map(({to, label}) =>
+          to === SHOP_PATH && SHOP_LINKS.length > 0 ? (
+            // The lines open under Shop on hover or keyboard focus; the
+            // Shop link itself still goes to everything.
+            <div className="site-nav-shop" key={to}>
+              <NavLink to={to} prefetch="intent">
+                {label}
+              </NavLink>
+              <div className="site-nav-shop-menu">
+                {SHOP_LINKS.map((line) => (
+                  <NavLink key={line.to} to={line.to} prefetch="intent">
+                    {line.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <NavLink key={to} to={to} prefetch="intent">
+              {label}
+            </NavLink>
+          ),
+        )}
       </nav>
       <div className="header-right">
         <Link className="mobile-search-button" to="/search" aria-label="Search">
@@ -187,10 +209,7 @@ function ClaraFooter() {
         <Link className="brand-mark" to="/">
           Clara Mendes
         </Link>
-        <p>
-          {BRAND.footer.blurb} We ship across the EU and to most other
-          countries; each product page shows how its item is delivered.
-        </p>
+        <p>{BRAND.footer.blurb}</p>
         <NewsletterForm variant="footer" />
       </div>
       <div className="footer-columns">

@@ -28,7 +28,9 @@ test('the hero carries the owner line, visible word for word', () => {
   assert.equal(BRAND.hero.headline, "We don't know what we'll make next.");
   assert.equal(BRAND.hero.line, "We like art, and we promise it won't be boring.");
   assert.equal(BRAND.hero.primaryCta.href, '/collections/all');
-  assert.equal(BRAND.hero.secondaryCta.href, '/our-story');
+  // One action only: the Our story button and the product footnote left
+  // the hero on 2026-10-23.
+  assert.deepEqual(Object.keys(BRAND.hero).sort(), ['headline', 'line', 'primaryCta']);
 });
 
 test('no brand sentence falls back on "original" as the umbrella word', () => {
@@ -78,18 +80,17 @@ test('the founder letter is complete and the portrait exists', () => {
 });
 
 test('the newsletter copy and forms are wired', () => {
-  assert.equal(BRAND.newsletter.title, 'New work first. A letter now and then.');
   assert.match(BRAND.newsletter.success('WELCOME10'), /WELCOME10/);
   assert.doesNotMatch(BRAND.newsletter.success(null), /code/i);
-  assert.match(BRAND.newsletter.body('X'), /10 % off/);
-  assert.doesNotMatch(BRAND.newsletter.body(null), /10 %/);
+  assert.match(BRAND.newsletter.footerLine('X'), /10 % off/);
+  assert.doesNotMatch(BRAND.newsletter.footerLine(null), /10 %/);
   const form = readFileSync(path.join(ROOT, 'app/components/NewsletterForm.tsx'), 'utf8');
   assert.match(form, /action=\{NEWSLETTER_ACTION\}|action="\/api\/subscribe"/);
   assert.match(form, /NEWSLETTER_HONEYPOT_FIELD/);
   assert.match(form, /hydrated \? <input type="hidden" name="_fetcher"/);
   const shell = readFileSync(path.join(ROOT, 'app/components/ClaraShell.tsx'), 'utf8');
   assert.match(shell, /<NewsletterForm variant="footer"/);
+  // The homepage uses the footer's one-line sign-up like every other page.
   const home = readFileSync(path.join(ROOT, 'app/routes/_index.tsx'), 'utf8');
-  assert.match(home, /<NewsletterForm variant="feature"/);
-  assert.doesNotMatch(home, /className="journal-teaser-card"\s+to=/);
+  assert.doesNotMatch(home, /NewsletterForm|journal-teaser|newsletter--footer/);
 });

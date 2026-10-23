@@ -14,9 +14,6 @@ export const BRAND = {
     headline: "We don't know what we'll make next.",
     line: "We like art, and we promise it won't be boring.",
     primaryCta: {href: '/collections/all', label: 'See what we made'},
-    secondaryCta: {href: '/our-story', label: 'Our story'},
-    footnote:
-      "Prints · phone cases · clothing · plant pots · book nooks · whatever's next",
   },
   letter: {
     eyebrow: 'The person behind the name',
@@ -35,12 +32,6 @@ export const BRAND = {
     founder: {name: 'Tassos Dimitriou', city: 'Nicosia', country: 'CY'},
   },
   newsletter: {
-    eyebrow: 'Letters from Nicosia',
-    title: 'New work first. A letter now and then.',
-    body: (code: string | null) =>
-      `Sign up and new pieces reach you before anyone else${
-        code ? ', with 10 % off your first order' : ''
-      }. No noise; leave whenever you like.`,
     footerLine: (code: string | null) =>
       `Letters from Nicosia — new work first${code ? ', 10 % off your first order' : ''}.`,
     label: 'Email address',
@@ -59,7 +50,6 @@ export const BRAND = {
     failed: "That didn't go through. Try again, or write to hello@shopclaramendes.com.",
     consent: 'By signing up you agree to receive emails from Clara Mendes. Unsubscribe any time.',
     privacyLabel: 'Privacy',
-    journalLink: 'Enter the journal →',
   },
   collection: {
     eyebrow: 'The collection',
@@ -96,8 +86,7 @@ export const BRAND = {
     collectionFallback: 'A Clara Mendes collection: art on things worth living with.',
   },
   footer: {
-    blurb:
-      'We like art and follow it wherever it goes: our own prints, works borrowed from museums, and things you use every day.',
+    blurb: 'We like art and follow it wherever it goes.',
   },
   seo: {
     homeTitle: 'Art Prints, Clothing and Curious Objects | Clara Mendes',

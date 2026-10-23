@@ -10,16 +10,18 @@ import {publicArtists} from './artistShops.ts';
 
 export type NavLinkItem = {label: string; to: string};
 
+export const SHOP_PATH = '/collections/all';
+
+const ARTISTS_LINK: NavLinkItem[] =
+  publicArtists().length > 0 ? [{to: '/artists', label: 'Artists'}] : [];
+
 /**
- * The site's primary navigation, in order. The sticky header, the mobile
- * menu, the homepage hero header and the Our Story header all render this
- * list, so a page never shows a different set of links from the next.
- * Lines appear only once released (artists, book nooks, personalised
- * products); Your Sky is a feature page, not a product URL.
+ * The lines under "Shop", in order. The desktop header shows them in the
+ * Shop menu; the mobile menu lists them in full. Lines appear only once
+ * released (book nooks, personalised products); Your Sky is a feature
+ * page, not a product URL.
  */
-export const NAV_LINKS: readonly NavLinkItem[] = [
-  {to: '/collections/all', label: 'Shop'},
-  ...(publicArtists().length > 0 ? [{to: '/artists', label: 'Artists'}] : []),
+export const SHOP_LINKS: readonly NavLinkItem[] = [
   {to: '/clothing', label: 'Clothing'},
   ...(releasedBookNooks().length > 0
     ? [{to: BOOK_NOOKS_PATH, label: 'Book Nooks'}]
@@ -30,6 +32,25 @@ export const NAV_LINKS: readonly NavLinkItem[] = [
   ...(PERSONALISED_RELEASE_FLAGS[NATAL_PRODUCT_HANDLE]
     ? [{to: `/products/${NATAL_PRODUCT_HANDLE}`, label: 'First Light'}]
     : []),
+];
+
+/**
+ * The short desktop navigation: the sticky header, the homepage hero
+ * header and the Our Story header all render this list, so a page never
+ * shows a different set of links from the next. Search and the cart sit
+ * beside it as icons; the journal and contact live in the footer.
+ */
+export const PRIMARY_LINKS: readonly NavLinkItem[] = [
+  {to: SHOP_PATH, label: 'Shop'},
+  ...ARTISTS_LINK,
+  {to: '/our-story', label: 'Our Story'},
+];
+
+/** Every page in the menu, in order, for the mobile menu drawer. */
+export const NAV_LINKS: readonly NavLinkItem[] = [
+  {to: SHOP_PATH, label: 'Shop'},
+  ...ARTISTS_LINK,
+  ...SHOP_LINKS,
   {to: '/our-story', label: 'Our Story'},
   {to: '/blogs/karina-of-time', label: 'Journal'},
   {to: '/contact', label: 'Contact'},

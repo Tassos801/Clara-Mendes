@@ -1,7 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {Link, NavLink} from 'react-router';
 import type {Route} from './+types/our-story';
-import {NAV_LINKS} from '~/lib/navLinks';
+import {PRIMARY_LINKS} from '~/lib/navLinks';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
@@ -196,7 +196,7 @@ export default function OurStory() {
               Clara Mendes
             </Link>
             <nav className="os-nav-group" aria-label="Site navigation">
-              {NAV_LINKS.map(({to, label}) => (
+              {PRIMARY_LINKS.map(({to, label}) => (
                 <NavLink
                   key={to}
                   to={to}
@@ -208,6 +208,9 @@ export default function OurStory() {
                   {label}
                 </NavLink>
               ))}
+              <Link to="/search" className="os-nav-text" prefetch="intent">
+                Search
+              </Link>
               <button
                 className="os-nav-text os-cart-link"
                 type="button"

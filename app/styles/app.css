@@ -141,6 +141,75 @@ button {
   text-transform: none;
 }
 
+/* Shop opens its lines on hover or keyboard focus. The padding-top bridge
+   keeps the menu open while the pointer moves down onto it. */
+.site-nav-shop {
+  position: relative;
+}
+
+.site-nav-shop-menu {
+  left: 50%;
+  min-width: 190px;
+  opacity: 0;
+  padding-top: 14px;
+  position: absolute;
+  top: 100%;
+  transform: translate(-50%, -4px);
+  transition: opacity 160ms ease, transform 160ms ease, visibility 160ms;
+  visibility: hidden;
+}
+
+.site-nav-shop:hover .site-nav-shop-menu,
+.site-nav-shop:focus-within .site-nav-shop-menu {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  visibility: visible;
+}
+
+.site-nav-shop-menu::before {
+  backdrop-filter: blur(var(--glass-blur)) saturate(1.28);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.28);
+  background: var(--glass-surface-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: var(--glass-shadow);
+  content: '';
+  inset: 14px 0 0;
+  position: absolute;
+  z-index: -1;
+}
+
+.site-nav .site-nav-shop-menu a {
+  display: block;
+  padding: 10px 18px;
+}
+
+.site-nav .site-nav-shop-menu a:first-child {
+  padding-top: 16px;
+}
+
+.site-nav .site-nav-shop-menu a:last-child {
+  padding-bottom: 16px;
+}
+
+/* Inside the menu the current line is marked by weight, not the pill. */
+.site-nav .site-nav-shop-menu a.active {
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: 0.73rem;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.site-nav .site-nav-shop-menu a:hover,
+.site-nav .site-nav-shop-menu a:focus-visible {
+  color: var(--color-muted);
+}
+
 .header-left {
   align-items: center;
   display: flex;
@@ -166,8 +235,9 @@ button {
   justify-self: end;
 }
 
+/* Search is an icon at every width; the text links no longer carry it. */
 .mobile-search-button {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-ink);
@@ -6227,13 +6297,11 @@ html.lenis body {
   }
 }
 
-/* ── Desktop header: nine links need about 1,060 px beside the brand and the
-   cart (measured 2026-10-16 in Segoe UI: links 623 px plus eight gaps,
-   brand 174 px, cart 69 px). Three equal columns, which centre the links on
-   the page, need about 1,480 px; below that the links take the space
-   between the brand and the cart, with tighter gaps. The breakpoints keep
-   about 40 px spare for wider system fonts (macOS). Re-measure when adding
-   a link. ── */
+/* ── Desktop header: since 2026-10-23 it carries three links (Shop, Artists,
+   Our Story) with the lines in the Shop menu, so it fits with room to spare
+   from 1280 px. The breakpoints below date from the nine-link header (about
+   1,060 px, measured 2026-10-16 in Segoe UI) and still hold. Re-measure
+   before adding a link. ── */
 .site-nav a {
   white-space: nowrap;
 }
