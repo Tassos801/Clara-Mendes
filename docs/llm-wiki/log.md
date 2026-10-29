@@ -2177,3 +2177,21 @@ line, the "See what we made" button and the "Enter the shop" orb are gone
 (`app/routes/_index.tsx`, tests in `scripts/mobileLanding.node-test.mjs`).
 Our Story and the founder's letter keep the full line. See
 [Brand voice](brand-voice.md).
+
+## [2026-10-29] performance | No public WebP on the storefront
+
+Following the site-speed pass: Oxygen also re-encodes the remaining WebP in
+`public/images` (and the ICC-tagged Our Story backdrop) into larger files,
+and a transparent WebP into a PNG about five times its size. Every image a
+page shows from `public/images` is now a plain sRGB JPEG (a palette PNG for
+the transparent clothing accent) at 2-3x its largest CSS size, written
+beside its source as `name.w<width>.jpg` by `npm run storefront:images`
+from the list in `scripts/lib/storefront-images.mjs`: journal plates
+(460 px; the journal's images went from ~2.4 MB to ~220 kB on desktop),
+artist-index sheets, gallery-page hero mockups (1000/1600 px `srcset`),
+the Our Story portrait and backdrop, Your Sky hero/occasions/swatches,
+Pastel Forms and the clothing accent. Curated (book nook) images gained a
+`.w1000.jpg` copy, so product pages and 3x phones no longer fetch the WebP
+original. WebP sources stay for scripts, feeds and social posts.
+Before/after screenshots at 1440 and 390 px matched. See
+[Hydrogen runtime](modules/hydrogen-runtime.md).

@@ -51,10 +51,11 @@ export const YOUR_SKY_PAGE: FeaturePage = {
     priceLine: 'From €35.99 · made to order · unframed or framed',
     cta: 'Design yours',
     image: {
-      src: '/images/your-sky/hero-print.webp',
+      // Shown at most 640 CSS px wide.
+      src: '/images/your-sky/hero-print.w1280.jpg',
       alt: 'A framed Your Sky star map print — the linen edition in a natural frame on a dark wall',
-      width: 2400,
-      height: 1500,
+      width: 1280,
+      height: 800,
     },
   },
   studio: {
@@ -66,19 +67,19 @@ export const YOUR_SKY_PAGE: FeaturePage = {
     {
       title: 'The night you met',
       line: 'The city, the date, the hour you still argue about.',
-      image: '/images/your-sky/occasion-met.webp',
+      image: '/images/your-sky/occasion-met.w800.jpg',
       preset: {title: 'The night we met', time: '22:00'},
     },
     {
       title: 'The morning she was born',
       line: 'Her first sky, exactly as it stood over the hospital.',
-      image: '/images/your-sky/occasion-born.webp',
+      image: '/images/your-sky/occasion-born.w800.jpg',
       preset: {title: 'The morning she was born', time: '06:40'},
     },
     {
       title: 'Where you said yes',
       line: 'The place, the evening, the stars that were watching.',
-      image: '/images/your-sky/occasion-yes.webp',
+      image: '/images/your-sky/occasion-yes.w800.jpg',
       preset: {title: 'Where you said yes', time: '20:30'},
     },
   ],

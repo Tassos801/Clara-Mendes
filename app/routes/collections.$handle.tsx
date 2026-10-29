@@ -555,7 +555,13 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
             alt={page.hero.alt}
             fetchPriority="high"
             height="1200"
+            sizes={
+              page.hero.srcSet
+                ? '(max-width: 880px) calc(100vw - 64px), 670px'
+                : undefined
+            }
             src={page.hero.src}
+            srcSet={page.hero.srcSet}
             width="1600"
           />
         </figure>

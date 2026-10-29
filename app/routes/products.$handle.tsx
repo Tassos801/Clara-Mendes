@@ -1360,7 +1360,7 @@ function ProductPage() {
               aria-label={`Art prints for the ${selectedFrameSize} frame`}
             >
               <img
-                src="/images/product-art/quiet-form/quiet-form-01.webp"
+                src="/images/product-art/quiet-form/quiet-form-01.w460.jpg"
                 alt="Quiet Form I art print shown unframed"
                 loading="lazy"
               />

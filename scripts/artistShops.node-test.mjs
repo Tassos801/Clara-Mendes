@@ -735,7 +735,7 @@ test('the artists index row shows the works as printed, one per artwork', () => 
   assert.deepEqual(entry.works, [
     {
       height: 448,
-      src: '/images/product-art/floating-world/the-great-wave-off-kanagawa.sheet-small.webp',
+      src: '/images/product-art/floating-world/the-great-wave-off-kanagawa.sheet-small.w560.jpg',
       title: WAVE.shortTitle,
       width: 560,
     },

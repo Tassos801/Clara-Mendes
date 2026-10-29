@@ -294,35 +294,50 @@ const GALLERY_PAGE_CONTENT: Record<string, GalleryPageContent> = {
   },
 };
 
+type GalleryHero = {src: string; srcSet?: string; alt: string};
+
+/**
+ * A 4:5 room mockup as JPEG copies (scripts/write-storefront-images.mjs):
+ * the hero crops it to 4:3 at up to 670 CSS px on desktops and the full
+ * width on phones, so phones take the 1000 px copy, retina desktops 1600.
+ */
+function mockupHero(name: string): Omit<GalleryHero, 'alt'> {
+  const base = `/images/product-art-mockups/${name}-room-detail-20x24`;
+  return {
+    src: `${base}.w1600.jpg`,
+    srcSet: `${base}.w1000.jpg 1000w, ${base}.w1600.jpg 1600w`,
+  };
+}
+
 /**
  * Hero scene per page, drawn from the owned in-situ mockup library
  * (public/images) so every edit opens on a real room rather than a text
  * block. Kept beside the content registry so a new page cannot ship
  * without choosing its scene.
  */
-const GALLERY_HERO: Record<string, {src: string; alt: string}> = {
+const GALLERY_HERO: Record<string, GalleryHero> = {
   'terracotta-wall-art': {
-    src: '/images/product-art-mockups/sunlit-mosaic/sunlit-mosaic-01-room-detail-20x24.webp',
+    ...mockupHero('sunlit-mosaic/sunlit-mosaic-01'),
     alt: 'Sunlit Mosaic I terracotta art print hung in a warm neutral room',
   },
   'blue-abstract-wall-art': {
-    src: '/images/product-art-mockups/patina-blue/patina-blue-01-room-detail-20x24.webp',
+    ...mockupHero('patina-blue/patina-blue-01'),
     alt: 'Patina Blue I indigo abstract print on a pale wall in soft daylight',
   },
   'geometric-wall-art': {
-    src: '/images/product-art-mockups/neo-deco/neo-deco-01-room-detail-20x24.webp',
+    ...mockupHero('neo-deco/neo-deco-01'),
     alt: 'Neo Deco I graphic geometric print anchoring a modern room',
   },
   'art-deco-prints': {
-    src: '/images/product-art-mockups/neo-deco/neo-deco-02-room-detail-20x24.webp',
+    ...mockupHero('neo-deco/neo-deco-02'),
     alt: 'Neo Deco II black and gold Deco print above a console',
   },
   'dark-botanical-wall-art': {
-    src: '/images/product-art-mockups/midnight-garden/midnight-garden-01-room-detail-20x24.webp',
+    ...mockupHero('midnight-garden/midnight-garden-01'),
     alt: 'Midnight Garden I dark botanical print in a low-lit room',
   },
   'abstract-wall-art': {
-    src: '/images/product-art-mockups/quiet-form/quiet-form-01-room-detail-20x24.webp',
+    ...mockupHero('quiet-form/quiet-form-01'),
     alt: 'Quiet Form I warm abstract print hung in a calm interior',
   },
   'living-room-wall-art': {
@@ -330,7 +345,7 @@ const GALLERY_HERO: Record<string, {src: string; alt: string}> = {
     alt: 'Quiet Form print above a sofa in a warm, lived-in living room',
   },
   'bedroom-wall-art': {
-    src: '/images/product-art-mockups/patina-blue/patina-blue-03-room-detail-20x24.webp',
+    ...mockupHero('patina-blue/patina-blue-03'),
     alt: 'Patina Blue III indigo print bringing calm to a bedroom wall',
   },
   'wall-art-sets-of-3': {
@@ -338,21 +353,21 @@ const GALLERY_HERO: Record<string, {src: string; alt: string}> = {
     alt: 'Sunlit Mosaic print styled on a table with ceramics and warm light',
   },
   'warm-minimalist-wall-art': {
-    src: '/images/product-art-mockups/quiet-form/quiet-form-03-room-detail-20x24.webp',
+    ...mockupHero('quiet-form/quiet-form-03'),
     alt: 'Quiet Form III terracotta crescent print in a spare, warm room',
   },
   'terracotta-gallery-wall': {
-    src: '/images/product-art-mockups/sunlit-mosaic/sunlit-mosaic-02-room-detail-20x24.webp',
+    ...mockupHero('sunlit-mosaic/sunlit-mosaic-02'),
     alt: 'Sunlit Mosaic II terracotta collage print hung in a warm room',
   },
   'ink-and-cream-gallery-wall': {
-    src: '/images/product-art-mockups/midnight-garden/midnight-garden-02-room-detail-20x24.webp',
+    ...mockupHero('midnight-garden/midnight-garden-02'),
     alt: 'Midnight Garden II ink and cream botanical print in low light',
   },
 };
 
 export type GalleryPage = GalleryPageContent & {
-  hero: {src: string; alt: string};
+  hero: GalleryHero;
 };
 
 export function getGalleryPage(slug?: string | null): GalleryPage | null {

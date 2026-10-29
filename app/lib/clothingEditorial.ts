@@ -62,11 +62,15 @@ export function capsuleStory(handle?: string | null): CapsuleStory | null {
   return handle ? (CAPSULE_STORIES[handle] ?? null) : null;
 }
 
-/** A 720 px copy of the olive watercolour for the /clothing hero. */
+/**
+ * A 600 px copy of the olive watercolour for the /clothing hero (280 CSS
+ * px wide), as a palette PNG: it is transparent, and Oxygen turns a
+ * transparent WebP into a PNG five times its size.
+ */
 export const CLOTHING_PAGE_ACCENT = {
-  src: '/images/clothing/olive-mineral-720.webp',
-  width: 720,
-  height: 480,
+  src: '/images/clothing/olive-mineral-720.w600.png',
+  width: 600,
+  height: 400,
 };
 
 /**

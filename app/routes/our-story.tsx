@@ -425,7 +425,7 @@ html:has(.our-story-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/backdrops/our-story-light.jpg);
+  background-image: url(/images/backdrops/our-story-light.w2560.jpg);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -436,7 +436,7 @@ html:has(.our-story-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/backdrops/our-story-light.jpg);
+  background-image: url(/images/backdrops/our-story-light.w2560.jpg);
   background-size: cover;
   background-position: center;
   filter: blur(40px) brightness(0.7) sepia(0.4);
