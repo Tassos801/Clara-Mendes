@@ -8,8 +8,11 @@ Snapshot: 2026-10-22 (branch `claude/brand-line`). Design:
 *We don't know what we'll make next. We like art, and we promise it won't be
 boring.* It replaced "original art" as the umbrella claim, because the shop
 also sells museum reproductions, clothing, plant pots, phone cases and book
-nooks. The homepage hero shows it word for word (`BRAND.hero.headline`,
-`BRAND.hero.line`).
+nooks. Our Story and the founder's letter still say it in full.
+
+Since 2026-10-29 the homepage hero says it in five words: *Art, wherever it
+leads. Never the same twice.* (`BRAND.hero.headline`, `BRAND.hero.line`,
+pinned by `scripts/brand.node-test.mjs`).
 
 ## Where copy lives
 

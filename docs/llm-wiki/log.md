@@ -2167,3 +2167,11 @@ book-nook card images now ship as compressed JPEGs at the sizes they are
 shown. Product pages mount gallery slides past the next one, and the Shop
 Pay button, after the page has loaded. See
 [Hydrogen runtime](modules/hydrogen-runtime.md).
+
+## [2026-10-29] copy | A shorter homepage hero
+
+The owner asked for the landing-page wording to be very short and poetic.
+The hero now reads *Art, wherever it leads.* / *Never the same twice.*
+(`BRAND.hero` in `app/content/brand.ts`); the button stays "See what we
+made". Our Story and the founder's letter keep the full line. See
+[Brand voice](brand-voice.md).

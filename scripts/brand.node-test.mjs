@@ -25,8 +25,8 @@ const BANNED = [
 ];
 
 test('the hero carries the owner line, visible word for word', () => {
-  assert.equal(BRAND.hero.headline, "We don't know what we'll make next.");
-  assert.equal(BRAND.hero.line, "We like art, and we promise it won't be boring.");
+  assert.equal(BRAND.hero.headline, 'Art, wherever it leads.');
+  assert.equal(BRAND.hero.line, 'Never the same twice.');
   assert.equal(BRAND.hero.primaryCta.href, '/collections/all');
   // One action only: the Our story button and the product footnote left
   // the hero on 2026-10-23.

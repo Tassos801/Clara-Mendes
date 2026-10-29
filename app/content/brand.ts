@@ -11,8 +11,8 @@
 
 export const BRAND = {
   hero: {
-    headline: "We don't know what we'll make next.",
-    line: "We like art, and we promise it won't be boring.",
+    headline: 'Art, wherever it leads.',
+    line: 'Never the same twice.',
     primaryCta: {href: '/collections/all', label: 'See what we made'},
   },
   letter: {
