@@ -7,7 +7,11 @@ import sharp from 'sharp';
 import {hexToLinear} from '../app/components/cinematic/paintRenderer.ts';
 import {BRAND} from '../app/content/brand.ts';
 import {artistProducts} from '../app/lib/artistShops.ts';
-import {CLOTHING_PAGE_ACCENT} from '../app/lib/clothingEditorial.ts';
+import {
+  CLOTHING_PAGE_ACCENT,
+  capsuleStory,
+  lookAccent,
+} from '../app/lib/clothingEditorial.ts';
 import {
   CURATED_IMAGE_WIDTHS,
   CURATED_PRODUCTS,
@@ -254,9 +258,28 @@ test('pages show the plain copies, not the WebP or ICC-tagged originals', () => 
     /srcSet=\{page\.hero\.srcSet\}/,
   );
 
-  // Clothing hero accent: transparent, so a PNG copy.
+  // Clothing: the hero accent and the colourway ferns are transparent, so
+  // PNG copies; the Quiet Current band is a JPEG flattened onto white for
+  // its multiply blend.
   shown(CLOTHING_PAGE_ACCENT.src, 'clothing accent');
   assert.match(CLOTHING_PAGE_ACCENT.src, /\.png$/);
+  const quietCurrent = capsuleStory('quiet-current');
+  shown(quietCurrent.band.src, 'Quiet Current band');
+  shown(quietCurrent.looksImage.src, 'Quiet Current looks');
+  for (const colour of ['Moss / Mist', 'Clay / Oat']) {
+    shown(lookAccent(colour), `${colour} fern`);
+    assert.match(lookAccent(colour), /\.png$/);
+  }
+  assert.doesNotMatch(read('app/lib/clothingEditorial.ts'), /\.webp/);
+  // Phones hide the looks image, so they fetch a blank pixel instead.
+  assert.match(
+    read('app/routes/clothing.tsx'),
+    /<source media="\(max-width: 699px\)" srcSet=\{BLANK_PIXEL\} \/>/,
+  );
+  assert.match(
+    read('app/styles/clothing.css'),
+    /@media \(max-width: 699px\) \{[^@]*\.clothing-hero-media \{\s*display: none;/,
+  );
 
   // Artists index: every museum sheet.
   const sheets = artistProducts().filter((product) => /\.sheet-small\./.test(product.sheet.src));

@@ -90,12 +90,29 @@ export const STOREFRONT_IMAGE_SOURCES = [
     widths: [600],
     format: 'png',
   },
+  // Quiet Current: the looks composite (633 CSS px, hidden on phones) and
+  // the colourway ferns (64 CSS px tall, transparent).
+  {src: '/images/clothing/quiet-current-looks.webp', widths: [1280]},
+  ...['moss', 'clay'].map((tone) => ({
+    src: `/images/clothing/fern-${tone}.webp`,
+    widths: [96],
+    format: 'png',
+  })),
+  // The collection band (1240 CSS px) is transparent but drawn with
+  // mix-blend-mode: multiply, where white leaves the section showing
+  // exactly as transparency did, so it flattens onto white as a JPEG.
+  {
+    src: '/images/clothing/mineral-strata-moss.webp',
+    widths: [1600],
+    flatten: '#ffffff',
+  },
 ];
 
 /** One entry per file written: source, copy path, width, format. */
 export const STOREFRONT_IMAGE_COPIES = STOREFRONT_IMAGE_SOURCES.flatMap(
-  ({src, widths, format = 'jpg', quality = 78}) =>
+  ({src, widths, format = 'jpg', quality = 78, flatten}) =>
     widths.map((width) => ({
+      flatten,
       format,
       quality,
       src,
