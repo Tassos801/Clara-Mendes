@@ -2100,3 +2100,25 @@ phones (`.footer-columns` in `app/styles/app.css`). The pages themselves are
 unchanged and still link to each other through their related-page rows and
 appear in the collections sitemap. `scripts/footer.node-test.mjs` pins the
 three columns and guards the column from returning.
+
+## [2026-10-29] fulfillment | Merchant Center fetches its feeds from the site
+
+The Merchant Center product data came from manual file uploads that expire 30
+days after each upload (last one 2026-10-29: 361 items, then South Korea
+dropped from both data sources because Google needs KRW prices there). Two
+resource routes now serve the same data as tab-separated text for Merchant
+Center's daily scheduled fetch: `/feeds/google-merchant.txt` (studio prints,
+canvas, cards, postcards, plant pots, Your Sky and the museum prints, hanger,
+acrylic, metal, canvas, framed, cards and postcards) and
+`/feeds/google-merchant-printful.txt` (museum mugs, cushions and blankets,
+listed in the EU only). `app/lib/merchantFeed.ts` builds the rows (SKU ids and
+titles identical to the manual uploads, checked item by item against the
+2026-10-29 files), `app/lib/merchantFeedShipping.ts` holds the per-profile
+rates that single-line Storefront carts confirmed on 2026-10-29, and
+`app/lib/merchantFeed.server.ts` reads the catalogue in the Cyprus market and,
+for the Printful feed, quotes each Printful profile's EU rate from a one-item
+cart (its USD rates convert daily). Responses are cached 6 hours in the
+worker's Cache API; a failed build answers 503 rather than an empty file.
+Phone cases, activewear and book nooks stay out. Tests:
+`scripts/merchantFeed.node-test.mjs`. See
+[Fulfillment](modules/fulfillment.md).

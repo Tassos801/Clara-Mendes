@@ -74,13 +74,29 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
   `/policies/shipping-policy`, which renders the admin-hosted content.
 - Ops QC: `docs/first-order-runbook.md` step 5 validates tracking against the
   same windows.
+- Merchant Center feeds: `/feeds/google-merchant.txt` (every line with a
+  fixed EUR rate) and `/feeds/google-merchant-printful.txt` (Printful mugs,
+  cushions and blankets, EU only), built by `app/lib/merchantFeed.ts` and
+  fetched by Merchant Center daily. Each item carries its own shipping: the
+  rates per shipping profile live in `app/lib/merchantFeedShipping.ts`, the
+  handling and transit days come from the constants above. The Printful
+  profiles hold USD rates that Shopify converts daily, so that feed quotes
+  them from a one-item cart per line on each build. Responses are cached for
+  6 hours; a failed build answers 503 so Merchant Center keeps the last good
+  fetch.
 
 ## Changing A Window
 
 Update the constants, mirror the change in the shipping-policy draft and
-re-paste it into Shopify Admin, and re-check runbook step 5. The live policy
-page and the Merchant Center shipping settings live in Shopify admin and do
-not update from code.
+re-paste it into Shopify Admin, and re-check runbook step 5. The Merchant
+Center feeds pick up the new windows on their next fetch. The live policy page
+lives in Shopify admin and does not update from code.
+
+## Changing A Shipping Rate
+
+A rate or a zone changed in a Shopify shipping profile must change in
+`app/lib/merchantFeedShipping.ts` in the same PR, or the feeds advertise the
+old rate. Printful rates need no change.
 
 ## Corrections (2026-09-11)
 
