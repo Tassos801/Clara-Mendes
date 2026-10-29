@@ -85,7 +85,8 @@ Shopify's `hydrogenRoutes()` wrapper.
   WebGL and the chapter reveals use IntersectionObserver and the Web
   Animations API (`app/components/cinematic/`), so the whole cinematic
   layer is one ~9 kB gzip chunk, loaded once the page has loaded and the
-  browser is idle (a cold WebGL context costs the main thread ~200 ms)
+  visitor first scrolls, touches, moves the mouse or presses a key (a cold
+  WebGL context costs the main thread ~200 ms)
 
 ## Images from public/
 

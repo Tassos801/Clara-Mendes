@@ -2156,9 +2156,11 @@ ScrollTrigger and Lenis after hydration for one shader and a few fades; the
 painted background now draws with plain WebGL (same shader, same colours:
 `hexToLinear` repeats Three.js's sRGB-to-linear step) and the chapter
 palette and reveals use IntersectionObserver and the Web Animations API, so
-the cinematic chunk is ~9 kB gzip. It now boots after the page's `load`
-event, and the shader links asynchronously (`KHR_parallel_shader_compile`)
-where supported, because a cold WebGL start blocks the main thread. The live site also showed that Oxygen
+the cinematic chunk is ~9 kB gzip. Because a cold WebGL start blocks the
+main thread, it now boots after the page's `load` event at the visitor's
+first interaction (leaving content already on screen unanimated), and the
+shader links asynchronously (`KHR_parallel_shader_compile`) where
+supported. The live site also showed that Oxygen
 re-encodes WebP from `public/` into larger JPEGs (an 8 kB WebP went out as
 25 kB) and ignores `?width=`; the hero backdrop, rail circles and
 book-nook card images now ship as compressed JPEGs at the sizes they are

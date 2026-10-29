@@ -1,15 +1,24 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useLocation} from 'react-router';
 import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import type {CinematicHandle} from './cinematicExperience';
+
+const FIRST_INTERACTION_EVENTS = [
+  'pointermove',
+  'pointerdown',
+  'touchstart',
+  'wheel',
+  'keydown',
+  'scroll',
+] as const;
 
 /**
  * Boots the sitewide cinematic experience as a progressive enhancement:
  * a persistent painted WebGL background (cursor + scroll reactive, palette
  * lerped per chapter), Lenis smooth scrolling, and chapter reveals.
  * Everything loads via dynamic import once the page has loaded and the
- * browser is idle (creating a WebGL context costs the main thread ~200 ms
- * on a cold start, so it waits until the page is usable), and only when the
+ * visitor first interacts (creating a WebGL context costs the main thread
+ * ~200 ms on a cold start, so it stays out of page load), and only when the
  * visitor has not requested reduced motion and the device is not
  * memory/data constrained; without WebGL it stops before drawing — either
  * way the site renders on its CSS fallback backgrounds exactly as designed.
@@ -19,10 +28,27 @@ export function CinematicProvider({children}: {children: React.ReactNode}) {
   const scanRef = useRef<CinematicHandle['scan'] | null>(null);
   const location = useLocation();
   const pageLoaded = useAfterPageLoad();
+  const [interacted, setInteracted] = useState(false);
+
+  // The background is decoration: it waits for the visitor's first scroll,
+  // touch, mouse move or key press after the page has loaded, so a visitor
+  // who only reads the first screen never pays for a WebGL start.
+  useEffect(() => {
+    if (!pageLoaded || interacted) return;
+    const onFirstInteraction = () => setInteracted(true);
+    for (const type of FIRST_INTERACTION_EVENTS) {
+      window.addEventListener(type, onFirstInteraction, {passive: true});
+    }
+    return () => {
+      for (const type of FIRST_INTERACTION_EVENTS) {
+        window.removeEventListener(type, onFirstInteraction);
+      }
+    };
+  }, [pageLoaded, interacted]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !pageLoaded) return;
+    if (!canvas || !interacted) return;
 
     let destroyed = false;
     let cleanup: (() => void) | null = null;
@@ -36,7 +62,8 @@ export function CinematicProvider({children}: {children: React.ReactNode}) {
         }
         cleanup = handle.destroy;
         scanRef.current = handle.scan;
-        handle.scan();
+        // Booting mid-visit: what is already on screen stays as it is.
+        handle.scan({revealOnScreen: false});
       })
       .catch((error) => {
         console.warn('Cinematic experience disabled:', error);
@@ -47,7 +74,7 @@ export function CinematicProvider({children}: {children: React.ReactNode}) {
       scanRef.current = null;
       cleanup?.();
     };
-  }, [pageLoaded]);
+  }, [interacted]);
 
   // Rebuild chapter triggers after every client-side navigation, once the
   // new route's DOM has painted.

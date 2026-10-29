@@ -15,9 +15,18 @@ type OrchestratorOptions = {
   setTargetPalette: (palette: PaletteName) => void;
 };
 
+export type ScanOptions = {
+  /**
+   * False when booting partway through a visit: chapters the visitor has
+   * already reached keep their content as it is instead of hiding it and
+   * rising it in again. Navigations scan with the default (true).
+   */
+  revealOnScreen?: boolean;
+};
+
 export type ChapterOrchestrator = {
   /** Rebuild observers for the current DOM. Call after each navigation. */
-  scan: () => void;
+  scan: (options?: ScanOptions) => void;
   destroy: () => void;
 };
 
@@ -30,6 +39,8 @@ const PALETTE_BAND = '-45% 0px -45% 0px';
  * anchor jump, a fast fling) still counts as entered and is revealed.
  */
 const REVEAL_LINE = '100000px 0px -22% 0px';
+/** The same line as a fraction of the viewport height, for the boot check. */
+const REVEAL_LINE_FRACTION = 0.78;
 
 const REVEAL_KEYFRAMES: Keyframe[] = [
   {opacity: 0, visibility: 'hidden', translate: '0 28px'},
@@ -56,7 +67,7 @@ export function createChapterOrchestrator({
     animations = [];
   };
 
-  const scan = () => {
+  const scan = ({revealOnScreen = true}: ScanOptions = {}) => {
     revert();
     setTargetPalette(DEFAULT_PALETTE);
 
@@ -100,6 +111,13 @@ export function createChapterOrchestrator({
 
       const reveals = chapter.querySelectorAll<HTMLElement>('[data-reveal]');
       if (reveals.length === 0) continue;
+      if (
+        !revealOnScreen &&
+        chapter.getBoundingClientRect().top <
+          window.innerHeight * REVEAL_LINE_FRACTION
+      ) {
+        continue;
+      }
 
       // Paused at time zero, the backwards fill holds each child hidden and
       // lowered until its chapter enters; finished, nothing stays inline.

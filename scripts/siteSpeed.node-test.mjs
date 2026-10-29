@@ -55,11 +55,15 @@ test('the cinematic layer needs no Three.js or GSAP', () => {
   ]) {
     assert.doesNotMatch(read(file), /from 'three'|from 'gsap|import\('(three|gsap)/);
   }
-  // Still downloaded only after the device gates, as its own chunk.
-  assert.match(
-    read('app/components/cinematic/CinematicProvider.tsx'),
-    /await import\('\.\/cinematicExperience'\)/,
-  );
+  // Its own chunk, fetched only after the device gates, once the page has
+  // loaded and the visitor first interacts; a mid-visit boot leaves what
+  // is already on screen alone.
+  const provider = read('app/components/cinematic/CinematicProvider.tsx');
+  assert.match(provider, /await import\('\.\/cinematicExperience'\)/);
+  assert.match(provider, /const pageLoaded = useAfterPageLoad\(\);/);
+  assert.match(provider, /if \(!pageLoaded \|\| interacted\) return;/);
+  assert.match(provider, /if \(!canvas \|\| !interacted\) return;/);
+  assert.match(provider, /handle\.scan\(\{revealOnScreen: false\}\)/);
 });
 
 test('palettes convert to linear light exactly as Three.js did', () => {
