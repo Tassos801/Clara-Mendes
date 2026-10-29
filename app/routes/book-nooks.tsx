@@ -14,7 +14,7 @@ import {
   getBookNookTheme,
   releasedBookNooks,
 } from '~/lib/bookNooks';
-import {curatedImages} from '~/lib/curatedProducts';
+import {curatedImages, curatedImageSrcSet} from '~/lib/curatedProducts';
 import {formatMoney} from '~/lib/money';
 import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
@@ -143,7 +143,9 @@ export default function BookNooks() {
               alt={hero.image.altText ?? hero.name}
               loading="eager"
               height={hero.image.height ?? undefined}
+              sizes="(max-width: 860px) 340px, 420px"
               src={hero.image.url}
+              srcSet={curatedImageSrcSet(hero.image.url)}
               width={hero.image.width ?? undefined}
             />
             <span className="nook-hero__caption">{hero.name}</span>

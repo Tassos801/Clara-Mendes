@@ -19,6 +19,7 @@ import {getProductDescription} from '~/lib/productCopy';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {breadcrumbSchema, buildSeoMeta, getCanonicalUrl, productSchema} from '~/lib/seo';
+import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
@@ -168,6 +169,8 @@ export default function ToughCasePage() {
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [showStickyATC, setShowStickyATC] = useState(false);
+  // Shop Pay's script (~200 kB) waits for the page; its slot keeps its height.
+  const showShopPay = useAfterPageLoad();
   const atcRef = useRef<HTMLDivElement>(null);
   const price = variant?.price ?? product.priceRange.minVariantPrice;
   const canBuy = Boolean(variant?.availableForSale);
@@ -426,15 +429,17 @@ export default function ToughCasePage() {
             </div>
             {canBuy && variant && storeDomain ? (
               <div className="shop-pay-accelerator" aria-label="Express checkout with Shop Pay">
-                <ShopPayButton
-                  storeDomain={
-                    /^https?:\/\//i.test(storeDomain)
-                      ? storeDomain
-                      : `https://${storeDomain}`
-                  }
-                  variantIdsAndQuantities={[{id: variant.id, quantity}]}
-                  width="100%"
-                />
+                {showShopPay ? (
+                  <ShopPayButton
+                    storeDomain={
+                      /^https?:\/\//i.test(storeDomain)
+                        ? storeDomain
+                        : `https://${storeDomain}`
+                    }
+                    variantIdsAndQuantities={[{id: variant.id, quantity}]}
+                    width="100%"
+                  />
+                ) : null}
               </div>
             ) : null}
           </div>

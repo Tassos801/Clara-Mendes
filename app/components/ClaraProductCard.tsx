@@ -16,6 +16,7 @@ import {
   selectAccurateClassicFrameImage,
 } from '~/lib/classicFrame';
 import {curatedDisplayTitle, withCuratedImages} from '~/lib/curatedProducts';
+import {storefrontImageLoader} from '~/lib/imageLoader';
 import type {ClothingProductLike} from '~/lib/clothing';
 
 const CARD_IMAGE_SIZES =
@@ -163,6 +164,7 @@ export function ClaraProductCard({
                   data={baseImage}
                   alt={baseImage.altText || title}
                   aspectRatio="4/5"
+                  loader={storefrontImageLoader}
                   sizes={CARD_IMAGE_SIZES}
                   loading={loading}
                 />
@@ -173,6 +175,7 @@ export function ClaraProductCard({
                     alt=""
                     aria-hidden
                     aspectRatio="4/5"
+                    loader={storefrontImageLoader}
                     sizes={CARD_IMAGE_SIZES}
                     loading="lazy"
                   />

@@ -14,8 +14,11 @@ import {
   websiteSchema,
 } from '~/lib/seo';
 import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
-
-const HERO_INTERIOR_MOBILE = '/images/backdrops/hero-interior-mobile.webp';
+import {
+  HERO_BACKDROP,
+  HERO_BACKDROP_MEDIA,
+  heroBackdropPreloads,
+} from '~/lib/heroBackdrop';
 
 /** Set on <html> once the hero's glass pill has scrolled out of view. */
 const HOME_PAST_HERO_CLASS = 'home-past-hero';
@@ -28,25 +31,9 @@ export const meta: Route.MetaFunction = ({data}) => {
   });
 };
 
-// The hero background is a CSS image, which browsers discover only after
-// the stylesheet parses — preloading it moves LCP earlier. Phones get a
-// 1700 px WebP (about 90 KB) instead of the 2560 px JPEG (about 680 KB);
-// the media queries match the stylesheet so only one file is fetched.
-export const links: Route.LinksFunction = () => [
-  {
-    as: 'image',
-    href: '/images/backdrops/hero-interior.jpg',
-    media: '(min-width: 721px)',
-    rel: 'preload',
-  },
-  {
-    as: 'image',
-    href: HERO_INTERIOR_MOBILE,
-    media: '(max-width: 720px)',
-    rel: 'preload',
-    type: 'image/webp',
-  },
-];
+// The hero background is a CSS image; preload the one file (phone,
+// desktop or large) the stylesheet will paint (app/lib/heroBackdrop.ts).
+export const links: Route.LinksFunction = () => heroBackdropPreloads();
 
 // Every section is static (the rail is release-gated data; the sign-up is
 // the footer's), so the homepage makes no Storefront call; the loader only
@@ -377,7 +364,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/backdrops/hero-interior.jpg);
+  background-image: url(${HERO_BACKDROP.desktop});
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -388,7 +375,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/backdrops/hero-interior.jpg);
+  background-image: url(${HERO_BACKDROP.desktop});
   background-size: cover;
   background-position: center;
   filter: blur(30px) brightness(0.8) sepia(0.3);
@@ -398,10 +385,17 @@ html:has(.home-root) main {
   -webkit-mask-image: radial-gradient(circle 350px at var(--x, 50%) var(--y, 50%), transparent 0%, black 100%);
 }
 
-@media (max-width: 720px) {
+@media ${HERO_BACKDROP_MEDIA.large} {
   .hm-layer-sharp,
   .hm-layer-blur {
-    background-image: url(/images/backdrops/hero-interior-mobile.webp);
+    background-image: url(${HERO_BACKDROP.large});
+  }
+}
+
+@media ${HERO_BACKDROP_MEDIA.mobile} {
+  .hm-layer-sharp,
+  .hm-layer-blur {
+    background-image: url(${HERO_BACKDROP.mobile});
   }
 }
 

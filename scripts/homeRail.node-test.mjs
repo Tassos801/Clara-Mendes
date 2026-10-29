@@ -67,14 +67,12 @@ test('the homepage makes no Storefront call and the cut sections stay gone', () 
 });
 
 test('links() only preloads the hero images', () => {
-  const start = homepageSource.indexOf('export const links');
-  assert.notEqual(start, -1);
-  const links = homepageSource.slice(
-    start,
-    homepageSource.indexOf('];', start),
+  // The three backdrop preloads live in app/lib/heroBackdrop.ts
+  // (scripts/siteSpeed.node-test.mjs pins them).
+  assert.match(
+    homepageSource,
+    /export const links: Route\.LinksFunction = \(\) => heroBackdropPreloads\(\);/,
   );
-  assert.doesNotMatch(links, /rel: 'stylesheet'/);
-  assert.equal(links.match(/rel: 'preload'/g)?.length, 2);
 });
 
 test('the site header returns once the hero pill scrolls away', () => {

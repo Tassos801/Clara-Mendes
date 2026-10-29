@@ -5,6 +5,7 @@ import type {Route} from './+types/collections.$handle';
 import {
   buildCollectionAnalyticsProducts,
   CollectionView,
+  heroBackdropMeta,
   SHOP_PRODUCT_TYPES,
 } from './collections.all';
 import type {
@@ -125,12 +126,14 @@ export const meta: Route.MetaFunction = ({data}) => {
   }
 
   const collection = data as ShopifyCollectionLoaderData | undefined;
-  return buildSeoMeta({
+  const seo = buildSeoMeta({
     description:
       collection?.description ?? BRAND.shopAll.collectionFallback,
     title: collection?.heading ?? 'Collection',
     url: collection?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
+  // Collections without their own hero paint the shared interior.
+  return collection && !collection.hero ? [...seo, ...heroBackdropMeta()] : seo;
 };
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
