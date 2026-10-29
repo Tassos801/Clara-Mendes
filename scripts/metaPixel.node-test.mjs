@@ -140,6 +140,22 @@ test('root reads PUBLIC_META_PIXEL_ID and the component checks consent first', (
   assert.match(component, /visitorConsentCollected/);
 });
 
+test('after Accept the page counts once, whoever sends PageView first', () => {
+  // Hydrogen re-sends the current page's views once consent arrives, so the
+  // consent listener and the PAGE_VIEWED subscriber share one map.
+  const component = read('app/components/MetaPixelAnalytics.tsx');
+  assert.match(component, /^const lastViews = new Map<string, string>\(\);$/m);
+  assert.equal(component.match(/new Map</g).length, 1);
+  assert.match(
+    component,
+    /!isRepeatedView\(lastViews, 'PageView', window\.location\.href\)/,
+  );
+  assert.match(
+    component,
+    /isRepeatedView\(lastViews, 'PageView', payload\.url\)/,
+  );
+});
+
 test('frame-src keeps the default-src frame hosts and adds facebook.com', () => {
   for (const host of [
     "'self'",

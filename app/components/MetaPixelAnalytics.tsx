@@ -25,6 +25,11 @@ type SubscriptionWindow = Window & {__claraMetaPixelSubscribed?: boolean};
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
+// One per page load, like the subscription. After Accept, Hydrogen re-sends
+// the current page's views, and the consent listener may already have sent
+// its PageView: both check here so the page counts once.
+const lastViews = new Map<string, string>();
+
 /**
  * Meta pixel for catalog ads (app/lib/metaPixel.ts). Nothing loads until the
  * visitor allows marketing cookies; accepting later loads the pixel and
@@ -52,7 +57,11 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
         return;
       }
       const loadedBefore = setMetaConsent(true);
-      if (!loadedBefore && initializeMetaPixel(pixelId)) {
+      if (
+        !loadedBefore &&
+        initializeMetaPixel(pixelId) &&
+        !isRepeatedView(lastViews, 'PageView', window.location.href)
+      ) {
         trackMetaEvent('PageView');
       }
     };
@@ -78,7 +87,6 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
     // Loads the pixel on the first event the visitor's consent allows.
     const allowed = () =>
       metaPixelAllowed(privacyReader.current()) && initializeMetaPixel(pixelId);
-    const lastViews = new Map<string, string>();
 
     subscribe(AnalyticsEvent.PAGE_VIEWED, (payload) => {
       if (!allowed() || isRepeatedView(lastViews, 'PageView', payload.url))
