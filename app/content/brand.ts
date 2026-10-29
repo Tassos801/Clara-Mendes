@@ -10,10 +10,9 @@
  */
 
 export const BRAND = {
+  /** The homepage hero says this and nothing else (owner, 2026-10-29). */
   hero: {
-    headline: 'Art, wherever it leads.',
-    line: 'Never the same twice.',
-    primaryCta: {href: '/collections/all', label: 'See what we made'},
+    headline: 'Wherever it leads.',
   },
   letter: {
     eyebrow: 'The person behind the name',

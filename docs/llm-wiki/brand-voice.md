@@ -10,9 +10,10 @@ boring.* It replaced "original art" as the umbrella claim, because the shop
 also sells museum reproductions, clothing, plant pots, phone cases and book
 nooks. Our Story and the founder's letter still say it in full.
 
-Since 2026-10-29 the homepage hero says it in five words: *Art, wherever it
-leads. Never the same twice.* (`BRAND.hero.headline`, `BRAND.hero.line`,
-pinned by `scripts/brand.node-test.mjs`).
+Since 2026-10-29 the homepage hero says only *Wherever it leads.*
+(`BRAND.hero.headline`, pinned by `scripts/brand.node-test.mjs`): no second
+line, no button and no "Enter the shop" orb. The menu pill and the line
+rail just below lead into the shop.
 
 ## Where copy lives
 

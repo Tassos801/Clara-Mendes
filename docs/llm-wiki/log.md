@@ -2170,8 +2170,10 @@ Pay button, after the page has loaded. See
 
 ## [2026-10-29] copy | A shorter homepage hero
 
-The owner asked for the landing-page wording to be very short and poetic.
-The hero now reads *Art, wherever it leads.* / *Never the same twice.*
-(`BRAND.hero` in `app/content/brand.ts`); the button stays "See what we
-made". Our Story and the founder's letter keep the full line. See
+The owner asked for the landing-page wording to be very short and poetic,
+then for "Wherever it leads" and nothing else. The hero now shows only
+*Wherever it leads.* (`BRAND.hero` in `app/content/brand.ts`); its second
+line, the "See what we made" button and the "Enter the shop" orb are gone
+(`app/routes/_index.tsx`, tests in `scripts/mobileLanding.node-test.mjs`).
+Our Story and the founder's letter keep the full line. See
 [Brand voice](brand-voice.md).
