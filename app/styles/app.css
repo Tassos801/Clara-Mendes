@@ -839,6 +839,7 @@ button {
 }
 
 .product-gallery-slide img,
+.product-gallery-pending,
 .product-gallery--carousel > .product-image-placeholder {
   aspect-ratio: 4 / 5;
   background: var(--color-soft);

@@ -50,6 +50,11 @@ import {buildSeoMeta, collectionSchema, getCanonicalUrl} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import type {CollectionHero} from '~/lib/collectionHeroes';
 import {
+  HERO_BACKDROP,
+  HERO_BACKDROP_MEDIA,
+  heroBackdropPreloads,
+} from '~/lib/heroBackdrop';
+import {
   ListingCursorError,
   featuredMuseumClause,
   museumSearchQuery,
@@ -147,7 +152,7 @@ export const meta: Route.MetaFunction = ({data}) => {
   const heading = data?.heading;
   const isCapsule = Boolean(data?.activeCapsule) && heading;
 
-  return buildSeoMeta({
+  const seo = buildSeoMeta({
     description:
       data?.description ?? BRAND.shopAll.description,
     image: `${STOREFRONT_ORIGIN}${data?.shareImage || '/images/product-art/quiet-form/quiet-form-01.webp'}`,
@@ -157,7 +162,14 @@ export const meta: Route.MetaFunction = ({data}) => {
     // URL because they have no separate landing page.
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
+  // The shop hero paints the shared interior; preload the file it uses.
+  return data ? [...seo, ...heroBackdropMeta()] : seo;
 };
+
+/** heroBackdropPreloads() as meta descriptors, for routes whose hero depends on loader data. */
+export function heroBackdropMeta() {
+  return heroBackdropPreloads().map((link) => ({tagName: 'link', ...link}));
+}
 
 export async function loader({context, request}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
@@ -1095,7 +1107,7 @@ const collectionCss = `
   background-color: var(--cv-bg-base);
   background-image:
     linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-    url(/images/backdrops/hero-interior.jpg);
+    url(${HERO_BACKDROP.desktop});
   background-size: cover;
   background-position: center 40%;
   color: #fff;
@@ -1674,6 +1686,14 @@ const collectionCss = `
   .cv-hero { min-height: 50vh; }
 }
 
+@media ${HERO_BACKDROP_MEDIA.large} {
+  .cv-hero {
+    background-image:
+      linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
+      url(${HERO_BACKDROP.large});
+  }
+}
+
 /* Thumb-height shortcut back to the toolbar, shown on phones only. */
 .cv-jump {
   display: none;
@@ -1685,7 +1705,7 @@ const collectionCss = `
   .cv-hero {
     background-image:
       linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-      url(/images/backdrops/hero-interior-mobile.webp);
+      url(${HERO_BACKDROP.mobile});
     min-height: auto;
     padding: calc(var(--header-height) + 28px) 18px 26px;
   }

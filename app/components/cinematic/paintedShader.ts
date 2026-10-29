@@ -23,11 +23,13 @@ export function isPaletteName(value: unknown): value is PaletteName {
   return typeof value === 'string' && value in PALETTES;
 }
 
+/** One full-screen quad; vUv runs 0..1 from the bottom-left corner. */
 export const PAINT_VERTEX_SHADER = /* glsl */ `
+  attribute vec2 aPosition;
   varying vec2 vUv;
   void main() {
-    vUv = uv;
-    gl_Position = vec4(position, 1.0);
+    vUv = aPosition * 0.5 + 0.5;
+    gl_Position = vec4(aPosition, 0.0, 1.0);
   }
 `;
 

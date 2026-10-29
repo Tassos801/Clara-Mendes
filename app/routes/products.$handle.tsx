@@ -21,6 +21,8 @@ import {
   ShopPayButton,
 } from '@shopify/hydrogen';
 import type {Route} from './+types/products.$handle';
+import {storefrontImageLoader} from '~/lib/imageLoader';
+import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {
   focusPhoneModelPicker,
@@ -942,6 +944,9 @@ function ProductPage() {
   // (seo.ts), and Googlebot crawls as a US buyer, who cannot be sent cards.
   const schemaVariants = defaultMarketVariants(product.variants.nodes);
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
+  // Shop Pay's button pulls in ~200 kB of Shopify script; its slot keeps
+  // its height, so it can arrive after the page has loaded.
+  const showShopPay = useAfterPageLoad();
   const shopUrl = new URL('/collections/all', seoUrl).toString();
   const galleryLeadImage = isArtPrint
     ? (selectedVariant?.image ?? product.featuredImage ?? primaryImage)
@@ -1516,11 +1521,13 @@ function ProductPage() {
                 className="shop-pay-accelerator"
                 aria-label="Express checkout with Shop Pay"
               >
-                <ShopPayButton
-                  storeDomain={shopPayStoreUrl}
-                  variantIdsAndQuantities={[{id: selectedVariant.id, quantity}]}
-                  width="100%"
-                />
+                {showShopPay ? (
+                  <ShopPayButton
+                    storeDomain={shopPayStoreUrl}
+                    variantIdsAndQuantities={[{id: selectedVariant.id, quantity}]}
+                    width="100%"
+                  />
+                ) : null}
               </div>
             ) : null}
           </div>
@@ -2064,6 +2071,12 @@ function ProductGalleryCarousel({
   productTitle: string;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  // Slides past the next one mount once the page has loaded, or as soon as
+  // the shopper moves the gallery, so a phone isn't fetching five more
+  // photographs while the lead image and the page's scripts are loading.
+  const pageLoaded = useAfterPageLoad();
+  const [galleryMoved, setGalleryMoved] = useState(false);
+  const showAllSlides = pageLoaded || galleryMoved;
   const [zoomIndex, setZoomIndex] = useState<number | null>(null);
   const zoomOverlayRef = useRef<HTMLDivElement>(null);
   const galleryTrackRef = useRef<HTMLDivElement>(null);
@@ -2139,6 +2152,7 @@ function ProductGalleryCarousel({
   const handleGalleryScroll = useCallback(() => {
     const track = galleryTrackRef.current;
     if (!track) return;
+    setGalleryMoved(true);
 
     if (galleryScrollFrameRef.current !== null) {
       window.cancelAnimationFrame(galleryScrollFrameRef.current);
@@ -2287,13 +2301,18 @@ function ProductGalleryCarousel({
                     setZoomIndex(index);
                   }}
                 >
-                  <Image
-                    aspectRatio="4/5"
-                    data={image}
-                    alt={image.altText || `${productTitle} view ${index + 1}`}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    sizes="(min-width: 981px) min(51vw, 760px), calc(100vw - 32px)"
-                  />
+                  {showAllSlides || index <= activeIndex + 1 ? (
+                    <Image
+                      aspectRatio="4/5"
+                      data={image}
+                      alt={image.altText || `${productTitle} view ${index + 1}`}
+                      loader={storefrontImageLoader}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      sizes="(min-width: 981px) min(51vw, 760px), calc(100vw - 32px)"
+                    />
+                  ) : (
+                    <span className="product-gallery-pending" aria-hidden />
+                  )}
                   <span className="product-zoom-hint">View detail</span>
                 </button>
               </div>

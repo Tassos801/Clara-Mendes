@@ -2147,3 +2147,21 @@ pixel's consent listener and once when Hydrogen re-sent the page's views
 is true). `app/components/MetaPixelAnalytics.tsx` now keeps one module-level
 repeat-view map for both paths. See
 [Analytics and attribution](modules/analytics-and-attribution.md).
+
+## [2026-10-29] performance | Lighter pages: no Three.js/GSAP, right-sized images
+
+Mobile Lighthouse on the live site scored 44 (home), 54 (shop) and 72 (a
+print page). Every page downloaded ~235 kB gzip of Three.js, GSAP,
+ScrollTrigger and Lenis after hydration for one shader and a few fades; the
+painted background now draws with plain WebGL (same shader, same colours:
+`hexToLinear` repeats Three.js's sRGB-to-linear step) and the chapter
+palette and reveals use IntersectionObserver and the Web Animations API, so
+the cinematic chunk is ~9 kB gzip. It now boots after the page's `load`
+event, and the shader links asynchronously (`KHR_parallel_shader_compile`)
+where supported, because a cold WebGL start blocks the main thread. The live site also showed that Oxygen
+re-encodes WebP from `public/` into larger JPEGs (an 8 kB WebP went out as
+25 kB) and ignores `?width=`; the hero backdrop, rail circles and
+book-nook card images now ship as compressed JPEGs at the sizes they are
+shown. Product pages mount gallery slides past the next one, and the Shop
+Pay button, after the page has loaded. See
+[Hydrogen runtime](modules/hydrogen-runtime.md).

@@ -81,7 +81,27 @@ Shopify's `hydrogenRoutes()` wrapper.
 - React `18.3.1`
 - React Router `7.12.0`
 - Vite `6.4.2`
-- Three.js, GSAP, and Lenis for interactive/visual storefront behavior
+- Lenis for desktop smooth scrolling; the painted background is plain
+  WebGL and the chapter reveals use IntersectionObserver and the Web
+  Animations API (`app/components/cinematic/`), so the whole cinematic
+  layer is one ~9 kB gzip chunk, loaded once the page has loaded and the
+  browser is idle (a cold WebGL context costs the main thread ~200 ms)
+
+## Images from public/
+
+Oxygen serves `public/` files through Shopify's image service at full size:
+plain sRGB JPEGs pass through as they are, but WebP and ICC-tagged JPEGs are
+re-encoded into larger JPEGs, and `?width=` parameters are ignored. So
+images we size by hand ship as compressed JPEGs at the size they are shown:
+the hero backdrop in three files picked by media query
+(`app/lib/heroBackdrop.ts`, preloaded with the same queries), the line-rail
+circles at 360 px (`public/images/line-rail/`), and every curated
+(book nook) image with `.w360.jpg` / `.w720.jpg` copies that
+`storefrontImageLoader` (`app/lib/imageLoader.ts`) picks for Hydrogen's
+`<Image>`. `npm run curated:images -- --copies` rewrites the copies;
+`scripts/siteSpeed.node-test.mjs` checks them. Shopify CDN images
+(`cdn.shopify.com/s/files`) do resize and serve WebP, so product photos
+stay there.
 
 ## Maintenance Notes
 

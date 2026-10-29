@@ -1,7 +1,14 @@
 import {Link} from 'react-router';
-import {curatedImages, type CuratedProduct} from '~/lib/curatedProducts';
+import {
+  curatedImages,
+  curatedImageSrcSet,
+  type CuratedProduct,
+} from '~/lib/curatedProducts';
 import {bookNookFactLine, buildLevel, getBookNookTheme} from '~/lib/bookNooks';
 import {formatMoney, type MoneyAmount} from '~/lib/money';
+
+/** Two columns on phones, ~300 px cards from 521 px up (book-nooks.css). */
+const NOOK_CARD_SIZES = '(max-width: 520px) 50vw, 320px';
 
 export type BookNookStorefrontProduct = {
   handle: string;
@@ -48,7 +55,9 @@ export function BookNookCard({
               decoding="async"
               height={studio.height ?? undefined}
               loading={loading}
+              sizes={NOOK_CARD_SIZES}
               src={studio.url}
+              srcSet={curatedImageSrcSet(studio.url)}
               width={studio.width ?? undefined}
             />
           ) : null}
@@ -60,7 +69,9 @@ export function BookNookCard({
               decoding="async"
               height={lit.height ?? undefined}
               loading="lazy"
+              sizes={NOOK_CARD_SIZES}
               src={lit.url}
+              srcSet={curatedImageSrcSet(lit.url)}
               width={lit.width ?? undefined}
             />
           ) : null}

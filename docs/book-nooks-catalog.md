@@ -43,6 +43,9 @@ colour. `npm run curated:images` (`scripts/prepare-curated-product-images.mjs`)
 turns them into one consistent set per kit:
 
 - 1000 × 1250 (4:5) WebP in `public/images/curated/<handle>/`
+- 360 px and 720 px JPEG copies beside each (`01-studio.w360.jpg`) that
+  cards, thumbnails and the cart use, since Oxygen serves `public/` images
+  at full size (`npm run curated:images -- --copies` rewrites only these)
 - supplier text, dimension lines and inset panels cropped or masked away
 - one shared grade for the original crop layouts: orange cast pulled toward the brand neutrals, saturation
   0.86, slightly lifted shadows, soft vignette on photographs, fixed-seed grain
@@ -136,8 +139,8 @@ changed by this refinement. Google Merchant feed refresh timing was not tested.
    1000 × 1250 and a transparent cut-out for every released nook.
 7. Check `/book-nooks` and the product page at desktop and phone widths.
 
-`npm run curated:images -- --check` confirms every declared file exists at
-the right size.
+`npm run curated:images -- --check` confirms every declared file and its
+two smaller copies exist at the right size.
 
 ## Shopify follow-ups
 
