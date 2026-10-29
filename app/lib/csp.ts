@@ -17,6 +17,8 @@ export const CSP_IMG_SRC = [
   'https://www.google.com',
   'https://www.googleadservices.com',
   'https://googleads.g.doubleclick.net',
+  // Meta pixel image beacon (app/lib/metaPixel.client.ts).
+  'https://www.facebook.com',
 ];
 
 /**
@@ -34,6 +36,8 @@ export const CSP_SCRIPT_SRC = [
   "'self'",
   'https://cdn.shopify.com',
   'https://www.googletagmanager.com',
+  // Meta pixel base code and its per-pixel config script.
+  'https://connect.facebook.net',
 ];
 
 export const CSP_GOOGLE_CONNECT_SRC = [
@@ -43,4 +47,22 @@ export const CSP_GOOGLE_CONNECT_SRC = [
   'https://www.google.com',
   'https://www.googleadservices.com',
   'https://googleads.g.doubleclick.net',
+];
+
+// Meta pixel events (fbevents.js sends to facebook.com/tr).
+export const CSP_META_CONNECT_SRC = [
+  'https://www.facebook.com',
+  'https://connect.facebook.net',
+];
+
+/**
+ * frame-src. Without it frames fall back to Hydrogen's default-src
+ * ('self', cdn.shopify.com, shopify.com), so those stay listed; Meta's
+ * fbevents.js adds a facebook.com frame.
+ */
+export const CSP_FRAME_SRC = [
+  "'self'",
+  'https://cdn.shopify.com',
+  'https://shopify.com',
+  'https://www.facebook.com',
 ];

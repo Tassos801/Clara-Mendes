@@ -16,6 +16,8 @@ declare global {
    */
   interface Env {
     PUBLIC_GTM_CONTAINER_ID?: string;
+    /** Meta pixel (dataset) id; unset = no Meta pixel (app/lib/metaPixel.ts). */
+    PUBLIC_META_PIXEL_ID?: string;
     SHOPIFY_ADMIN_ACCESS_TOKEN?: string;
     /**
      * Dev Dashboard app credentials. When set, the server mints short-lived

@@ -2122,3 +2122,19 @@ worker's Cache API; a failed build answers 503 rather than an empty file.
 Phone cases, activewear and book nooks stay out. Tests:
 `scripts/merchantFeed.node-test.mjs`. See
 [Fulfillment](modules/fulfillment.md).
+
+## [2026-10-29] analytics | Meta pixel behind marketing consent, and the consent API fix
+
+Added the Meta pixel for catalog ads (`app/components/MetaPixelAnalytics.tsx`,
+`app/lib/metaPixel{,.client}.ts`), on only when `PUBLIC_META_PIXEL_ID` is set.
+It loads after the visitor allows marketing cookies and sends PageView,
+ViewContent and AddToCart with SKU `content_ids`, matching the Meta catalog
+"Clara Mendes" fed from `/feeds/google-merchant*.txt`. The GTM component's
+payload helpers moved to `app/lib/analyticsItems.ts` for both integrations.
+CSP gains Meta's hosts and an explicit frame-src. While testing, the live site
+showed that Hydrogen never received the full Customer Privacy API for
+returning visitors (the banner script only leaves a stub), so `canTrack()` was
+false and no analytics ran for them; `app/components/CustomerPrivacyApiFallback.tsx`
+loads Shopify's standalone API when it is missing. Tests:
+`scripts/metaPixel.node-test.mjs`. See
+[Analytics and attribution](modules/analytics-and-attribution.md).
