@@ -635,6 +635,63 @@ export type AvailableMarketCountriesQuery = {
   };
 };
 
+export type MerchantFeedProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  cursor?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+}>;
+
+export type MerchantFeedProductsQuery = {
+  products: {
+    pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage' | 'endCursor'>;
+    nodes: Array<
+      Pick<
+        StorefrontAPI.Product,
+        'handle' | 'title' | 'productType' | 'tags' | 'description'
+      > & {
+        featuredImage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
+        variants: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.ProductVariant,
+              'id' | 'sku' | 'availableForSale'
+            > & {
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+              image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
+export type MerchantFeedQuoteMutationVariables = StorefrontAPI.Exact<{
+  input: StorefrontAPI.CartInput;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type MerchantFeedQuoteMutation = {
+  cartCreate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<{
+      deliveryGroups: {
+        nodes: Array<{
+          deliveryOptions: Array<{
+            estimatedCost: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          }>;
+        }>;
+      };
+    }>;
+  }>;
+};
+
 export type ClaraProductCardFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
@@ -3249,6 +3306,10 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
+  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        description\n        featuredImage {\n          url\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: MerchantFeedProductsQuery;
+    variables: MerchantFeedProductsQueryVariables;
+  };
   '#graphql\n  query SitemapCollectionEligibility($handle: String!, $after: String) {\n    collection(handle: $handle) {\n      handle\n      products(first: 100, after: $after) {\n        nodes {\n          handle productType tags vendor\n          storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }\n          fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
     return: SitemapCollectionEligibilityQuery;
     variables: SitemapCollectionEligibilityQueryVariables;
@@ -3351,7 +3412,12 @@ interface GeneratedQueryTypes {
   };
 }
 
-interface GeneratedMutationTypes {}
+interface GeneratedMutationTypes {
+  '#graphql\n  mutation MerchantFeedQuote(\n    $input: CartInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        deliveryGroups(first: 5) {\n          nodes {\n            deliveryOptions {\n              estimatedCost {\n                amount\n                currencyCode\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: MerchantFeedQuoteMutation;
+    variables: MerchantFeedQuoteMutationVariables;
+  };
+}
 
 declare module '@shopify/hydrogen' {
   interface StorefrontQueries extends GeneratedQueryTypes {}
