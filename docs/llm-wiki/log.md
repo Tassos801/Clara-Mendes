@@ -2195,3 +2195,12 @@ Pastel Forms and the clothing accent. Curated (book nook) images gained a
 original. WebP sources stay for scripts, feeds and social posts.
 Before/after screenshots at 1440 and 390 px matched. See
 [Hydrogen runtime](modules/hydrogen-runtime.md).
+
+## [2026-10-29] homepage | "Enter the shop" orb back
+
+The owner asked for the "Enter the shop" orb back on the landing page as it
+was before the "Wherever it leads." hero (#163): the pulsing orb and its
+label at the bottom of the hero, click or press-and-hold to go to
+`/collections/all`. Phones show it too now (they hid it while it repeated
+the hero button, which is gone): a third row of the phone hero grid, in flow
+below the words. See [Brand voice](brand-voice.md).
