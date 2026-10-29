@@ -114,6 +114,9 @@
 .clothing-hero-media {
   margin: 0;
 }
+.clothing-hero-media picture {
+  display: block;
+}
 .clothing-hero-media img {
   aspect-ratio: 4 / 3;
   background: var(--color-moss);

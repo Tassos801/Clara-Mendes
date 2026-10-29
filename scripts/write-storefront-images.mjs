@@ -6,7 +6,8 @@
  * sRGB JPEGs and PNGs through as they are but re-encodes WebP and
  * ICC-tagged JPEGs into larger full-size files, so each copy is a
  * progressive mozjpeg JPEG with no ICC profile (sharp converts to sRGB and
- * drops metadata), or a palette PNG where the image is transparent.
+ * drops metadata), or a palette PNG where the image is transparent
+ * (`flatten` puts a transparent image on a solid colour instead).
  *
  * Usage:
  *   npm run storefront:images              write every copy
@@ -29,6 +30,7 @@ async function write(copy) {
   if (width < copy.width)
     throw new Error(`${copy.src} is ${width} px, narrower than ${copy.width}`);
   const resized = source.resize({width: copy.width, kernel: 'lanczos3'});
+  if (copy.flatten) resized.flatten({background: copy.flatten});
   await (
     copy.format === 'png'
       ? resized.png({compressionLevel: 9, effort: 10, palette: true})

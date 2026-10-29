@@ -42,16 +42,18 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
     intro:
       'A digital, watercolour-style design inspired by the layered ridges in Clara Mendes’ print Where Mist Rests. Each piece is mostly solid colour, with soft washes at the sides or along the outer leg. The leggings and biker shorts add a fern.',
     // Recoloured from the same wash layers printed on the garments
-    // (assets/clothing/README.md).
+    // (assets/clothing/README.md). Plain JPEG copies, like
+    // CLOTHING_PAGE_ACCENT; the band is flattened onto white, which its
+    // multiply blend shows the same as transparency.
     band: {
-      src: '/images/clothing/mineral-strata-moss.webp',
+      src: '/images/clothing/mineral-strata-moss.w1600.jpg',
       width: 1600,
       height: 533,
     },
     looksImage: {
-      src: '/images/clothing/quiet-current-looks.webp',
-      width: 1360,
-      height: 1000,
+      src: '/images/clothing/quiet-current-looks.w1280.jpg',
+      width: 1280,
+      height: 941,
       alt: 'Quiet Current sports bra and leggings in Moss / Mist, and tank top and leggings in Clay / Oat',
       caption: 'Quiet Current in Moss / Mist and Clay / Oat. Digital mockups.',
     },
@@ -75,12 +77,15 @@ export const CLOTHING_PAGE_ACCENT = {
 
 /**
  * Fern sprigs from the garment print, matched on the colourway's first word,
- * shown beside each colourway in the chooser.
+ * shown beside each colourway in the chooser (64 CSS px tall). 96 px palette
+ * PNGs, since they are transparent.
  */
 const COLOURWAY_ACCENTS: Record<string, string> = {
-  moss: '/images/clothing/fern-moss.webp',
-  clay: '/images/clothing/fern-clay.webp',
+  moss: '/images/clothing/fern-moss.w96.png',
+  clay: '/images/clothing/fern-clay.w96.png',
 };
+
+export const COLOURWAY_ACCENT_SIZE = {width: 96, height: 221};
 
 export function lookAccent(colour: string): string | null {
   const key = colour.trim().split(/[\s/]+/)[0]?.toLowerCase() ?? '';
