@@ -47,7 +47,7 @@ test('phone landing pages keep the hero in flow so the words never meet the pill
   assert.doesNotMatch(homepageSource, /hm-coords/);
 });
 
-test('short mobile landing pages compact the hero without hiding its actions', () => {
+test('short mobile landing pages compact the hero', () => {
   const css = getShortMobileCss();
 
   // The grid itself comes from the phone rules; this query only tightens it.
@@ -55,16 +55,20 @@ test('short mobile landing pages compact the hero without hiding its actions', (
   assert.match(css, /\.hm-ui-layer\s*\{[^}]*row-gap:\s*8px;/s);
   // The one-row phone header from the 768px rules is not overridden here.
   assert.doesNotMatch(css, /\.hm-header-top\s*\{/);
-  assert.match(css, /\.hm-hero-actions\s*\{[^}]*margin-top:\s*14px;/s);
-  assert.match(css, /\.hm-hero-action\s*\{[^}]*min-height:\s*38px;/s);
+});
+
+test('the hero holds the headline and nothing else', () => {
+  // Since 2026-10-29: no second line, no button, no "Enter the shop" orb.
+  for (const gone of ['hm-prompt-sub', 'hm-hero-action', 'hm-interaction-anchor', 'hm-orb-btn', 'hm-label-enter']) {
+    assert.doesNotMatch(homepageSource, new RegExp(gone), gone);
+  }
+  assert.match(homepageSource, /<h1 id="home-title" className="hm-prompt-main">/);
 });
 
 test('phones get one calm header row that opens the site menu', () => {
   const css = getPhoneCss();
   assert.match(css, /\.hm-nav-group\s*\{[^}]*display:\s*none;/s);
   assert.match(css, /\.hm-menu-button,\s*\.hm-header-icons\s*\{[^}]*display:\s*inline-flex;/s);
-  // "Enter the shop" repeats "See what we made" on phones.
-  assert.match(css, /\.hm-interaction-anchor\s*\{[^}]*display:\s*none;/s);
   assert.match(homepageSource, /onClick=\{\(\) => open\('mobile'\)\}/);
   assert.match(homepageSource, /aria-label="Open menu"/);
 });

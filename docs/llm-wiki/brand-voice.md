@@ -8,8 +8,12 @@ Snapshot: 2026-10-22 (branch `claude/brand-line`). Design:
 *We don't know what we'll make next. We like art, and we promise it won't be
 boring.* It replaced "original art" as the umbrella claim, because the shop
 also sells museum reproductions, clothing, plant pots, phone cases and book
-nooks. The homepage hero shows it word for word (`BRAND.hero.headline`,
-`BRAND.hero.line`).
+nooks. Our Story and the founder's letter still say it in full.
+
+Since 2026-10-29 the homepage hero says only *Wherever it leads.*
+(`BRAND.hero.headline`, pinned by `scripts/brand.node-test.mjs`): no second
+line, no button and no "Enter the shop" orb. The menu pill and the line
+rail just below lead into the shop.
 
 ## Where copy lives
 

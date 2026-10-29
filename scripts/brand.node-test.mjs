@@ -25,12 +25,9 @@ const BANNED = [
 ];
 
 test('the hero carries the owner line, visible word for word', () => {
-  assert.equal(BRAND.hero.headline, "We don't know what we'll make next.");
-  assert.equal(BRAND.hero.line, "We like art, and we promise it won't be boring.");
-  assert.equal(BRAND.hero.primaryCta.href, '/collections/all');
-  // One action only: the Our story button and the product footnote left
-  // the hero on 2026-10-23.
-  assert.deepEqual(Object.keys(BRAND.hero).sort(), ['headline', 'line', 'primaryCta']);
+  assert.equal(BRAND.hero.headline, 'Wherever it leads.');
+  // Nothing else since 2026-10-29: no second line, no button, no orb.
+  assert.deepEqual(Object.keys(BRAND.hero), ['headline']);
 });
 
 test('no brand sentence falls back on "original" as the umbrella word', () => {
