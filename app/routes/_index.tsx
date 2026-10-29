@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {Link, useLoaderData} from 'react-router';
+import {Link, useLoaderData, useNavigate} from 'react-router';
 import type {Route} from './+types/_index';
 import {LineRail} from '~/components/LineRail';
 import {PRIMARY_LINKS} from '~/lib/navLinks';
@@ -45,10 +45,13 @@ export function loader({request}: Route.LoaderArgs) {
 export default function Homepage() {
   const {seoUrl} = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
+  const navigate = useNavigate();
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const outlineRef = useRef<HTMLDivElement | null>(null);
+  const orbRef = useRef<HTMLButtonElement | null>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
 
   useEffect(() => {
     // The custom cursor follows a mouse. Touch screens and reduced motion
@@ -132,6 +135,59 @@ export default function Homepage() {
     };
   }, []);
 
+  useEffect(() => {
+    const orb = orbRef.current;
+    const outline = outlineRef.current;
+    const title = titleRef.current;
+    if (!orb || !outline || !title) return;
+
+    let pressTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const down = () => {
+      outline.style.width = '20px';
+      outline.style.height = '20px';
+      outline.style.backgroundColor = 'rgba(255,255,255,0.1)';
+      outline.style.borderColor = 'rgba(255,255,255,0.6)';
+      title.style.transition = 'opacity 1s ease';
+      title.style.opacity = '0';
+      pressTimer = setTimeout(() => {
+        void navigate('/collections/all');
+      }, 950);
+    };
+
+    const up = () => {
+      if (pressTimer) clearTimeout(pressTimer);
+      outline.style.width = '32px';
+      outline.style.height = '32px';
+      outline.style.backgroundColor = 'transparent';
+      outline.style.borderColor = 'rgba(255,255,255,0.3)';
+      title.style.opacity = '1';
+    };
+
+    const enterOrb = () => {
+      outline.style.width = '48px';
+      outline.style.height = '48px';
+      outline.style.borderColor = 'rgba(255,255,255,0.5)';
+    };
+
+    orb.addEventListener('mousedown', down);
+    orb.addEventListener('mouseup', up);
+    orb.addEventListener('mouseenter', enterOrb);
+    orb.addEventListener('mouseleave', up);
+    orb.addEventListener('touchstart', down);
+    orb.addEventListener('touchend', up);
+
+    return () => {
+      orb.removeEventListener('mousedown', down);
+      orb.removeEventListener('mouseup', up);
+      orb.removeEventListener('mouseenter', enterOrb);
+      orb.removeEventListener('mouseleave', up);
+      orb.removeEventListener('touchstart', down);
+      orb.removeEventListener('touchend', up);
+      if (pressTimer) clearTimeout(pressTimer);
+    };
+  }, [navigate]);
+
   return (
     <div className="commerce-home">
       <style suppressHydrationWarning>{homeCss}</style>
@@ -197,9 +253,22 @@ export default function Homepage() {
           </header>
 
           <div className="hm-hero-text">
-            <h1 id="home-title" className="hm-prompt-main">
+            <h1 ref={titleRef} id="home-title" className="hm-prompt-main">
               {BRAND.hero.headline}
             </h1>
+          </div>
+
+          <div className="hm-interaction-anchor">
+            <button
+              ref={orbRef}
+              type="button"
+              className="hm-orb-btn"
+              aria-label="Enter the shop"
+              onClick={() => {
+                void navigate('/collections/all');
+              }}
+            />
+            <span className="hm-label-enter">Enter the shop</span>
           </div>
         </div>
 
@@ -462,6 +531,75 @@ html:has(.home-root) main {
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 0.5s;
 }
 
+.hm-interaction-anchor {
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  pointer-events: auto;
+}
+
+.hm-orb-btn {
+  width: 12px;
+  height: 12px;
+  background: transparent;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.6);
+  transition: all 0.6s var(--hm-ease-fluid);
+  position: relative;
+  overflow: visible;
+  padding: 0;
+}
+
+.hm-orb-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 50%;
+  animation: hmOrbPulse 2.8s var(--hm-ease-fluid) infinite;
+}
+
+.hm-orb-btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border-radius: 50%;
+  background: white;
+  transform: scale(0);
+  transition: transform 1.5s var(--hm-ease-fluid);
+}
+
+.hm-orb-btn:active::after { transform: scale(1); }
+
+.hm-orb-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.9);
+}
+
+.hm-orb-btn:hover::before {
+  animation: none;
+  width: 50px; height: 50px;
+  border-color: rgba(255,255,255,0.4);
+}
+
+.hm-label-enter {
+  font-family: var(--hm-font-sans);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--hm-text-muted);
+  opacity: 0;
+  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2.2s;
+}
+
 .hm-cursor-dot,
 .hm-cursor-outline {
   position: fixed;
@@ -526,6 +664,11 @@ html:has(.home-root) main {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes hmOrbPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
+  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
+}
+
 /* Narrower desktops: the three links keep their size; only the page
    padding and the brand tighten. */
 @media (max-width: 1360px) {
@@ -552,16 +695,17 @@ html:has(.home-root) main {
     cursor: auto;
   }
 
-  /* Phones keep the hero in flow: pill and words as grid rows, so the hero
-     can never be shorter than its content and the centred words never
-     slide under the pill (an absolute block at 46% did, on phones whose
-     browser reported a short small-viewport height). */
+  /* Phones keep the hero in flow: pill, words and the "Enter the shop" orb
+     as grid rows, so the hero can never be shorter than its content and
+     the centred words never slide under the pill (an absolute block at
+     46% did, on phones whose browser reported a short small-viewport
+     height). */
   .hm-ui-layer {
     display: grid;
     /* One full-width column; the flex layout's space-between would
        otherwise shrink it to its content. */
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
     padding: 1.25rem 1.25rem 1.5rem;
     row-gap: 16px;
   }
@@ -611,8 +755,8 @@ html:has(.home-root) main {
     justify-self: center;
     left: auto;
     max-width: 340px;
-    /* A little more room below than above, as the old 46% centre had. */
-    padding-bottom: 6vh;
+    /* The orb row below leaves a little more room below the words than
+       above, as the old 46% centre had. */
     position: static;
     top: auto;
     transform: none;
@@ -629,6 +773,17 @@ html:has(.home-root) main {
 
   .hm-prompt-main {
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  .hm-interaction-anchor {
+    align-self: end;
+    bottom: auto;
+    gap: 1.35rem;
+    grid-row: 3;
+    justify-self: center;
+    left: auto;
+    position: static;
+    transform: none;
   }
 
   .hm-cursor-dot,
@@ -660,10 +815,20 @@ html:has(.home-root) main {
     line-height: 1;
     margin-bottom: 0;
   }
+
+  .hm-interaction-anchor {
+    gap: 0.85rem;
+  }
+
+  .hm-label-enter {
+    font-size: 0.62rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hm-prompt-main {
+  .hm-prompt-main,
+  .hm-label-enter,
+  .hm-orb-btn::before {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;

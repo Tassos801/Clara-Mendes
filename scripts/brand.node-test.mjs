@@ -26,7 +26,8 @@ const BANNED = [
 
 test('the hero carries the owner line, visible word for word', () => {
   assert.equal(BRAND.hero.headline, 'Wherever it leads.');
-  // Nothing else since 2026-10-29: no second line, no button, no orb.
+  // No second line and no button since 2026-10-29; the "Enter the shop"
+  // orb is markup in app/routes/_index.tsx, not brand copy.
   assert.deepEqual(Object.keys(BRAND.hero), ['headline']);
 });
 

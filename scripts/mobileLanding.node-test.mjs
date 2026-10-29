@@ -30,12 +30,12 @@ function getShortMobileCss() {
 test('phone landing pages keep the hero in flow so the words never meet the pill', () => {
   const css = getPhoneCss();
 
-  // Pill and words as grid rows at every phone height: the hero can never
-  // be shorter than its content (an absolute block at 46% slid under the
-  // pill on phones whose browser reported a short viewport).
+  // Pill, words and orb as grid rows at every phone height: the hero can
+  // never be shorter than its content (an absolute block at 46% slid under
+  // the pill on phones whose browser reported a short viewport).
   assert.match(
     css,
-    /\.hm-ui-layer\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\);/s,
+    /\.hm-ui-layer\s*\{[^}]*display:\s*grid;[^}]*grid-template-rows:\s*auto minmax\(0, 1fr\) auto;/s,
   );
   // One full-width column (the flex layout's space-between would shrink it).
   assert.match(css, /\.hm-ui-layer\s*\{[^}]*grid-template-columns:\s*minmax\(0, 1fr\);/s);
@@ -57,12 +57,23 @@ test('short mobile landing pages compact the hero', () => {
   assert.doesNotMatch(css, /\.hm-header-top\s*\{/);
 });
 
-test('the hero holds the headline and nothing else', () => {
-  // Since 2026-10-29: no second line, no button, no "Enter the shop" orb.
-  for (const gone of ['hm-prompt-sub', 'hm-hero-action', 'hm-interaction-anchor', 'hm-orb-btn', 'hm-label-enter']) {
+test('the hero holds the headline and the "Enter the shop" orb', () => {
+  // Since 2026-10-29: no second line and no button.
+  for (const gone of ['hm-prompt-sub', 'hm-hero-action']) {
     assert.doesNotMatch(homepageSource, new RegExp(gone), gone);
   }
-  assert.match(homepageSource, /<h1 id="home-title" className="hm-prompt-main">/);
+  assert.match(homepageSource, /<h1 ref=\{titleRef\} id="home-title" className="hm-prompt-main">/);
+  // The orb came back the same day, on phones too: it is the hero's only
+  // way into the shop, so phones place it in flow below the words.
+  assert.match(homepageSource, /aria-label="Enter the shop"/);
+  assert.match(homepageSource, /<span className="hm-label-enter">Enter the shop<\/span>/);
+  assert.match(homepageSource, /void navigate\('\/collections\/all'\)/);
+  const css = getPhoneCss();
+  assert.match(
+    css,
+    /\.hm-interaction-anchor\s*\{[^}]*grid-row:\s*3;[^}]*position:\s*static;[^}]*transform:\s*none;/s,
+  );
+  assert.doesNotMatch(homepageSource, /\.hm-interaction-anchor\s*\{[^}]*display:\s*none;/s);
 });
 
 test('phones get one calm header row that opens the site menu', () => {

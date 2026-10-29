@@ -12,8 +12,10 @@ nooks. Our Story and the founder's letter still say it in full.
 
 Since 2026-10-29 the homepage hero says only *Wherever it leads.*
 (`BRAND.hero.headline`, pinned by `scripts/brand.node-test.mjs`): no second
-line, no button and no "Enter the shop" orb. The menu pill and the line
-rail just below lead into the shop.
+line and no button. The "Enter the shop" orb at the bottom of the hero came
+back the same day at the owner's request, on phones too (in flow below the
+words), since it is the hero's only way into the shop. The menu pill and the
+line rail just below also lead into the shop.
 
 ## Where copy lives
 
