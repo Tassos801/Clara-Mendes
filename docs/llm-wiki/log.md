@@ -2168,6 +2168,16 @@ shown. Product pages mount gallery slides past the next one, and the Shop
 Pay button, after the page has loaded. See
 [Hydrogen runtime](modules/hydrogen-runtime.md).
 
+## [2026-10-29] copy | A shorter homepage hero
+
+The owner asked for the landing-page wording to be very short and poetic,
+then for "Wherever it leads" and nothing else. The hero now shows only
+*Wherever it leads.* (`BRAND.hero` in `app/content/brand.ts`); its second
+line, the "See what we made" button and the "Enter the shop" orb are gone
+(`app/routes/_index.tsx`, tests in `scripts/mobileLanding.node-test.mjs`).
+Our Story and the founder's letter keep the full line. See
+[Brand voice](brand-voice.md).
+
 ## [2026-10-29] performance | No public WebP on the storefront
 
 Following the site-speed pass: Oxygen also re-encodes the remaining WebP in

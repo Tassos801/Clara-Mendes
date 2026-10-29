@@ -1,5 +1,5 @@
 import {useEffect, useRef} from 'react';
-import {Link, useLoaderData, useNavigate} from 'react-router';
+import {Link, useLoaderData} from 'react-router';
 import type {Route} from './+types/_index';
 import {LineRail} from '~/components/LineRail';
 import {PRIMARY_LINKS} from '~/lib/navLinks';
@@ -45,14 +45,10 @@ export function loader({request}: Route.LoaderArgs) {
 export default function Homepage() {
   const {seoUrl} = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
-  const navigate = useNavigate();
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
   const outlineRef = useRef<HTMLDivElement | null>(null);
-  const orbRef = useRef<HTMLButtonElement | null>(null);
-  const titleRef = useRef<HTMLHeadingElement | null>(null);
-  const subRef = useRef<HTMLParagraphElement | null>(null);
 
   useEffect(() => {
     // The custom cursor follows a mouse. Touch screens and reduced motion
@@ -136,63 +132,6 @@ export default function Homepage() {
     };
   }, []);
 
-  useEffect(() => {
-    const orb = orbRef.current;
-    const outline = outlineRef.current;
-    const title = titleRef.current;
-    const sub = subRef.current;
-    if (!orb || !outline || !title || !sub) return;
-
-    let pressTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const down = () => {
-      outline.style.width = '20px';
-      outline.style.height = '20px';
-      outline.style.backgroundColor = 'rgba(255,255,255,0.1)';
-      outline.style.borderColor = 'rgba(255,255,255,0.6)';
-      title.style.transition = 'opacity 1s ease';
-      title.style.opacity = '0';
-      sub.style.transition = 'opacity 1s ease';
-      sub.style.opacity = '0';
-      pressTimer = setTimeout(() => {
-        void navigate('/collections/all');
-      }, 950);
-    };
-
-    const up = () => {
-      if (pressTimer) clearTimeout(pressTimer);
-      outline.style.width = '32px';
-      outline.style.height = '32px';
-      outline.style.backgroundColor = 'transparent';
-      outline.style.borderColor = 'rgba(255,255,255,0.3)';
-      title.style.opacity = '1';
-      sub.style.opacity = '1';
-    };
-
-    const enterOrb = () => {
-      outline.style.width = '48px';
-      outline.style.height = '48px';
-      outline.style.borderColor = 'rgba(255,255,255,0.5)';
-    };
-
-    orb.addEventListener('mousedown', down);
-    orb.addEventListener('mouseup', up);
-    orb.addEventListener('mouseenter', enterOrb);
-    orb.addEventListener('mouseleave', up);
-    orb.addEventListener('touchstart', down);
-    orb.addEventListener('touchend', up);
-
-    return () => {
-      orb.removeEventListener('mousedown', down);
-      orb.removeEventListener('mouseup', up);
-      orb.removeEventListener('mouseenter', enterOrb);
-      orb.removeEventListener('mouseleave', up);
-      orb.removeEventListener('touchstart', down);
-      orb.removeEventListener('touchend', up);
-      if (pressTimer) clearTimeout(pressTimer);
-    };
-  }, [navigate]);
-
   return (
     <div className="commerce-home">
       <style suppressHydrationWarning>{homeCss}</style>
@@ -258,33 +197,9 @@ export default function Homepage() {
           </header>
 
           <div className="hm-hero-text">
-            <h1 ref={titleRef} id="home-title" className="hm-prompt-main">
+            <h1 id="home-title" className="hm-prompt-main">
               {BRAND.hero.headline}
             </h1>
-            <p ref={subRef} className="hm-prompt-sub">
-              {BRAND.hero.line}
-            </p>
-            <div className="hm-hero-actions">
-              <Link
-                className="hm-hero-action hm-hero-action--primary"
-                to={BRAND.hero.primaryCta.href}
-              >
-                {BRAND.hero.primaryCta.label}
-              </Link>
-            </div>
-          </div>
-
-          <div className="hm-interaction-anchor">
-            <button
-              ref={orbRef}
-              type="button"
-              className="hm-orb-btn"
-              aria-label="Enter the shop"
-              onClick={() => {
-                void navigate('/collections/all');
-              }}
-            />
-            <span className="hm-label-enter">Enter the shop</span>
           </div>
         </div>
 
@@ -539,148 +454,12 @@ html:has(.home-root) main {
   line-height: 1.1;
   font-weight: 400;
   letter-spacing: -0.02em;
-  margin: 0 0 2rem;
-  margin-inline: auto;
+  margin: 0 auto;
   max-width: 16ch;
   text-wrap: balance;
   color: var(--hm-text-main);
   opacity: 0;
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 0.5s;
-}
-
-.hm-prompt-sub {
-  font-family: var(--hm-font-serif);
-  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
-  text-transform: none;
-  letter-spacing: 0;
-  line-height: 1.5;
-  color: var(--hm-text-muted);
-  max-width: 34ch;
-  margin: 0 auto;
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 1.5s;
-}
-
-.hm-hero-actions {
-  align-items: center;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  margin-top: clamp(28px, 4vw, 44px);
-  pointer-events: auto;
-}
-
-.hm-hero-action {
-  align-items: center;
-  backdrop-filter: blur(18px) saturate(1.25);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 52%),
-    rgba(20, 18, 15, 0.26);
-  border: 1px solid rgba(255,255,255,0.42);
-  border-radius: 999px;
-  box-shadow:
-    0 12px 30px rgba(10, 9, 7, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.28);
-  color: var(--hm-text-main);
-  display: inline-flex;
-  font-size: 0.72rem;
-  font-weight: 600;
-  justify-content: center;
-  letter-spacing: 0.16em;
-  min-height: 46px;
-  min-width: 150px;
-  padding: 0 20px;
-  text-decoration: none;
-  text-transform: uppercase;
-  transition: background 240ms ease, border-color 240ms ease, color 240ms ease;
-}
-
-.hm-hero-action:hover {
-  background: rgba(20, 18, 15, 0.38);
-  border-color: rgba(255,255,255,0.72);
-}
-
-.hm-hero-action--primary {
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.82), transparent 58%),
-    rgba(251,250,246,0.84);
-  border-color: rgba(255,255,255,0.76);
-  color: #26231f;
-}
-
-.hm-hero-action--primary:hover {
-  background: white;
-  color: #26231f;
-}
-
-.hm-interaction-anchor {
-  position: absolute;
-  bottom: 4rem;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  pointer-events: auto;
-}
-
-.hm-orb-btn {
-  width: 12px;
-  height: 12px;
-  background: transparent;
-  border-radius: 50%;
-  border: 1px solid rgba(255,255,255,0.6);
-  transition: all 0.6s var(--hm-ease-fluid);
-  position: relative;
-  overflow: visible;
-  padding: 0;
-}
-
-.hm-orb-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
-  width: 40px; height: 40px;
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 50%;
-  animation: hmOrbPulse 2.8s var(--hm-ease-fluid) infinite;
-}
-
-.hm-orb-btn::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  border-radius: 50%;
-  background: white;
-  transform: scale(0);
-  transition: transform 1.5s var(--hm-ease-fluid);
-}
-
-.hm-orb-btn:active::after { transform: scale(1); }
-
-.hm-orb-btn:hover {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.9);
-}
-
-.hm-orb-btn:hover::before {
-  animation: none;
-  width: 50px; height: 50px;
-  border-color: rgba(255,255,255,0.4);
-}
-
-.hm-label-enter {
-  font-family: var(--hm-font-sans);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  color: var(--hm-text-muted);
-  opacity: 0;
-  animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2.2s;
 }
 
 .hm-cursor-dot,
@@ -745,11 +524,6 @@ html:has(.home-root) main {
 @keyframes hmFadeInSlow {
   from { opacity: 0; transform: translateY(15px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes hmOrbPulse {
-  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.2; }
-  50% { transform: translate(-50%, -50%) scale(1.6); opacity: 0; }
 }
 
 /* Narrower desktops: the three links keep their size; only the page
@@ -849,38 +623,12 @@ html:has(.home-root) main {
     font-size: 2.72rem;
     letter-spacing: -0.01em;
     line-height: 1.04;
-    margin-bottom: 1.35rem;
+    margin-bottom: 0;
     text-wrap: balance;
-  }
-
-  .hm-prompt-sub {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1.02rem;
-    letter-spacing: 0;
-    line-height: 1.5;
-    margin-inline: auto;
-    max-width: 30ch;
-    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.35);
   }
 
   .hm-prompt-main {
     text-shadow: 0 2px 24px rgba(0, 0, 0, 0.18);
-  }
-
-  .hm-hero-actions {
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 24px;
-  }
-
-  .hm-hero-action {
-    min-height: 46px;
-    width: min(240px, 100%);
-  }
-
-  /* "Enter the shop" repeats "See what we made"; phones keep one action. */
-  .hm-interaction-anchor {
-    display: none;
   }
 
   .hm-cursor-dot,
@@ -910,45 +658,12 @@ html:has(.home-root) main {
   .hm-prompt-main {
     font-size: clamp(2.3rem, 14vw, 2.65rem);
     line-height: 1;
-    margin-bottom: 0.8rem;
-  }
-
-  .hm-prompt-sub {
-    font-size: 0.92rem;
-    line-height: 1.45;
-  }
-
-  .hm-hero-actions {
-    gap: 8px;
-    margin-top: 14px;
-  }
-
-  .hm-hero-action {
-    min-height: 38px;
-    padding-inline: 16px;
-  }
-
-  .hm-interaction-anchor {
-    align-self: end;
-    bottom: auto;
-    gap: 0.85rem;
-    grid-row: 3;
-    justify-self: center;
-    left: auto;
-    position: static;
-    transform: none;
-  }
-
-  .hm-label-enter {
-    font-size: 0.62rem;
+    margin-bottom: 0;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hm-prompt-main,
-  .hm-prompt-sub,
-  .hm-label-enter,
-  .hm-orb-btn::before {
+  .hm-prompt-main {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
