@@ -49,7 +49,9 @@ the id of the Merchant Center and Meta catalogs).
   `app/lib/metaPixel{,.client}.ts`. Off unless `PUBLIC_META_PIXEL_ID` is set
   (dataset "Clara Mendes pixel", 2509864056173154, linked to the Meta catalog
   "Clara Mendes"). Nothing loads before marketing consent; accepting later
-  loads it and sends a PageView; withdrawing sends `consent revoke`. Events:
+  loads it and sends a PageView; withdrawing sends `consent revoke`. Hydrogen
+  also re-sends the current page's views after Accept, so the consent
+  listener and the PAGE_VIEWED subscriber share one repeat-view map. Events:
   PageView, ViewContent and AddToCart with `content_ids` = SKUs. Purchase
   happens on Shopify checkout and is not sent by the storefront.
 - CSP (`app/lib/csp.ts`): connect.facebook.net (script), www.facebook.com

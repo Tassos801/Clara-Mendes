@@ -2138,3 +2138,12 @@ false and no analytics ran for them; `app/components/CustomerPrivacyApiFallback.
 loads Shopify's standalone API when it is missing. Tests:
 `scripts/metaPixel.node-test.mjs`. See
 [Analytics and attribution](modules/analytics-and-attribution.md).
+
+## [2026-10-29] fix | One Meta PageView after Accept
+
+On the live site, accepting cookies sent PageView twice: once from the
+pixel's consent listener and once when Hydrogen re-sent the page's views
+(its `publish` turns from a no-op into the real function once `canTrack()`
+is true). `app/components/MetaPixelAnalytics.tsx` now keeps one module-level
+repeat-view map for both paths. See
+[Analytics and attribution](modules/analytics-and-attribution.md).
