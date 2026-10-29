@@ -1,6 +1,7 @@
 // Relative imports keep this module loadable by the plain-Node test runner
 // and by scripts/product.mjs, which cannot resolve the Vite "~" alias.
 import printCatalog from '../../data/print-catalog.json' with {type: 'json'};
+import {publicImageCopy} from './publicImages.ts';
 
 /**
  * Print collections added through the product pipeline
@@ -167,8 +168,9 @@ export function printImagePath(
 
 /**
  * The work as it is printed, small, for showing it bare on a page: a museum
- * print's bordered paper sheet (5:4 or 4:5, long side 560 px) or a studio
- * print's 4:5 artwork. Sizes match scripts/prepare-print-assets.py.
+ * print's bordered paper sheet (5:4 or 4:5, long side 560 px; its plain
+ * JPEG copy, see publicImages.ts) or a studio print's 4:5 artwork. Sizes
+ * match scripts/prepare-print-assets.py.
  */
 export function printSheetImage(
   collection: Pick<PrintCatalogCollection, 'kind' | 'slug'>,
@@ -177,10 +179,14 @@ export function printSheetImage(
   if (collectionKind(collection) !== 'museum')
     return {height: 1400, src: printImagePath(collection, print), width: 1120};
   const landscape = printOrientation(print) === 'landscape';
+  const width = landscape ? 560 : 448;
   return {
     height: landscape ? 448 : 560,
-    src: `/images/product-art/${collection.slug}/${print.slug}.sheet-small.webp`,
-    width: landscape ? 560 : 448,
+    src: publicImageCopy(
+      `/images/product-art/${collection.slug}/${print.slug}.sheet-small.webp`,
+      width,
+    ),
+    width,
   };
 }
 

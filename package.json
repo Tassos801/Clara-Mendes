@@ -12,6 +12,7 @@
     "product": "node ./scripts/product.mjs",
     "museum": "node ./scripts/museum.mjs",
     "curated:images": "node ./scripts/prepare-curated-product-images.mjs",
+    "storefront:images": "node ./scripts/write-storefront-images.mjs",
     "test": "node --test \"scripts/*.node-test.mjs\"",
     "typecheck": "react-router typegen && tsc --noEmit",
     "codegen": "shopify hydrogen codegen && react-router typegen",

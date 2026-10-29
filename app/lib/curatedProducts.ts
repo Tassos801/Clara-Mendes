@@ -117,13 +117,14 @@ export function curatedDisplaySrc(image: CuratedImage) {
 }
 
 /**
- * Smaller copies the image script writes beside every storefront image
- * (`01-studio.w360.jpg`, `01-studio.w720.jpg`). The site's own images
+ * JPEG copies the image script writes beside every storefront image
+ * (`01-studio.w360.jpg`, `.w720.jpg`, `.w1000.jpg`). The site's own images
  * have no resizing CDN — Oxygen serves each file at full size and turns
- * WebP into a larger JPEG — so cards and thumbnails pick a compressed JPEG
- * copy (passed through as-is) instead of the 1000 px original.
+ * WebP into a larger JPEG — so the storefront shows only compressed JPEG
+ * copies (passed through as-is): small ones for cards and thumbnails, the
+ * full-size one where the 1000 px WebP original used to go.
  */
-export const CURATED_IMAGE_WIDTHS = [360, 720] as const;
+export const CURATED_IMAGE_WIDTHS = [360, 720, 1000] as const;
 
 export function curatedImageCopySrc(src: string, width: number) {
   return src.replace(/\.webp$/, `.w${width}.jpg`);
@@ -140,22 +141,21 @@ export function hasCuratedImageCopies(src: string) {
   return CURATED_STOREFRONT_SRCS.has(src);
 }
 
-/** The smallest copy at least `width` px wide; the original past them all. */
+/** The smallest copy at least `width` px wide; the full-size copy past them all. */
 export function curatedImageSrcForWidth(src: string, width?: number) {
   if (!hasCuratedImageCopies(src)) return src;
-  const copy = CURATED_IMAGE_WIDTHS.find((candidate) => (width ?? 0) <= candidate);
-  return copy ? curatedImageCopySrc(src, copy) : src;
+  const copy =
+    CURATED_IMAGE_WIDTHS.find((candidate) => (width ?? 0) <= candidate) ??
+    CURATED_IMAGE_SIZE.width;
+  return curatedImageCopySrc(src, copy);
 }
 
-/** A `srcset` of both copies and the original, for plain <img> tags. */
+/** A `srcset` of every copy, for plain <img> tags. */
 export function curatedImageSrcSet(src: string) {
   if (!hasCuratedImageCopies(src)) return undefined;
-  return [
-    ...CURATED_IMAGE_WIDTHS.map(
-      (width) => `${curatedImageCopySrc(src, width)} ${width}w`,
-    ),
-    `${src} ${CURATED_IMAGE_SIZE.width}w`,
-  ].join(', ');
+  return CURATED_IMAGE_WIDTHS.map(
+    (width) => `${curatedImageCopySrc(src, width)} ${width}w`,
+  ).join(', ');
 }
 
 /** The branded image set in Storefront API image shape, or [] if none. */

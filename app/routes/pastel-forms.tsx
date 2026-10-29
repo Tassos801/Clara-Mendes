@@ -48,10 +48,10 @@ export default function PastelForms() {
       >
         <figure className="pastel-forms__image">
           <img
-            src={`/images/pastel-plant-pots/${selected.id}.webp`}
+            src={`/images/pastel-plant-pots/${selected.id}.w1200.jpg`}
             alt={`${selected.title} pastel ceramic plant pot design mockup`}
-            width={1254}
-            height={1254}
+            width={1200}
+            height={1200}
             fetchPriority="high"
           />
           <figcaption>
@@ -146,7 +146,9 @@ export default function PastelForms() {
           <p>Blush, sage, blue and butter.</p>
         </div>
         <img
-          src="/images/pastel-plant-pots/series.webp"
+          src="/images/pastel-plant-pots/series.w1536.jpg"
+          srcSet="/images/pastel-plant-pots/series.w960.jpg 960w, /images/pastel-plant-pots/series.w1536.jpg 1536w"
+          sizes="(max-width: 700px) calc(100vw - 72px), 1160px"
           alt="Design mockups of the four Pastel Forms ceramic plant pots"
           width={1536}
           height={1024}

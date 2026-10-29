@@ -25,10 +25,11 @@
  *   grid    2-column grid of detail `tiles` on linen; a tile is a crop of
  *           the source or {source, crop} from another photo
  *
- * Every storefront image also gets smaller copies beside it
- * (`name.w360.jpg`, `name.w720.jpg`; see CURATED_IMAGE_WIDTHS) for cards
- * and thumbnails, because Oxygen serves public images at full size and
- * re-encodes WebP as larger JPEGs (plain JPEGs pass through).
+ * Every storefront image also gets JPEG copies beside it (`name.w360.jpg`,
+ * `name.w720.jpg`, `name.w1000.jpg`; see CURATED_IMAGE_WIDTHS), which the
+ * storefront shows instead of the WebP, because Oxygen serves public
+ * images at full size and re-encodes WebP as larger JPEGs (plain JPEGs
+ * pass through).
  *
  * A product's optional `cutout` is derived from its studio image: the
  * object on a transparent 600 x 750 canvas, for the homepage shelf.
@@ -43,7 +44,7 @@
  *        write coordinate-grid overlays of each supplier photo to
  *        output/curated-images/<h>/ for choosing crops
  *   npm run curated:images -- --copies          rewrite only the smaller
- *        storefront copies (w360/w720) from the images already on disk
+ *        storefront copies (w360/w720/w1000) from the images already on disk
  *   npm run curated:images -- --check           verify outputs exist
  */
 import {existsSync} from 'node:fs';
@@ -66,7 +67,7 @@ export const IMAGE_WIDTH = 1000;
 export const IMAGE_HEIGHT = 1250;
 /** Lossy storefront copy of a lossless scene composite (see curatedDisplaySrc). */
 export const DISPLAY_QUALITY = 84;
-/** The w360/w720 card and thumbnail copies (mozjpeg). */
+/** The w360/w720/w1000 storefront copies (mozjpeg). */
 export const COPY_QUALITY = 80;
 const LINEN = '#f4f0e8';
 const GRID_MARGIN = 56;
@@ -583,7 +584,7 @@ async function loadCatalog() {
   );
 }
 
-/** Writes the w360/w720 copies of one storefront image (see curatedImageCopySrc). */
+/** Writes the w360/w720/w1000 copies of one storefront image (see curatedImageCopySrc). */
 async function writeImageCopies(sharp, src) {
   for (const width of CURATED_IMAGE_WIDTHS) {
     const copy = curatedImageCopySrc(src, width);

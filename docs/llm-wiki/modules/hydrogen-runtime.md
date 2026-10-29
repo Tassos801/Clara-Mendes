@@ -91,16 +91,30 @@ Shopify's `hydrogenRoutes()` wrapper.
 ## Images from public/
 
 Oxygen serves `public/` files through Shopify's image service at full size:
-plain sRGB JPEGs pass through as they are, but WebP and ICC-tagged JPEGs are
-re-encoded into larger JPEGs, and `?width=` parameters are ignored. So
-images we size by hand ship as compressed JPEGs at the size they are shown:
-the hero backdrop in three files picked by media query
-(`app/lib/heroBackdrop.ts`, preloaded with the same queries), the line-rail
-circles at 360 px (`public/images/line-rail/`), and every curated
-(book nook) image with `.w360.jpg` / `.w720.jpg` copies that
-`storefrontImageLoader` (`app/lib/imageLoader.ts`) picks for Hydrogen's
-`<Image>`. `npm run curated:images -- --copies` rewrites the copies;
-`scripts/siteSpeed.node-test.mjs` checks them. Shopify CDN images
+plain sRGB JPEGs and PNGs pass through as they are, but WebP and ICC-tagged
+JPEGs are re-encoded into larger JPEGs (a transparent WebP into a PNG about
+five times its size), and `?width=` parameters are ignored. So the
+storefront never shows a `public/` WebP; images ship as compressed JPEGs
+(palette PNGs if transparent) at 2–3× the size they are shown:
+
+- the hero backdrop in three files picked by media query
+  (`app/lib/heroBackdrop.ts`, preloaded with the same queries) and the
+  line-rail circles at 360 px (`public/images/line-rail/`);
+- every curated (book nook) image as `.w360.jpg` / `.w720.jpg` /
+  `.w1000.jpg` copies that `storefrontImageLoader` (`app/lib/imageLoader.ts`)
+  picks for Hydrogen's `<Image>`; `npm run curated:images -- --copies`
+  rewrites them;
+- everything else (journal plates, artist-index sheets, gallery-page hero
+  mockups, Our Story portrait and backdrop, Your Sky hero/occasions/swatches,
+  Pastel Forms, the clothing accent) as `name.w<width>.jpg|png` copies
+  beside the source (`publicImageCopy` in `app/lib/publicImages.ts`), listed
+  with their widths in `scripts/lib/storefront-images.mjs`.
+  `npm run storefront:images` writes them, `-- --check` verifies them. A new
+  page image goes on that list, and the page points at the copy.
+
+The WebP sources stay: scripts, Merchant Center feeds, social posts and
+`og:image` tags still use them. `scripts/siteSpeed.node-test.mjs` checks
+that every copy is plain and that pages use the copies. Shopify CDN images
 (`cdn.shopify.com/s/files`) do resize and serve WebP, so product photos
 stay there.
 

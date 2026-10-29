@@ -58,7 +58,9 @@ function plateCovers(): Cover[] {
         href: `/collections/all?capsule=${slug}`,
         label: `Plate ${String(covers.length + 1).padStart(2, '0')}`,
         title: `${name} ${ROMAN[plate]}`,
-        src: `/images/product-art/${slug}/${slug}-0${plate + 1}.webp`,
+        // 460 px JPEG copy (scripts/write-storefront-images.mjs): covers
+        // are at most 230 CSS px wide.
+        src: `/images/product-art/${slug}/${slug}-0${plate + 1}.w460.jpg`,
       });
     }
   }

@@ -25,8 +25,11 @@ export const BRAND = {
       "I don't know what we'll make next. I know it will be chosen with care, printed to order, and never boring.",
     ],
     signature: '— Tassos',
-    /** Site-relative; 640 × 800 head-and-shoulders crop supplied by the owner. */
-    portrait: '/images/our-story/tassos-dimitriou.webp',
+    /**
+     * Site-relative; 640 × 800 head-and-shoulders crop supplied by the
+     * owner, as the plain JPEG copy Oxygen passes through.
+     */
+    portrait: '/images/our-story/tassos-dimitriou.w640.jpg',
     portraitAlt:
       'Tassos Dimitriou, who runs Clara Mendes, smiling in front of a bookshelf',
     founder: {name: 'Tassos Dimitriou', city: 'Nicosia', country: 'CY'},
