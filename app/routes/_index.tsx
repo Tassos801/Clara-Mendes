@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {Link, useLoaderData, useNavigate} from 'react-router';
 import type {Route} from './+types/_index';
+import {BrandLogo} from '~/components/BrandLogo';
 import {LineRail} from '~/components/LineRail';
 import {PRIMARY_LINKS} from '~/lib/navLinks';
 import {LINE_RAIL_ENTRIES} from '~/lib/lineRail';
@@ -220,8 +221,12 @@ export default function Homepage() {
                 <line x1="0" y1="11" x2="20" y2="11" stroke="currentColor" strokeWidth="1.3" />
               </svg>
             </button>
-            <Link to="/" className="hm-nav-text hm-brand">
-              Clara Mendes
+            <Link
+              to="/"
+              className="hm-nav-text hm-brand"
+              aria-label="Clara Mendes home"
+            >
+              <BrandLogo variant="horizontal" />
             </Link>
             <nav className="hm-nav-group" aria-label="Home navigation">
               {PRIMARY_LINKS.map(({to, label}) => (
@@ -496,15 +501,15 @@ html:has(.home-root) main {
   display: none;
 }
 
+/* The one-line logo, sized like the glass header's (36 px there). */
 .hm-brand {
-  font-family: var(--hm-font-serif);
-  font-size: 1.8rem;
-  font-weight: 400;
-  letter-spacing: -0.02em;
-  font-style: italic;
-  text-transform: none;
+  align-items: center;
+  display: inline-flex;
   flex-shrink: 0;
-  white-space: nowrap;
+}
+
+.hm-brand .brand-logo {
+  height: 34px;
 }
 
 .hm-hero-text {
@@ -684,8 +689,8 @@ html:has(.home-root) main {
     padding-right: 1.5rem;
   }
 
-  .hm-brand {
-    font-size: 1.45rem;
+  .hm-brand .brand-logo {
+    height: 30px;
   }
 }
 
@@ -731,10 +736,8 @@ html:has(.home-root) main {
     display: none;
   }
 
-  .hm-brand {
-    font-size: 1.38rem;
-    line-height: 1.08;
-    max-width: none;
+  .hm-brand .brand-logo {
+    height: 28px;
   }
 
   .hm-nav-text {
@@ -743,10 +746,11 @@ html:has(.home-root) main {
   }
 
   .hm-brand.hm-nav-text {
-    font-size: 1.32rem;
-    line-height: 1;
-    letter-spacing: -0.02em;
     padding-left: 4px;
+  }
+
+  .hm-brand .brand-logo {
+    height: 26px;
   }
 
   .hm-hero-text {
@@ -800,9 +804,8 @@ html:has(.home-root) main {
     row-gap: 8px;
   }
 
-  .hm-brand,
-  .hm-brand.hm-nav-text {
-    font-size: 1.25rem;
+  .hm-brand .brand-logo {
+    height: 24px;
   }
 
   .hm-hero-text {

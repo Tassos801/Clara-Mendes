@@ -50,7 +50,7 @@ test('the root document links the manifest and the touch icon', () => {
   assert.match(route, /application\/manifest\+json/);
 });
 
-test('favicon.ico holds the monogram at 16, 32 and 48 px', async () => {
+test('favicon.ico holds the logo mark at 16, 32 and 48 px', async () => {
   const ico = readFileSync(path.join(ROOT, 'public', FAVICON_ICO));
   assert.equal(ico.readUInt16LE(2), 1, 'ICO type');
   const sizes = [];

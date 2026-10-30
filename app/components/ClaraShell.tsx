@@ -1,8 +1,9 @@
-import {Suspense} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Await, Link, NavLink, useAsyncValue} from 'react-router';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
+import {BrandLogo} from './BrandLogo';
 import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
@@ -93,7 +94,7 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
           </svg>
         </button>
         <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
-          Clara Mendes
+          <BrandLogo variant="horizontal" />
         </Link>
       </div>
       <nav className="site-nav" aria-label="Primary navigation">
@@ -206,8 +207,8 @@ function ClaraFooter() {
   return (
     <footer className="site-footer">
       <div className="footer-brand">
-        <Link className="brand-mark" to="/">
-          Clara Mendes
+        <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
+          <BrandLogo variant="stacked" />
         </Link>
         <p>{BRAND.footer.blurb}</p>
         <NewsletterForm variant="footer" />
@@ -317,6 +318,13 @@ function ClaraFooter() {
 function ClaraMobileNav() {
   const {type, close} = useAside();
   const isOpen = type === 'mobile';
+  // The stacked logo is ~12 KB of path data, so the closed drawer leaves it
+  // out of every page's HTML. Once drawn it stays, so it does not vanish
+  // while the drawer slides shut.
+  const [logoDrawn, setLogoDrawn] = useState(false);
+  useEffect(() => {
+    if (isOpen) setLogoDrawn(true);
+  }, [isOpen]);
 
   return (
     <div
@@ -340,8 +348,13 @@ function ClaraMobileNav() {
         tabIndex={-1}
       >
         <header className="mobile-nav-header">
-          <Link className="brand-mark" to="/" onClick={close}>
-            Clara Mendes
+          <Link
+            className="brand-mark"
+            to="/"
+            aria-label="Clara Mendes home"
+            onClick={close}
+          >
+            {isOpen || logoDrawn ? <BrandLogo variant="stacked" /> : null}
           </Link>
           <button type="button" onClick={close} aria-label="Close menu">
             <svg
