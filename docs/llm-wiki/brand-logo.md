@@ -62,15 +62,16 @@ the right; nothing in `public/` is WebP (Oxygen re-encodes it). The skill
 `clara-brand-assets` (user-level) holds the procedure for new assets and for a
 new logo file.
 
-## Owner hand-off (not in the repo)
+## Outside the repo (done 2026-10-30)
 
-`Mine/shopify/clara-mendes-brand-2026-10-30/` holds the files only the owner
-can place: the one-line lockup as a transparent PNG for the checkout logo
-(Settings → Checkout → Customize) and the email templates (Settings →
-Notifications → Customize), the stacked lockup, and square avatars (mark on
-oat; lockup on paper) plus a Facebook cover for the social profiles. The
-checkout and email logos still show the old italic wordmark until the owner
-uploads these.
+`Mine/shopify/clara-mendes-brand-2026-10-30/` holds the files for the surfaces
+the repo does not control, all placed on 2026-10-30: the one-line lockup as
+the checkout logo (checkout editor → Settings → Logo, 180 px, left) and the
+email-template logo (Settings → Notifications → Customize email templates,
+180 px; the templates had no logo before), the mark on oat as the profile
+picture on Facebook, Instagram and Pinterest, and the stacked lockup on paper
+as the Facebook cover. A throwaway cart confirmed the logo in the live
+checkout header; the email preview showed it on the order confirmation.
 
 ## Verification
 
