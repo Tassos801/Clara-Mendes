@@ -71,8 +71,8 @@ type BreadcrumbInput = {
 
 export const SITE_NAME = 'Clara Mendes';
 export const DEFAULT_META_DESCRIPTION = BRAND.seo.defaultDescription;
-// Owned 1200x630 crop of Quiet Form I — never a stock photo: the share
-// card is often the first impression of the brand's actual work.
+// The logo on paper, 1200x630 (scripts/build-share-card.mjs): pages without
+// their own image share the brand, and the platform prints the title below.
 export const DEFAULT_SHARE_IMAGE = `${STOREFRONT_ORIGIN}/images/share/og-default.jpg`;
 
 export function getCanonicalUrl(_request: Request, pathname: string) {
@@ -124,6 +124,7 @@ export function organizationSchema(url: string) {
     '@type': 'Organization',
     name: SITE_NAME,
     url: origin,
+    logo: `${origin}/images/brand/clara-mendes-logo.png`,
     description: DEFAULT_META_DESCRIPTION,
     founder: {'@type': 'Person', name: BRAND.letter.founder.name},
   };

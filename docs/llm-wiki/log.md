@@ -2204,3 +2204,14 @@ label at the bottom of the hero, click or press-and-hold to go to
 `/collections/all`. Phones show it too now (they hid it while it repeated
 the hero button, which is gone): a third row of the phone hero grid, in flow
 below the words. See [Brand voice](brand-voice.md).
+
+## [2026-10-30] brand | the new logo across the store
+
+The owner's official logo (CLARA over MENDES, Mondrian mark) replaces the
+italic wordmark and the "CM" favicon. The file in `docs/brand` is traced
+into `app/content/logo.ts` by `scripts/trace-logo.mjs` (0.989 overlap with
+the file); `BrandLogo` draws it inline: one-line lockup in the header,
+stacked lockup in the drawer and the paper-coloured footer; the mark alone on
+the favicon and app icons; the stacked lockup on the share card and as the
+Organization `logo`. Owner files for checkout, email and social sit outside
+the repo. See [Brand logo](brand-logo.md).

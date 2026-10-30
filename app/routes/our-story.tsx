@@ -1,6 +1,7 @@
 import {useEffect, useRef} from 'react';
 import {Link, NavLink} from 'react-router';
 import type {Route} from './+types/our-story';
+import {BrandLogo} from '~/components/BrandLogo';
 import {PRIMARY_LINKS} from '~/lib/navLinks';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
@@ -192,8 +193,12 @@ export default function OurStory() {
 
         <div className="os-ui-layer">
           <header className="os-header-top">
-            <Link to="/" className="os-nav-text os-brand">
-              Clara Mendes
+            <Link
+              to="/"
+              className="os-nav-text os-brand"
+              aria-label="Clara Mendes home"
+            >
+              <BrandLogo variant="horizontal" />
             </Link>
             <nav className="os-nav-group" aria-label="Site navigation">
               {PRIMARY_LINKS.map(({to, label}) => (
@@ -510,12 +515,15 @@ html:has(.our-story-root) main {
   gap: clamp(1rem, 2.6vw, 3rem);
 }
 
+/* The one-line logo, sized like the glass header's (36 px there). */
 .os-brand {
-  font-family: var(--os-font-serif);
-  font-size: 1.8rem;
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0;
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.os-brand .brand-logo {
+  height: 34px;
 }
 
 .os-content-container {
@@ -837,13 +845,8 @@ html:has(.our-story-root) main {
     letter-spacing: 0.16em;
   }
 
-  .os-brand {
-    font-size: 1.38rem;
-    line-height: 1.08;
-  }
-
-  .os-brand.os-nav-text {
-    font-size: 1.38rem;
+  .os-brand .brand-logo {
+    height: 28px;
   }
 
   .os-facts {

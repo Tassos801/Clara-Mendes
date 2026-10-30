@@ -39,6 +39,7 @@ Source: local Shopify Hydrogen storefront repository at
 - [Clothing](modules/clothing.md) - The `/clothing` destination: what counts as clothing, categories vs capsules, the approval rule, 8 Oct 2026 catalogue state, and prepared Shopify changes.
 - [Analytics And Attribution](modules/analytics-and-attribution.md) - Shopify analytics, ad platform events, UTM/click ID capture, and cart attributes.
 - [Brand Voice](brand-voice.md) - The owner's brand line, `app/content/brand.ts`, our-own/borrowed labels, copy guard, homepage order, line rail, lead prints and the Shop All line rotation.
+- [Brand Logo](brand-logo.md) - The 2026-10-30 logo (CLARA / MENDES + Mondrian mark): vector data in `app/content/logo.ts`, the trace script, `BrandLogo`, where each lockup appears, icons, share card, owner hand-off.
 - [Brand Film](modules/brand-film.md) - The silent 45-second launch film: Remotion package, render check, Shopify Files upload, Our Story embed.
 
 ## Operations

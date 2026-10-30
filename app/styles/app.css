@@ -103,12 +103,44 @@ button {
   z-index: 30;
 }
 
+/* The logo (BrandLogo) in the header, drawer and footer links. Each place
+   sets the height; the viewBox gives the width. The header carries the
+   one-line lockup: 36 px tall gives about 15 px capitals. */
 .brand-mark {
-  font-family: var(--serif);
-  font-size: 1.85rem;
-  font-style: italic;
-  letter-spacing: -0.03em;
-  white-space: nowrap;
+  align-items: center;
+  display: inline-flex;
+  flex: none;
+  vertical-align: top;
+}
+
+.brand-logo {
+  display: block;
+  flex: none;
+  width: auto;
+}
+
+.site-header .brand-logo {
+  height: 36px;
+}
+
+/* The header is 76 px tall, 68 px from 720 px down and 60 px from 480 px. */
+@media (max-width: 720px) {
+  .site-header .brand-logo {
+    height: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-header .brand-logo {
+    height: 26px;
+  }
+}
+
+/* At 320 px, 26 px would push the cart about 3 px past the pill's edge. */
+@media (max-width: 340px) {
+  .site-header .brand-logo {
+    height: 24px;
+  }
 }
 
 .site-nav {
@@ -2774,6 +2806,20 @@ button {
   margin: 16px 0 0;
 }
 
+/* The stacked logo in paper (currentColor), about 132 px wide. */
+.footer-brand .brand-mark {
+  margin-bottom: 12px;
+}
+
+.footer-brand .brand-logo {
+  height: 82px;
+}
+
+/* The ink focus ring would vanish on the deep footer. */
+.site-footer .brand-mark:focus-visible {
+  outline-color: var(--color-paper);
+}
+
 .footer-columns {
   display: grid;
   gap: 28px;
@@ -3048,10 +3094,6 @@ button {
 
   .mobile-search-button {
     display: flex;
-  }
-
-  .brand-mark {
-    font-size: 1.35rem;
   }
 
   .hero-section {
@@ -3349,10 +3391,6 @@ button {
 
   .header-right {
     gap: 6px;
-  }
-
-  .brand-mark {
-    font-size: 1.2rem;
   }
 
   .cart-button {
@@ -3695,6 +3733,10 @@ button {
   display: flex;
   justify-content: space-between;
   margin-bottom: 32px;
+}
+
+.mobile-nav-header .brand-logo {
+  height: 72px;
 }
 
 .mobile-nav-header button {
