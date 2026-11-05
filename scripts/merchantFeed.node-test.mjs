@@ -343,7 +343,9 @@ test('fixed lines carry checkout rates and the page promise', () => {
   assert.equal(rate(print, 'DE'), 'DE:16.00 EUR:2:4:5:10');
   assert.equal(rate(print, 'NO'), 'NO:9.99 EUR:2:4:7:20');
   assert.equal(rate(print, 'TR'), 'TR:9.99 EUR:2:4:7:20');
-  assert.equal(rate(print, 'US'), 'US:17.99 EUR:2:4:7:20');
+  // US zones (2026-11-05): prints EUR 13.99 (orders under EUR 77).
+  assert.equal(rate(print, 'US'), 'US:13.99 EUR:2:4:7:20');
+  assert.equal(rate(print, 'CA'), 'CA:17.99 EUR:2:4:7:20');
   assert.equal(rate(print, 'IL'), 'IL:39.99 EUR:2:4:7:20');
   assert.equal(rate(print, 'KR'), undefined);
   // Postcards: letter post, EU only.
@@ -354,7 +356,7 @@ test('fixed lines carry checkout rates and the page promise', () => {
   // Framed (and framed Your Sky): no US delivery.
   assert.equal(rate(items['CM-FW-01-CFP16X20'], 'US'), undefined);
   assert.equal(rate(items['CM-SKY-8X10-NAT'], 'JP'), 'JP:29.99 EUR:2:4:7:20');
-  assert.equal(rate(items['CM-SKY-8X10-UNF'], 'US'), 'US:17.99 EUR:2:4:7:20');
+  assert.equal(rate(items['CM-SKY-8X10-UNF'], 'US'), 'US:13.99 EUR:2:4:7:20');
   assert.equal(rate(items['CM-POT-BLUSH'], 'DE'), 'DE:6.99 EUR:2:4:5:10');
   assert.equal(rate(items['CM-POT-BLUSH'], 'US'), undefined);
 });
@@ -546,4 +548,38 @@ test('the routes answer 503 rather than an empty feed, each for its market', () 
   assert.match(route('google-merchant-us'), /'fixed', 'US'\)/);
   assert.match(route('google-merchant-printful-us'), /'printful', 'US'\)/);
   assert.match(route('meta-country-us'), /'meta-country',\s+'US',?\s*\)/);
+});
+
+test('US zones: acrylic and metal pay the upper General rate, canvas its own', () => {
+  const catalog = [
+    product(
+      'the-great-wave-off-kanagawa-acrylic-print',
+      'The Great Wave off Kanagawa Acrylic Print',
+      'Acrylic Prints',
+      MUSEUM,
+      [variant('CM-FW-01-ACRY8X12', {Size: '8 × 12 in'}, '79.99')],
+    ),
+    product(
+      'stretched-canvas-art-16x20',
+      'Stretched Canvas Art',
+      'Canvas Art',
+      [STUDIO],
+      [variant('CM-QF-CAN-16X20', {Artwork: 'Quiet Form'}, '80.10')],
+    ),
+    CATALOG[0],
+  ];
+  const items = byId(merchantFeedTsv(merchantFeedRows(catalog, 'fixed')));
+  const acrylic = items['CM-FW-01-ACRY8X12'];
+  const print = items['CM-QF-01-8X10'];
+  assert.equal(rate(acrylic, 'US'), 'US:23.99 EUR:2:4:7:20');
+  assert.equal(rate(print, 'US'), 'US:13.99 EUR:2:4:7:20');
+  // Everywhere else acrylic keeps exactly the print rates.
+  assert.deepEqual(
+    acrylic.shipping.filter((c) => !c.startsWith('US:')),
+    print.shipping.filter((c) => !c.startsWith('US:')),
+  );
+  const canvas = items['CM-QF-CAN-16X20'];
+  assert.equal(rate(canvas, 'US'), 'US:23.99 EUR:2:4:7:20');
+  assert.equal(rate(canvas, 'JP'), 'JP:29.99 EUR:2:4:7:20');
+  assert.equal(rate(canvas, 'CY'), 'CY:3.99 EUR:2:4:5:10');
 });

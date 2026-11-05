@@ -12,8 +12,8 @@ import {
 // CZ/DK/HU/PL/RO/SE, nothing for BG/HR/MT), so each item carries its own.
 //
 // Rates are what checkout charges for one item (single-line Storefront carts,
-// 2026-10-29), per Shopify shipping profile: General (prints, hanger, acrylic
-// and metal prints, unframed Your Sky), "Canvas 16x20", "Framed Your Sky",
+// 2026-10-29; US zones 2026-11-05), per Shopify shipping profile: General
+// (prints, hanger, acrylic and metal prints, unframed Your Sky), "Canvas 16x20", "Framed Your Sky",
 // "Letter post - cards & postcards" (EU only) and "Pastel Forms plant pots".
 // A country missing from a table means that line does not ship there. When a
 // shipping profile changes in Shopify, change this table in the same PR.
@@ -52,20 +52,34 @@ export type Rates = {
 const except = (...left: string[]) =>
   FEED_INTERNATIONAL_COUNTRIES.filter((country) => !left.includes(country));
 
+// General profile, United States zone (owner, 2026-11-05: "Price-based
+// split"): EUR 13.99 on orders under EUR 77 and EUR 23.99 from EUR 77, so
+// acrylic and metal prints (from EUR 79.99; Prodigi ships them to the US for
+// EUR 22-23) pay their cost while prints and hangers (up to EUR 74.99) don't.
+// A one-item feed row lands on one side of the split, so the General lines
+// are two tables: `print` and `mounted` (acrylic, metal).
+const GENERAL_INTERNATIONAL = {
+  '9.99': ['NO', 'CH', 'TR'],
+  '17.99': except('NO', 'CH', 'TR', 'ID', 'IL', 'MY', 'US'),
+  '39.99': ['ID', 'IL', 'MY'],
+};
+
 export const FIXED_RATES = {
   print: {
     cyprus: '3.99',
     eu: '16.00',
-    international: {
-      '9.99': ['NO', 'CH', 'TR'],
-      '17.99': except('NO', 'CH', 'TR', 'ID', 'IL', 'MY'),
-      '39.99': ['ID', 'IL', 'MY'],
-    },
+    international: {...GENERAL_INTERNATIONAL, '13.99': ['US']},
+  },
+  mounted: {
+    cyprus: '3.99',
+    eu: '16.00',
+    international: {...GENERAL_INTERNATIONAL, '23.99': ['US']},
   },
   canvas: {
     cyprus: '3.99',
     eu: '16.00',
     international: {
+      '23.99': ['US'],
       '29.99': [
         'AU',
         'CA',
@@ -79,7 +93,6 @@ export const FIXED_RATES = {
         'SG',
         'TH',
         'TW',
-        'US',
         'VN',
       ],
     },
