@@ -1,9 +1,9 @@
 # US market status
 
-**Updated:** 2026-10-18  
+**Updated:** 2026-11-05  
 **Branch:** `claude/us-market`  
 **State:** A1 (country pin), A2 (US delivery wording) and A2b (no-duty wording) are **live on main** (#140, `e348c69`, deployed 2026-10-18). The read-only checks C1 and B4 are done, B1 (Prodigi US quotes) is done, and the US policy text is drafted (A6). Nothing has changed in Shopify, Prodigi or Merchant Center.  
-**Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
+**Current writer:** Claude Code `us-market` session (Windows PC), from 2026-11-05. Owner go-ahead relayed by the coordinator session on 2026-11-05: "USD prices, ship from US" and "launch the clothing line in full" (Counter-Diagonal). Scope: Printful clothing in the US, the A5 USD feeds (site + Printful) with `custom_label_0`, then the launch-bundle Admin steps.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
 
