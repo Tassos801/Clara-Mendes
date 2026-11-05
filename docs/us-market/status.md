@@ -43,9 +43,10 @@ Admin steps at the D2/D3/D7 settings already approved. Done so far:
 - **US checkout quotes in USD** (one-item carts):
   - Prodigi lines: print / hanger A3 $17, acrylic / metal / canvas $28, case $10.
   - Printful lines: hoodie / crew $8.79, tee / long sleeve $4.95, cap / tote $4.69, Quiet Current $6.
-- **Open (owner OK needed in session):**
-  1. Remove the US from the EUR site source 10788135803 (96 countries; the EUR Printful source has no US). Owner approved via the coordinator ("US sees USD only"), but this session's permission check needs it in session.
-  2. **General split threshold:** the large hanger 76×51 (EUR 74.99, $87) gets the upper $28 rate in USD. Shopify's order-amount test in USD lands the EUR 77 split between $77 and $87 (a $77 cart gets $17). Moving the split to EUR 79 keeps the approved intent: hangers ≤ 74.99 pay $17, acrylic/metal ≥ 79.99 pay $28. Until then the USD feed quotes hangers at $17 (keyed on the A3 variant), so the 76×51 hanger's feed rate is below checkout.
+- **Both open items done 2026-11-05** (owner in session: "Yes, do both"):
+  - Merchant Center EUR site source 10788135803: the US was removed (96 → 95 countries, nothing else changed). The EUR Printful source lists only the EU-26.
+  - General US split moved from EUR 77 to EUR 79: tier 1 EUR 0–78.99 → 13.99, tier 2 from EUR 79.00 → 23.99. Cause: in USD, Shopify placed the EUR 77 split between $77 and $87, so the $87 hanger 76×51 paid $28.
+  - US readback: hanger 76×51 ($86) $17; hanger A3, print 20×24 and two-print carts at $77 and $83 all $17; acrylic and metal $28.
 - **B3 done 2026-11-05** (owner in this session: "Price-based split", then
   "Yes, save them"). See B3 below for the zones and the checkout readback.
 - **Owner question answered** ("Price-based split"): acrylic, metal
@@ -382,7 +383,7 @@ test that asserts it.
   **Done 2026-11-05** in Admin, each profile saved ("Changes saved"):
   - General: the US left "Rest of world" (now 160 countries, EUR 17.99).
     New zone "United States", one Standard rate by order amount:
-    EUR 0–76.99 → EUR 13.99, from EUR 77 → EUR 23.99. Owner chose this
+    EUR 0–76.99 → EUR 13.99, from EUR 77 → EUR 23.99 (moved to EUR 79 the same day, see Stopped here). Owner chose this
     split because acrylic and metal (from EUR 79.99) cost EUR 22–23 to ship
     to the US; prints and hangers (up to EUR 74.99) cost up to EUR 13.68.
   - Canvas 16x20: the US left "Selected countries outside the EU" (17 left,
@@ -419,7 +420,7 @@ test that asserts it.
   markets, target countries, shipping services. Record it here.
   **Done 2026-10-18 (read-only):** see Evidence. The EUR file feeds already
   target the US, and app product sync is off.
-- [x] **C2 Add the US:** *USD sources registered 2026-11-05; US removal from the EUR source pending the owner's in-session OK.* a USD feed targeting the US (A5 route or a new TSV
+- [x] **C2 Add the US:** *Done 2026-11-05: USD sources registered, US removed from the EUR site source.* a USD feed targeting the US (A5 route or a new TSV
   `CLARA-PRINTS-USD`) and a US shipping service (B3 rates, 2–4 handling,
   7–15 transit). Then move the United States from the EUR feeds' country
   list to the USD feed. The listings move rather than disappear, but

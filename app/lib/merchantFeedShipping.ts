@@ -53,11 +53,13 @@ const except = (...left: string[]) =>
   FEED_INTERNATIONAL_COUNTRIES.filter((country) => !left.includes(country));
 
 // General profile, United States zone (owner, 2026-11-05: "Price-based
-// split"): EUR 13.99 on orders under EUR 77 and EUR 23.99 from EUR 77, so
+// split"): EUR 13.99 on orders under EUR 79 and EUR 23.99 from EUR 79, so
 // acrylic and metal prints (from EUR 79.99; Prodigi ships them to the US for
 // EUR 22-23) pay their cost while prints and hangers (up to EUR 74.99) don't.
-// A one-item feed row lands on one side of the split, so the General lines
-// are two tables: `print` and `mounted` (acrylic, metal).
+// The split was first EUR 77, but in the USD market Shopify placed it between
+// $77 and $87, so the $87 hanger paid the upper rate; EUR 79 fixed that
+// (owner OK the same day). A one-item feed row lands on one side of the
+// split, so the General lines are two tables: `print` and `mounted`.
 const GENERAL_INTERNATIONAL = {
   '9.99': ['NO', 'CH', 'TR'],
   '17.99': except('NO', 'CH', 'TR', 'ID', 'IL', 'MY', 'US'),
