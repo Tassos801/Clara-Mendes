@@ -168,8 +168,8 @@ const CATALOG = [
     [variant('CM-QC-121-MM-XS', {Colour: 'Moss / Mist', Size: 'XS'}, '55')],
   ),
   product(
-    'counter-diagonal-hoodie',
-    'Counter-Diagonal Hoodie',
+    'counter-diagonal-premium-hoodie',
+    'Counter-Diagonal Premium Hoodie',
     'Hoodies',
     ['clara-mendes-clothing', 'Counter-Diagonal', 'Made to order'],
     [
@@ -201,7 +201,7 @@ const EU_QUOTES = {
   'cushion-insert': '12.39',
   blanket: '6.55',
   'apparel:quiet-current-studio-tank': '4.95',
-  'apparel:counter-diagonal-hoodie': '6.71',
+  'apparel:counter-diagonal-premium-hoodie': '6.71',
   'apparel:counter-diagonal-cap': '4.59',
 };
 const PRINTFUL_EUR = {
@@ -256,8 +256,8 @@ test('the Printful feed lists mugs, cushions, blankets and listed clothing', () 
       ['CM-FW-01-CUSH18-C', 'cushion-cover', 'cushion-cover'],
       ['CM-FW-01-CUSH18-I', 'cushion-insert', 'cushion-insert'],
       ['CM-QC-121-MM-XS', 'apparel', 'apparel:quiet-current-studio-tank'],
-      ['CD-HOOD-M', 'apparel', 'apparel:counter-diagonal-hoodie'],
-      ['CD-HOOD-L', 'apparel', 'apparel:counter-diagonal-hoodie'],
+      ['CD-HOOD-M', 'apparel', 'apparel:counter-diagonal-premium-hoodie'],
+      ['CD-HOOD-L', 'apparel', 'apparel:counter-diagonal-premium-hoodie'],
       ['CD-CAP', 'apparel', 'apparel:counter-diagonal-cap'],
     ],
   );
@@ -268,11 +268,11 @@ test('clothing carries the apparel attributes and its capsule label', () => {
     merchantFeedTsv(merchantFeedRows(CATALOG, 'printful'), PRINTFUL_EUR),
   );
   const hoodie = items['CD-HOOD-M'];
-  assert.equal(hoodie.title, 'Counter-Diagonal Hoodie — M, Bone');
-  assert.equal(hoodie.item_group_id, 'counter-diagonal-hoodie');
+  assert.equal(hoodie.title, 'Counter-Diagonal Premium Hoodie — M, Bone');
+  assert.equal(hoodie.item_group_id, 'counter-diagonal-premium-hoodie');
   assert.equal(
     hoodie.link,
-    'https://shopclaramendes.com/products/counter-diagonal-hoodie?country=CY&Size=M&Color=Bone',
+    'https://shopclaramendes.com/products/counter-diagonal-premium-hoodie?country=CY&Size=M&Color=Bone',
   );
   assert.equal(hoodie.size, 'M');
   assert.equal(hoodie.color, 'Bone');
@@ -460,7 +460,7 @@ test('the USD feeds list the US only, at quoted US rates and ?country=US links',
         'cushion-cover': '5.49',
         'cushion-insert': '13.49',
         'apparel:quiet-current-studio-tank': '5.49',
-        'apparel:counter-diagonal-hoodie': '8.79',
+        'apparel:counter-diagonal-premium-hoodie': '8.79',
         'apparel:counter-diagonal-cap': '4.69',
       },
     }),
@@ -504,7 +504,7 @@ test('the Meta country feed overrides price, link and availability by id', () =>
     'CD-HOOD-M',
     'US',
     '58.49 USD',
-    'https://shopclaramendes.com/products/counter-diagonal-hoodie?country=US&Size=M&Color=Bone',
+    'https://shopclaramendes.com/products/counter-diagonal-premium-hoodie?country=US&Size=M&Color=Bone',
     'in stock',
   ]);
   // Not for sale in the US market: listed, but out of stock for US viewers.

@@ -123,6 +123,28 @@ export type ClothingCatalogQuery = {
   };
 };
 
+export type ClothingShippingQuoteMutationVariables = StorefrontAPI.Exact<{
+  input: StorefrontAPI.CartInput;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+}>;
+
+export type ClothingShippingQuoteMutation = {
+  cartCreate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<{
+      deliveryGroups: {
+        nodes: Array<{
+          deliveryOptions: Array<{
+            estimatedCost: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          }>;
+        }>;
+      };
+    }>;
+  }>;
+};
+
 export type DefaultMarketProductAvailabilityQueryVariables =
   StorefrontAPI.Exact<{
     country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
@@ -3491,6 +3513,10 @@ interface GeneratedQueryTypes {
 }
 
 interface GeneratedMutationTypes {
+  '#graphql\n  mutation ClothingShippingQuote($input: CartInput!, $country: CountryCode)\n  @inContext(country: $country) {\n    cartCreate(input: $input) {\n      cart {\n        deliveryGroups(first: 5) {\n          nodes {\n            deliveryOptions {\n              estimatedCost {\n                amount\n                currencyCode\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: ClothingShippingQuoteMutation;
+    variables: ClothingShippingQuoteMutationVariables;
+  };
   '#graphql\n  mutation FeedQuoteCreate(\n    $input: CartInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        ...FeedQuoteCart\n      }\n      userErrors {\n        message\n      }\n    }\n  }\n  #graphql\n  fragment FeedQuoteCart on Cart {\n    id\n    lines(first: 1) {\n      nodes {\n        id\n      }\n    }\n    deliveryGroups(first: 5) {\n      nodes {\n        deliveryOptions {\n          estimatedCost {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n': {
     return: FeedQuoteCreateMutation;
     variables: FeedQuoteCreateMutationVariables;

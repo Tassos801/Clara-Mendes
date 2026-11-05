@@ -14,6 +14,36 @@ Operator steps: [Clothing destination guide](../../clothing-destination.md).
 Before/after map and prepared Shopify changes:
 [Catalogue audit](../../audits/clothing-catalog-2026-10-08.md).
 
+## Counter-Diagonal (2026-11-05)
+
+- The second capsule, `counter-diagonal`: one design "Inspired by Theo van
+  Doesburg" (never "Art by") on hoodies, a crewneck, tees, a long sleeve, a
+  cap, a beanie and a tote, made by Printful. It is the line advertised in
+  New York, so it leads `/clothing`: the hero (copy names only the garment
+  kinds on sale), the default "Featured" sort (its pieces first, in garment
+  order), the capsule filter and its own section with the credit line.
+  Quiet Current keeps its section and colourway chooser after it.
+- Categories now: Hoodies, Sweatshirts, T-shirts, Long sleeves, Tops,
+  Leggings, Bras, Shorts, ..., Accessories (Hats, Caps, Beanies, Tote Bags).
+  The museum Art Canvas Tote is typed "Bags" and is not clothing.
+- `KNOWN_CLOTHING_CAPSULES` in `app/lib/clothing.ts` (`counter-diagonal`,
+  `quiet-current`) count as capsules by handle; others need
+  `custom.collection_kind`. The products must be in the `counter-diagonal`
+  collection, published to the channel, for the capsule to lead.
+- Line pieces list through the future-garment path (type or tag plus both
+  approval metafields). `counter-diagonal-hoodie` (AOP) and
+  `counter-diagonal-classic-hoodie` are `false` in `PRODUCT_RELEASE_FLAGS`,
+  so they never list even if published.
+- PDP: `quotesClothingShipping` / `quoteClothingShipping`
+  (`app/lib/clothingShipping*.ts`) price one piece to the buyer's country
+  with a throwaway cart (no checkout), cached an hour per piece and country;
+  `ClothingShippingQuoteLine` shows it in the market's currency. No fixed
+  table: Printful's profiles set the rates (USD, converted daily). No
+  delivery window yet (no verified Printful source in the repo).
+- `/collections/counter-diagonal` has its own hero. Page art:
+  `scripts/build-counter-diagonal-art.mjs` (plain JPEG / palette PNG).
+- Tests: `scripts/counterDiagonalStorefront.node-test.mjs`.
+
 ## How It Works
 
 - Classification is merchant-owned. A product is clothing if its product type

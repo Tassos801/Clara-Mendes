@@ -1,12 +1,43 @@
-import {clothingCategory, clothingCapsules} from './clothing.ts';
+import {
+  clothingCategory,
+  clothingCapsules,
+  clothingCapsuleRank,
+  clothingCategoryRank,
+} from './clothing.ts';
 import type {ClothingProduct} from './clothing.server';
 
 export const CLOTHING_PAGE_SIZE = 12;
 export const CLOTHING_SORTS = [
+  {value: 'featured', label: 'Featured'},
   {value: 'newest', label: 'Newest first'},
   {value: 'price-asc', label: 'Price: low to high'},
   {value: 'price-desc', label: 'Price: high to low'},
 ] as const;
+export const DEFAULT_CLOTHING_SORT = 'featured';
+
+/** The best-ranked capsule a piece belongs to (lead capsule = 0). */
+function capsuleRankOf(product: ClothingProduct) {
+  return Math.min(
+    clothingCapsuleRank(null),
+    ...product.collections.nodes.map((item) => clothingCapsuleRank(item.handle)),
+  );
+}
+
+/**
+ * Featured order: the lead capsule's pieces first, then the next capsule's,
+ * each in garment order (hoodies, sweatshirts, tees, long sleeves, ...,
+ * accessories), newest first within a kind. Products arrive newest first,
+ * and Array.prototype.sort is stable, so ties keep that order.
+ */
+export function featuredClothingOrder<T extends ClothingProduct>(
+  products: T[],
+): T[] {
+  return [...products].sort(
+    (a, b) =>
+      capsuleRankOf(a) - capsuleRankOf(b) ||
+      clothingCategoryRank(a) - clothingCategoryRank(b),
+  );
+}
 
 export function selectClothing(
   products: ClothingProduct[],
@@ -16,14 +47,15 @@ export function selectClothing(
   const capsule = params.get('capsule') || '';
   const sort = CLOTHING_SORTS.some((item) => item.value === params.get('sort'))
     ? params.get('sort')!
-    : 'newest';
-  const filtered = products.filter(
+    : DEFAULT_CLOTHING_SORT;
+  let filtered = products.filter(
     (product) =>
       (!category || clothingCategory(product)?.slug === category) &&
       (!capsule ||
         product.collections.nodes.some((item) => item.handle === capsule)),
   );
-  if (sort !== 'newest') {
+  if (sort === 'featured') filtered = featuredClothingOrder(filtered);
+  else if (sort !== 'newest') {
     const price = (product: ClothingProduct) =>
       Number(clothingDisplayPrice(product)?.amount ?? 0);
     filtered.sort(
@@ -122,7 +154,22 @@ export function showClothingTools(total: number) {
   return total >= CLOTHING_TOOLS_MIN_PRODUCTS;
 }
 
-const SIZE_ORDER = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', '2XL', '3XL', '4XL'];
+const SIZE_ORDER = [
+  'XXS',
+  '2XS',
+  'XS',
+  'S',
+  'M',
+  'L',
+  'XL',
+  'XXL',
+  '2XL',
+  'XXXL',
+  '3XL',
+  '4XL',
+  '5XL',
+  '6XL',
+];
 
 /** "XS–XL" when the offered sizes are a known run; null when unknown or mixed. */
 export function clothingSizeRange(products: ClothingProduct[]) {
@@ -160,7 +207,55 @@ export type ClothingLookPiece = {
 
 export type ClothingLook = {colour: string; pieces: ClothingLookPiece[]};
 
-const UPPER_BODY = new Set(['outerwear', 'knitwear', 'tops', 'bras', 'dresses', 'one-pieces']);
+const UPPER_BODY = new Set([
+  'outerwear',
+  'knitwear',
+  'hoodies',
+  'sweatshirts',
+  't-shirts',
+  'long-sleeves',
+  'tops',
+  'bras',
+  'dresses',
+  'one-pieces',
+]);
+
+/** How the page names each garment type in running text. */
+const GARMENT_NOUNS: Record<string, string> = {
+  hoodies: 'hoodies',
+  hoodie: 'hoodies',
+  sweatshirts: 'sweatshirts',
+  sweatshirt: 'sweatshirts',
+  't-shirts': 'tees',
+  't-shirt': 'tees',
+  'long sleeve shirts': 'long sleeves',
+  'long sleeve shirt': 'long sleeves',
+  'long sleeve t-shirts': 'long sleeves',
+  hats: 'hats',
+  caps: 'caps',
+  beanies: 'beanies',
+  'tote bags': 'totes',
+};
+
+/**
+ * "hoodies, sweatshirts, tees and totes": the kinds of garment these pieces
+ * really are, in page order, so the copy never names a piece that is not
+ * on sale. Null for types without a running-text name.
+ */
+export function clothingGarmentPhrase(products: ClothingProduct[]) {
+  const order = [...new Set(Object.values(GARMENT_NOUNS))];
+  const nouns: string[] = [];
+  for (const product of products) {
+    const noun = GARMENT_NOUNS[product.productType?.trim().toLowerCase() ?? ''];
+    if (!noun) return null;
+    if (!nouns.includes(noun)) nouns.push(noun);
+  }
+  nouns.sort((a, b) => order.indexOf(a) - order.indexOf(b));
+  if (!nouns.length) return null;
+  return nouns.length === 1
+    ? nouns[0]
+    : `${nouns.slice(0, -1).join(', ')} and ${nouns.at(-1)}`;
+}
 
 /**
  * Coordinated looks: colourways shared by two or more pieces, each shown
