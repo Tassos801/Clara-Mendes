@@ -1,4 +1,5 @@
 import {isFeaturePageHandle} from './catalogFilters.ts';
+import {MARKET_URL_PARAM, normalizeMarketCountry} from './markets.ts';
 // v4 starts fresh after the catalog repricing so previously saved prices
 // cannot appear in the recently viewed rail.
 export const RECENTLY_VIEWED_STORAGE_KEY = 'cm:recently-viewed:v4';
@@ -11,6 +12,22 @@ export function recentlyViewedProductIds(ids: string[]) {
       ids.filter((id) => /^gid:\/\/shopify\/Product\/[0-9]+$/.test(id)),
     ),
   ].slice(0, MAX_ENTRIES);
+}
+
+/**
+ * The rail's Storefront read. It carries the page's market as the
+ * `?country=` pin, so a visitor on a `?country=US` link (or any page whose
+ * market differs from their saved one) sees the rail in that page's
+ * currency, not their own (docs/us-market).
+ */
+export function recentlyViewedRequestUrl(
+  ids: string[],
+  country?: string | null,
+) {
+  const params = new URLSearchParams(ids.map((id) => ['id', id]));
+  const market = normalizeMarketCountry(country);
+  if (market) params.set(MARKET_URL_PARAM, market);
+  return `/api/recently-viewed?${params}`;
 }
 
 export type RecentlyViewedEntry = {

@@ -103,3 +103,23 @@ test('records and reads released-floor snapshots under the v4 key', () => {
     [{amount: '29.99', handle: 'quiet-form-i-art-print', hasPriceRange: true}],
   );
 });
+
+test('the rail reads the page market, so a ?country=US page gets USD', async () => {
+  const {recentlyViewedRequestUrl} = await import('../app/lib/recentlyViewed.ts');
+  const {getLocaleFromRequest} = await import('../app/lib/markets.ts');
+  const ids = ['gid://shopify/Product/1', 'gid://shopify/Product/2'];
+  const us = recentlyViewedRequestUrl(ids, 'US');
+  assert.equal(
+    us,
+    '/api/recently-viewed?id=gid%3A%2F%2Fshopify%2FProduct%2F1&id=gid%3A%2F%2Fshopify%2FProduct%2F2&country=US',
+  );
+  // The API resolves its market from that pin, whatever the visitor's own.
+  const request = new Request(`https://shopclaramendes.com${us}`, {
+    headers: {'oxygen-buyer-country': 'CY'},
+  });
+  assert.equal(getLocaleFromRequest(request, 'CY').country, 'US');
+  assert.match(recentlyViewedRequestUrl(ids, 'cy'), /&country=CY$/);
+  // No (or an unknown) page market: the visitor's own market, as before.
+  assert.doesNotMatch(recentlyViewedRequestUrl(ids, null), /country=/);
+  assert.doesNotMatch(recentlyViewedRequestUrl(ids, 'ZZ'), /country=/);
+});
