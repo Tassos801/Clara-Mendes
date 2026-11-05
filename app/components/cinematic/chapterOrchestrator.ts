@@ -1,114 +1,144 @@
 /**
  * Scroll orchestration for the cinematic experience.
  *
- * Scans the DOM for `[data-chapter]` sections and wires GSAP ScrollTriggers
- * that (a) retarget the painted background palette as chapters cross the
- * viewport midpoint and (b) reveal `[data-reveal]` children with a staggered
- * rise/fade, once per page visit. Framework-free so it can be re-run on
- * every client-side navigation and fully reverted in between.
+ * Scans the DOM for `[data-chapter]` sections and (a) retargets the painted
+ * background palette while a chapter crosses the viewport's middle band and
+ * (b) reveals its `[data-reveal]` children with a staggered rise/fade, once
+ * per page visit. Built on IntersectionObserver and the Web Animations API,
+ * so it needs no scroll library and no layout reads while scrolling.
+ * Framework-free so it can be re-run on every client-side navigation and
+ * fully reverted in between.
  */
 import {DEFAULT_PALETTE, isPaletteName, type PaletteName} from './paintedShader';
 
-type Gsap = typeof import('gsap').gsap;
-type ScrollTriggerStatic = typeof import('gsap/ScrollTrigger').ScrollTrigger;
-
 type OrchestratorOptions = {
-  gsap: Gsap;
-  ScrollTrigger: ScrollTriggerStatic;
   setTargetPalette: (palette: PaletteName) => void;
-  reduceMotion: boolean;
+};
+
+export type ScanOptions = {
+  /**
+   * False when booting partway through a visit: chapters the visitor has
+   * already reached keep their content as it is instead of hiding it and
+   * rising it in again. Navigations scan with the default (true).
+   */
+  revealOnScreen?: boolean;
 };
 
 export type ChapterOrchestrator = {
-  /** Rebuild triggers for the current DOM. Call after each navigation. */
-  scan: () => void;
+  /** Rebuild observers for the current DOM. Call after each navigation. */
+  scan: (options?: ScanOptions) => void;
   destroy: () => void;
 };
 
+/** A chapter's palette applies while it crosses the 45%–55% band. */
+const PALETTE_BAND = '-45% 0px -45% 0px';
+
+/**
+ * Reveals start when a chapter's top passes 78% of the viewport height.
+ * The root reaches far above the viewport so a chapter skipped past (an
+ * anchor jump, a fast fling) still counts as entered and is revealed.
+ */
+const REVEAL_LINE = '100000px 0px -22% 0px';
+/** The same line as a fraction of the viewport height, for the boot check. */
+const REVEAL_LINE_FRACTION = 0.78;
+
+const REVEAL_KEYFRAMES: Keyframe[] = [
+  {opacity: 0, visibility: 'hidden', translate: '0 28px'},
+  {opacity: 1, visibility: 'visible', translate: '0 0'},
+];
+/** GSAP's power3.out, the curve the reveals were tuned with. */
+const REVEAL_EASING = 'cubic-bezier(0.25, 1, 0.5, 1)';
+const REVEAL_DURATION_MS = 1100;
+const REVEAL_STAGGER_MS = 100;
+
 export function createChapterOrchestrator({
-  gsap,
-  ScrollTrigger,
   setTargetPalette,
-  reduceMotion,
 }: OrchestratorOptions): ChapterOrchestrator {
-  let ctx: ReturnType<typeof gsap.context> | null = null;
-  let refreshTimer: ReturnType<typeof setTimeout> | null = null;
-  let lastScrollAt = 0;
+  let paletteObserver: IntersectionObserver | null = null;
+  let revealObserver: IntersectionObserver | null = null;
+  let animations: Animation[] = [];
 
-  const onAnyScroll = () => {
-    lastScrollAt = Date.now();
+  const revert = () => {
+    paletteObserver?.disconnect();
+    revealObserver?.disconnect();
+    paletteObserver = null;
+    revealObserver = null;
+    for (const animation of animations) animation.cancel();
+    animations = [];
   };
-  window.addEventListener('scroll', onAnyScroll, {passive: true});
 
-  // Infinite scroll appends products and changes the page height; keep
-  // trigger positions honest without rebuilding anything. The refresh is a
-  // forced layout pass over the whole page, so it must never land while a
-  // fling is in progress — a main-thread stall mid-momentum reads as the
-  // scroll "stopping dead". Wait for 300ms of scroll silence first.
-  const scheduleRefresh = () => {
-    if (refreshTimer) clearTimeout(refreshTimer);
-    refreshTimer = setTimeout(() => {
-      refreshTimer = null;
-      if (Date.now() - lastScrollAt < 300) {
-        scheduleRefresh();
-        return;
-      }
-      ScrollTrigger.refresh();
-    }, 300);
-  };
-  const observer = new MutationObserver(scheduleRefresh);
-
-  const scan = () => {
-    ctx?.revert();
+  const scan = ({revealOnScreen = true}: ScanOptions = {}) => {
+    revert();
     setTargetPalette(DEFAULT_PALETTE);
 
-    ctx = gsap.context(() => {
-      const chapters = Array.from(
-        document.querySelectorAll<HTMLElement>('[data-chapter]'),
-      );
+    const chapters = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-chapter]'),
+    );
+    if (chapters.length === 0) return;
 
-      for (const chapter of chapters) {
-        const palette = chapter.dataset.chapter;
-        if (isPaletteName(palette)) {
-          ScrollTrigger.create({
-            trigger: chapter,
-            start: 'top 55%',
-            end: 'bottom 45%',
-            onEnter: () => setTargetPalette(palette),
-            onEnterBack: () => setTargetPalette(palette),
-          });
+    const pending = new Map<Element, Animation[]>();
+
+    paletteObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const palette = (entry.target as HTMLElement).dataset.chapter;
+          if (entry.isIntersecting && isPaletteName(palette)) {
+            setTargetPalette(palette);
+          }
         }
+      },
+      {rootMargin: PALETTE_BAND},
+    );
 
-        if (reduceMotion) continue;
-
-        const reveals = chapter.querySelectorAll<HTMLElement>('[data-reveal]');
-        if (reveals.length > 0) {
-          gsap.from(reveals, {
-            y: 28,
-            autoAlpha: 0,
-            duration: 1.1,
-            ease: 'power3.out',
-            stagger: 0.1,
-            scrollTrigger: {
-              trigger: chapter,
-              start: 'top 78%',
-              once: true,
-            },
-          });
+    revealObserver = new IntersectionObserver(
+      (entries, observer) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          observer.unobserve(entry.target);
+          for (const animation of pending.get(entry.target) ?? []) {
+            animation.play();
+          }
+          pending.delete(entry.target);
         }
+      },
+      {rootMargin: REVEAL_LINE},
+    );
+
+    for (const chapter of chapters) {
+      if (isPaletteName(chapter.dataset.chapter)) {
+        paletteObserver.observe(chapter);
       }
-    });
-  };
 
-  observer.observe(document.body, {childList: true, subtree: true});
+      const reveals = chapter.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (reveals.length === 0) continue;
+      if (
+        !revealOnScreen &&
+        chapter.getBoundingClientRect().top <
+          window.innerHeight * REVEAL_LINE_FRACTION
+      ) {
+        continue;
+      }
+
+      // Paused at time zero, the backwards fill holds each child hidden and
+      // lowered until its chapter enters; finished, nothing stays inline.
+      const chapterAnimations = Array.from(reveals, (element, index) => {
+        const animation = element.animate(REVEAL_KEYFRAMES, {
+          delay: index * REVEAL_STAGGER_MS,
+          duration: REVEAL_DURATION_MS,
+          easing: REVEAL_EASING,
+          fill: 'backwards',
+        });
+        animation.pause();
+        return animation;
+      });
+      animations.push(...chapterAnimations);
+      pending.set(chapter, chapterAnimations);
+      revealObserver.observe(chapter);
+    }
+  };
 
   return {
     scan,
-    destroy: () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', onAnyScroll);
-      if (refreshTimer) clearTimeout(refreshTimer);
-      ctx?.revert();
-    },
+    destroy: revert,
   };
 }

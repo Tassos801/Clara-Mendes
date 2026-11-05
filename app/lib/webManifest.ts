@@ -6,6 +6,8 @@
  * Icons (and /favicon.ico): node scripts/build-app-icons.mjs
  */
 
+import {BRAND} from '../content/brand.ts';
+
 /** Warm stone, the page background (--color-page), so the launch screen matches the site. */
 export const APP_BACKGROUND_COLOR = '#D6CCBB';
 export const APP_THEME_COLOR = '#D6CCBB';
@@ -19,8 +21,7 @@ export function webManifest() {
     id: '/',
     name: APP_NAME,
     short_name: APP_NAME,
-    description:
-      'Original art and museum prints, clothing, phone cases, plant pots and book nooks.',
+    description: BRAND.seo.manifestDescription,
     start_url: '/',
     scope: '/',
     display: 'standalone',

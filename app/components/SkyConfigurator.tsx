@@ -76,7 +76,7 @@ const DETAIL_HINTS: Record<SkyDetail, string> = {
 };
 
 /** An empty sage wall from the story page; the print is placed on it to scale. */
-const WALL_ROOM_SRC = '/images/backdrops/our-story-light.jpg';
+const WALL_ROOM_SRC = '/images/backdrops/our-story-light.w2560.jpg';
 
 const PREVIEW_LABELS: Record<SkyPreviewStatus, string> = {
   example: 'Example',
@@ -976,10 +976,10 @@ export function SkyConfigurator({
               <img
                 alt=""
                 aria-hidden="true"
-                height={400}
+                height={300}
                 loading="lazy"
-                src={`/images/your-sky/swatch-${layout}-${id}.webp`}
-                width={320}
+                src={`/images/your-sky/swatch-${layout}-${id}.w240.jpg`}
+                width={240}
               />
               <span>{SKY_THEME_LABELS[id]}</span>
             </button>
@@ -1005,10 +1005,10 @@ export function SkyConfigurator({
               <img
                 alt=""
                 aria-hidden="true"
-                height={400}
+                height={300}
                 loading="lazy"
-                src={`/images/your-sky/swatch-${id}-${theme}.webp`}
-                width={320}
+                src={`/images/your-sky/swatch-${id}-${theme}.w240.jpg`}
+                width={240}
               />
               <span>{SKY_LAYOUT_LABELS[id]}</span>
             </button>

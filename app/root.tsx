@@ -7,6 +7,7 @@ import {
   ScrollRestoration,
   useLoaderData,
   useRouteError,
+  useRouteLoaderData,
 } from 'react-router';
 import {
   Analytics,
@@ -17,10 +18,13 @@ import {
 import type {Route} from './+types/root';
 import favicon from '~/assets/favicon.svg';
 import {ClaraShell} from '~/components/ClaraShell';
+import {CustomerPrivacyApiFallback} from '~/components/CustomerPrivacyApiFallback';
 import {GoogleCommerceAnalytics} from '~/components/GoogleCommerceAnalytics';
+import {MetaPixelAnalytics} from '~/components/MetaPixelAnalytics';
 import {MarketingAttributionCapture} from '~/components/MarketingAttribution';
 import {getCartOrNull} from '~/lib/cart';
 import {normalizeGtmContainerId} from '~/lib/googleCommerce';
+import {normalizeMetaPixelId} from '~/lib/metaPixel';
 import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
@@ -115,6 +119,10 @@ export async function loader({context, request}: Route.LoaderArgs) {
       language: storefront.i18n.language,
     },
     gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
+    metaPixelId: normalizeMetaPixelId(env.PUBLIC_META_PIXEL_ID),
+    newsletter: {
+      welcomeCode: env.NEWSLETTER_WELCOME_CODE?.trim() || null,
+    },
   };
 }
 
@@ -130,8 +138,10 @@ export default function App() {
       consent={data.consent}
       shop={data.shop}
     >
+      <CustomerPrivacyApiFallback />
       <MarketingAttributionCapture />
       <GoogleCommerceAnalytics containerId={data.gtmContainerId} />
+      <MetaPixelAnalytics pixelId={data.metaPixelId} />
       <ClaraShell cart={data.cart}>
         <Outlet />
       </ClaraShell>
@@ -158,14 +168,22 @@ export function ErrorBoundary() {
     detail = error.message;
   }
 
-  return (
-    <main className="error-page">
+  const page = (
+    <div className="error-page">
       <p className="eyebrow">Clara Mendes</p>
       <h1>{title}</h1>
       <p>{detail}</p>
       <a className="text-link" href="/collections/all">
         Back to the shop
       </a>
-    </main>
+    </div>
   );
+
+  // A 404 from a child route still has the root data, so it gets the
+  // normal header, footer and menus instead of a dead end. When the root
+  // loader itself failed there is no cart to hand the shell, so the bare
+  // page stands alone.
+  const rootData = useRouteLoaderData<typeof loader>('root');
+  if (!rootData) return <main>{page}</main>;
+  return <ClaraShell cart={rootData.cart}>{page}</ClaraShell>;
 }

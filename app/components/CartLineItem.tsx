@@ -16,6 +16,7 @@ import {CartFormError} from './CartFormError';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
 import {GIFT_NOTE_KEY} from '~/lib/sky/gift';
+import {storefrontImageLoader} from '~/lib/imageLoader';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {
   curatedDisplayTitle,
@@ -220,6 +221,7 @@ export function CartLineItem({
               aspectRatio="4/5"
               className="cart-line-image"
               data={image}
+              loader={storefrontImageLoader}
               loading="lazy"
               sizes="88px"
               width={176}

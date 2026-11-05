@@ -1,63 +1,80 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {useLocation} from 'react-router';
-import {
-  buildPaintFragmentShader,
-  DEFAULT_PALETTE,
-  PAINT_VERTEX_SHADER,
-  PALETTES,
-  type PaletteName,
-} from './paintedShader';
-import {
-  createChapterOrchestrator,
-  type ChapterOrchestrator,
-} from './chapterOrchestrator';
+import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
+import type {CinematicHandle} from './cinematicExperience';
+
+const FIRST_INTERACTION_EVENTS = [
+  'pointermove',
+  'pointerdown',
+  'touchstart',
+  'wheel',
+  'keydown',
+  'scroll',
+] as const;
 
 /**
  * Boots the sitewide cinematic experience as a progressive enhancement:
  * a persistent painted WebGL background (cursor + scroll reactive, palette
- * lerped per chapter), Lenis smooth scrolling, and GSAP ScrollTrigger
- * chapter reveals. Everything loads via dynamic import after hydration is
- * idle, and only when the visitor has not requested reduced motion, the
- * device is not memory/data constrained, and WebGL is available — otherwise
- * no cinematic code is downloaded and the site renders on its CSS fallback
- * backgrounds exactly as designed.
+ * lerped per chapter), Lenis smooth scrolling, and chapter reveals.
+ * Everything loads via dynamic import once the page has loaded and the
+ * visitor first interacts (creating a WebGL context costs the main thread
+ * ~200 ms on a cold start, so it stays out of page load), and only when the
+ * visitor has not requested reduced motion and the device is not
+ * memory/data constrained; without WebGL it stops before drawing — either
+ * way the site renders on its CSS fallback backgrounds exactly as designed.
  */
 export function CinematicProvider({children}: {children: React.ReactNode}) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const scanRef = useRef<ChapterOrchestrator['scan'] | null>(null);
+  const scanRef = useRef<CinematicHandle['scan'] | null>(null);
   const location = useLocation();
+  const pageLoaded = useAfterPageLoad();
+  const [interacted, setInteracted] = useState(false);
+
+  // The background is decoration: it waits for the visitor's first scroll,
+  // touch, mouse move or key press after the page has loaded, so a visitor
+  // who only reads the first screen never pays for a WebGL start.
+  useEffect(() => {
+    if (!pageLoaded || interacted) return;
+    const onFirstInteraction = () => setInteracted(true);
+    for (const type of FIRST_INTERACTION_EVENTS) {
+      window.addEventListener(type, onFirstInteraction, {passive: true});
+    }
+    return () => {
+      for (const type of FIRST_INTERACTION_EVENTS) {
+        window.removeEventListener(type, onFirstInteraction);
+      }
+    };
+  }, [pageLoaded, interacted]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    if (!canvas || !interacted) return;
 
     let destroyed = false;
     let cleanup: (() => void) | null = null;
 
-    const idleId = whenIdle(() => {
-      boot(canvas)
-        .then((handle) => {
-          if (!handle) return;
-          if (destroyed) {
-            handle.destroy();
-            return;
-          }
-          cleanup = handle.destroy;
-          scanRef.current = handle.scan;
-          handle.scan();
-        })
-        .catch((error) => {
-          console.warn('Cinematic experience disabled:', error);
-        });
-    });
+    boot(canvas)
+      .then((handle) => {
+        if (!handle) return;
+        if (destroyed) {
+          handle.destroy();
+          return;
+        }
+        cleanup = handle.destroy;
+        scanRef.current = handle.scan;
+        // Booting mid-visit: what is already on screen stays as it is.
+        handle.scan({revealOnScreen: false});
+      })
+      .catch((error) => {
+        console.warn('Cinematic experience disabled:', error);
+      });
 
     return () => {
       destroyed = true;
-      cancelIdle(idleId);
       scanRef.current = null;
       cleanup?.();
     };
-  }, []);
+  }, [interacted]);
 
   // Rebuild chapter triggers after every client-side navigation, once the
   // new route's DOM has painted.
@@ -77,17 +94,14 @@ export function CinematicProvider({children}: {children: React.ReactNode}) {
   );
 }
 
-type BootHandle = {
-  scan: ChapterOrchestrator['scan'];
-  destroy: () => void;
-};
-
 /**
- * Gates the ~190 kB gzip (Three.js + GSAP + Lenis) cinematic download.
- * Reduced-motion visitors and constrained devices keep the CSS paper
- * fallback the layouts are designed over — no cinematic code is fetched.
+ * Gates the cinematic download (~10 kB gzip: Lenis, the WebGL paint and the
+ * chapter observers). Reduced-motion visitors and constrained devices keep
+ * the CSS paper fallback the layouts are designed over — no cinematic code
+ * is fetched. Reduced-motion visitors never boot, so chapter reveals can
+ * always animate once it runs.
  */
-function canBootCinematic(canvas: HTMLCanvasElement) {
+function canBootCinematic() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return false;
   }
@@ -101,200 +115,13 @@ function canBootCinematic(canvas: HTMLCanvasElement) {
     .deviceMemory;
   if (deviceMemory != null && deviceMemory < 2) return false;
 
-  // Probe WebGL support before paying for the Three.js chunk
-  try {
-    const probe = document.createElement('canvas');
-    const gl =
-      probe.getContext('webgl2') ??
-      probe.getContext('webgl') ??
-      probe.getContext('experimental-webgl');
-    if (!gl) return false;
-  } catch {
-    return false;
-  }
-
-  return Boolean(canvas);
+  return true;
 }
 
-async function boot(canvas: HTMLCanvasElement): Promise<BootHandle | null> {
+async function boot(canvas: HTMLCanvasElement): Promise<CinematicHandle | null> {
   if (typeof window === 'undefined') return null;
-  if (!canBootCinematic(canvas)) return null;
+  if (!canBootCinematic()) return null;
 
-  const [THREE, {gsap}, {ScrollTrigger}, {default: Lenis}] = await Promise.all([
-    import('three'),
-    import('gsap'),
-    import('gsap/ScrollTrigger'),
-    import('lenis'),
-  ]);
-
-  gsap.registerPlugin(ScrollTrigger);
-  // The mobile URL bar collapsing during a downward flick fires a resize;
-  // ScrollTrigger's default response is a full refresh mid-fling, which
-  // stalls the main thread and interrupts native scroll momentum.
-  ScrollTrigger.config({ignoreMobileResize: true});
-
-  // --- Painted background -------------------------------------------------
-  const renderer = new THREE.WebGLRenderer({
-    canvas,
-    antialias: false,
-    powerPreference: 'low-power',
-  });
-  // On phones the paint renders at reduced resolution and is CSS-stretched;
-  // the marbled texture has no hard edges, so the upscale is invisible while
-  // fragment cost drops with the square of the ratio.
-  const coarsePointer = window.matchMedia('(pointer: coarse)').matches;
-  const maxDpr = coarsePointer ? 0.75 : 1.5;
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  const startColors = PALETTES[DEFAULT_PALETTE].map(
-    (hex) => new THREE.Color(hex),
-  );
-  const targetColors = PALETTES[DEFAULT_PALETTE].map(
-    (hex) => new THREE.Color(hex),
-  );
-
-  const uniforms = {
-    uTime: {value: 0},
-    uResolution: {
-      value: new THREE.Vector2(window.innerWidth, window.innerHeight),
-    },
-    uPointer: {value: new THREE.Vector2(0.5, 0.5)},
-    uScrollVel: {value: 0},
-    uColorA: {value: startColors[0].clone()},
-    uColorB: {value: startColors[1].clone()},
-    uColorC: {value: startColors[2].clone()},
-  };
-
-  const scene = new THREE.Scene();
-  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  const material = new THREE.ShaderMaterial({
-    uniforms,
-    vertexShader: PAINT_VERTEX_SHADER,
-    fragmentShader: buildPaintFragmentShader(coarsePointer ? 3 : 4),
-    depthTest: false,
-    depthWrite: false,
-  });
-  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
-  scene.add(mesh);
-  canvas.classList.add('is-active');
-
-  const setTargetPalette = (palette: PaletteName) => {
-    const [a, b, c] = PALETTES[palette];
-    targetColors[0].set(a);
-    targetColors[1].set(b);
-    targetColors[2].set(c);
-  };
-
-  // Pointer: spring-damped toward the cursor; slow autonomous drift on touch.
-  const pointerTarget = {x: 0.5, y: 0.5};
-  const onPointerMove = (event: MouseEvent) => {
-    pointerTarget.x = event.clientX / window.innerWidth;
-    pointerTarget.y = 1 - event.clientY / window.innerHeight;
-  };
-  if (!coarsePointer) {
-    window.addEventListener('mousemove', onPointerMove, {passive: true});
-  }
-
-  // URL-bar show/hide fires height-only resizes on phones; reallocating
-  // the framebuffer for those mid-scroll is a visible hitch. The canvas is
-  // a soft background, so a briefly stale height is invisible — real
-  // orientation/layout changes always change the width too.
-  let lastResizeWidth = window.innerWidth;
-  const onResize = () => {
-    if (coarsePointer && window.innerWidth === lastResizeWidth) return;
-    lastResizeWidth = window.innerWidth;
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
-  };
-  window.addEventListener('resize', onResize);
-
-  // --- Smooth scroll --------------------------------------------------------
-  let scrollVelTarget = 0;
-
-  const lenis = new Lenis({lerp: 0.1});
-  lenis.on('scroll', (instance: {velocity: number}) => {
-    ScrollTrigger.update();
-    scrollVelTarget = Math.max(-1, Math.min(1, instance.velocity / 60));
-  });
-  gsap.ticker.lagSmoothing(0);
-
-  // --- Render loop (one ticker drives Lenis + shader) -----------------------
-  // On phones the background renders every other frame (~30fps): the drift
-  // is slow enough that the halved cadence is imperceptible, and the freed
-  // GPU time goes to scroll compositing. Lenis always ticks at full rate so
-  // scrolling itself never slows.
-  let skipPaintFrame = false;
-  const tick = (time: number) => {
-    lenis.raf(time * 1000);
-
-    if (coarsePointer) {
-      skipPaintFrame = !skipPaintFrame;
-      if (skipPaintFrame) return;
-    }
-
-    uniforms.uTime.value = time;
-
-    const pointer = uniforms.uPointer.value;
-    if (coarsePointer) {
-      // Autonomous drift so the paint stays alive without a cursor
-      pointerTarget.x = 0.5 + Math.sin(time * 0.13) * 0.3;
-      pointerTarget.y = 0.5 + Math.cos(time * 0.09) * 0.3;
-    }
-    pointer.x += (pointerTarget.x - pointer.x) * 0.045;
-    pointer.y += (pointerTarget.y - pointer.y) * 0.045;
-
-    uniforms.uScrollVel.value +=
-      (scrollVelTarget - uniforms.uScrollVel.value) * 0.06;
-    scrollVelTarget *= 0.94;
-
-    uniforms.uColorA.value.lerp(targetColors[0], 0.035);
-    uniforms.uColorB.value.lerp(targetColors[1], 0.035);
-    uniforms.uColorC.value.lerp(targetColors[2], 0.035);
-
-    renderer.render(scene, camera);
-  };
-
-  gsap.ticker.add(tick);
-
-  // --- Chapters --------------------------------------------------------------
-  const orchestrator = createChapterOrchestrator({
-    gsap,
-    ScrollTrigger,
-    setTargetPalette,
-    // Reduced-motion visitors never reach boot(), so chapter reveals can
-    // always animate here.
-    reduceMotion: false,
-  });
-
-  return {
-    scan: orchestrator.scan,
-    destroy: () => {
-      orchestrator.destroy();
-      gsap.ticker.remove(tick);
-      lenis.destroy();
-      window.removeEventListener('mousemove', onPointerMove);
-      window.removeEventListener('resize', onResize);
-      mesh.geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-      canvas.classList.remove('is-active');
-    },
-  };
-}
-
-function whenIdle(callback: () => void): number {
-  // requestIdleCallback is still missing in Safari
-  if (typeof window.requestIdleCallback === 'function') {
-    return window.requestIdleCallback(callback, {timeout: 2500});
-  }
-  return window.setTimeout(callback, 350);
-}
-
-function cancelIdle(id: number) {
-  if (typeof window.cancelIdleCallback === 'function') {
-    window.cancelIdleCallback(id);
-  } else {
-    window.clearTimeout(id);
-  }
+  const {startCinematic} = await import('./cinematicExperience');
+  return startCinematic(canvas);
 }

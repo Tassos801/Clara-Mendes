@@ -110,9 +110,9 @@ export function shopCapsuleDescription(capsule: Capsule) {
     const sizes = `${joinLabels(capsule.sizeLabels)}${capsule.sizesVary ? ' (sizes vary by work)' : ''}`;
     if (capsule.kind === 'museum')
       return `${capsule.title} — ${capsule.note}. ${count} ${prints} of public-domain works from museum collections, each printed whole on a white border and available unframed in ${sizes}.`;
-    return `${capsule.title} — ${capsule.note}. ${count} original Clara Mendes ${prints}, available unframed in ${sizes}.`;
+    return `${capsule.title} — ${capsule.note}. ${count} Clara Mendes ${prints} of our own, available unframed in ${sizes}.`;
   }
-  return `The ${capsule.title} capsule — ${capsule.note}. Three coordinated original Clara Mendes prints.`;
+  return `The ${capsule.title} capsule — ${capsule.note}. Three coordinated Clara Mendes prints of our own.`;
 }
 
 function joinLabels(labels: string[]) {

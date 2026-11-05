@@ -21,6 +21,8 @@ import {
   ShopPayButton,
 } from '@shopify/hydrogen';
 import type {Route} from './+types/products.$handle';
+import {storefrontImageLoader} from '~/lib/imageLoader';
+import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {
   focusPhoneModelPicker,
@@ -883,8 +885,14 @@ function ProductPage() {
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
   const isPhoneCase =
     (product.productType || '').toLowerCase() === 'phone cases';
-  // Printful activewear runs on its own production clock, not Prodigi's.
-  const windows = fulfilmentWindows(product.productType, product.handle, product.tags);
+  // Printful activewear and the museum mugs, cushions and blankets run on
+  // Printful's production clock, not Prodigi's.
+  const windows = fulfilmentWindows(
+    product.productType,
+    product.handle,
+    product.tags,
+    artProduct?.printfulTechnique,
+  );
   // Activewear copy is structured HTML (intro, features, fabric, size table);
   // the plain-text description would run those blocks together.
   const isApparel = isClothingProduct(product);
@@ -893,7 +901,9 @@ function ProductPage() {
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
-  const isBlanket = (product.productType || '').toLowerCase() === 'blankets';
+  // The fleece extension blanket; museum blankets carry their own details.
+  const isBlanket =
+    !artProduct && (product.productType || '').toLowerCase() === 'blankets';
   const potDesign = pastelPots.designs.find(
     (design) => design.handle === product.handle,
   );
@@ -934,6 +944,9 @@ function ProductPage() {
   // (seo.ts), and Googlebot crawls as a US buyer, who cannot be sent cards.
   const schemaVariants = defaultMarketVariants(product.variants.nodes);
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
+  // Shop Pay's button pulls in ~200 kB of Shopify script; its slot keeps
+  // its height, so it can arrive after the page has loaded.
+  const showShopPay = useAfterPageLoad();
   const shopUrl = new URL('/collections/all', seoUrl).toString();
   const galleryLeadImage = isArtPrint
     ? (selectedVariant?.image ?? product.featuredImage ?? primaryImage)
@@ -1074,6 +1087,7 @@ function ProductPage() {
             productId: product.id,
             productHandle: product.handle,
             productType: product.productType,
+            printfulTechnique: artProduct?.printfulTechnique,
             tags: product.tags,
             reviewSummary:
               reviews.summary.total > 0
@@ -1346,7 +1360,7 @@ function ProductPage() {
               aria-label={`Art prints for the ${selectedFrameSize} frame`}
             >
               <img
-                src="/images/product-art/quiet-form/quiet-form-01.webp"
+                src="/images/product-art/quiet-form/quiet-form-01.w460.jpg"
                 alt="Quiet Form I art print shown unframed"
                 loading="lazy"
               />
@@ -1507,11 +1521,13 @@ function ProductPage() {
                 className="shop-pay-accelerator"
                 aria-label="Express checkout with Shop Pay"
               >
-                <ShopPayButton
-                  storeDomain={shopPayStoreUrl}
-                  variantIdsAndQuantities={[{id: selectedVariant.id, quantity}]}
-                  width="100%"
-                />
+                {showShopPay ? (
+                  <ShopPayButton
+                    storeDomain={shopPayStoreUrl}
+                    variantIdsAndQuantities={[{id: selectedVariant.id, quantity}]}
+                    width="100%"
+                  />
+                ) : null}
               </div>
             ) : null}
           </div>
@@ -1789,6 +1805,7 @@ function ProductPage() {
                       (variant: ProductVariant) => variant.outOfReach,
                     ),
                     isApparel: isQuietCurrent,
+                    printful: Boolean(artProduct?.printfulTechnique),
                   })
                     ? DELIVERY_US_BUSINESS_DAYS
                     : null
@@ -2054,6 +2071,12 @@ function ProductGalleryCarousel({
   productTitle: string;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
+  // Slides past the next one mount once the page has loaded, or as soon as
+  // the shopper moves the gallery, so a phone isn't fetching five more
+  // photographs while the lead image and the page's scripts are loading.
+  const pageLoaded = useAfterPageLoad();
+  const [galleryMoved, setGalleryMoved] = useState(false);
+  const showAllSlides = pageLoaded || galleryMoved;
   const [zoomIndex, setZoomIndex] = useState<number | null>(null);
   const zoomOverlayRef = useRef<HTMLDivElement>(null);
   const galleryTrackRef = useRef<HTMLDivElement>(null);
@@ -2129,6 +2152,7 @@ function ProductGalleryCarousel({
   const handleGalleryScroll = useCallback(() => {
     const track = galleryTrackRef.current;
     if (!track) return;
+    setGalleryMoved(true);
 
     if (galleryScrollFrameRef.current !== null) {
       window.cancelAnimationFrame(galleryScrollFrameRef.current);
@@ -2277,13 +2301,18 @@ function ProductGalleryCarousel({
                     setZoomIndex(index);
                   }}
                 >
-                  <Image
-                    aspectRatio="4/5"
-                    data={image}
-                    alt={image.altText || `${productTitle} view ${index + 1}`}
-                    loading={index === 0 ? 'eager' : 'lazy'}
-                    sizes="(min-width: 981px) min(51vw, 760px), calc(100vw - 32px)"
-                  />
+                  {showAllSlides || index <= activeIndex + 1 ? (
+                    <Image
+                      aspectRatio="4/5"
+                      data={image}
+                      alt={image.altText || `${productTitle} view ${index + 1}`}
+                      loader={storefrontImageLoader}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      sizes="(min-width: 981px) min(51vw, 760px), calc(100vw - 32px)"
+                    />
+                  ) : (
+                    <span className="product-gallery-pending" aria-hidden />
+                  )}
                   <span className="product-zoom-hint">View detail</span>
                 </button>
               </div>

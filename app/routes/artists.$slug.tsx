@@ -19,6 +19,8 @@ import {
   artistArtworks,
   artistElsewhere,
   artistFacetValue,
+  artistFamilies,
+  artistPageTitle,
   artistPath,
   artistProductsQuery,
   artistShopView,
@@ -45,7 +47,7 @@ export const meta: Route.MetaFunction = ({data}) => {
   return buildSeoMeta({
     description: firstSentence(artist.bio),
     image: data.portrait?.url ?? undefined,
-    title: `${artist.name}: art prints and more | Clara Mendes`,
+    title: artist.pageTitle,
     // Refine and sort are views of one page.
     url: `${STOREFRONT_ORIGIN}${artist.path}`,
   });
@@ -116,6 +118,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
         artist.tags?.movement,
       ].filter((value): value is string => Boolean(value)),
       name: artist.name,
+      pageTitle: artistPageTitle(artist, artistFamilies(listed)),
       path: artistPath(artist),
     },
     artworks: artworks.map((artwork) => ({

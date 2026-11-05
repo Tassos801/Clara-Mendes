@@ -52,6 +52,18 @@ Important categories:
 
 Source: [README](../../../README.md).
 
+### Admin API auth on the server
+
+The storefront's own Admin calls (reviews, newsletter sign-up) get their token
+from `app/lib/adminToken.server.ts`. In production set `SHOPIFY_CLIENT_ID` and
+`SHOPIFY_CLIENT_SECRET` (the Dev Dashboard app's credentials): the server
+exchanges them with Shopify's client-credentials grant for a 24-hour token,
+caches it per isolate until five minutes before expiry, and mints a new one
+after that. `SHOPIFY_ADMIN_ACCESS_TOKEN` still works as an override for a
+static token; a pasted Dev Dashboard token expires within a day, so do not use
+one in production. With neither set, reviews return 503 and sign-up reports
+"disabled"; a failed exchange is an error (sign-up returns 502).
+
 ## Launch Readiness
 
 Before paid traffic:

@@ -1,6 +1,8 @@
 import {useEffect, useRef} from 'react';
-import {Link} from 'react-router';
+import {Link, NavLink} from 'react-router';
 import type {Route} from './+types/our-story';
+import {BrandLogo} from '~/components/BrandLogo';
+import {PRIMARY_LINKS} from '~/lib/navLinks';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
 import {
@@ -16,13 +18,14 @@ import {buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
 import {capitalize, catalogCounts, countWord} from '~/lib/catalogSummary';
+import {BRAND} from '~/content/brand';
 
 const CATALOG = catalogCounts();
 const WORKS = countWord(CATALOG.works);
 const CAPSULES = countWord(CATALOG.capsules);
 const PAGE_URL = `${STOREFRONT_ORIGIN}/our-story`;
 // Kept under the 155-char meta truncation in buildSeoMeta.
-const PAGE_DESCRIPTION = `Clara Mendes began with original art: now ${WORKS} works in ${CAPSULES} capsules, with cards, canvas, clothing, ceramics and book nooks around them.`;
+const PAGE_DESCRIPTION = BRAND.ourStory.description;
 
 // Clara Mendes' own capsules; museum collections appear with the range below.
 const SHOP_CAPSULES = listShopCapsules();
@@ -44,7 +47,7 @@ const RANGE = [
   },
   {
     name: 'Phone cases',
-    note: 'Every original work on a matte, dual-layer tough case for iPhone, Samsung Galaxy and Google Pixel.',
+    note: BRAND.ourStory.caseNote,
     released: isReleasedProductHandle(TOUGH_CASE_HANDLE),
     to: `/products/${TOUGH_CASE_HANDLE}`,
   },
@@ -163,6 +166,23 @@ export default function OurStory() {
             description: PAGE_DESCRIPTION,
             url: PAGE_URL,
           },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Person',
+            name: BRAND.letter.founder.name,
+            jobTitle: 'Founder',
+            image: `${STOREFRONT_ORIGIN}${BRAND.letter.portrait}`,
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: BRAND.letter.founder.city,
+              addressCountry: BRAND.letter.founder.country,
+            },
+            worksFor: {
+              '@type': 'Organization',
+              name: 'Clara Mendes',
+              url: STOREFRONT_ORIGIN,
+            },
+          },
         ]}
       />
 
@@ -173,21 +193,28 @@ export default function OurStory() {
 
         <div className="os-ui-layer">
           <header className="os-header-top">
-            <Link to="/" className="os-nav-text os-brand">
-              Clara Mendes
+            <Link
+              to="/"
+              className="os-nav-text os-brand"
+              aria-label="Clara Mendes home"
+            >
+              <BrandLogo variant="horizontal" />
             </Link>
             <nav className="os-nav-group" aria-label="Site navigation">
-              <Link to="/collections/all" className="os-nav-text">
-                Shop
-              </Link>
-              <Link to="/our-story" className="os-nav-text os-active-tab">
-                Our Story
-              </Link>
-              <Link to="/search" className="os-nav-text">
+              {PRIMARY_LINKS.map(({to, label}) => (
+                <NavLink
+                  key={to}
+                  to={to}
+                  prefetch="intent"
+                  className={({isActive}) =>
+                    `os-nav-text${isActive ? ' os-active-tab' : ''}`
+                  }
+                >
+                  {label}
+                </NavLink>
+              ))}
+              <Link to="/search" className="os-nav-text" prefetch="intent">
                 Search
-              </Link>
-              <Link to="/contact" className="os-nav-text">
-                Contact
               </Link>
               <button
                 className="os-nav-text os-cart-link"
@@ -201,23 +228,14 @@ export default function OurStory() {
 
           <div className="os-content-container">
             <h1 id="os-title" className="os-story-title">
-              The quiet pursuit of <i>permanence</i>.
+              {BRAND.ourStory.title}
             </h1>
             <div className="os-story-body">
-              <p>
-                Clara Mendes was born from a singular belief: the art and
-                objects we live with should bring character, calm, and a point
-                of view to everyday spaces.
-              </p>
-              <p>
-                It began with fifteen original works in five coordinated
-                capsules. Today there are {WORKS} works across {CAPSULES}{' '}
-                capsules, each made to hold its own on a wall and to sit
-                comfortably beside the others — and around them, a small range
-                of things to live with.
-              </p>
+              {BRAND.ourStory.intro.map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
             </div>
-            <a className="os-scroll-cue" href="#os-collection">
+            <a className="os-scroll-cue" href="#os-letter">
               Read the story
               <span aria-hidden>↓</span>
             </a>
@@ -226,6 +244,31 @@ export default function OurStory() {
 
         <div ref={dotRef} className="os-cursor-dot" />
         <div ref={outlineRef} className="os-cursor-outline" />
+      </section>
+
+      <section
+        id="os-letter"
+        className="os-section os-section--letter"
+        aria-labelledby="os-letter-title"
+      >
+        <figure className="os-letter-portrait">
+          <img
+            alt={BRAND.letter.portraitAlt}
+            decoding="async"
+            height={800}
+            loading="lazy"
+            src={BRAND.letter.portrait}
+            width={640}
+          />
+        </figure>
+        <div className="os-letter-copy">
+          <p className="os-eyebrow">{BRAND.letter.eyebrow}</p>
+          <h2 id="os-letter-title">{BRAND.letter.title}</h2>
+          {BRAND.letter.paragraphs.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+          <p className="os-letter-sign">{BRAND.letter.signature}</p>
+        </div>
       </section>
 
       <section
@@ -238,12 +281,7 @@ export default function OurStory() {
           {capitalize(WORKS)} works. {capitalize(CAPSULES)} capsules. One
           considered whole.
         </h2>
-        <p className="os-section-lede">
-          Each capsule is a small family of original works, composed so a single
-          print carries a room and a pair or trio reads as one intentional
-          arrangement. Buy one now and add its companions later — they are
-          designed to keep belonging together.
-        </p>
+        <p className="os-section-lede">{BRAND.ourStory.capsulesLede}</p>
         <ul className="os-capsule-list">
           {STUDIO_CAPSULES.map((capsule) => (
             <li key={capsule.slug}>
@@ -331,7 +369,7 @@ export default function OurStory() {
       </section>
 
       <section className="os-section os-section--cta" aria-label="Continue">
-        <h2>Live with something original.</h2>
+        <h2>{BRAND.ourStory.closing}</h2>
         <div className="os-cta-row">
           <Link className="os-cta os-cta--primary" to="/collections/all">
             Shop the collection
@@ -392,7 +430,7 @@ html:has(.our-story-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/backdrops/our-story-light.jpg);
+  background-image: url(/images/backdrops/our-story-light.w2560.jpg);
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -403,7 +441,7 @@ html:has(.our-story-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(/images/backdrops/our-story-light.jpg);
+  background-image: url(/images/backdrops/our-story-light.w2560.jpg);
   background-size: cover;
   background-position: center;
   filter: blur(40px) brightness(0.7) sepia(0.4);
@@ -477,12 +515,15 @@ html:has(.our-story-root) main {
   gap: clamp(1rem, 2.6vw, 3rem);
 }
 
+/* The one-line logo, sized like the glass header's (36 px there). */
 .os-brand {
-  font-family: var(--os-font-serif);
-  font-size: 1.8rem;
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0;
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.os-brand .brand-logo {
+  height: 34px;
 }
 
 .os-content-container {
@@ -499,8 +540,6 @@ html:has(.our-story-root) main {
   font-weight: 400;
   font-style: italic;
   margin: 0 0 2.5rem;
-  opacity: 0;
-  animation: osFadeInSlow 2.5s var(--os-ease-fluid) forwards 0.4s;
   line-height: 1.15;
 }
 
@@ -510,8 +549,6 @@ html:has(.our-story-root) main {
   line-height: 1.8;
   font-weight: 300;
   color: var(--os-text-muted);
-  opacity: 0;
-  animation: osFadeInSlow 2.5s var(--os-ease-fluid) forwards 0.8s;
 }
 
 .os-story-body p { margin: 0 0 1.5rem; }
@@ -525,8 +562,6 @@ html:has(.our-story-root) main {
   gap: 10px;
   letter-spacing: 0.2em;
   margin-top: 1rem;
-  opacity: 0;
-  animation: osFadeInSlow 2.5s var(--os-ease-fluid) forwards 1.2s;
   text-decoration: none;
   text-transform: uppercase;
   width: fit-content;
@@ -601,6 +636,42 @@ html:has(.our-story-root) main {
   line-height: 1.75;
   margin: 0 0 40px;
   max-width: 62ch;
+}
+
+.os-section--letter {
+  align-items: start;
+  display: grid;
+  gap: clamp(28px, 5vw, 72px);
+  grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1.2fr);
+}
+
+.os-letter-portrait {
+  margin: 0;
+}
+
+.os-letter-portrait img {
+  aspect-ratio: 4 / 5;
+  border-radius: 10px;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+
+.os-letter-copy p:not(.os-eyebrow) {
+  color: var(--os-muted);
+  font-size: 1.06rem;
+  line-height: 1.75;
+  margin: 0 0 1.15em;
+  max-width: 60ch;
+}
+
+.os-letter-copy p.os-letter-sign {
+  color: inherit;
+  font-family: var(--os-font-serif);
+  font-size: 1.3rem;
+  font-style: italic;
+  margin-top: 1.6em;
 }
 
 .os-capsule-list {
@@ -744,13 +815,16 @@ html:has(.our-story-root) main {
   background: #3a352f;
 }
 
-@keyframes osFadeInSlow {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @media (max-width: 768px) {
   .os-ui-layer { padding: 2rem; }
+
+  .os-section--letter {
+    grid-template-columns: 1fr;
+  }
+
+  .os-letter-portrait {
+    max-width: 320px;
+  }
 
   .os-header-top {
     align-items: flex-start;
@@ -771,13 +845,8 @@ html:has(.our-story-root) main {
     letter-spacing: 0.16em;
   }
 
-  .os-brand {
-    font-size: 1.38rem;
-    line-height: 1.08;
-  }
-
-  .os-brand.os-nav-text {
-    font-size: 1.38rem;
+  .os-brand .brand-logo {
+    height: 28px;
   }
 
   .os-facts {
@@ -794,14 +863,6 @@ html:has(.our-story-root) main {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .os-story-title,
-  .os-story-body,
-  .os-scroll-cue {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-  }
-
   .os-scroll-cue { scroll-behavior: auto; }
 
   .os-capsule-item,

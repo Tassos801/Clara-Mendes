@@ -1844,6 +1844,55 @@ Sources: `app/routes/artists._index.tsx`, `app/lib/artistShops.ts`,
 `app/lib/printCatalog.ts`, `app/styles/artists.css`, `app/styles/app.css`,
 `scripts/prepare-print-assets.py`, `scripts/artistShops.node-test.mjs`.
 
+## 2026-10-18 - Line and Colour continuation preflight
+
+The owner requested the Line and Colour handoff continuation. A separate
+branch, `codex/line-and-colour-staging-2026-10-18`, starts at `9fca667`.
+All twenty print-file hashes and all production-file/preview hashes for
+26 family products match; source signatures are current. The 36 listings
+cover 241 variants and keep their release flags false. `npm test` passes
+498/498. See the committed
+[preflight evidence](../artist-shops/evidence/line-and-colour-local-preflight-2026-10-18.json).
+
+Shopify's product list already shows Line and Colour mug Drafts and newer
+decor Drafts; these are not recorded in the current product catalogues and
+must be reconciled before any staging write. Both staging dry runs stop
+before an Admin request because the local client-credential entries are
+blank. The owner is filling them. Browser approval gates declined Shopify
+and Prodigi access; even after chat approval, a saved permission or managed
+policy still blocks the browser. No Shopify/Prodigi change or publication
+was made. The current writer and precise resume steps are in
+[status](../artist-shops/status.md#line-and-colour-continuation-2026-10-18-codex).
+
+## 2026-10-18 - Line and Colour Draft staging and supplier mapping complete
+
+The owner's continuation and completed local credentials enabled staging
+and mapping on `codex/line-and-colour-staging-2026-10-18` (draft PR #141).
+Created ten print and sixteen family Drafts, then reconciled/adopted the ten
+existing mug Drafts. The owner chose to retain EUR 24.99, superseding the
+earlier EUR 5.53 price. Existing mug product/variant IDs are preserved;
+obsolete `-PF` SKU suffixes and stale copy/SEO were reconciled with the
+pipeline. All 36 listings and 241 variants now have catalogue Shopify IDs.
+
+Mapped and reopened twenty print variants, five natural frames, six
+mirror-wrap canvases and ten mugs in Prodigi, all with Standard shipping.
+Canvas Fill is 201.87% dashboard scale for the 150 dpi files, covering the
+full face at 0/0, no border, rated Acceptable; numeric 100% leaves the image
+too small. Fifty print gallery images are READY in their approved order.
+The five case files and 200 device SKU mappings use the existing API route;
+all case sales-channel fulfilment switches are off. These files still need
+deployment with the future approved release checkpoint.
+
+Preservation readbacks compared 241, 251 and 257 pre-existing/unrelated
+products unchanged; unrelated catalogue entries are unchanged. Tests pass
+498/498, plus typecheck, lint and build. Unreleased live checks pass 20/20
+for prints and 52/52 for families (404 and absent from sitemap). Final
+staging dry runs recognize all listings as existing Drafts. Release flags
+remain false; no publication, rate change or order occurred. Delivery
+profile/rate checks and the owner's separate release go-ahead remain.
+See [readback](../artist-shops/evidence/line-and-colour-staging-mapping-2026-10-18.json)
+and [current handoff](../artist-shops/status.md).
+
 ## 2026-10-18 - US market planned
 
 The owner asked to sell properly to US buyers. A live Storefront readback
@@ -1879,3 +1928,290 @@ A read-only pass for the US work found:
   countries, the US included.
 
 Details and the resulting step order are in [us-market/status.md](../us-market/status.md).
+
+## [2026-10-20] catalog | Seven products per artist: Drafts and Prodigi mapping
+
+Added six supplied-file families to the art-product pipeline (hanger, acrylic
+and metal prints from Prodigi; mug, cushion and blanket from Printful). They
+take the AI-fitted files from `museum/seven-products(-lc)` and copy each
+file's AI-fill log into the catalog as `provenance`. Staged 110 Shopify
+products (Floating World 60, Line and Colour 50); the Line and Colour mug stays
+the Prodigi mug from #141, by the owner's choice on 2026-10-20. This branch is
+rebased on #141.
+
+Mapped 59 of 60 Prodigi channel products by clicking through the dashboard
+(hanger frame colour, metal finish matte, Standard shipping), read them back
+and recorded 194 of 200 variants with `mapped`. The Chrysanthemum hanger's
+large size waits for its 24.8 MB file. Switched Prodigi fulfilment off on the
+50 Printful products. Printful sync waits for the owner's API token. 38 hanger
+and acrylic products were set Active on 2026-10-18 by the catalog-sync app
+and added to sales channels by the owner; the owner keeps them Active. Stock
+is 0, release flags stay false. See
+[status](../artist-shops/status.md) and the
+[readback](../artist-shops/evidence/seven-products-prodigi-mapping-2026-10-20.json).
+
+## [2026-10-20] catalog | Printful sync for the seven-products range
+
+Added the `printful` step to the product pipeline. It works through the
+store's Printful app (Printful's platform sync API, `/sync/products` and
+`/sync/variant`), adds each file to the Printful file library once with an md5
+check, waits out Printful's rate limit, and writes the read-back for
+`mapped --printful`. Synced 48 of 50 Printful products (10 Floating World
+mugs, 20 cushions, 18 blankets; 108 variants) and recorded them. Two blanket
+files over 20 MB wait for a manual upload. Overall 302 of 310 seven-products
+variants now have verified mappings. Products stay Drafts or unreleased. See
+[status](../artist-shops/status.md) and the
+[read-back](../artist-shops/evidence/seven-products-printful-mapping-2026-10-20.json).
+
+## [2026-10-20] release | Seven products per artist released (107 of 110)
+
+At the owner's request the seven-products range went live. He accepted every
+supplied file below 150 ppi as it is (49 `ppiExceptions`; supplied families
+may now go down to 40 ppi, rendered families keep 150), approved the supplied
+files of Troika, Green Center, Lozenge Composition and Composition No. 1
+(`suppliedApprovals`, as these works have no approved crop) and chose to go
+live on the General shipping profile until "Free EU shipping – artist
+products" exists. `release` activated the Drafts (it now accepts products the
+owner already made Active), untracked stock and removed the pending tags;
+Claude added the 69 products without channels to "Clara Mendes" and "Clara
+Mendes Headless" in Admin; a second `release` confirmed every variant sellable
+through the Storefront API and set `released`. Not released: the Chrysanthemum
+hanger and the Two Poplars and Chrysanthemum blankets (large files not with
+their suppliers yet). The shop's type tabs and the artist shops now list Hanger
+Prints, Acrylic Prints and Metal Prints after Canvas, and Mugs, Cushions and
+Blankets after Phone Cases; Kandinsky and Mondrian get artist pages.
+
+## [2026-10-20] fix | Printful windows, artist page titles, blanket details
+
+A debug pass over the seven-products release found three content errors on
+the live site. The Printful mugs, cushions and blankets showed Prodigi's
+production and dispatch windows and, to US buyers, Prodigi's US delivery
+estimate; they now use Printful's windows per technique (see
+[Fulfillment](modules/fulfillment.md)). The Kandinsky and Mondrian pages were
+titled "art prints and more", and their curator's notes named prints, framed
+prints, mugs, canvas and phone cases, none of which are released for Line and
+Colour; the title now leads with the first product type the artist's shop
+lists (`artistPageTitle`), the notes name what is on sale, and a test fails
+if a note names a type the shop does not list. Restore the fuller sentence
+when Line and Colour's prints, framed prints, canvas, cases and mugs release.
+The museum blanket pages also showed the retired fleece blanket's
+"30 × 40 in" panel; it now shows only on that product.
+
+## [2026-10-20] perf | Slim art-product catalog in the browser
+
+The client chunk carrying `data/art-product-catalog.json` was 966,794 bytes
+(102,192 gzip) and loaded on every page through the root route; most of it
+was pipeline records the browser never reads. The client build now gets a
+slim copy (see [Catalog and products](modules/catalog-and-products.md)): the
+chunk is 225,565 bytes (30,838 gzip), and the build no longer warns about it.
+Server output is unchanged.
+
+## [2026-10-20] pipeline | Printful read-back trusts the MD5
+
+`printfulMappingFromReadback` (`scripts/lib/art-product-pipeline.mjs`)
+accepted a Printful file whose MD5 differed from the local file when its name
+and pixel size matched, and its note said "matched by md5" if any other
+placement had matched. A regenerated supplied file keeps its name and size, so
+a stale file could have been recorded as verified. A hash Printful gives must
+now match; name and pixel size stand in only where Printful gives no hash, and
+the note names the weakest match per placement. The 2026-10-20 read-backs (48
+products, 108 variants) still pass, all by MD5.
+
+## [2026-10-22] brand | The owner's line replaces "original art"
+
+On `claude/brand-line` the umbrella claim "original art" gave way to the
+owner's line, "We don't know what we'll make next. We like art, and we promise
+it won't be boring." All brand copy now lives in `app/content/brand.ts`; the
+capsules are "our own work" and the artist shops "borrowed from museums". The
+homepage opens on a six-tile curiosity grid (`HERO_TILES`), shows the lead
+print of every studio capsule (`app/lib/leadPrints.ts`) and drops the capsule
+carousel and "More from the edit". Shop All's Featured order rotates studio
+products by line (`app/lib/listingLines.ts`), museum products after, paged in
+memory (`app/lib/listingPage.ts`) with an exact count.
+`scripts/brand.node-test.mjs` blocks the old claim in `app/`. Removed the dead
+`buildOriginalArtQuery`, `ORIGINAL_ART_QUERY_FIRST`, `ORIGINAL_ART_TAG`
+and `pickVariedProducts`. See [Brand voice](brand-voice.md).
+
+## [2026-10-22] auth | Admin tokens minted from client credentials
+
+The Dev Dashboard app's tokens expire after 24 h, so the server now mints its
+own: `app/lib/adminToken.server.ts` exchanges `SHOPIFY_CLIENT_ID` +
+`SHOPIFY_CLIENT_SECRET` for an Admin token and caches it until five minutes
+before expiry; `SHOPIFY_ADMIN_ACCESS_TOKEN` stays as a static override.
+`ReviewsNotConfiguredError` moved there and is re-exported from
+`reviews.server.ts`. Tests: `scripts/adminToken.node-test.mjs`. See
+[Local development and launch](operations/local-development-and-launch.md).
+
+## [2026-10-23] home | Short homepage: hero, line rail, priced tiles, collection, letters
+
+On `claude/home-rail` the homepage became short: hero, line rail, six
+curiosity tiles with price chips, trust strip, "The collection so far",
+Letters from Nicosia, footer. New modules: `app/lib/lineRail.ts` +
+`app/components/LineRail.tsx` (one circle per released line, gated like the
+navigation) and `app/lib/homeTilePrices.ts` (one `@inContext` query for the
+tiles' `priceHandle` products, labelled with the card rules, sale-only). The
+loader runs the lead prints and the tile prices in parallel, each allowed to
+fail. Removed with their bands: `ArtistShopsFeature`, `YourSkyTeaser`,
+`ClothingFeature`, `BookNookShelf`, `ToughCaseTeaser`, `FramedArtFeature`,
+`HomepageEditorial`, `BrandFilm` (components), `app/styles/artist-feature.css`,
+`app/content/homeEditorial.ts`, the pastel-pot and story bands,
+`CLOTHING_HOME_FEATURE` and `CLOTHING_HERO_ACCENT`, `BRAND.livingEdit`
+and `BRAND.storyBand`, and their CSS (`.sky-teaser`, `.case-teaser`,
+`.pastel-pot-teaser`, `.brand-film-*`, `.home-film`, the homepage
+`.clothing-feature` rules, the dead `.market-selector` rules). The global
+header now returns once the hero's glass pill scrolls away: an
+IntersectionObserver toggles `html.home-past-hero`, and the homepage CSS
+shows the fixed header with a fade-down (none under reduced motion). The
+custom cursor runs only with a fine pointer and without reduced motion.
+`--color-oat` joined the tokens. Tests: `scripts/lineRail.node-test.mjs`,
+`scripts/homeTilePrices.node-test.mjs`, `scripts/homeRail.node-test.mjs`
+(order, header rules, chip CSS, cursor gate, removed-band guard);
+`scripts/brandFilm.node-test.mjs` keeps only the CDN check. See
+[Routes and pages](modules/routes-and-pages.md) and
+[Brand voice](brand-voice.md).
+
+## [2026-10-23] home | Homepage cut to hero, rail, letters; footer in columns
+
+The homepage is now hero → line rail → trust strip → Letters from Nicosia →
+footer. The curiosity grid ("So far", six tiles with price chips) and "The
+collection so far" (`OriginalArtPreview`, compact) left the page, with their
+CSS. Deleted: `app/components/HeroTiles.tsx`, `app/lib/homeTilePrices.ts`,
+`scripts/homeTilePrices.node-test.mjs`, and `HeroTile`, `HERO_TILES` and
+`BRAND.curiosity` from `app/content/brand.ts` (`BRAND.collection` stays for
+Shop All's fallback block). The loader makes no Storefront call and returns
+`{seoUrl}` only; codegen dropped `HomepageQuery`, `HomeTilePricesQuery` and
+`HomeTilePriceFragment`. Tests: `scripts/homeRail.node-test.mjs` pins the new
+order and guards against the cut sections, the Storefront query and the
+deleted files; the tile tests left `scripts/brand.node-test.mjs` and
+`scripts/mobileLanding.node-test.mjs`. The site footer (`ClaraFooter` in
+`app/components/ClaraShell.tsx`) is now brand + sign-up, four link columns
+(Shop, Wall art by style, Clara Mendes, Help) and a bottom bar with the
+copyright and social links; `scripts/footer.node-test.mjs` pins it. See
+[Routes and pages](modules/routes-and-pages.md) and
+[Brand voice](brand-voice.md).
+
+## [2026-10-23] home | Footer loses the "Wall art by style" column
+
+The owner asked for a shorter footer, so the nine style landing-page links
+(`/collections/abstract-wall-art` and friends, `app/lib/galleryPages.ts`)
+left `ClaraFooter` in `app/components/ClaraShell.tsx`; the footer is now
+three columns (Shop, Clara Mendes, Help) over the bottom bar, two per row on
+phones (`.footer-columns` in `app/styles/app.css`). The pages themselves are
+unchanged and still link to each other through their related-page rows and
+appear in the collections sitemap. `scripts/footer.node-test.mjs` pins the
+three columns and guards the column from returning.
+
+## [2026-10-29] fulfillment | Merchant Center fetches its feeds from the site
+
+The Merchant Center product data came from manual file uploads that expire 30
+days after each upload (last one 2026-10-29: 361 items, then South Korea
+dropped from both data sources because Google needs KRW prices there). Two
+resource routes now serve the same data as tab-separated text for Merchant
+Center's daily scheduled fetch: `/feeds/google-merchant.txt` (studio prints,
+canvas, cards, postcards, plant pots, Your Sky and the museum prints, hanger,
+acrylic, metal, canvas, framed, cards and postcards) and
+`/feeds/google-merchant-printful.txt` (museum mugs, cushions and blankets,
+listed in the EU only). `app/lib/merchantFeed.ts` builds the rows (SKU ids and
+titles identical to the manual uploads, checked item by item against the
+2026-10-29 files), `app/lib/merchantFeedShipping.ts` holds the per-profile
+rates that single-line Storefront carts confirmed on 2026-10-29, and
+`app/lib/merchantFeed.server.ts` reads the catalogue in the Cyprus market and,
+for the Printful feed, quotes each Printful profile's EU rate from a one-item
+cart (its USD rates convert daily). Responses are cached 6 hours in the
+worker's Cache API; a failed build answers 503 rather than an empty file.
+Phone cases, activewear and book nooks stay out. Tests:
+`scripts/merchantFeed.node-test.mjs`. See
+[Fulfillment](modules/fulfillment.md).
+
+## [2026-10-29] analytics | Meta pixel behind marketing consent, and the consent API fix
+
+Added the Meta pixel for catalog ads (`app/components/MetaPixelAnalytics.tsx`,
+`app/lib/metaPixel{,.client}.ts`), on only when `PUBLIC_META_PIXEL_ID` is set.
+It loads after the visitor allows marketing cookies and sends PageView,
+ViewContent and AddToCart with SKU `content_ids`, matching the Meta catalog
+"Clara Mendes" fed from `/feeds/google-merchant*.txt`. The GTM component's
+payload helpers moved to `app/lib/analyticsItems.ts` for both integrations.
+CSP gains Meta's hosts and an explicit frame-src. While testing, the live site
+showed that Hydrogen never received the full Customer Privacy API for
+returning visitors (the banner script only leaves a stub), so `canTrack()` was
+false and no analytics ran for them; `app/components/CustomerPrivacyApiFallback.tsx`
+loads Shopify's standalone API when it is missing. Tests:
+`scripts/metaPixel.node-test.mjs`. See
+[Analytics and attribution](modules/analytics-and-attribution.md).
+
+## [2026-10-29] fix | One Meta PageView after Accept
+
+On the live site, accepting cookies sent PageView twice: once from the
+pixel's consent listener and once when Hydrogen re-sent the page's views
+(its `publish` turns from a no-op into the real function once `canTrack()`
+is true). `app/components/MetaPixelAnalytics.tsx` now keeps one module-level
+repeat-view map for both paths. See
+[Analytics and attribution](modules/analytics-and-attribution.md).
+
+## [2026-10-29] performance | Lighter pages: no Three.js/GSAP, right-sized images
+
+Mobile Lighthouse on the live site scored 44 (home), 54 (shop) and 72 (a
+print page). Every page downloaded ~235 kB gzip of Three.js, GSAP,
+ScrollTrigger and Lenis after hydration for one shader and a few fades; the
+painted background now draws with plain WebGL (same shader, same colours:
+`hexToLinear` repeats Three.js's sRGB-to-linear step) and the chapter
+palette and reveals use IntersectionObserver and the Web Animations API, so
+the cinematic chunk is ~9 kB gzip. Because a cold WebGL start blocks the
+main thread, it now boots after the page's `load` event at the visitor's
+first interaction (leaving content already on screen unanimated), and the
+shader links asynchronously (`KHR_parallel_shader_compile`) where
+supported. The live site also showed that Oxygen
+re-encodes WebP from `public/` into larger JPEGs (an 8 kB WebP went out as
+25 kB) and ignores `?width=`; the hero backdrop, rail circles and
+book-nook card images now ship as compressed JPEGs at the sizes they are
+shown. Product pages mount gallery slides past the next one, and the Shop
+Pay button, after the page has loaded. See
+[Hydrogen runtime](modules/hydrogen-runtime.md).
+
+## [2026-10-29] copy | A shorter homepage hero
+
+The owner asked for the landing-page wording to be very short and poetic,
+then for "Wherever it leads" and nothing else. The hero now shows only
+*Wherever it leads.* (`BRAND.hero` in `app/content/brand.ts`); its second
+line, the "See what we made" button and the "Enter the shop" orb are gone
+(`app/routes/_index.tsx`, tests in `scripts/mobileLanding.node-test.mjs`).
+Our Story and the founder's letter keep the full line. See
+[Brand voice](brand-voice.md).
+
+## [2026-10-29] performance | No public WebP on the storefront
+
+Following the site-speed pass: Oxygen also re-encodes the remaining WebP in
+`public/images` (and the ICC-tagged Our Story backdrop) into larger files,
+and a transparent WebP into a PNG about five times its size. Every image a
+page shows from `public/images` is now a plain sRGB JPEG (a palette PNG for
+the transparent clothing accent) at 2-3x its largest CSS size, written
+beside its source as `name.w<width>.jpg` by `npm run storefront:images`
+from the list in `scripts/lib/storefront-images.mjs`: journal plates
+(460 px; the journal's images went from ~2.4 MB to ~220 kB on desktop),
+artist-index sheets, gallery-page hero mockups (1000/1600 px `srcset`),
+the Our Story portrait and backdrop, Your Sky hero/occasions/swatches,
+Pastel Forms and the clothing accent. Curated (book nook) images gained a
+`.w1000.jpg` copy, so product pages and 3x phones no longer fetch the WebP
+original. WebP sources stay for scripts, feeds and social posts.
+Before/after screenshots at 1440 and 390 px matched. See
+[Hydrogen runtime](modules/hydrogen-runtime.md).
+
+## [2026-10-29] homepage | "Enter the shop" orb back
+
+The owner asked for the "Enter the shop" orb back on the landing page as it
+was before the "Wherever it leads." hero (#163): the pulsing orb and its
+label at the bottom of the hero, click or press-and-hold to go to
+`/collections/all`. Phones show it too now (they hid it while it repeated
+the hero button, which is gone): a third row of the phone hero grid, in flow
+below the words. See [Brand voice](brand-voice.md).
+
+## [2026-10-30] brand | the new logo across the store
+
+The owner's official logo (CLARA over MENDES, Mondrian mark) replaces the
+italic wordmark and the "CM" favicon. The file in `docs/brand` is traced
+into `app/content/logo.ts` by `scripts/trace-logo.mjs` (0.989 overlap with
+the file); `BrandLogo` draws it inline: one-line lockup in the header,
+stacked lockup in the drawer and the paper-coloured footer; the mark alone on
+the favicon and app icons; the stacked lockup on the share card and as the
+Organization `logo`. Owner files for checkout, email and social sit outside
+the repo. See [Brand logo](brand-logo.md).

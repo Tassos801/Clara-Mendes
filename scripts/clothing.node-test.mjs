@@ -298,8 +298,8 @@ test('every page image the editorial config names exists in public/', async () =
 });
 
 test('colourway ferns match the colourway name and unknown colours get none', () => {
-  assert.equal(lookAccent('Moss / Mist'), '/images/clothing/fern-moss.webp');
-  assert.equal(lookAccent('Clay / Oat'), '/images/clothing/fern-clay.webp');
+  assert.equal(lookAccent('Moss / Mist'), '/images/clothing/fern-moss.w96.png');
+  assert.equal(lookAccent('Clay / Oat'), '/images/clothing/fern-clay.w96.png');
   assert.equal(lookAccent('Ink'), null);
 });
 

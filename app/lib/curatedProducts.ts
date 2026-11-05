@@ -116,6 +116,48 @@ export function curatedDisplaySrc(image: CuratedImage) {
     : image.src;
 }
 
+/**
+ * JPEG copies the image script writes beside every storefront image
+ * (`01-studio.w360.jpg`, `.w720.jpg`, `.w1000.jpg`). The site's own images
+ * have no resizing CDN — Oxygen serves each file at full size and turns
+ * WebP into a larger JPEG — so the storefront shows only compressed JPEG
+ * copies (passed through as-is): small ones for cards and thumbnails, the
+ * full-size one where the 1000 px WebP original used to go.
+ */
+export const CURATED_IMAGE_WIDTHS = [360, 720, 1000] as const;
+
+export function curatedImageCopySrc(src: string, width: number) {
+  return src.replace(/\.webp$/, `.w${width}.jpg`);
+}
+
+const CURATED_STOREFRONT_SRCS = new Set(
+  CURATED_PRODUCTS.flatMap((product) =>
+    (product.images ?? []).map(curatedDisplaySrc),
+  ),
+);
+
+/** True for a storefront image the script has written smaller copies of. */
+export function hasCuratedImageCopies(src: string) {
+  return CURATED_STOREFRONT_SRCS.has(src);
+}
+
+/** The smallest copy at least `width` px wide; the full-size copy past them all. */
+export function curatedImageSrcForWidth(src: string, width?: number) {
+  if (!hasCuratedImageCopies(src)) return src;
+  const copy =
+    CURATED_IMAGE_WIDTHS.find((candidate) => (width ?? 0) <= candidate) ??
+    CURATED_IMAGE_SIZE.width;
+  return curatedImageCopySrc(src, copy);
+}
+
+/** A `srcset` of every copy, for plain <img> tags. */
+export function curatedImageSrcSet(src: string) {
+  if (!hasCuratedImageCopies(src)) return undefined;
+  return CURATED_IMAGE_WIDTHS.map(
+    (width) => `${curatedImageCopySrc(src, width)} ${width}w`,
+  ).join(', ');
+}
+
 /** The branded image set in Storefront API image shape, or [] if none. */
 export function curatedImages(
   handle?: string | null,

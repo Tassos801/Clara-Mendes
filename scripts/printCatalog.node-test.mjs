@@ -169,12 +169,12 @@ test('a partial release filters the right members and links to a real shop URL',
   assert.equal(capsules.getShopCapsuleBySlug('unknown', catalog), null);
 
   const alphaCopy = capsules.shopCapsuleDescription(alpha);
-  assert.ok(alphaCopy.includes('2 original Clara Mendes prints'));
+  assert.ok(alphaCopy.includes('2 Clara Mendes prints of our own'));
   assert.ok(alphaCopy.endsWith('available unframed in 8 × 10 in.'));
   const betaCopy = capsules.shopCapsuleDescription(
     capsules.getShopCapsuleBySlug('beta-set', catalog),
   );
-  assert.ok(betaCopy.includes('1 original Clara Mendes print,'));
+  assert.ok(betaCopy.includes('1 Clara Mendes print of our own,'));
   assert.ok(betaCopy.endsWith('available unframed in 8 × 10 in.'));
 });
 
@@ -273,7 +273,7 @@ test('the live Sci-fi & Cinema release offers all three sizes', () => {
   assert.deepEqual(capsule.handles, handles);
   assert.equal(
     capsules.shopCapsuleDescription(capsule),
-    'Sci-fi & Cinema — Imagined worlds, cinematic light, and a sense of scale. 4 original Clara Mendes prints, available unframed in 8 × 10 in, 16 × 20 in, and 20 × 24 in.',
+    'Sci-fi & Cinema — Imagined worlds, cinematic light, and a sense of scale. 4 Clara Mendes prints of our own, available unframed in 8 × 10 in, 16 × 20 in, and 20 × 24 in.',
   );
   const [collection] = prints.PRINT_CATALOG.collections;
   assert.deepEqual(

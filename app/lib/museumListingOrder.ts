@@ -17,10 +17,11 @@ import {
  *
  * Shopify lists newest first, so a museum release of dozens of products
  * would take over the first page of the shop. In the default order the
- * studio's own products keep their order and come first, and museum
- * products follow by product type — art prints, framed prints, canvas,
- * greeting cards, postcards, phone cases, mugs — and within a type by the
- * catalog's artwork sequence. Explicit sorts (price, title) are untouched.
+ * studio's own products come first, rotated by product line
+ * (app/lib/listingLines.ts), and museum products follow by product
+ * type — art prints, framed prints, canvas, greeting cards, postcards,
+ * phone cases, mugs — and within a type by the catalog's artwork
+ * sequence. Explicit sorts (price, title) are untouched.
  *
  * Museum products are identified from the catalogs: every product of a
  * `kind: "museum"` collection of data/print-catalog.json carries the
@@ -153,7 +154,7 @@ export function museumSearchQuery(base: string | null, museumClause: string) {
   return `${base ? `(${base}) ` : ''}${museumClause}`;
 }
 
-// ------------------------------------------------------------- paging --
+// ------------------------------------------------- listing page shapes --
 
 export type ListingPageInfo = {
   endCursor: string | null;
@@ -164,76 +165,6 @@ export type ListingPageInfo = {
 
 export type ListingConnection<T> = {nodes: T[]; pageInfo: ListingPageInfo};
 
-/** One Storefront page of the studio set, GraphQL cursor semantics. */
-export type StudioPageRequest =
-  {after: string | null; first: number} | {before: string | null; last: number};
-
-export type ListingSources<T> = {
-  /** Studio products in Shopify's order, paged by Storefront cursors. */
-  studio: (request: StudioPageRequest) => Promise<ListingConnection<T>>;
-  /** Every museum product of the search, already in listing order. */
-  museum: () => Promise<T[]>;
-};
-
-/** Storefront `products(...)` paging variables for one studio request. */
-export type StorefrontPageVariables = {
-  endCursor?: string | null;
-  first?: number;
-  last?: number;
-  reverse: boolean;
-  startCursor?: string | null;
-};
-
-type StorefrontPageInfo = {
-  endCursor?: string | null;
-  hasNextPage: boolean;
-  hasPreviousPage: boolean;
-  startCursor?: string | null;
-};
-
-/**
- * The Storefront API refuses `last` without `before`, so the end of the
- * studio set is read as the first products of the reversed order (whose
- * cursors also page the forward order) and turned back by
- * `studioConnection`.
- */
-export function studioPageVariables(
-  page: StudioPageRequest,
-  reverse: boolean,
-): StorefrontPageVariables {
-  if ('first' in page)
-    return {endCursor: page.after, first: page.first, reverse};
-  if (!page.before) return {first: page.last, reverse: !reverse};
-  return {last: page.last, reverse, startCursor: page.before};
-}
-
-/** A Storefront answer to `studioPageVariables(page)` as a studio page. */
-export function studioConnection<T>(
-  page: StudioPageRequest,
-  nodes: T[],
-  pageInfo: StorefrontPageInfo,
-): ListingConnection<T> {
-  if (!('first' in page) && !page.before)
-    return {
-      nodes: [...nodes].reverse(),
-      pageInfo: {
-        endCursor: pageInfo.startCursor ?? null,
-        hasNextPage: false,
-        hasPreviousPage: pageInfo.hasNextPage,
-        startCursor: pageInfo.endCursor ?? null,
-      },
-    };
-  return {
-    nodes,
-    pageInfo: {
-      endCursor: pageInfo.endCursor ?? null,
-      hasNextPage: pageInfo.hasNextPage,
-      hasPreviousPage: pageInfo.hasPreviousPage,
-      startCursor: pageInfo.startCursor ?? null,
-    },
-  };
-}
-
 /** `getPaginationVariables` output from @shopify/hydrogen. */
 export type ListingPaginationVariables =
   | {endCursor?: string | null; first: number}
@@ -241,175 +172,3 @@ export type ListingPaginationVariables =
 
 /** A cursor this listing did not issue (stale, hand-edited or foreign). */
 export class ListingCursorError extends Error {}
-
-const STUDIO = 's.';
-const MUSEUM = 'm.';
-
-/**
- * Cursors point at one product: `s.<Storefront cursor>` for a studio
- * product, `m.<index>` for a museum product's place in listing order. Both
- * are stable for a given search, so "Load more" and "Load previous" links
- * work from any page, including a deep page loaded directly.
- */
-export function studioCursor(cursor: string) {
-  return `${STUDIO}${cursor}`;
-}
-
-export function museumCursor(index: number) {
-  return `${MUSEUM}${index}`;
-}
-
-type Position =
-  {kind: 'studio'; cursor: string} | {kind: 'museum'; index: number};
-
-export function parseListingCursor(cursor: string): Position {
-  if (cursor.startsWith(STUDIO) && cursor.length > STUDIO.length)
-    return {kind: 'studio', cursor: cursor.slice(STUDIO.length)};
-  if (cursor.startsWith(MUSEUM)) {
-    const raw = cursor.slice(MUSEUM.length);
-    const index = Number(raw);
-    if (/^\d{1,6}$/.test(raw) && Number.isSafeInteger(index))
-      return {kind: 'museum', index};
-  }
-  throw new ListingCursorError(`Unknown listing cursor: ${cursor}`);
-}
-
-/**
- * One page of the default listing: studio products first (Storefront
- * paging), then museum products (an offset into the ranked set). A page that
- * reaches the end of the studio set is filled from the start of the museum
- * set, so every page but the last is full. Forward and backward paging use
- * the same positions, so no product repeats or goes missing.
- */
-export async function studioThenMuseumPage<T>(
-  variables: ListingPaginationVariables,
-  sources: ListingSources<T>,
-): Promise<ListingConnection<T>> {
-  if ('first' in variables) {
-    const cursor = variables.endCursor ?? null;
-    const position = cursor ? parseListingCursor(cursor) : null;
-    return position?.kind === 'museum'
-      ? pageAfterMuseum(position.index, variables.first, sources)
-      : pageFromStudio(position?.cursor ?? null, variables.first, sources);
-  }
-  const cursor = variables.startCursor ?? null;
-  const position = cursor ? parseListingCursor(cursor) : null;
-  if (position?.kind === 'studio') {
-    const studio = await sources.studio({
-      before: position.cursor,
-      last: variables.last,
-    });
-    return {
-      nodes: studio.nodes,
-      pageInfo: {
-        endCursor: wrap(studio.pageInfo.endCursor, studio.nodes),
-        hasNextPage: true,
-        hasPreviousPage: studio.pageInfo.hasPreviousPage,
-        startCursor: wrap(studio.pageInfo.startCursor, studio.nodes),
-      },
-    };
-  }
-  const museum = await sources.museum();
-  // No cursor: the last page of the whole listing.
-  return pageBeforeMuseum(
-    position ? position.index : museum.length,
-    variables.last,
-    museum,
-    sources,
-  );
-}
-
-function wrap(cursor: string | null | undefined, nodes: unknown[]) {
-  return nodes.length && cursor ? studioCursor(cursor) : null;
-}
-
-async function pageFromStudio<T>(
-  after: string | null,
-  first: number,
-  sources: ListingSources<T>,
-): Promise<ListingConnection<T>> {
-  const studio = await sources.studio({after, first});
-  const nodes = [...studio.nodes];
-  let startCursor = wrap(studio.pageInfo.startCursor, studio.nodes);
-  let endCursor = wrap(studio.pageInfo.endCursor, studio.nodes);
-  let hasNextPage = studio.pageInfo.hasNextPage;
-  if (!hasNextPage) {
-    const museum = await sources.museum();
-    const fill = museum.slice(0, Math.max(0, first - nodes.length));
-    nodes.push(...fill);
-    if (fill.length) {
-      startCursor ??= museumCursor(0);
-      endCursor = museumCursor(fill.length - 1);
-    }
-    hasNextPage = museum.length > fill.length;
-  }
-  return {
-    nodes,
-    pageInfo: {
-      endCursor,
-      hasNextPage,
-      // A cursor means a product came before this page.
-      hasPreviousPage: Boolean(after) || studio.pageInfo.hasPreviousPage,
-      startCursor,
-    },
-  };
-}
-
-async function pageAfterMuseum<T>(
-  index: number,
-  first: number,
-  sources: ListingSources<T>,
-): Promise<ListingConnection<T>> {
-  const museum = await sources.museum();
-  if (index >= museum.length)
-    throw new ListingCursorError(`Museum cursor ${index} is past the end`);
-  const nodes = museum.slice(index + 1, index + 1 + first);
-  const last = index + nodes.length;
-  return {
-    nodes,
-    pageInfo: {
-      endCursor: nodes.length ? museumCursor(last) : null,
-      hasNextPage: last + 1 < museum.length,
-      hasPreviousPage: true,
-      startCursor: nodes.length ? museumCursor(index + 1) : null,
-    },
-  };
-}
-
-async function pageBeforeMuseum<T>(
-  index: number,
-  last: number,
-  museum: T[],
-  sources: ListingSources<T>,
-): Promise<ListingConnection<T>> {
-  if (index > museum.length)
-    throw new ListingCursorError(`Museum cursor ${index} is past the end`);
-  const from = Math.max(0, index - last);
-  const tail = museum.slice(from, index);
-  const need = last - tail.length;
-  let studio: ListingConnection<T> | null = null;
-  let hasPreviousPage: boolean;
-  if (need > 0) {
-    studio = await sources.studio({before: null, last: need});
-    hasPreviousPage = studio.pageInfo.hasPreviousPage;
-  } else if (from > 0) {
-    hasPreviousPage = true;
-  } else {
-    const probe = await sources.studio({before: null, last: 1});
-    hasPreviousPage = probe.nodes.length > 0;
-  }
-  const studioNodes = studio?.nodes ?? [];
-  return {
-    nodes: [...studioNodes, ...tail],
-    pageInfo: {
-      endCursor: tail.length
-        ? museumCursor(index - 1)
-        : wrap(studio?.pageInfo.endCursor, studioNodes),
-      hasNextPage: index < museum.length,
-      hasPreviousPage,
-      startCursor:
-        wrap(studio?.pageInfo.startCursor, studioNodes) ??
-        (tail.length ? museumCursor(from) : null),
-    },
-  };
-}

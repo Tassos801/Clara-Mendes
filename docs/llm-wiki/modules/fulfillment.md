@@ -74,13 +74,29 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
   `/policies/shipping-policy`, which renders the admin-hosted content.
 - Ops QC: `docs/first-order-runbook.md` step 5 validates tracking against the
   same windows.
+- Merchant Center feeds: `/feeds/google-merchant.txt` (every line with a
+  fixed EUR rate) and `/feeds/google-merchant-printful.txt` (Printful mugs,
+  cushions and blankets, EU only), built by `app/lib/merchantFeed.ts` and
+  fetched by Merchant Center daily. Each item carries its own shipping: the
+  rates per shipping profile live in `app/lib/merchantFeedShipping.ts`, the
+  handling and transit days come from the constants above. The Printful
+  profiles hold USD rates that Shopify converts daily, so that feed quotes
+  them from a one-item cart per line on each build. Responses are cached for
+  6 hours; a failed build answers 503 so Merchant Center keeps the last good
+  fetch.
 
 ## Changing A Window
 
 Update the constants, mirror the change in the shipping-policy draft and
-re-paste it into Shopify Admin, and re-check runbook step 5. The live policy
-page and the Merchant Center shipping settings live in Shopify admin and do
-not update from code.
+re-paste it into Shopify Admin, and re-check runbook step 5. The Merchant
+Center feeds pick up the new windows on their next fetch. The live policy page
+lives in Shopify admin and does not update from code.
+
+## Changing A Shipping Rate
+
+A rate or a zone changed in a Shopify shipping profile must change in
+`app/lib/merchantFeedShipping.ts` in the same PR, or the feeds advertise the
+old rate. Printful rates need no change.
 
 ## Corrections (2026-09-11)
 
@@ -261,3 +277,19 @@ elsewhere wording, and every non-US buyer's wording is unchanged.
 untouched and the privacy banner keeps the visitor's own country
 (`visitorMarketCountry`, `app/lib/markets.ts`). The US is still inside the
 EUR "International" market until step B2.
+
+## 2026-10-20 - Printful museum products keep Printful's windows
+
+The museum mugs, cushions and blankets (the `printful` route in
+`app/lib/artProductCatalog.ts`) had inherited Prodigi's windows and, for US
+buyers, Prodigi's US 7–15 estimate. Each Printful family now names its
+technique (`printfulTechnique`), and `fulfilmentWindows`
+(`app/lib/storefrontBasics.ts`) uses it on the PDP and in the Offer
+`handlingTime`. Mugs and blankets are Sublimation: Printful publishes 2–5
+business days at every facility (printful.com/fulfillment-updates, read
+2026-10-20), so production 2–5 and dispatch 3–6 with the manual confirmation
+day. Cushions are "All-over synthetic" cut-and-sew (3–7 at partners) and take
+the activewear windows, 2–7 and 3–8. `readsUsDelivery` excludes them
+(`printful`), so US buyers read the generic EU + elsewhere wording until
+Printful's US transit is verified. The Line and Colour Prodigi mug keeps
+Prodigi's windows.

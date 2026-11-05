@@ -1,0 +1,3962 @@
+{
+  "$comment": "Printful read-back (GET /sync/products/@<Shopify product id>) after the printful step synced the seven-products Printful families through the store Printful app on 2026-10-20. Recorded with mapped --printful; file hash is the md5 Printful reports and matched the local file. Not synced yet: the Two Poplars and Chrysanthemum blankets (files over 20 MB, manual upload).",
+  "store": 18868484,
+  "readAt": "2026-10-20",
+  "sources": [
+    "floating-world/printful-readback-printful-mug-2026-10-20T09-38-29.json",
+    "floating-world/printful-readback-cushion-2026-10-20T09-46-22.json",
+    "line-and-colour/printful-readback-cushion-2026-10-20T09-50-00.json",
+    "floating-world/printful-readback-blanket-2026-10-20T09-53-19.json",
+    "line-and-colour/printful-readback-blanket-2026-10-20T09-55-28.json"
+  ],
+  "products": [
+    {
+      "sync_product": {
+        "id": 482178158,
+        "external_id": "16163633824078",
+        "name": "The Great Wave off Kanagawa Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577602951,
+          "external_id": "61249166606670",
+          "name": "The Great Wave off Kanagawa Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-01-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281340,
+              "hash": "690b47ec28e19b34b265370ad63451ee",
+              "filename": "met-39799-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090281834,
+              "hash": "30c8540f8172fc994755bcbc8db2e1cb",
+              "filename": "white-glossy-mug-white-11-oz-handle-on-right-6ad7368963844.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178166,
+        "external_id": "16163633922382",
+        "name": "Hodogaya on the Tōkaidō Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577602959,
+          "external_id": "61249166901582",
+          "name": "Hodogaya on the Tōkaidō Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-02-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281394,
+              "hash": "c5c62b0e443c40b9fd855e8219929c43",
+              "filename": "met-55458-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090281846,
+              "hash": "b0ac964954ab13bfc93fb5f6a6ce103f",
+              "filename": "white-glossy-mug-white-11-oz-handle-on-right-6ad7368ad3875.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178171,
+        "external_id": "16163634053454",
+        "name": "Sekiya Village on the Sumida River Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577602978,
+          "external_id": "61249167130958",
+          "name": "Sekiya Village on the Sumida River Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-03-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281457,
+              "hash": "5c8dc4553091028ecfa21018841b8bdf",
+              "filename": "met-55291-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090281848,
+              "hash": null,
+              "filename": "white-glossy-mug-white-11-oz-handle-on-right-6ad7368bcadb6.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178177,
+        "external_id": "16163634151758",
+        "name": "Tago Bay near Ejiri on the Tōkaidō Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577602988,
+          "external_id": "61249167393102",
+          "name": "Tago Bay near Ejiri on the Tōkaidō Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-04-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281497,
+              "hash": "e87b33f6690b10b20ccce8c82b46454a",
+              "filename": "met-57000-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090281852,
+              "hash": null,
+              "filename": "white-glossy-mug-white-11-oz-handle-on-right-6ad7368c9a26e.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178186,
+        "external_id": "16163634282830",
+        "name": "Ushibori in Hitachi Province Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603003,
+          "external_id": "61249167851854",
+          "name": "Ushibori in Hitachi Province Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-05-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281566,
+              "hash": "f9cf5da0c610f47b11666757809d95bb",
+              "filename": "met-56239-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090281861,
+              "hash": null,
+              "filename": "white-glossy-mug-white-11-oz-handle-on-right-6ad7368e2385b.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178189,
+        "external_id": "16163634381134",
+        "name": "Yoshida on the Tōkaidō Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603006,
+          "external_id": "61249168048462",
+          "name": "Yoshida on the Tōkaidō Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-06-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281626,
+              "hash": "49da66df276090187a09798ce8529a60",
+              "filename": "met-56360-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178193,
+        "external_id": "16163634413902",
+        "name": "Nissaka, Sayo no Nakayama Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603010,
+          "external_id": "61249168277838",
+          "name": "Nissaka, Sayo no Nakayama Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-07-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281674,
+              "hash": "378cfe5dd828e3e076fe0366546c8d42",
+              "filename": "met-55993-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090281869,
+              "hash": null,
+              "filename": "white-glossy-mug-white-11-oz-handle-on-right-6ad736901a88e.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178207,
+        "external_id": "16163634512206",
+        "name": "Fireworks at Ryōgoku Bridge Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603039,
+          "external_id": "61249168376142",
+          "name": "Fireworks at Ryōgoku Bridge Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-08-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281723,
+              "hash": "d6ab347735ba8590092684a31ff1b5d2",
+              "filename": "met-37093-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178215,
+        "external_id": "16163634577742",
+        "name": "Kinryūsan Temple at Asakusa Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603047,
+          "external_id": "61249168441678",
+          "name": "Kinryūsan Temple at Asakusa Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-09-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281748,
+              "hash": "b1b8a51491ddcb855e501d2c757d5b61",
+              "filename": "met-56689-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178221,
+        "external_id": "16163634643278",
+        "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Mug",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603065,
+          "external_id": "61249168539982",
+          "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Mug / 11 oz",
+          "synced": true,
+          "variant_id": 1320,
+          "sku": "CM-FW-10-MUG11-PF",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090281783,
+              "hash": "b1042506a7ac02a8e149ac438f74e2ff",
+              "filename": "met-55433-mug-11oz.jpg",
+              "width": 2700,
+              "height": 1050,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178251,
+        "external_id": "16163634708814",
+        "name": "The Great Wave off Kanagawa Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603095,
+          "external_id": "61249168605518",
+          "name": "The Great Wave off Kanagawa Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-01-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282814,
+              "hash": "5a92b2df18819bff2080eaa626784ec8",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad73718b109c.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603096,
+          "external_id": "61249168638286",
+          "name": "The Great Wave off Kanagawa Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-01-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282823,
+              "hash": "33baedafc77b0400166f076efe08b36e",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad73719a3c44.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603097,
+          "external_id": "61249168671054",
+          "name": "The Great Wave off Kanagawa Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-01-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282850,
+              "hash": "f5f4a7ffa9e69d6a79dd457fce9357b0",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad7371bacae1.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603098,
+          "external_id": "61249168703822",
+          "name": "The Great Wave off Kanagawa Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-01-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282071,
+              "hash": "e2c3236bfdabdf7c935e62469edc8d37",
+              "filename": "met-39799-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282856,
+              "hash": "fcb8e8f261d10d889e2d862e0292bc1b",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad7371ccb26e.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178257,
+        "external_id": "16163634839886",
+        "name": "Hodogaya on the Tōkaidō Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603109,
+          "external_id": "61249169031502",
+          "name": "Hodogaya on the Tōkaidō Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-02-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282848,
+              "hash": "4e30c970a51c731ee6d61e6c029f8352",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad7371d6fdb3.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603110,
+          "external_id": "61249169064270",
+          "name": "Hodogaya on the Tōkaidō Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-02-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282873,
+              "hash": "9930f0abdc880086b7b28ed77227a6ce",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad7371e2b9a9.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603111,
+          "external_id": "61249169097038",
+          "name": "Hodogaya on the Tōkaidō Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-02-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282878,
+              "hash": "70c888d050d3c0b0d9339b82b670f4a2",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad7371fc227a.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603112,
+          "external_id": "61249169129806",
+          "name": "Hodogaya on the Tōkaidō Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-02-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282125,
+              "hash": "1f163ee2ff884b6eecdb3e193d2ef106",
+              "filename": "met-55458-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282882,
+              "hash": "e0465b32a9cbf57ac19cedc6c0e95a7d",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad73720723f3.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178275,
+        "external_id": "16163634905422",
+        "name": "Sekiya Village on the Sumida River Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603178,
+          "external_id": "61249169228110",
+          "name": "Sekiya Village on the Sumida River Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-03-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282877,
+              "hash": "012d808ad087c271234f4f25dc6f092f",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad73721aee91.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603179,
+          "external_id": "61249169260878",
+          "name": "Sekiya Village on the Sumida River Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-03-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090282885,
+              "hash": "e1682edb269e1223a58869ed9917aa9a",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad73722b88a7.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603180,
+          "external_id": "61249169293646",
+          "name": "Sekiya Village on the Sumida River Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-03-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283945,
+              "hash": "9d13ceca463edd4503221b21cf353a69",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad737d4c2280.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603181,
+          "external_id": "61249169326414",
+          "name": "Sekiya Village on the Sumida River Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-03-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282198,
+              "hash": "8c47c2364e70be722d22260c3e122742",
+              "filename": "met-55291-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283949,
+              "hash": "36f2c81f0c0c07d34e570a70a47d9ecd",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad737d56ae43.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178296,
+        "external_id": "16163635069262",
+        "name": "Tago Bay near Ejiri on the Tōkaidō Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603202,
+          "external_id": "61249169621326",
+          "name": "Tago Bay near Ejiri on the Tōkaidō Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-04-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283948,
+              "hash": "61fea965b882c6d744aba40e0778408b",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad737d6218e8.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603203,
+          "external_id": "61249169654094",
+          "name": "Tago Bay near Ejiri on the Tōkaidō Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-04-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283952,
+              "hash": "354edd4b46a3b568313be37060790ee9",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad737d75149e.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603204,
+          "external_id": "61249169686862",
+          "name": "Tago Bay near Ejiri on the Tōkaidō Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-04-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283967,
+              "hash": "5ebbf942c218ebe320879dcbf110b7c1",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad737d86192b.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603205,
+          "external_id": "61249169719630",
+          "name": "Tago Bay near Ejiri on the Tōkaidō Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-04-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282299,
+              "hash": "a23dee2d0eacf8c7eb818e2e5673cf50",
+              "filename": "met-57000-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283966,
+              "hash": "b6c743f1c92c90d4276faef9835589e7",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad737d912159.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178314,
+        "external_id": "16163635200334",
+        "name": "Ushibori in Hitachi Province Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603232,
+          "external_id": "61249169981774",
+          "name": "Ushibori in Hitachi Province Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-05-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283980,
+              "hash": "add616471caf701b6b1db534d8cb92eb",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad737da9e0ef.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603233,
+          "external_id": "61249170014542",
+          "name": "Ushibori in Hitachi Province Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-05-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283978,
+              "hash": "4cd2bab498207c6f1749e32594736f3d",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad737dba4eea.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603234,
+          "external_id": "61249170047310",
+          "name": "Ushibori in Hitachi Province Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-05-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283996,
+              "hash": "efe73b93db580b53a7ce1d3d1583626c",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad737dc51f7b.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603235,
+          "external_id": "61249170080078",
+          "name": "Ushibori in Hitachi Province Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-05-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282355,
+              "hash": "ee43639e938b14b8f8e13b9bd1842cf6",
+              "filename": "met-56239-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284012,
+              "hash": "e453a4ddc36161b45cd3cee374529d23",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad737de52428.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178320,
+        "external_id": "16163635495246",
+        "name": "Yoshida on the Tōkaidō Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603242,
+          "external_id": "61249170407758",
+          "name": "Yoshida on the Tōkaidō Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-06-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284324,
+              "hash": "389a754417da2eb6f8d9a4656fcb2034",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad7381c44cef.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603243,
+          "external_id": "61249170440526",
+          "name": "Yoshida on the Tōkaidō Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-06-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284348,
+              "hash": "689612f0a9e43189dc273c5f05025d29",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad7381d5df82.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603244,
+          "external_id": "61249170473294",
+          "name": "Yoshida on the Tōkaidō Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-06-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284366,
+              "hash": "eca5ad6403bea650a5c8fd86c83f2c73",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad7381e9f52a.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603245,
+          "external_id": "61249170506062",
+          "name": "Yoshida on the Tōkaidō Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-06-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282415,
+              "hash": "b041195984f2ec6292800c079425f83f",
+              "filename": "met-56360-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284363,
+              "hash": "784a2a1522071afc03a54916e619b91f",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad7382018e75.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178325,
+        "external_id": "16163635822926",
+        "name": "Nissaka, Sayo no Nakayama Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603250,
+          "external_id": "61249171816782",
+          "name": "Nissaka, Sayo no Nakayama Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-07-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284355,
+              "hash": "914eb1894830d0249c1ba07c891a7afa",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad73820937b0.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603251,
+          "external_id": "61249171849550",
+          "name": "Nissaka, Sayo no Nakayama Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-07-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284369,
+              "hash": "acb2b0eae7f170e57061390e9058beca",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad7382204a9f.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603252,
+          "external_id": "61249171882318",
+          "name": "Nissaka, Sayo no Nakayama Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-07-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284386,
+              "hash": "34b546eeb499f3b8df6e999f3db3244f",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad73822992ce.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603253,
+          "external_id": "61249171915086",
+          "name": "Nissaka, Sayo no Nakayama Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-07-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282479,
+              "hash": "249124ddd297198da052860f262984fa",
+              "filename": "met-55993-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284408,
+              "hash": "c995b1b034070a17f0afa5115d068d39",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad73824e58ff.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178337,
+        "external_id": "16163636085070",
+        "name": "Fireworks at Ryōgoku Bridge Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603267,
+          "external_id": "61249173422414",
+          "name": "Fireworks at Ryōgoku Bridge Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-08-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284394,
+              "hash": "93ece6ffd4ebacc103430e9c05f0b4fa",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad73824d5867.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603268,
+          "external_id": "61249173455182",
+          "name": "Fireworks at Ryōgoku Bridge Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-08-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284407,
+              "hash": "b399369b99ca290efd0cf70bec689378",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad738255f7aa.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603269,
+          "external_id": "61249173487950",
+          "name": "Fireworks at Ryōgoku Bridge Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-08-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284844,
+              "hash": null,
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad738647d78d.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        },
+        {
+          "id": 5577603270,
+          "external_id": "61249173520718",
+          "name": "Fireworks at Ryōgoku Bridge Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-08-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282574,
+              "hash": "fce86d36ab0da6d53ab927fb962948a2",
+              "filename": "met-37093-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284852,
+              "hash": null,
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad738652d3c3.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178338,
+        "external_id": "16163636347214",
+        "name": "Kinryūsan Temple at Asakusa Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603271,
+          "external_id": "61249175290190",
+          "name": "Kinryūsan Temple at Asakusa Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-09-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090284860,
+              "hash": null,
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad73866cf89b.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        },
+        {
+          "id": 5577603272,
+          "external_id": "61249175322958",
+          "name": "Kinryūsan Temple at Asakusa Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-09-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603273,
+          "external_id": "61249175355726",
+          "name": "Kinryūsan Temple at Asakusa Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-09-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603274,
+          "external_id": "61249175388494",
+          "name": "Kinryūsan Temple at Asakusa Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-09-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282695,
+              "hash": "c6e91f17282010ec1fa046ef7b464372",
+              "filename": "met-56689-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178361,
+        "external_id": "16163636805966",
+        "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577603315,
+          "external_id": "61249176830286",
+          "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-FW-10-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603316,
+          "external_id": "61249176863054",
+          "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-FW-10-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603317,
+          "external_id": "61249176895822",
+          "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-FW-10-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577603318,
+          "external_id": "61249176928590",
+          "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-FW-10-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282728,
+              "hash": "b4e164673b5ef999b66f52a00b05f1b8",
+              "filename": "met-55433-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179301,
+        "external_id": "16163649192270",
+        "name": "Improvisation No. 30 (Cannons) Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605310,
+          "external_id": "61249199800654",
+          "name": "Improvisation No. 30 (Cannons) Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-01-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283535,
+              "hash": "f477d1e12642ed520f8b8edaae89fa21",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad7378c26a70.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605311,
+          "external_id": "61249199833422",
+          "name": "Improvisation No. 30 (Cannons) Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-01-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283548,
+              "hash": "d5500687c6fe9dd31b0ab5d0aac5331e",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad7378d2cb20.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605312,
+          "external_id": "61249199866190",
+          "name": "Improvisation No. 30 (Cannons) Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-01-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283555,
+              "hash": "b0f542369cd7904eded7a4af6c0acbf1",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad7378e568da.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605313,
+          "external_id": "61249199898958",
+          "name": "Improvisation No. 30 (Cannons) Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-01-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282886,
+              "hash": "f14d1bb4b8d94b0ddfd7f91053513ae4",
+              "filename": "aic-8991-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283577,
+              "hash": "b752844f7afec99af533a08775c09312",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad737901a527.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179325,
+        "external_id": "16163649257806",
+        "name": "Landscape with Two Poplars Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605349,
+          "external_id": "61249200259406",
+          "name": "Landscape with Two Poplars Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-02-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283562,
+              "hash": "bb6bdbdc6b53abda867e37865e77b6cd",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad737902dc89.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605350,
+          "external_id": "61249200292174",
+          "name": "Landscape with Two Poplars Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-02-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283561,
+              "hash": "51d3d9efdf4ae5310c5eac76320c3715",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad7379140d35.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605351,
+          "external_id": "61249200324942",
+          "name": "Landscape with Two Poplars Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-02-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283571,
+              "hash": "44cbde79d211cc89e356e348381b2001",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad737922a9ed.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605352,
+          "external_id": "61249200357710",
+          "name": "Landscape with Two Poplars Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-02-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090282987,
+              "hash": "dbfc2f90c12e04b65ccfab077428c6e2",
+              "filename": "aic-8980-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283584,
+              "hash": "e40dfe43476fffa636a6c09055a6d94a",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad73792bdc0a.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179352,
+        "external_id": "16163649388878",
+        "name": "Houses at Murnau Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605419,
+          "external_id": "61249201078606",
+          "name": "Houses at Murnau Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-03-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283589,
+              "hash": "5f4ff8786fcb26755037ee7d7cf6cdd5",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad73795b32cb.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605420,
+          "external_id": "61249201111374",
+          "name": "Houses at Murnau Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-03-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090283585,
+              "hash": "b8658b9c723c5b41e22a04a92c232ad4",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad7379544903.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605421,
+          "external_id": "61249201144142",
+          "name": "Houses at Murnau Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-03-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285304,
+              "hash": "3acd2609d107d955dc9f150eb2ef49e4",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad738ad05a59.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605422,
+          "external_id": "61249201176910",
+          "name": "Houses at Murnau Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-03-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283043,
+              "hash": "cb9d2365044af8287cf9393e52af9f50",
+              "filename": "aic-129849-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285308,
+              "hash": "4638f78b154c5d967d05ca71983195df",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad738ae0761c.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179361,
+        "external_id": "16163649487182",
+        "name": "Painting with Troika Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605431,
+          "external_id": "61249202225486",
+          "name": "Painting with Troika Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-04-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285314,
+              "hash": "b394279bf0152908559ec9b7bcd0367a",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad738b09066e.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605432,
+          "external_id": "61249202258254",
+          "name": "Painting with Troika Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-04-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285331,
+              "hash": "aa22156e369c4b158061b484b7dd0402",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad738b0c64d3.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605433,
+          "external_id": "61249202291022",
+          "name": "Painting with Troika Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-04-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285332,
+              "hash": "b6f10fd89391b1f614e866fe098a14dd",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad738b24fdc6.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605434,
+          "external_id": "61249202323790",
+          "name": "Painting with Troika Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-04-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283097,
+              "hash": "7b07292255b8185b3575d6bb17123fd2",
+              "filename": "aic-8983-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285337,
+              "hash": "1b46e807c1d471d6f424f773501bc60a",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad738b35fc59.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179385,
+        "external_id": "16163649618254",
+        "name": "Painting with Green Center Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605470,
+          "external_id": "61249202684238",
+          "name": "Painting with Green Center Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-05-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285341,
+              "hash": "4db2acdd5c8154c28129474da598d7d9",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad738b3ea985.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605471,
+          "external_id": "61249202717006",
+          "name": "Painting with Green Center Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-05-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285342,
+              "hash": "d88aceb36c4201dfb37d850dcdc58832",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad738b57d357.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605472,
+          "external_id": "61249202749774",
+          "name": "Painting with Green Center Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-05-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285350,
+              "hash": "2ec0d2d43420c194528845808f3053c3",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad738b69dbd4.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605473,
+          "external_id": "61249202782542",
+          "name": "Painting with Green Center Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-05-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283142,
+              "hash": "7fd73c0167c02aa4b01f12924f580fb4",
+              "filename": "aic-8987-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285359,
+              "hash": "48a7cc01cdec78f3bbb62faf6db8d906",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad738b713069.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179403,
+        "external_id": "16163649913166",
+        "name": "Composition with Red, Yellow, and Blue Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605505,
+          "external_id": "61249203503438",
+          "name": "Composition with Red, Yellow, and Blue Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-06-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285648,
+              "hash": "859bd7ac8c09f03321003744b77479b1",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad738f59c0c1.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605506,
+          "external_id": "61249203536206",
+          "name": "Composition with Red, Yellow, and Blue Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-06-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285654,
+              "hash": "d8ed2051cbcf3f18d5e4c6b23b0c210d",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad738f63d107.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605507,
+          "external_id": "61249203568974",
+          "name": "Composition with Red, Yellow, and Blue Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-06-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285656,
+              "hash": "bbbd47acd3df0de2b665436e1d3f8adc",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad738f7a21b5.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605508,
+          "external_id": "61249203601742",
+          "name": "Composition with Red, Yellow, and Blue Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-06-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283198,
+              "hash": "d183285923b3b7233402c0238276e6c4",
+              "filename": "cma-1967.215-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285672,
+              "hash": "5700b42531d3e43b88660e6c4410a7a2",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad738f94b375.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179405,
+        "external_id": "16163650109774",
+        "name": "Lozenge Composition Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605510,
+          "external_id": "61249203962190",
+          "name": "Lozenge Composition Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-07-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285665,
+              "hash": "725abc227d7bd0139525f08309b5ed9b",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad738f880d2f.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605511,
+          "external_id": "61249203994958",
+          "name": "Lozenge Composition Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-07-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285661,
+              "hash": "2061433cdeb7436626a4350dcf495f3d",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad738f959db3.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605512,
+          "external_id": "61249204027726",
+          "name": "Lozenge Composition Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-07-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285684,
+              "hash": "9dedfb73e8811f2d8b3aee1004f8d300",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad738fa4ae6c.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605513,
+          "external_id": "61249204060494",
+          "name": "Lozenge Composition Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-07-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283236,
+              "hash": "3e75ffe629409137639df0214384b8cb",
+              "filename": "aic-109819-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285683,
+              "hash": "acddc705ee9ed0223968ff2264c8ae88",
+              "filename": "all-over-print-premium-pillow-22x22-front-6ad738fb8428d.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179411,
+        "external_id": "16163650404686",
+        "name": "Composition (No. 1) Gray-Red Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605528,
+          "external_id": "61249204748622",
+          "name": "Composition (No. 1) Gray-Red Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-08-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285693,
+              "hash": "ccffb52d1dab6361ad02bd1c774a26a7",
+              "filename": "all-over-print-premium-pillow-case-18x18-front-6ad738fdceea5.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605529,
+          "external_id": "61249204781390",
+          "name": "Composition (No. 1) Gray-Red Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-08-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090285707,
+              "hash": "12b570814cc1bb2a2991a3cd2854b34f",
+              "filename": "all-over-print-premium-pillow-18x18-front-6ad738ff0d423.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605530,
+          "external_id": "61249204814158",
+          "name": "Composition (No. 1) Gray-Red Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-08-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090286032,
+              "hash": "541f08ed6c065d7446fba26b0227fe94",
+              "filename": "all-over-print-premium-pillow-case-22x22-front-6ad7393d62aeb.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605531,
+          "external_id": "61249204846926",
+          "name": "Composition (No. 1) Gray-Red Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-08-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283289,
+              "hash": "3b94c57ca194da0a8311ff0a785c68a7",
+              "filename": "aic-65821-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179416,
+        "external_id": "16163650699598",
+        "name": "Chrysanthemum Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605536,
+          "external_id": "61249205535054",
+          "name": "Chrysanthemum Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-09-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605537,
+          "external_id": "61249205567822",
+          "name": "Chrysanthemum Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-09-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605538,
+          "external_id": "61249205600590",
+          "name": "Chrysanthemum Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-09-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605539,
+          "external_id": "61249205633358",
+          "name": "Chrysanthemum Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-09-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283375,
+              "hash": "fa1c292322d33fa07b60fddc17c41952",
+              "filename": "cma-1958.38-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179427,
+        "external_id": "16163650961742",
+        "name": "Field with Young Trees Cushion",
+        "synced": 4,
+        "variants": 4
+      },
+      "sync_variants": [
+        {
+          "id": 5577605565,
+          "external_id": "61249206059342",
+          "name": "Field with Young Trees Cushion / 18 × 18 in / Cover only",
+          "synced": true,
+          "variant_id": 9516,
+          "sku": "CM-LC-10-CUSH18-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605566,
+          "external_id": "61249206092110",
+          "name": "Field with Young Trees Cushion / 18 × 18 in / With insert",
+          "synced": true,
+          "variant_id": 9515,
+          "sku": "CM-LC-10-CUSH18-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605567,
+          "external_id": "61249206124878",
+          "name": "Field with Young Trees Cushion / 22 × 22 in / Cover only",
+          "synced": true,
+          "variant_id": 11078,
+          "sku": "CM-LC-10-CUSH22-C",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        },
+        {
+          "id": 5577605568,
+          "external_id": "61249206157646",
+          "name": "Field with Young Trees Cushion / 22 × 22 in / With insert",
+          "synced": true,
+          "variant_id": 11077,
+          "sku": "CM-LC-10-CUSH22-I",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            },
+            {
+              "type": "back",
+              "id": 1090283418,
+              "hash": "b115d081e9ae4971d31195cc0c6f3ca6",
+              "filename": "cma-1971.220-cushion-22.jpg",
+              "width": 3300,
+              "height": 3300,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178366,
+        "external_id": "16163637657934",
+        "name": "The Great Wave off Kanagawa Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603323,
+          "external_id": "61249178992974",
+          "name": "The Great Wave off Kanagawa Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-01-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286225,
+              "hash": "909c579890899ab9c833aa80164106e6",
+              "filename": "met-39799-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090287340,
+              "hash": "24c86736378272783b164bbddddceccb",
+              "filename": "throw-blanket-50x60-front-6ad73a0697777.png",
+              "width": 2000,
+              "height": 2000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178372,
+        "external_id": "16163637821774",
+        "name": "Hodogaya on the Tōkaidō Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603364,
+          "external_id": "61249179156814",
+          "name": "Hodogaya on the Tōkaidō Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-02-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286366,
+              "hash": "ae74b808234d37ef2207966a50b2bf25",
+              "filename": "met-55458-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            },
+            {
+              "type": "preview",
+              "id": 1090287359,
+              "hash": null,
+              "filename": "throw-blanket-50x60-front-6ad73a083df54.png",
+              "width": null,
+              "height": null,
+              "status": "waiting"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178375,
+        "external_id": "16163637887310",
+        "name": "Sekiya Village on the Sumida River Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603367,
+          "external_id": "61249179222350",
+          "name": "Sekiya Village on the Sumida River Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-03-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286527,
+              "hash": "cdc2b55a4c7b210abc099b4717c42f7e",
+              "filename": "met-55291-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178379,
+        "external_id": "16163637985614",
+        "name": "Tago Bay near Ejiri on the Tōkaidō Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603371,
+          "external_id": "61249179320654",
+          "name": "Tago Bay near Ejiri on the Tōkaidō Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-04-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286612,
+              "hash": "d7541918def9767a3d398e10234c35fe",
+              "filename": "met-57000-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178385,
+        "external_id": "16163638182222",
+        "name": "Ushibori in Hitachi Province Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603377,
+          "external_id": "61249179418958",
+          "name": "Ushibori in Hitachi Province Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-05-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286747,
+              "hash": "0efdcbac1f6f79c7115e0a7c88691745",
+              "filename": "met-56239-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178405,
+        "external_id": "16163638411598",
+        "name": "Yoshida on the Tōkaidō Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603487,
+          "external_id": "61249179550030",
+          "name": "Yoshida on the Tōkaidō Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-06-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286837,
+              "hash": "527f585cbf6d8e4547b877181354f22d",
+              "filename": "met-56360-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178436,
+        "external_id": "16163638640974",
+        "name": "Nissaka, Sayo no Nakayama Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603558,
+          "external_id": "61249179615566",
+          "name": "Nissaka, Sayo no Nakayama Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-07-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090286943,
+              "hash": "23515aa4db50e66446f9d473ae859237",
+              "filename": "met-55993-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178439,
+        "external_id": "16163638870350",
+        "name": "Fireworks at Ryōgoku Bridge Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603561,
+          "external_id": "61249179681102",
+          "name": "Fireworks at Ryōgoku Bridge Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-08-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287053,
+              "hash": "9fe1d17d55c2a1ad3a06d4e5dba2b0af",
+              "filename": "met-37093-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178461,
+        "external_id": "16163639099726",
+        "name": "Kinryūsan Temple at Asakusa Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603583,
+          "external_id": "61249179746638",
+          "name": "Kinryūsan Temple at Asakusa Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-09-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287135,
+              "hash": "e7dcab364bdd338e96542a19a69bd343",
+              "filename": "met-56689-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482178467,
+        "external_id": "16163639394638",
+        "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577603594,
+          "external_id": "61249179812174",
+          "name": "Sudden Shower over Shin-Ōhashi Bridge and Atake Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-FW-10-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287215,
+              "hash": "dc96efe4a2202e3c537392a514be6f1d",
+              "filename": "met-55433-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179431,
+        "external_id": "16163651191118",
+        "name": "Improvisation No. 30 (Cannons) Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605572,
+          "external_id": "61249206518094",
+          "name": "Improvisation No. 30 (Cannons) Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-01-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287483,
+              "hash": "44799f0ba717256d6d95f1ca37db9307",
+              "filename": "aic-8991-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179489,
+        "external_id": "16163651748174",
+        "name": "Houses at Murnau Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605633,
+          "external_id": "61249208975694",
+          "name": "Houses at Murnau Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-03-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287583,
+              "hash": "469fb2357d2aa11fd1c283913c4edf36",
+              "filename": "aic-129849-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179502,
+        "external_id": "16163652010318",
+        "name": "Painting with Troika Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605648,
+          "external_id": "61249209368910",
+          "name": "Painting with Troika Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-04-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287650,
+              "hash": "a219c23c5640603bf3cceb33aa2387bd",
+              "filename": "aic-8983-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179510,
+        "external_id": "16163652239694",
+        "name": "Painting with Green Center Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605657,
+          "external_id": "61249209729358",
+          "name": "Painting with Green Center Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-05-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287729,
+              "hash": "f000cc89db7e85c306e46947bc6ed391",
+              "filename": "aic-8987-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179517,
+        "external_id": "16163652567374",
+        "name": "Composition with Red, Yellow, and Blue Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605664,
+          "external_id": "61249210450254",
+          "name": "Composition with Red, Yellow, and Blue Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-06-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287809,
+              "hash": "5fc15885a44ca9d518e7bdd3668cdd10",
+              "filename": "cma-1967.215-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179522,
+        "external_id": "16163652763982",
+        "name": "Lozenge Composition Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605718,
+          "external_id": "61249210515790",
+          "name": "Lozenge Composition Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-07-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287865,
+              "hash": "b58b5cad5f8ec12dd2702b2dae3bbaa9",
+              "filename": "aic-109819-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179529,
+        "external_id": "16163652960590",
+        "name": "Composition (No. 1) Gray-Red Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605768,
+          "external_id": "61249212219726",
+          "name": "Composition (No. 1) Gray-Red Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-08-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090287925,
+              "hash": "e023a66865da686683c0bf3fe36c3399",
+              "filename": "aic-65821-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "sync_product": {
+        "id": 482179565,
+        "external_id": "16163653484878",
+        "name": "Field with Young Trees Throw Blanket",
+        "synced": 1,
+        "variants": 1
+      },
+      "sync_variants": [
+        {
+          "id": 5577605825,
+          "external_id": "61249213301070",
+          "name": "Field with Young Trees Throw Blanket / 50 × 60 in",
+          "synced": true,
+          "variant_id": 10986,
+          "sku": "CM-LC-10-BLANKET50X60",
+          "files": [
+            {
+              "type": "default",
+              "id": 1090288000,
+              "hash": "cd7360f854d220e531c2c88fa7f2c745",
+              "filename": "cma-1971.220-blanket-50x60.jpg",
+              "width": 7500,
+              "height": 9000,
+              "status": "ok"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

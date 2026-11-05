@@ -23,7 +23,6 @@ import {
 import {
   hasClothingApprovals,
   isClothingProduct,
-  isClothingProductType,
   type ClothingProductLike,
 } from './clothing.ts';
 
@@ -188,9 +187,15 @@ export const SHOP_PRODUCT_TYPE_ORDER: readonly string[] = [
   'Art Prints',
   'Framed Art',
   'Canvas Art',
+  'Hanger Prints',
+  'Acrylic Prints',
+  'Metal Prints',
   'Cards',
   'Postcards',
   'Phone Cases',
+  'Mugs',
+  'Cushions',
+  'Blankets',
   'Plant Pots',
   'Book Nooks',
 ];
@@ -502,36 +507,6 @@ export function isStoreThemeProduct(product: CatalogProductLike) {
     SELLABLE_PRODUCT_HANDLES.has(handle) ||
     (isClothingProduct(product) && hasClothingApprovals(product))
   );
-}
-
-/**
- * Up to `count` products for a short mixed row: the first of each shop
- * category in the given order (garments count as one, Clothing), then the
- * rest in order, so one range — ten book nooks, four garments — cannot
- * fill the row alone. Products in `exclude` (by id) are skipped.
- */
-export function pickVariedProducts<
-  T extends {id: string; productType?: string | null},
->(products: readonly T[], count: number, exclude: readonly {id: string}[] = []) {
-  const excluded = new Set(exclude.map((product) => product.id));
-  const pool = products.filter((product) => !excluded.has(product.id));
-  const category = (product: T) =>
-    isClothingProductType(product.productType)
-      ? 'Clothing'
-      : (product.productType ?? '');
-  const picked: T[] = [];
-  const seen = new Set<string>();
-  for (const product of pool) {
-    if (picked.length === count) break;
-    if (seen.has(category(product))) continue;
-    seen.add(category(product));
-    picked.push(product);
-  }
-  for (const product of pool) {
-    if (picked.length === count) break;
-    if (!picked.includes(product)) picked.push(product);
-  }
-  return picked;
 }
 
 export function isDemoProduct(product: CatalogProductLike) {

@@ -23,6 +23,7 @@ import {
 import {
   CLOTHING_PAGE_ACCENT,
   CLOTHING_PAGE_HERO,
+  COLOURWAY_ACCENT_SIZE,
   capsuleStory,
   lookAccent,
 } from '~/lib/clothingEditorial';
@@ -42,6 +43,10 @@ import {
 
 const DESCRIPTION =
   'Clara Mendes Clothing: leggings, a sports bra, biker shorts and a tank top with a watercolour-style print, made to order in Moss / Mist and Clay / Oat.';
+
+/** A 1x1 transparent GIF. */
+const BLANK_PIXEL =
+  'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
 export const meta: Route.MetaFunction = ({data}) =>
   buildSeoMeta({
@@ -158,13 +163,18 @@ export default function Clothing() {
         </div>
         {looksImage ? (
           <figure className="clothing-hero-media">
-            <img
-              src={looksImage.src}
-              alt={looksImage.alt}
-              width={looksImage.width}
-              height={looksImage.height}
-              fetchPriority="high"
-            />
+            <picture>
+              {/* Phones hide the figure (clothing.css), so they fetch a
+                  blank pixel instead. */}
+              <source media="(max-width: 699px)" srcSet={BLANK_PIXEL} />
+              <img
+                src={looksImage.src}
+                alt={looksImage.alt}
+                width={looksImage.width}
+                height={looksImage.height}
+                fetchPriority="high"
+              />
+            </picture>
             <figcaption>{looksImage.caption}</figcaption>
           </figure>
         ) : null}
@@ -354,8 +364,8 @@ export default function Clothing() {
                       <img
                         className="clothing-colourway-fern"
                         src={accent}
-                        width="391"
-                        height="900"
+                        width={COLOURWAY_ACCENT_SIZE.width}
+                        height={COLOURWAY_ACCENT_SIZE.height}
                         alt=""
                         loading="lazy"
                       />

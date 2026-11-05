@@ -9,6 +9,9 @@ Source: local Shopify Hydrogen storefront repository at
 
 - [Artist-shop pilot handoff](../artist-shops/HANDOFF.md) - Active work on
   `codex/artist-shops-pilot`; cross-PC setup, agreed scope and current status.
+- [Line and Colour staging and mapping](../artist-shops/evidence/line-and-colour-staging-mapping-2026-10-18.json) -
+  Kandinsky and Mondrian: 36 Shopify Drafts, 241 variants, 41 channel
+  mappings and 200 prepared API case mappings; EUR 24.99 mugs, release off.
 - [Floating World Draft readback](../artist-shops/evidence/draft-readback-2026-10-13.json) -
   Ten hidden Shopify Drafts and their 50 READY images verified on 13 October;
   product and variant IDs, print hashes, pending supplier mapping and scope limits.
@@ -35,6 +38,8 @@ Source: local Shopify Hydrogen storefront repository at
 - [Fulfillment And Delivery Promises](modules/fulfillment.md) - Prodigi windows, delivery estimates, and every surface that states them.
 - [Clothing](modules/clothing.md) - The `/clothing` destination: what counts as clothing, categories vs capsules, the approval rule, 8 Oct 2026 catalogue state, and prepared Shopify changes.
 - [Analytics And Attribution](modules/analytics-and-attribution.md) - Shopify analytics, ad platform events, UTM/click ID capture, and cart attributes.
+- [Brand Voice](brand-voice.md) - The owner's brand line, `app/content/brand.ts`, our-own/borrowed labels, copy guard, homepage order, line rail, lead prints and the Shop All line rotation.
+- [Brand Logo](brand-logo.md) - The 2026-10-30 logo (CLARA / MENDES + Mondrian mark): vector data in `app/content/logo.ts`, the trace script, `BrandLogo`, where each lockup appears, icons, share card, owner hand-off.
 - [Brand Film](modules/brand-film.md) - The silent 45-second launch film: Remotion package, render check, Shopify Files upload, Our Story embed.
 
 ## Operations

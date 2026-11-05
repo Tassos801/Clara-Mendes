@@ -34,38 +34,15 @@ export const ORIGINAL_ART_HANDLES: string[] = artCatalog.map(
 );
 
 /**
- * Query size for the dedicated availability lookup. The headroom covers a
- * future capsule addition AND the 12 extension products, which share the
- * `Clara Mendes Original` tag once published — without it, released
- * extensions could push prints off the end of the response and make them
- * read as unavailable.
- */
-export const ORIGINAL_ART_QUERY_FIRST = ORIGINAL_ART_HANDLES.length + 25;
-
-/**
- * Storefront `products(query:)` clause targeting the original prints.
- *
- * The catalog sync tags every print `Clara Mendes Original`, and tag is a
- * supported product search field. (Handle is not — Shopify silently ignores
- * unsupported fields and would return the entire catalog.) The resulting
- * product list is still keyed strictly by the expected catalog handles in
- * `buildOriginalArtProductMap`, so a mistagged product cannot leak in.
- */
-export const ORIGINAL_ART_TAG = 'Clara Mendes Original';
-
-export function buildOriginalArtQuery() {
-  return `tag:"${ORIGINAL_ART_TAG}"`;
-}
-
-/**
  * Reduces Storefront API products to a handle-keyed map of live state.
  * A handle that is missing from the result was not returned by Shopify
  * (unpublished or deleted) and is the only case treated as unavailable.
  */
 export function buildOriginalArtProductMap(
   products: Array<ClaraCardProduct | null | undefined>,
+  expected: readonly string[] = ORIGINAL_ART_HANDLES,
 ): OriginalArtProductMap {
-  const expectedHandles = new Set(ORIGINAL_ART_HANDLES);
+  const expectedHandles = new Set(expected.map((handle) => handle.toLowerCase()));
   const map: OriginalArtProductMap = {};
 
   for (const product of products) {

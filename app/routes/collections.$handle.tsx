@@ -5,6 +5,7 @@ import type {Route} from './+types/collections.$handle';
 import {
   buildCollectionAnalyticsProducts,
   CollectionView,
+  heroBackdropMeta,
   SHOP_PRODUCT_TYPES,
 } from './collections.all';
 import type {
@@ -21,6 +22,7 @@ import {
   WallSetPurchase,
   type WallSetPurchaseProduct,
 } from '~/components/WallSetPurchase';
+import {BRAND} from '~/content/brand';
 import {buildCapsuleTagQuery} from '~/lib/capsules';
 import {
   capsulePagePath,
@@ -124,13 +126,14 @@ export const meta: Route.MetaFunction = ({data}) => {
   }
 
   const collection = data as ShopifyCollectionLoaderData | undefined;
-  return buildSeoMeta({
+  const seo = buildSeoMeta({
     description:
-      collection?.description ??
-      'A focused Clara Mendes collection of original art and considered products.',
+      collection?.description ?? BRAND.shopAll.collectionFallback,
     title: collection?.heading ?? 'Collection',
     url: collection?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
+  // Collections without their own hero paint the shared interior.
+  return collection && !collection.hero ? [...seo, ...heroBackdropMeta()] : seo;
 };
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
@@ -316,8 +319,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       data.collections.nodes as CollectionLink[],
     ),
     description:
-      data.collection.description ||
-      'A focused Clara Mendes collection of original art and considered products.',
+      data.collection.description || BRAND.shopAll.collectionFallback,
     facets,
     heading: data.collection.title,
     hero: collectionHero(data.collection.handle),
@@ -430,7 +432,7 @@ function CapsuleLandingView({data}: {data: CapsuleLoaderData}) {
       </nav>
 
       <header className="capsule-hero">
-        <p className="eyebrow">Original art prints — a capsule of three</p>
+        <p className="eyebrow">Our own prints — a capsule of three</p>
         <h1>{page.capsule.title}</h1>
         <p className="capsule-subtitle">{page.subtitle}</p>
       </header>
@@ -553,7 +555,13 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
             alt={page.hero.alt}
             fetchPriority="high"
             height="1200"
+            sizes={
+              page.hero.srcSet
+                ? '(max-width: 880px) calc(100vw - 64px), 670px'
+                : undefined
+            }
             src={page.hero.src}
+            srcSet={page.hero.srcSet}
             width="1600"
           />
         </figure>

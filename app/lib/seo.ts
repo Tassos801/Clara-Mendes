@@ -1,5 +1,6 @@
 import type {ClaraCardProduct} from '../components/ClaraProductCard.tsx';
 import {deriveCardPricing} from './productCardPricing.ts';
+import {BRAND} from '../content/brand.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   fulfilmentWindows,
@@ -7,6 +8,7 @@ import {
   RETURN_WINDOW_DAYS,
   SHIPPING_COUNTRY_CODES,
   STOREFRONT_ORIGIN,
+  type PrintfulTechnique,
 } from './storefrontBasics.ts';
 
 type MoneyAmount = {
@@ -35,6 +37,8 @@ type ProductSchemaInput = {
   productId?: string | null;
   productHandle?: string | null;
   productType?: string | null;
+  /** A museum product Printful makes: its windows, not Prodigi's. */
+  printfulTechnique?: PrintfulTechnique | null;
   tags?: string[] | null;
   reviewSummary?: {
     count: number;
@@ -66,10 +70,9 @@ type BreadcrumbInput = {
 };
 
 export const SITE_NAME = 'Clara Mendes';
-export const DEFAULT_META_DESCRIPTION =
-  'Clara Mendes presents original art and considered products for calm, collected spaces.';
-// Owned 1200x630 crop of Quiet Form I — never a stock photo: the share
-// card is often the first impression of the brand's actual work.
+export const DEFAULT_META_DESCRIPTION = BRAND.seo.defaultDescription;
+// The logo on paper, 1200x630 (scripts/build-share-card.mjs): pages without
+// their own image share the brand, and the platform prints the title below.
 export const DEFAULT_SHARE_IMAGE = `${STOREFRONT_ORIGIN}/images/share/og-default.jpg`;
 
 export function getCanonicalUrl(_request: Request, pathname: string) {
@@ -121,7 +124,9 @@ export function organizationSchema(url: string) {
     '@type': 'Organization',
     name: SITE_NAME,
     url: origin,
+    logo: `${origin}/images/brand/clara-mendes-logo.png`,
     description: DEFAULT_META_DESCRIPTION,
+    founder: {'@type': 'Person', name: BRAND.letter.founder.name},
   };
 }
 
@@ -200,6 +205,7 @@ export function productSchema({
   productId,
   productHandle,
   productType,
+  printfulTechnique,
   tags,
   reviewSummary,
   sku,
@@ -283,6 +289,7 @@ export function productSchema({
               price: minPrice,
               productType,
               productHandle,
+              printfulTechnique,
               tags,
               url,
             })
@@ -293,6 +300,7 @@ export function productSchema({
             parentTitle: title,
             productType,
             productHandle,
+            printfulTechnique,
             tags,
             url,
             variant,
@@ -334,8 +342,14 @@ function offerShippingDetails(
   productType?: string | null,
   productHandle?: string | null,
   tags?: string[] | null,
+  printfulTechnique?: PrintfulTechnique | null,
 ) {
-  const windows = fulfilmentWindows(productType, productHandle, tags);
+  const windows = fulfilmentWindows(
+    productType,
+    productHandle,
+    tags,
+    printfulTechnique,
+  );
   if (!windows) return undefined;
   return {
     '@type': 'OfferShippingDetails',
@@ -390,6 +404,7 @@ function offerFromPrice({
   price,
   productType,
   productHandle,
+  printfulTechnique,
   tags,
   url,
 }: {
@@ -398,6 +413,7 @@ function offerFromPrice({
   price: MoneyAmount;
   productType?: string | null;
   productHandle?: string | null;
+  printfulTechnique?: PrintfulTechnique | null;
   tags?: string[] | null;
   url: string;
 }) {
@@ -408,7 +424,12 @@ function offerFromPrice({
     availability: schemaAvailability(availableForSale),
     itemCondition: 'https://schema.org/NewCondition',
     shippingDetails: includeCommerceDetails
-      ? offerShippingDetails(productType, productHandle, tags)
+      ? offerShippingDetails(
+          productType,
+          productHandle,
+          tags,
+          printfulTechnique,
+        )
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
       ? merchantReturnPolicy(productType)
@@ -421,6 +442,7 @@ function productVariantSchema({
   parentTitle,
   productType,
   productHandle,
+  printfulTechnique,
   tags,
   url,
   variant,
@@ -429,6 +451,7 @@ function productVariantSchema({
   parentTitle: string;
   productType?: string | null;
   productHandle?: string | null;
+  printfulTechnique?: PrintfulTechnique | null;
   tags?: string[] | null;
   url: string;
   variant: NonNullable<ProductSchemaInput['variants']>[number];
@@ -463,6 +486,7 @@ function productVariantSchema({
       price: variant.price,
       productType,
       productHandle,
+      printfulTechnique,
       tags,
       url: variantUrl.toString(),
     }),

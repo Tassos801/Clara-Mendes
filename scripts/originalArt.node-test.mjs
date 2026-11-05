@@ -1,11 +1,8 @@
 import assert from 'node:assert/strict';
 import {
   buildOriginalArtProductMap,
-  buildOriginalArtQuery,
   formatOriginalArtPrice,
   ORIGINAL_ART_HANDLES,
-  ORIGINAL_ART_QUERY_FIRST,
-  ORIGINAL_ART_TAG,
 } from '../app/lib/originalArt.ts';
 
 const fakeProduct = (handle, overrides = {}) => ({
@@ -43,19 +40,8 @@ const fakeProduct = (handle, overrides = {}) => ({
   ...overrides,
 });
 
-// The catalog defines fifteen prints and the availability query must always
-// cover all of them with headroom.
+// The catalog defines fifteen prints.
 assert.equal(ORIGINAL_ART_HANDLES.length, 15);
-assert.ok(
-  ORIGINAL_ART_QUERY_FIRST >= ORIGINAL_ART_HANDLES.length,
-  'availability query must cover the full expected catalog',
-);
-
-// The availability query filters by the sync-guaranteed catalog tag — tag
-// is a supported product search field (handle is not; Shopify silently
-// ignores it and would match the whole store).
-assert.equal(buildOriginalArtQuery(), `tag:"${ORIGINAL_ART_TAG}"`);
-assert.equal(ORIGINAL_ART_TAG, 'Clara Mendes Original');
 
 // Regression: with more than 12 live products, every one of the fifteen —
 // including the fifteenth — must be reported available. This guards against

@@ -16,6 +16,8 @@ const graphqlConfig: IGraphQLConfig = {
         '!./app/graphql/**/*.{ts,tsx,js,jsx}',
         // Admin API operations — not part of the Storefront schema
         '!./app/lib/reviews.server.ts',
+        '!./app/lib/newsletter.server.ts',
+        '!./app/lib/adminToken.server.ts',
       ],
     },
 

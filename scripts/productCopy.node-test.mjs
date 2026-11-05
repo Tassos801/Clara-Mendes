@@ -107,7 +107,7 @@ for (const label of PHONE_CASE_DEVICE_LABELS) {
 // sentence; other product types keep the full description.
 assert.equal(
   getProductLede(phoneCase),
-  'Original Clara Mendes artwork wrapped edge to edge around a slim snap phone case.',
+  'Clara Mendes artwork wrapped edge to edge around a slim snap phone case.',
 );
 assert.equal(
   getProductLede({

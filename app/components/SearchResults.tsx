@@ -6,6 +6,7 @@ import {
 } from '~/lib/productCardPricing';
 import {urlWithTrackingParams, type RegularSearchReturn} from '~/lib/search';
 import {curatedDisplayTitle, curatedImages} from '~/lib/curatedProducts';
+import {storefrontImageLoader} from '~/lib/imageLoader';
 
 type SearchItems = RegularSearchReturn['result']['items'];
 type PartialSearchResult<ItemType extends keyof SearchItems> = Pick<
@@ -172,6 +173,7 @@ function SearchResultsProducts({
                           data={image}
                           alt={title}
                           aspectRatio="1/1"
+                          loader={storefrontImageLoader}
                           sizes="(min-width: 720px) 240px, 44vw"
                         />
                       ) : null}

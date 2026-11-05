@@ -1,45 +1,29 @@
-import {Suspense} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Await, Link, NavLink, useAsyncValue} from 'react-router';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
+import {BrandLogo} from './BrandLogo';
 import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
 import {CinematicProvider} from './cinematic/CinematicProvider';
-import {
-  isReleasedProductHandle,
-  NATAL_PRODUCT_HANDLE,
-  PERSONALISED_RELEASE_FLAGS,
-  SKY_PRODUCT_HANDLE,
-} from '~/lib/catalogFilters';
+import {NewsletterForm} from './NewsletterForm';
+import {isReleasedProductHandle} from '~/lib/catalogFilters';
 import {TOUGH_CASE_HANDLE} from '~/lib/toughCase';
-import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from '~/lib/bookNooks';
 import {publicArtists} from '~/lib/artistShops';
+import {
+  NAV_LINKS,
+  PRIMARY_LINKS,
+  SHOP_LINKS,
+  SHOP_PATH,
+} from '~/lib/navLinks';
 import {cartItemCountLabel} from '~/lib/cartPresentation';
+import {BRAND} from '~/content/brand';
 
 const HAS_BOOK_NOOKS = releasedBookNooks().length > 0;
 const HAS_ARTISTS = publicArtists().length > 0;
 const HAS_PHONE_CASES = isReleasedProductHandle(TOUGH_CASE_HANDLE);
-
-const NAV_LINKS = [
-  {to: '/collections/all', label: 'Shop'},
-  ...(HAS_ARTISTS ? [{to: '/artists', label: 'Artists'}] : []),
-  {to: '/clothing', label: 'Clothing'},
-  ...(HAS_BOOK_NOOKS ? [{to: BOOK_NOOKS_PATH, label: 'Book Nooks'}] : []),
-  // Each personalised product gets its own entry once its flag flips.
-  // Your Sky is a feature page, not a product URL.
-  ...(PERSONALISED_RELEASE_FLAGS[SKY_PRODUCT_HANDLE]
-    ? [{to: YOUR_SKY_PAGE.path, label: YOUR_SKY_PAGE.navLabel}]
-    : []),
-  ...(PERSONALISED_RELEASE_FLAGS[NATAL_PRODUCT_HANDLE]
-    ? [{to: `/products/${NATAL_PRODUCT_HANDLE}`, label: 'First Light'}]
-    : []),
-  {to: '/our-story', label: 'Our Story'},
-  {to: '/blogs/karina-of-time', label: 'Journal'},
-  {to: '/contact', label: 'Contact'},
-  {to: '/search', label: 'Search'},
-] as const;
 
 export function ClaraShell({
   cart,
@@ -110,15 +94,32 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
           </svg>
         </button>
         <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
-          Clara Mendes
+          <BrandLogo variant="horizontal" />
         </Link>
       </div>
       <nav className="site-nav" aria-label="Primary navigation">
-        {NAV_LINKS.map(({to, label}) => (
-          <NavLink key={to} to={to} prefetch="intent">
-            {label}
-          </NavLink>
-        ))}
+        {PRIMARY_LINKS.map(({to, label}) =>
+          to === SHOP_PATH && SHOP_LINKS.length > 0 ? (
+            // The lines open under Shop on hover or keyboard focus; the
+            // Shop link itself still goes to everything.
+            <div className="site-nav-shop" key={to}>
+              <NavLink to={to} prefetch="intent">
+                {label}
+              </NavLink>
+              <div className="site-nav-shop-menu">
+                {SHOP_LINKS.map((line) => (
+                  <NavLink key={line.to} to={line.to} prefetch="intent">
+                    {line.label}
+                  </NavLink>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <NavLink key={to} to={to} prefetch="intent">
+              {label}
+            </NavLink>
+          ),
+        )}
       </nav>
       <div className="header-right">
         <Link className="mobile-search-button" to="/search" aria-label="Search">
@@ -205,65 +206,111 @@ function CartItemCount() {
 function ClaraFooter() {
   return (
     <footer className="site-footer">
-      <div>
-        <Link className="brand-mark" to="/">
-          Clara Mendes
+      <div className="footer-brand">
+        <Link className="brand-mark" to="/" aria-label="Clara Mendes home">
+          <BrandLogo variant="stacked" />
         </Link>
-        <p>
-          Original art, museum prints and everyday objects, with secure
-          checkout. We ship across the EU and to most other countries; each
-          product page shows how its item is delivered.
-        </p>
+        <p>{BRAND.footer.blurb}</p>
+        <NewsletterForm variant="footer" />
       </div>
-      <nav className="footer-style-nav" aria-label="Shop wall art by style">
-        <Link to="/collections/all?type=Art+Prints">Unframed Art Prints</Link>
-        <Link to="/collections/abstract-wall-art">Abstract Wall Art</Link>
-        <Link to="/collections/terracotta-wall-art">Terracotta Wall Art</Link>
-        <Link to="/collections/blue-abstract-wall-art">Blue Abstract Art</Link>
-        <Link to="/collections/geometric-wall-art">Geometric Wall Art</Link>
-        <Link to="/collections/dark-botanical-wall-art">Dark Botanicals</Link>
-        <Link to="/collections/living-room-wall-art">Living Room Art</Link>
-        <Link to="/collections/bedroom-wall-art">Bedroom Art</Link>
-        <Link to="/collections/wall-art-sets-of-3">Sets of 3</Link>
-      </nav>
-      <nav aria-label="Footer navigation">
-        <Link to="/collections/all">Shop</Link>
-        {HAS_ARTISTS ? <Link to="/artists">Artists</Link> : null}
-        <Link to="/clothing">Clothing</Link>
-        {HAS_BOOK_NOOKS ? <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link> : null}
-        {HAS_PHONE_CASES ? (
-          <Link to="/collections/all?type=Phone+Cases">Phone Cases</Link>
-        ) : null}
-        <Link to="/pastel-forms">Pastel Forms</Link>
-        <Link to="/our-story">Our Story</Link>
-        <Link to="/blogs/karina-of-time">Karina of Time</Link>
-        <Link to="/contact">Contact</Link>
-        <Link to="/policies/shipping-policy">Shipping</Link>
-        <Link to="/policies/refund-policy">Returns</Link>
-        <Link to="/policies/privacy-policy">Privacy</Link>
-        <Link to="/policies/terms-of-service">Terms</Link>
-        <a
-          href="https://www.instagram.com/shopclaramendes/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Instagram
-        </a>
-        <a
-          href="https://www.pinterest.com/shopclaramendes/"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Pinterest
-        </a>
-        <a
-          href="https://www.facebook.com/shopclaramendes"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Facebook
-        </a>
-      </nav>
+      <div className="footer-columns">
+        <nav className="footer-column" aria-label="Shop">
+          <h2 className="footer-heading">Shop</h2>
+          <ul>
+            <li>
+              <Link to="/collections/all">Shop all</Link>
+            </li>
+            {HAS_ARTISTS ? (
+              <li>
+                <Link to="/artists">Artists</Link>
+              </li>
+            ) : null}
+            <li>
+              <Link to="/clothing">Clothing</Link>
+            </li>
+            {HAS_BOOK_NOOKS ? (
+              <li>
+                <Link to={BOOK_NOOKS_PATH}>Book Nooks</Link>
+              </li>
+            ) : null}
+            {HAS_PHONE_CASES ? (
+              <li>
+                <Link to="/collections/all?type=Phone+Cases">Phone Cases</Link>
+              </li>
+            ) : null}
+            <li>
+              <Link to="/pastel-forms">Pastel Forms</Link>
+            </li>
+          </ul>
+        </nav>
+        <nav className="footer-column" aria-label="Clara Mendes">
+          <h2 className="footer-heading">Clara Mendes</h2>
+          <ul>
+            <li>
+              <Link to="/our-story">Our Story</Link>
+            </li>
+            <li>
+              <Link to="/blogs/karina-of-time">Karina of Time</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
+            </li>
+          </ul>
+        </nav>
+        <nav className="footer-column" aria-label="Help">
+          <h2 className="footer-heading">Help</h2>
+          <ul>
+            <li>
+              <Link to="/policies/shipping-policy">Shipping</Link>
+            </li>
+            <li>
+              <Link to="/policies/refund-policy">Returns</Link>
+            </li>
+            <li>
+              <Link to="/policies/privacy-policy">Privacy</Link>
+            </li>
+            <li>
+              <Link to="/policies/terms-of-service">Terms</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div className="footer-bottom">
+        <p className="footer-copyright">
+          © {new Date().getFullYear()} Clara Mendes · Nicosia, Cyprus
+        </p>
+        <nav className="footer-social" aria-label="Social">
+          <ul>
+            <li>
+              <a
+                href="https://www.instagram.com/shopclaramendes/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.pinterest.com/shopclaramendes/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Pinterest
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.facebook.com/shopclaramendes"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Facebook
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
     </footer>
   );
 }
@@ -271,6 +318,13 @@ function ClaraFooter() {
 function ClaraMobileNav() {
   const {type, close} = useAside();
   const isOpen = type === 'mobile';
+  // The stacked logo is ~12 KB of path data, so the closed drawer leaves it
+  // out of every page's HTML. Once drawn it stays, so it does not vanish
+  // while the drawer slides shut.
+  const [logoDrawn, setLogoDrawn] = useState(false);
+  useEffect(() => {
+    if (isOpen) setLogoDrawn(true);
+  }, [isOpen]);
 
   return (
     <div
@@ -294,8 +348,13 @@ function ClaraMobileNav() {
         tabIndex={-1}
       >
         <header className="mobile-nav-header">
-          <Link className="brand-mark" to="/" onClick={close}>
-            Clara Mendes
+          <Link
+            className="brand-mark"
+            to="/"
+            aria-label="Clara Mendes home"
+            onClick={close}
+          >
+            {isOpen || logoDrawn ? <BrandLogo variant="stacked" /> : null}
           </Link>
           <button type="button" onClick={close} aria-label="Close menu">
             <svg

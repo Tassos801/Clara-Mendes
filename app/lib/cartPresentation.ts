@@ -3,6 +3,10 @@
  * React so the node tests can pin them. Nothing here changes what is sent to
  * Shopify: line ids, merchandise ids, quantities and attributes are untouched.
  */
+import {
+  curatedImageSrcForWidth,
+  hasCuratedImageCopies,
+} from './curatedProducts.ts';
 
 type CartImage = {
   altText?: string | null;
@@ -43,6 +47,7 @@ export function cartLineThumbnail({
  * storefront serves itself (`/images/...`) have no resizer and pass through.
  */
 export function sizedImageUrl(url: string, width: number) {
+  if (hasCuratedImageCopies(url)) return curatedImageSrcForWidth(url, width);
   if (!url.startsWith('https://cdn.shopify.com/')) return url;
   try {
     const parsed = new URL(url);

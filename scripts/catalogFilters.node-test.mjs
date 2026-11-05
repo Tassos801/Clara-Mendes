@@ -17,7 +17,6 @@ import {
   isUnreleasedExtensionHandle,
   PHONE_CASE_HANDLE,
   orderShopProductTypes,
-  pickVariedProducts,
   PRODUCT_RELEASE_FLAGS,
   releasedExtensionProductTypes,
   shopProductTypes,
@@ -421,46 +420,30 @@ assert.equal(
     'Cards',
     'Postcards',
     'Phone Cases',
+    'Hanger Prints',
+    'Acrylic Prints',
+    'Metal Prints',
+    'Mugs',
+    'Cushions',
+    'Blankets',
   ]);
-  assert.deepEqual(live.slice(0, 8), [
+  assert.deepEqual(live.slice(0, 14), [
     'Art Prints',
     'Framed Art',
     'Canvas Art',
+    'Hanger Prints',
+    'Acrylic Prints',
+    'Metal Prints',
     'Cards',
     'Postcards',
     'Phone Cases',
+    'Mugs',
+    'Cushions',
+    'Blankets',
     'Plant Pots',
     'Book Nooks',
   ]);
   assert.equal(new Set(live).size, live.length);
   for (const type of releasedExtensionProductTypes())
     assert.ok(live.includes(type), `${type} has a tab`);
-}
-
-// A short mixed row takes one product per shop category first (garments
-// count as one), skips what is already shown, then fills in order.
-{
-  const row = (...types) =>
-    types.map((productType, index) => ({id: `p${index}`, productType}));
-  const products = row(
-    'Book Nooks',
-    'Book Nooks',
-    'Studio Top',
-    'Yoga Leggings',
-    'Book Nooks',
-    'Plant Pots',
-    'Art Prints',
-  );
-  assert.deepEqual(
-    pickVariedProducts(products, 4).map((p) => p.id),
-    ['p0', 'p2', 'p5', 'p6'],
-  );
-  assert.deepEqual(
-    pickVariedProducts(products, 4, [{id: 'p0'}, {id: 'p6'}]).map((p) => p.id),
-    ['p1', 'p2', 'p5', 'p3'],
-  );
-  assert.deepEqual(
-    pickVariedProducts(row('Cards', 'Cards'), 4).map((p) => p.id),
-    ['p0', 'p1'],
-  );
 }

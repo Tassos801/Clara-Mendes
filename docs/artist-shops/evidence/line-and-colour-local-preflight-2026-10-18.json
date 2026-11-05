@@ -1,0 +1,661 @@
+{
+  "checkedAt": "2026-10-18T09:09:08.375Z",
+  "collection": "line-and-colour",
+  "printFiles": 20,
+  "printHashFailures": [],
+  "familyProducts": 26,
+  "familyFileFailures": [],
+  "allPrintsUnreleased": true,
+  "allFamiliesUnreleased": true,
+  "prints": [
+    {
+      "handle": "improvisation-no-30-cannons-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/improvisation-no-30-cannons-8x10-300dpi.jpg",
+      "sha256": "fd5304865515ef84f4e20a93794c41869e3afcf7b47a858ffcd6d1728bb8d906",
+      "ok": true
+    },
+    {
+      "handle": "improvisation-no-30-cannons-art-print",
+      "size": "16x20",
+      "file": "line-and-colour/print/improvisation-no-30-cannons-16x20-300dpi.jpg",
+      "sha256": "ac7db42df1b5a1fe571190c1ae402063a9a5d87dfb208f14af9e3cb52e6c84e9",
+      "ok": true
+    },
+    {
+      "handle": "improvisation-no-30-cannons-art-print",
+      "size": "20x24",
+      "file": "line-and-colour/print/improvisation-no-30-cannons-20x24-300dpi.jpg",
+      "sha256": "76519f6f770501daed81a3e413f595976985472ec8c27c2a4135ddf4f50d9911",
+      "ok": true
+    },
+    {
+      "handle": "landscape-with-two-poplars-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/landscape-with-two-poplars-8x10-300dpi.jpg",
+      "sha256": "f4d0108ea4ec1c08ca0a2c287367c4e24834d58052ced7439694e19ae4a6f7e6",
+      "ok": true
+    },
+    {
+      "handle": "houses-at-murnau-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/houses-at-murnau-8x10-300dpi.jpg",
+      "sha256": "3601fb4599b233ecefe20a8d97d1d3c17d6554007eefcfe7dd209ad78d48235f",
+      "ok": true
+    },
+    {
+      "handle": "painting-with-troika-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/painting-with-troika-8x10-300dpi.jpg",
+      "sha256": "196c07d7ed15781814bdfb08b9454a0f783dd7e1bfd04b420a90f14be212bcd8",
+      "ok": true
+    },
+    {
+      "handle": "painting-with-green-center-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/painting-with-green-center-8x10-300dpi.jpg",
+      "sha256": "20d2f173b621328544bc59946eda6316433bb30ed5fde3472062c8b52c92aa5c",
+      "ok": true
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/composition-with-red-yellow-and-blue-8x10-300dpi.jpg",
+      "sha256": "0fdbbc700387122e49deec96f112e874edeaa1e84fbb7500db230a1df644f0e1",
+      "ok": true
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-art-print",
+      "size": "16x20",
+      "file": "line-and-colour/print/composition-with-red-yellow-and-blue-16x20-300dpi.jpg",
+      "sha256": "deccff585ae31081b20c39e316d3d807416b62fa0708e38f45723fe0a7df50c3",
+      "ok": true
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-art-print",
+      "size": "20x24",
+      "file": "line-and-colour/print/composition-with-red-yellow-and-blue-20x24-300dpi.jpg",
+      "sha256": "8163ae2fe92a299f385a49d1822d13ce06e04c65b97a509bb163a45b86a7bac6",
+      "ok": true
+    },
+    {
+      "handle": "lozenge-composition-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/lozenge-composition-8x10-300dpi.jpg",
+      "sha256": "501a937f990760bb6a1d48991a00d97950f8bc1944e236213c27821e2804f360",
+      "ok": true
+    },
+    {
+      "handle": "lozenge-composition-art-print",
+      "size": "16x20",
+      "file": "line-and-colour/print/lozenge-composition-16x20-300dpi.jpg",
+      "sha256": "9cf7c334b5a229607fd10e801ec5a4b869dfcd92c34814bbbec223f48ce5b1ca",
+      "ok": true
+    },
+    {
+      "handle": "lozenge-composition-art-print",
+      "size": "20x24",
+      "file": "line-and-colour/print/lozenge-composition-20x24-300dpi.jpg",
+      "sha256": "0247b78575abb8757f4c104577f86af925a7c2ee87458fc789d97acd6112aae3",
+      "ok": true
+    },
+    {
+      "handle": "composition-no-1-gray-red-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/composition-no-1-gray-red-8x10-300dpi.jpg",
+      "sha256": "7f30d3cd6c0bb08493f5a6825e2b666b53cc88364df0a54e2bc4f4b30c2e47ca",
+      "ok": true
+    },
+    {
+      "handle": "chrysanthemum-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/chrysanthemum-8x10-300dpi.jpg",
+      "sha256": "2b28d68ea0419520eabf3b05ace13213474fc243f370a2d47a1aba77921ad62a",
+      "ok": true
+    },
+    {
+      "handle": "chrysanthemum-art-print",
+      "size": "16x20",
+      "file": "line-and-colour/print/chrysanthemum-16x20-300dpi.jpg",
+      "sha256": "a5a938b8896012bf8e98304c3e0973f2f9345006825c233ce1f02a6081d4f6a2",
+      "ok": true
+    },
+    {
+      "handle": "chrysanthemum-art-print",
+      "size": "20x24",
+      "file": "line-and-colour/print/chrysanthemum-20x24-300dpi.jpg",
+      "sha256": "0807ee3ed1cc8bb4ac09a4ca8f00f870ee26627674bec00d1e1f36cd0811a280",
+      "ok": true
+    },
+    {
+      "handle": "field-with-young-trees-art-print",
+      "size": "8x10",
+      "file": "line-and-colour/print/field-with-young-trees-8x10-300dpi.jpg",
+      "sha256": "cfb7656d4cd5a529ce5f09f183345952022c6f7793c808c0adcd6bc0aae963cc",
+      "ok": true
+    },
+    {
+      "handle": "field-with-young-trees-art-print",
+      "size": "16x20",
+      "file": "line-and-colour/print/field-with-young-trees-16x20-300dpi.jpg",
+      "sha256": "9bfd44682d36309ec9753d13ba8765f7eeab49c36696662014d73c6e0cd3d76a",
+      "ok": true
+    },
+    {
+      "handle": "field-with-young-trees-art-print",
+      "size": "20x24",
+      "file": "line-and-colour/print/field-with-young-trees-20x24-300dpi.jpg",
+      "sha256": "5b2398759d776a121aa560b825ee29e367f2b620a1e3b9784291b55eaaa5c326",
+      "ok": true
+    }
+  ],
+  "family": [
+    {
+      "handle": "improvisation-no-30-cannons-framed-print",
+      "family": "framed-print",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/print/improvisation-no-30-cannons-16x20-300dpi.jpg",
+          "sha256": "ac7db42df1b5a1fe571190c1ae402063a9a5d87dfb208f14af9e3cb52e6c84e9",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/framed-print/web/improvisation-no-30-cannons-framed-print.webp",
+          "sha256": "caabb9df9566cebf219530eb381d04f9adbeca1ced7be37f02900b9d59924334",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-framed-print",
+      "family": "framed-print",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/print/composition-with-red-yellow-and-blue-16x20-300dpi.jpg",
+          "sha256": "deccff585ae31081b20c39e316d3d807416b62fa0708e38f45723fe0a7df50c3",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/framed-print/web/composition-with-red-yellow-and-blue-framed-print.webp",
+          "sha256": "78e8f3af5e0e2efd6b451c6a9e06ce6019fad2ca4dbcb04372c5e40eb6e8269f",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "lozenge-composition-framed-print",
+      "family": "framed-print",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/print/lozenge-composition-16x20-300dpi.jpg",
+          "sha256": "9cf7c334b5a229607fd10e801ec5a4b869dfcd92c34814bbbec223f48ce5b1ca",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/framed-print/web/lozenge-composition-framed-print.webp",
+          "sha256": "96ad3670baa1cf867b70849c34b531242bc78d43407d97d602e33c564f4dc0cc",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "chrysanthemum-framed-print",
+      "family": "framed-print",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/print/chrysanthemum-16x20-300dpi.jpg",
+          "sha256": "a5a938b8896012bf8e98304c3e0973f2f9345006825c233ce1f02a6081d4f6a2",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/framed-print/web/chrysanthemum-framed-print.webp",
+          "sha256": "bccadb55adc86b478f2d46fc5bc0d731b2aa11247e0990528d2845c72bf23c6e",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "field-with-young-trees-framed-print",
+      "family": "framed-print",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/print/field-with-young-trees-16x20-300dpi.jpg",
+          "sha256": "9bfd44682d36309ec9753d13ba8765f7eeab49c36696662014d73c6e0cd3d76a",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/framed-print/web/field-with-young-trees-framed-print.webp",
+          "sha256": "155ccf5802f8718df1ab499e65c9190b000031b0fe63c960fd37cb98c3d2bdff",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "improvisation-no-30-cannons-canvas",
+      "family": "canvas",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/canvas/improvisation-no-30-cannons-canvas-16x20-150dpi.jpg",
+          "sha256": "50fcc50e61ccfdbd28c53c1dfc25f41bce5adb3236df66120827f74185dc1bea",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/canvas/web/improvisation-no-30-cannons-canvas.webp",
+          "sha256": "be33be460b53d4c7ba0b632face2d71659590e90e2ef7c5b85a2ecf7b9a00389",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "landscape-with-two-poplars-canvas",
+      "family": "canvas",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/canvas/landscape-with-two-poplars-canvas-16x20-150dpi.jpg",
+          "sha256": "28b4d3915674828620f6fcc7dc7a9cb9bb1ad3e9cb549deb5736ffddb8343f31",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/canvas/web/landscape-with-two-poplars-canvas.webp",
+          "sha256": "a0d8172e14b76f1bc4b48c983c397f460d49e2745235cba229033d9e8746fc7e",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "houses-at-murnau-canvas",
+      "family": "canvas",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/canvas/houses-at-murnau-canvas-16x20-150dpi.jpg",
+          "sha256": "2240b63185e2292897628b3571780743cef923b85e985357f955049879d8ca02",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/canvas/web/houses-at-murnau-canvas.webp",
+          "sha256": "4e7e03b124257c9191bc882be2d1d6b6edf1629d756f368360728f3ffa080a68",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-canvas",
+      "family": "canvas",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/canvas/composition-with-red-yellow-and-blue-canvas-16x20-150dpi.jpg",
+          "sha256": "5717775fc8a551070d6d53b7e3af5c392b831f1d6e76f1e118550a6ec15ee949",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/canvas/web/composition-with-red-yellow-and-blue-canvas.webp",
+          "sha256": "6986665f7b9da8bcd8af0a0503cce18e9d42ce01dd78d49ecc74ed8d291ade08",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "chrysanthemum-canvas",
+      "family": "canvas",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/canvas/chrysanthemum-canvas-16x20-150dpi.jpg",
+          "sha256": "c9844b53d8e4b7a8f8557fd29476fcd17fdaf45f0e94c1877fa2933585294bb1",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/canvas/web/chrysanthemum-canvas.webp",
+          "sha256": "e7d287933f4cac8d7aa51448033bacfa41a9f137085324cd050a50f3cd6564f9",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "field-with-young-trees-canvas",
+      "family": "canvas",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/canvas/field-with-young-trees-canvas-16x20-150dpi.jpg",
+          "sha256": "fb71a9fc0f3095ba520e55e399f6775efbf95ec7e908baa88a58b9048cbf4e6a",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/canvas/web/field-with-young-trees-canvas.webp",
+          "sha256": "60c613a4718c585c5d7e4be4680f1c3652b803e213f968119c024ba14a86ef8d",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "improvisation-no-30-cannons-phone-case",
+      "family": "phone-case",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/phone-case/improvisation-no-30-cannons-phone-case-4x5-300dpi.jpg",
+          "sha256": "21cbc474d34bc576a53ed385a91d8f0ec0934ccd09e555fd1ff50ae960f6043c",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/phone-case/web/improvisation-no-30-cannons-phone-case.webp",
+          "sha256": "2e0a4a3d1738c2bcd59bd1b20cb26965116c60e52898ed7ec6353fd927db85f9",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "landscape-with-two-poplars-phone-case",
+      "family": "phone-case",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/phone-case/landscape-with-two-poplars-phone-case-4x5-300dpi.jpg",
+          "sha256": "8f0a35c76aee797864c413d1559f02f4bd4f4bad8f458d792d9b9d33c3792549",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/phone-case/web/landscape-with-two-poplars-phone-case.webp",
+          "sha256": "1a2fdd7a68ee25ffc05f93244e3482d29fb80c4ee1c56345acd2c40ce4ca0ba6",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-phone-case",
+      "family": "phone-case",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/phone-case/composition-with-red-yellow-and-blue-phone-case-4x5-300dpi.jpg",
+          "sha256": "86d32928c1bcbfb1f032c9cd8c8b7abeeca06346d75e3be2fcf48eecb5ab940c",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/phone-case/web/composition-with-red-yellow-and-blue-phone-case.webp",
+          "sha256": "0a23db6a65f8a77e42ef90d49d6cf28998b78b8ac024a2881cd745afa53b603d",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "chrysanthemum-phone-case",
+      "family": "phone-case",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/phone-case/chrysanthemum-phone-case-4x5-300dpi.jpg",
+          "sha256": "c52576438d172d0779696a71b0c70cd769c8742938579281785cb9dbe38ca25f",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/phone-case/web/chrysanthemum-phone-case.webp",
+          "sha256": "6af88ee955444dafb4d5f55f702267236a409991bc8687432a346b51651fc2e9",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "field-with-young-trees-phone-case",
+      "family": "phone-case",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/phone-case/field-with-young-trees-phone-case-4x5-300dpi.jpg",
+          "sha256": "64fc0c272df0845eba2fb5f890ba0454f5a85900963b6ea1d7e35dfe1830e249",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/phone-case/web/field-with-young-trees-phone-case.webp",
+          "sha256": "f2609a3f1252191c5aa9f7e1993e1f12b23f62046636837fd40d3f01cd306b25",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "improvisation-no-30-cannons-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/improvisation-no-30-cannons-mug-11oz-300dpi.jpg",
+          "sha256": "87f282c5208408a5457c4a6723d111ec53cc278d978b2f929c335b1bbb3bcef7",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/improvisation-no-30-cannons-mug.webp",
+          "sha256": "78389885f2ed4efd6d752874ebdf0791ed88e5f6419eda94997c01d5503c112f",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "landscape-with-two-poplars-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/landscape-with-two-poplars-mug-11oz-300dpi.jpg",
+          "sha256": "03afbe8590beb3002b358eb455b714dd90a10b1c5d3af615ef1b4f135c79f19d",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/landscape-with-two-poplars-mug.webp",
+          "sha256": "1170499cf90b0fde7cc6ff865fc74e0f0acc283cc97a638712b71f71f2d75488",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "houses-at-murnau-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/houses-at-murnau-mug-11oz-300dpi.jpg",
+          "sha256": "502c0e02c38d0f39175e369cf6436eb4e410aeb30a5a452da4400b42ae9ef4d6",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/houses-at-murnau-mug.webp",
+          "sha256": "96c93024dcbd1dbf5de116d6d044cda3d03c588f09076c420be033447bb9e229",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "painting-with-troika-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/painting-with-troika-mug-11oz-300dpi.jpg",
+          "sha256": "3ca8d7a2cd093261ddafa72038077930d7d5ac554a324b371f8e92a241e20ef1",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/painting-with-troika-mug.webp",
+          "sha256": "d25a4a253b98022480a65ce49e1445c91add06447910fb810f682aa653333ddc",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "painting-with-green-center-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/painting-with-green-center-mug-11oz-300dpi.jpg",
+          "sha256": "91059be7d4120dd087c533910cfca27ce5a2f1c0cf846b55330dfbde618e27f2",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/painting-with-green-center-mug.webp",
+          "sha256": "f4ac0dae4905284fa7ffe1a9b083df7322ff3457ff9e5257fcc8754e480e49e3",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "composition-with-red-yellow-and-blue-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/composition-with-red-yellow-and-blue-mug-11oz-300dpi.jpg",
+          "sha256": "487e3d975418ef6c21e3042b3237f4440d579e0d0675c8c19c088d488bc20163",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/composition-with-red-yellow-and-blue-mug.webp",
+          "sha256": "e33b50dfddf28f428e81e1d3b4c061610522c5ed35df557384e7dfba7aa2e6d1",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "lozenge-composition-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/lozenge-composition-mug-11oz-300dpi.jpg",
+          "sha256": "195f0459b446b01faaf4567f5f75e8f35e006790b00509bebc8c1405ec9cc129",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/lozenge-composition-mug.webp",
+          "sha256": "bb3d1465cb488586f54bd692ab645393cd1f1133d810fb725f1c89fe9da62267",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "composition-no-1-gray-red-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/composition-no-1-gray-red-mug-11oz-300dpi.jpg",
+          "sha256": "485ca89648cf16aaead89b795ad903299a3dcdf194b868a9e50887218c5c2875",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/composition-no-1-gray-red-mug.webp",
+          "sha256": "9f6abfd1f8df6e84b0cb996cd16411284ed29682808793215b9defaa13b34946",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "chrysanthemum-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/chrysanthemum-mug-11oz-300dpi.jpg",
+          "sha256": "0e918326c06a95df31f49240f55fb57a61f455778be818266bbef98ed2958099",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/chrysanthemum-mug.webp",
+          "sha256": "13a57e26da82ddc4aa86c698ae021b4a010f216e74a06911e266776c7a36e26b",
+          "ok": true
+        }
+      ]
+    },
+    {
+      "handle": "field-with-young-trees-mug",
+      "family": "mug",
+      "sourceCurrent": true,
+      "files": [
+        {
+          "kind": "print",
+          "file": "line-and-colour/mug/field-with-young-trees-mug-11oz-300dpi.jpg",
+          "sha256": "6d120356ea283bfd70e345ab93d7ef0c60952dcfa4d58df27a9808674159da08",
+          "ok": true
+        },
+        {
+          "kind": "preview",
+          "file": "line-and-colour/mug/web/field-with-young-trees-mug.webp",
+          "sha256": "7d141202f3f710bb454dd0ea65ae6c21da625b468070bb64fd67d824f4d7f8fd",
+          "ok": true
+        }
+      ]
+    }
+  ],
+  "counts": {
+    "collection": "line-and-colour",
+    "printProducts": 10,
+    "printVariants": 20,
+    "familyProducts": 26,
+    "familyVariants": 221,
+    "anyShopifyIdsRecorded": false
+  },
+  "tests": {
+    "command": "npm test",
+    "passed": 498,
+    "failed": 0
+  }
+}

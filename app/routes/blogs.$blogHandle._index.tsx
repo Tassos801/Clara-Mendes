@@ -9,6 +9,7 @@ import {StructuredData} from '~/components/StructuredData';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {buildSeoMeta, SITE_NAME} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
+import {BRAND} from '~/content/brand';
 
 /**
  * The store's single journal. "Karina of Time" reads as wordplay on the
@@ -20,8 +21,7 @@ import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
  */
 export const KARINA_HANDLE = 'karina-of-time';
 
-const KARINA_DESCRIPTION =
-  'Karina of Time — καρίνα, Greek for keel — is the Clara Mendes journal: notes on original art, colour, and the rooms prints live in. New issues by email.';
+const KARINA_DESCRIPTION = BRAND.seo.journalDescription;
 
 /**
  * Covers that keep the ring full (and the page alive) before enough
@@ -58,7 +58,9 @@ function plateCovers(): Cover[] {
         href: `/collections/all?capsule=${slug}`,
         label: `Plate ${String(covers.length + 1).padStart(2, '0')}`,
         title: `${name} ${ROMAN[plate]}`,
-        src: `/images/product-art/${slug}/${slug}-0${plate + 1}.webp`,
+        // 460 px JPEG copy (scripts/write-storefront-images.mjs): covers
+        // are at most 230 CSS px wide.
+        src: `/images/product-art/${slug}/${slug}-0${plate + 1}.w460.jpg`,
       });
     }
   }

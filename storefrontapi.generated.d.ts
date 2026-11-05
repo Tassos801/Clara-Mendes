@@ -635,6 +635,63 @@ export type AvailableMarketCountriesQuery = {
   };
 };
 
+export type MerchantFeedProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  cursor?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
+}>;
+
+export type MerchantFeedProductsQuery = {
+  products: {
+    pageInfo: Pick<StorefrontAPI.PageInfo, 'hasNextPage' | 'endCursor'>;
+    nodes: Array<
+      Pick<
+        StorefrontAPI.Product,
+        'handle' | 'title' | 'productType' | 'tags' | 'description'
+      > & {
+        featuredImage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
+        variants: {
+          nodes: Array<
+            Pick<
+              StorefrontAPI.ProductVariant,
+              'id' | 'sku' | 'availableForSale'
+            > & {
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+              image?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
+            }
+          >;
+        };
+      }
+    >;
+  };
+};
+
+export type MerchantFeedQuoteMutationVariables = StorefrontAPI.Exact<{
+  input: StorefrontAPI.CartInput;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type MerchantFeedQuoteMutation = {
+  cartCreate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<{
+      deliveryGroups: {
+        nodes: Array<{
+          deliveryOptions: Array<{
+            estimatedCost: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          }>;
+        }>;
+      };
+    }>;
+  }>;
+};
+
 export type ClaraProductCardFragment = Pick<
   StorefrontAPI.Product,
   'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
@@ -730,273 +787,6 @@ export type SitemapCollectionEligibilityQuery = {
       };
     }
   >;
-};
-
-export type HomepageQueryVariables = StorefrontAPI.Exact<{
-  artFirst: StorefrontAPI.Scalars['Int']['input'];
-  artQuery: StorefrontAPI.Scalars['String']['input'];
-  bookNookQuery: StorefrontAPI.Scalars['String']['input'];
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  first: StorefrontAPI.Scalars['Int']['input'];
-  frameHandle: StorefrontAPI.Scalars['String']['input'];
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-  productsQuery?: StorefrontAPI.InputMaybe<
-    StorefrontAPI.Scalars['String']['input']
-  >;
-  toughCaseHandle: StorefrontAPI.Scalars['String']['input'];
-}>;
-
-export type HomepageQuery = {
-  products: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Product,
-        'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
-      > & {
-        storefrontApproved?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-        >;
-        fulfillmentVerified?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-        >;
-        featuredImage?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Image,
-            'id' | 'url' | 'altText' | 'width' | 'height'
-          >
-        >;
-        images: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.Image,
-              'id' | 'url' | 'altText' | 'width' | 'height'
-            >
-          >;
-        };
-        priceRange: {
-          minVariantPrice: Pick<
-            StorefrontAPI.MoneyV2,
-            'amount' | 'currencyCode'
-          >;
-          maxVariantPrice: Pick<
-            StorefrontAPI.MoneyV2,
-            'amount' | 'currencyCode'
-          >;
-        };
-        sizeVariants: {
-          nodes: Array<
-            Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
-              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-            }
-          >;
-        };
-        cardVariant: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.ProductVariant,
-              'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
-            > & {
-              compareAtPrice?: StorefrontAPI.Maybe<
-                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-              >;
-              image?: StorefrontAPI.Maybe<
-                Pick<
-                  StorefrontAPI.Image,
-                  'id' | 'url' | 'altText' | 'width' | 'height'
-                >
-              >;
-              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-              selectedOptions: Array<
-                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-              >;
-            }
-          >;
-        };
-      }
-    >;
-  };
-  originalArtProducts: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Product,
-        'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
-      > & {
-        storefrontApproved?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-        >;
-        fulfillmentVerified?: StorefrontAPI.Maybe<
-          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-        >;
-        featuredImage?: StorefrontAPI.Maybe<
-          Pick<
-            StorefrontAPI.Image,
-            'id' | 'url' | 'altText' | 'width' | 'height'
-          >
-        >;
-        images: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.Image,
-              'id' | 'url' | 'altText' | 'width' | 'height'
-            >
-          >;
-        };
-        priceRange: {
-          minVariantPrice: Pick<
-            StorefrontAPI.MoneyV2,
-            'amount' | 'currencyCode'
-          >;
-          maxVariantPrice: Pick<
-            StorefrontAPI.MoneyV2,
-            'amount' | 'currencyCode'
-          >;
-        };
-        sizeVariants: {
-          nodes: Array<
-            Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
-              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-            }
-          >;
-        };
-        cardVariant: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.ProductVariant,
-              'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
-            > & {
-              compareAtPrice?: StorefrontAPI.Maybe<
-                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-              >;
-              image?: StorefrontAPI.Maybe<
-                Pick<
-                  StorefrontAPI.Image,
-                  'id' | 'url' | 'altText' | 'width' | 'height'
-                >
-              >;
-              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-              selectedOptions: Array<
-                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-              >;
-            }
-          >;
-        };
-      }
-    >;
-  };
-  frameProduct?: StorefrontAPI.Maybe<
-    Pick<
-      StorefrontAPI.Product,
-      'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
-    > & {
-      storefrontApproved?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-      >;
-      fulfillmentVerified?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-      >;
-      featuredImage?: StorefrontAPI.Maybe<
-        Pick<StorefrontAPI.Image, 'id' | 'url' | 'altText' | 'width' | 'height'>
-      >;
-      images: {
-        nodes: Array<
-          Pick<
-            StorefrontAPI.Image,
-            'id' | 'url' | 'altText' | 'width' | 'height'
-          >
-        >;
-      };
-      priceRange: {
-        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-        maxVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-      };
-      sizeVariants: {
-        nodes: Array<
-          Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
-            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-          }
-        >;
-      };
-      cardVariant: {
-        nodes: Array<
-          Pick<
-            StorefrontAPI.ProductVariant,
-            'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
-          > & {
-            compareAtPrice?: StorefrontAPI.Maybe<
-              Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-            >;
-            image?: StorefrontAPI.Maybe<
-              Pick<
-                StorefrontAPI.Image,
-                'id' | 'url' | 'altText' | 'width' | 'height'
-              >
-            >;
-            price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-            product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-            selectedOptions: Array<
-              Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-            >;
-          }
-        >;
-      };
-    }
-  >;
-  bookNooks: {
-    nodes: Array<
-      Pick<StorefrontAPI.Product, 'handle' | 'title' | 'availableForSale'> & {
-        priceRange: {
-          minVariantPrice: Pick<
-            StorefrontAPI.MoneyV2,
-            'amount' | 'currencyCode'
-          >;
-        };
-      }
-    >;
-  };
-  toughCase?: StorefrontAPI.Maybe<
-    Pick<
-      StorefrontAPI.Product,
-      'handle' | 'productType' | 'tags' | 'title' | 'vendor'
-    > & {
-      priceRange: {
-        minVariantPrice: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-      };
-      options: Array<
-        Pick<StorefrontAPI.ProductOption, 'name'> & {
-          optionValues: Array<
-            Pick<StorefrontAPI.ProductOptionValue, 'name'> & {
-              firstSelectableVariant?: StorefrontAPI.Maybe<
-                Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
-                  image?: StorefrontAPI.Maybe<
-                    Pick<StorefrontAPI.Image, 'url' | 'altText'>
-                  >;
-                }
-              >;
-            }
-          >;
-        }
-      >;
-    }
-  >;
-  collections: {
-    nodes: Array<
-      Pick<
-        StorefrontAPI.Collection,
-        'id' | 'handle' | 'title' | 'description'
-      > & {
-        products: {
-          nodes: Array<
-            Pick<
-              StorefrontAPI.Product,
-              'handle' | 'productType' | 'tags' | 'title' | 'vendor'
-            >
-          >;
-        };
-      }
-    >;
-  };
 };
 
 export type CartRecommendationsQueryVariables = StorefrontAPI.Exact<{
@@ -3516,13 +3306,13 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
+  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        description\n        featuredImage {\n          url\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: MerchantFeedProductsQuery;
+    variables: MerchantFeedProductsQueryVariables;
+  };
   '#graphql\n  query SitemapCollectionEligibility($handle: String!, $after: String) {\n    collection(handle: $handle) {\n      handle\n      products(first: 100, after: $after) {\n        nodes {\n          handle productType tags vendor\n          storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }\n          fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
     return: SitemapCollectionEligibilityQuery;
     variables: SitemapCollectionEligibilityQueryVariables;
-  };
-  '#graphql\n  query Homepage(\n    $artFirst: Int!\n    $artQuery: String!\n    $bookNookQuery: String!\n    $country: CountryCode\n    $first: Int!\n    $frameHandle: String!\n    $language: LanguageCode\n    $productsQuery: String\n    $toughCaseHandle: String!\n  ) @inContext(country: $country, language: $language) {\n    products(first: $first, sortKey: BEST_SELLING, query: $productsQuery) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    originalArtProducts: products(first: $artFirst, query: $artQuery) {\n      nodes {\n        ...ClaraProductCard\n      }\n    }\n    frameProduct: product(handle: $frameHandle) {\n      ...ClaraProductCard\n    }\n    bookNooks: products(first: 50, query: $bookNookQuery) {\n      nodes {\n        handle\n        title\n        availableForSale\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n    toughCase: product(handle: $toughCaseHandle) {\n      handle\n      productType\n      tags\n      title\n      vendor\n      priceRange {\n        minVariantPrice {\n          amount\n          currencyCode\n        }\n      }\n      options {\n        name\n        optionValues {\n          name\n          firstSelectableVariant {\n            availableForSale\n            image {\n              # Tight portrait crop: the previews carry linen either side.\n              url(transform: {crop: CENTER, maxWidth: 440, maxHeight: 800})\n              altText\n            }\n          }\n        }\n      }\n    }\n    collections(first: 12) {\n      nodes {\n        id\n        handle\n        title\n        description\n        products(first: 4) {\n          nodes {\n            handle\n            productType\n            tags\n            title\n            vendor\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
-    return: HomepageQuery;
-    variables: HomepageQueryVariables;
   };
   '#graphql\n  query CartRecommendations(\n    $country: CountryCode\n    $language: LanguageCode\n    $productId: ID!\n  ) @inContext(country: $country, language: $language) {\n    productRecommendations(productId: $productId, intent: RELATED) {\n      ...ClaraProductCard\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
     return: CartRecommendationsQuery;
@@ -3622,7 +3412,12 @@ interface GeneratedQueryTypes {
   };
 }
 
-interface GeneratedMutationTypes {}
+interface GeneratedMutationTypes {
+  '#graphql\n  mutation MerchantFeedQuote(\n    $input: CartInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        deliveryGroups(first: 5) {\n          nodes {\n            deliveryOptions {\n              estimatedCost {\n                amount\n                currencyCode\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+    return: MerchantFeedQuoteMutation;
+    variables: MerchantFeedQuoteMutationVariables;
+  };
+}
 
 declare module '@shopify/hydrogen' {
   interface StorefrontQueries extends GeneratedQueryTypes {}

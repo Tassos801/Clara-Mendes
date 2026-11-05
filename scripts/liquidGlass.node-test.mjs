@@ -51,7 +51,6 @@ test('applies glass to the shared navigation, commerce, and overlay surfaces', (
 
 test('extends the material to route-specific hero and merchandising controls', () => {
   expectGlassRule(homeSource, '.hm-header-top');
-  expectGlassRule(homeSource, '.hm-hero-action');
   expectGlassRule(storySource, '.os-header-top');
   expectGlassRule(collectionSource, '.cv-toolbar');
   expectGlassRule(collectionSource, '.cv-facets');

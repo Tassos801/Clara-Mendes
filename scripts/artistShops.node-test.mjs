@@ -379,12 +379,17 @@ function floatingWorldProducts(artistId) {
     .filter((product) => !artistId || product.artistId === artistId);
 }
 
-/** An artist's whole Floating World range: prints and every family. */
+/**
+ * An artist's released Floating World range: prints and every released
+ * family (staged Drafts never reach the shop, which lists what the
+ * Storefront API returns).
+ */
 function floatingWorldRange(artistId) {
   return shops
     .artistProducts()
     .filter((product) => product.collectionTag === 'Floating World')
-    .filter((product) => product.artistId === artistId);
+    .filter((product) => product.artistId === artistId)
+    .filter((product) => product.released);
 }
 
 test('artist shop Refine groups come from data, with counts per choice', () => {
@@ -436,6 +441,12 @@ test('artist shop types are named as on the cards and the Shop All tabs', () => 
       ['cards', 'Cards', 4],
       ['postcards', 'Postcards', 4],
       ['phone-cases', 'Phone Cases', 4],
+      ['hanger-prints', 'Hanger Prints', 4],
+      ['acrylic-prints', 'Acrylic Prints', 4],
+      ['metal-prints', 'Metal Prints', 4],
+      ['mugs', 'Mugs', 4],
+      ['cushions', 'Cushions', 4],
+      ['blankets', 'Blankets', 4],
     ],
   );
 });
@@ -452,6 +463,12 @@ test('artist shop Featured lists one section per type, in family order', () => {
       ['cards', 4],
       ['postcards', 4],
       ['phone-cases', 4],
+      ['hanger-prints', 4],
+      ['acrylic-prints', 4],
+      ['metal-prints', 4],
+      ['mugs', 4],
+      ['cushions', 4],
+      ['blankets', 4],
     ],
   );
   assert.ok(
@@ -475,7 +492,7 @@ test('artist shop Featured lists one section per type, in family order', () => {
   );
   assert.deepEqual(
     portrait.sections.map((section) => section.products.length),
-    [3, 3, 3, 3, 3, 3],
+    [3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
   );
   // A chosen type, or another sort, lists one grid.
   for (const query of ['type=cards', 'type=cards&type=postcards', 'sort=title'])
@@ -488,7 +505,8 @@ test('artist shop Featured lists one section per type, in family order', () => {
 
 test('artist shop drops groups that cannot narrow it, and their URL values', () => {
   const range = floatingWorldRange('katsushika-hokusai');
-  assert.equal(range.length, 36);
+  // Six works × twelve product types.
+  assert.equal(range.length, 72);
   // Every Hokusai is a landscape Fuji view of Floating World.
   const view = shops.artistShopView(
     range,
@@ -501,7 +519,7 @@ test('artist shop drops groups that cannot narrow it, and their URL values', () 
     ['type'],
   );
   assert.equal(view.activeCount, 0);
-  assert.equal(view.products.length, 36);
+  assert.equal(view.products.length, 72);
 });
 
 test('artist shop filters AND across groups, OR within one, and drop stale values', () => {
@@ -717,7 +735,7 @@ test('the artists index row shows the works as printed, one per artwork', () => 
   assert.deepEqual(entry.works, [
     {
       height: 448,
-      src: '/images/product-art/floating-world/the-great-wave-off-kanagawa.sheet-small.webp',
+      src: '/images/product-art/floating-world/the-great-wave-off-kanagawa.sheet-small.w560.jpg',
       title: WAVE.shortTitle,
       width: 560,
     },
@@ -748,7 +766,67 @@ test('every museum sheet has the small copy the artists index shows', async () =
         `${small.src} is missing: run npm run product -- prepare ${collection.slug}`,
       );
       const {height, width} = await sharp(file).metadata();
-      assert.deepEqual({height, width}, {height: small.height, width: small.width});
+      assert.deepEqual(
+        {height, width},
+        {height: small.height, width: small.width},
+      );
     }
   }
+});
+
+test('an artist page title leads with the first type the shop lists', () => {
+  const artist = {name: 'Vasily Kandinsky'};
+  assert.equal(
+    shops.artistPageTitle(artist, ['Prints', 'Canvas']),
+    'Vasily Kandinsky: art prints and more | Clara Mendes',
+  );
+  assert.equal(
+    shops.artistPageTitle(artist, ['Hanger prints', 'Cushions']),
+    'Vasily Kandinsky: hanger prints and more | Clara Mendes',
+  );
+  assert.equal(
+    shops.artistPageTitle(artist, ['Mugs']),
+    'Vasily Kandinsky: mugs | Clara Mendes',
+  );
+  // The shipped data: Line and Colour has no paper prints on sale yet.
+  const titles = Object.fromEntries(
+    shops
+      .publicArtists()
+      .map(({artist: shipped, products}) => [
+        shipped.slug,
+        shops.artistPageTitle(shipped, shops.artistFamilies(products)),
+      ]),
+  );
+  assert.match(titles.hokusai, /: art prints and more \|/);
+  assert.match(titles.kandinsky, /: hanger prints and more \|/);
+});
+
+// A note names products by their running-copy words; each must be on sale.
+const NOTE_WORDS = [
+  [/(^|\. )Prints\b/, 'Prints'],
+  [/framed prints/i, 'Framed prints'],
+  [/\bcanvas\b/i, 'Canvas'],
+  [/(?<!post)cards\b/i, 'Cards'],
+  [/postcards/i, 'Postcards'],
+  [/phone cases/i, 'Phone cases'],
+  [/\bhanger\b/i, 'Hanger prints'],
+  [/\bacrylic\b/i, 'Acrylic prints'],
+  [/\bmetal\b/i, 'Metal prints'],
+  [/\bmugs\b/i, 'Mugs'],
+  [/\bcushions\b/i, 'Cushions'],
+  [/\bblankets\b/i, 'Blankets'],
+];
+
+test("a curator's note names only product types the artist's shop lists", () => {
+  const checked = [];
+  for (const {artist, products} of shops.publicArtists()) {
+    if (!artist.curatorNote) continue;
+    const families = shops.artistFamilies(products);
+    for (const [pattern, family] of NOTE_WORDS) {
+      if (pattern.test(artist.curatorNote))
+        assert.ok(families.includes(family), `${artist.slug} names ${family}`);
+    }
+    checked.push(artist.slug);
+  }
+  assert.ok(checked.includes('kandinsky') && checked.includes('mondrian'));
 });

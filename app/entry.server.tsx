@@ -7,8 +7,10 @@ import {
 } from '@shopify/hydrogen';
 import type {EntryContext} from 'react-router';
 import {
+  CSP_FRAME_SRC,
   CSP_GOOGLE_CONNECT_SRC,
   CSP_IMG_SRC,
+  CSP_META_CONNECT_SRC,
   CSP_SCRIPT_SRC,
 } from '~/lib/csp';
 import {getMarketVaryHeader} from '~/lib/markets';
@@ -26,7 +28,8 @@ export default async function handleRequest(
         context.env.PUBLIC_CHECKOUT_DOMAIN ?? context.env.PUBLIC_STORE_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    connectSrc: [...CSP_GOOGLE_CONNECT_SRC],
+    connectSrc: [...CSP_GOOGLE_CONNECT_SRC, ...CSP_META_CONNECT_SRC],
+    frameSrc: [...CSP_FRAME_SRC],
     imgSrc: [...CSP_IMG_SRC],
     scriptSrc: [...CSP_SCRIPT_SRC],
   });
