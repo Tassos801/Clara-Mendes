@@ -259,14 +259,30 @@ test that asserts it.
   Current stays out until Printful's US origin and transit are checked. Drop the import-duty sentence for US buyers only on lines made in
   the US. Also confirm Printful's US transit for Quiet Current; if it fits
   7–15, drop `isApparel` from the PDP call. *Gate:* B1.
-- [ ] **A3 Money in fixed wording.** Replace hardcoded amounts with market-aware
+- [x] **A3 Money in fixed wording.** *Done 2026-11-05: no euro figure
+  reaches a US (USD) page; every other buyer keeps today's wording exactly
+  (`scripts/usMarketCopy.node-test.mjs`).*
+  - The Your Sky hero reads "From {live USD price} · made to order ·
+    unframed", using `usPriceLine` in `featurePages.ts` and `cheapestPrice`.
+  - The Quiet Current PDP shows checkout's US fee line instead of the EUR
+    table, plus the US delivery window and the no-duty line.
+  - The Quiet Current collection hero and the /clothing shipping sentence
+    use checkout's US fee, or show no figure.
+  - Original step text: Replace hardcoded amounts with market-aware
   ones: the Your Sky price line from the live minimum price in the buyer's
   currency; the activewear rate table keyed by market (the US row must match
   checkout, see B3). Files: `app/lib/featurePages.ts`,
   `app/components/YourSkyTeaser.tsx` (no longer on the homepage, removed 2026-10-23), `app/lib/storefrontBasics.ts`,
   `app/components/ApparelShipping.tsx`, `app/routes/clothing.tsx`,
   `app/lib/collectionHeroes.ts`. *Gate:* B2 for the USD figures.
-- [ ] **A4 Structured data follows the market.** In `app/lib/seo.ts`, use
+- [x] **A4 Structured data follows the market.** *Done 2026-11-05:
+  `structuredDataView` (deliveryReach.ts) plus `productSchema({market})`.*
+  - US buyer of an item the US can buy: USD offers, `shippingDetails` for
+    the US (dispatch window, 7–15 transit), returns `applicableCountry` US.
+  - US buyer of an item the US can't buy: the Cyprus offer in EUR. The
+    default-market read now carries prices.
+  - Non-US buyers: unchanged (`deliveryReach.node-test.mjs`).
+  - Original step text: In `app/lib/seo.ts`, use
   the buyer market's price and currency when the item is buyable there, and
   add US `shippingDetails` (rate, 2–4 handling, 7–15 transit) on US pages.
   The Cyprus fallback stays for items the US can't buy. *Gate:* D6, B3.
@@ -298,7 +314,7 @@ test that asserts it.
   - Printful rates are quoted per clothing product (Printful files
     garments into different profiles) with one cart per country whose line
     is swapped per item, because Shopify throttles bursts of new carts.
-- [ ] **A6 Docs.** *US policy text drafted 2026-10-18 in
+- [x] **A6 Docs.** *US section live 2026-11-05 (B5); `docs/shopify-policies-drafts.md` matches the live policy.* *US policy text drafted 2026-10-18 in
   [shipping-policy-us.md](shipping-policy-us.md), deliberately kept out of
   `shopify-policies-drafts.md` until B5.* Update [fulfillment](../llm-wiki/modules/fulfillment.md)
   and the shipping-policy draft (`docs/shopify-policies-drafts.md`, add a
@@ -407,7 +423,13 @@ test that asserts it.
   **Checked 2026-10-18 (read-only):** Shopify Tax is active and the US is
   not collecting (no registration). Nothing to change now; Shopify Tax
   flags a threshold when one is near. See Evidence.
-- [ ] **B5 Shipping policy.** Paste the A6 US paragraph (see the
+- [x] **B5 Shipping policy.** *Done 2026-11-05 (owner in session: "add a US paragraph to the shipping policy").*
+  - Added a section "Orders to the United States" before "Lost or delayed
+    shipments", and a "United States: see below" bullet under Shipping
+    costs. Nothing else changed: the editor diff was insertions only.
+  - The Storefront body is 7383 characters, and the live
+    /policies/shipping-policy contains the draft text verbatim.
+  - Original step text: Paste the A6 US paragraph (see the
   policy-editor notes in the wiki and the owner's memory). Additive only.
 - [ ] **B6 Verify.** The Storefront readback shows US `currency: USD`.
   `audit-customer-purchase-path.mjs` for a US address returns the D3 rate
