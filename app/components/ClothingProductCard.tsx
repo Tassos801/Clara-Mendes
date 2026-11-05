@@ -27,6 +27,11 @@ export function ClothingProductCard({
   const href = clothingProductUrl(product, selected);
   const title = clothingDisplayTitle(product);
   const sizes = clothingSizeRange([product]);
+  // One-size pieces (caps, beanies, totes) have no size to choose.
+  const choosesSize =
+    (product.options.find((option) => /^size$/i.test(option.name))
+      ?.optionValues.length ?? 0) > 1;
+  const cta = choosesSize ? 'Choose size' : 'View piece';
   const titleId = `clothing-card-${product.handle}`;
   return (
     <article className="clothing-card" aria-labelledby={titleId}>
@@ -66,7 +71,25 @@ export function ClothingProductCard({
           </p>
         ) : null}
       </div>
-      {colors.length > 0 ? (
+      {colors.length === 1 ? (
+        // One colour: name it, with no swatch button to choose.
+        <p className="clothing-colors clothing-colors--single">
+          {(() => {
+            const tone = clothingSwatchBackground(
+              colors[0].name,
+              colors[0].swatch?.color,
+            );
+            return tone ? (
+              <span
+                className="clothing-swatch-dot"
+                style={{background: tone}}
+                aria-hidden="true"
+              />
+            ) : null;
+          })()}
+          <span className="clothing-color-name">{colors[0].name}</span>
+        </p>
+      ) : colors.length > 1 ? (
         <div
           className="clothing-colors"
           role="group"
@@ -103,9 +126,9 @@ export function ClothingProductCard({
           to={href}
           prefetch="intent"
           className="clothing-card-cta"
-          aria-label={`Choose size: ${title}${color ? `, ${color.name}` : ''}`}
+          aria-label={`${cta}: ${title}${color ? `, ${color.name}` : ''}`}
         >
-          Choose size <span aria-hidden="true">→</span>
+          {cta} <span aria-hidden="true">→</span>
         </Link>
       </div>
     </article>

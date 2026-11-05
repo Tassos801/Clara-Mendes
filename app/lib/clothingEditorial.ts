@@ -9,7 +9,9 @@
  * Keep every sentence checkable: the Quiet Current print is a code-generated,
  * watercolour-style design (never "painted" or "adapted from" a painting),
  * the garments are printed, cut and sewn by the supplier after each order,
- * and every garment image is a digital mockup. Evidence and sources:
+ * and every garment image is a digital mockup. Counter-Diagonal is our own
+ * composition: always credit it "Inspired by Theo van Doesburg", never "Art
+ * by" or as his work. Evidence and sources:
  * docs/clothing-destination.md#copy-evidence.
  */
 
@@ -23,13 +25,35 @@ export type ClothingImage = {
 export type CapsuleStory = {
   /** One short paragraph: what the print is and where it sits. */
   intro: string;
-  /** A soft watercolour band across the top of the collection section. */
-  band?: Omit<ClothingImage, 'alt'>;
+  /** Shown under the capsule name, e.g. "Inspired by Theo van Doesburg". */
+  credit?: string;
+  /** A soft band of the capsule's art across the top of its section. */
+  band?: Omit<ClothingImage, 'alt'> & {
+    /** CSS object-position for the band's crop. */
+    position?: string;
+  };
   /**
    * Composite of the capsule's garments. Built from supplier digital
    * mockups, so the page labels it as such.
    */
   looksImage?: ClothingImage & {caption: string};
+  /**
+   * The page hero while this capsule leads /clothing. `text` receives the
+   * kinds of garment really on sale ("hoodies, tees and totes") so the copy
+   * never names a piece that is not listed.
+   */
+  hero?: {
+    eyebrow: string;
+    text: (garments: string | null) => string;
+    cta: string;
+  };
+  /** Decorative art beside the hero button (empty alt). */
+  accent?: {src: string; width: number; height: number; className: string};
+  /**
+   * False when the capsule's colours are just each blank's colour, not
+   * coordinated colourways, so "Choose a colourway" would mislead.
+   */
+  colourwayChooser?: false;
 };
 
 export const CLOTHING_PAGE_HERO = {
@@ -38,6 +62,43 @@ export const CLOTHING_PAGE_HERO = {
 };
 
 const CAPSULE_STORIES: Record<string, CapsuleStory> = {
+  // Our own composition (design pack Clara-Mendes-Van-Doesburg-Hoodie-
+  // 2026-10-30, README: "set at Van Doesburg's 45° counter-composition
+  // angle", palette red #B91616, blue #0A3B79, yellow #E3A216, black
+  // #171817). Images: scripts/build-counter-diagonal-art.mjs.
+  'counter-diagonal': {
+    credit: 'Inspired by Theo van Doesburg',
+    // Each garment comes in its own blank colour (Dust, Bone, Ivory, ...).
+    colourwayChooser: false,
+    intro:
+      'One composition of red, blue, yellow and black planes, tilted to the 45° angle of Theo van Doesburg’s counter-compositions. We drew it ourselves; it is not a copy of any of his paintings. Every piece carries the composition, its small emblem, or both.',
+    band: {
+      src: '/images/clothing/counter-diagonal-band.w1600.jpg',
+      width: 1600,
+      height: 427,
+      position: 'center 40%',
+    },
+    looksImage: {
+      src: '/images/clothing/counter-diagonal-looks.w1280.jpg',
+      width: 1280,
+      height: 960,
+      alt: 'Counter-Diagonal heavyweight hoodie from the back, with the full diagonal composition, beside the oversized tee with the small chest emblem',
+      caption:
+        'Counter-Diagonal heavyweight hoodie and oversized tee. Digital mockups.',
+    },
+    hero: {
+      eyebrow: 'New · Counter-Diagonal',
+      text: (garments) =>
+        `${garments ? `${garments[0].toUpperCase()}${garments.slice(1)} in` : 'Clothing in'} one geometric design, inspired by Theo van Doesburg. Made for you after you order.`,
+      cta: 'Shop Counter-Diagonal',
+    },
+    accent: {
+      src: '/images/clothing/counter-diagonal-emblem.w240.png',
+      width: 240,
+      height: 263,
+      className: 'clothing-hero-art clothing-hero-art--emblem',
+    },
+  },
   'quiet-current': {
     intro:
       'A digital, watercolour-style design inspired by the layered ridges in Clara Mendes’ print Where Mist Rests. Each piece is mostly solid colour, with soft washes at the sides or along the outer leg. The leggings and biker shorts add a fern.',
@@ -62,6 +123,42 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
 
 export function capsuleStory(handle?: string | null): CapsuleStory | null {
   return handle ? (CAPSULE_STORIES[handle] ?? null) : null;
+}
+
+/** A capsule story as loader data: everything but the hero text function. */
+export type CapsuleStoryData = Omit<CapsuleStory, 'hero'>;
+
+export function capsuleStoryData(
+  handle?: string | null,
+): CapsuleStoryData | null {
+  const story = capsuleStory(handle);
+  if (!story) return null;
+  const {hero: _hero, ...data} = story;
+  return data;
+}
+
+/**
+ * The /clothing hero: the lead capsule's own hero when it has one, else the
+ * long-standing page hero (the Quiet Current wording).
+ */
+export function clothingPageHero(
+  handle: string | null | undefined,
+  garments: string | null,
+) {
+  const hero = capsuleStory(handle)?.hero;
+  return hero
+    ? {
+        eyebrow: hero.eyebrow,
+        title: CLOTHING_PAGE_HERO.title,
+        text: hero.text(garments),
+        cta: hero.cta,
+      }
+    : {
+        eyebrow: null,
+        title: CLOTHING_PAGE_HERO.title,
+        text: CLOTHING_PAGE_HERO.text,
+        cta: 'Shop clothing',
+      };
 }
 
 /**

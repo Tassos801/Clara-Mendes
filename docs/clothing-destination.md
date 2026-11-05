@@ -71,6 +71,12 @@ A product is shown on `/clothing` only when **all** of these are true.
      `custom.storefront_approved` and `custom.fulfillment_verified` must be
      type Boolean, readable by the Storefront API, and exactly `true`.
 
+**Counter-Diagonal (2026-11-05)** uses the future garment path: each line
+piece needs both metafields `true`. The two earlier versions,
+`counter-diagonal-hoodie` and `counter-diagonal-classic-hoodie`, are `false`
+in `PRODUCT_RELEASE_FLAGS`, so they stay hidden even if published or
+approved.
+
 **The rule fails closed.** A missing metafield, a missing value, a value of
 `false`, a text-type field, `TRUE` in capitals, or a field the Storefront API
 cannot read all count as "not approved", and the garment stays hidden.
@@ -88,16 +94,24 @@ The page category comes from this table. Source: `CATEGORIES` in
 
 | Category | Exact product types |
 | --- | --- |
+| Hoodies | Hoodies, Hoodie |
+| Sweatshirts | Sweatshirts, Sweatshirt |
+| T-shirts | T-Shirts, T-Shirt |
+| Long sleeves | Long Sleeve Shirts, Long Sleeve Shirt, Long Sleeve T-Shirts |
+| Tops | Studio Top, Tops, Shirts, Tank Tops, Blouses |
 | Leggings | Yoga Leggings, Leggings |
 | Bras | Sports Bra, Sports Bras, Bras |
 | Shorts | Biker Shorts, Shorts |
-| Tops | Studio Top, Tops, T-Shirts, T-Shirt, Shirts, Tank Tops, Blouses, Sweatshirts, Hoodies |
 | Dresses | Dresses, Dress |
 | Skirts | Skirts, Skirt |
 | Trousers | Trousers, Pants, Jeans |
 | Knitwear | Knitwear, Sweaters, Cardigans |
 | Outerwear | Outerwear, Jackets, Coats |
 | One-pieces | Jumpsuits, Playsuits, Bodysuits |
+| Accessories | Hats, Caps, Beanies, Tote Bags |
+
+The table order is the page order. "Bags" is not in it on purpose: the museum
+Art Canvas Tote uses that type and must not appear on `/clothing`.
 
 A garment admitted only by the tag, with a type that is not in the table, is
 shown under a category called "Clothing". Use a listed type when you can.
@@ -182,16 +196,20 @@ It reads the Admin and Storefront APIs, makes no change, and refuses
   and a test in `scripts/fulfilmentWindows.node-test.mjs`.
 - **Shipping rates on the page.** The rate table on the product page, the
   "Shipping from" line and the Quiet Current collection subtitle are fixed to
-  the four Quiet Current handles (`APPAREL_SHIPPING_RATES`). A new garment
-  charges whatever its Shopify shipping profile says, and the page says
-  shipping is calculated at checkout. The `/clothing` page shows the "Shipping
-  from" line only while every piece is Quiet Current.
+  the four Quiet Current handles (`APPAREL_SHIPPING_RATES`). Every other
+  garment (Counter-Diagonal) shows checkout's own fee for one piece to the
+  buyer's country, from a throwaway one-piece cart in the buyer's market
+  currency, cached for an hour (`app/lib/clothingShipping.server.ts`). No line
+  appears when the piece does not ship there or the quote fails. The
+  `/clothing` page shows the "Shipping from" line only while every piece is
+  Quiet Current.
 - **Editorial block for a new capsule.** Add an entry to `CAPSULE_STORIES` in
   [`app/lib/clothingEditorial.ts`](../app/lib/clothingEditorial.ts). Without an
   entry the capsule still lists, filters and links; it gets the generic block
-  (name, piece count, link).
-- **Collection page hero.** `app/lib/collectionHeroes.ts` has an entry for
-  `quiet-current` only.
+  (name, piece count, link). Quiet Current and Counter-Diagonal have entries;
+  Counter-Diagonal's also sets the page hero while it leads.
+- **Collection page hero.** `app/lib/collectionHeroes.ts` has entries for
+  `quiet-current` and `counter-diagonal`.
 - **A garment type that is not in the table**, if you want its own category
   instead of the tag: add it to `CATEGORIES` in `app/lib/clothing.ts`.
 
@@ -211,8 +229,10 @@ It reads the Admin and Storefront APIs, makes no change, and refuses
    in the snapshot `clothingKind` is `null` on all 17 collections, and the
    snapshot cannot show whether the definition exists. See
    [One-time Shopify set-up](#one-time-shopify-set-up-prepared-not-applied).
-   Without the value the collection is not a capsule. Quiet Current is the one
-   exception: the code treats the handle `quiet-current` as a capsule.
+   Without the value the collection is not a capsule. The exceptions are the
+   handles in `KNOWN_CLOTHING_CAPSULES` (`app/lib/clothing.ts`):
+   `counter-diagonal` and `quiet-current` count as capsules by handle, and
+   lead the page in that order.
 3. **Add the garments** to the collection (manual or by rule). The page reads
    the real membership from each garment, so the garments must be eligible
    (see [Who appears](#who-appears)).
@@ -263,8 +283,10 @@ Nothing in this section has been done.
   piece comes in both colourways and is sold separately" only when that is
   true in the data; otherwise "Pieces are sold separately". There are no
   bundles.
-- **The collection section** shows the capsule that holds the newest piece (or
-  the first capsule by name), and is hidden when there is no capsule.
+- **The collection sections**: one per capsule. Counter-Diagonal leads while
+  it has a listed piece (hero, default "Featured" sort, first section);
+  otherwise the capsule holding the newest piece leads. Counter-Diagonal has
+  no colourway chooser, since its colours are each blank's own colour.
 - **Product cards** show the sizes of that piece only ("Sizes XS–XL" when its
   size option is a standard run). "Made to order" in "Before you order" shows
   only when every piece has the tag `Made to order`. Processing time and the

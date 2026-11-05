@@ -17,6 +17,8 @@ type ProductShippingTextProps = {
   usDeliveryWindow?: string | null;
   /** US orders ship from a US lab (`shipsWithinUs`): no import duties. */
   usDomestic?: boolean;
+  /** How the piece is made: "Embroidered" for the Counter-Diagonal hats. */
+  madeBy?: 'Printed' | 'Embroidered';
 };
 
 export function ProductShippingText({
@@ -28,6 +30,7 @@ export function ProductShippingText({
   internationalDeliveryWindow,
   usDeliveryWindow,
   usDomestic = false,
+  madeBy = 'Printed',
 }: ProductShippingTextProps) {
   if (curatedShipping) return <>{curatedShipping}</>;
 
@@ -36,7 +39,7 @@ export function ProductShippingText({
   if (usDeliveryWindow && !isPlantPot && reach !== 'eu') {
     return (
       <>
-        Printed to order and dispatched within {dispatchWindow} business days.
+        {madeBy} to order and dispatched within {dispatchWindow} business days.
         After dispatch, delivery within the US is estimated at{' '}
         {usDeliveryWindow} business days
         {reach === 'selected'
@@ -74,7 +77,7 @@ export function ProductShippingText({
           Mixed orders may combine shipping charges at checkout.{' '}
         </>
       ) : null}
-      Printed to order and dispatched within {dispatchWindow} business days.
+      {madeBy} to order and dispatched within {dispatchWindow} business days.
       After dispatch, delivery is estimated at {deliveryWindow} business days
       across the EU{elsewhere} Delivery updates are emailed when available.
       {importNote}

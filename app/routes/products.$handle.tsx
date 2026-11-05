@@ -136,6 +136,7 @@ import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DELIVERY_US_BUSINESS_DAYS,
+  counterDiagonalTechnique,
   fulfilmentWindows,
   isPersonalisedProductType,
   isQuietCurrentProduct,
@@ -146,10 +147,13 @@ import {
 } from '~/lib/storefrontBasics';
 import {parseApparelDescription} from '~/lib/apparelCopy';
 import {isClothingProduct} from '~/lib/clothing';
+import {quotesClothingShipping} from '~/lib/clothingShipping';
+import {quoteClothingShipping} from '~/lib/clothingShipping.server';
 import {
   APPAREL_SHIPPING_DETAIL_ID,
   ApparelShippingLine,
   ApparelShippingRates,
+  ClothingShippingQuoteLine,
 } from '~/components/ApparelShipping';
 import {
   curatedDisplayTitle,
@@ -686,12 +690,22 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // a sold-out one; the default-market reads tell the two apart (free for a
   // buyer in Cyprus or when everything is buyable).
   const buyerCountry = context.storefront.i18n.country;
-  const [reachedProduct, relatedProducts] = await Promise.all([
+  const [reachedProduct, relatedProducts, clothingShipping] = await Promise.all([
     withVariantReach(context.storefront, product),
     withDeliveryReach(
       context.storefront,
       museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
     ),
+    // Counter-Diagonal ships at Printful's per-country rates: quote
+    // checkout's fee for one piece to this buyer (cached, never blocks long).
+    quotesClothingShipping(product)
+      ? quoteClothingShipping(
+          context.storefront,
+          product.selectedOrFirstAvailableVariant?.id,
+          buyerCountry,
+          {waitUntil: context.waitUntil},
+        )
+      : Promise.resolve(null),
   ]);
   const outOfReach = reachedProduct.variants.nodes.some(
     (variant: ProductVariant) => variant.outOfReach,
@@ -700,6 +714,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   return {
     artProduct,
     artworkCredit: productArtworkCredit(product.handle),
+    clothingShipping,
     capsuleSummary: shopCapsule
       ? {
           blurb: capsulePage?.pdpBlurb ?? null,
@@ -746,6 +761,7 @@ function ProductPage() {
     artworkCredit,
     capsuleSummary,
     classicFrameCrossSell,
+    clothingShipping,
     deliveryCountry,
     museumCase,
     phoneCaseCrossSell,
@@ -898,6 +914,13 @@ function ProductPage() {
   const isApparel = isClothingProduct(product);
   const isQuietCurrent = isQuietCurrentProduct(product.handle);
   const isFutureClothing = isApparel && !isQuietCurrent;
+  // The merchant's "Made to order" tag (Counter-Diagonal carries it) keeps
+  // the status chip honest for garments made after each order.
+  const isTaggedMadeToOrder = Boolean(
+    product.tags?.some(
+      (tag: string) => tag.trim().toLowerCase() === 'made to order',
+    ),
+  );
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
@@ -1228,7 +1251,14 @@ function ProductPage() {
                 </span>
               </p>
             ) : null}
-            {isQuietCurrent ? <ApparelShippingLine /> : null}
+            {isQuietCurrent ? (
+              <ApparelShippingLine />
+            ) : clothingShipping ? (
+              <ClothingShippingQuoteLine
+                quote={clothingShipping}
+                countryPhrase={deliveryCountry.phrase}
+              />
+            ) : null}
 
             <div
               className="product-availability-row"
@@ -1246,7 +1276,9 @@ function ProductPage() {
                 (caseModelPending && productAvailableForSale)
                   ? curatedProduct
                     ? 'DIY kit'
-                    : isFutureClothing ? 'Available' : 'Made to order'
+                    : isFutureClothing && !isTaggedMadeToOrder
+                      ? 'Available'
+                      : 'Made to order'
                   : notShippedHere
                     ? 'Not shipped here'
                     : 'Unavailable'}
@@ -1535,7 +1567,7 @@ function ProductPage() {
           <ul className="product-assurance-list" aria-label="Order reassurance">
             <li>
               <span aria-hidden />
-              {isFutureClothing
+              {isFutureClothing && !windows
                 ? 'Available destinations and shipping fees are confirmed at checkout.'
                 : isLetterPost
                 ? 'Sent by letter post — untracked, typically 5–8 business days.'
@@ -1789,7 +1821,20 @@ function ProductPage() {
               id={isQuietCurrent ? APPAREL_SHIPPING_DETAIL_ID : undefined}
             >
               {isQuietCurrent ? <ApparelShippingRates /> : null}
+              {!isQuietCurrent && clothingShipping ? (
+                <>
+                  Shipping to {deliveryCountry.phrase} is{' '}
+                  {formatMoney(clothingShipping)} for this piece; more pieces
+                  can change the fee.{' '}
+                </>
+              ) : null}
               {windows ? <ProductShippingText
+                madeBy={
+                  counterDiagonalTechnique(product.productType, product.handle) ===
+                  'embroidered'
+                    ? 'Embroidered'
+                    : 'Printed'
+                }
                 curatedShipping={curatedProduct?.shipping}
                 isPlantPot={isPlantPot}
                 reach={shippingReach}

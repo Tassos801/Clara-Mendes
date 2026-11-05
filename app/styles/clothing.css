@@ -111,6 +111,11 @@
   pointer-events: none;
   width: clamp(200px, 20vw, 280px);
 }
+/* Counter-Diagonal: the small chest emblem instead of the olive wash. */
+.clothing-hero-art--emblem {
+  margin-right: clamp(8px, 4vw, 48px);
+  width: clamp(64px, 6vw, 88px);
+}
 .clothing-hero-media {
   margin: 0;
 }
@@ -241,6 +246,23 @@
   color: var(--clothing-secondary);
   font-size: 13px;
   padding-left: 4px;
+}
+/* A single colour is a label, not a choice. */
+.clothing-colors--single {
+  gap: 8px;
+  margin-left: 0;
+  min-height: 28px;
+}
+.clothing-colors--single .clothing-color-name {
+  flex-basis: auto;
+  margin-top: 0;
+  padding-left: 0;
+}
+.clothing-swatch-dot {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--clothing-line);
+  height: 14px;
+  width: 14px;
 }
 .clothing-card-footer {
   align-items: center;
@@ -401,6 +423,10 @@
     calc((100% - var(--clothing-max)) / 2)
   );
 }
+/* Two capsules in a row: a hairline keeps them apart on the shared tone. */
+.clothing-page > .clothing-collection + .clothing-collection {
+  border-top: 1px solid var(--clothing-line);
+}
 .clothing-collection h2 {
   font-size: clamp(28px, 3vw, 40px);
   letter-spacing: -0.015em;
@@ -412,6 +438,13 @@
   line-height: 1.65;
   margin-top: 14px;
   max-width: 44ch;
+}
+/* After the paragraph rule, which it overrides at the same specificity. */
+.clothing-collection-copy > p.clothing-collection-credit {
+  color: var(--color-ink);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  margin-top: 8px;
 }
 .clothing-collection-copy .clothing-text-link {
   margin-top: 10px;
@@ -588,6 +621,14 @@
     width: 150px;
     /* On the narrowest phones the sprig tucks behind the solid button. */
     z-index: -1;
+  }
+  /* The long button fills the row, so the emblem sits up by the eyebrow,
+     in space the breadcrumb and eyebrow never reach. */
+  .clothing-hero-art--emblem {
+    bottom: auto;
+    right: 4px;
+    top: 6px;
+    width: 44px;
   }
   .clothing-colourway-fern {
     height: 52px;

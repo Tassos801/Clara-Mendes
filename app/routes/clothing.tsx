@@ -10,11 +10,16 @@ import type {Route} from './+types/clothing';
 import {ClothingProductCard} from '~/components/ClothingProductCard';
 import {StructuredData} from '~/components/StructuredData';
 import {loadClothingProducts} from '~/lib/clothing.server';
-import {clothingCategories, clothingCapsules} from '~/lib/clothing';
+import {
+  LEAD_CLOTHING_CAPSULE,
+  clothingCategories,
+  clothingCapsules,
+} from '~/lib/clothing';
 import {
   CLOTHING_SORTS,
   allMadeToOrder,
   clothingFilterUrl,
+  clothingGarmentPhrase,
   clothingLooks,
   clothingSwatchBackground,
   selectClothing,
@@ -22,9 +27,10 @@ import {
 } from '~/lib/clothingPresentation';
 import {
   CLOTHING_PAGE_ACCENT,
-  CLOTHING_PAGE_HERO,
   COLOURWAY_ACCENT_SIZE,
   capsuleStory,
+  capsuleStoryData,
+  clothingPageHero,
   lookAccent,
 } from '~/lib/clothingEditorial';
 import {isOffThemeCollectionHandle} from '~/lib/catalogFilters';
@@ -41,8 +47,23 @@ import {
   getCanonicalUrl,
 } from '~/lib/seo';
 
-const DESCRIPTION =
+/** The page before Counter-Diagonal (and whenever it has nothing listed). */
+const QUIET_CURRENT_DESCRIPTION =
   'Clara Mendes Clothing: leggings, a sports bra, biker shorts and a tank top with a watercolour-style print, made to order in Moss / Mist and Clay / Oat.';
+
+/** Names only the garment kinds really listed. */
+function clothingDescription(
+  leadGarments: string | null,
+  hasLead: boolean,
+  hasQuietCurrent: boolean,
+) {
+  if (!hasLead) return QUIET_CURRENT_DESCRIPTION;
+  return `Clara Mendes Clothing: Counter-Diagonal ${leadGarments ?? 'clothing'} in one geometric design inspired by Theo van Doesburg${
+    hasQuietCurrent
+      ? ', and Quiet Current activewear with a watercolour-style print'
+      : ''
+  }. Made to order.`;
+}
 
 /** A 1x1 transparent GIF. */
 const BLANK_PIXEL =
@@ -51,7 +72,7 @@ const BLANK_PIXEL =
 export const meta: Route.MetaFunction = ({data}) =>
   buildSeoMeta({
     title: 'Clothing | Clara Mendes',
-    description: DESCRIPTION,
+    description: data?.description || QUIET_CURRENT_DESCRIPTION,
     url: data?.seoUrl || 'https://shopclaramendes.com/clothing',
     image: data?.products?.[0]?.featuredImage?.url,
     noIndex: !data?.catalogTotal,
@@ -60,6 +81,8 @@ export const meta: Route.MetaFunction = ({data}) =>
 export async function loader({context, request}: Route.LoaderArgs) {
   const products = await loadClothingProducts(context.storefront);
   const selection = selectClothing(products, new URL(request.url).searchParams);
+  // Known capsules first (Counter-Diagonal, then Quiet Current), then any
+  // other capsule by name.
   const capsules = clothingCapsules(products).filter(
     (capsule) => !isOffThemeCollectionHandle(capsule.handle),
   );
@@ -69,9 +92,11 @@ export async function loader({context, request}: Route.LoaderArgs) {
         (collection) => collection.handle === handle,
       ),
     );
-  // Products arrive newest first, so the capsule holding the newest piece
-  // leads the page; a new capsule takes over without a code change.
+  // Counter-Diagonal leads while it has a listed piece (the line advertised
+  // in New York). Otherwise the capsule holding the newest piece leads, so
+  // a new capsule takes over without a code change.
   const featured =
+    capsules.find((capsule) => capsule.handle === LEAD_CLOTHING_CAPSULE) ??
     capsules.find((capsule) =>
       products[0]?.collections.nodes.some(
         (collection) => collection.handle === capsule.handle,
@@ -80,9 +105,29 @@ export async function loader({context, request}: Route.LoaderArgs) {
     capsules[0] ??
     null;
   const featuredProducts = featured ? inCapsule(featured.handle) : [];
+  const leadGarments = clothingGarmentPhrase(featuredProducts);
+  const heroStory = capsuleStory(featured?.handle);
+  // One section per capsule, the featured one first.
+  const collections = [
+    ...(featured ? [featured] : []),
+    ...capsules.filter((capsule) => capsule.handle !== featured?.handle),
+  ].map((capsule) => {
+    const pieces = inCapsule(capsule.handle);
+    const story = capsuleStoryData(capsule.handle);
+    const colourways =
+      story?.colourwayChooser === false ? [] : clothingLooks(pieces);
+    return {
+      ...capsule,
+      story,
+      colourways,
+      everyPieceInEveryColourway:
+        pieces.length > 0 &&
+        colourways.every((look) => look.pieces.length === pieces.length),
+    };
+  });
   // Verified processing times and shipping fees exist only for the released
   // Quiet Current pieces; anything else defers to the product page.
-  const knownTerms =
+  const quietCurrentOnly =
     products.length > 0 &&
     products.every((product) => isQuietCurrentProduct(product.handle));
   return {
@@ -92,18 +137,26 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ),
     capsules,
     catalogTotal: products.length,
-    featured,
-    story: capsuleStory(featured?.handle),
-    colourways: clothingLooks(featuredProducts),
-    everyPieceInEveryColourway:
-      featuredProducts.length > 0 &&
-      clothingLooks(featuredProducts).every(
-        (look) => look.pieces.length === featuredProducts.length,
-      ),
+    collections,
+    description: clothingDescription(
+      leadGarments,
+      featured?.handle === LEAD_CLOTHING_CAPSULE,
+      capsules.some((capsule) => capsule.handle === 'quiet-current'),
+    ),
+    hero: {
+      ...clothingPageHero(featured?.handle, leadGarments),
+      looksImage: heroStory?.looksImage ?? null,
+      accent: heroStory?.accent ?? {
+        ...CLOTHING_PAGE_ACCENT,
+        className: 'clothing-hero-art',
+      },
+    },
     showTools: showClothingTools(products.length) || Boolean(selection.category),
     madeToOrder: allMadeToOrder(products),
-    processing: knownTerms ? APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS : null,
-    shippingFrom: knownTerms ? APPAREL_SHIPPING_FROM_EUR : null,
+    // Quiet Current is cut and sewn; DTG and embroidered pieces are not.
+    cutAndSewn: quietCurrentOnly,
+    processing: quietCurrentOnly ? APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS : null,
+    shippingFrom: quietCurrentOnly ? APPAREL_SHIPPING_FROM_EUR : null,
     seoUrl: getCanonicalUrl(request, '/clothing'),
   };
 }
@@ -114,7 +167,8 @@ export default function Clothing() {
   const submit = useSubmit();
   const href = (key: 'category' | 'capsule', value: string) =>
     clothingFilterUrl(params, key, value);
-  const looksImage = data.story?.looksImage;
+  const {hero} = data;
+  const looksImage = hero.looksImage;
   const more = new URLSearchParams(params);
   more.set('page', String(data.page + 1));
   return (
@@ -128,7 +182,7 @@ export default function Clothing() {
             ],
           }),
           collectionSchema({
-            description: DESCRIPTION,
+            description: data.description,
             products: data.products,
             title: 'Clara Mendes Clothing',
             url: data.seoUrl,
@@ -146,18 +200,21 @@ export default function Clothing() {
             <span aria-hidden="true">/</span>
             <span aria-current="page">Clothing</span>
           </nav>
-          <h1 id="clothing-title">{CLOTHING_PAGE_HERO.title}</h1>
-          <p className="clothing-hero-text">{CLOTHING_PAGE_HERO.text}</p>
+          {hero.eyebrow ? (
+            <p className="clothing-eyebrow">{hero.eyebrow}</p>
+          ) : null}
+          <h1 id="clothing-title">{hero.title}</h1>
+          <p className="clothing-hero-text">{hero.text}</p>
           {data.catalogTotal ? (
             <a className="primary-button clothing-hero-cta" href="#pieces">
-              Shop clothing
+              {hero.cta}
             </a>
           ) : null}
           <img
-            className="clothing-hero-art"
-            src={CLOTHING_PAGE_ACCENT.src}
-            width={CLOTHING_PAGE_ACCENT.width}
-            height={CLOTHING_PAGE_ACCENT.height}
+            className={hero.accent.className}
+            src={hero.accent.src}
+            width={hero.accent.width}
+            height={hero.accent.height}
             alt=""
           />
         </div>
@@ -172,7 +229,9 @@ export default function Clothing() {
                 alt={looksImage.alt}
                 width={looksImage.width}
                 height={looksImage.height}
-                fetchPriority="high"
+                // React 18 drops camelCase fetchPriority; the lowercase
+                // attribute reaches the HTML (as on /your-sky).
+                {...{fetchpriority: 'high'}}
               />
             </picture>
             <figcaption>{looksImage.caption}</figcaption>
@@ -320,42 +379,55 @@ export default function Clothing() {
         )}
       </section>
 
-      {data.featured ? (
+      {data.collections.map((collection) => (
         <section
-          className={`clothing-collection${data.story?.band ? ' clothing-collection--band' : ''}`}
-          aria-labelledby="clothing-collection-title"
+          key={collection.handle}
+          className={`clothing-collection${collection.story?.band ? ' clothing-collection--band' : ''}`}
+          aria-labelledby={`clothing-collection-${collection.handle}`}
         >
-          {data.story?.band ? (
+          {collection.story?.band ? (
             <img
               className="clothing-collection-band"
-              src={data.story.band.src}
-              width={data.story.band.width}
-              height={data.story.band.height}
+              src={collection.story.band.src}
+              width={collection.story.band.width}
+              height={collection.story.band.height}
+              style={
+                collection.story.band.position
+                  ? {objectPosition: collection.story.band.position}
+                  : undefined
+              }
               alt=""
               loading="lazy"
             />
           ) : null}
           <div className="clothing-collection-copy">
             <p className="clothing-eyebrow">The collection</p>
-            <h2 id="clothing-collection-title">{data.featured.title}</h2>
-            {data.story ? <p>{data.story.intro}</p> : null}
+            <h2 id={`clothing-collection-${collection.handle}`}>
+              {collection.title}
+            </h2>
+            {collection.story?.credit ? (
+              <p className="clothing-collection-credit">
+                {collection.story.credit}
+              </p>
+            ) : null}
+            {collection.story ? <p>{collection.story.intro}</p> : null}
             <Link
               className="clothing-text-link"
-              to={`/collections/${data.featured.handle}`}
+              to={`/collections/${collection.handle}`}
               prefetch="intent"
             >
-              View the {data.featured.title} collection
+              View the {collection.title} collection
             </Link>
           </div>
-          {data.colourways.length > 1 ? (
+          {collection.colourways.length > 1 ? (
             <div className="clothing-colourways">
               <h3>Choose a colourway</h3>
               <p className="clothing-colourways-note">
-                {data.everyPieceInEveryColourway
-                  ? `Every piece comes in ${data.colourways.length === 2 ? 'both' : 'each'} colourway${data.colourways.length === 2 ? 's' : ''} and is sold separately.`
+                {collection.everyPieceInEveryColourway
+                  ? `Every piece comes in ${collection.colourways.length === 2 ? 'both' : 'each'} colourway${collection.colourways.length === 2 ? 's' : ''} and is sold separately.`
                   : 'Pieces are sold separately.'}
               </p>
-              {data.colourways.map((look) => {
+              {collection.colourways.map((look) => {
                 const tone = clothingSwatchBackground(look.colour);
                 const accent = lookAccent(look.colour);
                 return (
@@ -412,7 +484,7 @@ export default function Clothing() {
             </div>
           ) : null}
         </section>
-      ) : null}
+      ))}
 
       {data.catalogTotal ? (
         <section
@@ -432,7 +504,7 @@ export default function Clothing() {
               <dt>{data.madeToOrder ? 'Made to order' : 'Fabric and care'}</dt>
               <dd>
                 {data.madeToOrder
-                  ? `Printed, cut and sewn after you order${
+                  ? `${data.cutAndSewn ? 'Printed, cut and sewn' : 'Made for you'} after you order${
                       data.processing
                         ? `; processing takes ${data.processing} business days`
                         : ''
