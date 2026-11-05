@@ -323,3 +323,19 @@ test('Counter-Diagonal gets Printful windows by technique; other new garments st
   // Quiet Current keeps its cut-and-sew windows.
   assert.deepEqual(fulfilmentWindows('Studio Top', 'quiet-current-studio-tank'), embroidered);
 });
+
+test('a slow first quote shows no line now and finishes in the background', async () => {
+  let release;
+  const slow = {mutate: () => new Promise((resolve) => { release = () => resolve({cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [{estimatedCost: {amount: '4.69', currencyCode: 'USD'}}]}]}}}}); })};
+  const background = [];
+  const quote = await quoteClothingShipping(slow, 'gid://shopify/ProductVariant/9', 'US', {timeoutMs: 20, waitUntil: (promise) => background.push(promise)});
+  assert.equal(quote, null);
+  assert.equal(background.length, 1, 'the pending quote is handed to waitUntil');
+  release();
+  await background[0];
+  // A quick answer is returned straight away and nothing is left running.
+  const fast = {mutate: async () => ({cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [{estimatedCost: {amount: '4.45', currencyCode: 'EUR'}}]}]}}}})};
+  const idle = [];
+  assert.deepEqual(await quoteClothingShipping(fast, 'gid://shopify/ProductVariant/9', 'CY', {timeoutMs: 1000, waitUntil: (p) => idle.push(p)}), {amount: '4.45', currencyCode: 'EUR'});
+  assert.equal(idle.length, 0);
+});

@@ -703,6 +703,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           context.storefront,
           product.selectedOrFirstAvailableVariant?.id,
           buyerCountry,
+          {waitUntil: context.waitUntil},
         )
       : Promise.resolve(null),
   ]);
