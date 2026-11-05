@@ -137,6 +137,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
     // Cases ship to the US (Storefront readback, 2026-10-18), so a US buyer
     // reads the US window (docs/us-market/status.md, A2).
     usDelivery: readsUsDelivery({buyerCountry: context.storefront.i18n.country}),
+    // The page's market, so the Recently viewed rail reads the same one.
+    marketCountry: context.storefront.i18n.country,
     phone,
     product,
     seoUrl: getCanonicalUrl(request, `/products/${TOUGH_CASE_HANDLE}`),
@@ -158,6 +160,7 @@ export default function ToughCasePage() {
     artwork,
     artworkImage,
     artworks,
+    marketCountry,
     phone,
     product,
     seoUrl,
@@ -509,7 +512,10 @@ export default function ToughCasePage() {
         </div>
       </section>
 
-      <RecentlyViewed excludeHandles={[product.handle]} />
+      <RecentlyViewed
+        excludeHandles={[product.handle]}
+        country={marketCountry}
+      />
 
       <div
         aria-hidden={showStickyATC ? undefined : true}

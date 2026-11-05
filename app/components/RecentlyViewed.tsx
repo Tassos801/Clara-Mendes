@@ -6,6 +6,7 @@ import {
 import {
   getRecentlyViewed,
   recentlyViewedProductIds,
+  recentlyViewedRequestUrl,
 } from '~/lib/recentlyViewed';
 
 /**
@@ -15,8 +16,11 @@ import {
  */
 export function RecentlyViewed({
   excludeHandles = [],
+  country,
 }: {
   excludeHandles?: string[];
+  /** The page's market (its loader's `storefront.i18n.country`). */
+  country?: string | null;
 }) {
   const [products, setProducts] = useState<ClaraCardProduct[]>([]);
   const serializedExcludes = excludeHandles.join(',');
@@ -30,8 +34,9 @@ export function RecentlyViewed({
     const controller = new AbortController();
     setProducts([]);
     if (ids.length) {
-      const params = new URLSearchParams(ids.map((id) => ['id', id]));
-      void fetch(`/api/recently-viewed?${params}`, {signal: controller.signal})
+      void fetch(recentlyViewedRequestUrl(ids, country), {
+        signal: controller.signal,
+      })
         .then(async (response) =>
           response.ok
             ? (response.json() as Promise<{products: ClaraCardProduct[]}>)
@@ -52,7 +57,7 @@ export function RecentlyViewed({
         });
     }
     return () => controller.abort();
-  }, [serializedExcludes]);
+  }, [serializedExcludes, country]);
 
   if (products.length === 0) return null;
 

@@ -2034,7 +2034,10 @@ function ProductPage() {
         </section>
       ) : null}
 
-      <RecentlyViewed excludeHandles={[product.handle]} />
+      <RecentlyViewed
+        excludeHandles={[product.handle]}
+        country={deliveryCountry.code}
+      />
 
       {/* While hidden the bar is inert, so keyboard and screen-reader users
           never land on an invisible purchase button. */}
