@@ -423,7 +423,11 @@ test that asserts it.
   **Checked 2026-10-18 (read-only):** Shopify Tax is active and the US is
   not collecting (no registration). Nothing to change now; Shopify Tax
   flags a threshold when one is near. See Evidence.
-- [x] **B5 Shipping policy.** *Done 2026-11-05 (owner in session: "add a US paragraph to the shipping policy").*
+- [x] **B5 Shipping policy.** *2026-11-05 later (owner in session: "Yes, save them"):*
+  - Added a "Counter-Diagonal clothing" section (EU fees EUR 6.50 / 4.45, Switzerland, Norway, Iceland, Liechtenstein EUR 10.16 / 9.27, other countries on each product page, Printful windows) and a Shipping costs bullet.
+  - The US section now says "printed in" instead of "made in".
+  - Admin body (8796 characters) equals the draft line for line; the live page matches it verbatim.
+  - Initial save: *Done 2026-11-05 (owner in session: "add a US paragraph to the shipping policy").*
   - Added a section "Orders to the United States" before "Lost or delayed
     shipments", and a "United States: see below" bullet under Shipping
     costs. Nothing else changed: the editor diff was insertions only.
