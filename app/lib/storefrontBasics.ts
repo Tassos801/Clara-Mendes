@@ -175,11 +175,51 @@ export type PrintfulTechnique = 'sublimation' | 'cut-sew';
 export const PRINTFUL_SUBLIMATION_PRODUCTION_WINDOW_BUSINESS_DAYS = '2–5';
 export const PRINTFUL_SUBLIMATION_DISPATCH_WINDOW_BUSINESS_DAYS = '3–6';
 
+// Counter-Diagonal (Printful, read 2026-11-05 by the cd-apparel session from
+// help.printful.com "How long does fulfillment take?", the live "Average
+// fulfillment times" table on printful.com/recent-updates and its notices).
+// DTG garments and the DTFlex tote: 2–5 business days in the US and the EU.
+// Regular embroidery (cap, beanie): 2–5 in the EU but 2–7 in the US, where
+// Texas was at 4–7 on 30 Oct, so one 2–7 window covers both. Dispatch adds
+// the manual-confirmation day, as for activewear. Transit (printful.com/
+// shipping, POST /v2/shipping-rates): Cyprus 3–7 and the EU 3–6 from Latvia
+// or Spain, the US 3–6 from US facilities, all inside the shared EU and US
+// delivery windows above.
+export const PRINTFUL_PRINTED_PRODUCTION_WINDOW_BUSINESS_DAYS = '2–5';
+export const PRINTFUL_PRINTED_DISPATCH_WINDOW_BUSINESS_DAYS = '3–6';
+
+/** How Printful makes each Counter-Diagonal product type. */
+const COUNTER_DIAGONAL_TECHNIQUES: Readonly<
+  Record<string, 'printed' | 'embroidered'>
+> = {
+  hoodies: 'printed',
+  sweatshirts: 'printed',
+  't-shirts': 'printed',
+  'long sleeve shirts': 'printed',
+  'tote bags': 'printed',
+  hats: 'embroidered',
+};
+
+/**
+ * "printed" (DTG, DTFlex) or "embroidered" for a Counter-Diagonal piece of a
+ * known type; null for anything else, which keeps its own rule. (The old
+ * all-over-print draft never lists: PRODUCT_RELEASE_FLAGS.)
+ */
+export function counterDiagonalTechnique(
+  productType?: string | null,
+  handle?: string | null,
+) {
+  if (!handle?.toLowerCase().startsWith('counter-diagonal-')) return null;
+  return (
+    COUNTER_DIAGONAL_TECHNIQUES[productType?.trim().toLowerCase() ?? ''] ?? null
+  );
+}
+
 /**
  * Production and dispatch windows: Prodigi's, unless Printful makes the
- * product (Quiet Current, or a museum product with a `printfulTechnique`).
- * Future garments have no supplier estimate until their merchant copy
- * states it.
+ * product (Quiet Current, Counter-Diagonal, or a museum product with a
+ * `printfulTechnique`). Other future garments have no supplier estimate
+ * until their merchant copy states it.
  */
 export function fulfilmentWindows(
   productType?: string | null,
@@ -187,6 +227,17 @@ export function fulfilmentWindows(
   tags?: string[] | null,
   printfulTechnique?: PrintfulTechnique | null,
 ) {
+  const counterDiagonal = counterDiagonalTechnique(productType, handle);
+  if (counterDiagonal === 'printed')
+    return {
+      production: PRINTFUL_PRINTED_PRODUCTION_WINDOW_BUSINESS_DAYS,
+      dispatch: PRINTFUL_PRINTED_DISPATCH_WINDOW_BUSINESS_DAYS,
+    };
+  if (counterDiagonal === 'embroidered')
+    return {
+      production: APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
+      dispatch: APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
+    };
   if (isClothingProduct({productType, tags}) && !isQuietCurrentProduct(handle))
     return null;
   if (isQuietCurrentProduct(handle) || printfulTechnique === 'cut-sew')
