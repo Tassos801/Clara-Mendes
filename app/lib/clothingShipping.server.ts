@@ -18,11 +18,22 @@ const TIMEOUT_MS = 2500;
  * country, in that market's currency: a throwaway one-piece cart (no
  * checkout, no order). Null when the piece does not ship there, the quote
  * fails or it takes too long; the page then shows no fee line.
+ *
+ * Printful's carrier rates can be slow on a cold request. A quote that
+ * misses the timeout keeps running through `waitUntil` and fills the cache,
+ * so the next visitor gets the line; only a finished answer is cached.
  */
 export async function quoteClothingShipping(
   storefront: Storefront,
   variantId: string | null | undefined,
   country: string | null | undefined,
+  {
+    waitUntil,
+    timeoutMs = TIMEOUT_MS,
+  }: {
+    waitUntil?: (promise: Promise<unknown>) => void;
+    timeoutMs?: number;
+  } = {},
 ): Promise<ClothingShippingQuote | null> {
   if (!variantId || !country) return null;
   const key = `https://clothing-shipping.quote/${encodeURIComponent(variantId)}/${country}`;
@@ -35,28 +46,38 @@ export async function quoteClothingShipping(
     return (await hit.json().catch(() => null)) as ClothingShippingQuote | null;
   }
 
+  const store = (quote: ClothingShippingQuote | null) =>
+    cache
+      ?.put(
+        key,
+        new Response(JSON.stringify(quote), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': `public, max-age=${quote ? CACHE_SECONDS : FAILED_CACHE_SECONDS}`,
+          },
+        }),
+      )
+      .catch(() => undefined);
+  const pending = requestQuote(storefront, variantId, country).catch(
+    () => null,
+  );
   let timer: ReturnType<typeof setTimeout> | undefined;
-  const quote = await Promise.race([
-    requestQuote(storefront, variantId, country),
-    new Promise<null>((resolve) => {
-      timer = setTimeout(() => resolve(null), TIMEOUT_MS);
+  const result = await Promise.race([
+    pending.then((quote) => ({quote, finished: true})),
+    new Promise<{quote: null; finished: false}>((resolve) => {
+      timer = setTimeout(
+        () => resolve({quote: null, finished: false}),
+        timeoutMs,
+      );
     }),
-  ])
-    .catch(() => null)
-    .finally(() => clearTimeout(timer));
+  ]).finally(() => clearTimeout(timer));
 
-  await cache
-    ?.put(
-      key,
-      new Response(JSON.stringify(quote), {
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': `public, max-age=${quote ? CACHE_SECONDS : FAILED_CACHE_SECONDS}`,
-        },
-      }),
-    )
-    .catch(() => undefined);
-  return quote;
+  if (result.finished) {
+    await store(result.quote);
+    return result.quote;
+  }
+  waitUntil?.(pending.then(store));
+  return null;
 }
 
 async function requestQuote(

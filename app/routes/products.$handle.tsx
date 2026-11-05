@@ -136,6 +136,7 @@ import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DELIVERY_US_BUSINESS_DAYS,
+  counterDiagonalTechnique,
   fulfilmentWindows,
   isPersonalisedProductType,
   isQuietCurrentProduct,
@@ -702,6 +703,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           context.storefront,
           product.selectedOrFirstAvailableVariant?.id,
           buyerCountry,
+          {waitUntil: context.waitUntil},
         )
       : Promise.resolve(null),
   ]);
@@ -1565,7 +1567,7 @@ function ProductPage() {
           <ul className="product-assurance-list" aria-label="Order reassurance">
             <li>
               <span aria-hidden />
-              {isFutureClothing
+              {isFutureClothing && !windows
                 ? 'Available destinations and shipping fees are confirmed at checkout.'
                 : isLetterPost
                 ? 'Sent by letter post — untracked, typically 5–8 business days.'
@@ -1819,7 +1821,20 @@ function ProductPage() {
               id={isQuietCurrent ? APPAREL_SHIPPING_DETAIL_ID : undefined}
             >
               {isQuietCurrent ? <ApparelShippingRates /> : null}
+              {!isQuietCurrent && clothingShipping ? (
+                <>
+                  Shipping to {deliveryCountry.phrase} is{' '}
+                  {formatMoney(clothingShipping)} for this piece; more pieces
+                  can change the fee.{' '}
+                </>
+              ) : null}
               {windows ? <ProductShippingText
+                madeBy={
+                  counterDiagonalTechnique(product.productType, product.handle) ===
+                  'embroidered'
+                    ? 'Embroidered'
+                    : 'Printed'
+                }
                 curatedShipping={curatedProduct?.shipping}
                 isPlantPot={isPlantPot}
                 reach={shippingReach}
@@ -1843,13 +1858,6 @@ function ProductPage() {
                 usDomestic={shipsWithinUs(product.productType)}
               /> : (
                 <>
-                  {clothingShipping ? (
-                    <>
-                      Shipping to {deliveryCountry.phrase} is{' '}
-                      {formatMoney(clothingShipping)} for this piece; more
-                      pieces can change the fee.{' '}
-                    </>
-                  ) : null}
                   Available destinations and shipping fees are confirmed at checkout.
                   See the product details for any item-specific processing and delivery information.
                 </>

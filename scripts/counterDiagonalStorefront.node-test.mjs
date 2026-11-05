@@ -293,3 +293,49 @@ test('the quote is a one-piece cart in the buyer market; failures show no line',
   assert.equal(await quoteClothingShipping(broken, 'gid://shopify/ProductVariant/1', 'CY'), null);
   assert.equal(await quoteClothingShipping(storefront, null, 'CY'), null);
 });
+
+// --- Printful windows for Counter-Diagonal (cd-apparel readback, 2026-11-05) ---
+const {fulfilmentWindows, counterDiagonalTechnique} = await import('../app/lib/storefrontBasics.ts');
+
+test('Counter-Diagonal gets Printful windows by technique; other new garments still get none', () => {
+  const printed = {production: '2–5', dispatch: '3–6'};
+  const embroidered = {production: '2–7', dispatch: '3–8'};
+  for (const [type, handle] of [
+    ['Hoodies', 'counter-diagonal-heavyweight-hoodie'],
+    ['Hoodies', 'counter-diagonal-premium-hoodie'],
+    ['Sweatshirts', 'counter-diagonal-heavyweight-crewneck'],
+    ['T-Shirts', 'counter-diagonal-tee'],
+    ['T-Shirts', 'counter-diagonal-oversized-tee'],
+    ['Long Sleeve Shirts', 'counter-diagonal-long-sleeve-tee'],
+    ['Tote Bags', 'counter-diagonal-tote'],
+  ]) {
+    assert.deepEqual(fulfilmentWindows(type, handle, ['clara-mendes-clothing']), printed, handle);
+    assert.equal(counterDiagonalTechnique(type, handle), 'printed');
+  }
+  for (const handle of ['counter-diagonal-cap', 'counter-diagonal-beanie']) {
+    assert.deepEqual(fulfilmentWindows('Hats', handle, ['clara-mendes-clothing']), embroidered, handle);
+    assert.equal(counterDiagonalTechnique('Hats', handle), 'embroidered');
+  }
+  // Only the line's own handles and known types.
+  assert.equal(fulfilmentWindows('Hoodies', 'meadow-hoodie', ['clara-mendes-clothing']), null);
+  assert.equal(counterDiagonalTechnique('Bags', 'counter-diagonal-bag'), null);
+  assert.equal(fulfilmentWindows('Dresses', 'counter-diagonal-dress'), null);
+  // Quiet Current keeps its cut-and-sew windows.
+  assert.deepEqual(fulfilmentWindows('Studio Top', 'quiet-current-studio-tank'), embroidered);
+});
+
+test('a slow first quote shows no line now and finishes in the background', async () => {
+  let release;
+  const slow = {mutate: () => new Promise((resolve) => { release = () => resolve({cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [{estimatedCost: {amount: '4.69', currencyCode: 'USD'}}]}]}}}}); })};
+  const background = [];
+  const quote = await quoteClothingShipping(slow, 'gid://shopify/ProductVariant/9', 'US', {timeoutMs: 20, waitUntil: (promise) => background.push(promise)});
+  assert.equal(quote, null);
+  assert.equal(background.length, 1, 'the pending quote is handed to waitUntil');
+  release();
+  await background[0];
+  // A quick answer is returned straight away and nothing is left running.
+  const fast = {mutate: async () => ({cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [{estimatedCost: {amount: '4.45', currencyCode: 'EUR'}}]}]}}}})};
+  const idle = [];
+  assert.deepEqual(await quoteClothingShipping(fast, 'gid://shopify/ProductVariant/9', 'CY', {timeoutMs: 1000, waitUntil: (p) => idle.push(p)}), {amount: '4.45', currencyCode: 'EUR'});
+  assert.equal(idle.length, 0);
+});
