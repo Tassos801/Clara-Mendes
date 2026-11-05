@@ -91,6 +91,8 @@ export type FeedRow = Record<(typeof FEED_COLUMNS)[number], string> & {
   /** Rows with one key share a shipping profile, so one quote prices them. */
   quoteKey: string;
   variantId: string;
+  /** The Shopify product title, without the size or colour (Meta cards). */
+  productTitle: string;
 };
 
 type Item = Pick<
@@ -326,6 +328,7 @@ export function merchantFeedRows(
         ...item,
         id: v.sku,
         variantId: v.id,
+        productTitle: p.title.replace(/\s+/g, ' ').trim().slice(0, 150),
         quoteKey: quoteKeyFor(p, item.line),
         item_group_id: p.handle,
         title: item.title.slice(0, 150),
@@ -396,6 +399,7 @@ export function merchantFeedTsv(
 export const META_COUNTRY_COLUMNS = [
   'id',
   'override',
+  'title',
   'price',
   'link',
   'availability',
@@ -403,15 +407,23 @@ export const META_COUNTRY_COLUMNS = [
 
 /**
  * A Meta catalog country feed: the US price, landing page and availability
- * of each item, by id. Build it from rows `withUnavailable`: an item Shopify
- * can't deliver to the US is not for sale there, so it reads "out of stock"
- * and US ads never show it.
+ * of each item, by id, and the product-level title, so ad cards read
+ * "Counter-Diagonal Tee" rather than the variant's "— M, Ivory". Build it
+ * from rows `withUnavailable`: an item Shopify can't deliver to the US is not
+ * for sale there, so it reads "out of stock" and US ads never show it.
  */
 export function metaCountryFeedTsv(rows: FeedRow[], country: 'US') {
   const lines = [META_COUNTRY_COLUMNS.join('\t')];
   for (const row of rows)
     lines.push(
-      [row.id, country, row.price, row.link, row.availability].join('\t'),
+      [
+        row.id,
+        country,
+        row.productTitle,
+        row.price,
+        row.link,
+        row.availability,
+      ].join('\t'),
     );
   return `${lines.join('\n')}\n`;
 }

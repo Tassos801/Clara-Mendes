@@ -505,12 +505,15 @@ test('the Meta country feed overrides price, link and availability by id', () =>
   assert.deepEqual(byKey['CD-HOOD-M'], [
     'CD-HOOD-M',
     'US',
+    // Product-level title: Meta cards drop the variant's size and colour.
+    'Counter-Diagonal Premium Hoodie',
     '58.49 USD',
     'https://shopclaramendes.com/products/counter-diagonal-premium-hoodie?country=US&Size=M&Color=Bone',
     'in stock',
   ]);
   // Not for sale in the US market: listed, but out of stock for US viewers.
-  assert.equal(byKey['CM-QF-01-16X20'][4], 'out of stock');
+  assert.equal(byKey['CM-QF-01-16X20'][5], 'out of stock');
+  assert.equal(byKey['CM-QF-01-8X10'][2], 'Quiet Form I Art Print');
   assert.equal(byKey['CD-TEE-M'], undefined);
   for (const row of rows) assert.equal(row.length, header.length);
 });
