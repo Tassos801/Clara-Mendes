@@ -247,6 +247,23 @@
   font-size: 13px;
   padding-left: 4px;
 }
+/* A single colour is a label, not a choice. */
+.clothing-colors--single {
+  gap: 8px;
+  margin-left: 0;
+  min-height: 28px;
+}
+.clothing-colors--single .clothing-color-name {
+  flex-basis: auto;
+  margin-top: 0;
+  padding-left: 0;
+}
+.clothing-swatch-dot {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--clothing-line);
+  height: 14px;
+  width: 14px;
+}
 .clothing-card-footer {
   align-items: center;
   border-top: 1px solid var(--clothing-line);

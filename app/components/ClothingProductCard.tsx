@@ -66,7 +66,25 @@ export function ClothingProductCard({
           </p>
         ) : null}
       </div>
-      {colors.length > 0 ? (
+      {colors.length === 1 ? (
+        // One colour: name it, with no swatch button to choose.
+        <p className="clothing-colors clothing-colors--single">
+          {(() => {
+            const tone = clothingSwatchBackground(
+              colors[0].name,
+              colors[0].swatch?.color,
+            );
+            return tone ? (
+              <span
+                className="clothing-swatch-dot"
+                style={{background: tone}}
+                aria-hidden="true"
+              />
+            ) : null;
+          })()}
+          <span className="clothing-color-name">{colors[0].name}</span>
+        </p>
+      ) : colors.length > 1 ? (
         <div
           className="clothing-colors"
           role="group"

@@ -49,6 +49,11 @@ export type CapsuleStory = {
   };
   /** Decorative art beside the hero button (empty alt). */
   accent?: {src: string; width: number; height: number; className: string};
+  /**
+   * False when the capsule's colours are just each blank's colour, not
+   * coordinated colourways, so "Choose a colourway" would mislead.
+   */
+  colourwayChooser?: false;
 };
 
 export const CLOTHING_PAGE_HERO = {
@@ -63,6 +68,8 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
   // #171817). Images: scripts/build-counter-diagonal-art.mjs.
   'counter-diagonal': {
     credit: 'Inspired by Theo van Doesburg',
+    // Each garment comes in its own blank colour (Dust, Bone, Ivory, ...).
+    colourwayChooser: false,
     intro:
       'One composition of red, blue, yellow and black planes, tilted to the 45° angle of Theo van Doesburg’s counter-compositions. We drew it ourselves; it is not a copy of any of his paintings. Every piece carries the composition, its small emblem, or both.',
     band: {

@@ -113,10 +113,12 @@ export async function loader({context, request}: Route.LoaderArgs) {
     ...capsules.filter((capsule) => capsule.handle !== featured?.handle),
   ].map((capsule) => {
     const pieces = inCapsule(capsule.handle);
-    const colourways = clothingLooks(pieces);
+    const story = capsuleStoryData(capsule.handle);
+    const colourways =
+      story?.colourwayChooser === false ? [] : clothingLooks(pieces);
     return {
       ...capsule,
-      story: capsuleStoryData(capsule.handle),
+      story,
       colourways,
       everyPieceInEveryColourway:
         pieces.length > 0 &&
