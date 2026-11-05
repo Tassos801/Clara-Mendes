@@ -14,7 +14,7 @@ with .99 rounding (D2). US rates: prints and unframed Your Sky €11.99,
 canvas €23.99, phone cases €7.99 (D3). Framed and cards stay out of the US
 (D5). Book nooks unchanged (D4). Feed links get a market pin (D7).
 
-## 0. Ship the code first
+## 0. Ship the code first ✓
 
 Merge PR #140 into `main` so Oxygen deploys A1 (the `?country=` pin), A2
 (US delivery wording) and A2b (no import duties on US-lab lines). These are
@@ -23,6 +23,17 @@ harmless before the US market exists.
 *Check:* on shopclaramendes.com, `/products/quiet-form-i-art-print?country=CY`
 shows the EU wording. A US visitor without the pin sees "delivery within the
 US is estimated at 7–15 business days".
+
+**Done 2026-10-18:** merged as `e348c69`; Oxygen run 39156549472 succeeded.
+Live readback (from the owner's Mac, an EU location):
+- `?country=US` on a print, the phone case, `/collections/abstract-wall-art`
+  and `/your-sky` showed the US wording. Print and case also showed "US
+  orders ship from within the US, so no import duties apply."
+- `?country=CY` and the unpinned print showed the unchanged EU wording.
+- The framed print with `?country=US` kept the generic wording (out of US
+  reach).
+- Canonicals carry no query, prices are still EUR, and `llms.txt` has the
+  US line.
 
 ## 1. Studio Classic Framed 16×20 (before US rates drop)
 
@@ -80,7 +91,13 @@ would compare EUR feed prices with USD pages and disapprove. So do all of
     opt-out, as US state privacy laws expect).
   - *Check:* the Storefront readback (status.md, Evidence) shows US
     `currency: USD`, and a US product page shows `$`.
-- **3b. USD feed for the US (C2).** Pick one:
+- **3b. USD feed for the US (C2).** *Built 2026-11-05 (A5):* register
+  `https://shopclaramendes.com/feeds/google-merchant-us.txt` and
+  `https://shopclaramendes.com/feeds/google-merchant-printful-us.txt` as
+  scheduled-fetch primary sources, label `CLARA-PRINTS-USD`, United States,
+  English, free listings; Meta takes
+  `https://shopclaramendes.com/feeds/meta-country-us.txt` as its US country
+  feed. They answer 503 until 3a is done. The older options were:
   - **Recommended:** build A5 first (code). It's a route such as
     `/feeds/google/us.tsv` that lists live products at US prices with
     `?country=US` links. Merge it, then add it in Merchant Center as a
@@ -90,8 +107,10 @@ would compare EUR feed prices with USD pages and disapprove. So do all of
     `clara-mendes-sky-feed.txt`; not on the Mac, probably on the Windows
     PC) with USD prices and `?country=US` links, and upload them as new
     sources.
-- **3c. Pin the EUR feeds (C3).** Append `?country=CY` to every link in the
-  two EUR files and re-upload them. When the USD source shows approved
+- **3c. Pin the EUR feeds (C3).** *In code since A5:* the fetched EUR feeds
+  carry `?country=CY` and drop their US shipping once the US market is USD.
+  (Before the fetched feeds: append `?country=CY` to every link in the
+  two EUR files and re-upload them.) When the USD source shows approved
   items, remove United States from the EUR sources' country list (the
   listings have moved, not gone). Confirm that removal with the owner
   first.

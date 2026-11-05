@@ -1,26 +1,51 @@
+import {isListedProduct} from './catalogFilters.ts';
+import {isClothingProduct, type ApprovalMetafield} from './clothing.ts';
+import {MARKET_URL_PARAM} from './markets.ts';
 import {
   FIXED_RATES,
   HANDLING,
   SHIPPING_COLUMN,
   shippingCells,
+  usShippingCell,
   type FixedRateLine,
 } from './merchantFeedShipping.ts';
+import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 
-// Merchant Center product feeds as tab-separated text, served by
-// app/routes/feeds.google-merchant[.txt].tsx (every line with a fixed EUR
-// rate) and feeds.google-merchant-printful[.txt].tsx (Printful mugs, cushions
-// and blankets, EU only). Merchant Center fetches both daily, so prices,
-// stock and new products follow the store without file uploads.
+// Merchant Center product feeds as tab-separated text, two per market:
+//   EUR (Cyprus market; listed in the EU and worldwide)
+//     feeds.google-merchant[.txt].tsx           lines with a fixed EUR rate
+//     feeds.google-merchant-printful[.txt].tsx  Printful lines (mugs, cushions,
+//                                               blankets, clothing), EU only
+//   USD (United States market; listed in the US only)
+//     feeds.google-merchant-us[.txt].tsx
+//     feeds.google-merchant-printful-us[.txt].tsx
+// plus feeds.meta-country-us[.txt].tsx, the US country feed for the Meta
+// catalog. Merchant Center and Meta fetch them daily, so prices, stock and
+// new products follow the store without file uploads.
 //
 // Item ids are SKUs and titles follow the manual uploads (2026-08-12 to
-// 2026-10-29), so switching to the fetched feeds keeps every offer.
+// 2026-10-29), so switching to the fetched feeds kept every offer. An item
+// has the same id in the EUR and USD feeds (two feed labels in Merchant
+// Center; Meta's country feed overrides it by id). Links pin the market with
+// `?country=` (app/lib/markets.ts): Googlebot crawls as a US buyer, and the
+// landing page must show the feed's currency.
 
 // prettier-ignore
 export const FEED_COLUMNS = [
   'id', 'item_group_id', 'title', 'description', 'link', 'image_link', 'price',
   'availability', 'condition', 'brand', 'google_product_category', 'size',
-  'material', 'color', 'identifier_exists',
+  'material', 'color', 'identifier_exists', 'gender', 'age_group',
+  'custom_label_0',
 ] as const;
+
+/** The market a feed lists, and the currency its prices must be in. */
+export type FeedMarket = 'CY' | 'US';
+export const FEED_CURRENCY: Record<FeedMarket, string> = {CY: 'EUR', US: 'USD'};
+
+// `custom_label_0` names the clothing capsule, so Meta and Google Ads can
+// group a line into a product set (custom_label_0 = Counter-Diagonal). The
+// capsule tags follow the shared product contract.
+export const CAPSULE_TAGS = ['Counter-Diagonal', 'Quiet Current'] as const;
 
 export type FeedVariant = {
   id: string;
@@ -36,27 +61,43 @@ export type FeedProduct = {
   title: string;
   productType: string;
   tags: string[];
+  vendor?: string | null;
+  storefrontApproved?: ApprovalMetafield | null;
+  fulfillmentVerified?: ApprovalMetafield | null;
   description: string;
   featuredImage?: {url: string} | null;
   variants: {nodes: FeedVariant[]};
 };
 
 export type PrintfulLine =
-  'mug' | 'cushion-cover' | 'cushion-insert' | 'blanket';
+  'mug' | 'cushion-cover' | 'cushion-insert' | 'blanket' | 'apparel';
 /** The shipping table an item uses: a fixed one, or a Printful profile. */
 export type FeedLine = FixedRateLine | PrintfulLine;
-/** EUR checkout rate per Printful line, quoted on each fetch. */
-export type PrintfulRates = Record<PrintfulLine, string>;
+/** Checkout rate (in the feed's currency) per quote key, from cart quotes. */
+export type Quotes = Record<string, string>;
+/** Where a feed's `shipping` values come from. */
+export type FeedShipping =
+  | {
+      market: 'CY';
+      /** False once the US market sells in USD: the USD feeds list the US. */
+      includeUs: boolean;
+      /** Printful lines: the German (EU) and Cyprus checkout quotes. */
+      quotes?: {eu: Quotes; cyprus: Quotes};
+    }
+  | {market: 'US'; quotes: Quotes};
 
 export type FeedRow = Record<(typeof FEED_COLUMNS)[number], string> & {
   line: FeedLine;
+  /** Rows with one key share a shipping profile, so one quote prices them. */
+  quoteKey: string;
   variantId: string;
 };
 
 type Item = Pick<
   FeedRow,
   'line' | 'title' | 'size' | 'material' | 'color' | 'google_product_category'
->;
+> &
+  Partial<Pick<FeedRow, 'gender' | 'age_group' | 'custom_label_0'>>;
 
 const ART =
   'Home & Garden > Decor > Artwork > Posters, Prints, & Visual Artwork';
@@ -192,21 +233,73 @@ function museumItem(p: FeedProduct, o: Record<string, string>): Item | null {
   };
 }
 
+const APPAREL_CATEGORY: Record<string, string> = {
+  Hoodies: 'Apparel & Accessories > Clothing > Shirts & Tops',
+  Sweatshirts: 'Apparel & Accessories > Clothing > Shirts & Tops',
+  'T-Shirts': 'Apparel & Accessories > Clothing > Shirts & Tops',
+  'Long Sleeve Shirts': 'Apparel & Accessories > Clothing > Shirts & Tops',
+  Hats: 'Apparel & Accessories > Clothing Accessories > Hats',
+  'Tote Bags': 'Apparel & Accessories > Handbags, Wallets & Cases > Handbags',
+};
+const ACTIVEWEAR = 'Apparel & Accessories > Clothing > Activewear';
+
+/**
+ * Printful clothing the storefront lists (Quiet Current, Counter-Diagonal).
+ * Google needs colour, size, gender and age group for apparel in the US and
+ * much of the EU.
+ */
+function clothingItem(p: FeedProduct, o: Record<string, string>): Item | null {
+  if (!isClothingProduct(p) || !isListedProduct(p)) return null;
+  const womens = (APPAREL_PRODUCT_TYPES as readonly string[]).includes(
+    p.productType,
+  );
+  const color = o.Color ?? o.Colour ?? '';
+  const detail = [o.Size, color].filter(Boolean).join(', ');
+  return {
+    line: 'apparel',
+    title: detail ? `${p.title} — ${detail}` : p.title,
+    size: o.Size ?? '',
+    material: '',
+    color,
+    google_product_category: womens
+      ? ACTIVEWEAR
+      : (APPAREL_CATEGORY[p.productType] ?? 'Apparel & Accessories > Clothing'),
+    gender: womens ? 'female' : 'unisex',
+    age_group: 'adult',
+    custom_label_0: CAPSULE_TAGS.find((tag) => p.tags.includes(tag)) ?? '',
+  };
+}
+
 function itemFor(p: FeedProduct, o: Record<string, string>) {
   if (p.handle === 'your-sky-star-map') return skyItem(o);
-  if (p.tags.includes('Clara Mendes Original')) return studioItem(p, o);
-  if (p.tags.includes('Museum Reproduction')) return museumItem(p, o);
-  return null;
+  const art = p.tags.includes('Clara Mendes Original')
+    ? studioItem(p, o)
+    : p.tags.includes('Museum Reproduction')
+      ? museumItem(p, o)
+      : null;
+  return art ?? clothingItem(p, o);
+}
+
+// One quote prices every row with the same key: a fixed line per product
+// type, a museum Printful line, or one clothing product (Printful files
+// garments into different shipping profiles).
+function quoteKeyFor(p: FeedProduct, line: FeedLine) {
+  if (line === 'apparel') return `apparel:${p.handle}`;
+  return isPrintfulLine(line) ? line : `${line}:${p.productType}`;
 }
 
 /**
- * Rows for one feed: `fixed` lines or `printful` lines. Lists variants for
- * sale in Cyprus (the default market) that have a SKU and an image.
+ * Rows for one feed (`fixed` or `printful` lines) in one market: variants for
+ * sale there (or all, `withUnavailable`) that have a SKU and an image. Throws when a price is not in the
+ * market's currency (the US before it has its own USD market).
  */
 export function merchantFeedRows(
   products: FeedProduct[],
   feed: 'fixed' | 'printful',
+  market: FeedMarket = 'CY',
+  {withUnavailable = false}: {withUnavailable?: boolean} = {},
 ) {
+  const currency = FEED_CURRENCY[market];
   const rows: FeedRow[] = [];
   for (const p of products) {
     for (const v of p.variants.nodes) {
@@ -215,22 +308,32 @@ export function merchantFeedRows(
       );
       const item = itemFor(p, options);
       const image = v.image?.url ?? p.featuredImage?.url;
-      if (!item || !v.availableForSale || !v.sku || !image) continue;
+      if (!item || !v.sku || !image) continue;
+      if (!v.availableForSale && !withUnavailable) continue;
       if (isPrintfulLine(item.line) !== (feed === 'printful')) continue;
-      const params = new URLSearchParams(
-        v.selectedOptions.map((s) => [s.name, s.value]),
-      );
+      if (v.price.currencyCode !== currency)
+        throw new Error(
+          `${market} prices are in ${v.price.currencyCode}, not ${currency}`,
+        );
+      const params = new URLSearchParams([
+        [MARKET_URL_PARAM, market],
+        ...v.selectedOptions.map((s) => [s.name, s.value]),
+      ]);
       rows.push({
+        gender: '',
+        age_group: '',
+        custom_label_0: '',
         ...item,
         id: v.sku,
         variantId: v.id,
+        quoteKey: quoteKeyFor(p, item.line),
         item_group_id: p.handle,
         title: item.title.slice(0, 150),
         description: p.description.replace(/\s+/g, ' ').trim().slice(0, 4900),
         link: `https://shopclaramendes.com/products/${p.handle}?${params}`,
         image_link: image,
         price: `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`,
-        availability: 'in stock',
+        availability: v.availableForSale ? 'in stock' : 'out of stock',
         condition: 'new',
         brand: 'Clara Mendes',
         identifier_exists: 'no',
@@ -240,20 +343,39 @@ export function merchantFeedRows(
   return rows;
 }
 
-function rowShipping({line}: FeedRow, printful?: PrintfulRates) {
-  if (!isPrintfulLine(line))
-    return shippingCells(FIXED_RATES[line], HANDLING.prodigi);
-  const rate = printful?.[line];
-  if (!rate) throw new Error(`No checkout rate for ${line}`);
-  const handling = line.startsWith('cushion')
-    ? HANDLING.cutSew
-    : HANDLING.sublimation;
-  return shippingCells({cyprus: rate, eu: rate}, handling);
+function handlingFor(line: FeedLine) {
+  if (!isPrintfulLine(line)) return HANDLING.prodigi;
+  return line === 'mug' || line === 'blanket'
+    ? HANDLING.sublimation
+    : HANDLING.cutSew;
+}
+
+function rowShipping(row: FeedRow, shipping: FeedShipping) {
+  const handling = handlingFor(row.line);
+  if (shipping.market === 'US') {
+    const rate = shipping.quotes[row.quoteKey];
+    if (!rate) throw new Error(`No US checkout rate for ${row.quoteKey}`);
+    return [usShippingCell(rate, handling)];
+  }
+  const omit = shipping.includeUs ? [] : ['US'];
+  if (!isPrintfulLine(row.line))
+    return shippingCells(FIXED_RATES[row.line], handling, omit);
+  // Printful profiles charge one rate across Europe; Cyprus is quoted too,
+  // because the Quiet Current profile prices it apart. No Cyprus quote: the
+  // item doesn't list Cyprus.
+  const eu = shipping.quotes?.eu[row.quoteKey];
+  if (!eu) throw new Error(`No checkout rate for ${row.quoteKey}`);
+  const cyprus = shipping.quotes?.cyprus[row.quoteKey];
+  const cells = shippingCells({cyprus: cyprus ?? eu, eu}, handling, omit);
+  return cyprus ? cells : cells.filter((cell) => !cell.startsWith('CY:'));
 }
 
 /** Header row, then one row per item; shipping columns repeat per country. */
-export function merchantFeedTsv(rows: FeedRow[], printful?: PrintfulRates) {
-  const cells = rows.map((row) => rowShipping(row, printful));
+export function merchantFeedTsv(
+  rows: FeedRow[],
+  shipping: FeedShipping = {market: 'CY', includeUs: true},
+) {
+  const cells = rows.map((row) => rowShipping(row, shipping));
   const width = Math.max(0, ...cells.map((c) => c.length));
   const pad = (values: string[]) => [
     ...values,
@@ -268,5 +390,28 @@ export function merchantFeedTsv(rows: FeedRow[], printful?: PrintfulRates) {
     );
     lines.push([...values, ...pad(cells[i])].join('\t'));
   });
+  return `${lines.join('\n')}\n`;
+}
+
+export const META_COUNTRY_COLUMNS = [
+  'id',
+  'override',
+  'price',
+  'link',
+  'availability',
+] as const;
+
+/**
+ * A Meta catalog country feed: the US price, landing page and availability
+ * of each item, by id. Build it from rows `withUnavailable`: an item Shopify
+ * can't deliver to the US is not for sale there, so it reads "out of stock"
+ * and US ads never show it.
+ */
+export function metaCountryFeedTsv(rows: FeedRow[], country: 'US') {
+  const lines = [META_COUNTRY_COLUMNS.join('\t')];
+  for (const row of rows)
+    lines.push(
+      [row.id, country, row.price, row.link, row.availability].join('\t'),
+    );
   return `${lines.join('\n')}\n`;
 }

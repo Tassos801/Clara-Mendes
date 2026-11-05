@@ -51,6 +51,13 @@ test('only quoted US-lab product types ship within the US', () => {
     'Canvas Art',
     'Personalised Art',
     'Phone Cases',
+    // Counter-Diagonal clothing: Printful ships it from the US (2026-11-05).
+    'Hoodies',
+    'Sweatshirts',
+    'T-Shirts',
+    'Long Sleeve Shirts',
+    'Hats',
+    'Tote Bags',
   ]);
   for (const type of US_DOMESTIC_PRODUCT_TYPES) {
     assert.equal(shipsWithinUs(type), true, type);

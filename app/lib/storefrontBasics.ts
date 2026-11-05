@@ -50,12 +50,21 @@ export const DELIVERY_US_BUSINESS_DAYS = '7–15';
 // within the US (live quotes, docs/us-market/status.md step B1, 2026-10-18:
 // prints, Your Sky, canvas and cases all quoted from prodigi_us / us7), so
 // US buyers owe no import duties on them. Add a type only after a quote shows
-// a US lab; framed 20×24 ships from GB.
+// a US lab; framed 20×24 ships from GB. The Counter-Diagonal clothing types
+// follow Printful's own US quotes (POST /v2/shipping-rates to New York,
+// 2026-11-05: all 11 Counter-Diagonal products depart from the US, no
+// customs); add a garment type only once every live product of it does.
 export const US_DOMESTIC_PRODUCT_TYPES = [
   'Art Prints',
   'Canvas Art',
   'Personalised Art',
   'Phone Cases',
+  'Hoodies',
+  'Sweatshirts',
+  'T-Shirts',
+  'Long Sleeve Shirts',
+  'Hats',
+  'Tote Bags',
 ] as const;
 
 export function shipsWithinUs(productType?: string | null) {

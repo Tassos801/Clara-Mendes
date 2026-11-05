@@ -1,13 +1,46 @@
 # US market status
 
-**Updated:** 2026-10-18  
+**Updated:** 2026-11-05  
 **Branch:** `claude/us-market`  
-**State:** A1 (country pin) and A2 (US delivery wording) are built and verified on this branch (not merged). The read-only checks C1 and B4 are done, B1 (Prodigi US quotes) is done, and the US policy text is drafted (A6). Nothing has changed in Shopify, Prodigi or Merchant Center.  
-**Current writer:** none. Claude Code (owner's Mac) wrote the plan and did A1–A2 on 2026-10-18, then stopped. The next writer names themselves here before editing.
+**State:** A1 (country pin), A2 (US delivery wording) and A2b (no-duty wording) are **live on main** (#140, `e348c69`, deployed 2026-10-18). The read-only checks C1 and B4 are done, B1 (Prodigi US quotes) is done, and the US policy text is drafted (A6). Nothing has changed in Shopify, Prodigi or Merchant Center.  
+**Current writer:** Claude Code `us-market` session (Windows PC), from 2026-11-05. Owner go-ahead relayed by the coordinator session on 2026-11-05: "USD prices, ship from US" and "launch the clothing line in full" (Counter-Diagonal). Scope: Printful clothing in the US, the A5 USD feeds (site + Printful) with `custom_label_0`, then the launch-bundle Admin steps.
 
 Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
 
 ## Stopped here
+
+**2026-11-05 (us-market session, Windows PC).** Owner, via the coordinator:
+"USD prices, ship from US" and "launch the clothing line in full" (one
+design, Counter-Diagonal). That is the go-ahead for the launch bundle's
+Admin steps at the D2/D3/D7 settings already approved. Done so far:
+
+- **Printful clothing in the US (checked, nothing to change).** Printful
+  store 18868484 sells "Worldwide", so Printful routes each order to the
+  nearest facility that stocks it. `POST /v2/shipping-rates` to New York
+  (read-only) departs from the **US with no customs** for all 11
+  Counter-Diagonal products (hoodies, crewneck, tees, long sleeve, cap,
+  beanie, tote) and for Quiet Current (EUR 4.19, under its EUR 4.95 US
+  rate). Every Printful-managed Shopify profile already has a US zone at
+  Printful's own USD rate: Hoodies (#PF-FRG2, #PF-FRG1002) $8.79, Tshirts
+  (#PF-FRG1) $4.95, Hats/Bags/All-over (#PF-FRG42) $4.69. Checkout quotes
+  the cap, beanie and tote at EUR 4.18 to New York and EUR 4.45 in the EU.
+- **A5 built** (this branch, PR to follow): USD feeds, `?country=CY` on the
+  EUR feeds (C3 in code), clothing in the Printful feeds with
+  `custom_label_0` = capsule. See A5 below.
+- **PR #169** (A5 + C3 in code) is open, CI green; the owner merges.
+- **B3 Canvas zone staged, not saved:** this session's permission check
+  refused the Admin Save without the owner's own approval in this session,
+  so nothing changed in Shopify. Pending: Canvas US EUR 23.99 (US out of
+  "Selected countries outside the EU", which keeps its other 17), Phone
+  cases US EUR 7.99.
+- **New owner question (blocks the General US zone only):** acrylic, metal
+  and hanger prints went live on 2026-10-29 in the General profile. Prodigi
+  charges EUR 22.02-23.04 to ship acrylic and metal to the US and
+  EUR 13.41-13.68 for hangers (live quotes 2026-11-05), so the approved
+  EUR 11.99 General US rate would undercharge them. Step 1's studio Classic
+  Framed is still unreleased (release flag false), so its risk is dormant.
+
+Earlier history (2026-10-18):
 
 1. D2–D7 decided 2026-10-18: the owner said "Go with the proposed
    defaults for D2–D7 and start step A1 (the country pin), then A2."
@@ -15,8 +48,13 @@ Rules and pick-up steps: [HANDOFF.md](HANDOFF.md).
    blocked: A2b needs B1, A3 needs B2, A4 needs B3, and A5 is optional.
 3. **B1 is done (2026-10-18)** and the owner approved the D3 rates the
    same day (prints/Your Sky €11.99, canvas €23.99, cases €7.99). Next:
-   A2b is done too. Next: [launch-bundle.md](launch-bundle.md), the
-   ordered Admin runbook (0 merge PR #140 → 1 studio Classic Framed
+   A2b is done too. **Step 0 is done:** #140 was squash-merged as
+   `e348c69` on 2026-10-18 at the owner's request ("mark PR #140 ready,
+   check CI, merge it into main and verify the live site"). The Oxygen run
+   39156549472 succeeded, and the live checks passed (see launch-bundle.md
+   § 0). This branch has main merged back in, so keep working here and open
+   a new PR for the next code step. Next: [launch-bundle.md](launch-bundle.md),
+   the ordered Admin runbook (~~0 merge PR #140~~ → 1 studio Classic Framed
    profile choice → 2 US zones → 3 USD market + USD feed + EUR feed pin in
    one session → 4 A3/A4/B5). Every step there needs the owner's go-ahead.
    For 3b, building A5 (a dynamic USD feed route) first is recommended,
@@ -216,10 +254,34 @@ test that asserts it.
   the buyer market's price and currency when the item is buyable there, and
   add US `shippingDetails` (rate, 2–4 handling, 7–15 transit) on US pages.
   The Cyprus fallback stays for items the US can't buy. *Gate:* D6, B3.
-- [ ] **A5 Merchant feed route (optional, dynamic).** A route such as
+- [x] **A5 Merchant feed route (optional, dynamic).** A route such as
   `/feeds/google/<country>.tsv` that lists live products at that market's
   prices with `?country=` links, so Merchant Center can fetch it daily
   instead of the hand-kept TSV. *Gate:* D7, owner prefers it over a TSV.
+  **Built 2026-11-05** (`app/lib/merchantFeed*.ts`, tests in
+  `scripts/merchantFeed.node-test.mjs`):
+  - `/feeds/google-merchant-us.txt` (fixed lines) and
+    `/feeds/google-merchant-printful-us.txt` (Printful lines incl.
+    clothing): `@inContext(country: US)` prices, `?country=US` links, one
+    `shipping` value for the US at the rate a New York cart quotes. They
+    answer **503 until the US market sells in USD**, so they can be merged
+    first. Lines Shopify can't deliver to the US (framed, cards, pots) are
+    left out.
+  - `/feeds/meta-country-us.txt`: a Meta catalog **country feed** (`id`,
+    `override` = US, USD `price`, `link`, `availability`) for the items of
+    the two EUR feeds; items not for sale in the US read out of stock.
+  - EUR feeds: links now carry `?country=CY` (C3), and they keep listing
+    the US only while `@inContext(country: US)` is still EUR; once the US
+    market sells in USD they drop their US `shipping` values by themselves.
+    Diffed against the live feeds: same 361 + 108 ids, every field and
+    rate unchanged apart from the pin.
+  - Clothing (Quiet Current and Counter-Diagonal, listed products only)
+    joins the Printful feeds with `gender`, `age_group`, `color`, `size`
+    and `custom_label_0` = capsule (`Counter-Diagonal` / `Quiet Current`)
+    for Meta product sets and Google Ads; the new columns are empty for art.
+  - Printful rates are quoted per clothing product (Printful files
+    garments into different profiles) with one cart per country whose line
+    is swapped per item, because Shopify throttles bursts of new carts.
 - [ ] **A6 Docs.** *US policy text drafted 2026-10-18 in
   [shipping-policy-us.md](shipping-policy-us.md), deliberately kept out of
   `shopify-policies-drafts.md` until B5.* Update [fulfillment](../llm-wiki/modules/fulfillment.md)
@@ -327,6 +389,8 @@ test that asserts it.
   list to the USD feed. The listings move rather than disappear, but
   confirm this with the owner, since it edits the EUR feed's settings.
 - [ ] **C3 Pin the EUR feed's links** to `?country=CY` (after A1 is live).
+  *In code since A5 (2026-11-05):* live once that PR is merged and deployed;
+  Merchant Center and Meta pick it up on their next daily fetch.
 - [ ] **C4 Watch diagnostics** for 3–7 days and fix price or availability
   mismatches.
 
