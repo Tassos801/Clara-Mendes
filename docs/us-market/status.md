@@ -28,12 +28,9 @@ Admin steps at the D2/D3/D7 settings already approved. Done so far:
   EUR feeds (C3 in code), clothing in the Printful feeds with
   `custom_label_0` = capsule. See A5 below.
 - **PR #169** (A5 + C3 in code) is open, CI green; the owner merges.
-- **B3 Canvas zone staged, not saved:** this session's permission check
-  refused the Admin Save without the owner's own approval in this session,
-  so nothing changed in Shopify. Pending: Canvas US EUR 23.99 (US out of
-  "Selected countries outside the EU", which keeps its other 17), Phone
-  cases US EUR 7.99.
-- **New owner question (blocks the General US zone only):** acrylic, metal
+- **B3 done 2026-11-05** (owner in this session: "Price-based split", then
+  "Yes, save them"). See B3 below for the zones and the checkout readback.
+- **Owner question answered** ("Price-based split"): acrylic, metal
   and hanger prints went live on 2026-10-29 in the General profile. Prodigi
   charges EUR 22.02-23.04 to ship acrylic and metal to the US and
   EUR 13.41-13.68 for hangers (live quotes 2026-11-05), so the approved
@@ -356,7 +353,7 @@ test that asserts it.
   currency USD, prices per D2, prices shown without tax. Check under
   Settings → Taxes and duties how converted prices treat the EUR price's
   VAT.
-- [ ] **B3 US shipping zones.** Add a "United States" zone at the D3 rate
+- [x] **B3 US shipping zones.** Add a "United States" zone at the D3 rate
   to the General (prints, unframed Your Sky), canvas and phone-case
   profiles. Quiet Current already has US €4.95. Leave every existing zone
   and rate untouched. Note whether Shopify lets the zone rate be entered in
@@ -364,6 +361,27 @@ test that asserts it.
   new zones replace for the US only: prints €17.99, canvas €29.99, case
   €12.99 (Evidence). Shipping-information sync to Merchant Center is on, so
   the new zones reach Merchant Center by themselves.
+  **Done 2026-11-05** in Admin, each profile saved ("Changes saved"):
+  - General: the US left "Rest of world" (now 160 countries, EUR 17.99).
+    New zone "United States", one Standard rate by order amount:
+    EUR 0–76.99 → EUR 13.99, from EUR 77 → EUR 23.99. Owner chose this
+    split because acrylic and metal (from EUR 79.99) cost EUR 22–23 to ship
+    to the US; prints and hangers (up to EUR 74.99) cost up to EUR 13.68.
+  - Canvas 16x20: the US left "Selected countries outside the EU" (17 left,
+    EUR 29.99). New zone "United States", Standard EUR 23.99.
+  - Phone cases: the US left "Rest of world" (117 left, EUR 12.99). New zone
+    "United States", Standard EUR 7.99.
+  - New rates show no transit time ("None"), like the other international
+    rates.
+  - Checkout readback (one-item Storefront carts, no order):
+    - New York: print 8×10 and 20×24 13.99; hanger A3 and 76×51 13.99;
+      acrylic 8×12 23.99; metal 23.99; canvas 23.99; case 7.99.
+    - Unchanged elsewhere: Cyprus 3.99 for print, acrylic, canvas and case;
+      Canada 17.99 (print, acrylic); Japan 29.99 canvas, 17.99 print;
+      Germany 16.00 print, 4.95 case.
+  - The feed tables (`merchantFeedShipping.ts`: `print` US 13.99, new
+    `mounted` for acrylic/metal US 23.99, canvas US 23.99) moved in the
+    same PR (#169).
 - [x] **B4 US sales tax.** Confirm Shopify Tax is monitoring US thresholds.
   A foreign seller registers in a state only after crossing that state's
   threshold.
