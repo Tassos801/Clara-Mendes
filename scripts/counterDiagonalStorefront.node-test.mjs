@@ -135,9 +135,9 @@ test('featured order: Counter-Diagonal first, in garment order, newest first wit
     'counter-diagonal-crewneck',
     'counter-diagonal-oversized-tee',
     'counter-diagonal-long-sleeve',
-    // Both accessories: newest first, as Shopify returned them.
-    'counter-diagonal-tote',
+    // Accessories: hats before totes, whatever Shopify returned first.
     'counter-diagonal-cap',
+    'counter-diagonal-tote',
     'quiet-current-studio-tank',
     'quiet-current-high-waist-leggings',
   ]);
@@ -145,7 +145,7 @@ test('featured order: Counter-Diagonal first, in garment order, newest first wit
   assert.equal(CLOTHING_SORTS[0].value, 'featured');
   assert.equal(selectClothing(newestFirst, new URLSearchParams()).products[0].handle, 'counter-diagonal-heavyweight-hoodie');
   assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('sort=newest')).products.map((p) => p.handle), newestFirst.map((p) => p.handle));
-  assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('category=accessories')).products.map((p) => p.handle), ['counter-diagonal-tote', 'counter-diagonal-cap']);
+  assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('category=accessories')).products.map((p) => p.handle), ['counter-diagonal-cap', 'counter-diagonal-tote']);
   assert.equal(selectClothing(newestFirst, new URLSearchParams('sort=bogus')).sort, 'featured');
 });
 
@@ -243,3 +243,53 @@ function loadRoute(name) {
   new Function('exports', 'require', output)(exports, load);
   return exports;
 }
+
+// --- PDP shipping line: checkout's own fee for one piece, per buyer country ---
+const {cheapestShippingQuote, quotesClothingShipping, QUOTE_ADDRESSES} = await import('../app/lib/clothingShipping.ts');
+const {quoteClothingShipping} = await import('../app/lib/clothingShipping.server.ts');
+
+test('only clothing without its own rate table gets a live quote', () => {
+  assert.equal(quotesClothingShipping(heavyweight), true);
+  assert.equal(quotesClothingShipping(cap), true);
+  assert.equal(quotesClothingShipping(tank), false);
+  assert.equal(quotesClothingShipping({handle: 'where-mist-rests', productType: 'Art Prints', tags: []}), false);
+  assert.deepEqual(
+    cheapestShippingQuote([
+      {estimatedCost: {amount: '10.7', currencyCode: 'USD'}},
+      {estimatedCost: {amount: '4.85', currencyCode: 'USD'}},
+    ]),
+    {amount: '4.85', currencyCode: 'USD'},
+  );
+  assert.equal(cheapestShippingQuote([]), null);
+});
+
+test('the quote is a one-piece cart in the buyer market; failures show no line', async () => {
+  const calls = [];
+  const storefront = {
+    mutate: async (mutation, {variables}) => {
+      calls.push({mutation, variables});
+      return {cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [
+        {estimatedCost: {amount: '10.70', currencyCode: 'USD'}},
+        {estimatedCost: {amount: '4.85', currencyCode: 'USD'}},
+      ]}]}}}};
+    },
+  };
+  assert.deepEqual(await quoteClothingShipping(storefront, 'gid://shopify/ProductVariant/1', 'US'), {amount: '4.85', currencyCode: 'USD'});
+  const {variables, mutation} = calls[0];
+  assert.match(mutation, /@inContext\(country: \$country\)/);
+  assert.match(mutation, /cartCreate/);
+  // A throwaway cart: it never asks for a checkout URL.
+  assert.doesNotMatch(mutation, /checkoutUrl/);
+  assert.equal(variables.country, 'US');
+  assert.deepEqual(variables.input.lines, [{merchandiseId: 'gid://shopify/ProductVariant/1', quantity: 1}]);
+  assert.deepEqual(variables.input.delivery.addresses[0].address.deliveryAddress, {countryCode: 'US', ...QUOTE_ADDRESSES.US});
+  // EU countries price by code alone.
+  await quoteClothingShipping(storefront, 'gid://shopify/ProductVariant/1', 'CY');
+  assert.deepEqual(calls[1].variables.input.delivery.addresses[0].address.deliveryAddress, {countryCode: 'CY'});
+
+  const none = {mutate: async () => ({cartCreate: {cart: {deliveryGroups: {nodes: []}}}})};
+  assert.equal(await quoteClothingShipping(none, 'gid://shopify/ProductVariant/1', 'GB'), null);
+  const broken = {mutate: async () => { throw new Error('Storefront down'); }};
+  assert.equal(await quoteClothingShipping(broken, 'gid://shopify/ProductVariant/1', 'CY'), null);
+  assert.equal(await quoteClothingShipping(storefront, null, 'CY'), null);
+});

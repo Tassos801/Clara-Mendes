@@ -622,10 +622,13 @@
     /* On the narrowest phones the sprig tucks behind the solid button. */
     z-index: -1;
   }
+  /* The long button fills the row, so the emblem sits up by the eyebrow,
+     in space the breadcrumb and eyebrow never reach. */
   .clothing-hero-art--emblem {
-    bottom: 0;
-    right: 8px;
-    width: 52px;
+    bottom: auto;
+    right: 4px;
+    top: 6px;
+    width: 44px;
   }
   .clothing-colourway-fern {
     height: 52px;

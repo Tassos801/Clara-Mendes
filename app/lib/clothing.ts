@@ -100,11 +100,20 @@ export function clothingCapsuleRank(handle?: string | null) {
   return index < 0 ? KNOWN_CLOTHING_CAPSULES.length : index;
 }
 
-/** Category position in page order; unknown or tag-only garments go last. */
+/**
+ * Position in page order: the category's, then the type's place within it
+ * (so hats come before totes in Accessories); unknown or tag-only garments
+ * go last.
+ */
 export function clothingCategoryRank(product: ClothingProductLike) {
   const slug = clothingCategory(product)?.slug;
   const index = CATEGORIES.findIndex((category) => category.slug === slug);
-  return index < 0 ? CATEGORIES.length : index;
+  if (index < 0) return CATEGORIES.length;
+  const types: readonly string[] = CATEGORIES[index].types;
+  const type = types.findIndex(
+    (known) => normalize(known) === normalize(product.productType),
+  );
+  return index + Math.max(type, 0) / 100;
 }
 
 export type ClothingCategory = {slug: string; label: string};

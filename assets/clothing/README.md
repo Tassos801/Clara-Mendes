@@ -56,3 +56,12 @@ Masters are written as RGBA PNG (ferns at most 2400 px on the long edge, strata 
 
 - `../../public/images/clothing/olive-mineral-720.webp`: 720 × 480 px, WebP quality 80, made from `olive-mineral-master.png` (78 KB instead of 288 KB). Used as the hero accent on `/clothing`; the homepage keeps the full-size file.
 
+
+## Counter-Diagonal page art (2026-11-05)
+
+Built by `node scripts/build-counter-diagonal-art.mjs --source "<...>\Clara-Mendes-Van-Doesburg-Hoodie-2026-10-30"` from the design pack (our own composition, credited "Inspired by Theo van Doesburg"). Plain sRGB JPEG or palette PNG, no ICC profile, so Oxygen serves them as they are.
+
+- `counter-diagonal-band.w1600.jpg`: the middle of `source/back.svg`, rendered on white (the section shows it with multiply).
+- `counter-diagonal-looks.w1280.jpg`: Printful's digital mockups of the heavyweight hoodie (back) and oversized tee (front) on stone; the page labels it "Digital mockups".
+- `counter-diagonal-collection-hero.jpg` (2560 × 1000) and `-mobile.jpg` (1040 × 870): the same mockups on deep blue for `/collections/counter-diagonal`; garments right of x 1220 on desktop.
+- `counter-diagonal-emblem.w240.png`: the chest emblem, trimmed from `print-files-samples/heavyweight-hoodie/front.png`.

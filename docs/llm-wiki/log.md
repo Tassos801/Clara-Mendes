@@ -2215,3 +2215,17 @@ stacked lockup in the drawer and the paper-coloured footer; the mark alone on
 the favicon and app icons; the stacked lockup on the share card and as the
 Organization `logo`. Owner files for checkout, email and social sit outside
 the repo. See [Brand logo](brand-logo.md).
+
+## [2026-11-05] clothing | Counter-Diagonal leads /clothing
+
+The owner launched the Counter-Diagonal line (one design, "Inspired by Theo
+van Doesburg"; never "Art by") on hoodies, a crewneck, tees, a long sleeve,
+a cap, a beanie and a tote, and points New York ads at `/clothing`. New
+categories Hoodies, Sweatshirts, T-shirts, Long sleeves and Accessories
+(Hats, Tote Bags; the museum tote is "Bags" and stays off). `counter-diagonal`
+is a capsule by handle and leads: hero, the default Featured sort, the
+capsule filter and its own section, with Quiet Current's after it. Line
+pieces list through the approval metafields; the two old drafts are flagged
+off. Their PDPs quote checkout's own fee for one piece to the buyer's
+country (Printful's profiles, cached an hour), so the figure follows the
+market's currency. See [Clothing](modules/clothing.md).

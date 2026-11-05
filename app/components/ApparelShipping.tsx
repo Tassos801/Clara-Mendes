@@ -1,4 +1,29 @@
+import type {ClothingShippingQuote} from '~/lib/clothingShipping';
+import {formatMoney} from '~/lib/money';
 import {APPAREL_SHIPPING_RATES} from '~/lib/storefrontBasics';
+
+/**
+ * Counter-Diagonal and other clothing on Printful's profiles: checkout's own
+ * fee for one piece to the buyer's country, in the buyer's currency
+ * (app/lib/clothingShipping.ts). Two of the same piece share one fee;
+ * different pieces can each add one, so checkout has the last word.
+ */
+export function ClothingShippingQuoteLine({
+  quote,
+  countryPhrase,
+}: {
+  quote: ClothingShippingQuote;
+  countryPhrase: string;
+}) {
+  return (
+    <p className="apparel-shipping-line">
+      <span>
+        Shipping to {countryPhrase}: {formatMoney(quote)} for this piece.
+      </span>{' '}
+      <span>Checkout confirms the fee for your whole order.</span>
+    </p>
+  );
+}
 
 const RATES_ID = 'apparel-shipping-rates';
 

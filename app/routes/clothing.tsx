@@ -229,7 +229,9 @@ export default function Clothing() {
                 alt={looksImage.alt}
                 width={looksImage.width}
                 height={looksImage.height}
-                fetchPriority="high"
+                // React 18 drops camelCase fetchPriority; the lowercase
+                // attribute reaches the HTML (as on /your-sky).
+                {...{fetchpriority: 'high'}}
               />
             </picture>
             <figcaption>{looksImage.caption}</figcaption>
