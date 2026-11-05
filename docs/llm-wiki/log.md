@@ -2215,3 +2215,10 @@ stacked lockup in the drawer and the paper-coloured footer; the mark alone on
 the favicon and app icons; the stacked lockup on the share card and as the
 Organization `logo`. Owner files for checkout, email and social sit outside
 the repo. See [Brand logo](brand-logo.md).
+
+## [2026-10-30] brand | logo on checkout, emails and social
+
+After #167 went live, the surfaces outside the repo followed the same day:
+checkout logo and email-template logo in Shopify admin, profile pictures on
+Facebook, Instagram and Pinterest, and the Facebook cover. See
+[Brand logo](brand-logo.md).
