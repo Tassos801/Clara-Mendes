@@ -58,12 +58,17 @@ test('only quoted US-lab product types ship within the US', () => {
     'Long Sleeve Shirts',
     'Hats',
     'Tote Bags',
+    // Quiet Current: Printful ships US orders from the US (2026-11-05).
+    'Yoga Leggings',
+    'Sports Bra',
+    'Biker Shorts',
+    'Studio Top',
   ]);
   for (const type of US_DOMESTIC_PRODUCT_TYPES) {
     assert.equal(shipsWithinUs(type), true, type);
     assert.equal(shipsWithinUs(` ${type.toLowerCase()} `), true, type);
   }
-  for (const type of ['Framed Art', 'Book Nooks', 'Plant Pots', 'Cards', 'Postcards', 'Yoga Leggings', 'Mugs', '', null, undefined]) {
+  for (const type of ['Framed Art', 'Book Nooks', 'Plant Pots', 'Cards', 'Postcards', 'Mugs', '', null, undefined]) {
     assert.equal(shipsWithinUs(type), false, String(type));
   }
 });

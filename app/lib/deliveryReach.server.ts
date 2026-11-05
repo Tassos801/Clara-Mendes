@@ -74,21 +74,28 @@ export async function withVariantReach<
     const data = await storefront.query(DEFAULT_MARKET_VARIANTS_QUERY, {
       variables: {country: DEFAULT_MARKET_COUNTRY, handle: product.handle},
     });
-    const available = new Set(
-      (data.product?.variants.nodes ?? []).flatMap((variant) =>
-        variant.availableForSale ? [variant.id] : [],
-      ),
+    const defaultVariants = (data.product?.variants.nodes ?? []).filter(
+      (variant) => variant.availableForSale,
     );
+    const available = new Set(defaultVariants.map((variant) => variant.id));
     if (!available.size) return product;
+    // Cyprus prices, for the structured data of items the buyer can't buy.
+    const prices = new Map(
+      defaultVariants.map((variant) => [variant.id, variant.price] as const),
+    );
     const selected = product.selectedOrFirstAvailableVariant;
     return {
       ...product,
       selectedOrFirstAvailableVariant: selected
-        ? markOutOfReachVariant(selected, available)
+        ? markOutOfReachVariant(selected, available, prices)
         : selected,
       variants: {
         ...product.variants,
-        nodes: markOutOfReachVariants(product.variants.nodes, available),
+        nodes: markOutOfReachVariants(
+          product.variants.nodes,
+          available,
+          prices,
+        ),
       },
     };
   } catch (error) {
@@ -148,6 +155,10 @@ const DEFAULT_MARKET_VARIANTS_QUERY = `#graphql
         nodes {
           id
           availableForSale
+          price {
+            amount
+            currencyCode
+          }
         }
       }
     }

@@ -240,6 +240,9 @@ export default function ToughCasePage() {
         data={[
           productSchema({
             availableForSale: canBuy,
+            // Cases ship to the US from a US lab: a US buyer's Offer names the
+            // US (decision D6, docs/us-market/status.md).
+            market: usDelivery ? 'US' : null,
             description: getProductDescription(product),
             image: artworkImage?.url,
             priceRange: product.priceRange,

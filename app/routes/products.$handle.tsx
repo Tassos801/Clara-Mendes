@@ -178,7 +178,7 @@ import {
   type ReviewsMetafieldResponse,
 } from '~/lib/reviews';
 import {summarizeReviews, type ProductReviewsData} from '~/lib/reviewTypes';
-import {countryPhrase, defaultMarketVariants} from '~/lib/deliveryReach';
+import {countryPhrase, structuredDataView} from '~/lib/deliveryReach';
 import {
   deliveryCountryChoices,
   withDeliveryReach,
@@ -698,7 +698,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     ),
     // Counter-Diagonal ships at Printful's per-country rates: quote
     // checkout's fee for one piece to this buyer (cached, never blocks long).
-    quotesClothingShipping(product)
+    // Quiet Current's rate table is in EUR, so a US (USD) buyer gets
+    // checkout's fee instead.
+    quotesClothingShipping(product) ||
+    (isQuietCurrentProduct(product.handle) && buyerCountry === 'US')
       ? quoteClothingShipping(
           context.storefront,
           product.selectedOrFirstAvailableVariant?.id,
@@ -913,6 +916,8 @@ function ProductPage() {
   // the plain-text description would run those blocks together.
   const isApparel = isClothingProduct(product);
   const isQuietCurrent = isQuietCurrentProduct(product.handle);
+  // Quiet Current's EUR rate table, unless checkout quoted this buyer's fee.
+  const showApparelTable = isQuietCurrent && !clothingShipping;
   const isFutureClothing = isApparel && !isQuietCurrent;
   // The merchant's "Made to order" tag (Counter-Diagonal carries it) keeps
   // the status chip honest for garments made after each order.
@@ -963,9 +968,14 @@ function ProductPage() {
   const productAvailableForSale = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
-  // Structured data describes the default market: its Offer ships to the EU
-  // (seo.ts), and Googlebot crawls as a US buyer, who cannot be sent cards.
-  const schemaVariants = defaultMarketVariants(product.variants.nodes);
+  // Structured data follows a US buyer's market when the item ships there;
+  // otherwise it describes the default market, whose Offer ships to the EU
+  // (seo.ts). Googlebot crawls as a US buyer, who cannot be sent cards.
+  const schema = structuredDataView(
+    deliveryCountry.code,
+    product.variants.nodes,
+  );
+  const schemaVariants = schema.variants;
   const shopPayStoreUrl = storeDomain ? getStoreUrl(storeDomain) : null;
   // Shop Pay's button pulls in ~200 kB of Shopify script; its slot keeps
   // its height, so it can arrive after the page has loaded.
@@ -1103,6 +1113,7 @@ function ProductPage() {
             availableForSale: schemaVariants.some(
               (variant) => variant.availableForSale,
             ),
+            market: schema.market,
             description: productDescription,
             gtin: selectedVariant?.barcode,
             image: absoluteImageUrl(primaryImage?.url),
@@ -1251,7 +1262,7 @@ function ProductPage() {
                 </span>
               </p>
             ) : null}
-            {isQuietCurrent ? (
+            {showApparelTable ? (
               <ApparelShippingLine />
             ) : clothingShipping ? (
               <ClothingShippingQuoteLine
@@ -1818,10 +1829,10 @@ function ProductPage() {
             ) : null}
             <ProductDetail
               label="Shipping"
-              id={isQuietCurrent ? APPAREL_SHIPPING_DETAIL_ID : undefined}
+              id={showApparelTable ? APPAREL_SHIPPING_DETAIL_ID : undefined}
             >
-              {isQuietCurrent ? <ApparelShippingRates /> : null}
-              {!isQuietCurrent && clothingShipping ? (
+              {showApparelTable ? <ApparelShippingRates /> : null}
+              {!showApparelTable && clothingShipping ? (
                 <>
                   Shipping to {deliveryCountry.phrase} is{' '}
                   {formatMoney(clothingShipping)} for this piece; more pieces
@@ -1849,7 +1860,6 @@ function ProductPage() {
                     shipsToBuyer: !product.variants.nodes.every(
                       (variant: ProductVariant) => variant.outOfReach,
                     ),
-                    isApparel: isQuietCurrent,
                     printful: Boolean(artProduct?.printfulTechnique),
                   })
                     ? DELIVERY_US_BUSINESS_DAYS
