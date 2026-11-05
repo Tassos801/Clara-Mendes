@@ -91,7 +91,13 @@ would compare EUR feed prices with USD pages and disapprove. So do all of
     opt-out, as US state privacy laws expect).
   - *Check:* the Storefront readback (status.md, Evidence) shows US
     `currency: USD`, and a US product page shows `$`.
-- **3b. USD feed for the US (C2).** Pick one:
+- **3b. USD feed for the US (C2).** *Built 2026-11-05 (A5):* register
+  `https://shopclaramendes.com/feeds/google-merchant-us.txt` and
+  `https://shopclaramendes.com/feeds/google-merchant-printful-us.txt` as
+  scheduled-fetch primary sources, label `CLARA-PRINTS-USD`, United States,
+  English, free listings; Meta takes
+  `https://shopclaramendes.com/feeds/meta-country-us.txt` as its US country
+  feed. They answer 503 until 3a is done. The older options were:
   - **Recommended:** build A5 first (code). It's a route such as
     `/feeds/google/us.tsv` that lists live products at US prices with
     `?country=US` links. Merge it, then add it in Merchant Center as a
@@ -101,8 +107,10 @@ would compare EUR feed prices with USD pages and disapprove. So do all of
     `clara-mendes-sky-feed.txt`; not on the Mac, probably on the Windows
     PC) with USD prices and `?country=US` links, and upload them as new
     sources.
-- **3c. Pin the EUR feeds (C3).** Append `?country=CY` to every link in the
-  two EUR files and re-upload them. When the USD source shows approved
+- **3c. Pin the EUR feeds (C3).** *In code since A5:* the fetched EUR feeds
+  carry `?country=CY` and drop their US shipping once the US market is USD.
+  (Before the fetched feeds: append `?country=CY` to every link in the
+  two EUR files and re-upload them.) When the USD source shows approved
   items, remove United States from the EUR sources' country list (the
   listings have moved, not gone). Confirm that removal with the owner
   first.

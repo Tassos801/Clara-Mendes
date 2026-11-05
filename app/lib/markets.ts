@@ -16,7 +16,8 @@ export const AVAILABLE_MARKET_COUNTRIES_QUERY = `#graphql
 ` as const;
 
 // Countries in Shopify's "International" market (2026-10-06, EUR, no local
-// currencies): every country Prodigi quotes prints to, except the UK (UK VAT
+// currencies; the US left it for its own USD market, see US_MARKET_COUNTRIES):
+// every country Prodigi quotes prints to, except the UK (UK VAT
 // registration comes first), UK-VAT Isle of Man, sanctioned destinations
 // (RU BY IR KP SY CU) and conflict zones on hold (AF IQ LY SD SS SO YE VE MM
 // HT CF ML PS). Canvas, framed pieces, cases and pots reach subsets of these
@@ -185,7 +186,6 @@ const INTERNATIONAL_MARKET_COUNTRIES = [
   {code: 'TZ', currency: 'EUR', name: 'Tanzania'},
   {code: 'UA', currency: 'EUR', name: 'Ukraine'},
   {code: 'UG', currency: 'EUR', name: 'Uganda'},
-  {code: 'US', currency: 'EUR', name: 'United States'},
   {code: 'UY', currency: 'EUR', name: 'Uruguay'},
   {code: 'UZ', currency: 'EUR', name: 'Uzbekistan'},
   {code: 'VA', currency: 'EUR', name: 'Vatican City'},
@@ -200,6 +200,13 @@ const INTERNATIONAL_MARKET_COUNTRIES = [
   {code: 'ZA', currency: 'EUR', name: 'South Africa'},
   {code: 'ZM', currency: 'EUR', name: 'Zambia'},
   {code: 'ZW', currency: 'EUR', name: 'Zimbabwe'},
+] as const;
+
+// The "United States" market (docs/us-market): USD by Shopify's automatic
+// conversion from EUR with .99 rounding (decision D2), US-made prints, cases
+// and Printful clothing. Prices and rates are read from Shopify, never here.
+const US_MARKET_COUNTRIES = [
+  {code: 'US', currency: 'USD', name: 'United States'},
 ] as const;
 
 // EU-27 (markets "Cyprus" + "European Union"), then the UK, which is in no
@@ -233,6 +240,7 @@ export const MARKET_COUNTRIES = [
   {code: 'ES', currency: 'EUR', name: 'Spain'},
   {code: 'SE', currency: 'SEK', name: 'Sweden'},
   {code: 'GB', currency: 'GBP', name: 'United Kingdom'},
+  ...US_MARKET_COUNTRIES,
   ...INTERNATIONAL_MARKET_COUNTRIES,
 ] as const;
 
