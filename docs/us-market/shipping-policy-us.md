@@ -1,4 +1,9 @@
-# US section for the shipping policy (draft, not live)
+# US section for the shipping policy (LIVE since 2026-11-05)
+
+**Live:** the final text is in the Shipping Policy block of
+[`docs/shopify-policies-drafts.md`](../shopify-policies-drafts.md) (section
+"Orders to the United States" plus a "United States: see below" bullet),
+pasted into Admin on 2026-11-05. The draft below is kept for history.
 
 Step A6/B5 in [status.md](status.md). This text is **not** in
 [`docs/shopify-policies-drafts.md`](../shopify-policies-drafts.md) yet,

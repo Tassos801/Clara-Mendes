@@ -54,6 +54,8 @@ export const DELIVERY_US_BUSINESS_DAYS = '7–15';
 // follow Printful's own US quotes (POST /v2/shipping-rates to New York,
 // 2026-11-05: all 11 Counter-Diagonal products depart from the US, no
 // customs); add a garment type only once every live product of it does.
+// Quiet Current's four types too: Printful quotes them to New York from the
+// US (EUR 4.19, 4–6 days, 2026-11-05).
 export const US_DOMESTIC_PRODUCT_TYPES = [
   'Art Prints',
   'Canvas Art',
@@ -65,6 +67,10 @@ export const US_DOMESTIC_PRODUCT_TYPES = [
   'Long Sleeve Shirts',
   'Hats',
   'Tote Bags',
+  'Yoga Leggings',
+  'Sports Bra',
+  'Biker Shorts',
+  'Studio Top',
 ] as const;
 
 export function shipsWithinUs(productType?: string | null) {

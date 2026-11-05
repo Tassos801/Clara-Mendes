@@ -17,7 +17,8 @@ policy is Shopify's generated template and is not drafted here.
 ## Shipping Policy
 
 Paste into: **Shipping policy** (live version 2026-10-06: worldwide except
-the UK; rates mirror the Shopify shipping profiles, see
+the UK; the "Orders to the United States" section added 2026-11-05,
+docs/us-market; rates mirror the Shopify shipping profiles, see
 `docs/llm-wiki/modules/fulfillment.md`. The activewear rates and windows
 mirror `APPAREL_SHIPPING_RATES` and the `APPAREL_*_WINDOW_BUSINESS_DAYS`
 constants in `app/lib/storefrontBasics.ts`; change them together.)
@@ -46,6 +47,7 @@ constants in `app/lib/storefrontBasics.ts`; change them together.)
 <li>Pastel Forms plant pots: EUR 6.99 across the EU; EUR 11.99 to most other countries (not the United States).</li>
 <li>DIY book nook kits: delivery included.</li>
 <li>Quiet Current activewear: Cyprus EUR 3.99; other EU countries, the United States and Japan EUR 4.95; Canada, Australia, New Zealand and several other non-EU European countries EUR 6.99; Switzerland, Norway, Iceland and Liechtenstein EUR 9.99; other countries EUR 12.99. One fee per order, however many activewear pieces it holds.</li>
+<li>United States: see Orders to the United States below.</li>
 </ul>
 <p>Mixed orders may combine shipping charges for different products at checkout. Any applicable taxes are shown before payment.</p>
 
@@ -64,6 +66,12 @@ constants in `app/lib/storefrontBasics.ts`; change them together.)
 <p>Quiet Current activewear is printed, cut and sewn to order by our fulfilment partner, so it takes longer than our other printed products. Production takes 2–7 business days and orders are dispatched within 3–8 business days. After dispatch, delivery is estimated at 5–10 business days across the European Union and 7–20 business days to other countries.</p>
 <p>Activewear shipping is charged once per order, however many activewear pieces it holds: Cyprus EUR 3.99; other EU countries, the United States and Japan EUR 4.95; Albania, Andorra, Bosnia and Herzegovina, Moldova, Monaco, Montenegro, North Macedonia, San Marino, Serbia, Ukraine, Vatican City, Canada, Australia and New Zealand EUR 6.99; Switzerland, Norway, Iceland and Liechtenstein EUR 9.99; every other country we ship to EUR 12.99. Other items in the same order ship at their own rates, and checkout confirms the fee for your address.</p>
 <p>Orders shipped to the United States are made with a heavier fabric. Each product page lists the fabric used for US orders and for all other destinations.</p>
+
+<h2>Orders to the United States</h2>
+<p>US orders are priced and charged in US dollars, converted from our euro prices at the current exchange rate. Prices exclude any US sales tax, which checkout adds where it applies.</p>
+<p>Art prints, prints with hangers, acrylic and metal prints, stretched canvas, unframed Your Sky maps and phone cases for US orders are made in our print partner's US lab, and Quiet Current and Counter-Diagonal clothing in our clothing partner's US facility, so no import duties apply to them. Printed products are dispatched within 2–4 business days; clothing follows the times on each product page. After dispatch, delivery within the United States is estimated at 7–15 business days.</p>
+<p>US shipping, charged in US dollars at checkout: art prints, prints with hangers, acrylic and metal prints and unframed Your Sky maps EUR 13.99 when these items total under EUR 79 and EUR 23.99 from EUR 79; stretched canvas EUR 23.99; phone cases EUR 7.99; Quiet Current activewear EUR 4.95 per order (the euro rates are converted at checkout). Counter-Diagonal clothing currently ships at USD 4.69 for caps, beanies and totes, USD 4.95 for tees and long sleeves and USD 8.79 for hoodies and sweatshirts; pieces of one kind share a fee, and each product page shows it. Checkout confirms the fee for your address.</p>
+<p>DIY book nook kits ship from China with delivery included, and US import duties may apply. Framed pieces, greeting cards, postcards and Pastel Forms plant pots do not currently ship to the United States.</p>
 
 <h2>Lost or delayed shipments</h2>
 <p>If your order has not arrived within 15 business days of the ship date (25 business days outside the European Union), please contact us at <a href="mailto:hello@shopclaramendes.com">hello@shopclaramendes.com</a> with your order number and we will investigate promptly.</p>

@@ -20,6 +20,11 @@ export type FeaturePage = {
     headline: string;
     sub: string;
     priceLine: string;
+    /**
+     * US buyers (USD market): `{price}` is the cheapest map they can buy, from
+     * Shopify. Framed maps don't ship to the US, so it names unframed only.
+     */
+    usPriceLine?: string;
     cta: string;
     image: {src: string; alt: string; width: number; height: number};
   };
@@ -49,6 +54,7 @@ export const YOUR_SKY_PAGE: FeaturePage = {
     headline: 'The sky above you, the night it mattered.',
     sub: 'Every star as it truly stood over the place and the minute you choose — drawn as a Clara Mendes print, with your own title beneath it.',
     priceLine: 'From €35.99 · made to order · unframed or framed',
+    usPriceLine: 'From {price} · made to order · unframed',
     cta: 'Design yours',
     image: {
       // Shown at most 640 CSS px wide.

@@ -51,7 +51,13 @@ import {
   isClothingProductType,
 } from '~/lib/clothing';
 import {loadClothingProducts} from '~/lib/clothing.server';
-import {collectionHero} from '~/lib/collectionHeroes';
+import {
+  collectionHero,
+  heroNamesShipping,
+  usCollectionHero,
+} from '~/lib/collectionHeroes';
+import {quoteClothingShipping} from '~/lib/clothingShipping.server';
+import {formatMoney} from '~/lib/money';
 import {
   buildCollectionProductFilters,
   extractFacetOptions,
@@ -135,6 +141,27 @@ export const meta: Route.MetaFunction = ({data}) => {
   // Collections without their own hero paint the shared interior.
   return collection && !collection.hero ? [...seo, ...heroBackdropMeta()] : seo;
 };
+
+/**
+ * The collection's hero. A hero that names a shipping fee (Quiet Current, in
+ * EUR) reads checkout's own fee for a US (USD) buyer instead, so no euro
+ * figure reaches a dollar page (docs/us-market, A3).
+ */
+async function collectionHeroFor(
+  context: Route.LoaderArgs['context'],
+  handle: string,
+  variantId: string | null | undefined,
+) {
+  if (context.storefront.i18n.country !== 'US' || !heroNamesShipping(handle))
+    return collectionHero(handle);
+  const quote = await quoteClothingShipping(
+    context.storefront,
+    variantId,
+    'US',
+    {waitUntil: context.waitUntil},
+  );
+  return usCollectionHero(handle, quote ? formatMoney(quote) : null);
+}
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
   const handle = params.handle;
@@ -322,7 +349,11 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       data.collection.description || BRAND.shopAll.collectionFallback,
     facets,
     heading: data.collection.title,
-    hero: collectionHero(data.collection.handle),
+    hero: await collectionHeroFor(
+      context,
+      data.collection.handle,
+      filterDemoProducts(products.nodes)[0]?.cardVariant?.nodes[0]?.id,
+    ),
     products: {
       ...products,
       // Labelled where they don't ship to the buyer, not "Sold out".

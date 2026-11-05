@@ -9,6 +9,7 @@ import {
   needsVariantReach,
   nothingBuyable,
   reachCheckIds,
+  structuredDataView,
 } from '../app/lib/deliveryReach.ts';
 import {
   deliveryCountryChoices,
@@ -253,4 +254,120 @@ test('delivery choices are the checkout countries, sorted by name', async () => 
     {code: 'US', name: 'United States'},
   ]);
   assert.equal(storefront.calls[0].cache, 'long');
+});
+
+// Decision D6 (docs/us-market/status.md): structured data follows a US
+// buyer's market when the item ships there, else the default market.
+const usd = (id, availableForSale, amount = '41.00') => ({
+  ...variant(id, availableForSale),
+  price: {amount, currencyCode: 'USD'},
+});
+const offerOf = (schema) => schema.offers ?? schema.hasVariant[0].offers;
+
+test('a US buyer who can buy the item gets USD offers with US shipping', () => {
+  // Your Sky: the unframed map ships to the US, the framed one doesn't.
+  const framed = usd(2, false, '103.00');
+  const variants = markOutOfReachVariants(
+    [usd(1, true), framed],
+    new Set([framed.id]),
+    new Map([[framed.id, {amount: '89.99', currencyCode: 'EUR'}]]),
+  );
+  const view = structuredDataView('US', variants);
+  assert.equal(view.market, 'US');
+  // The framed map is not offered to the US.
+  assert.deepEqual(
+    view.variants.map((entry) => entry.availableForSale),
+    [true, false],
+  );
+  const offer = offerOf(
+    productSchema({
+      availableForSale: true,
+      market: view.market,
+      description: 'A star map.',
+      productType: 'Art Prints',
+      title: 'Your Sky',
+      url: 'https://shopclaramendes.com/your-sky',
+      variants: view.variants,
+    }),
+  );
+  assert.equal(offer.priceCurrency, 'USD');
+  assert.equal(offer.price, '41.00');
+  assert.deepEqual(
+    offer.shippingDetails.shippingDestination.map((d) => d.addressCountry),
+    ['US'],
+  );
+  assert.equal(offer.shippingDetails.deliveryTime.transitTime.minValue, 7);
+  assert.equal(offer.shippingDetails.deliveryTime.transitTime.maxValue, 15);
+  assert.deepEqual(offer.hasMerchantReturnPolicy.applicableCountry, ['US']);
+});
+
+test('a US buyer of an item that does not ship there reads the Cyprus offer', () => {
+  const card = usd(1, false, '9.00');
+  const reached = markOutOfReachVariants(
+    [card],
+    new Set([card.id]),
+    new Map([[card.id, {amount: '7.20', currencyCode: 'EUR'}]]),
+  );
+  const view = structuredDataView('US', reached);
+  assert.equal(view.market, null);
+  const offer = offerOf(
+    productSchema({
+      availableForSale: view.variants.some((v) => v.availableForSale),
+      market: view.market,
+      description: 'A folded fine-art card.',
+      productType: 'Art Prints',
+      title: 'Nissaka Greeting Card',
+      url: 'https://shopclaramendes.com/products/nissaka-greeting-card',
+      variants: view.variants,
+    }),
+  );
+  assert.equal(offer.priceCurrency, 'EUR');
+  assert.equal(offer.price, '7.20');
+  assert.equal(offer.availability, 'https://schema.org/InStock');
+  const countries = offer.shippingDetails.shippingDestination.map(
+    (d) => d.addressCountry,
+  );
+  assert.ok(countries.includes('CY') && !countries.includes('US'));
+  assert.equal(offer.shippingDetails.deliveryTime.transitTime.maxValue, 10);
+});
+
+test('every other buyer keeps the default-market structured data exactly', () => {
+  const card = variant(1, false);
+  const reached = markOutOfReachVariants(
+    [card, variant(2, true)],
+    new Set([card.id]),
+    new Map([[card.id, {amount: '7.20', currencyCode: 'EUR'}]]),
+  );
+  for (const country of ['CY', 'DE', 'PL', 'JP', null]) {
+    const view = structuredDataView(country, reached);
+    assert.equal(view.market, null, String(country));
+    assert.deepEqual(view.variants, defaultMarketVariants(reached));
+  }
+});
+
+test('withVariantReach keeps the Cyprus price of an out-of-reach variant', async () => {
+  const variants = [usd(1, false, '9.00')];
+  const storefront = fakeStorefront('US', () => ({
+    product: {
+      variants: {
+        nodes: [
+          {
+            availableForSale: true,
+            id: variants[0].id,
+            price: {amount: '7.20', currencyCode: 'EUR'},
+          },
+        ],
+      },
+    },
+  }));
+  const reached = await withVariantReach(storefront, {
+    handle: 'fine-art-greeting-card',
+    selectedOrFirstAvailableVariant: variants[0],
+    variants: {nodes: variants},
+  });
+  assert.deepEqual(reached.variants.nodes[0].defaultMarketPrice, {
+    amount: '7.20',
+    currencyCode: 'EUR',
+  });
+  assert.equal(reached.selectedOrFirstAvailableVariant.outOfReach, true);
 });

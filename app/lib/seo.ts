@@ -3,6 +3,7 @@ import {deriveCardPricing} from './productCardPricing.ts';
 import {BRAND} from '../content/brand.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_US_BUSINESS_DAYS,
   fulfilmentWindows,
   isPersonalisedProductType,
   RETURN_WINDOW_DAYS,
@@ -25,8 +26,16 @@ type SeoMetaInput = {
   url: string;
 };
 
+/**
+ * The market an Offer describes: null for the default market (EU shipping
+ * and returns), 'US' for a US buyer who can buy the item (US shipping and
+ * returns). See structuredDataView in deliveryReach.ts.
+ */
+export type SchemaMarket = 'US' | null;
+
 type ProductSchemaInput = {
   availableForSale?: boolean;
+  market?: SchemaMarket;
   gtin?: string | null;
   description: string;
   image?: string | null;
@@ -198,6 +207,7 @@ export function collectionSchema({
 
 export function productSchema({
   availableForSale = true,
+  market = null,
   gtin,
   description,
   image,
@@ -286,6 +296,7 @@ export function productSchema({
         : minPrice
           ? offerFromPrice({
               availableForSale,
+              market,
               price: minPrice,
               productType,
               productHandle,
@@ -297,6 +308,7 @@ export function productSchema({
     hasVariant: isGroup
       ? listedVariants.map((variant) =>
           productVariantSchema({
+            market,
             parentTitle: title,
             productType,
             productHandle,
@@ -333,16 +345,17 @@ function dayRange(window: string) {
 /**
  * Shipping and return enrichments for Offer nodes, mirroring the published
  * promises: the product type's dispatch window (prints 2–4 business days,
- * Printful activewear 3–8), EU delivery 5–10 after dispatch
- * (storefrontBasics constants), and the refund policy's returns
- * (merchantReturnPolicy below). Google reads these for shipping/returns
- * annotations on product results.
+ * Printful activewear 3–8), delivery after dispatch (EU 5–10, or the US
+ * 7–15 on a US buyer's page; storefrontBasics constants), and the refund
+ * policy's returns (merchantReturnPolicy below). Google reads these for
+ * shipping/returns annotations on product results.
  */
 function offerShippingDetails(
   productType?: string | null,
   productHandle?: string | null,
   tags?: string[] | null,
   printfulTechnique?: PrintfulTechnique | null,
+  market: SchemaMarket = null,
 ) {
   const windows = fulfilmentWindows(
     productType,
@@ -353,7 +366,7 @@ function offerShippingDetails(
   if (!windows) return undefined;
   return {
     '@type': 'OfferShippingDetails',
-    shippingDestination: SHIPPING_COUNTRY_CODES.map((country) => ({
+    shippingDestination: schemaCountries(market).map((country) => ({
       '@type': 'DefinedRegion',
       addressCountry: country,
     })),
@@ -366,7 +379,11 @@ function offerShippingDetails(
       },
       transitTime: {
         '@type': 'QuantitativeValue',
-        ...dayRange(DELIVERY_EU_BUSINESS_DAYS),
+        ...dayRange(
+          market === 'US'
+            ? DELIVERY_US_BUSINESS_DAYS
+            : DELIVERY_EU_BUSINESS_DAYS,
+        ),
         unitCode: 'DAY',
       },
     },
@@ -378,16 +395,24 @@ function offerShippingDetails(
  * custom or personalised orders, which are non-returnable (Your Sky, First
  * Light). Google reads MerchantReturnNotPermitted with no window or fees.
  */
-function merchantReturnPolicy(productType?: string | null) {
+/** The countries an Offer's shipping and returns name. */
+function schemaCountries(market: SchemaMarket): string[] {
+  return market === 'US' ? ['US'] : [...SHIPPING_COUNTRY_CODES];
+}
+
+function merchantReturnPolicy(
+  productType?: string | null,
+  market: SchemaMarket = null,
+) {
   if (isPersonalisedProductType(productType))
     return {
       '@type': 'MerchantReturnPolicy',
-      applicableCountry: [...SHIPPING_COUNTRY_CODES],
+      applicableCountry: schemaCountries(market),
       returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
     };
   return {
     '@type': 'MerchantReturnPolicy',
-    applicableCountry: [...SHIPPING_COUNTRY_CODES],
+    applicableCountry: schemaCountries(market),
     returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
     merchantReturnDays: RETURN_WINDOW_DAYS,
     returnMethod: 'https://schema.org/ReturnByMail',
@@ -397,6 +422,7 @@ function merchantReturnPolicy(productType?: string | null) {
 
 function offerFromPrice({
   availableForSale = true,
+  market = null,
   // Collection ItemLists skip the shipping/returns blocks — repeating them
   // per list item would triple the page's JSON-LD for data Google reads
   // from the product page anyway.
@@ -409,6 +435,7 @@ function offerFromPrice({
   url,
 }: {
   availableForSale?: boolean;
+  market?: SchemaMarket;
   includeCommerceDetails?: boolean;
   price: MoneyAmount;
   productType?: string | null;
@@ -429,16 +456,18 @@ function offerFromPrice({
           productHandle,
           tags,
           printfulTechnique,
+          market,
         )
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
-      ? merchantReturnPolicy(productType)
+      ? merchantReturnPolicy(productType, market)
       : undefined,
     url,
   };
 }
 
 function productVariantSchema({
+  market = null,
   parentTitle,
   productType,
   productHandle,
@@ -448,6 +477,7 @@ function productVariantSchema({
   variant,
   vendor,
 }: {
+  market?: SchemaMarket;
   parentTitle: string;
   productType?: string | null;
   productHandle?: string | null;
@@ -483,6 +513,7 @@ function productVariantSchema({
     },
     offers: offerFromPrice({
       availableForSale: variant.availableForSale,
+      market,
       price: variant.price,
       productType,
       productHandle,

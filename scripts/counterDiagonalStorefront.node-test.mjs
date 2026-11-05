@@ -193,10 +193,10 @@ test('Counter-Diagonal images exist as plain JPEG or PNG, never WebP', () => {
 
 test('the real /clothing loader leads with Counter-Diagonal and keeps Quiet Current', async () => {
   const route = loadRoute('clothing');
-  const load = (products, search = '') => route.loader({
+  const load = (products, search = '', country = 'US') => route.loader({
     request: new Request(`https://shopclaramendes.com/clothing${search}`),
     context: {storefront: {
-      i18n: {country: 'US', language: 'EN'},
+      i18n: {country, language: 'EN'},
       CacheShort: () => ({}),
       query: async () => ({products: {nodes: products, pageInfo: {hasNextPage: false, endCursor: null}}}),
     }},
@@ -220,7 +220,10 @@ test('the real /clothing loader leads with Counter-Diagonal and keeps Quiet Curr
   assert.equal(before.hero.text, CLOTHING_PAGE_HERO.text);
   assert.equal(before.hero.cta, 'Shop clothing');
   assert.equal(before.cutAndSewn, true);
-  assert.equal(before.shippingFrom, '3.99');
+  // A US (USD) buyer reads checkout's fee, never a euro figure; this fake
+  // storefront quotes nothing, so no figure. Cyprus keeps "from €3.99".
+  assert.equal(before.shippingFrom, null);
+  assert.equal((await load([tank, leggings], '', 'CY')).shippingFrom, '€3.99');
   assert.match(before.description, /^Clara Mendes Clothing: leggings, a sports bra/);
 
   // An unapproved line piece or an old draft never reaches the page.

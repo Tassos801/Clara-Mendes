@@ -10,11 +10,11 @@ import {StructuredData} from '~/components/StructuredData';
 import {loadFeaturePage} from '~/lib/featurePageLoader';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {SKY_PRESET_EVENT} from '~/lib/sky/configuratorState';
-import type {MoneyAmount} from '~/lib/money';
+import {cheapestPrice, formatMoney, type MoneyAmount} from '~/lib/money';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {PRODUCT_VARIANT_FRAGMENT} from '~/lib/productVariantFragment';
 import {breadcrumbSchema, buildSeoMeta, productSchema} from '~/lib/seo';
-import {countryPhrase, defaultMarketVariants} from '~/lib/deliveryReach';
+import {countryPhrase, structuredDataView} from '~/lib/deliveryReach';
 import {withVariantReach} from '~/lib/deliveryReach.server';
 import {readsUsDelivery, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
@@ -60,6 +60,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
   });
   return {
     ...feature,
+    buyerCountry: context.storefront.i18n.country,
     deliveryCountry: countryPhrase(context.storefront.i18n.country),
     // Unframed maps ship to the US (Storefront readback, 2026-10-18).
     usDelivery: readsUsDelivery({buyerCountry: context.storefront.i18n.country}),
@@ -67,12 +68,23 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function YourSkyPage() {
-  const {deliveryCountry, product, seoUrl, skyTheme, usDelivery} =
+  const {buyerCountry, deliveryCountry, product, seoUrl, skyTheme, usDelivery} =
     useLoaderData<typeof loader>();
-  // Structured data describes the default market (see products.$handle).
-  const schemaVariants = defaultMarketVariants<StudioVariant>(
+  // Structured data follows a US buyer's market when the map ships there,
+  // else the default market (see products.$handle).
+  const schema = structuredDataView<StudioVariant>(
+    buyerCountry,
     product.variants.nodes,
   );
+  const schemaVariants = schema.variants;
+  // US buyers read the live USD price of the cheapest map they can buy.
+  const usFrom = usDelivery
+    ? cheapestPrice(product.variants.nodes)
+    : null;
+  const heroPriceLine =
+    usFrom && page.hero.usPriceLine
+      ? page.hero.usPriceLine.replace('{price}', formatMoney(usFrom))
+      : page.hero.priceLine;
   const selectedVariant =
     product.selectedOrFirstAvailableVariant ??
     product.variants.nodes[0] ??
@@ -86,6 +98,7 @@ export default function YourSkyPage() {
             availableForSale: schemaVariants.some(
               (variant) => variant.availableForSale,
             ),
+            market: schema.market,
             description: page.description,
             image: `${STOREFRONT_ORIGIN}${page.hero.image.src}`,
             priceRange: product.priceRange,
@@ -111,7 +124,7 @@ export default function YourSkyPage() {
           <p className="eyebrow">{page.hero.eyebrow}</p>
           <h1 id="your-sky-headline">{page.hero.headline}</h1>
           <p className="your-sky-hero-sub">{page.hero.sub}</p>
-          <p className="your-sky-hero-price">{page.hero.priceLine}</p>
+          <p className="your-sky-hero-price">{heroPriceLine}</p>
           <a className="primary-button your-sky-hero-cta" href="#design">
             {page.hero.cta}
           </a>

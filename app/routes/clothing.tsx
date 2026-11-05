@@ -10,6 +10,8 @@ import type {Route} from './+types/clothing';
 import {ClothingProductCard} from '~/components/ClothingProductCard';
 import {StructuredData} from '~/components/StructuredData';
 import {loadClothingProducts} from '~/lib/clothing.server';
+import {quoteClothingShipping} from '~/lib/clothingShipping.server';
+import {formatMoney} from '~/lib/money';
 import {
   LEAD_CLOTHING_CAPSULE,
   clothingCategories,
@@ -130,6 +132,17 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const quietCurrentOnly =
     products.length > 0 &&
     products.every((product) => isQuietCurrentProduct(product.handle));
+  // Quiet Current's "from" fee is in EUR; a US (USD) buyer reads checkout's
+  // own fee for one piece instead, or no figure (docs/us-market, A3).
+  const usQuote =
+    quietCurrentOnly && context.storefront.i18n.country === 'US'
+      ? await quoteClothingShipping(
+          context.storefront,
+          products[0]?.cardVariant?.nodes[0]?.id,
+          'US',
+          {waitUntil: context.waitUntil},
+        )
+      : null;
   return {
     ...selection,
     categories: clothingCategories(
@@ -156,7 +169,11 @@ export async function loader({context, request}: Route.LoaderArgs) {
     // Quiet Current is cut and sewn; DTG and embroidered pieces are not.
     cutAndSewn: quietCurrentOnly,
     processing: quietCurrentOnly ? APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS : null,
-    shippingFrom: quietCurrentOnly ? APPAREL_SHIPPING_FROM_EUR : null,
+    shippingFrom: !quietCurrentOnly
+      ? null
+      : context.storefront.i18n.country === 'US'
+        ? usQuote && formatMoney(usQuote)
+        : `€${APPAREL_SHIPPING_FROM_EUR}`,
     seoUrl: getCanonicalUrl(request, '/clothing'),
   };
 }
@@ -516,7 +533,7 @@ export default function Clothing() {
               <dt>Shipping</dt>
               <dd>
                 {data.shippingFrom
-                  ? `One clothing shipping fee per order, from €${data.shippingFrom}. Other items ship at their own rates. Checkout confirms the fee for your address.`
+                  ? `One clothing shipping fee per order, from ${data.shippingFrom}. Other items ship at their own rates. Checkout confirms the fee for your address.`
                   : 'Checkout confirms the shipping fee for your address.'}{' '}
                 <Link to="/policies/shipping-policy">Shipping policy</Link>
               </dd>

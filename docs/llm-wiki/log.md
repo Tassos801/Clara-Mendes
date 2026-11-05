@@ -2229,3 +2229,18 @@ pieces list through the approval metafields; the two old drafts are flagged
 off. Their PDPs quote checkout's own fee for one piece to the buyer's
 country (Printful's profiles, cached an hour), so the figure follows the
 market's currency. See [Clothing](modules/clothing.md).
+
+## 2026-11-05 — US market live in USD
+
+The Shopify market "United States" sells in USD (Dynamic FX, rounding up to
+the nearest $1.00). It has US shipping zones:
+- General: EUR 13.99 under EUR 79, EUR 23.99 from EUR 79.
+- Canvas EUR 23.99; phone cases EUR 7.99.
+- Printful profiles keep their own US rates.
+
+USD feeds are registered in Merchant Center (CLARA-PRINTS-USD), and there
+is a Meta US country feed. A US page shows no euro figure. Structured data
+follows a US buyer who can buy the item (USD, US shipping and returns), and
+falls back to the Cyprus offer otherwise. The shipping policy has an
+"Orders to the United States" section. See
+[US market status](../us-market/status.md).

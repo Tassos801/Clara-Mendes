@@ -34,7 +34,11 @@ export type DeliveryCountryChoice = {code: string; name: string};
 export type NotShippedTo = {notShippedTo?: string};
 
 /** Set on a variant that is sellable in the default market but not here. */
-export type OutOfReach = {outOfReach?: boolean};
+export type OutOfReach = {
+  outOfReach?: boolean;
+  /** The variant's price in the default market (Cyprus), when out of reach. */
+  defaultMarketPrice?: {amount: string; currencyCode: string};
+};
 
 // Names that read with an article: "doesn't ship to the United States".
 const DEFINITE_ARTICLE = new Set(
@@ -103,21 +107,37 @@ export function needsVariantReach(
   );
 }
 
+type DefaultMarketPrices = ReadonlyMap<
+  string,
+  {amount: string; currencyCode: string}
+>;
+
 /** Flags each variant the buyer cannot buy but the default market can. */
 export function markOutOfReachVariants<
   V extends {availableForSale: boolean; id: string},
->(variants: readonly V[], defaultMarketIds: ReadonlySet<string>) {
+>(
+  variants: readonly V[],
+  defaultMarketIds: ReadonlySet<string>,
+  defaultMarketPrices?: DefaultMarketPrices,
+) {
   return variants.map((variant) =>
-    markOutOfReachVariant(variant, defaultMarketIds),
+    markOutOfReachVariant(variant, defaultMarketIds, defaultMarketPrices),
   );
 }
 
 export function markOutOfReachVariant<
   V extends {availableForSale: boolean; id: string},
->(variant: V, defaultMarketIds: ReadonlySet<string>): V & OutOfReach {
-  return !variant.availableForSale && defaultMarketIds.has(variant.id)
-    ? {...variant, outOfReach: true}
-    : variant;
+>(
+  variant: V,
+  defaultMarketIds: ReadonlySet<string>,
+  defaultMarketPrices?: DefaultMarketPrices,
+): V & OutOfReach {
+  if (variant.availableForSale || !defaultMarketIds.has(variant.id))
+    return variant;
+  const price = defaultMarketPrices?.get(variant.id);
+  return price
+    ? {...variant, outOfReach: true, defaultMarketPrice: price}
+    : {...variant, outOfReach: true};
 }
 
 /**
@@ -133,4 +153,38 @@ export function defaultMarketVariants<
   return variants.map((variant) =>
     variant.outOfReach ? {...variant, availableForSale: true} : variant,
   );
+}
+
+/**
+ * What a product's structured data describes (decision D6,
+ * docs/us-market/status.md). A US buyer who can buy the item gets their own
+ * market: USD prices and US shipping and returns, with variants the US can't
+ * buy left out. Everyone else, and a US buyer of an item that doesn't ship
+ * to the US, gets the default market as before (Cyprus prices, EU shipping).
+ * Googlebot crawls as a US buyer.
+ */
+export function structuredDataView<
+  V extends {
+    availableForSale: boolean;
+    price: {amount: string; currencyCode: string};
+  } & OutOfReach,
+>(
+  buyerCountry: string | null | undefined,
+  variants: readonly V[],
+): {market: 'US' | null; variants: V[]} {
+  const us = buyerCountry?.trim().toUpperCase() === 'US';
+  if (us && variants.some((variant) => variant.availableForSale))
+    return {market: 'US', variants: [...variants]};
+  const fallback = defaultMarketVariants(variants);
+  return {
+    market: null,
+    // The US sells in USD: its fallback offer carries the Cyprus EUR price.
+    variants: us
+      ? fallback.map((variant) =>
+          variant.defaultMarketPrice
+            ? {...variant, price: variant.defaultMarketPrice}
+            : variant,
+        )
+      : fallback,
+  };
 }
