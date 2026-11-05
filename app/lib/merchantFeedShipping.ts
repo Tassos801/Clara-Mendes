@@ -2,6 +2,7 @@ import {
   APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
+  DELIVERY_US_BUSINESS_DAYS,
   DISPATCH_WINDOW_BUSINESS_DAYS,
   PRINTFUL_SUBLIMATION_DISPATCH_WINDOW_BUSINESS_DAYS,
 } from './storefrontBasics.ts';
@@ -16,6 +17,10 @@ import {
 // "Letter post - cards & postcards" (EU only) and "Pastel Forms plant pots".
 // A country missing from a table means that line does not ship there. When a
 // shipping profile changes in Shopify, change this table in the same PR.
+//
+// These EUR tables feed the EUR feeds only. The USD feeds for the United
+// States (once it is its own USD market) quote every rate from a US cart
+// instead, so they follow Shopify's conversion without a second table.
 
 // The EU-27 minus Slovenia, which Google Shopping does not list.
 // prettier-ignore
@@ -25,7 +30,8 @@ export const FEED_EU_COUNTRIES = [
 ] as const;
 
 // Where Merchant Center lists products outside the EU and the International
-// market sells. No South Korea: Google needs KRW prices there.
+// market sells. No South Korea: Google needs KRW prices there. The EUR feeds
+// leave the US out once the US market sells in USD (the USD feeds take it).
 // prettier-ignore
 export const FEED_INTERNATIONAL_COUNTRIES = [
   'DZ', 'AO', 'AR', 'AU', 'BH', 'BD', 'BR', 'KH', 'CM', 'CA', 'CL', 'CO', 'CR',
@@ -111,12 +117,20 @@ const TRANSIT_EU = businessDays(DELIVERY_EU_BUSINESS_DAYS);
 const TRANSIT_INTERNATIONAL = businessDays(
   DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
 );
+const TRANSIT_US = businessDays(DELIVERY_US_BUSINESS_DAYS);
 
 export const SHIPPING_COLUMN =
   'shipping(country:price:min_handling_time:max_handling_time:min_transit_time:max_transit_time)';
 
-/** One `shipping` value per country the item ships to. */
-export function shippingCells(rates: Rates, handling: string) {
+/**
+ * One `shipping` value per country the item ships to. `omit` leaves countries
+ * out (the US, once the USD feeds list it).
+ */
+export function shippingCells(
+  rates: Rates,
+  handling: string,
+  omit: readonly string[] = [],
+) {
   const eu = FEED_EU_COUNTRIES.map(
     (c) =>
       `${c}:${c === 'CY' ? rates.cyprus : rates.eu} EUR:${handling}:${TRANSIT_EU}`,
@@ -127,9 +141,14 @@ export function shippingCells(rates: Rates, handling: string) {
     ),
   );
   const international = FEED_INTERNATIONAL_COUNTRIES.flatMap((c) =>
-    rateOf.has(c)
+    rateOf.has(c) && !omit.includes(c)
       ? [`${c}:${rateOf.get(c)} EUR:${handling}:${TRANSIT_INTERNATIONAL}`]
       : [],
   );
   return [...eu, ...international];
+}
+
+/** The USD feeds' single `shipping` value: the quoted US checkout rate. */
+export function usShippingCell(amount: string, handling: string) {
+  return `US:${amount} USD:${handling}:${TRANSIT_US}`;
 }

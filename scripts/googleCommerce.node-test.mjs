@@ -83,10 +83,15 @@ assert.ok(
   'United Kingdom market missing',
 );
 // Worldwide (2026-10-06): one entry per country, the EU-27 plus the
-// International market in EUR — the UK stays out of every market.
+// International market in EUR — the UK stays out of every market. The US
+// has its own USD market (2026-11-05, docs/us-market).
 const marketCodes = MARKET_COUNTRIES.map(({code}) => code);
 assert.equal(new Set(marketCodes).size, marketCodes.length, 'duplicate market');
-for (const code of ['US', 'CA', 'AU', 'CH', 'NO', 'JP', 'NZ', 'SG'])
+assert.ok(
+  MARKET_COUNTRIES.some((c) => c.code === 'US' && c.currency === 'USD'),
+  'US should sell in USD',
+);
+for (const code of ['CA', 'AU', 'CH', 'NO', 'JP', 'NZ', 'SG'])
   assert.ok(
     MARKET_COUNTRIES.some((c) => c.code === code && c.currency === 'EUR'),
     `${code} should sell in EUR`,

@@ -647,8 +647,14 @@ export type MerchantFeedProductsQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        'handle' | 'title' | 'productType' | 'tags' | 'description'
+        'handle' | 'title' | 'productType' | 'tags' | 'vendor' | 'description'
       > & {
+        storefrontApproved?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+        >;
+        fulfillmentVerified?: StorefrontAPI.Maybe<
+          Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+        >;
         featuredImage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
         variants: {
           nodes: Array<
@@ -669,26 +675,94 @@ export type MerchantFeedProductsQuery = {
   };
 };
 
-export type MerchantFeedQuoteMutationVariables = StorefrontAPI.Exact<{
+export type FeedMarketCurrencyQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+}>;
+
+export type FeedMarketCurrencyQuery = {
+  localization: {country: {currency: Pick<StorefrontAPI.Currency, 'isoCode'>}};
+};
+
+export type FeedQuoteCartFragment = Pick<StorefrontAPI.Cart, 'id'> & {
+  lines: {
+    nodes: Array<
+      | Pick<StorefrontAPI.CartLine, 'id'>
+      | Pick<StorefrontAPI.ComponentizableCartLine, 'id'>
+    >;
+  };
+  deliveryGroups: {
+    nodes: Array<{
+      deliveryOptions: Array<{
+        estimatedCost: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+      }>;
+    }>;
+  };
+};
+
+export type FeedQuoteCreateMutationVariables = StorefrontAPI.Exact<{
   input: StorefrontAPI.CartInput;
   country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
   language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
 }>;
 
-export type MerchantFeedQuoteMutation = {
+export type FeedQuoteCreateMutation = {
   cartCreate?: StorefrontAPI.Maybe<{
-    cart?: StorefrontAPI.Maybe<{
-      deliveryGroups: {
-        nodes: Array<{
-          deliveryOptions: Array<{
-            estimatedCost: Pick<
-              StorefrontAPI.MoneyV2,
-              'amount' | 'currencyCode'
-            >;
+    cart?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.Cart, 'id'> & {
+        lines: {
+          nodes: Array<
+            | Pick<StorefrontAPI.CartLine, 'id'>
+            | Pick<StorefrontAPI.ComponentizableCartLine, 'id'>
+          >;
+        };
+        deliveryGroups: {
+          nodes: Array<{
+            deliveryOptions: Array<{
+              estimatedCost: Pick<
+                StorefrontAPI.MoneyV2,
+                'amount' | 'currencyCode'
+              >;
+            }>;
           }>;
-        }>;
-      };
-    }>;
+        };
+      }
+    >;
+    userErrors: Array<Pick<StorefrontAPI.CartUserError, 'message'>>;
+  }>;
+};
+
+export type FeedQuoteSwapMutationVariables = StorefrontAPI.Exact<{
+  cartId: StorefrontAPI.Scalars['ID']['input'];
+  lines:
+    | Array<StorefrontAPI.CartLineUpdateInput>
+    | StorefrontAPI.CartLineUpdateInput;
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type FeedQuoteSwapMutation = {
+  cartLinesUpdate?: StorefrontAPI.Maybe<{
+    cart?: StorefrontAPI.Maybe<
+      Pick<StorefrontAPI.Cart, 'id'> & {
+        lines: {
+          nodes: Array<
+            | Pick<StorefrontAPI.CartLine, 'id'>
+            | Pick<StorefrontAPI.ComponentizableCartLine, 'id'>
+          >;
+        };
+        deliveryGroups: {
+          nodes: Array<{
+            deliveryOptions: Array<{
+              estimatedCost: Pick<
+                StorefrontAPI.MoneyV2,
+                'amount' | 'currencyCode'
+              >;
+            }>;
+          }>;
+        };
+      }
+    >;
+    userErrors: Array<Pick<StorefrontAPI.CartUserError, 'message'>>;
   }>;
 };
 
@@ -3306,9 +3380,13 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
-  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        description\n        featuredImage {\n          url\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: MerchantFeedProductsQuery;
     variables: MerchantFeedProductsQueryVariables;
+  };
+  '#graphql\n  query FeedMarketCurrency($country: CountryCode)\n  @inContext(country: $country) {\n    localization {\n      country {\n        currency {\n          isoCode\n        }\n      }\n    }\n  }\n': {
+    return: FeedMarketCurrencyQuery;
+    variables: FeedMarketCurrencyQueryVariables;
   };
   '#graphql\n  query SitemapCollectionEligibility($handle: String!, $after: String) {\n    collection(handle: $handle) {\n      handle\n      products(first: 100, after: $after) {\n        nodes {\n          handle productType tags vendor\n          storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }\n          fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }\n        }\n        pageInfo { hasNextPage endCursor }\n      }\n    }\n  }\n': {
     return: SitemapCollectionEligibilityQuery;
@@ -3413,9 +3491,13 @@ interface GeneratedQueryTypes {
 }
 
 interface GeneratedMutationTypes {
-  '#graphql\n  mutation MerchantFeedQuote(\n    $input: CartInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        deliveryGroups(first: 5) {\n          nodes {\n            deliveryOptions {\n              estimatedCost {\n                amount\n                currencyCode\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n': {
-    return: MerchantFeedQuoteMutation;
-    variables: MerchantFeedQuoteMutationVariables;
+  '#graphql\n  mutation FeedQuoteCreate(\n    $input: CartInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        ...FeedQuoteCart\n      }\n      userErrors {\n        message\n      }\n    }\n  }\n  #graphql\n  fragment FeedQuoteCart on Cart {\n    id\n    lines(first: 1) {\n      nodes {\n        id\n      }\n    }\n    deliveryGroups(first: 5) {\n      nodes {\n        deliveryOptions {\n          estimatedCost {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n': {
+    return: FeedQuoteCreateMutation;
+    variables: FeedQuoteCreateMutationVariables;
+  };
+  '#graphql\n  mutation FeedQuoteSwap(\n    $cartId: ID!\n    $lines: [CartLineUpdateInput!]!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartLinesUpdate(cartId: $cartId, lines: $lines) {\n      cart {\n        ...FeedQuoteCart\n      }\n      userErrors {\n        message\n      }\n    }\n  }\n  #graphql\n  fragment FeedQuoteCart on Cart {\n    id\n    lines(first: 1) {\n      nodes {\n        id\n      }\n    }\n    deliveryGroups(first: 5) {\n      nodes {\n        deliveryOptions {\n          estimatedCost {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n': {
+    return: FeedQuoteSwapMutation;
+    variables: FeedQuoteSwapMutationVariables;
   };
 }
 
