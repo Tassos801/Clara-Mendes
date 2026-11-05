@@ -898,6 +898,13 @@ function ProductPage() {
   const isApparel = isClothingProduct(product);
   const isQuietCurrent = isQuietCurrentProduct(product.handle);
   const isFutureClothing = isApparel && !isQuietCurrent;
+  // The merchant's "Made to order" tag (Counter-Diagonal carries it) keeps
+  // the status chip honest for garments made after each order.
+  const isTaggedMadeToOrder = Boolean(
+    product.tags?.some(
+      (tag: string) => tag.trim().toLowerCase() === 'made to order',
+    ),
+  );
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
@@ -1246,7 +1253,9 @@ function ProductPage() {
                 (caseModelPending && productAvailableForSale)
                   ? curatedProduct
                     ? 'DIY kit'
-                    : isFutureClothing ? 'Available' : 'Made to order'
+                    : isFutureClothing && !isTaggedMadeToOrder
+                      ? 'Available'
+                      : 'Made to order'
                   : notShippedHere
                     ? 'Not shipped here'
                     : 'Unavailable'}

@@ -273,6 +273,14 @@ export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
   'quiet-current-studio-bra': true,
   'quiet-current-high-waist-biker-shorts': true,
   'quiet-current-studio-tank': true,
+  // Counter-Diagonal (Inspired by Theo van Doesburg), launched 2026-11-05.
+  // The line's garments list through the future-garment path (type or the
+  // clara-mendes-clothing tag, plus both approval metafields true), so they
+  // need no flag here. These two earlier versions stay Draft and out of the
+  // line (owner, 2026-11-05): false keeps them off every listing, search
+  // and the sitemap even if one is published or approved by mistake.
+  'counter-diagonal-hoodie': false,
+  'counter-diagonal-classic-hoodie': false,
 };
 
 /** Shop type-filter value for each standalone product. */
@@ -573,6 +581,10 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
   ) {
     return hasProductSample;
   }
+  // Counter-Diagonal's members are approved by metafield, which no flag can
+  // show before the query, so its route always fetches; the empty-sample
+  // check above still hides it until Shopify returns a listed garment.
+  if (handle === 'counter-diagonal') return hasProductSample;
 
   return !handle || !ORIGINAL_ART_COLLECTION_HANDLES.has(handle);
 }

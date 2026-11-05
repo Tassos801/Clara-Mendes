@@ -1,8 +1,8 @@
 import type {Storefront} from '@shopify/hydrogen';
 import type {ClaraCardProduct} from '../components/ClaraProductCard';
-import {filterDemoProducts} from './catalogFilters';
-import {CLOTHING_PRODUCT_QUERY, isClothingProduct} from './clothing';
-import {PRODUCT_CARD_FRAGMENT} from './productCardFragment';
+import {filterDemoProducts} from './catalogFilters.ts';
+import {CLOTHING_PRODUCT_QUERY, isClothingProduct} from './clothing.ts';
+import {PRODUCT_CARD_FRAGMENT} from './productCardFragment.ts';
 
 export type ClothingProduct = ClaraCardProduct & {
   options: Array<{

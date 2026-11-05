@@ -22,25 +22,33 @@ export type ClothingProductLike = {
   } | null;
 };
 
+/**
+ * Page order: the Counter-Diagonal garments first (the line advertised),
+ * then activewear, then other kinds, accessories last. Hats and tote bags
+ * count as clothing only by these exact types: the museum Art Canvas Tote is
+ * typed "Bags" and must stay off /clothing.
+ */
 const CATEGORIES = [
-  {slug: 'leggings', label: 'Leggings', types: ['Yoga Leggings', 'Leggings']},
-  {slug: 'bras', label: 'Bras', types: ['Sports Bra', 'Sports Bras', 'Bras']},
-  {slug: 'shorts', label: 'Shorts', types: ['Biker Shorts', 'Shorts']},
+  {slug: 'hoodies', label: 'Hoodies', types: ['Hoodies', 'Hoodie']},
+  {
+    slug: 'sweatshirts',
+    label: 'Sweatshirts',
+    types: ['Sweatshirts', 'Sweatshirt'],
+  },
+  {slug: 't-shirts', label: 'T-shirts', types: ['T-Shirts', 'T-Shirt']},
+  {
+    slug: 'long-sleeves',
+    label: 'Long sleeves',
+    types: ['Long Sleeve Shirts', 'Long Sleeve Shirt', 'Long Sleeve T-Shirts'],
+  },
   {
     slug: 'tops',
     label: 'Tops',
-    types: [
-      'Studio Top',
-      'Tops',
-      'T-Shirts',
-      'T-Shirt',
-      'Shirts',
-      'Tank Tops',
-      'Blouses',
-      'Sweatshirts',
-      'Hoodies',
-    ],
+    types: ['Studio Top', 'Tops', 'Shirts', 'Tank Tops', 'Blouses'],
   },
+  {slug: 'leggings', label: 'Leggings', types: ['Yoga Leggings', 'Leggings']},
+  {slug: 'bras', label: 'Bras', types: ['Sports Bra', 'Sports Bras', 'Bras']},
+  {slug: 'shorts', label: 'Shorts', types: ['Biker Shorts', 'Shorts']},
   {slug: 'dresses', label: 'Dresses', types: ['Dresses', 'Dress']},
   {slug: 'skirts', label: 'Skirts', types: ['Skirts', 'Skirt']},
   {slug: 'trousers', label: 'Trousers', types: ['Trousers', 'Pants', 'Jeans']},
@@ -59,7 +67,45 @@ const CATEGORIES = [
     label: 'One-pieces',
     types: ['Jumpsuits', 'Playsuits', 'Bodysuits'],
   },
+  {
+    slug: 'accessories',
+    label: 'Accessories',
+    types: ['Hats', 'Caps', 'Beanies', 'Tote Bags'],
+  },
 ] as const;
+
+/**
+ * Capsules the code knows by handle, so they list even before their
+ * collection carries `custom.collection_kind` = `capsule`. Order is page
+ * order: Counter-Diagonal leads /clothing (the line advertised in New York);
+ * Quiet Current follows. Any other capsule needs the metafield.
+ */
+export const KNOWN_CLOTHING_CAPSULES = [
+  'counter-diagonal',
+  'quiet-current',
+] as const;
+export const LEAD_CLOTHING_CAPSULE = KNOWN_CLOTHING_CAPSULES[0];
+
+export function isKnownClothingCapsule(handle?: string | null) {
+  return (KNOWN_CLOTHING_CAPSULES as readonly string[]).includes(
+    normalize(handle),
+  );
+}
+
+/** Rank for page order: known capsules first, in their order. */
+export function clothingCapsuleRank(handle?: string | null) {
+  const index = (KNOWN_CLOTHING_CAPSULES as readonly string[]).indexOf(
+    normalize(handle),
+  );
+  return index < 0 ? KNOWN_CLOTHING_CAPSULES.length : index;
+}
+
+/** Category position in page order; unknown or tag-only garments go last. */
+export function clothingCategoryRank(product: ClothingProductLike) {
+  const slug = clothingCategory(product)?.slug;
+  const index = CATEGORIES.findIndex((category) => category.slug === slug);
+  return index < 0 ? CATEGORIES.length : index;
+}
 
 export type ClothingCategory = {slug: string; label: string};
 export type ClothingCategoryCount = ClothingCategory & {count: number};
@@ -146,7 +192,9 @@ export function clothingCategories(
 }
 
 /** Capsules are explicit Shopify groups, separate from garment categories.
- * Quiet Current predates the merchant convention and retains its real group.
+ * The known capsules (KNOWN_CLOTHING_CAPSULES) count by handle; any other
+ * collection needs the capsule metafield. Known capsules come first, in
+ * their page order, then the rest by title.
  */
 export function clothingCapsules(
   products: ClothingProductLike[],
@@ -156,7 +204,7 @@ export function clothingCapsules(
     const seen = new Set<string>();
     for (const collection of product.collections?.nodes ?? []) {
       const isCapsule =
-        collection.handle === 'quiet-current' ||
+        isKnownClothingCapsule(collection.handle) ||
         (collection.clothingKind?.type === 'single_line_text_field' &&
           collection.clothingKind.value === 'capsule');
       if (!isCapsule || isClothingCategoryCollection(collection) || seen.has(collection.handle))
@@ -170,7 +218,11 @@ export function clothingCapsules(
       });
     }
   }
-  return [...capsules.values()].sort((a, b) => a.title.localeCompare(b.title));
+  return [...capsules.values()].sort(
+    (a, b) =>
+      clothingCapsuleRank(a.handle) - clothingCapsuleRank(b.handle) ||
+      a.title.localeCompare(b.title),
+  );
 }
 
 /** Escapes Shopify's documented search value syntax, never GraphQL source. */
