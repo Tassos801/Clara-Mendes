@@ -27,6 +27,12 @@ Admin steps at the D2/D3/D7 settings already approved. Done so far:
 - **A5 built** (this branch, PR to follow): USD feeds, `?country=CY` on the
   EUR feeds (C3 in code), clothing in the Printful feeds with
   `custom_label_0` = capsule. See A5 below.
+- **PR #169** (A5 + C3 in code) is open, CI green; the owner merges.
+- **B3 Canvas zone staged, not saved:** this session's permission check
+  refused the Admin Save without the owner's own approval in this session,
+  so nothing changed in Shopify. Pending: Canvas US EUR 23.99 (US out of
+  "Selected countries outside the EU", which keeps its other 17), Phone
+  cases US EUR 7.99.
 - **New owner question (blocks the General US zone only):** acrylic, metal
   and hanger prints went live on 2026-10-29 in the General profile. Prodigi
   charges EUR 22.02-23.04 to ship acrylic and metal to the US and
