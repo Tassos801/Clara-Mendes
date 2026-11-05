@@ -8,9 +8,14 @@ import {isQuietCurrentProduct} from './storefrontBasics.ts';
  * at checkout. A fixed table here would drift, so the product page quotes
  * checkout itself: a one-piece cart for the buyer's country, in the buyer's
  * market currency (docs/us-market/HANDOFF.md rule 2: derived, never a
- * hardcoded copy). Read 2026-11-05 for the cap: Cyprus and the EU €4.45, US
- * €4.18, Canada €7.04, Australia €7.22, Switzerland €9.27, none for the UK
- * or Japan; two of the same piece cost one fee, two different pieces add up.
+ * hardcoded copy). Printful's app manages the profiles (rates in USD, flat,
+ * one fee per profile per order): hoodies and crewneck $7.29 EU / $8.79 US,
+ * tees and long sleeve $4.99 / $4.95, cap, beanie and tote $4.99 / $4.69
+ * (read 2026-11-05 by cd-apparel, cd-accessories and us-market; checkout
+ * then showed CY €6.50 / €4.45 / €4.45). Pieces in one profile share a fee,
+ * pieces in different profiles each add one, so the page quotes one piece
+ * and leaves the order total to checkout. US orders ship from Printful's US
+ * facilities. No rate for the UK or Japan (not in a sellable zone).
  */
 export type ClothingShippingQuote = {amount: string; currencyCode: string};
 
