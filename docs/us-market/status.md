@@ -28,6 +28,24 @@ Admin steps at the D2/D3/D7 settings already approved. Done so far:
   EUR feeds (C3 in code), clothing in the Printful feeds with
   `custom_label_0` = capsule. See A5 below.
 - **PR #169** (A5 + C3 in code) is open, CI green; the owner merges.
+- **US market LIVE 2026-11-05 ~09:50 UTC** (owner in this session: "Yes, create it"). Shopify market "United States" (123884568910): currency USD, Dynamic FX (1 EUR = 1.147 USD), rounding "up to the nearest $1.00". Shopify offers no x.99 option, so prices end in .00 (D2 said .99). Shopify notes that Dynamic FX prices include a 2% conversion fee. Parent market International; privacy inherited (cookie banner, data-sharing opt-out). Storefront: US → USD (print 8×10 $31, premium hoodie $49, tee $37, cap $30); CY/DE/CA unchanged in EUR.
+- **USD feeds live and registered** in Merchant Center 5837804292:
+  - "Clara Mendes US site feed (daily fetch, USD)" 10792346185 and "Clara Mendes US Printful feed (daily fetch, USD)" 10792346479.
+  - Both: United States only, English, label CLARA-PRINTS-USD, free listings, daily 12:00 AM.
+  - First fetch: 312 site products. The routes serve 313 site, 189 Printful and 685 Meta rows.
+  - nyc-ads has the Meta country feed URL.
+- **Live checks (US buyer, saved country US; then reset to CY):**
+  - /clothing, the print page, the Counter-Diagonal hoodie page and the cart are all USD.
+  - The print page reads "delivery within the US is estimated at 7–15 business days" and "US orders ship from within the US, so no import duties apply".
+  - The hoodie page reads "Shipping to the United States: $8.79".
+  - Cart $31 + $49 = $80. Cyprus: /clothing and the cart in EUR (EUR 68.98). Test cart emptied.
+  - Screenshots in `Mine/shopify/clara-us-market-2026-11/` on the Windows PC.
+- **US checkout quotes in USD** (one-item carts):
+  - Prodigi lines: print / hanger A3 $17, acrylic / metal / canvas $28, case $10.
+  - Printful lines: hoodie / crew $8.79, tee / long sleeve $4.95, cap / tote $4.69, Quiet Current $6.
+- **Open (owner OK needed in session):**
+  1. Remove the US from the EUR site source 10788135803 (96 countries; the EUR Printful source has no US). Owner approved via the coordinator ("US sees USD only"), but this session's permission check needs it in session.
+  2. **General split threshold:** the large hanger 76×51 (EUR 74.99, $87) gets the upper $28 rate in USD. Shopify's order-amount test in USD lands the EUR 77 split between $77 and $87 (a $77 cart gets $17). Moving the split to EUR 79 keeps the approved intent: hangers ≤ 74.99 pay $17, acrylic/metal ≥ 79.99 pay $28. Until then the USD feed quotes hangers at $17 (keyed on the A3 variant), so the 76×51 hanger's feed rate is below checkout.
 - **B3 done 2026-11-05** (owner in this session: "Price-based split", then
   "Yes, save them"). See B3 below for the zones and the checkout readback.
 - **Owner question answered** ("Price-based split"): acrylic, metal
@@ -348,7 +366,7 @@ test that asserts it.
   plant pot. It needs `.env.sky.local` with `PRODIGI_API_KEY` and
   `PRODIGI_API_BASE=https://api.prodigi.com`; without a key it exits 2
   with a message.
-- [ ] **B2 United States market.** Move US out of "International" (which
+- [x] **B2 United States market.** *Done 2026-11-05, see Stopped here.* Move US out of "International" (which
   keeps its other 177 countries) into a new "United States" market:
   currency USD, prices per D2, prices shown without tax. Check under
   Settings → Taxes and duties how converted prices treat the EUR price's
@@ -401,12 +419,12 @@ test that asserts it.
   markets, target countries, shipping services. Record it here.
   **Done 2026-10-18 (read-only):** see Evidence. The EUR file feeds already
   target the US, and app product sync is off.
-- [ ] **C2 Add the US:** a USD feed targeting the US (A5 route or a new TSV
+- [x] **C2 Add the US:** *USD sources registered 2026-11-05; US removal from the EUR source pending the owner's in-session OK.* a USD feed targeting the US (A5 route or a new TSV
   `CLARA-PRINTS-USD`) and a US shipping service (B3 rates, 2–4 handling,
   7–15 transit). Then move the United States from the EUR feeds' country
   list to the USD feed. The listings move rather than disappear, but
   confirm this with the owner, since it edits the EUR feed's settings.
-- [ ] **C3 Pin the EUR feed's links** to `?country=CY` (after A1 is live).
+- [x] **C3 Pin the EUR feed's links** to `?country=CY` (after A1 is live).
   *In code since A5 (2026-11-05):* live once that PR is merged and deployed;
   Merchant Center and Meta pick it up on their next daily fetch.
 - [ ] **C4 Watch diagnostics** for 3–7 days and fix price or availability
