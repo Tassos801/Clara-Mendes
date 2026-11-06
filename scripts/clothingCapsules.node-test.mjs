@@ -243,3 +243,21 @@ function loadRoute(name) {
   new Function('exports', 'require', output)(exports, load);
   return exports;
 }
+
+test('Circle Rhythm credits Sophie Taeuber-Arp as inspiration, with brand-free art', async () => {
+  const {capsuleStory} = await import('../app/lib/clothingEditorial.ts');
+  const {existsSync} = await import('node:fs');
+  const story = capsuleStory('circle-rhythm');
+  assert.equal(story.credit, 'Inspired by Sophie Taeuber-Arp');
+  assert.equal(story.colourwayChooser, false);
+  const hero = clothingPageHero('circle-rhythm', 'hoodies and tees');
+  assert.equal(hero.text, 'Hoodies and tees in one design of circles, rings and bars, inspired by Sophie Taeuber-Arp. Made for you after you order.');
+  const copy = [story.credit, story.intro, hero.eyebrow, hero.text, hero.cta].join(' ');
+  assert.doesNotMatch(copy, /\bart by\b|(?<!inspired )\bby sophie\b|\bpainted\b|\breproduction of (?!any)/i);
+  assert.match(story.intro, /not a reproduction of any of her works/);
+  assert.doesNotMatch(copy, /[€$]|\bEUR\b|\bUSD\b|clara mendes/i);
+  for (const src of [story.band.src, story.accent.src]) {
+    assert.match(src, /\.(jpe?g|png)$/, src);
+    assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+  }
+});

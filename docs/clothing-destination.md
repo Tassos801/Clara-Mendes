@@ -255,6 +255,12 @@ It reads the Admin and Storefront APIs, makes no change, and refuses
      So write the collection description and set its image in Admin.
    - **Feeds:** `custom_label_0` is the capsule collection's title, so a Meta
      or Google product set can select the new line by name.
+   - **Art for an editorial entry:** `node scripts/build-capsule-art.mjs
+     --handle <handle> --source <design pack>\hero` renders the band (a
+     frieze of the composition's rows, `--band-rows`) and the chest-emblem
+     accent from the pack's brand-free SVGs; with `--looks` (transparent PNG
+     mockups whose credit is the official logo) it adds the looks image and
+     the collection hero. Never use art with a typed brand name.
 3. **Add the garments** to the collection (manual or by rule). The page reads
    the real membership from each garment, so the garments must be eligible
    (see [Who appears](#who-appears)).
