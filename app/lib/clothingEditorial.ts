@@ -66,7 +66,11 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
   // Our own composition (design pack Clara-Mendes-Van-Doesburg-Hoodie-
   // 2026-10-30, README: "set at Van Doesburg's 45° counter-composition
   // angle", palette red #B91616, blue #0A3B79, yellow #E3A216, black
-  // #171817). Images: scripts/build-counter-diagonal-art.mjs.
+  // #171817). Images: scripts/build-counter-diagonal-art.mjs. The looks
+  // image and collection heroes were rebuilt 2026-11-06 with the hoodie
+  // back from cd-colours' logo-credit mockup (colours-2026-11/mockups-logo/
+  // heavyweight-hoodie/dust/ghost-back.jpg, cut from its white ground), so
+  // the garment credit shows the official logo (owner's logo rule).
   'counter-diagonal': {
     credit: 'Inspired by Theo van Doesburg',
     // Each garment comes in its own blank colour (Dust, Bone, Ivory, ...).

@@ -2275,3 +2275,11 @@ editorial entries: credit, intro, band and emblem accent, built by the new
 of whole shapes, or a strip for a diagonal composition). Their looks
 images and `/collections/<handle>` heroes come from the lines' Printful
 mockups, which carry the official logo credit (`--looks`).
+
+## 2026-11-06 — Capsule looks images in their /clothing sections
+
+A capsule section on `/clothing` without a colourway chooser (Counter-Diagonal,
+Free Abyss, Circle Rhythm) now shows the capsule's looks image in its right
+column; Quiet Current keeps its chooser there. The Counter-Diagonal looks
+image and collection heroes were rebuilt with the logo-credit hoodie mockup,
+so every capsule image carries the official logo, not a typed name.

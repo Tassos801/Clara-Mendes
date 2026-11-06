@@ -464,6 +464,24 @@ export default function Clothing() {
               View the {collection.title} collection
             </Link>
           </div>
+          {/* Without a colourway chooser the right column shows the capsule's
+              looks image (the lead capsule's also heads the page, far
+              above, on screens from 700 px). */}
+          {collection.colourways.length <= 1 && collection.story?.looksImage ? (
+            <figure className="clothing-collection-looks">
+              <img
+                src={collection.story.looksImage.src}
+                alt={collection.story.looksImage.alt}
+                width={collection.story.looksImage.width}
+                height={collection.story.looksImage.height}
+                loading="lazy"
+                decoding="async"
+              />
+              {collection.story.looksImage.caption ? (
+                <figcaption>{collection.story.looksImage.caption}</figcaption>
+              ) : null}
+            </figure>
+          ) : null}
           {collection.colourways.length > 1 ? (
             <div className="clothing-colourways">
               <h3>Choose a colourway</h3>
