@@ -10,6 +10,7 @@ import {
 } from '../app/lib/clothing.ts';
 import {featuredClothingOrder} from '../app/lib/clothingPresentation.ts';
 import {
+  clothingLinesHero,
   clothingPageHero,
   genericCapsuleStory,
 } from '../app/lib/clothingEditorial.ts';
@@ -19,7 +20,8 @@ import {merchantFeedRows} from '../app/lib/merchantFeed.ts';
 const approved = {type: 'boolean', value: 'true'};
 const capsuleKind = {type: 'single_line_text_field', value: 'capsule'};
 const cd = {handle: 'counter-diagonal', title: 'Counter-Diagonal', clothingKind: capsuleKind};
-const qc = {handle: 'quiet-current', title: 'Quiet Current', clothingKind: null};
+const sea = {handle: 'sea-line', title: 'Sea Line', clothingKind: capsuleKind};
+const retired = {handle: 'quiet-current', title: 'Quiet Current', clothingKind: capsuleKind};
 const suprema = {handle: 'suprema', title: 'Suprema', clothingKind: capsuleKind};
 const rhythm = {handle: 'rhythm', title: 'Rhythm', clothingKind: capsuleKind};
 
@@ -50,13 +52,14 @@ const supremaHoodie = piece('suprema-hoodie', 'Hoodies', [suprema]);
 const supremaTee = piece('suprema-tee', 'T-Shirts', [suprema]);
 const cdTee = piece('counter-diagonal-tee', 'T-Shirts', [cd]);
 const cdHoodie = piece('counter-diagonal-hoodie-x', 'Hoodies', [cd]);
-const qcTank = piece('quiet-current-studio-tank', 'Studio Top', [qc]);
-const newestFirst = [rhythmTee, supremaTee, cdTee, supremaHoodie, cdHoodie, qcTank];
+const seaTee = piece('sea-line-tee', 'T-Shirts', [sea]);
+const newestFirst = [rhythmTee, supremaTee, cdTee, supremaHoodie, cdHoodie, seaTee];
 
-test('a collection is a capsule by its metafield; Quiet Current by its old handle', () => {
+test('a collection is a capsule by its metafield; the retired Quiet Current never', () => {
   assert.equal(isClothingCapsuleCollection(suprema), true);
   assert.equal(isClothingCapsuleCollection({...suprema, clothingKind: {type: 'single_line_text_field', value: ' Capsule '}}), true);
-  assert.equal(isClothingCapsuleCollection(qc), true);
+  assert.equal(isClothingCapsuleCollection(retired), false);
+  assert.equal(isClothingCapsuleCollection({...retired, clothingKind: null}), false);
   assert.equal(isClothingCapsuleCollection({...cd, clothingKind: null}), true);
   // No metafield, a text-typed lookalike, or a garment category: never.
   assert.equal(isClothingCapsuleCollection({...suprema, clothingKind: null}), false);
@@ -70,10 +73,10 @@ test('Counter-Diagonal comes first, then the capsules by their newest piece', ()
     {handle: 'counter-diagonal', title: 'Counter-Diagonal', count: 2},
     {handle: 'rhythm', title: 'Rhythm', count: 1},
     {handle: 'suprema', title: 'Suprema', count: 2},
-    {handle: 'quiet-current', title: 'Quiet Current', count: 1},
+    {handle: 'sea-line', title: 'Sea Line', count: 1},
   ]);
   // Without Counter-Diagonal, the newest line leads.
-  assert.equal(clothingCapsules([supremaTee, qcTank, rhythmTee])[0].handle, 'suprema');
+  assert.equal(clothingCapsules([supremaTee, seaTee, rhythmTee])[0].handle, 'suprema');
 });
 
 test('featured order follows the capsule order, garments in kind order', () => {
@@ -83,7 +86,7 @@ test('featured order follows the capsule order, garments in kind order', () => {
     'rhythm-tee',
     'suprema-hoodie',
     'suprema-tee',
-    'quiet-current-studio-tank',
+    'sea-line-tee',
   ]);
 });
 
@@ -97,7 +100,27 @@ test('a capsule without an editorial entry gets a generic hero', () => {
   assert.equal(clothingPageHero('suprema', null, {title: 'Suprema', madeToOrder: false}).text, 'Clothing from the Suprema collection.');
   // Editorial entries keep their own wording.
   assert.equal(clothingPageHero('counter-diagonal', 'tees', {title: 'Counter-Diagonal', madeToOrder: true}).eyebrow, 'New · Counter-Diagonal');
-  assert.equal(clothingPageHero('quiet-current', null, {title: 'Quiet Current', madeToOrder: true}).cta, 'Shop clothing');
+  // No capsule at all: the general wording.
+  assert.deepEqual(clothingPageHero(null, null, null), {eyebrow: null, title: 'Clothing, with an artistic touch.', text: 'Original designs inspired by modern artists, made for you after you order.', cta: 'Shop clothing'});
+  // Several lines: the hero names each line and each artist.
+  assert.deepEqual(
+    clothingLinesHero(
+      [
+        {title: 'Counter-Diagonal', credit: 'Inspired by Theo van Doesburg'},
+        {title: 'Free Abyss', credit: 'Inspired by Kazimir Malevich'},
+        {title: 'Circle Rhythm', credit: 'Inspired by Sophie Taeuber-Arp'},
+      ],
+      true,
+    ),
+    {
+      eyebrow: 'Three lines · Made to order',
+      title: 'Clothing, with an artistic touch.',
+      text: 'Counter-Diagonal, Free Abyss and Circle Rhythm: three original designs, inspired by Theo van Doesburg, Kazimir Malevich and Sophie Taeuber-Arp. Made for you after you order.',
+      cta: 'Shop all clothing',
+    },
+  );
+  // A line without a credit leaves the artists out rather than guess.
+  assert.equal(clothingLinesHero([{title: 'A', credit: 'Inspired by X'}, {title: 'B', credit: null}], false).text, 'A and B: two original designs.');
 });
 
 test('the generic story is the collection description and image', () => {
@@ -143,20 +166,23 @@ test('the real /clothing loader lists a new capsule with its generic block', asy
       },
     });
   const data = await load(newestFirst);
-  assert.deepEqual(data.collections.map((c) => c.handle), ['counter-diagonal', 'rhythm', 'suprema', 'quiet-current']);
+  assert.deepEqual(data.lines.map((line) => line.handle), ['counter-diagonal', 'rhythm', 'suprema', 'sea-line']);
   // Only capsules without an editorial entry are read.
-  assert.deepEqual(queried.sort(), ['rhythm', 'suprema']);
-  assert.equal(data.collections[2].story.intro, 'Floating planes, inspired by Kazimir Malevich.');
-  assert.equal(data.collections[1].story, null);
-  assert.equal(data.hero.eyebrow, 'New · Counter-Diagonal');
+  assert.deepEqual(queried.sort(), ['rhythm', 'sea-line', 'suprema']);
+  assert.equal(data.lines[0].credit, 'Inspired by Theo van Doesburg');
+  assert.equal(data.lines[1].credit, null);
+  // Several lines: the hero names them all, with no single line's emblem.
+  assert.equal(data.hero.eyebrow, 'Four lines · Made to order');
+  assert.match(data.hero.text, /^Counter-Diagonal, Rhythm, Suprema and Sea Line: four original designs\./);
+  assert.equal(data.hero.accent, null);
 
-  // Without Counter-Diagonal the newest line leads with the generic hero.
-  const alone = await load([supremaTee, supremaHoodie, qcTank]);
+  // One line alone leads with its own (here generic) hero.
+  const alone = await load([supremaTee, supremaHoodie]);
   assert.equal(alone.hero.eyebrow, 'New · Suprema');
   assert.equal(alone.hero.text, 'Hoodies and tees from the Suprema collection. Made for you after you order.');
   assert.equal(alone.hero.accent, null);
   assert.equal(alone.hero.looksImage, null);
-  assert.equal(alone.description, 'Clara Mendes Clothing: Suprema hoodies and tees, and Quiet Current activewear with a watercolour-style print. Made to order.');
+  assert.equal(alone.description, 'Clara Mendes Clothing: Suprema, an original design, on hoodies and tees. Made to order.');
 });
 
 test('an artist quote becomes the pull-quote, never the lede', () => {
@@ -215,7 +241,7 @@ test('a new capsule names itself in custom_label_0', () => {
       feedProduct('suprema-tee', [suprema, {handle: 't-shirts', title: 'T-Shirts', clothingKind: capsuleKind}], ['clara-mendes-clothing']),
       feedProduct('counter-diagonal-tee', [cd], ['clara-mendes-clothing', 'Counter-Diagonal']),
       // No collections read: the capsule tag still names it.
-      feedProduct('quiet-current-tee', undefined, ['clara-mendes-clothing', 'Quiet Current']),
+      feedProduct('tagged-tee', undefined, ['clara-mendes-clothing', 'Counter-Diagonal']),
       feedProduct('loose-tee', [{handle: 'sale', title: 'Sale', clothingKind: null}], ['clara-mendes-clothing']),
     ].map((p) => (p.collections.nodes ? p : {...p, collections: null})),
     'printful',
@@ -223,7 +249,7 @@ test('a new capsule names itself in custom_label_0', () => {
   assert.deepEqual(rows.map((row) => [row.item_group_id, row.custom_label_0]), [
     ['suprema-tee', 'Suprema'],
     ['counter-diagonal-tee', 'Counter-Diagonal'],
-    ['quiet-current-tee', 'Quiet Current'],
+    ['tagged-tee', 'Counter-Diagonal'],
     ['loose-tee', ''],
   ]);
 });
@@ -298,10 +324,89 @@ test('Free Abyss credits Kazimir Malevich as inspiration, with brand-free art', 
   }
 });
 
-test('a capsule section without a colourway chooser shows its looks image', () => {
+test('the lines show as compact tiles, with no colourway chooser', () => {
   const route = readFileSync(resolve('app/routes/clothing.tsx'), 'utf8');
-  assert.match(route, /collection\.colourways\.length <= 1 && collection\.story\?\.looksImage \? \(\s*<figure className="clothing-collection-looks">/);
-  // Below the fold, so it never competes with the hero for bandwidth.
-  assert.match(route, /<figure className="clothing-collection-looks">[\s\S]*?loading="lazy"/);
-  assert.match(readFileSync(resolve('app/styles/clothing.css'), 'utf8'), /\.clothing-collection-looks img \{/);
+  assert.match(route, /<li className="clothing-line-tile" key=\{line\.handle\}>/);
+  // Each tile: looks image (lazy, below the fold), band, name, credit, links.
+  assert.match(route, /className="clothing-line-tile-image"[\s\S]*?loading="lazy"/);
+  assert.match(route, /to=\{href\('capsule', line\.handle\)\}/);
+  assert.match(route, /to=\{`\/collections\/\$\{line\.handle\}`\}/);
+  assert.doesNotMatch(route, /Choose a colourway|clothing-colourway|clothing-collection-looks/);
+  // One filter bar: line chips and category tabs that narrow together.
+  assert.match(route, /aria-label="Clothing lines" className="clothing-chips"/);
+  assert.match(route, /aria-label="Clothing categories"/);
+  const css = readFileSync(resolve('app/styles/clothing.css'), 'utf8');
+  // Grid: 4 columns, 3 on tablets, 2 on phones.
+  assert.match(css, /\.clothing-grid \{[^}]*grid-template-columns: repeat\(4, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 1023px\) \{\s*\.clothing-grid \{[^}]*repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 699px\) \{[\s\S]*?\.clothing-grid \{[^}]*repeat\(2, minmax\(0, 1fr\)\)/);
+});
+
+test('every card names its line, so two lines never share a title', () => {
+  const card = readFileSync(resolve('app/components/ClothingProductCard.tsx'), 'utf8');
+  assert.match(card, /<p className="clothing-card-line" aria-hidden="true">/);
+  // Screen readers hear the line inside the title link instead.
+  assert.match(card, /<span className="sr-only">, \{line\}<\/span>/);
+});
+
+test('retired Quiet Current pages redirect to /clothing, published or not', async () => {
+  const {isRetiredClothingHandle, RETIRED_CLOTHING_PRODUCTS} = await import('../app/lib/clothing.ts');
+  assert.deepEqual([...RETIRED_CLOTHING_PRODUCTS], [
+    'quiet-current-high-waist-leggings',
+    'quiet-current-studio-bra',
+    'quiet-current-high-waist-biker-shorts',
+    'quiet-current-studio-tank',
+  ]);
+  assert.equal(isRetiredClothingHandle('product', 'Quiet-Current-Studio-Bra'), true);
+  assert.equal(isRetiredClothingHandle('collection', 'quiet-current'), true);
+  assert.equal(isRetiredClothingHandle('product', 'counter-diagonal-tee'), false);
+  // Both routes redirect before they query Shopify.
+  const pdp = readFileSync(resolve('app/routes/products.$handle.tsx'), 'utf8');
+  assert.match(pdp, /if \(isRetiredClothingHandle\('product', handle\)\) \{\s*throw redirect\('\/clothing', 301\);/);
+  const collection = readFileSync(resolve('app/routes/collections.$handle.tsx'), 'utf8');
+  assert.match(collection, /if \(isRetiredClothingHandle\('collection', handle\)\) \{\s*throw redirect\('\/clothing', 301\);/);
+});
+
+test('line chips count inside the chosen tab and drop empty lines', async () => {
+  const {clothingLineChips} = await import('../app/lib/clothingPresentation.ts');
+  assert.deepEqual(clothingLineChips(newestFirst, ''), [
+    {handle: 'counter-diagonal', title: 'Counter-Diagonal', count: 2},
+    {handle: 'rhythm', title: 'Rhythm', count: 1},
+    {handle: 'suprema', title: 'Suprema', count: 2},
+    {handle: 'sea-line', title: 'Sea Line', count: 1},
+  ]);
+  // Hoodies only: Rhythm and Sea Line have none, so they drop out.
+  assert.deepEqual(clothingLineChips(newestFirst, 'hoodies-sweatshirts').map((chip) => `${chip.handle}:${chip.count}`), ['counter-diagonal:1', 'suprema:1']);
+});
+
+test('old single-category links open their group; unknown values open nothing', async () => {
+  const {clothingGroupSlug} = await import('../app/lib/clothing.ts');
+  assert.equal(clothingGroupSlug('hoodies'), 'hoodies-sweatshirts');
+  assert.equal(clothingGroupSlug('Sweatshirts'), 'hoodies-sweatshirts');
+  assert.equal(clothingGroupSlug('t-shirts'), 'tees-long-sleeves');
+  assert.equal(clothingGroupSlug('long-sleeves'), 'tees-long-sleeves');
+  assert.equal(clothingGroupSlug('leggings'), 'activewear');
+  assert.equal(clothingGroupSlug('accessories'), 'accessories');
+  assert.equal(clothingGroupSlug('tees-long-sleeves'), 'tees-long-sleeves');
+  assert.equal(clothingGroupSlug('bogus'), null);
+  assert.equal(clothingGroupSlug(''), null);
+});
+
+test('/artists lists the clothing artists apart, as "Clothing inspired by", never as museum works', async () => {
+  const {CLOTHING_ARTISTS} = await import('../app/lib/clothingArtists.ts');
+  assert.deepEqual(CLOTHING_ARTISTS.map((artist) => [artist.capsule, artist.name]), [
+    ['counter-diagonal', 'Theo van Doesburg'],
+    ['free-abyss', 'Kazimir Malevich'],
+    ['circle-rhythm', 'Sophie Taeuber-Arp'],
+  ]);
+  for (const artist of CLOTHING_ARTISTS) {
+    assert.match(artist.note, /our own/, artist.name);
+    assert.doesNotMatch(artist.note, /\bart by\b|reproduction of (?!a|any)|museum/i, artist.name);
+    assert.match(artist.meta[0], /^\d{4}–\d{4}$/, artist.name);
+  }
+  const page = readFileSync(resolve('app/routes/artists._index.tsx'), 'utf8');
+  assert.match(page, /Clothing inspired by\s*<\/h2>/);
+  assert.match(page, /<h2 className="artists-group-title">Museum works<\/h2>/);
+  // Each clothing row opens its line's collection.
+  assert.match(page, /path: `\/collections\/\$\{entry\.capsule\}`/);
 });

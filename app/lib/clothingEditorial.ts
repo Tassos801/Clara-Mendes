@@ -59,7 +59,7 @@ export type CapsuleStory = {
 
 export const CLOTHING_PAGE_HERO = {
   title: 'Clothing, with an artistic touch.',
-  text: 'Leggings, a sports bra, biker shorts and a tank top, printed with a soft watercolour-style design in two colourways.',
+  text: 'Original designs inspired by modern artists, made for you after you order.',
 };
 
 const CAPSULE_STORIES: Record<string, CapsuleStory> = {
@@ -189,26 +189,6 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
       className: 'clothing-hero-art clothing-hero-art--emblem',
     },
   },
-  'quiet-current': {
-    intro:
-      'A digital, watercolour-style design inspired by the layered ridges in Clara Mendes’ print Where Mist Rests. Each piece is mostly solid colour, with soft washes at the sides or along the outer leg. The leggings and biker shorts add a fern.',
-    // Recoloured from the same wash layers printed on the garments
-    // (assets/clothing/README.md). Plain JPEG copies, like
-    // CLOTHING_PAGE_ACCENT; the band is flattened onto white, which its
-    // multiply blend shows the same as transparency.
-    band: {
-      src: '/images/clothing/mineral-strata-moss.w1600.jpg',
-      width: 1600,
-      height: 533,
-    },
-    looksImage: {
-      src: '/images/clothing/quiet-current-looks.w1280.jpg',
-      width: 1280,
-      height: 941,
-      alt: 'Quiet Current sports bra and leggings in Moss / Mist, and tank top and leggings in Clay / Oat',
-      caption: 'Quiet Current in Moss / Mist and Clay / Oat. Digital mockups.',
-    },
-  },
 };
 
 export function capsuleStory(handle?: string | null): CapsuleStory | null {
@@ -277,9 +257,10 @@ export function capsuleStoryData(
 }
 
 /**
- * The /clothing hero: the lead capsule's own hero when it has one; a generic
- * one, named after the collection, for a capsule without an entry here;
- * else the long-standing page hero (the Quiet Current wording).
+ * The /clothing hero with a single line: the lead capsule's own hero when it
+ * has one; a generic one, named after the collection, for a capsule without
+ * an entry here; else the page's general wording. With several lines the
+ * page uses clothingLinesHero instead.
  */
 export function clothingPageHero(
   handle: string | null | undefined,
@@ -307,6 +288,41 @@ export function clothingPageHero(
     title: CLOTHING_PAGE_HERO.title,
     text: CLOTHING_PAGE_HERO.text,
     cta: 'Shop clothing',
+  };
+}
+
+const NUMBER_WORDS = ['', 'one', 'two', 'three', 'four', 'five', 'six'];
+
+function listWords(words: readonly string[]) {
+  if (words.length < 2) return words.join('');
+  return `${words.slice(0, -1).join(', ')} and ${words.at(-1)}`;
+}
+
+/** "Theo van Doesburg" from "Inspired by Theo van Doesburg". */
+export function inspiredByName(credit?: string | null) {
+  const name = credit?.match(/^Inspired by (.+)$/i)?.[1]?.trim();
+  return name || null;
+}
+
+/**
+ * The /clothing hero once several lines are on sale: it names every line
+ * and, when each carries an "Inspired by" credit, the artists, so no line
+ * is left out of the page's first words.
+ */
+export function clothingLinesHero(
+  lines: Array<{title: string; credit?: string | null}>,
+  madeToOrder: boolean,
+) {
+  const artists = lines.map((line) => inspiredByName(line.credit));
+  const count = NUMBER_WORDS[lines.length] ?? String(lines.length);
+  const inspired = artists.every(Boolean)
+    ? `, inspired by ${listWords(artists as string[])}`
+    : '';
+  return {
+    eyebrow: `${count[0].toUpperCase()}${count.slice(1)} lines · Made to order`,
+    title: CLOTHING_PAGE_HERO.title,
+    text: `${listWords(lines.map((line) => line.title))}: ${count} original designs${inspired}.${madeToOrder ? ' Made for you after you order.' : ''}`,
+    cta: 'Shop all clothing',
   };
 }
 

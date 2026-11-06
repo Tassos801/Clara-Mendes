@@ -1,5 +1,13 @@
 # Quiet Current activewear — launch record
 
+> **Retired 2026-11-06** (owner: "get rid of the yoga stuff"; artist
+> activewear may follow later). The four release flags are `false`, so the
+> products list nowhere (grid, search, feeds, sitemap) even while
+> published; the four product pages and `/collections/quiet-current`
+> redirect to `/clothing` (`RETIRED_CLOTHING_PRODUCTS` and
+> `RETIRED_CLOTHING_COLLECTIONS` in `app/lib/clothing.ts`). The record
+> below is kept as history.
+
 Four Printful all-over-print products (leggings #302, studio bra #001A, biker shorts #308, studio tank #121), each in Moss / Mist and Clay / Oat, XS–XL (40 variants). The v2 "Mineral Wash" artwork and review live outside the repo in `Desktop/Clara-Mendes-Movement-Review-2026-10-07/v2`; the print files themselves are in the Printful File library as `qc2f*-{clay|moss}-{302|001A|308|121}-*.png`.
 
 The storefront shows a product only when both gates are open: its handle is `true` in `PRODUCT_RELEASE_FLAGS` (`app/lib/catalogFilters.ts`), and it is Active and published to the storefront channel in Shopify.

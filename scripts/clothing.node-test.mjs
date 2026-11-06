@@ -30,8 +30,9 @@ test('garment classification uses exact types or explicit merchant tag, never fu
   assert.equal(isClothingProduct({productType: 'Yoga Leggings Poster'}), false);
   assert.equal(isClothingProductType(' dresses '), true);
   assert.equal(isClothingProductType('Dress Art Print'), false);
+  // Tabs are broad groups of the categories, in page order.
   assert.deepEqual(clothingCategories([future, future, {productType: 'Studio Top'}]), [
-    {slug: 'tops', label: 'Tops', count: 1}, {slug: 'dresses', label: 'Dresses', count: 2},
+    {slug: 'tees-long-sleeves', label: 'Tees & long sleeves', count: 1}, {slug: 'dresses-bottoms', label: 'Dresses & bottoms', count: 2},
   ]);
 });
 
@@ -39,7 +40,8 @@ test('capsules use explicit collection metadata and actual membership, excluding
   assert.deepEqual(clothingCapsules([future, {...future, collections: {nodes: [{...capsule, handle: 'clothing', title: 'Clothing'}, capsule, capsule, {...capsule, handle: 'dresses', title: 'Dresses'}, {handle: 'all', title: 'Shop All'}, {...capsule, handle: 'unknown', clothingKind: {value: 'capsule'}}]}}]), [{handle: 'meadow', title: 'Meadow', count: 2}]);
   assert.deepEqual(clothingCapsules([{productType: 'Dresses', tags: ['Meadow'], title: 'Meadow Dress'}]), []);
   assert.equal(isClothingCategoryCollection({handle: 'new-leggings', title: 'Leggings'}), true);
-  assert.deepEqual(clothingCapsules([{...future, collections: {nodes: [{handle: 'quiet-current', title: 'Quiet Current'}]}}]), [{handle: 'quiet-current', title: 'Quiet Current', count: 1}]);
+  // Quiet Current is retired: never a capsule, even if tagged one.
+  assert.deepEqual(clothingCapsules([{...future, collections: {nodes: [{handle: 'quiet-current', title: 'Quiet Current', clothingKind: {type: 'single_line_text_field', value: 'capsule'}}]}}]), []);
 });
 
 test('future collections require an actual listed member; hidden, empty and legacy groups fail closed', () => {
@@ -72,19 +74,22 @@ test('off-theme, unfulfillable and protected staged products cannot bypass gates
   assert.equal(isListedProduct({...future, handle: ''}), false);
 });
 
-test('the four released Quiet Current products retain visibility with their real false approvals', () => {
+test('the four retired Quiet Current products list nowhere, published or not', () => {
   const existing = readJson('docs/audits/clothing-catalog-2026-10-08.json').clothing;
   assert.equal(existing.length, 4);
   for (const product of existing) {
-    assert.equal(PRODUCT_RELEASE_FLAGS[product.handle], true);
-    assert.equal(hasClothingApprovals(product), false);
-    assert.equal(isListedProduct(product), true);
+    assert.equal(PRODUCT_RELEASE_FLAGS[product.handle], false);
+    assert.equal(isListedProduct(product), false);
+    // Even with both approvals set, the false flag keeps them off.
+    assert.equal(isListedProduct({...product, storefrontApproved: {type: 'boolean', value: 'true'}, fulfillmentVerified: {type: 'boolean', value: 'true'}}), false);
   }
 });
 
 test('category query values cannot inject extra Shopify search conditions', () => {
   assert.match(buildClothingSearchQuery(), /tag:"clara-mendes-clothing"/);
-  assert.equal(buildClothingSearchQuery({category: 'leggings'}), '(product_type:"Yoga Leggings" OR product_type:"Leggings")');
+  // A single category in an old link widens to its group.
+  assert.equal(buildClothingSearchQuery({category: 'leggings'}), '(product_type:"Yoga Leggings" OR product_type:"Leggings" OR product_type:"Sports Bra" OR product_type:"Sports Bras" OR product_type:"Bras" OR product_type:"Biker Shorts" OR product_type:"Shorts")');
+  assert.equal(buildClothingSearchQuery({category: 'accessories'}), '(product_type:"Hats" OR product_type:"Caps" OR product_type:"Beanies" OR product_type:"Tote Bags")');
   assert.equal(buildClothingSearchQuery({category: 'leggings" OR *'}), 'tag:"__unknown-clothing-category__"');
 });
 
@@ -221,7 +226,7 @@ const garment = (handle, title, productType, colours, sizes = ['XS', 'S', 'M', '
   id: `gid://shopify/Product/${handle}`, handle, title, productType,
   tags: ['Activewear', 'Made to order', 'Quiet Current'],
   featuredImage: null, priceRange: {minVariantPrice: {amount: '50.0', currencyCode: 'EUR'}},
-  collections: {nodes: [{handle: 'quiet-current', title: 'Quiet Current', clothingKind: null}]},
+  collections: {nodes: [{handle: 'quiet-current-fixture', title: 'Quiet Current', clothingKind: {type: 'single_line_text_field', value: 'capsule'}}]},
   options: [
     {name: 'Colour', optionValues: colours.map((name) => ({name, swatch: null, firstSelectableVariant: variantFor(handle, name)}))},
     {name: 'Size', optionValues: sizes.map((name) => ({name, swatch: null, firstSelectableVariant: null}))},
@@ -281,18 +286,29 @@ test('palette colourways get split swatches; unknown names fall back to text', (
 });
 
 test('editorial copy is optional per capsule and never calls the print hand-painted', () => {
-  const story = capsuleStory('quiet-current');
-  assert.ok(story?.intro);
+  // Quiet Current is retired: no editorial entry.
+  assert.equal(capsuleStory('quiet-current'), null);
   assert.equal(capsuleStory('meadow'), null);
-  const copy = [CLOTHING_PAGE_HERO.title, CLOTHING_PAGE_HERO.text, story.intro, story.looksImage.alt, story.looksImage.caption].join(' ');
-  assert.doesNotMatch(copy, /hand-?painted|painted on|paintings? printed/i);
-  assert.match(story.looksImage.caption, /digital mockups/i);
+  for (const handle of ['counter-diagonal', 'free-abyss', 'circle-rhythm']) {
+    const story = capsuleStory(handle);
+    assert.ok(story?.intro, handle);
+    const copy = [CLOTHING_PAGE_HERO.title, CLOTHING_PAGE_HERO.text, story.intro, story.looksImage.alt, story.looksImage.caption].join(' ');
+    assert.doesNotMatch(copy, /hand-?painted|painted on|paintings? printed/i, handle);
+    assert.match(story.looksImage.caption, /digital mockups/i, handle);
+  }
+  // The general hero names no retired activewear.
+  assert.doesNotMatch(CLOTHING_PAGE_HERO.text, /leggings|bra|biker|watercolour/i);
 });
 
 test('every page image the editorial config names exists in public/', async () => {
   const {existsSync} = await import('node:fs');
-  const story = capsuleStory('quiet-current');
-  for (const src of [story.looksImage.src, story.band.src, CLOTHING_PAGE_ACCENT.src, lookAccent('Moss / Mist'), lookAccent('Clay / Oat'), '/images/clothing/olive-mineral.webp']) {
+  for (const handle of ['counter-diagonal', 'free-abyss', 'circle-rhythm']) {
+    const story = capsuleStory(handle);
+    for (const src of [story.looksImage.src, story.band.src, story.accent.src]) {
+      assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+    }
+  }
+  for (const src of [CLOTHING_PAGE_ACCENT.src, lookAccent('Moss / Mist'), lookAccent('Clay / Oat'), '/images/clothing/olive-mineral.webp']) {
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
 });

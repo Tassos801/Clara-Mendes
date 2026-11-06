@@ -2,6 +2,7 @@ import {useState, type CSSProperties} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {Link} from 'react-router';
 import type {ClothingProduct} from '~/lib/clothing.server';
+import {clothingLineTitle} from '~/lib/clothing';
 import {
   clothingColorOptions,
   clothingDisplayImage,
@@ -13,11 +14,16 @@ import {
 } from '~/lib/clothingPresentation';
 
 /**
- * Swatches a card shows before "+N": five fit a phone card (44 px targets)
- * on two rows at most; the product page offers every colour.
+ * Swatches a card shows before "+N": four fit one row of a two-column
+ * phone card (32 px targets); the product page offers every colour.
  */
-export const CARD_SWATCH_LIMIT = 5;
+export const CARD_SWATCH_LIMIT = 4;
 
+/**
+ * One garment: its line ("Free Abyss") over its name, so two lines' hoodies
+ * never read the same; price and sizes on one line; colour swatches that
+ * switch the image. The image and the title both open the product page.
+ */
 export function ClothingProductCard({
   product,
   eager = false,
@@ -32,17 +38,13 @@ export function ClothingProductCard({
   const price = clothingDisplayPrice(product, selected);
   const href = clothingProductUrl(product, selected);
   const title = clothingDisplayTitle(product);
+  const line = clothingLineTitle(product);
   const sizes = clothingSizeRange([product]);
-  // One-size pieces (caps, beanies, totes) have no size to choose.
-  const choosesSize =
-    (product.options.find((option) => /^size$/i.test(option.name))?.optionValues
-      .length ?? 0) > 1;
-  const cta = choosesSize ? 'Choose size' : 'View piece';
   const titleId = `clothing-card-${product.handle}`;
   return (
     <article className="clothing-card" aria-labelledby={titleId}>
-      {/* The title and "Choose size" links carry the name for keyboard and
-          screen-reader users; the image link is a larger pointer target. */}
+      {/* The title link carries the name for keyboard and screen-reader
+          users; the image link is a larger pointer target. */}
       <Link
         to={href}
         prefetch="intent"
@@ -55,7 +57,7 @@ export function ClothingProductCard({
             data={image}
             alt=""
             aspectRatio="4/5"
-            sizes="(min-width: 1100px) 24vw, (min-width: 600px) 31vw, 46vw"
+            sizes="(min-width: 1024px) 23vw, (min-width: 600px) 31vw, 46vw"
             loading={eager ? 'eager' : 'lazy'}
           />
         ) : (
@@ -63,17 +65,33 @@ export function ClothingProductCard({
         )}
       </Link>
       <div className="clothing-card-heading">
+        {line ? (
+          <p className="clothing-card-line" aria-hidden="true">
+            {line}
+          </p>
+        ) : null}
         <h3 id={titleId}>
           <Link to={href} prefetch="intent">
             {title}
+            {line ? <span className="sr-only">, {line}</span> : null}
           </Link>
         </h3>
-        {price ? (
-          <p className="clothing-card-price">
-            {new Intl.NumberFormat('en-IE', {
-              style: 'currency',
-              currency: price.currencyCode,
-            }).format(Number(price.amount))}
+        {price || sizes ? (
+          <p className="clothing-card-meta">
+            {price ? (
+              <span className="clothing-card-price">
+                {new Intl.NumberFormat('en-IE', {
+                  style: 'currency',
+                  currency: price.currencyCode,
+                }).format(Number(price.amount))}
+              </span>
+            ) : null}
+            {sizes ? (
+              <span className="clothing-card-sizes">
+                <span className="sr-only">Sizes </span>
+                {sizes}
+              </span>
+            ) : null}
           </p>
         ) : null}
       </div>
@@ -136,17 +154,6 @@ export function ClothingProductCard({
           </span>
         </div>
       ) : null}
-      <div className="clothing-card-footer">
-        {sizes ? <span>Sizes {sizes}</span> : <span />}
-        <Link
-          to={href}
-          prefetch="intent"
-          className="clothing-card-cta"
-          aria-label={`${cta}: ${title}${color ? `, ${color.name}` : ''}`}
-        >
-          {cta} <span aria-hidden="true">→</span>
-        </Link>
-      </div>
     </article>
   );
 }

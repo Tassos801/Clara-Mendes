@@ -51,7 +51,7 @@ export const FEED_CURRENCY: Record<FeedMarket, string> = {CY: 'EUR', US: 'USD'};
 // title of the product's capsule collection (the same rule as /clothing, so
 // a new artist capsule carries its name), else a capsule tag from the
 // shared product contract.
-export const CAPSULE_TAGS = ['Counter-Diagonal', 'Quiet Current'] as const;
+export const CAPSULE_TAGS = ['Counter-Diagonal'] as const;
 
 export type FeedVariant = {
   id: string;

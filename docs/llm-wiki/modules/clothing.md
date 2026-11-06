@@ -83,6 +83,13 @@ Before/after map and prepared Shopify changes:
   gets a generic block from its Shopify collection (description as intro,
   image as hero image, hero named after it; `loadCapsuleSummaries`). Copy rules and evidence:
   [Copy evidence](../../clothing-destination.md#copy-evidence).
+- Page (2026-11-06, compact): a short hero naming every line; one filter
+  bar with line chips (`?capsule=`) and grouped tabs (`?category=`,
+  `CATEGORY_GROUPS`) that narrow each other; cards with their line above
+  the title; 4/3/2 columns (desktop/tablet/phone); compact line tiles;
+  24 pieces per page. Quiet Current is retired: flags false, its pages
+  redirect to `/clothing`. `/artists` has a "Clothing inspired by" group
+  (`app/lib/clothingArtists.ts`).
 - Capsules (2026-11-06): any published collection with
   `custom.collection_kind = capsule` holding a listed garment
   (`isClothingCapsuleCollection`); `counter-diagonal` and the legacy

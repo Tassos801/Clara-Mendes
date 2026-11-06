@@ -263,16 +263,16 @@ export const PRODUCT_RELEASE_FLAGS: Record<string, boolean> = {
   // approved €39.99 with €4.95 EU / €3.99 CY shipping ("Phone cases"
   // profile); the first live order is the first physical QC.
   [TOUGH_CASE_HANDLE]: true,
-  // Quiet Current activewear (Printful AOP #302 / #001A / #308 / #121), v2
-  // "Mineral Wash" artwork. Owner authorized launch on 2026-10-07 after
-  // all 40 variants were mapped, billing added and EUR shipping verified.
-  // Publish the products after this flag deployment; type tabs appear as
-  // soon as the flags are live. Owner declined samples; the first order
-  // is the first physical QC. See docs/quiet-current-release.md.
-  'quiet-current-high-waist-leggings': true,
-  'quiet-current-studio-bra': true,
-  'quiet-current-high-waist-biker-shorts': true,
-  'quiet-current-studio-tank': true,
+  // Quiet Current activewear, launched 2026-10-07, RETIRED 2026-11-06
+  // (owner: "get rid of the yoga stuff"; artist activewear may follow).
+  // false keeps it off every listing, feed, search and the sitemap even
+  // while still published; its pages redirect to /clothing
+  // (RETIRED_CLOTHING_PRODUCTS in clothing.ts). See
+  // docs/quiet-current-release.md.
+  'quiet-current-high-waist-leggings': false,
+  'quiet-current-studio-bra': false,
+  'quiet-current-high-waist-biker-shorts': false,
+  'quiet-current-studio-tank': false,
   // Counter-Diagonal (Inspired by Theo van Doesburg), launched 2026-11-05.
   // The line's garments list through the future-garment path (type or the
   // clara-mendes-clothing tag, plus both approval metafields true), so they
@@ -569,18 +569,6 @@ export function isDemoCollection(collection: CatalogCollectionLike) {
     return hasProductSample;
   }
 
-  // Quiet Current is a real Shopify collection, not an art capsule. Let
-  // the route fetch it when a member releases, then keep the same empty
-  // collection guard after Shopify returns the published product sample.
-  if (
-    handle === 'quiet-current' &&
-    Object.entries(PRODUCT_RELEASE_FLAGS).some(
-      ([productHandle, released]) =>
-        released && productHandle.startsWith('quiet-current-'),
-    )
-  ) {
-    return hasProductSample;
-  }
   // Counter-Diagonal's members are approved by metafield, which no flag can
   // show before the query, so its route always fetches; the empty-sample
   // check above still hides it until Shopify returns a listed garment.

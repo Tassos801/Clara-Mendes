@@ -1,13 +1,18 @@
 import {
   clothingCategory,
+  clothingCategoryGroup,
   clothingCapsuleOrder,
   clothingCapsules,
   clothingCategoryRank,
+  clothingGroupSlug,
 } from './clothing.ts';
 import type {ClothingProduct} from './clothing.server';
 import {garmentColourHex, isColourOptionName} from './garmentColours.ts';
 
-export const CLOTHING_PAGE_SIZE = 12;
+/** Six rows of four on desktop before "Show more". */
+export const CLOTHING_PAGE_SIZE = 24;
+/** "Show more" for this many pieces or fewer would be a stub: show them. */
+export const CLOTHING_PAGE_SLACK = 8;
 export const CLOTHING_SORTS = [
   {value: 'featured', label: 'Featured'},
   {value: 'newest', label: 'Newest first'},
@@ -40,20 +45,51 @@ export function featuredClothingOrder<T extends ClothingProduct>(
   );
 }
 
+/** In a line? An empty handle means every line. */
+export function inClothingLine(product: ClothingProduct, capsule: string) {
+  return (
+    !capsule ||
+    product.collections.nodes.some((item) => item.handle === capsule)
+  );
+}
+
+/** In a tab? An empty slug means every group. */
+export function inClothingGroup(product: ClothingProduct, category: string) {
+  return !category || clothingCategoryGroup(product)?.slug === category;
+}
+
+/**
+ * Line filter chips with counts inside the chosen tab, so the line and
+ * the tab narrow together. A line with nothing in this tab drops out.
+ */
+export function clothingLineChips(
+  products: ClothingProduct[],
+  category: string,
+) {
+  const inTab = products.filter((product) => inClothingGroup(product, category));
+  return clothingCapsules(products)
+    .map((capsule) => ({
+      handle: capsule.handle,
+      title: capsule.title,
+      count: inTab.filter((product) => inClothingLine(product, capsule.handle))
+        .length,
+    }))
+    .filter((chip) => chip.count > 0);
+}
+
 export function selectClothing(
   products: ClothingProduct[],
   params: URLSearchParams,
 ) {
-  const category = params.get('category') || '';
+  // Old links name a single category (`hoodies`); they open its group.
+  const category = clothingGroupSlug(params.get('category')) ?? '';
   const capsule = params.get('capsule') || '';
   const sort = CLOTHING_SORTS.some((item) => item.value === params.get('sort'))
     ? params.get('sort')!
     : DEFAULT_CLOTHING_SORT;
   let filtered = products.filter(
     (product) =>
-      (!category || clothingCategory(product)?.slug === category) &&
-      (!capsule ||
-        product.collections.nodes.some((item) => item.handle === capsule)),
+      inClothingGroup(product, category) && inClothingLine(product, capsule),
   );
   if (sort === 'featured') filtered = featuredClothingOrder(filtered);
   else if (sort !== 'newest') {
@@ -69,14 +105,18 @@ export function selectClothing(
     Number.isSafeInteger(requested) && requested > 0 ? requested : 1,
     maxPage,
   );
+  const shown =
+    filtered.length - page * CLOTHING_PAGE_SIZE <= CLOTHING_PAGE_SLACK
+      ? filtered.length
+      : page * CLOTHING_PAGE_SIZE;
   return {
     category,
     capsule,
     sort,
     page,
     total: filtered.length,
-    products: filtered.slice(0, page * CLOTHING_PAGE_SIZE),
-    hasMore: page < maxPage,
+    products: filtered.slice(0, shown),
+    hasMore: shown < filtered.length,
   };
 }
 
@@ -111,7 +151,6 @@ export function clothingFilterUrl(
   next.delete('page');
   if (value) next.set(key, value);
   else next.delete(key);
-  if (key === 'category' && !value) next.delete('capsule');
   return `/clothing${next.size ? `?${next}` : ''}#pieces`;
 }
 

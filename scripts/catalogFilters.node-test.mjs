@@ -116,10 +116,6 @@ assert.deepEqual(releasedExtensionProductTypes(), [
   'Canvas Art',
   'Phone Cases',
   'Plant Pots',
-  'Yoga Leggings',
-  'Sports Bra',
-  'Biker Shorts',
-  'Studio Top',
 ]);
 assert.deepEqual(releasedExtensionProductTypes({}, {}), []);
 assert.equal(
@@ -230,14 +226,9 @@ withFlags({[BLANKET_HANDLE]: true}, () => {
 assert.equal(isReleasedExtensionHandle('fine-art-greeting-card'), true);
 assert.equal(isReleasedExtensionHandle(BLANKET_HANDLE), false);
 
-// The collection route calls this handle-only guard before querying Shopify.
-// Quiet Current must be reachable after its release, while an unpublished
-// empty result and unrelated releases must not open the collection.
-assert.equal(isDemoCollection({handle: 'quiet-current'}), false);
-assert.equal(
-  isDemoCollection({handle: 'quiet-current', products: {nodes: []}}),
-  true,
-);
+// Quiet Current is retired (2026-11-06): its collection stays hidden even
+// with a published member in the sample, and its products list nowhere.
+assert.equal(isDemoCollection({handle: 'quiet-current'}), true);
 assert.equal(
   isDemoCollection({
     handle: 'quiet-current',
@@ -251,18 +242,16 @@ assert.equal(
       ],
     },
   }),
-  false,
+  true,
 );
-withFlags(
-  {'art-tough-phone-case': true},
-  () => assert.equal(isDemoCollection({handle: 'quiet-current'}), true),
-  PRODUCT_RELEASE_FLAGS,
-);
-withFlags(
-  {'quiet-current-studio-tank': true},
-  () => assert.equal(isDemoCollection({handle: 'quiet-current'}), false),
-  PRODUCT_RELEASE_FLAGS,
-);
+for (const handle of [
+  'quiet-current-high-waist-leggings',
+  'quiet-current-studio-bra',
+  'quiet-current-high-waist-biker-shorts',
+  'quiet-current-studio-tank',
+]) {
+  assert.equal(PRODUCT_RELEASE_FLAGS[handle], false, handle);
+}
 
 assert.equal(
   isDemoCollection({

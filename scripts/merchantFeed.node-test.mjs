@@ -160,12 +160,23 @@ const CATALOG = [
     MUSEUM,
     [variant('CM-FW-01-CASE-IPHONE-13', {Device: 'iPhone 13'}, '35.99')],
   ),
+  // Activewear listed through its approvals (the retired Quiet Current
+  // tank, below, never reaches a feed).
   product(
-    'quiet-current-studio-tank',
+    'studio-tank-fixture',
     'Studio Tank',
     'Studio Top',
-    ['Activewear', 'Made to order', 'Quiet Current'],
+    ['clara-mendes-clothing', 'Activewear', 'Made to order'],
     [variant('CM-QC-121-MM-XS', {Colour: 'Moss / Mist', Size: 'XS'}, '55')],
+    APPROVED,
+  ),
+  product(
+    'quiet-current-studio-tank',
+    'Quiet Current Studio Tank',
+    'Studio Top',
+    ['Activewear', 'Made to order', 'Quiet Current'],
+    [variant('CM-QC-RETIRED', {Colour: 'Moss / Mist', Size: 'XS'}, '55')],
+    APPROVED,
   ),
   product(
     'counter-diagonal-premium-hoodie',
@@ -200,7 +211,7 @@ const EU_QUOTES = {
   'cushion-cover': '4.48',
   'cushion-insert': '12.39',
   blanket: '6.55',
-  'apparel:quiet-current-studio-tank': '4.95',
+  'apparel:studio-tank-fixture': '4.95',
   'apparel:counter-diagonal-premium-hoodie': '6.71',
   'apparel:counter-diagonal-cap': '4.59',
 };
@@ -209,7 +220,7 @@ const PRINTFUL_EUR = {
   includeUs: true,
   quotes: {
     eu: EU_QUOTES,
-    cyprus: {...EU_QUOTES, 'apparel:quiet-current-studio-tank': '3.99'},
+    cyprus: {...EU_QUOTES, 'apparel:studio-tank-fixture': '3.99'},
   },
 };
 
@@ -255,7 +266,7 @@ test('the Printful feed lists mugs, cushions, blankets and listed clothing', () 
       ['CM-FW-01-MUG11-PF', 'mug', 'mug'],
       ['CM-FW-01-CUSH18-C', 'cushion-cover', 'cushion-cover'],
       ['CM-FW-01-CUSH18-I', 'cushion-insert', 'cushion-insert'],
-      ['CM-QC-121-MM-XS', 'apparel', 'apparel:quiet-current-studio-tank'],
+      ['CM-QC-121-MM-XS', 'apparel', 'apparel:studio-tank-fixture'],
       ['CD-HOOD-M', 'apparel', 'apparel:counter-diagonal-premium-hoodie'],
       ['CD-HOOD-L', 'apparel', 'apparel:counter-diagonal-premium-hoodie'],
       ['CD-CAP', 'apparel', 'apparel:counter-diagonal-cap'],
@@ -291,7 +302,10 @@ test('clothing carries the apparel attributes and its capsule label', () => {
   const tank = items['CM-QC-121-MM-XS'];
   assert.equal(tank.gender, 'female');
   assert.equal(tank.color, 'Moss / Mist');
-  assert.equal(tank.custom_label_0, 'Quiet Current');
+  // In no capsule collection and with no capsule tag: no label.
+  assert.equal(tank.custom_label_0, '');
+  // The retired Quiet Current tank never feeds, even approved.
+  assert.equal(items['CM-QC-RETIRED'], undefined);
   assert.equal(
     tank.google_product_category,
     'Apparel & Accessories > Clothing > Activewear',
@@ -461,7 +475,7 @@ test('the USD feeds list the US only, at quoted US rates and ?country=US links',
         mug: '5.99',
         'cushion-cover': '5.49',
         'cushion-insert': '13.49',
-        'apparel:quiet-current-studio-tank': '5.49',
+        'apparel:studio-tank-fixture': '5.49',
         'apparel:counter-diagonal-premium-hoodie': '8.79',
         'apparel:counter-diagonal-cap': '4.69',
       },

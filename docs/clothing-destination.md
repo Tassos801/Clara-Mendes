@@ -116,6 +116,24 @@ Art Canvas Tote uses that type and must not appear on `/clothing`.
 A garment admitted only by the tag, with a type that is not in the table, is
 shown under a category called "Clothing". Use a listed type when you can.
 
+### The tabs shoppers see (2026-11-06)
+
+`/clothing` merges the categories into a few groups (`CATEGORY_GROUPS` in
+`app/lib/clothing.ts`), in this order: **Hoodies & sweatshirts** (hoodies,
+sweatshirts, knitwear, outerwear), **Tees & long sleeves** (t-shirts, long
+sleeves, tops), **Activewear** (leggings, bras, shorts), **Dresses &
+bottoms**, **Accessories**, and **More clothing** for tag-only garments. A
+group with no listed piece never shows. An old link that names one
+category (`?category=hoodies`) opens its group.
+
+Above the tabs, **line chips** (All lines, Counter-Diagonal, Free Abyss,
+Circle Rhythm, …) filter by capsule. Both filters live in the URL
+(`?capsule=free-abyss&category=tees-long-sleeves`) and narrow each other:
+the tab counts are inside the chosen line, and the line chips inside the
+chosen tab. Every card names its line above its title. The lines follow as
+compact tiles (looks image, band, name, "Inspired by …", links), not as
+full sections.
+
 ## Add a new garment (no code change)
 
 1. **Create the product** in Shopify Admin. Give it a colour option named
