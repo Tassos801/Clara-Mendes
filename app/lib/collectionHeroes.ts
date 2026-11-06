@@ -37,7 +37,9 @@ const HEROES: Record<string, HeroEntry> = {
     alt: 'Quiet Current studio bra and leggings in Moss / Mist, and tank and leggings in Clay / Oat, laid on the collection’s mist-and-fern print',
   },
   // Our own composition: credit "Inspired by Theo van Doesburg", never "Art
-  // by". Images: scripts/build-counter-diagonal-art.mjs (Printful mockups).
+  // by". Images: scripts/build-counter-diagonal-art.mjs (Printful mockups;
+  // the hoodie back carries the official logo credit since 2026-11-06, see
+  // clothingEditorial.ts).
   // No money in the subtitle, so it reads the same in every market.
   'counter-diagonal': {
     eyebrow: 'Clothing · Inspired by Theo van Doesburg',

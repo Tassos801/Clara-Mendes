@@ -297,3 +297,11 @@ test('Free Abyss credits Kazimir Malevich as inspiration, with brand-free art', 
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
 });
+
+test('a capsule section without a colourway chooser shows its looks image', () => {
+  const route = readFileSync(resolve('app/routes/clothing.tsx'), 'utf8');
+  assert.match(route, /collection\.colourways\.length <= 1 && collection\.story\?\.looksImage \? \(\s*<figure className="clothing-collection-looks">/);
+  // Below the fold, so it never competes with the hero for bandwidth.
+  assert.match(route, /<figure className="clothing-collection-looks">[\s\S]*?loading="lazy"/);
+  assert.match(readFileSync(resolve('app/styles/clothing.css'), 'utf8'), /\.clothing-collection-looks img \{/);
+});

@@ -467,6 +467,24 @@
 .clothing-collection-copy .clothing-text-link {
   margin-top: 10px;
 }
+/* A capsule's looks image, where it has no colourway chooser. */
+.clothing-collection-looks {
+  align-self: center;
+  margin: 0;
+}
+.clothing-collection-looks img {
+  aspect-ratio: 4 / 3;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  width: 100%;
+}
+.clothing-collection-looks figcaption {
+  color: var(--clothing-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 10px;
+}
 .clothing-colourways h3 {
   font-size: 20px;
 }
