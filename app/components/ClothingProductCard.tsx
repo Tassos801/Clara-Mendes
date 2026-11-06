@@ -12,6 +12,12 @@ import {
   clothingSwatchBackground,
 } from '~/lib/clothingPresentation';
 
+/**
+ * Swatches a card shows before "+N": five fit a phone card (44 px targets)
+ * on two rows at most; the product page offers every colour.
+ */
+export const CARD_SWATCH_LIMIT = 5;
+
 export function ClothingProductCard({
   product,
   eager = false,
@@ -29,8 +35,8 @@ export function ClothingProductCard({
   const sizes = clothingSizeRange([product]);
   // One-size pieces (caps, beanies, totes) have no size to choose.
   const choosesSize =
-    (product.options.find((option) => /^size$/i.test(option.name))
-      ?.optionValues.length ?? 0) > 1;
+    (product.options.find((option) => /^size$/i.test(option.name))?.optionValues
+      .length ?? 0) > 1;
   const cta = choosesSize ? 'Choose size' : 'View piece';
   const titleId = `clothing-card-${product.handle}`;
   return (
@@ -95,7 +101,7 @@ export function ClothingProductCard({
           role="group"
           aria-label={`Colour for ${title}`}
         >
-          {colors.map((item, index) => {
+          {colors.slice(0, CARD_SWATCH_LIMIT).map((item, index) => {
             const tone = clothingSwatchBackground(
               item.name,
               item.swatch?.color,
@@ -115,6 +121,16 @@ export function ClothingProductCard({
               </button>
             );
           })}
+          {colors.length > CARD_SWATCH_LIMIT ? (
+            <Link
+              to={href}
+              prefetch="intent"
+              className="clothing-swatch-more"
+              aria-label={`${colors.length} colours: see all on ${title}`}
+            >
+              +{colors.length - CARD_SWATCH_LIMIT}
+            </Link>
+          ) : null}
           <span className="clothing-color-name" aria-live="polite">
             {color?.name}
           </span>

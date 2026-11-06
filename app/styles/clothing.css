@@ -223,7 +223,9 @@
 .clothing-swatch > span {
   background: var(--swatch);
   border-radius: 50%;
+  /* The inset hairline keeps white and cream fabrics visible. */
   box-shadow:
+    inset 0 0 0 1px rgba(38, 35, 31, 0.2),
     0 0 0 2px var(--color-paper),
     0 0 0 3px transparent;
   height: 22px;
@@ -231,6 +233,7 @@
 }
 .clothing-swatch[aria-pressed='true'] > span {
   box-shadow:
+    inset 0 0 0 1px rgba(38, 35, 31, 0.2),
     0 0 0 2px var(--color-paper),
     0 0 0 3px var(--color-ink);
 }
@@ -241,6 +244,21 @@
 .clothing-swatch--text[aria-pressed='true'] {
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+.clothing-swatch-more {
+  align-items: center;
+  color: var(--clothing-secondary);
+  display: inline-flex;
+  font-size: 13px;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 32px;
+  text-decoration: none;
+}
+.clothing-swatch-more:hover {
+  color: var(--color-ink);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 .clothing-color-name {
   color: var(--clothing-secondary);

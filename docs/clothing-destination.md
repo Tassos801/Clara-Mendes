@@ -121,6 +121,18 @@ shown under a category called "Clothing". Use a listed type when you can.
 1. **Create the product** in Shopify Admin. Give it a colour option named
    `Colour`, `Color` or `Colourway`, and a `Size` option. The page takes the
    card image, price and link for each colour from that colour option.
+   - **Several colours:** set each colour's variant image, and name the
+     colour in the alt text of every image that shows it, as in "Counter-
+     Diagonal Tee in Ivory: back view". The product page then shows only
+     the chosen colour's images, plus the images that name no colour
+     (labels, close-ups). An image of one colour whose alt text names no
+     colour shows with every colour. Write the description without naming
+     one fabric colour.
+   - **Swatches** come from Shopify's own option swatch when one is set,
+     else from the colour's name: Printful's catalog hex in
+     [`app/lib/garmentColours.ts`](../app/lib/garmentColours.ts) (add a
+     `PICKED_HEX` line when one reads wrong). A name with no hex shows as
+     text. Cards show five swatches, then "+N".
 2. **Set the product type** to one type from the table above. If the garment is
    a kind that is not listed, add the tag `clara-mendes-clothing` instead.
 3. **Set the Shopify product category** (taxonomy) under Apparel &
