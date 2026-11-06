@@ -133,6 +133,39 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
       className: 'clothing-hero-art clothing-hero-art--emblem',
     },
   },
+  // Our own composition (design pack Clara-Mendes-Malevich-2026-11,
+  // hero/palette.json: black #161616, red #C23A22, yellow-ochre #E09A18,
+  // blue #2F4AB8, green #2F6B45). Credit "Inspired by Kazimir Malevich",
+  // never "Art by"; the name "Malevich" is used only in the credit and copy,
+  // never as a product name (trademark check, malevich-line, 6 Nov). The
+  // printed pieces carry the closing line of his 1919 text "Suprematism"
+  // (our translation); the cap and beanie carry the emblem only (line
+  // copy). Images: scripts/build-capsule-art.mjs --handle free-abyss
+  // --composition free-abyss-composition-light.svg --band-strip 0.5:1100.
+  'free-abyss': {
+    credit: 'Inspired by Kazimir Malevich',
+    // Each garment comes in its own blank colours (White, Faded White, ...).
+    colourwayChooser: false,
+    intro:
+      'A black wedge and a yellow-ochre plane rise on one tilted axis among red, blue and green bars and two thin signal lines, with open space all around, after Kazimir Malevich’s Suprematism. We drew it ourselves; it is not a reproduction of a Malevich painting. The printed pieces carry the closing line of his 1919 text “Suprematism”, in our translation; the cap and beanie carry the emblem only.',
+    band: {
+      src: '/images/clothing/free-abyss-band.w1600.jpg',
+      width: 1600,
+      height: 427,
+    },
+    hero: {
+      eyebrow: 'New · Free Abyss',
+      text: (garments) =>
+        `${garments ? `${garments[0].toUpperCase()}${garments.slice(1)} in` : 'Clothing in'} one Suprematist design, inspired by Kazimir Malevich. Made for you after you order.`,
+      cta: 'Shop Free Abyss',
+    },
+    accent: {
+      src: '/images/clothing/free-abyss-emblem.w240.png',
+      width: 240,
+      height: 240,
+      className: 'clothing-hero-art clothing-hero-art--emblem',
+    },
+  },
   'quiet-current': {
     intro:
       'A digital, watercolour-style design inspired by the layered ridges in Clara Mendes’ print Where Mist Rests. Each piece is mostly solid colour, with soft washes at the sides or along the outer leg. The leggings and biker shorts add a fern.',

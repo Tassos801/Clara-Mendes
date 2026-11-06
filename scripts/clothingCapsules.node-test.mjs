@@ -261,3 +261,21 @@ test('Circle Rhythm credits Sophie Taeuber-Arp as inspiration, with brand-free a
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
 });
+
+test('Free Abyss credits Kazimir Malevich as inspiration, with brand-free art', async () => {
+  const {capsuleStory} = await import('../app/lib/clothingEditorial.ts');
+  const {existsSync} = await import('node:fs');
+  const story = capsuleStory('free-abyss');
+  assert.equal(story.credit, 'Inspired by Kazimir Malevich');
+  assert.equal(story.colourwayChooser, false);
+  const hero = clothingPageHero('free-abyss', 'hoodies, tees and totes');
+  assert.equal(hero.text, 'Hoodies, tees and totes in one Suprematist design, inspired by Kazimir Malevich. Made for you after you order.');
+  const copy = [story.credit, story.intro, hero.eyebrow, hero.text, hero.cta].join(' ');
+  assert.doesNotMatch(copy, /\bart by\b|(?<!inspired )\bby kazimir\b|\bpainted\b/i);
+  assert.match(story.intro, /not a reproduction of a Malevich painting/);
+  assert.doesNotMatch(copy, /[€$]|\bEUR\b|\bUSD\b|clara mendes/i);
+  for (const src of [story.band.src, story.accent.src]) {
+    assert.match(src, /\.(jpe?g|png)$/, src);
+    assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+  }
+});

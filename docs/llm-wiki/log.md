@@ -2266,10 +2266,12 @@ garment's description shows as a pull-quote on its product page, and the
 feeds name the capsule in `custom_label_0`. See
 [Add a new capsule](../clothing-destination.md#add-a-new-capsule).
 
-## 2026-11-06 — Circle Rhythm on /clothing
+## 2026-11-06 — Circle Rhythm and Free Abyss on /clothing
 
-The Circle Rhythm capsule (inspired by Sophie Taeuber-Arp, collection
-`circle-rhythm`) has its editorial entry: credit, intro, band and emblem
-accent, built by the new `scripts/build-capsule-art.mjs` from the line's
-brand-free SVGs. Its looks image and collection hero follow once the
-mockups carry the official logo credit.
+The Circle Rhythm (inspired by Sophie Taeuber-Arp, `circle-rhythm`) and
+Free Abyss (inspired by Kazimir Malevich, `free-abyss`) capsules have
+editorial entries: credit, intro, band and emblem accent, built by the new
+`scripts/build-capsule-art.mjs` from each line's brand-free SVGs (a frieze
+of whole shapes, or a strip for a diagonal composition). Their looks
+images and collection heroes follow once the mockups carry the official
+logo credit.

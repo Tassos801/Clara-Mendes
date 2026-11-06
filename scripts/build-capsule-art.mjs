@@ -72,7 +72,48 @@ async function write(name, buffer) {
 // a circle's cy, a rect's middle, a path's first point (the composition's
 // rings start at their left edge, on the centre line). Each row is trimmed,
 // scaled to the row height, and the rows are centred with even gaps.
-{
+//
+// A diagonal composition reads better as a strip through it, like the
+// Counter-Diagonal band: --band-strip "0.55:1000" renders it 1000 px wide,
+// centred on the 1600 px band, with its height fraction 0.55 at the middle
+// of the desktop crop (y 293). Its shapes run off the band's edges, as they
+// do on the garment.
+const strip = arg('band-strip');
+if (strip) {
+  const svg = await readFile(
+    path.join(source, arg('composition', `${handle}-back-light.svg`)),
+  );
+  const [at, width] = strip.split(':').map(Number);
+  const art = await sharp(svg, {density: 300})
+    .resize(width || 1600)
+    .flatten({background: '#FFFFFF'})
+    .png()
+    .toBuffer();
+  const {width: artWidth, height: artHeight} = await sharp(art).metadata();
+  const top = Math.round(293 - at * artHeight);
+  // Composite the art onto the white band; only its overlap is kept.
+  const cropTop = Math.max(0, -top);
+  const visible = Math.min(artHeight - cropTop, 427 - Math.max(0, top));
+  const piece = await sharp(art)
+    .extract({left: 0, top: cropTop, width: artWidth, height: visible})
+    .png()
+    .toBuffer();
+  await write(
+    `${handle}-band.w1600.jpg`,
+    await sharp({
+      create: {width: 1600, height: 427, channels: 3, background: '#FFFFFF'},
+    })
+      .composite([
+        {
+          input: piece,
+          left: Math.round((1600 - artWidth) / 2),
+          top: Math.max(0, top),
+        },
+      ])
+      .jpeg({quality: 82, mozjpeg: true, chromaSubsampling: '4:4:4'})
+      .toBuffer(),
+  );
+} else {
   const svg = await readFile(
     path.join(source, arg('composition', `${handle}-back-light.svg`)),
     'utf8',
