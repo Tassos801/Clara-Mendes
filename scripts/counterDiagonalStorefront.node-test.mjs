@@ -10,7 +10,7 @@ import {
   clothingCategory,
   isClothingProduct,
   isClothingCategoryCollection,
-  KNOWN_CLOTHING_CAPSULES,
+  LEGACY_CLOTHING_CAPSULES,
   LEAD_CLOTHING_CAPSULE,
 } from '../app/lib/clothing.ts';
 import {
@@ -98,7 +98,7 @@ test('the contract product types map to categories; activewear keeps its own', (
 
 test('Counter-Diagonal is a capsule by handle and comes before Quiet Current', () => {
   assert.equal(LEAD_CLOTHING_CAPSULE, 'counter-diagonal');
-  assert.deepEqual(KNOWN_CLOTHING_CAPSULES, ['counter-diagonal', 'quiet-current']);
+  assert.deepEqual(LEGACY_CLOTHING_CAPSULES, ['quiet-current']);
   assert.deepEqual(clothingCapsules(newestFirst), [
     {handle: 'counter-diagonal', title: 'Counter-Diagonal', count: 7},
     {handle: 'quiet-current', title: 'Quiet Current', count: 2},
@@ -106,7 +106,8 @@ test('Counter-Diagonal is a capsule by handle and comes before Quiet Current', (
   const meadow = {handle: 'meadow', title: 'A Meadow', clothingKind: {type: 'single_line_text_field', value: 'capsule'}};
   assert.deepEqual(
     clothingCapsules([piece('meadow-dress', 'Meadow Dress', 'Dresses', {collection: meadow}), heavyweight, leggings]).map((c) => c.handle),
-    ['counter-diagonal', 'quiet-current', 'meadow'],
+    // A metafield capsule with the newest piece comes right after the lead.
+    ['counter-diagonal', 'meadow', 'quiet-current'],
   );
 });
 

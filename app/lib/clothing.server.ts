@@ -3,6 +3,7 @@ import type {ClaraCardProduct} from '../components/ClaraProductCard';
 import {filterDemoProducts} from './catalogFilters.ts';
 import {CLOTHING_PRODUCT_QUERY, isClothingProduct} from './clothing.ts';
 import {PRODUCT_CARD_FRAGMENT} from './productCardFragment.ts';
+import type {CapsuleCollectionSummary} from './clothingEditorial.ts';
 
 export type ClothingProduct = ClaraCardProduct & {
   options: Array<{
@@ -74,6 +75,51 @@ export async function loadClothingProducts(
   } while (after);
   return [...products.values()];
 }
+
+/**
+ * Title, description and image of capsule collections that have no
+ * editorial entry, for their generic block. A failed or empty read leaves
+ * the capsule with its title and link only.
+ */
+export async function loadCapsuleSummaries(
+  storefront: Storefront,
+  handles: string[],
+): Promise<Record<string, CapsuleCollectionSummary>> {
+  const entries = await Promise.all(
+    handles.map(async (handle) => {
+      try {
+        const data: {collection?: CapsuleCollectionSummary | null} =
+          await storefront.query(CAPSULE_SUMMARY_QUERY, {
+            variables: {handle},
+            cache: storefront.CacheShort(),
+          });
+        return data.collection ? ([handle, data.collection] as const) : null;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  return Object.fromEntries(entries.filter((entry) => entry !== null));
+}
+
+const CAPSULE_SUMMARY_QUERY = `#graphql
+  query ClothingCapsuleSummary(
+    $country: CountryCode
+    $handle: String!
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: $handle) {
+      title
+      description
+      image {
+        url
+        altText
+        width
+        height
+      }
+    }
+  }
+` as const;
 
 const CLOTHING_QUERY = `#graphql
   query ClothingCatalog($query: String!, $after: String, $country: CountryCode, $language: LanguageCode)

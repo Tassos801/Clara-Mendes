@@ -9,7 +9,10 @@ import {Image} from '@shopify/hydrogen';
 import type {Route} from './+types/clothing';
 import {ClothingProductCard} from '~/components/ClothingProductCard';
 import {StructuredData} from '~/components/StructuredData';
-import {loadClothingProducts} from '~/lib/clothing.server';
+import {
+  loadCapsuleSummaries,
+  loadClothingProducts,
+} from '~/lib/clothing.server';
 import {quoteClothingShipping} from '~/lib/clothingShipping.server';
 import {formatMoney} from '~/lib/money';
 import {
@@ -33,6 +36,7 @@ import {
   capsuleStory,
   capsuleStoryData,
   clothingPageHero,
+  genericCapsuleStory,
   lookAccent,
 } from '~/lib/clothingEditorial';
 import {isOffThemeCollectionHandle} from '~/lib/catalogFilters';
@@ -58,7 +62,14 @@ function clothingDescription(
   leadGarments: string | null,
   hasLead: boolean,
   hasQuietCurrent: boolean,
+  otherLead?: string | null,
 ) {
+  if (!hasLead && otherLead)
+    return `Clara Mendes Clothing: ${otherLead} ${leadGarments ?? 'clothing'}${
+      hasQuietCurrent
+        ? ', and Quiet Current activewear with a watercolour-style print'
+        : ''
+    }. Made to order.`;
   if (!hasLead) return QUIET_CURRENT_DESCRIPTION;
   return `Clara Mendes Clothing: Counter-Diagonal ${leadGarments ?? 'clothing'} in one geometric design inspired by Theo van Doesburg${
     hasQuietCurrent
@@ -83,8 +94,8 @@ export const meta: Route.MetaFunction = ({data}) =>
 export async function loader({context, request}: Route.LoaderArgs) {
   const products = await loadClothingProducts(context.storefront);
   const selection = selectClothing(products, new URL(request.url).searchParams);
-  // Known capsules first (Counter-Diagonal, then Quiet Current), then any
-  // other capsule by name.
+  // Counter-Diagonal first, then the other capsules (collections with
+  // custom.collection_kind = capsule), newest piece first.
   const capsules = clothingCapsules(products).filter(
     (capsule) => !isOffThemeCollectionHandle(capsule.handle),
   );
@@ -97,25 +108,28 @@ export async function loader({context, request}: Route.LoaderArgs) {
   // Counter-Diagonal leads while it has a listed piece (the line advertised
   // in New York). Otherwise the capsule holding the newest piece leads, so
   // a new capsule takes over without a code change.
-  const featured =
-    capsules.find((capsule) => capsule.handle === LEAD_CLOTHING_CAPSULE) ??
-    capsules.find((capsule) =>
-      products[0]?.collections.nodes.some(
-        (collection) => collection.handle === capsule.handle,
-      ),
-    ) ??
-    capsules[0] ??
-    null;
+  const featured = capsules[0] ?? null;
   const featuredProducts = featured ? inCapsule(featured.handle) : [];
   const leadGarments = clothingGarmentPhrase(featuredProducts);
-  const heroStory = capsuleStory(featured?.handle);
+  // A capsule without an editorial entry gets a generic block from its
+  // own Shopify collection (description and image).
+  const summaries = await loadCapsuleSummaries(
+    context.storefront,
+    capsules
+      .map((capsule) => capsule.handle)
+      .filter((handle) => !capsuleStory(handle)),
+  );
+  const storyOf = (handle?: string | null) =>
+    capsuleStoryData(handle) ??
+    (handle ? genericCapsuleStory(summaries[handle]) : null);
+  const heroStory = storyOf(featured?.handle);
   // One section per capsule, the featured one first.
   const collections = [
     ...(featured ? [featured] : []),
     ...capsules.filter((capsule) => capsule.handle !== featured?.handle),
   ].map((capsule) => {
     const pieces = inCapsule(capsule.handle);
-    const story = capsuleStoryData(capsule.handle);
+    const story = storyOf(capsule.handle);
     const colourways =
       story?.colourwayChooser === false ? [] : clothingLooks(pieces);
     return {
@@ -155,14 +169,24 @@ export async function loader({context, request}: Route.LoaderArgs) {
       leadGarments,
       featured?.handle === LEAD_CLOTHING_CAPSULE,
       capsules.some((capsule) => capsule.handle === 'quiet-current'),
+      featured && featured.handle !== 'quiet-current' ? featured.title : null,
     ),
     hero: {
-      ...clothingPageHero(featured?.handle, leadGarments),
+      ...clothingPageHero(
+        featured?.handle,
+        leadGarments,
+        featured
+          ? {title: featured.title, madeToOrder: allMadeToOrder(featuredProducts)}
+          : null,
+      ),
       looksImage: heroStory?.looksImage ?? null,
-      accent: heroStory?.accent ?? {
-        ...CLOTHING_PAGE_ACCENT,
-        className: 'clothing-hero-art',
-      },
+      // The olive watercolour belongs to Quiet Current; a generic capsule
+      // gets no accent.
+      accent:
+        heroStory?.accent ??
+        (featured && !capsuleStory(featured.handle)
+          ? null
+          : {...CLOTHING_PAGE_ACCENT, className: 'clothing-hero-art'}),
     },
     showTools: showClothingTools(products.length) || Boolean(selection.category),
     madeToOrder: allMadeToOrder(products),
@@ -227,13 +251,15 @@ export default function Clothing() {
               {hero.cta}
             </a>
           ) : null}
-          <img
-            className={hero.accent.className}
-            src={hero.accent.src}
-            width={hero.accent.width}
-            height={hero.accent.height}
-            alt=""
-          />
+          {hero.accent ? (
+            <img
+              className={hero.accent.className}
+              src={hero.accent.src}
+              width={hero.accent.width}
+              height={hero.accent.height}
+              alt=""
+            />
+          ) : null}
         </div>
         {looksImage ? (
           <figure className="clothing-hero-media">
@@ -251,7 +277,9 @@ export default function Clothing() {
                 {...{fetchpriority: 'high'}}
               />
             </picture>
-            <figcaption>{looksImage.caption}</figcaption>
+            {looksImage.caption ? (
+              <figcaption>{looksImage.caption}</figcaption>
+            ) : null}
           </figure>
         ) : null}
       </section>
@@ -427,7 +455,7 @@ export default function Clothing() {
                 {collection.story.credit}
               </p>
             ) : null}
-            {collection.story ? <p>{collection.story.intro}</p> : null}
+            {collection.story?.intro ? <p>{collection.story.intro}</p> : null}
             <Link
               className="clothing-text-link"
               to={`/collections/${collection.handle}`}

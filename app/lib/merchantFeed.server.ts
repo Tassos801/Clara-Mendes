@@ -276,6 +276,19 @@ const MERCHANT_FEED_PRODUCTS_QUERY = `#graphql
         featuredImage {
           url
         }
+        collections(first: 20) {
+          nodes {
+            handle
+            title
+            clothingKind: metafield(
+              namespace: "custom"
+              key: "collection_kind"
+            ) {
+              type
+              value
+            }
+          }
+        }
         variants(first: 100) {
           nodes {
             id

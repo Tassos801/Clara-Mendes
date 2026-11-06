@@ -2244,3 +2244,14 @@ follows a US buyer who can buy the item (USD, US shipping and returns), and
 falls back to the Cyprus offer otherwise. The shipping policy has an
 "Orders to the United States" section. See
 [US market status](../us-market/status.md).
+
+## 2026-11-06 — Clothing capsules found by metafield; artist quote on the PDP
+
+`/clothing` lists every published collection with
+`custom.collection_kind = capsule` that holds a listed garment, with
+Counter-Diagonal first and the rest by newest piece; Quiet Current still
+counts by handle. A capsule without editorial copy gets a generic block
+from its Shopify collection description and image. An artist quote in a
+garment's description shows as a pull-quote on its product page, and the
+feeds name the capsule in `custom_label_0`. See
+[Add a new capsule](../clothing-destination.md#add-a-new-capsule).

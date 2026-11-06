@@ -5,10 +5,17 @@
  * `description` Shopify derives from it runs those blocks together, so the
  * PDP reads `descriptionHtml` and renders each part in its own place.
  *
+ * An artist line may add one quote from the artist, written as
+ * `<blockquote><p>Text.</p><cite>Name, year (our translation)</cite></blockquote>`
+ * (a `<footer>` or a wrapping `<figure>` with `<figcaption>` also works, as
+ * does a last paragraph "— Name"). The PDP shows it as a pull-quote.
+ *
  * Output is plain text and string cells only (no HTML is rendered), so
  * merchant markup can never inject anything into the page.
  */
 export type ApparelSizeGuide = {headers: string[]; rows: string[][]};
+
+export type ApparelQuote = {text: string; cite: string | null};
 
 export type ApparelCopy = {
   lede: string;
@@ -17,6 +24,7 @@ export type ApparelCopy = {
   sizeGuide: ApparelSizeGuide | null;
   fitNotes: string[];
   madeToOrder: string | null;
+  quote: ApparelQuote | null;
 };
 
 const ENTITIES: Record<string, string> = {
@@ -72,13 +80,47 @@ function parseTable(tableHtml: string): ApparelSizeGuide | null {
   return {headers, rows};
 }
 
+const QUOTE_MARKS = /^[\s“”"„«»‘’']+|[\s“”"„«»‘’']+$/g;
+
+function parseQuote(inner: string): ApparelQuote | null {
+  const credit =
+    inner.match(/<(cite|footer|figcaption)\b[^>]*>([\s\S]*?)<\/\1>/i) ??
+    // Or a last paragraph of its own that starts with a dash. A dash inside
+    // the quote ("abyss — infinity") is part of the quote.
+    inner.match(/<(p)\b[^>]*>(\s*[—–][\s\S]*?)<\/p>\s*$/i);
+  const cite = credit ? htmlToText(credit[2]).replace(/^[—–-]\s*/, '') : '';
+  const text = htmlToText(
+    (credit ? inner.replace(credit[0], ' ') : inner).replace(
+      /<\/p>\s*<p\b[^>]*>/gi,
+      ' ',
+    ),
+  ).replace(QUOTE_MARKS, '');
+  return text ? {text, cite: cite || null} : null;
+}
+
+/** The first quote, and the HTML without any quote (so it never leads). */
+function takeQuote(html: string) {
+  const match =
+    [...html.matchAll(/<figure\b[^>]*>([\s\S]*?)<\/figure>/gi)].find((figure) =>
+      /<blockquote\b/i.test(figure[1]),
+    ) ?? html.match(/<blockquote\b[^>]*>([\s\S]*?)<\/blockquote>/i);
+  if (!match) return {quote: null, rest: html};
+  return {
+    quote: parseQuote(match[1].replace(/<\/?blockquote\b[^>]*>/gi, '')),
+    rest: html
+      .replace(match[0], '')
+      .replace(/<blockquote\b[^>]*>[\s\S]*?<\/blockquote>/gi, ''),
+  };
+}
+
 /** Returns null when the HTML has no intro paragraph to lead with. */
 export function parseApparelDescription(
   html?: string | null,
 ): ApparelCopy | null {
   if (!html) return null;
+  const {quote, rest} = takeQuote(html);
   const blocks = [
-    ...html.matchAll(/<(p|ul|ol|table|h[1-6])\b[^>]*>([\s\S]*?)<\/\1>/gi),
+    ...rest.matchAll(/<(p|ul|ol|table|h[1-6])\b[^>]*>([\s\S]*?)<\/\1>/gi),
   ].map((match) => ({tag: match[1].toLowerCase(), inner: match[2]}));
 
   const copy: ApparelCopy = {
@@ -88,6 +130,7 @@ export function parseApparelDescription(
     sizeGuide: null,
     fitNotes: [],
     madeToOrder: null,
+    quote,
   };
   let afterTable = false;
   for (const block of blocks) {

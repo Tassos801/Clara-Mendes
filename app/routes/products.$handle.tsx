@@ -1592,6 +1592,19 @@ function ProductPage() {
             </li>
           </ul>
 
+          {apparelCopy?.quote ? (
+            <figure className="product-pull-quote">
+              <blockquote>
+                <p>“{apparelCopy.quote.text}”</p>
+              </blockquote>
+              {apparelCopy.quote.cite ? (
+                <figcaption>
+                  <cite>{apparelCopy.quote.cite}</cite>
+                </figcaption>
+              ) : null}
+            </figure>
+          ) : null}
+
           <div className="product-details-list">
             {apparelCopy ? (
               <>

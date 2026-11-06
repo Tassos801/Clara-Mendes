@@ -1,5 +1,9 @@
 import {isListedProduct} from './catalogFilters.ts';
-import {isClothingProduct, type ApprovalMetafield} from './clothing.ts';
+import {
+  clothingCapsules,
+  isClothingProduct,
+  type ApprovalMetafield,
+} from './clothing.ts';
 import {MARKET_URL_PARAM} from './markets.ts';
 import {
   FIXED_RATES,
@@ -43,8 +47,10 @@ export type FeedMarket = 'CY' | 'US';
 export const FEED_CURRENCY: Record<FeedMarket, string> = {CY: 'EUR', US: 'USD'};
 
 // `custom_label_0` names the clothing capsule, so Meta and Google Ads can
-// group a line into a product set (custom_label_0 = Counter-Diagonal). The
-// capsule tags follow the shared product contract.
+// group a line into a product set (custom_label_0 = Counter-Diagonal): the
+// title of the product's capsule collection (the same rule as /clothing, so
+// a new artist capsule carries its name), else a capsule tag from the
+// shared product contract.
 export const CAPSULE_TAGS = ['Counter-Diagonal', 'Quiet Current'] as const;
 
 export type FeedVariant = {
@@ -67,6 +73,13 @@ export type FeedProduct = {
   description: string;
   featuredImage?: {url: string} | null;
   variants: {nodes: FeedVariant[]};
+  collections?: {
+    nodes: Array<{
+      handle: string;
+      title: string;
+      clothingKind?: ApprovalMetafield | null;
+    }>;
+  } | null;
 };
 
 export type PrintfulLine =
@@ -268,7 +281,10 @@ function clothingItem(p: FeedProduct, o: Record<string, string>): Item | null {
       : (APPAREL_CATEGORY[p.productType] ?? 'Apparel & Accessories > Clothing'),
     gender: womens ? 'female' : 'unisex',
     age_group: 'adult',
-    custom_label_0: CAPSULE_TAGS.find((tag) => p.tags.includes(tag)) ?? '',
+    custom_label_0:
+      clothingCapsules([p])[0]?.title ??
+      CAPSULE_TAGS.find((tag) => p.tags.includes(tag)) ??
+      '',
   };
 }
 

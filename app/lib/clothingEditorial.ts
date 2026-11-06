@@ -34,9 +34,10 @@ export type CapsuleStory = {
   };
   /**
    * Composite of the capsule's garments. Built from supplier digital
-   * mockups, so the page labels it as such.
+   * mockups, so the page labels it as such. A generic capsule uses its
+   * collection image, with no caption.
    */
-  looksImage?: ClothingImage & {caption: string};
+  looksImage?: ClothingImage & {caption: string | null};
   /**
    * The page hero while this capsule leads /clothing. `text` receives the
    * kinds of garment really on sale ("hoodies, tees and totes") so the copy
@@ -125,6 +126,55 @@ export function capsuleStory(handle?: string | null): CapsuleStory | null {
   return handle ? (CAPSULE_STORIES[handle] ?? null) : null;
 }
 
+/** What Shopify says about a capsule collection that has no entry here. */
+export type CapsuleCollectionSummary = {
+  title: string;
+  description?: string | null;
+  image?: {
+    url: string;
+    altText?: string | null;
+    width?: number | null;
+    height?: number | null;
+  } | null;
+};
+
+/** At most this many characters of a collection description, cut at a sentence. */
+const GENERIC_INTRO_LIMIT = 420;
+
+function introFrom(description?: string | null) {
+  const text = description?.replace(/\s+/g, ' ').trim() ?? '';
+  if (text.length <= GENERIC_INTRO_LIMIT) return text;
+  const cut = text.slice(0, GENERIC_INTRO_LIMIT);
+  const end = cut.lastIndexOf('. ');
+  return end > 80 ? cut.slice(0, end + 1) : `${cut.replace(/\s+\S*$/, '')}…`;
+}
+
+/**
+ * The generic block for a capsule without an entry above: the merchant's
+ * collection description as its intro and the collection image as its
+ * looks image. Shopify supplies both, so nothing here makes a claim.
+ */
+export function genericCapsuleStory(
+  summary?: CapsuleCollectionSummary | null,
+): CapsuleStoryData | null {
+  if (!summary) return null;
+  const intro = introFrom(summary.description);
+  const image = summary.image;
+  return {
+    intro,
+    looksImage:
+      image?.url && image.width && image.height
+        ? {
+            src: `${image.url}${image.url.includes('?') ? '&' : '?'}width=1280`,
+            width: 1280,
+            height: Math.round((1280 * image.height) / image.width),
+            alt: image.altText || summary.title,
+            caption: null,
+          }
+        : undefined,
+  };
+}
+
 /** A capsule story as loader data: everything but the hero text function. */
 export type CapsuleStoryData = Omit<CapsuleStory, 'hero'>;
 
@@ -138,27 +188,37 @@ export function capsuleStoryData(
 }
 
 /**
- * The /clothing hero: the lead capsule's own hero when it has one, else the
- * long-standing page hero (the Quiet Current wording).
+ * The /clothing hero: the lead capsule's own hero when it has one; a generic
+ * one, named after the collection, for a capsule without an entry here;
+ * else the long-standing page hero (the Quiet Current wording).
  */
 export function clothingPageHero(
   handle: string | null | undefined,
   garments: string | null,
+  generic?: {title: string; madeToOrder: boolean} | null,
 ) {
-  const hero = capsuleStory(handle)?.hero;
-  return hero
-    ? {
-        eyebrow: hero.eyebrow,
-        title: CLOTHING_PAGE_HERO.title,
-        text: hero.text(garments),
-        cta: hero.cta,
-      }
-    : {
-        eyebrow: null,
-        title: CLOTHING_PAGE_HERO.title,
-        text: CLOTHING_PAGE_HERO.text,
-        cta: 'Shop clothing',
-      };
+  const story = capsuleStory(handle);
+  const hero = story?.hero;
+  if (hero)
+    return {
+      eyebrow: hero.eyebrow,
+      title: CLOTHING_PAGE_HERO.title,
+      text: hero.text(garments),
+      cta: hero.cta,
+    };
+  if (!story && generic)
+    return {
+      eyebrow: `New · ${generic.title}`,
+      title: CLOTHING_PAGE_HERO.title,
+      text: `${garments ? `${garments[0].toUpperCase()}${garments.slice(1)}` : 'Clothing'} from the ${generic.title} collection.${generic.madeToOrder ? ' Made for you after you order.' : ''}`,
+      cta: `Shop ${generic.title}`,
+    };
+  return {
+    eyebrow: null,
+    title: CLOTHING_PAGE_HERO.title,
+    text: CLOTHING_PAGE_HERO.text,
+    cta: 'Shop clothing',
+  };
 }
 
 /**

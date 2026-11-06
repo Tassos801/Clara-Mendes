@@ -1284,6 +1284,39 @@ button {
   max-width: 46ch;
 }
 
+/* An artist line's quote, set off from the buying details. */
+.product-pull-quote {
+  border-left: 2px solid var(--color-ink);
+  margin: 28px 0 8px;
+  max-width: 46ch;
+  padding: 2px 0 2px 18px;
+}
+
+.product-pull-quote blockquote {
+  margin: 0;
+}
+
+.product-pull-quote p {
+  color: var(--color-ink);
+  font-family: var(--serif);
+  font-size: 1.28rem;
+  font-style: italic;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.product-pull-quote figcaption {
+  color: var(--color-muted);
+  font-size: 0.82rem;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.product-pull-quote cite {
+  font-style: normal;
+}
+
 /* "by Katsushika Hokusai (1760–1849)" under museum and artist products. */
 .product-artist-line {
   font-family: var(--serif);

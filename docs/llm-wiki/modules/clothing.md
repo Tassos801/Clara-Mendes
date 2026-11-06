@@ -26,9 +26,9 @@ Before/after map and prepared Shopify changes:
 - Categories now: Hoodies, Sweatshirts, T-shirts, Long sleeves, Tops,
   Leggings, Bras, Shorts, ..., Accessories (Hats, Caps, Beanies, Tote Bags).
   The museum Art Canvas Tote is typed "Bags" and is not clothing.
-- `KNOWN_CLOTHING_CAPSULES` in `app/lib/clothing.ts` (`counter-diagonal`,
-  `quiet-current`) count as capsules by handle; others need
-  `custom.collection_kind`. The products must be in the `counter-diagonal`
+- `counter-diagonal` (`LEAD_CLOTHING_CAPSULE`) and `quiet-current`
+  (`LEGACY_CLOTHING_CAPSULES`) in `app/lib/clothing.ts` count as capsules by
+  handle; others need `custom.collection_kind`. The products must be in the `counter-diagonal`
   collection, published to the channel, for the capsule to lead.
 - Line pieces list through the future-garment path (type or tag plus both
   approval metafields). `counter-diagonal-hoodie` (AOP) and
@@ -80,7 +80,15 @@ Before/after map and prepared Shopify changes:
   collection section with a "Choose a colourway" thumbnail chooser, and
   "Before you order" (sizing, made to order, shipping, returns). Editorial copy
   per capsule is in `app/lib/clothingEditorial.ts`; a capsule without an entry
-  gets a generic block. Copy rules and evidence:
+  gets a generic block from its Shopify collection (description as intro,
+  image as hero image, hero named after it; `loadCapsuleSummaries`).
+- Capsules (2026-11-06): any published collection with
+  `custom.collection_kind = capsule` holding a listed garment
+  (`isClothingCapsuleCollection`); `counter-diagonal` and the legacy
+  `quiet-current` also count by handle. Order: Counter-Diagonal, then by
+  newest piece. Feeds put the capsule title in `custom_label_0`. An artist
+  quote in the description (`<blockquote>` + `<cite>`) shows as a PDP
+  pull-quote (`ApparelCopy.quote`). Copy rules and evidence:
   [Copy evidence](../../clothing-destination.md#copy-evidence).
 - `app/routes/collections.clothing.tsx` redirects `/collections/clothing` to
   `/clothing` (301, query string kept). The homepage section
