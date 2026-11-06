@@ -163,6 +163,15 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
       width: 1600,
       height: 427,
     },
+    // Printful mockups with the official logo credit (malevich-line,
+    // hero/mockups/, 6 Nov).
+    looksImage: {
+      src: '/images/clothing/free-abyss-looks.w1280.jpg',
+      width: 1280,
+      height: 960,
+      alt: 'Free Abyss heavyweight hoodie in White from the back, with the full composition, the quote and the credit, beside the oversized tee in Faded White with the chest emblem',
+      caption: 'Free Abyss heavyweight hoodie and oversized tee. Digital mockups.',
+    },
     hero: {
       eyebrow: 'New · Free Abyss',
       text: (garments) =>

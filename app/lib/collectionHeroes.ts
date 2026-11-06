@@ -59,6 +59,18 @@ const HEROES: Record<string, HeroEntry> = {
     imageMobile: '/images/clothing/circle-rhythm-collection-hero-mobile.jpg',
     alt: 'Circle Rhythm heavyweight hoodie from the back and oversized tee with the chest emblem, digital mockups on blue',
   },
+  // Our own composition: credit "Inspired by Kazimir Malevich", never "Art
+  // by". Images: scripts/build-capsule-art.mjs --handle free-abyss --looks
+  // --trim (Printful mockups with the official logo credit), on the line's
+  // black #161616. No money in the subtitle.
+  'free-abyss': {
+    eyebrow: 'Clothing · Inspired by Kazimir Malevich',
+    subtitle:
+      'One Suprematist design of a black wedge and an ochre plane on hoodies, tees and more, with the closing line of his 1919 text on the printed pieces. Made for you after you order.',
+    image: '/images/clothing/free-abyss-collection-hero.jpg',
+    imageMobile: '/images/clothing/free-abyss-collection-hero-mobile.jpg',
+    alt: 'Free Abyss heavyweight hoodie from the back and oversized tee with the chest emblem, digital mockups on black',
+  },
 };
 
 // Plain heroes for loader data (no function field), built once so each

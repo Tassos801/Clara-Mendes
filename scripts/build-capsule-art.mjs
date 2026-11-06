@@ -8,7 +8,7 @@
 //     --source "<...>\Clara-Mendes-Taeuber-Arp-2026-11\hero" \
 //     [--composition circle-rhythm-back-light.svg] [--emblem circle-rhythm-emblem-light.svg] \
 //     [--band-rows 0-0.43,0.5-0.76] \
-//     [--looks hoodie.png,tee.png] [--ground "#2B56AE"]
+//     [--looks hoodie.png,tee.png] [--trim] [--ground "#2B56AE"]
 //
 // Output (public/images/clothing, or --out), plain sRGB without ICC
 // profiles, never WebP (Oxygen re-encodes WebP into bigger files):
@@ -207,8 +207,11 @@ if (looks) {
   const [big, small] = looks
     .split(',')
     .map((file) => path.resolve(source, file));
-  const fit = (file, size) =>
-    sharp(file)
+  // --trim drops a render's transparent margin first, so the garment, not
+  // the canvas, fills its box.
+  const trim = process.argv.includes('--trim');
+  const fit = async (file, size) =>
+    sharp(trim ? await sharp(file).trim().png().toBuffer() : file)
       .resize(size, size, {
         fit: 'contain',
         background: {r: 0, g: 0, b: 0, alpha: 0},

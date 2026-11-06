@@ -285,7 +285,14 @@ test('Free Abyss credits Kazimir Malevich as inspiration, with brand-free art', 
   assert.doesNotMatch(copy, /\bart by\b|(?<!inspired )\bby kazimir\b|\bpainted\b/i);
   assert.match(story.intro, /not a reproduction of a Malevich painting/);
   assert.doesNotMatch(copy, /[€$]|\bEUR\b|\bUSD\b|clara mendes/i);
-  for (const src of [story.band.src, story.accent.src]) {
+  // Looks image and collection hero: logo-credit mockups, labelled as such.
+  const {collectionHero} = await import('../app/lib/collectionHeroes.ts');
+  const page = collectionHero('free-abyss');
+  assert.match(story.looksImage.caption, /digital mockups/i);
+  assert.match(page.alt, /digital mockups/i);
+  assert.match(page.eyebrow, /Inspired by Kazimir Malevich/);
+  assert.doesNotMatch([page.eyebrow, page.subtitle, page.alt, story.looksImage.alt].join(' '), /\bart by\b|[€$]|\bEUR\b|\bUSD\b/i);
+  for (const src of [story.band.src, story.accent.src, story.looksImage.src, page.image, page.imageMobile]) {
     assert.match(src, /\.(jpe?g|png)$/, src);
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
