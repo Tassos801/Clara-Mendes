@@ -100,8 +100,9 @@ export function readsUsDelivery({
   );
 }
 
-// Printful all-over synthetic garments (Quiet Current activewear, matched by
-// exact released product handles). Printful publishes 2–5 business days in-house and
+// Printful all-over synthetic garments: the activewear types, first Quiet
+// Current's (retired 2026-11-06), now the artist lines' on the same blanks
+// (Counter-Diagonal, Circle Rhythm, Free Abyss). Printful publishes 2–5 business days in-house and
 // 3–7 at partner facilities for the technique, counted from the business day
 // after the order (help.printful.com, "How long does fulfillment take?").
 // Orders wait for manual confirmation in Printful, which can add a business
@@ -121,6 +122,38 @@ export function isApparelProductType(productType?: string | null) {
   const type = productType?.trim().toLowerCase();
   return Boolean(
     type && APPAREL_PRODUCT_TYPES.some((t) => t.toLowerCase() === type),
+  );
+}
+
+/**
+ * The artist lines' activewear, made on the Quiet Current blanks (Printful
+ * all-over print yoga leggings 242, padded sports bra 387, biker shorts 507,
+ * women's tank 202: activewear-2026-11/README.md, 6 Nov), so Printful's
+ * all-over synthetic windows above apply. Exact handles: verified timing
+ * belongs to known products, never to a future product of the same type.
+ */
+const ARTIST_ACTIVEWEAR_HANDLES = new Set([
+  'counter-diagonal-leggings',
+  'counter-diagonal-sports-bra',
+  'counter-diagonal-biker-shorts',
+  'counter-diagonal-tank',
+  'circle-rhythm-high-waist-leggings',
+  'circle-rhythm-sports-bra',
+  'circle-rhythm-high-waist-biker-shorts',
+  'circle-rhythm-fitted-tank',
+  'free-abyss-high-waist-leggings',
+  'free-abyss-sports-bra',
+  'free-abyss-high-waist-biker-shorts',
+  'free-abyss-fitted-tank',
+]);
+
+export function isArtistActivewear(
+  productType?: string | null,
+  handle?: string | null,
+) {
+  return (
+    isApparelProductType(productType) &&
+    ARTIST_ACTIVEWEAR_HANDLES.has(handle?.trim().toLowerCase() ?? '')
   );
 }
 
@@ -223,9 +256,9 @@ export function counterDiagonalTechnique(
 
 /**
  * Production and dispatch windows: Prodigi's, unless Printful makes the
- * product (Quiet Current, Counter-Diagonal, or a museum product with a
- * `printfulTechnique`). Other future garments have no supplier estimate
- * until their merchant copy states it.
+ * product (the all-over-print activewear, Counter-Diagonal, or a museum
+ * product with a `printfulTechnique`). Other future garments have no
+ * supplier estimate until their merchant copy states it.
  */
 export function fulfilmentWindows(
   productType?: string | null,
@@ -240,6 +273,12 @@ export function fulfilmentWindows(
       dispatch: PRINTFUL_PRINTED_DISPATCH_WINDOW_BUSINESS_DAYS,
     };
   if (counterDiagonal === 'embroidered')
+    return {
+      production: APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
+      dispatch: APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
+    };
+  // The artist lines' activewear, on the Quiet Current blanks.
+  if (isArtistActivewear(productType, handle))
     return {
       production: APPAREL_PRODUCTION_WINDOW_BUSINESS_DAYS,
       dispatch: APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,

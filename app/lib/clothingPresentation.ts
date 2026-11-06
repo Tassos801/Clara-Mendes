@@ -8,6 +8,7 @@ import {
 } from './clothing.ts';
 import type {ClothingProduct} from './clothing.server';
 import {garmentColourHex, isColourOptionName} from './garmentColours.ts';
+import {isApparelProductType} from './storefrontBasics.ts';
 
 /** Six rows of four on desktop before "Show more". */
 export const CLOTHING_PAGE_SIZE = 24;
@@ -365,18 +366,26 @@ const PALETTE_SWATCHES: Record<string, string> = {
 
 /**
  * Shopify's own swatch wins. A single fabric colour ("Dust", "Faded Bone")
- * takes its Printful catalog hex (garmentColours.ts), else the brand
+ * takes its Printful catalog hex (garmentColours.ts), or for all-over-print
+ * activewear its print base (pass the product type), else the brand
  * palette's. A colourway named in palette colours ("Moss / Mist") gets a
  * split dot. Anything else falls back to a text label.
  */
 export function clothingSwatchBackground(
   name: string,
   swatchColor?: string | null,
+  productType?: string | null,
 ) {
   if (swatchColor) return swatchColor;
   const parts = name.split('/').map((part) => part.trim().toLowerCase());
   if (parts.length === 1)
-    return garmentColourHex(parts[0]) ?? PALETTE_SWATCHES[parts[0]] ?? null;
+    return (
+      garmentColourHex(parts[0], {
+        activewear: isApparelProductType(productType),
+      }) ??
+      PALETTE_SWATCHES[parts[0]] ??
+      null
+    );
   const tones = parts.map((part) => PALETTE_SWATCHES[part]);
   if (tones.some((tone) => !tone)) return null;
   const step = 100 / tones.length;

@@ -102,6 +102,7 @@ export function ClothingProductCard({
             const tone = clothingSwatchBackground(
               colors[0].name,
               colors[0].swatch?.color,
+              product.productType,
             );
             return tone ? (
               <span
@@ -123,6 +124,7 @@ export function ClothingProductCard({
             const tone = clothingSwatchBackground(
               item.name,
               item.swatch?.color,
+              product.productType,
             );
             return (
               <button

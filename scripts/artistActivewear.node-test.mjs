@@ -18,6 +18,7 @@ import {
 import {filterDemoProducts} from '../app/lib/catalogFilters.ts';
 import {garmentColourHex} from '../app/lib/garmentColours.ts';
 import {merchantFeedRows} from '../app/lib/merchantFeed.ts';
+import {fulfilmentWindows, isArtistActivewear} from '../app/lib/storefrontBasics.ts';
 
 // Fixture: the artist activewear as the coordinator describes it (6 Nov).
 // Circle Rhythm first; Counter-Diagonal and Free Abyss use the same blanks.
@@ -135,13 +136,43 @@ test('activewear cards name their line, and the line chips and tabs narrow each 
   assert.equal(clothingLineTitle(faTank), 'Free Abyss');
 });
 
-test('Cream swatches as #EAE2D3, Black by its catalog hex', () => {
+test('activewear swatches are its print bases: Cream #EAE2D3, Black #171817', () => {
   assert.equal(garmentColourHex('Cream'), '#eae2d3');
   assert.equal(garmentColourHex(' cream '), '#eae2d3');
   assert.equal(clothingSwatchBackground('Cream'), '#eae2d3');
-  assert.match(clothingSwatchBackground('Black'), /^#[0-9a-f]{6}$/i);
+  for (const type of ['Yoga Leggings', 'Sports Bra', 'Biker Shorts', 'Studio Top']) {
+    assert.equal(clothingSwatchBackground('Cream', null, type), '#eae2d3', type);
+    assert.equal(clothingSwatchBackground('Black', null, type), '#171817', type);
+  }
+  // Other garments keep Printful's catalog black.
+  assert.equal(clothingSwatchBackground('Black', null, 'Hoodies'), '#0e0b0b');
+  assert.equal(clothingSwatchBackground('Black'), '#0e0b0b');
   // A Shopify swatch set on the value still wins.
-  assert.equal(clothingSwatchBackground('Cream', '#f0e8d8'), '#f0e8d8');
+  assert.equal(clothingSwatchBackground('Cream', '#f0e8d8', 'Sports Bra'), '#f0e8d8');
+  // The card and the product page pass the product type.
+  const card = readFileSync(new URL('../app/components/ClothingProductCard.tsx', import.meta.url), 'utf8');
+  assert.equal(card.match(/swatch\?\.color,\s+product\.productType,/g)?.length, 2);
+  const pdp = readFileSync(new URL('../app/routes/products.$handle.tsx', import.meta.url), 'utf8');
+  assert.match(pdp, /\?\.swatch\?\.color,\s+product\.productType,\s+\);/);
+});
+
+test('the artist activewear gets Printful\'s all-over windows; a future piece does not', () => {
+  const pieces = [
+    ['counter-diagonal-leggings', 'Yoga Leggings'], ['counter-diagonal-sports-bra', 'Sports Bra'],
+    ['counter-diagonal-biker-shorts', 'Biker Shorts'], ['counter-diagonal-tank', 'Studio Top'],
+    ...BLANKS.flatMap(([slug, , type]) => ['circle-rhythm', 'free-abyss'].map((line) => [`${line}-${slug}`, type])),
+  ];
+  assert.equal(pieces.length, 12);
+  for (const [handle, type] of pieces) {
+    assert.ok(isArtistActivewear(type, handle), handle);
+    assert.deepEqual(fulfilmentWindows(type, handle), {production: '2–7', dispatch: '3–8'}, handle);
+  }
+  // Same type, unknown product: no promise. Known handle, wrong type: no.
+  assert.equal(fulfilmentWindows('Sports Bra', 'free-abyss-sports-bra-2'), null);
+  assert.equal(isArtistActivewear('Hoodies', 'circle-rhythm-sports-bra'), false);
+  // The badge then reads "Processes in 2–7 business days".
+  const pdp = readFileSync(new URL('../app/routes/products.$handle.tsx', import.meta.url), 'utf8');
+  assert.match(pdp, /`Processes in \$\{windows\.production\} business days`/);
 });
 
 test('activewear feeds as women\'s Activewear with its colour and line', () => {

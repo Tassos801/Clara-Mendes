@@ -142,11 +142,29 @@ const PRINTFUL_HEX: Record<string, string> = {
   yam: '#db642f',
 };
 
+/**
+ * All-over-print activewear prints its fabric colour, so its swatches are
+ * the print bases, not a blank's catalog colour (cd-colours, 6 Nov:
+ * activewear-2026-11/README.md "Bases").
+ */
+const ACTIVEWEAR_HEX: Record<string, string> = {
+  cream: '#eae2d3',
+  black: '#171817',
+};
+
 /** The swatch hex for a fabric colour name, or null when it is unknown. */
-export function garmentColourHex(name?: string | null): string | null {
+export function garmentColourHex(
+  name?: string | null,
+  {activewear = false}: {activewear?: boolean} = {},
+): string | null {
   const key = name?.trim().toLowerCase().replace(/\s+/g, ' ') ?? '';
   if (!key) return null;
-  return PICKED_HEX[key] ?? PRINTFUL_HEX[key] ?? null;
+  return (
+    (activewear ? ACTIVEWEAR_HEX[key] : undefined) ??
+    PICKED_HEX[key] ??
+    PRINTFUL_HEX[key] ??
+    null
+  );
 }
 
 type ImageLike = {altText?: string | null};
