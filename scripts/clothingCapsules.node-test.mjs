@@ -243,3 +243,57 @@ function loadRoute(name) {
   new Function('exports', 'require', output)(exports, load);
   return exports;
 }
+
+test('Circle Rhythm credits Sophie Taeuber-Arp as inspiration, with brand-free art', async () => {
+  const {capsuleStory} = await import('../app/lib/clothingEditorial.ts');
+  const {existsSync} = await import('node:fs');
+  const story = capsuleStory('circle-rhythm');
+  assert.equal(story.credit, 'Inspired by Sophie Taeuber-Arp');
+  assert.equal(story.colourwayChooser, false);
+  const hero = clothingPageHero('circle-rhythm', 'hoodies and tees');
+  assert.equal(hero.text, 'Hoodies and tees in one design of circles, rings and bars, inspired by Sophie Taeuber-Arp. Made for you after you order.');
+  const copy = [story.credit, story.intro, hero.eyebrow, hero.text, hero.cta].join(' ');
+  assert.doesNotMatch(copy, /\bart by\b|(?<!inspired )\bby sophie\b|\bpainted\b|\breproduction of (?!any)/i);
+  assert.match(story.intro, /not a reproduction of any of her works/);
+  assert.doesNotMatch(copy, /[€$]|\bEUR\b|\bUSD\b|clara mendes/i);
+  for (const src of [story.band.src, story.accent.src]) {
+    assert.match(src, /\.(jpe?g|png)$/, src);
+    assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+  }
+  // Looks image and collection hero: logo-credit mockups, labelled as such.
+  const {collectionHero} = await import('../app/lib/collectionHeroes.ts');
+  const page = collectionHero('circle-rhythm');
+  assert.match(story.looksImage.caption, /digital mockups/i);
+  assert.match(page.alt, /digital mockups/i);
+  assert.match(page.eyebrow, /Inspired by Sophie Taeuber-Arp/);
+  assert.doesNotMatch([page.eyebrow, page.subtitle, page.alt, story.looksImage.alt].join(' '), /\bart by\b|[€$]|\bEUR\b|\bUSD\b/i);
+  for (const src of [story.looksImage.src, page.image, page.imageMobile]) {
+    assert.match(src, /\.(jpe?g|png)$/, src);
+    assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+  }
+});
+
+test('Free Abyss credits Kazimir Malevich as inspiration, with brand-free art', async () => {
+  const {capsuleStory} = await import('../app/lib/clothingEditorial.ts');
+  const {existsSync} = await import('node:fs');
+  const story = capsuleStory('free-abyss');
+  assert.equal(story.credit, 'Inspired by Kazimir Malevich');
+  assert.equal(story.colourwayChooser, false);
+  const hero = clothingPageHero('free-abyss', 'hoodies, tees and totes');
+  assert.equal(hero.text, 'Hoodies, tees and totes in one Suprematist design, inspired by Kazimir Malevich. Made for you after you order.');
+  const copy = [story.credit, story.intro, hero.eyebrow, hero.text, hero.cta].join(' ');
+  assert.doesNotMatch(copy, /\bart by\b|(?<!inspired )\bby kazimir\b|\bpainted\b/i);
+  assert.match(story.intro, /not a reproduction of a Malevich painting/);
+  assert.doesNotMatch(copy, /[€$]|\bEUR\b|\bUSD\b|clara mendes/i);
+  // Looks image and collection hero: logo-credit mockups, labelled as such.
+  const {collectionHero} = await import('../app/lib/collectionHeroes.ts');
+  const page = collectionHero('free-abyss');
+  assert.match(story.looksImage.caption, /digital mockups/i);
+  assert.match(page.alt, /digital mockups/i);
+  assert.match(page.eyebrow, /Inspired by Kazimir Malevich/);
+  assert.doesNotMatch([page.eyebrow, page.subtitle, page.alt, story.looksImage.alt].join(' '), /\bart by\b|[€$]|\bEUR\b|\bUSD\b/i);
+  for (const src of [story.band.src, story.accent.src, story.looksImage.src, page.image, page.imageMobile]) {
+    assert.match(src, /\.(jpe?g|png)$/, src);
+    assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+  }
+});

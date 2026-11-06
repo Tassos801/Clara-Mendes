@@ -100,6 +100,91 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
       className: 'clothing-hero-art clothing-hero-art--emblem',
     },
   },
+  // Our own composition (design pack Clara-Mendes-Taeuber-Arp-2026-11,
+  // hero/palette.json: red #C8341E, blue #2B56AE, ochre #D9A030, rose
+  // #D98A82, grey #7E7C78, black #171817). Credit "Inspired by Sophie
+  // Taeuber-Arp", never "Art by". The printed pieces carry a line from her
+  // 1922 essay "Bemerkungen über den Unterricht im ornamentalen Entwerfen"
+  // (our translation); the cap and beanie carry the emblem only (line copy).
+  // Images: scripts/build-capsule-art.mjs --handle circle-rhythm
+  // --band-rows 0-0.43,0.5-0.76, from the brand-free composition and
+  // emblem SVGs.
+  'circle-rhythm': {
+    credit: 'Inspired by Sophie Taeuber-Arp',
+    // Each garment comes in its own blank colours (Dust, Bone, Ivory, ...).
+    colourwayChooser: false,
+    intro:
+      'Circles, rings, short bars and small crosses in red, blue, ochre, rose and grey, set out in the spirit of Sophie Taeuber-Arp’s abstract compositions. We drew it ourselves; it is not a reproduction of any of her works. The printed pieces carry a line from her 1922 essay on teaching ornamental design, in our translation; the cap and beanie carry the emblem only.',
+    band: {
+      src: '/images/clothing/circle-rhythm-band.w1600.jpg',
+      width: 1600,
+      height: 427,
+    },
+    // Printful mockups with the official logo credit (taeuber-arp-line,
+    // hero/mockups/, 6 Nov).
+    looksImage: {
+      src: '/images/clothing/circle-rhythm-looks.w1280.jpg',
+      width: 1280,
+      height: 960,
+      alt: 'Circle Rhythm heavyweight hoodie in Dust from the back, with the full composition, the quote and the credit, beside the oversized tee in Faded Bone with the chest emblem',
+      caption:
+        'Circle Rhythm heavyweight hoodie and oversized tee. Digital mockups.',
+    },
+    hero: {
+      eyebrow: 'New · Circle Rhythm',
+      text: (garments) =>
+        `${garments ? `${garments[0].toUpperCase()}${garments.slice(1)} in` : 'Clothing in'} one design of circles, rings and bars, inspired by Sophie Taeuber-Arp. Made for you after you order.`,
+      cta: 'Shop Circle Rhythm',
+    },
+    accent: {
+      src: '/images/clothing/circle-rhythm-emblem.w240.png',
+      width: 240,
+      height: 240,
+      className: 'clothing-hero-art clothing-hero-art--emblem',
+    },
+  },
+  // Our own composition (design pack Clara-Mendes-Malevich-2026-11,
+  // hero/palette.json: black #161616, red #C23A22, yellow-ochre #E09A18,
+  // blue #2F4AB8, green #2F6B45). Credit "Inspired by Kazimir Malevich",
+  // never "Art by"; the name "Malevich" is used only in the credit and copy,
+  // never as a product name (trademark check, malevich-line, 6 Nov). The
+  // printed pieces carry the closing line of his 1919 text "Suprematism"
+  // (our translation); the cap and beanie carry the emblem only (line
+  // copy). Images: scripts/build-capsule-art.mjs --handle free-abyss
+  // --composition free-abyss-composition-light.svg --band-strip 0.5:1100.
+  'free-abyss': {
+    credit: 'Inspired by Kazimir Malevich',
+    // Each garment comes in its own blank colours (White, Faded White, ...).
+    colourwayChooser: false,
+    intro:
+      'A black wedge and a yellow-ochre plane rise on one tilted axis among red, blue and green bars and two thin signal lines, with open space all around, after Kazimir Malevich’s Suprematism. We drew it ourselves; it is not a reproduction of a Malevich painting. The printed pieces carry the closing line of his 1919 text “Suprematism”, in our translation; the cap and beanie carry the emblem only.',
+    band: {
+      src: '/images/clothing/free-abyss-band.w1600.jpg',
+      width: 1600,
+      height: 427,
+    },
+    // Printful mockups with the official logo credit (malevich-line,
+    // hero/mockups/, 6 Nov).
+    looksImage: {
+      src: '/images/clothing/free-abyss-looks.w1280.jpg',
+      width: 1280,
+      height: 960,
+      alt: 'Free Abyss heavyweight hoodie in White from the back, with the full composition, the quote and the credit, beside the oversized tee in Faded White with the chest emblem',
+      caption: 'Free Abyss heavyweight hoodie and oversized tee. Digital mockups.',
+    },
+    hero: {
+      eyebrow: 'New · Free Abyss',
+      text: (garments) =>
+        `${garments ? `${garments[0].toUpperCase()}${garments.slice(1)} in` : 'Clothing in'} one Suprematist design, inspired by Kazimir Malevich. Made for you after you order.`,
+      cta: 'Shop Free Abyss',
+    },
+    accent: {
+      src: '/images/clothing/free-abyss-emblem.w240.png',
+      width: 240,
+      height: 240,
+      className: 'clothing-hero-art clothing-hero-art--emblem',
+    },
+  },
   'quiet-current': {
     intro:
       'A digital, watercolour-style design inspired by the layered ridges in Clara Mendes’ print Where Mist Rests. Each piece is mostly solid colour, with soft washes at the sides or along the outer leg. The leggings and biker shorts add a fern.',
