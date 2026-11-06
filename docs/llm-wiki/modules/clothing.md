@@ -81,15 +81,22 @@ Before/after map and prepared Shopify changes:
   "Before you order" (sizing, made to order, shipping, returns). Editorial copy
   per capsule is in `app/lib/clothingEditorial.ts`; a capsule without an entry
   gets a generic block from its Shopify collection (description as intro,
-  image as hero image, hero named after it; `loadCapsuleSummaries`).
+  image as hero image, hero named after it; `loadCapsuleSummaries`). Copy rules and evidence:
+  [Copy evidence](../../clothing-destination.md#copy-evidence).
 - Capsules (2026-11-06): any published collection with
   `custom.collection_kind = capsule` holding a listed garment
   (`isClothingCapsuleCollection`); `counter-diagonal` and the legacy
   `quiet-current` also count by handle. Order: Counter-Diagonal, then by
   newest piece. Feeds put the capsule title in `custom_label_0`. An artist
   quote in the description (`<blockquote>` + `<cite>`) shows as a PDP
-  pull-quote (`ApparelCopy.quote`). Copy rules and evidence:
-  [Copy evidence](../../clothing-destination.md#copy-evidence).
+  pull-quote (`ApparelCopy.quote`).
+- Colours (2026-11-06): a garment with several values in its colour option
+  shows round swatches on the product page (`VariantOptions` `swatch` prop)
+  and on its card (five, then "+N"). Swatch hex: Shopify's option swatch,
+  else `garmentColourHex` (Printful catalog values, `app/lib/garmentColours.ts`).
+  The product page reads every image (`ProductColourGallery`, 100) and keeps
+  the chosen colour's, matched on the colour named in the alt text
+  (`imagesForColour`); images naming no colour show with every colour.
 - `app/routes/collections.clothing.tsx` redirects `/collections/clothing` to
   `/clothing` (301, query string kept). The homepage section
   (`app/components/ClothingFeature.tsx`) is no longer on the homepage

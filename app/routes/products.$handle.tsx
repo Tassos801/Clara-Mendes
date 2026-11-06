@@ -147,6 +147,8 @@ import {
 } from '~/lib/storefrontBasics';
 import {parseApparelDescription} from '~/lib/apparelCopy';
 import {isClothingProduct} from '~/lib/clothing';
+import {clothingSwatchBackground} from '~/lib/clothingPresentation';
+import {imagesForColour, isColourOptionName} from '~/lib/garmentColours';
 import {quotesClothingShipping} from '~/lib/clothingShipping';
 import {quoteClothingShipping} from '~/lib/clothingShipping.server';
 import {
@@ -195,6 +197,7 @@ type ProductImage = {
 
 type ProductOptionValue = {
   id: string;
+  swatch?: {color?: string | null} | null;
   name: string;
 };
 
@@ -690,6 +693,23 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // a sold-out one; the default-market reads tell the two apart (free for a
   // buyer in Cyprus or when everything is buyable).
   const buyerCountry = context.storefront.i18n.country;
+  // A garment in several fabric colours shows the chosen colour's images:
+  // the first ten images may all be one colour, so read every image here.
+  const colourNames = isClothingProduct(product)
+    ? (product.options
+        .find((option) => isColourOptionName(option.name))
+        ?.optionValues.map((value) => value.name) ?? [])
+    : [];
+  const colourImages =
+    colourNames.length > 1
+      ? context.storefront
+          .query(COLOUR_GALLERY_QUERY, {
+            variables: {handle: product.handle},
+            cache: context.storefront.CacheShort(),
+          })
+          .then((result) => result.product?.images.nodes ?? null)
+          .catch(() => null)
+      : Promise.resolve(null);
   const [reachedProduct, relatedProducts, clothingShipping] = await Promise.all([
     withVariantReach(context.storefront, product),
     withDeliveryReach(
@@ -710,6 +730,16 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
         )
       : Promise.resolve(null),
   ]);
+  const allImages = await colourImages;
+  const selectedColour =
+    product.selectedOrFirstAvailableVariant?.selectedOptions.find((option) =>
+      isColourOptionName(option.name),
+    )?.value ?? null;
+  const colourGallery =
+    allImages && imagesForColour(allImages, colourNames, selectedColour);
+  const shownProduct: ProductDetail = colourGallery
+    ? {...reachedProduct, galleryImages: {nodes: colourGallery.slice(0, 10)}}
+    : reachedProduct;
   const outOfReach = reachedProduct.variants.nodes.some(
     (variant: ProductVariant) => variant.outOfReach,
   );
@@ -736,7 +766,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     phoneCaseCrossSell,
     classicFrameCrossSell,
     toughCaseCrossSell,
-    product: reachedProduct,
+    product: shownProduct,
     relatedByArtist: museumPairing ? museumPairing.artist : null,
     // The section shows three cards; it is "from the same capsule" only
     // when no best-selling fill is among them.
@@ -929,6 +959,15 @@ function ProductPage() {
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
+  // Fabric colours pick by swatch: Shopify's own, else the colour's name.
+  const colourValues =
+    product.options.find((option) => isColourOptionName(option.name))
+      ?.optionValues ?? [];
+  const colourSwatch = (value: string) =>
+    clothingSwatchBackground(
+      value,
+      colourValues.find((item) => item.name === value)?.swatch?.color,
+    );
   // The fleece extension blanket; museum blankets carry their own details.
   const isBlanket =
     !artProduct && (product.productType || '').toLowerCase() === 'blankets';
@@ -1357,6 +1396,7 @@ function ProductPage() {
             <VariantOptions
               product={product}
               selectedVariant={selectedVariant}
+              swatch={isApparel ? colourSwatch : undefined}
             />
           )}
 
@@ -2664,6 +2704,26 @@ const MUSEUM_PAIR_QUERY = `#graphql
   ${PRODUCT_CARD_FRAGMENT}
 ` as const;
 
+// Every image of a garment in several colours, filtered to the chosen one.
+const COLOUR_GALLERY_QUERY = `#graphql
+  query ProductColourGallery(
+    $country: CountryCode
+    $handle: String!
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    product(handle: $handle) {
+      images(first: 100) {
+        nodes {
+          altText
+          height
+          url
+          width
+        }
+      }
+    }
+  }
+` as const;
+
 const PRODUCT_QUERY = `#graphql
   query Product(
     $capsuleQuery: String!
@@ -2694,6 +2754,9 @@ const PRODUCT_QUERY = `#graphql
         optionValues {
           id
           name
+          swatch {
+            color
+          }
         }
       }
       selectedOrFirstAvailableVariant(

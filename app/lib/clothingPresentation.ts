@@ -5,6 +5,7 @@ import {
   clothingCategoryRank,
 } from './clothing.ts';
 import type {ClothingProduct} from './clothing.server';
+import {garmentColourHex, isColourOptionName} from './garmentColours.ts';
 
 export const CLOTHING_PAGE_SIZE = 12;
 export const CLOTHING_SORTS = [
@@ -81,9 +82,8 @@ export function selectClothing(
 
 export function clothingColorOptions(product: ClothingProduct) {
   return (
-    product.options.find((option) =>
-      /^(colou?r|colou?rway)$/i.test(option.name),
-    )?.optionValues ?? []
+    product.options.find((option) => isColourOptionName(option.name))
+      ?.optionValues ?? []
   );
 }
 
@@ -117,9 +117,7 @@ export function clothingFilterUrl(
 
 export function clothingProductUrl(product: ClothingProduct, colorIndex = 0) {
   const color = clothingColorOptions(product)[colorIndex];
-  const option = product.options.find((item) =>
-    /^(colou?r|colou?rway)$/i.test(item.name),
-  );
+  const option = product.options.find((item) => isColourOptionName(item.name));
   const options = color?.firstSelectableVariant?.selectedOptions;
   const search = options?.length
     ? new URLSearchParams(
@@ -178,8 +176,7 @@ export function clothingSizeRange(products: ClothingProduct[]) {
       (product) =>
         product.options
           .find((option) => /^size$/i.test(option.name))
-          ?.optionValues.map((value) => value.name.trim().toUpperCase()) ??
-        [],
+          ?.optionValues.map((value) => value.name.trim().toUpperCase()) ?? [],
     ),
   );
   if (!sizes.size) return null;
@@ -320,19 +317,21 @@ const PALETTE_SWATCHES: Record<string, string> = {
 };
 
 /**
- * Shopify's own swatch wins. Otherwise a colourway named only in palette
- * colours gets a split dot; anything else falls back to a text label.
+ * Shopify's own swatch wins. A single fabric colour ("Dust", "Faded Bone")
+ * takes its Printful catalog hex (garmentColours.ts), else the brand
+ * palette's. A colourway named in palette colours ("Moss / Mist") gets a
+ * split dot. Anything else falls back to a text label.
  */
 export function clothingSwatchBackground(
   name: string,
   swatchColor?: string | null,
 ) {
   if (swatchColor) return swatchColor;
-  const tones = name
-    .split('/')
-    .map((part) => PALETTE_SWATCHES[part.trim().toLowerCase()]);
-  if (!tones.length || tones.some((tone) => !tone)) return null;
-  if (tones.length === 1) return tones[0];
+  const parts = name.split('/').map((part) => part.trim().toLowerCase());
+  if (parts.length === 1)
+    return garmentColourHex(parts[0]) ?? PALETTE_SWATCHES[parts[0]] ?? null;
+  const tones = parts.map((part) => PALETTE_SWATCHES[part]);
+  if (tones.some((tone) => !tone)) return null;
   const step = 100 / tones.length;
   return `linear-gradient(135deg, ${tones
     .map((tone, index) => `${tone} ${index * step}% ${(index + 1) * step}%`)
