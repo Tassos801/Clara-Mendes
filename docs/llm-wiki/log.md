@@ -2244,3 +2244,13 @@ follows a US buyer who can buy the item (USD, US shipping and returns), and
 falls back to the Cyprus offer otherwise. The shipping policy has an
 "Orders to the United States" section. See
 [US market status](../us-market/status.md).
+
+## 2026-11-06 — Colour swatches for clothing
+
+A garment in several fabric colours shows round swatches on its product page
+and its `/clothing` card, and the product page gallery follows the chosen
+colour (images are matched on the colour their alt text names). Swatch
+colours come from Shopify's option swatch, else Printful's catalog hex by
+colour name (`app/lib/garmentColours.ts`). This readies Counter-Diagonal for
+light and dark fabrics. See [clothing](modules/clothing.md) and
+[Add a new garment](../clothing-destination.md#add-a-new-garment-no-code-change).

@@ -80,7 +80,14 @@ Before/after map and prepared Shopify changes:
   collection section with a "Choose a colourway" thumbnail chooser, and
   "Before you order" (sizing, made to order, shipping, returns). Editorial copy
   per capsule is in `app/lib/clothingEditorial.ts`; a capsule without an entry
-  gets a generic block. Copy rules and evidence:
+  gets a generic block.
+- Colours (2026-11-06): a garment with several values in its colour option
+  shows round swatches on the product page (`VariantOptions` `swatch` prop)
+  and on its card (five, then "+N"). Swatch hex: Shopify's option swatch,
+  else `garmentColourHex` (Printful catalog values, `app/lib/garmentColours.ts`).
+  The product page reads every image (`ProductColourGallery`, 100) and keeps
+  the chosen colour's, matched on the colour named in the alt text
+  (`imagesForColour`); images naming no colour show with every colour. Copy rules and evidence:
   [Copy evidence](../../clothing-destination.md#copy-evidence).
 - `app/routes/collections.clothing.tsx` redirects `/collections/clothing` to
   `/clothing` (301, query string kept). The homepage section

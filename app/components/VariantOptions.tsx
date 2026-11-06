@@ -1,4 +1,5 @@
 import {Link, useLocation} from 'react-router';
+import {isColourOptionName} from '~/lib/garmentColours';
 import {formatMoney} from '~/lib/money';
 import {
   describeOptionValues,
@@ -25,15 +26,22 @@ export type VariantOptionsProduct = {
  * selectable (to show it is sold out) and the purchase button disables. A
  * value that only doesn't ship to the buyer's country is not sold out: the
  * purchase button says so once for every value.
+ *
+ * With `swatch`, a colour option whose every value has a swatch shows round
+ * swatches (named by the legend and each swatch's label) instead of chips,
+ * unless its values cost different amounts.
  */
 export function VariantOptions({
   basePath,
   product,
   selectedVariant,
+  swatch,
 }: {
   basePath?: string;
   product: VariantOptionsProduct;
   selectedVariant?: VariantOptionsVariant | null;
+  /** CSS background for a colour value, or null when it has none. */
+  swatch?: (value: string) => string | null;
 }) {
   const location = useLocation();
   const path = basePath ?? `/products/${product.handle}`;
@@ -68,6 +76,11 @@ export function VariantOptions({
           variants: product.variants.nodes,
         });
         const selectedValue = selectedMap.get(option.name);
+        const swatches =
+          swatch && isColourOptionName(option.name) && !showPrices
+            ? values.map((value) => swatch(value.name))
+            : null;
+        const asSwatches = Boolean(swatches?.every(Boolean));
 
         return (
           <fieldset className="variant-fieldset" key={option.id || option.name}>
@@ -83,14 +96,45 @@ export function VariantOptions({
             <div
               className={`variant-options${
                 showPrices ? ' variant-options--priced' : ''
-              }`}
+              }${asSwatches ? ' variant-options--swatches' : ''}`}
             >
-              {values.map((value) => {
+              {values.map((value, index) => {
                 const params = new URLSearchParams(location.search);
                 value.targetOptions.forEach((selectedOption) => {
                   params.set(selectedOption.name, selectedOption.value);
                 });
                 const soldOut = value.available === false && !value.outOfReach;
+                const tone = swatches?.[index];
+
+                if (asSwatches && tone) {
+                  return (
+                    <Link
+                      aria-current={value.selected ? 'true' : undefined}
+                      aria-disabled={soldOut ? 'true' : undefined}
+                      aria-label={
+                        soldOut ? `${value.name}, sold out` : value.name
+                      }
+                      className={[
+                        'variant-swatch',
+                        value.selected ? 'is-selected' : '',
+                        soldOut ? 'is-unavailable' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')}
+                      key={value.id}
+                      preventScrollReset
+                      replace
+                      title={value.name}
+                      to={`${path}?${params.toString()}`}
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="variant-swatch-dot"
+                        style={{background: tone}}
+                      />
+                    </Link>
+                  );
+                }
 
                 return (
                   <Link
