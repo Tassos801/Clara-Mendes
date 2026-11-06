@@ -98,10 +98,11 @@ The page category comes from this table. Source: `CATEGORIES` in
 | Sweatshirts | Sweatshirts, Sweatshirt |
 | T-shirts | T-Shirts, T-Shirt |
 | Long sleeves | Long Sleeve Shirts, Long Sleeve Shirt, Long Sleeve T-Shirts |
-| Tops | Studio Top, Tops, Shirts, Tank Tops, Blouses |
+| Tops | Tops, Shirts, Tank Tops, Blouses |
 | Leggings | Yoga Leggings, Leggings |
 | Bras | Sports Bra, Sports Bras, Bras |
 | Shorts | Biker Shorts, Shorts |
+| Studio tops | Studio Top, Studio Tops |
 | Dresses | Dresses, Dress |
 | Skirts | Skirts, Skirt |
 | Trousers | Trousers, Pants, Jeans |
@@ -121,9 +122,11 @@ shown under a category called "Clothing". Use a listed type when you can.
 `/clothing` merges the categories into a few groups (`CATEGORY_GROUPS` in
 `app/lib/clothing.ts`), in this order: **Hoodies & sweatshirts** (hoodies,
 sweatshirts, knitwear, outerwear), **Tees & long sleeves** (t-shirts, long
-sleeves, tops), **Activewear** (leggings, bras, shorts), **Dresses &
-bottoms**, **Accessories**, and **More clothing** for tag-only garments. A
-group with no listed piece never shows. An old link that names one
+sleeves, tops), **Activewear** (leggings, bras, shorts, studio tops: the
+artist lines' fitted tank is typed "Studio Top"), **Dresses & bottoms**,
+**Accessories**, and **More clothing** for tag-only garments. A group with
+no listed piece never shows, so Activewear appears with the first artist
+activewear piece that is Active and approved (Quiet Current never counts). An old link that names one
 category (`?category=hoodies`) opens its group.
 
 Above the tabs, **line chips** (All lines, Counter-Diagonal, Free Abyss,
@@ -149,8 +152,9 @@ full sections.
    - **Swatches** come from Shopify's own option swatch when one is set,
      else from the colour's name: Printful's catalog hex in
      [`app/lib/garmentColours.ts`](../app/lib/garmentColours.ts) (add a
-     `PICKED_HEX` line when one reads wrong). A name with no hex shows as
-     text. Cards show five swatches, then "+N".
+     `PICKED_HEX` line when one reads wrong; "Cream", the artist
+     activewear's light fabric, is #EAE2D3 there). A name with no hex shows
+     as text. Cards show four swatches, then "+N".
 2. **Set the product type** to one type from the table above. If the garment is
    a kind that is not listed, add the tag `clara-mendes-clothing` instead.
 3. **Set the Shopify product category** (taxonomy) under Apparel &

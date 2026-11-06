@@ -19,7 +19,11 @@ export function isColourOptionName(name?: string | null) {
  * Hand-picked swatches, checked against the real fabric. They win over the
  * catalog value below. Add a line when a catalog hex reads wrong on screen.
  */
-const PICKED_HEX: Record<string, string> = {};
+const PICKED_HEX: Record<string, string> = {
+  // The artist activewear's light fabric (coordinator, 6 Nov), also the
+  // cream linework of Counter-Diagonal's dark-fabric art.
+  cream: '#eae2d3',
+};
 
 /**
  * Printful's own catalog hex for each fabric colour name, from
