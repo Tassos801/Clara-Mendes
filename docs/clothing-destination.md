@@ -154,7 +154,9 @@ full sections.
      [`app/lib/garmentColours.ts`](../app/lib/garmentColours.ts) (add a
      `PICKED_HEX` line when one reads wrong; "Cream" is #EAE2D3 there).
      All-over-print activewear prints its fabric, so its swatches are the
-     print bases (`ACTIVEWEAR_HEX`): Cream #EAE2D3, Black #171817. A name with no hex shows
+     print bases (`ACTIVEWEAR_HEX`): Cream #EAE2D3, Black #171817; a line
+     whose print files use another ground overrides it by handle prefix
+     (`ACTIVEWEAR_LINE_HEX`: Free Abyss Black #121212). A name with no hex shows
      as text. Cards show four swatches, then "+N".
 2. **Set the product type** to one type from the table above. If the garment is
    a kind that is not listed, add the tag `clara-mendes-clothing` instead.

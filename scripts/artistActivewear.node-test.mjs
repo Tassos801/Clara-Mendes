@@ -136,24 +136,33 @@ test('activewear cards name their line, and the line chips and tabs narrow each 
   assert.equal(clothingLineTitle(faTank), 'Free Abyss');
 });
 
-test('activewear swatches are its print bases: Cream #EAE2D3, Black #171817', () => {
+test('activewear swatches are its print bases: Cream #EAE2D3, Black #171817 (Free Abyss #121212)', () => {
   assert.equal(garmentColourHex('Cream'), '#eae2d3');
   assert.equal(garmentColourHex(' cream '), '#eae2d3');
   assert.equal(clothingSwatchBackground('Cream'), '#eae2d3');
-  for (const type of ['Yoga Leggings', 'Sports Bra', 'Biker Shorts', 'Studio Top']) {
-    assert.equal(clothingSwatchBackground('Cream', null, type), '#eae2d3', type);
-    assert.equal(clothingSwatchBackground('Black', null, type), '#171817', type);
+  for (const [, , productType] of BLANKS) {
+    for (const line of ['counter-diagonal', 'circle-rhythm']) {
+      const product = {productType, handle: `${line}-x`};
+      assert.equal(clothingSwatchBackground('Cream', null, product), '#eae2d3', product.handle);
+      assert.equal(clothingSwatchBackground('Black', null, product), '#171817', product.handle);
+    }
+    // Free Abyss prints its Black ground as #121212; its White is plain white.
+    const abyss = {productType, handle: 'free-abyss-high-waist-leggings'};
+    assert.equal(clothingSwatchBackground('Black', null, abyss), '#121212');
+    assert.equal(clothingSwatchBackground('White', null, abyss), '#ffffff');
+    assert.equal(clothingSwatchBackground('Black', null, {productType}), '#171817');
   }
-  // Other garments keep Printful's catalog black.
-  assert.equal(clothingSwatchBackground('Black', null, 'Hoodies'), '#0e0b0b');
+  // Other garments keep Printful's catalog black, Free Abyss's tees too.
+  assert.equal(clothingSwatchBackground('Black', null, {productType: 'Hoodies', handle: 'counter-diagonal-heavyweight-hoodie'}), '#0e0b0b');
+  assert.equal(clothingSwatchBackground('Black', null, {productType: 'T-Shirts', handle: 'free-abyss-tee'}), '#0e0b0b');
   assert.equal(clothingSwatchBackground('Black'), '#0e0b0b');
   // A Shopify swatch set on the value still wins.
-  assert.equal(clothingSwatchBackground('Cream', '#f0e8d8', 'Sports Bra'), '#f0e8d8');
-  // The card and the product page pass the product type.
+  assert.equal(clothingSwatchBackground('Cream', '#f0e8d8', {productType: 'Sports Bra'}), '#f0e8d8');
+  // The card and the product page pass the product.
   const card = readFileSync(new URL('../app/components/ClothingProductCard.tsx', import.meta.url), 'utf8');
-  assert.equal(card.match(/swatch\?\.color,\s+product\.productType,/g)?.length, 2);
+  assert.equal(card.match(/swatch\?\.color,\s+product,/g)?.length, 2);
   const pdp = readFileSync(new URL('../app/routes/products.$handle.tsx', import.meta.url), 'utf8');
-  assert.match(pdp, /\?\.swatch\?\.color,\s+product\.productType,\s+\);/);
+  assert.match(pdp, /\?\.swatch\?\.color,\s+product,\s+\);/);
 });
 
 test('the artist activewear gets Printful\'s all-over windows; a future piece does not', () => {

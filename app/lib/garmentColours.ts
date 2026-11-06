@@ -152,15 +152,38 @@ const ACTIVEWEAR_HEX: Record<string, string> = {
   black: '#171817',
 };
 
+/**
+ * A line whose print files use another ground, by handle prefix: the
+ * full-panel ground rect in each line's source-svg (coordinator, 6 Nov:
+ * Free Abyss Black #121212 in 11/11 dark files; Counter-Diagonal and
+ * Circle Rhythm keep the bases above).
+ */
+const ACTIVEWEAR_LINE_HEX: Record<string, Record<string, string>> = {
+  'free-abyss': {black: '#121212'},
+};
+
+function activewearHex(key: string, handle?: string | null) {
+  const slug = handle?.trim().toLowerCase() ?? '';
+  const line = Object.keys(ACTIVEWEAR_LINE_HEX).find((prefix) =>
+    slug.startsWith(`${prefix}-`),
+  );
+  return (
+    (line ? ACTIVEWEAR_LINE_HEX[line][key] : undefined) ?? ACTIVEWEAR_HEX[key]
+  );
+}
+
 /** The swatch hex for a fabric colour name, or null when it is unknown. */
 export function garmentColourHex(
   name?: string | null,
-  {activewear = false}: {activewear?: boolean} = {},
+  {
+    activewear = false,
+    handle,
+  }: {activewear?: boolean; handle?: string | null} = {},
 ): string | null {
   const key = name?.trim().toLowerCase().replace(/\s+/g, ' ') ?? '';
   if (!key) return null;
   return (
-    (activewear ? ACTIVEWEAR_HEX[key] : undefined) ??
+    (activewear ? activewearHex(key, handle) : undefined) ??
     PICKED_HEX[key] ??
     PRINTFUL_HEX[key] ??
     null

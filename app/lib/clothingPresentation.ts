@@ -367,21 +367,22 @@ const PALETTE_SWATCHES: Record<string, string> = {
 /**
  * Shopify's own swatch wins. A single fabric colour ("Dust", "Faded Bone")
  * takes its Printful catalog hex (garmentColours.ts), or for all-over-print
- * activewear its print base (pass the product type), else the brand
+ * activewear its print base (pass the product), else the brand
  * palette's. A colourway named in palette colours ("Moss / Mist") gets a
  * split dot. Anything else falls back to a text label.
  */
 export function clothingSwatchBackground(
   name: string,
   swatchColor?: string | null,
-  productType?: string | null,
+  product?: {productType?: string | null; handle?: string | null},
 ) {
   if (swatchColor) return swatchColor;
   const parts = name.split('/').map((part) => part.trim().toLowerCase());
   if (parts.length === 1)
     return (
       garmentColourHex(parts[0], {
-        activewear: isApparelProductType(productType),
+        activewear: isApparelProductType(product?.productType),
+        handle: product?.handle,
       }) ??
       PALETTE_SWATCHES[parts[0]] ??
       null
