@@ -66,7 +66,9 @@ export function clothingLineChips(
   products: ClothingProduct[],
   category: string,
 ) {
-  const inTab = products.filter((product) => inClothingGroup(product, category));
+  const inTab = products.filter((product) =>
+    inClothingGroup(product, category),
+  );
   return clothingCapsules(products)
     .map((capsule) => ({
       handle: capsule.handle,
@@ -251,6 +253,7 @@ const UPPER_BODY = new Set([
   't-shirts',
   'long-sleeves',
   'tops',
+  'studio-tops',
   'bras',
   'dresses',
   'one-pieces',
@@ -267,6 +270,11 @@ const GARMENT_NOUNS: Record<string, string> = {
   'long sleeve shirts': 'long sleeves',
   'long sleeve shirt': 'long sleeves',
   'long sleeve t-shirts': 'long sleeves',
+  // Artist activewear, tops before bottoms.
+  'studio top': 'tanks',
+  'sports bra': 'sports bras',
+  'yoga leggings': 'leggings',
+  'biker shorts': 'biker shorts',
   hats: 'hats',
   caps: 'caps',
   beanies: 'beanies',

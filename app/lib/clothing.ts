@@ -44,7 +44,14 @@ const CATEGORIES = [
   {
     slug: 'tops',
     label: 'Tops',
-    types: ['Studio Top', 'Tops', 'Shirts', 'Tank Tops', 'Blouses'],
+    types: ['Tops', 'Shirts', 'Tank Tops', 'Blouses'],
+  },
+  // The fitted activewear tank (Printful all-over), apart from everyday
+  // tops; its tab is Activewear. Tops sort before bottoms in looks.
+  {
+    slug: 'studio-tops',
+    label: 'Studio tops',
+    types: ['Studio Top', 'Studio Tops'],
   },
   {slug: 'leggings', label: 'Leggings', types: ['Yoga Leggings', 'Leggings']},
   {slug: 'bras', label: 'Bras', types: ['Sports Bra', 'Sports Bras', 'Bras']},
@@ -94,7 +101,7 @@ const CATEGORY_GROUPS = [
   {
     slug: 'activewear',
     label: 'Activewear',
-    categories: ['leggings', 'bras', 'shorts'],
+    categories: ['leggings', 'bras', 'shorts', 'studio-tops'],
   },
   {
     slug: 'dresses-bottoms',
@@ -148,7 +155,9 @@ export function isRetiredClothingHandle(
   handle?: string | null,
 ) {
   const list: readonly string[] =
-    kind === 'product' ? RETIRED_CLOTHING_PRODUCTS : RETIRED_CLOTHING_COLLECTIONS;
+    kind === 'product'
+      ? RETIRED_CLOTHING_PRODUCTS
+      : RETIRED_CLOTHING_COLLECTIONS;
   return list.includes(normalize(handle));
 }
 

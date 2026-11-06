@@ -2296,3 +2296,13 @@ retired: its flags are false and its pages redirect to `/clothing`.
 and Sophie Taeuber-Arp, apart from the museum works. See
 [clothing](modules/clothing.md) and
 [The tabs shoppers see](../clothing-destination.md#the-tabs-shoppers-see-2026-11-06).
+
+## 2026-11-06 — Artist activewear on /clothing
+
+The artist lines' activewear (leggings, sports bra, biker shorts, fitted
+tank) lives under one **Activewear** tab: the tank's type "Studio Top" is
+its own category (`studio-tops`) in that group, not a tee. "Cream", the
+activewear's light fabric, swatches as #EAE2D3 (`PICKED_HEX` in
+`app/lib/garmentColours.ts`). On phones the chosen line chip and tab
+scroll into view. Test: `scripts/artistActivewear.node-test.mjs`.
+

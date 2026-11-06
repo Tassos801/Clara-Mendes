@@ -31,8 +31,8 @@ test('garment classification uses exact types or explicit merchant tag, never fu
   assert.equal(isClothingProductType(' dresses '), true);
   assert.equal(isClothingProductType('Dress Art Print'), false);
   // Tabs are broad groups of the categories, in page order.
-  assert.deepEqual(clothingCategories([future, future, {productType: 'Studio Top'}]), [
-    {slug: 'tees-long-sleeves', label: 'Tees & long sleeves', count: 1}, {slug: 'dresses-bottoms', label: 'Dresses & bottoms', count: 2},
+  assert.deepEqual(clothingCategories([future, future, {productType: 'Studio Top'}, {productType: 'Tank Tops'}]), [
+    {slug: 'tees-long-sleeves', label: 'Tees & long sleeves', count: 1}, {slug: 'activewear', label: 'Activewear', count: 1}, {slug: 'dresses-bottoms', label: 'Dresses & bottoms', count: 2},
   ]);
 });
 
@@ -88,7 +88,7 @@ test('the four retired Quiet Current products list nowhere, published or not', (
 test('category query values cannot inject extra Shopify search conditions', () => {
   assert.match(buildClothingSearchQuery(), /tag:"clara-mendes-clothing"/);
   // A single category in an old link widens to its group.
-  assert.equal(buildClothingSearchQuery({category: 'leggings'}), '(product_type:"Yoga Leggings" OR product_type:"Leggings" OR product_type:"Sports Bra" OR product_type:"Sports Bras" OR product_type:"Bras" OR product_type:"Biker Shorts" OR product_type:"Shorts")');
+  assert.equal(buildClothingSearchQuery({category: 'leggings'}), '(product_type:"Studio Top" OR product_type:"Studio Tops" OR product_type:"Yoga Leggings" OR product_type:"Leggings" OR product_type:"Sports Bra" OR product_type:"Sports Bras" OR product_type:"Bras" OR product_type:"Biker Shorts" OR product_type:"Shorts")');
   assert.equal(buildClothingSearchQuery({category: 'accessories'}), '(product_type:"Hats" OR product_type:"Caps" OR product_type:"Beanies" OR product_type:"Tote Bags")');
   assert.equal(buildClothingSearchQuery({category: 'leggings" OR *'}), 'tag:"__unknown-clothing-category__"');
 });

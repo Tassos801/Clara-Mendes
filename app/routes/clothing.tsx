@@ -1,3 +1,4 @@
+import {useEffect, useRef} from 'react';
 import {
   Form,
   Link,
@@ -157,6 +158,19 @@ export default function Clothing() {
     clothingFilterUrl(params, key, value);
   const {hero} = data;
   const looksImage = hero.looksImage;
+  // On phones the line chips and tabs scroll sideways: bring the chosen ones
+  // into view (a deep link to "Activewear" opens past the screen edge)
+  // without moving the page.
+  const filters = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    filters.current?.querySelectorAll('nav').forEach((nav) => {
+      const current = nav.querySelector<HTMLElement>('a[aria-current]');
+      if (!current || nav.scrollWidth <= nav.clientWidth) return;
+      const offset =
+        current.getBoundingClientRect().left - nav.getBoundingClientRect().left;
+      nav.scrollLeft += offset - (nav.clientWidth - current.offsetWidth) / 2;
+    });
+  }, [data.capsule, data.category]);
   const more = new URLSearchParams(params);
   more.set('page', String(data.page + 1));
   const selectedLine = data.lines.find((line) => line.handle === data.capsule);
@@ -281,7 +295,7 @@ export default function Clothing() {
           ) : null}
         </div>
         {showLineChips || showTabs ? (
-          <div className="clothing-filters">
+          <div className="clothing-filters" ref={filters}>
             {showLineChips ? (
               <nav aria-label="Clothing lines" className="clothing-chips">
                 <Link

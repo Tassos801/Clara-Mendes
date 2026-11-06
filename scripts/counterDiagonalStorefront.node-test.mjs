@@ -84,13 +84,15 @@ test('the contract product types map to categories; activewear keeps its own', (
   assert.equal(slug('Yoga Leggings'), 'leggings');
   assert.equal(slug('Sports Bra'), 'bras');
   assert.equal(slug('Biker Shorts'), 'shorts');
-  assert.equal(slug('Studio Top'), 'tops');
+  assert.equal(slug('Studio Top'), 'studio-tops');
+  assert.equal(slug('Tank Tops'), 'tops');
   // The museum Art Canvas Tote is typed "Bags" and is not clothing.
   assert.equal(isClothingProduct({productType: 'Bags'}), false);
   assert.equal(isClothingProduct({productType: 'Mugs'}), false);
   // The tabs are broad groups, counted per group.
   assert.deepEqual(clothingCategories(newestFirst).map(({slug: s, count}) => `${s}:${count}`), [
-    'hoodies-sweatshirts:3', 'tees-long-sleeves:3', 'activewear:1', 'accessories:2',
+    // The Studio Top tank counts as activewear, with the leggings.
+    'hoodies-sweatshirts:3', 'tees-long-sleeves:2', 'activewear:2', 'accessories:2',
   ]);
   assert.equal(clothingCategories(newestFirst).find(({slug: s}) => s === 'tees-long-sleeves').label, 'Tees & long sleeves');
   assert.equal(isClothingCategoryCollection({handle: 'accessories', title: 'Accessories'}), true);
@@ -159,7 +161,9 @@ test('the garment phrase names only kinds on sale, in page order', () => {
   assert.equal(clothingGarmentPhrase(line), 'hoodies, sweatshirts, tees, long sleeves, hats and totes');
   assert.equal(clothingGarmentPhrase([premium, tee]), 'hoodies and tees');
   assert.equal(clothingGarmentPhrase([heavyweight]), 'hoodies');
-  assert.equal(clothingGarmentPhrase([heavyweight, tank]), null);
+  // Activewear has nouns too; a kind without one keeps the copy generic.
+  assert.equal(clothingGarmentPhrase([heavyweight, tank]), 'hoodies and tanks');
+  assert.equal(clothingGarmentPhrase([heavyweight, piece('x-dress', 'X Dress', 'Dresses')]), null);
   assert.equal(clothingGarmentPhrase([]), null);
 });
 
