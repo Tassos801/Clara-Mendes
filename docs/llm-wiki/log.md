@@ -2305,4 +2305,8 @@ its own category (`studio-tops`) in that group, not a tee. "Cream", the
 activewear's light fabric, swatches as #EAE2D3 (`PICKED_HEX` in
 `app/lib/garmentColours.ts`). On phones the chosen line chip and tab
 scroll into view. Test: `scripts/artistActivewear.node-test.mjs`.
+Then: activewear swatches use the print bases (Black #171817, not the
+catalog black), and the twelve artist activewear products (exact handles,
+`isArtistActivewear` in `app/lib/storefrontBasics.ts`) take Printful's
+all-over windows: "Processes in 2–7 business days", dispatch 3–8.
 

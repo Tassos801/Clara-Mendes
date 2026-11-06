@@ -973,6 +973,7 @@ function ProductPage() {
     clothingSwatchBackground(
       value,
       colourValues.find((item) => item.name === value)?.swatch?.color,
+      product.productType,
     );
   // The fleece extension blanket; museum blankets carry their own details.
   const isBlanket =
