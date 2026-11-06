@@ -47,6 +47,18 @@ const HEROES: Record<string, HeroEntry> = {
     imageMobile: '/images/clothing/counter-diagonal-collection-hero-mobile.jpg',
     alt: 'Counter-Diagonal heavyweight hoodie from the back and oversized tee with the chest emblem, digital mockups on deep blue',
   },
+  // Our own composition: credit "Inspired by Sophie Taeuber-Arp", never
+  // "Art by". Images: scripts/build-capsule-art.mjs --handle circle-rhythm
+  // --looks (Printful mockups with the official logo credit). No money in
+  // the subtitle, so it reads the same in every market.
+  'circle-rhythm': {
+    eyebrow: 'Clothing · Inspired by Sophie Taeuber-Arp',
+    subtitle:
+      'One design of circles, rings and bars on hoodies, tees and more, with a line from her 1922 essay on the printed pieces. Made for you after you order.',
+    image: '/images/clothing/circle-rhythm-collection-hero.jpg',
+    imageMobile: '/images/clothing/circle-rhythm-collection-hero-mobile.jpg',
+    alt: 'Circle Rhythm heavyweight hoodie from the back and oversized tee with the chest emblem, digital mockups on blue',
+  },
 };
 
 // Plain heroes for loader data (no function field), built once so each

@@ -260,6 +260,17 @@ test('Circle Rhythm credits Sophie Taeuber-Arp as inspiration, with brand-free a
     assert.match(src, /\.(jpe?g|png)$/, src);
     assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
   }
+  // Looks image and collection hero: logo-credit mockups, labelled as such.
+  const {collectionHero} = await import('../app/lib/collectionHeroes.ts');
+  const page = collectionHero('circle-rhythm');
+  assert.match(story.looksImage.caption, /digital mockups/i);
+  assert.match(page.alt, /digital mockups/i);
+  assert.match(page.eyebrow, /Inspired by Sophie Taeuber-Arp/);
+  assert.doesNotMatch([page.eyebrow, page.subtitle, page.alt, story.looksImage.alt].join(' '), /\bart by\b|[€$]|\bEUR\b|\bUSD\b/i);
+  for (const src of [story.looksImage.src, page.image, page.imageMobile]) {
+    assert.match(src, /\.(jpe?g|png)$/, src);
+    assert.ok(existsSync(resolve('public' + src)), `${src} is missing`);
+  }
 });
 
 test('Free Abyss credits Kazimir Malevich as inspiration, with brand-free art', async () => {

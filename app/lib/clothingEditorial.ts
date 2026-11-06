@@ -120,6 +120,16 @@ const CAPSULE_STORIES: Record<string, CapsuleStory> = {
       width: 1600,
       height: 427,
     },
+    // Printful mockups with the official logo credit (taeuber-arp-line,
+    // hero/mockups/, 6 Nov).
+    looksImage: {
+      src: '/images/clothing/circle-rhythm-looks.w1280.jpg',
+      width: 1280,
+      height: 960,
+      alt: 'Circle Rhythm heavyweight hoodie in Dust from the back, with the full composition, the quote and the credit, beside the oversized tee in Faded Bone with the chest emblem',
+      caption:
+        'Circle Rhythm heavyweight hoodie and oversized tee. Digital mockups.',
+    },
     hero: {
       eyebrow: 'New · Circle Rhythm',
       text: (garments) =>
