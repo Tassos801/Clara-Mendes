@@ -10,7 +10,6 @@ import {
   clothingCategory,
   isClothingProduct,
   isClothingCategoryCollection,
-  LEGACY_CLOTHING_CAPSULES,
   LEAD_CLOTHING_CAPSULE,
 } from '../app/lib/clothing.ts';
 import {
@@ -89,25 +88,24 @@ test('the contract product types map to categories; activewear keeps its own', (
   // The museum Art Canvas Tote is typed "Bags" and is not clothing.
   assert.equal(isClothingProduct({productType: 'Bags'}), false);
   assert.equal(isClothingProduct({productType: 'Mugs'}), false);
+  // The tabs are broad groups, counted per group.
   assert.deepEqual(clothingCategories(newestFirst).map(({slug: s, count}) => `${s}:${count}`), [
-    'hoodies:2', 'sweatshirts:1', 't-shirts:1', 'long-sleeves:1', 'tops:1', 'leggings:1', 'accessories:2',
+    'hoodies-sweatshirts:3', 'tees-long-sleeves:3', 'activewear:1', 'accessories:2',
   ]);
-  assert.equal(clothingCategories(newestFirst).find(({slug: s}) => s === 'long-sleeves').label, 'Long sleeves');
+  assert.equal(clothingCategories(newestFirst).find(({slug: s}) => s === 'tees-long-sleeves').label, 'Tees & long sleeves');
   assert.equal(isClothingCategoryCollection({handle: 'accessories', title: 'Accessories'}), true);
 });
 
-test('Counter-Diagonal is a capsule by handle and comes before Quiet Current', () => {
+test('Counter-Diagonal is a capsule by handle; the retired Quiet Current is none', () => {
   assert.equal(LEAD_CLOTHING_CAPSULE, 'counter-diagonal');
-  assert.deepEqual(LEGACY_CLOTHING_CAPSULES, ['quiet-current']);
   assert.deepEqual(clothingCapsules(newestFirst), [
     {handle: 'counter-diagonal', title: 'Counter-Diagonal', count: 7},
-    {handle: 'quiet-current', title: 'Quiet Current', count: 2},
   ]);
   const meadow = {handle: 'meadow', title: 'A Meadow', clothingKind: {type: 'single_line_text_field', value: 'capsule'}};
   assert.deepEqual(
     clothingCapsules([piece('meadow-dress', 'Meadow Dress', 'Dresses', {collection: meadow}), heavyweight, leggings]).map((c) => c.handle),
     // A metafield capsule with the newest piece comes right after the lead.
-    ['counter-diagonal', 'meadow', 'quiet-current'],
+    ['counter-diagonal', 'meadow'],
   );
 });
 
@@ -147,6 +145,12 @@ test('featured order: Counter-Diagonal first, in garment order, newest first wit
   assert.equal(selectClothing(newestFirst, new URLSearchParams()).products[0].handle, 'counter-diagonal-heavyweight-hoodie');
   assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('sort=newest')).products.map((p) => p.handle), newestFirst.map((p) => p.handle));
   assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('category=accessories')).products.map((p) => p.handle), ['counter-diagonal-cap', 'counter-diagonal-tote']);
+  // Group tabs, and old single-category links opening their group.
+  assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('category=hoodies-sweatshirts')).products.map((p) => p.handle), ['counter-diagonal-heavyweight-hoodie', 'counter-diagonal-premium-hoodie', 'counter-diagonal-crewneck']);
+  assert.equal(selectClothing(newestFirst, new URLSearchParams('category=hoodies')).category, 'hoodies-sweatshirts');
+  assert.equal(selectClothing(newestFirst, new URLSearchParams('category=nonsense')).category, '');
+  // Line and tab narrow together.
+  assert.deepEqual(selectClothing(newestFirst, new URLSearchParams('capsule=counter-diagonal&category=tees-long-sleeves')).products.map((p) => p.handle), ['counter-diagonal-oversized-tee', 'counter-diagonal-long-sleeve']);
   assert.equal(selectClothing(newestFirst, new URLSearchParams('sort=bogus')).sort, 'featured');
 });
 
@@ -178,8 +182,8 @@ test('Counter-Diagonal copy credits Van Doesburg as inspiration, never as the ar
   assert.match(story.looksImage.caption, /digital mockups/i);
   // Market-neutral: no money in fixed copy (docs/us-market/HANDOFF.md rule 2).
   assert.doesNotMatch(copy, /[€$]|\bEUR\b|\bUSD\b/);
-  // Without a hero of its own (Quiet Current) the page keeps its old hero.
-  assert.deepEqual(clothingPageHero('quiet-current', null), {eyebrow: null, title: CLOTHING_PAGE_HERO.title, text: CLOTHING_PAGE_HERO.text, cta: 'Shop clothing'});
+  // With no capsule the page keeps its general hero.
+  assert.deepEqual(clothingPageHero(null, null), {eyebrow: null, title: CLOTHING_PAGE_HERO.title, text: CLOTHING_PAGE_HERO.text, cta: 'Shop clothing'});
   assert.equal('hero' in capsuleStoryData('counter-diagonal'), false);
 });
 
@@ -192,7 +196,7 @@ test('Counter-Diagonal images exist as plain JPEG or PNG, never WebP', () => {
   }
 });
 
-test('the real /clothing loader leads with Counter-Diagonal and keeps Quiet Current', async () => {
+test('the real /clothing loader leads with Counter-Diagonal and drops the retired Quiet Current', async () => {
   const route = loadRoute('clothing');
   const load = (products, search = '', country = 'US') => route.loader({
     request: new Request(`https://shopclaramendes.com/clothing${search}`),
@@ -204,32 +208,27 @@ test('the real /clothing loader leads with Counter-Diagonal and keeps Quiet Curr
   });
   const data = await load(newestFirst);
   assert.equal(data.products[0].handle, 'counter-diagonal-heavyweight-hoodie');
-  assert.deepEqual(data.collections.map((c) => c.handle), ['counter-diagonal', 'quiet-current']);
-  assert.equal(data.collections[0].story.credit, 'Inspired by Theo van Doesburg');
+  // The retired activewear never reaches the page, published or not.
+  assert.equal(data.products.some((p) => p.handle.startsWith('quiet-current-')), false);
+  assert.equal(data.catalogTotal, 7);
+  assert.deepEqual(data.lines.map((line) => line.handle), ['counter-diagonal']);
+  assert.equal(data.lines[0].credit, 'Inspired by Theo van Doesburg');
   assert.equal(data.hero.eyebrow, 'New · Counter-Diagonal');
   assert.equal(data.hero.text, 'Hoodies, sweatshirts, tees, long sleeves, hats and totes in one geometric design, inspired by Theo van Doesburg. Made for you after you order.');
   assert.equal(data.hero.looksImage.src, '/images/clothing/counter-diagonal-looks.w1280.jpg');
-  assert.match(data.description, /^Clara Mendes Clothing: Counter-Diagonal hoodies, .* and totes in one geometric design inspired by Theo van Doesburg, and Quiet Current activewear/);
-  assert.equal(data.showTools, true);
-  assert.equal(data.cutAndSewn, false);
-  assert.equal(data.shippingFrom, null);
-  assert.deepEqual(data.capsules.map((c) => c.handle), ['counter-diagonal', 'quiet-current']);
+  assert.equal(data.description, 'Clara Mendes Clothing: Counter-Diagonal, an original design inspired by Theo van Doesburg, on hoodies, sweatshirts, tees, long sleeves, hats and totes. Made to order.');
+  assert.deepEqual(data.categories.map((c) => c.slug), ['hoodies-sweatshirts', 'tees-long-sleeves', 'accessories']);
+  assert.deepEqual(data.lineChips, [{handle: 'counter-diagonal', title: 'Counter-Diagonal', count: 7}]);
 
-  // Before the line goes live, the page is exactly the Quiet Current page.
+  // Only retired pieces: the page is empty, not the old activewear page.
   const before = await load([tank, leggings]);
-  assert.deepEqual(before.collections.map((c) => c.handle), ['quiet-current']);
+  assert.equal(before.catalogTotal, 0);
+  assert.deepEqual(before.lines, []);
   assert.equal(before.hero.text, CLOTHING_PAGE_HERO.text);
-  assert.equal(before.hero.cta, 'Shop clothing');
-  assert.equal(before.cutAndSewn, true);
-  // A US (USD) buyer reads checkout's fee, never a euro figure; this fake
-  // storefront quotes nothing, so no figure. Cyprus keeps "from €3.99".
-  assert.equal(before.shippingFrom, null);
-  assert.equal((await load([tank, leggings], '', 'CY')).shippingFrom, '€3.99');
-  assert.match(before.description, /^Clara Mendes Clothing: leggings, a sports bra/);
 
   // An unapproved line piece or an old draft never reaches the page.
   const leaked = await load([{...heavyweight, storefrontApproved: null}, {...premium, handle: 'counter-diagonal-hoodie'}, tank]);
-  assert.deepEqual(leaked.products.map((p) => p.handle), ['quiet-current-studio-tank']);
+  assert.deepEqual(leaked.products.map((p) => p.handle), []);
 });
 
 /** Execute the real route loader; only rendering helpers are replaced. */

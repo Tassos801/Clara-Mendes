@@ -75,6 +75,84 @@ const CATEGORIES = [
 ] as const;
 
 /**
+ * The tabs a shopper sees: a few broad groups of the categories above, in
+ * page order. A group with no listed piece never shows, so Activewear and
+ * "Dresses & bottoms" stay hidden while nothing in them is for sale. A
+ * category slug in an old link (`?category=hoodies`) opens its group.
+ */
+const CATEGORY_GROUPS = [
+  {
+    slug: 'hoodies-sweatshirts',
+    label: 'Hoodies & sweatshirts',
+    categories: ['hoodies', 'sweatshirts', 'knitwear', 'outerwear'],
+  },
+  {
+    slug: 'tees-long-sleeves',
+    label: 'Tees & long sleeves',
+    categories: ['t-shirts', 'long-sleeves', 'tops'],
+  },
+  {
+    slug: 'activewear',
+    label: 'Activewear',
+    categories: ['leggings', 'bras', 'shorts'],
+  },
+  {
+    slug: 'dresses-bottoms',
+    label: 'Dresses & bottoms',
+    categories: ['dresses', 'skirts', 'trousers', 'one-pieces'],
+  },
+  {slug: 'accessories', label: 'Accessories', categories: ['accessories']},
+  // Garments admitted only by the clara-mendes-clothing tag.
+  {slug: 'clothing', label: 'More clothing', categories: ['clothing']},
+] as const;
+
+/** The group a category (or group) slug from a URL belongs to, or null. */
+export function clothingGroupSlug(value?: string | null) {
+  const slug = normalize(value);
+  if (!slug) return null;
+  const group = CATEGORY_GROUPS.find(
+    (candidate) =>
+      candidate.slug === slug ||
+      (candidate.categories as readonly string[]).includes(slug),
+  );
+  return group?.slug ?? null;
+}
+
+/** A garment's tab: the group of its category. */
+export function clothingCategoryGroup(
+  product: ClothingProductLike,
+): ClothingCategory | null {
+  const group = CATEGORY_GROUPS.find((candidate) =>
+    (candidate.categories as readonly string[]).includes(
+      clothingCategory(product)?.slug ?? '',
+    ),
+  );
+  return group ? {slug: group.slug, label: group.label} : null;
+}
+
+/**
+ * Lines retired from the shop (owner, 2026-11-06: "get rid of the yoga
+ * stuff"). Their release flags are false (catalogFilters.ts), so they list
+ * nowhere even while still published; their pages redirect to /clothing.
+ */
+export const RETIRED_CLOTHING_PRODUCTS = [
+  'quiet-current-high-waist-leggings',
+  'quiet-current-studio-bra',
+  'quiet-current-high-waist-biker-shorts',
+  'quiet-current-studio-tank',
+] as const;
+export const RETIRED_CLOTHING_COLLECTIONS = ['quiet-current'] as const;
+
+export function isRetiredClothingHandle(
+  kind: 'product' | 'collection',
+  handle?: string | null,
+) {
+  const list: readonly string[] =
+    kind === 'product' ? RETIRED_CLOTHING_PRODUCTS : RETIRED_CLOTHING_COLLECTIONS;
+  return list.includes(normalize(handle));
+}
+
+/**
  * A capsule is a published collection with `custom.collection_kind` =
  * `capsule` that holds a listed garment, so a new line (an artist capsule)
  * lists without a code change. Counter-Diagonal leads /clothing (the line
@@ -82,30 +160,22 @@ const CATEGORIES = [
  */
 export const LEAD_CLOTHING_CAPSULE = 'counter-diagonal';
 
-/**
- * Capsules from before the metafield, counted by handle. Quiet Current's
- * collection has no `custom.collection_kind` (Storefront read, 2026-11-06);
- * drop it here once the collection carries the metafield.
- */
-export const LEGACY_CLOTHING_CAPSULES = ['quiet-current'] as const;
-
 type CapsuleCollectionLike = {
   handle: string;
   title?: string | null;
   clothingKind?: ApprovalMetafield | null;
 };
 
-/** The metafield (or the lead or a legacy handle) makes a capsule. */
+/** The metafield (or the lead capsule's handle) makes a capsule. */
 export function isClothingCapsuleCollection(collection: CapsuleCollectionLike) {
   const handle = normalize(collection.handle);
   const tagged =
     collection.clothingKind?.type === 'single_line_text_field' &&
     normalize(collection.clothingKind.value) === 'capsule';
   return (
-    (tagged ||
-      handle === LEAD_CLOTHING_CAPSULE ||
-      (LEGACY_CLOTHING_CAPSULES as readonly string[]).includes(handle)) &&
-    !isClothingCategoryCollection(collection)
+    (tagged || handle === LEAD_CLOTHING_CAPSULE) &&
+    !isClothingCategoryCollection(collection) &&
+    !isRetiredClothingHandle('collection', handle)
   );
 }
 
@@ -197,21 +267,29 @@ export function filterClothingProducts<T extends ClothingProductLike>(
   return products.filter(isClothingProduct);
 }
 
-/** Counts must be built from eligible, channel-visible products. */
+/**
+ * The tabs with their counts, in page order: category groups that hold at
+ * least one of these products. Counts must be built from eligible,
+ * channel-visible products.
+ */
 export function clothingCategories(
   products: ClothingProductLike[],
 ): ClothingCategoryCount[] {
   const counts = new Map<string, ClothingCategoryCount>();
   for (const product of products) {
-    const category = clothingCategory(product);
-    if (!category) continue;
-    const existing = counts.get(category.slug);
-    counts.set(category.slug, {...category, count: (existing?.count ?? 0) + 1});
+    const group = clothingCategoryGroup(product);
+    if (!group) continue;
+    const existing = counts.get(group.slug);
+    counts.set(group.slug, {...group, count: (existing?.count ?? 0) + 1});
   }
-  return [
-    ...CATEGORIES.map(({slug}) => counts.get(slug)),
-    counts.get('clothing'),
-  ].filter((category): category is ClothingCategoryCount => Boolean(category));
+  return CATEGORY_GROUPS.map(({slug}) => counts.get(slug)).filter(
+    (group): group is ClothingCategoryCount => Boolean(group),
+  );
+}
+
+/** The line a garment belongs to (its capsule's title), for its card. */
+export function clothingLineTitle(product: ClothingProductLike) {
+  return clothingCapsules([product])[0]?.title ?? null;
 }
 
 /** Capsules are explicit Shopify groups, separate from garment categories
@@ -270,9 +348,18 @@ export function buildClothingSearchQuery({
   category,
 }: {category?: string | null} = {}) {
   if (!category || category === 'all') return CLOTHING_PRODUCT_QUERY;
-  if (category === 'clothing') return `tag:${quoteSearchValue(CLOTHING_TAG)}`;
-  const selected = CATEGORIES.find(({slug}) => slug === category);
-  return selected
-    ? `(${selected.types.map((type) => `product_type:${quoteSearchValue(type)}`).join(' OR ')})`
-    : 'tag:"__unknown-clothing-category__"';
+  const group = CATEGORY_GROUPS.find(
+    ({slug}) => slug === clothingGroupSlug(category),
+  );
+  if (!group) return 'tag:"__unknown-clothing-category__"';
+  const types = CATEGORIES.filter(({slug}) =>
+    (group.categories as readonly string[]).includes(slug),
+  ).flatMap(({types}) => types);
+  const terms = [
+    ...((group.categories as readonly string[]).includes('clothing')
+      ? [`tag:${quoteSearchValue(CLOTHING_TAG)}`]
+      : []),
+    ...types.map((type) => `product_type:${quoteSearchValue(type)}`),
+  ];
+  return `(${terms.join(' OR ')})`;
 }

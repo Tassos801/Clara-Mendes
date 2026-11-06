@@ -146,7 +146,7 @@ import {
   STOREFRONT_ORIGIN,
 } from '~/lib/storefrontBasics';
 import {parseApparelDescription} from '~/lib/apparelCopy';
-import {isClothingProduct} from '~/lib/clothing';
+import {isClothingProduct, isRetiredClothingHandle} from '~/lib/clothing';
 import {clothingSwatchBackground} from '~/lib/clothingPresentation';
 import {imagesForColour, isColourOptionName} from '~/lib/garmentColours';
 import {quotesClothingShipping} from '~/lib/clothingShipping';
@@ -415,6 +415,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
 
   if (!handle) {
     throw new Response('Product handle is required', {status: 400});
+  }
+
+  // A retired clothing line (Quiet Current) sends its pages to /clothing,
+  // whether or not its products are still published.
+  if (isRetiredClothingHandle('product', handle)) {
+    throw redirect('/clothing', 301);
   }
 
   // Feature-page products (Your Sky) are sold on their own page; the old

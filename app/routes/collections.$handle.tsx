@@ -49,6 +49,7 @@ import {
   clothingCapsules,
   isClothingProduct,
   isClothingProductType,
+  isRetiredClothingHandle,
 } from '~/lib/clothing';
 import {loadClothingProducts} from '~/lib/clothing.server';
 import {
@@ -165,6 +166,11 @@ async function collectionHeroFor(
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
   const handle = params.handle;
+
+  // A retired clothing line's collection (Quiet Current) opens /clothing.
+  if (isRetiredClothingHandle('collection', handle)) {
+    throw redirect('/clothing', 301);
+  }
 
   // Gallery slugs are storefront-only routes, so the stale-Shopify-collection
   // guard must not swallow them; they never reach the Shopify query below.

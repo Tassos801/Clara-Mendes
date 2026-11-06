@@ -1,5 +1,3 @@
-import {APPAREL_SHIPPING_FROM_EUR} from './storefrontBasics.ts';
-
 /**
  * Collections whose catalog hero replaces the shared art-print interior with
  * their own image and copy. The image keeps its left side quiet so the white
@@ -21,21 +19,7 @@ type HeroEntry = CollectionHero & {
   usSubtitle?: (shipping: string | null) => string;
 };
 
-const QUIET_CURRENT_LEAD =
-  'Leggings, studio bra, biker shorts and tank with a watercolour-style mist print. Moss / Mist and Clay / Oat, XS–XL.';
-
 const HEROES: Record<string, HeroEntry> = {
-  'quiet-current': {
-    eyebrow: 'Activewear · the movement edit',
-    subtitle: `${QUIET_CURRENT_LEAD} Clothing shipping from €${APPAREL_SHIPPING_FROM_EUR}, one fee per order.`,
-    usSubtitle: (shipping) =>
-      shipping
-        ? `${QUIET_CURRENT_LEAD} Clothing shipping ${shipping} to the United States, one fee per order.`
-        : `${QUIET_CURRENT_LEAD} One clothing shipping fee per order.`,
-    image: '/images/quiet-current/collection-hero.jpg',
-    imageMobile: '/images/quiet-current/collection-hero-mobile.jpg',
-    alt: 'Quiet Current studio bra and leggings in Moss / Mist, and tank and leggings in Clay / Oat, laid on the collection’s mist-and-fern print',
-  },
   // Our own composition: credit "Inspired by Theo van Doesburg", never "Art
   // by". Images: scripts/build-counter-diagonal-art.mjs (Printful mockups;
   // the hoodie back carries the official logo credit since 2026-11-06, see

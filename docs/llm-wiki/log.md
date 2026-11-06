@@ -2283,3 +2283,16 @@ Free Abyss, Circle Rhythm) now shows the capsule's looks image in its right
 column; Quiet Current keeps its chooser there. The Counter-Diagonal looks
 image and collection heroes were rebuilt with the logo-credit hoodie mockup,
 so every capsule image carries the official logo, not a typed name.
+
+## 2026-11-06 — Compact /clothing, grouped tabs, Quiet Current retired
+
+`/clothing` is shorter at every size. The hero names every line. One filter
+bar holds line chips and grouped category tabs (Hoodies & sweatshirts, Tees
+& long sleeves, Accessories, …), which narrow each other and deep-link
+through the URL. Cards name their line above the title, the grid is 4/3/2
+columns, and the lines are compact tiles. Quiet Current activewear is
+retired: its flags are false and its pages redirect to `/clothing`.
+`/artists` adds "Clothing inspired by" Theo van Doesburg, Kazimir Malevich
+and Sophie Taeuber-Arp, apart from the museum works. See
+[clothing](modules/clothing.md) and
+[The tabs shoppers see](../clothing-destination.md#the-tabs-shoppers-see-2026-11-06).

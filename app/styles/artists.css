@@ -51,6 +51,23 @@
   margin-top: clamp(24px, 3vw, 40px);
 }
 
+/* "Museum works" and "Clothing inspired by": the page's two groups. */
+.artists-group-title {
+  border-top: 1px solid var(--color-line, #dcd9d0);
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  font-weight: 400;
+  margin: clamp(32px, 4vw, 56px) 0 0;
+  padding-top: clamp(18px, 2vw, 24px);
+}
+
+.artists-clothing > h2.artists-group-title {
+  color: var(--color-ink);
+  font-size: clamp(1.6rem, 2.6vw, 2.1rem);
+  font-style: normal;
+  margin: 0 0 4px;
+}
+
 .artists-letter > h2 {
   color: var(--color-muted);
   font-family: var(--serif);

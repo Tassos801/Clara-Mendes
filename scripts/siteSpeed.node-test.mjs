@@ -263,9 +263,12 @@ test('pages show the plain copies, not the WebP or ICC-tagged originals', () => 
   // its multiply blend.
   shown(CLOTHING_PAGE_ACCENT.src, 'clothing accent');
   assert.match(CLOTHING_PAGE_ACCENT.src, /\.png$/);
-  const quietCurrent = capsuleStory('quiet-current');
-  shown(quietCurrent.band.src, 'Quiet Current band');
-  shown(quietCurrent.looksImage.src, 'Quiet Current looks');
+  // The lines' art is written by its build scripts as plain sRGB JPEG.
+  for (const handle of ['counter-diagonal', 'free-abyss', 'circle-rhythm']) {
+    const story = capsuleStory(handle);
+    assertPlainJpeg(story.band.src);
+    assertPlainJpeg(story.looksImage.src);
+  }
   for (const colour of ['Moss / Mist', 'Clay / Oat']) {
     shown(lookAccent(colour), `${colour} fern`);
     assert.match(lookAccent(colour), /\.png$/);

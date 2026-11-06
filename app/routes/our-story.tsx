@@ -67,7 +67,7 @@ const RANGE = [
   ),
   {
     name: 'Clothing',
-    note: 'Quiet Current activewear, printed with a soft watercolour-style design drawn from the print Where Mist Rests.',
+    note: 'Hoodies, tees, caps, beanies and totes in our own designs, each inspired by a modern artist and made to order.',
     released: true,
     to: '/clothing',
   },

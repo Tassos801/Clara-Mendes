@@ -82,13 +82,15 @@ test('activewear shipping lists every zone once, from €3.99 to Cyprus', () => 
   );
 });
 
-test('only Quiet Current carries its own collection hero', () => {
-  const hero = collectionHero('quiet-current');
-  assert.ok(hero);
-  assert.match(hero.subtitle ?? '', /Clothing shipping from €3\.99, one fee per order/);
-  // The print is a digital watercolour-style design, never a painting.
-  assert.doesNotMatch(hero.subtitle ?? '', /painted|painting/i);
-  assert.equal(collectionHero('Quiet-Current'), hero);
+test('the clothing lines carry their own collection heroes; the retired Quiet Current none', () => {
+  // Quiet Current is retired (2026-11-06): its collection redirects to /clothing.
+  assert.equal(collectionHero('quiet-current'), null);
+  for (const handle of ['counter-diagonal', 'circle-rhythm', 'free-abyss']) {
+    const hero = collectionHero(handle);
+    assert.ok(hero, handle);
+    assert.doesNotMatch(hero.subtitle ?? '', /painted|painting|[€$]/i, handle);
+  }
+  assert.equal(collectionHero('Counter-Diagonal'), collectionHero('counter-diagonal'));
   assert.equal(collectionHero('all'), null);
   assert.equal(collectionHero(undefined), null);
 });
