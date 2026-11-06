@@ -3,6 +3,22 @@
 /* eslint-disable */
 import type * as StorefrontAPI from '@shopify/hydrogen/storefront-api-types';
 
+export type ClothingCapsuleSummaryQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  handle: StorefrontAPI.Scalars['String']['input'];
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+}>;
+
+export type ClothingCapsuleSummaryQuery = {
+  collection?: StorefrontAPI.Maybe<
+    Pick<StorefrontAPI.Collection, 'title' | 'description'> & {
+      image?: StorefrontAPI.Maybe<
+        Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+      >;
+    }
+  >;
+};
+
 export type ClothingCatalogQueryVariables = StorefrontAPI.Exact<{
   query: StorefrontAPI.Scalars['String']['input'];
   after?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['String']['input']>;
@@ -680,6 +696,15 @@ export type MerchantFeedProductsQuery = {
           Pick<StorefrontAPI.Metafield, 'type' | 'value'>
         >;
         featuredImage?: StorefrontAPI.Maybe<Pick<StorefrontAPI.Image, 'url'>>;
+        collections: {
+          nodes: Array<
+            Pick<StorefrontAPI.Collection, 'handle' | 'title'> & {
+              clothingKind?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+              >;
+            }
+          >;
+        };
         variants: {
           nodes: Array<
             Pick<
@@ -3400,6 +3425,10 @@ export type FeaturePageProductQuery = {
 };
 
 interface GeneratedQueryTypes {
+  '#graphql\n  query ClothingCapsuleSummary(\n    $country: CountryCode\n    $handle: String!\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    collection(handle: $handle) {\n      title\n      description\n      image {\n        url\n        altText\n        width\n        height\n      }\n    }\n  }\n': {
+    return: ClothingCapsuleSummaryQuery;
+    variables: ClothingCapsuleSummaryQueryVariables;
+  };
   '#graphql\n  query ClothingCatalog($query: String!, $after: String, $country: CountryCode, $language: LanguageCode)\n  @inContext(country: $country, language: $language) {\n    products(first: 50, after: $after, query: $query, sortKey: CREATED_AT, reverse: true) {\n      nodes {\n        ...ClaraProductCard\n        collections(first: 30) { nodes { handle title clothingKind: metafield(namespace: "custom", key: "collection_kind") { type value } } }\n        options {\n          name\n          optionValues {\n            name\n            swatch { color }\n            firstSelectableVariant {\n              id availableForSale\n              image { url altText width height }\n              price { amount currencyCode }\n              selectedOptions { name value }\n            }\n          }\n        }\n      }\n      pageInfo { hasNextPage endCursor }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
     return: ClothingCatalogQuery;
     variables: ClothingCatalogQueryVariables;
@@ -3424,7 +3453,7 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
-  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        collections(first: 20) {\n          nodes {\n            handle\n            title\n            clothingKind: metafield(\n              namespace: "custom"\n              key: "collection_kind"\n            ) {\n              type\n              value\n            }\n          }\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: MerchantFeedProductsQuery;
     variables: MerchantFeedProductsQueryVariables;
   };

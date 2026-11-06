@@ -75,29 +75,38 @@ const CATEGORIES = [
 ] as const;
 
 /**
- * Capsules the code knows by handle, so they list even before their
- * collection carries `custom.collection_kind` = `capsule`. Order is page
- * order: Counter-Diagonal leads /clothing (the line advertised in New York);
- * Quiet Current follows. Any other capsule needs the metafield.
+ * A capsule is a published collection with `custom.collection_kind` =
+ * `capsule` that holds a listed garment, so a new line (an artist capsule)
+ * lists without a code change. Counter-Diagonal leads /clothing (the line
+ * advertised in New York); the others follow, newest piece first.
  */
-export const KNOWN_CLOTHING_CAPSULES = [
-  'counter-diagonal',
-  'quiet-current',
-] as const;
-export const LEAD_CLOTHING_CAPSULE = KNOWN_CLOTHING_CAPSULES[0];
+export const LEAD_CLOTHING_CAPSULE = 'counter-diagonal';
 
-export function isKnownClothingCapsule(handle?: string | null) {
-  return (KNOWN_CLOTHING_CAPSULES as readonly string[]).includes(
-    normalize(handle),
-  );
-}
+/**
+ * Capsules from before the metafield, counted by handle. Quiet Current's
+ * collection has no `custom.collection_kind` (Storefront read, 2026-11-06);
+ * drop it here once the collection carries the metafield.
+ */
+export const LEGACY_CLOTHING_CAPSULES = ['quiet-current'] as const;
 
-/** Rank for page order: known capsules first, in their order. */
-export function clothingCapsuleRank(handle?: string | null) {
-  const index = (KNOWN_CLOTHING_CAPSULES as readonly string[]).indexOf(
-    normalize(handle),
+type CapsuleCollectionLike = {
+  handle: string;
+  title?: string | null;
+  clothingKind?: ApprovalMetafield | null;
+};
+
+/** The metafield (or the lead or a legacy handle) makes a capsule. */
+export function isClothingCapsuleCollection(collection: CapsuleCollectionLike) {
+  const handle = normalize(collection.handle);
+  const tagged =
+    collection.clothingKind?.type === 'single_line_text_field' &&
+    normalize(collection.clothingKind.value) === 'capsule';
+  return (
+    (tagged ||
+      handle === LEAD_CLOTHING_CAPSULE ||
+      (LEGACY_CLOTHING_CAPSULES as readonly string[]).includes(handle)) &&
+    !isClothingCategoryCollection(collection)
   );
-  return index < 0 ? KNOWN_CLOTHING_CAPSULES.length : index;
 }
 
 /**
@@ -119,6 +128,11 @@ export function clothingCategoryRank(product: ClothingProductLike) {
 export type ClothingCategory = {slug: string; label: string};
 export type ClothingCategoryCount = ClothingCategory & {count: number};
 export type ClothingCapsule = {handle: string; title: string; count: number};
+
+/** The capsules' handles in page order (lead first), from clothingCapsules. */
+export function clothingCapsuleOrder(products: ClothingProductLike[]) {
+  return clothingCapsules(products).map((capsule) => capsule.handle);
+}
 
 function normalize(value?: string | null) {
   return value?.trim().toLowerCase() ?? '';
@@ -200,23 +214,22 @@ export function clothingCategories(
   ].filter((category): category is ClothingCategoryCount => Boolean(category));
 }
 
-/** Capsules are explicit Shopify groups, separate from garment categories.
- * The known capsules (KNOWN_CLOTHING_CAPSULES) count by handle; any other
- * collection needs the capsule metafield. Known capsules come first, in
- * their page order, then the rest by title.
+/** Capsules are explicit Shopify groups, separate from garment categories
+ * (isClothingCapsuleCollection). Products arrive newest first, so a
+ * capsule's first sighting is its newest piece: Counter-Diagonal comes
+ * first, then the capsule with the newest piece, and so on.
  */
 export function clothingCapsules(
   products: ClothingProductLike[],
 ): ClothingCapsule[] {
-  const capsules = new Map<string, ClothingCapsule>();
-  for (const product of products.filter(isClothingProduct)) {
+  const capsules = new Map<string, ClothingCapsule & {newest: number}>();
+  products.filter(isClothingProduct).forEach((product, position) => {
     const seen = new Set<string>();
     for (const collection of product.collections?.nodes ?? []) {
-      const isCapsule =
-        isKnownClothingCapsule(collection.handle) ||
-        (collection.clothingKind?.type === 'single_line_text_field' &&
-          collection.clothingKind.value === 'capsule');
-      if (!isCapsule || isClothingCategoryCollection(collection) || seen.has(collection.handle))
+      if (
+        !isClothingCapsuleCollection(collection) ||
+        seen.has(collection.handle)
+      )
         continue;
       seen.add(collection.handle);
       const previous = capsules.get(collection.handle);
@@ -224,14 +237,20 @@ export function clothingCapsules(
         handle: collection.handle,
         title: collection.title,
         count: (previous?.count ?? 0) + 1,
+        newest: previous?.newest ?? position,
       });
     }
-  }
-  return [...capsules.values()].sort(
-    (a, b) =>
-      clothingCapsuleRank(a.handle) - clothingCapsuleRank(b.handle) ||
-      a.title.localeCompare(b.title),
-  );
+  });
+  const lead = (handle: string) =>
+    normalize(handle) === LEAD_CLOTHING_CAPSULE ? 0 : 1;
+  return [...capsules.values()]
+    .sort(
+      (a, b) =>
+        lead(a.handle) - lead(b.handle) ||
+        a.newest - b.newest ||
+        a.title.localeCompare(b.title),
+    )
+    .map(({newest: _newest, ...capsule}) => capsule);
 }
 
 /** Escapes Shopify's documented search value syntax, never GraphQL source. */

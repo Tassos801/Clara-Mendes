@@ -236,15 +236,25 @@ It reads the Admin and Storefront APIs, makes no change, and refuses
      `one-pieces`), or the title is "Clothing", a category label, or a product
      type from the table (for example "Dresses", "Tops", "Skirt").
 2. **Set the collection metafield `custom.collection_kind` to `capsule`** (type
-   Single line text, exact lower-case value). **This needs a collection
-   metafield definition with Storefront access. It is prepared, not done:**
-   in the snapshot `clothingKind` is `null` on all 17 collections, and the
-   snapshot cannot show whether the definition exists. See
-   [One-time Shopify set-up](#one-time-shopify-set-up-prepared-not-applied).
-   Without the value the collection is not a capsule. The exceptions are the
-   handles in `KNOWN_CLOTHING_CAPSULES` (`app/lib/clothing.ts`):
-   `counter-diagonal` and `quiet-current` count as capsules by handle, and
-   lead the page in that order.
+   Single line text; case and spaces are ignored). The definition exists with
+   Storefront access (created for Counter-Diagonal, 2026-11-05). Without the
+   value the collection is not a capsule. Two handles count without it
+   (`app/lib/clothing.ts`): `counter-diagonal` (`LEAD_CLOTHING_CAPSULE`) and
+   `quiet-current` (`LEGACY_CLOTHING_CAPSULES`, whose collection has no
+   metafield yet; set it, then drop the handle).
+   - **Page order:** Counter-Diagonal first, then the other capsules by their
+     newest listed piece. The featured order of the grid follows the same
+     order. Counter-Diagonal leads the hero while it has a listed piece;
+     otherwise the capsule with the newest piece leads.
+   - **Copy:** a capsule with an entry in `app/lib/clothingEditorial.ts`
+     (credit, intro, band, looks image, hero) uses it. A capsule without one
+     gets a generic block: its Shopify **collection description** (up to
+     about 420 characters, cut at a sentence) as the intro, its **collection
+     image** as the hero image when it leads, and a hero named after the
+     collection ("New · <title>", "<garments> from the <title> collection").
+     So write the collection description and set its image in Admin.
+   - **Feeds:** `custom_label_0` is the capsule collection's title, so a Meta
+     or Google product set can select the new line by name.
 3. **Add the garments** to the collection (manual or by rule). The page reads
    the real membership from each garment, so the garments must be eligible
    (see [Who appears](#who-appears)).
@@ -262,6 +272,27 @@ It reads the Admin and Storefront APIs, makes no change, and refuses
 Predictive search suggestions do not list a new capsule collection. That
 check has no product list to judge by, and only `quiet-current`,
 `clara-mendes-art-living` and the five original-art handles pass without one.
+
+## An artist's quote on the product page
+
+An artist line can carry one quote from the artist. Put it in the product
+description HTML as a blockquote, with the credit in a `<cite>`:
+
+```html
+<blockquote>
+  <p>The quote, in our own translation.</p>
+  <cite>Kazimir Malevich, 1915 (our translation)</cite>
+</blockquote>
+```
+
+A `<footer>` instead of `<cite>`, a `<figure>` with a `<figcaption>`, or a
+last paragraph of its own starting "— Name" also give the credit (a dash
+inside the quote stays in the quote). The product page shows it as a
+pull-quote under the purchase details, with typographic quote marks added
+(do not type your own). It never becomes the intro, wherever it sits in the
+description. Parser: `parseApparelDescription` in `app/lib/apparelCopy.ts`.
+Keep the source note (title, year, page) in the line's README, not on the
+page.
 
 ## One-time Shopify set-up (prepared, not applied)
 

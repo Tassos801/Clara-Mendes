@@ -1,7 +1,7 @@
 import {
   clothingCategory,
+  clothingCapsuleOrder,
   clothingCapsules,
-  clothingCapsuleRank,
   clothingCategoryRank,
 } from './clothing.ts';
 import type {ClothingProduct} from './clothing.server';
@@ -16,29 +16,27 @@ export const CLOTHING_SORTS = [
 ] as const;
 export const DEFAULT_CLOTHING_SORT = 'featured';
 
-/** The best-ranked capsule a piece belongs to (lead capsule = 0). */
-function capsuleRankOf(product: ClothingProduct) {
-  return Math.min(
-    clothingCapsuleRank(null),
-    ...product.collections.nodes.map((item) =>
-      clothingCapsuleRank(item.handle),
-    ),
-  );
-}
-
 /**
- * Featured order: the lead capsule's pieces first, then the next capsule's,
- * each in garment order (hoodies, sweatshirts, tees, long sleeves, ...,
- * accessories), newest first within a kind. Products arrive newest first,
+ * Featured order: the lead capsule's pieces first, then the next capsule's
+ * (the capsule page order of clothingCapsules), each in garment order
+ * (hoodies, sweatshirts, tees, long sleeves, ..., accessories), newest first
+ * within a kind; pieces in no capsule last. Products arrive newest first,
  * and Array.prototype.sort is stable, so ties keep that order.
  */
 export function featuredClothingOrder<T extends ClothingProduct>(
   products: T[],
 ): T[] {
+  const order = clothingCapsuleOrder(products);
+  const rank = (product: ClothingProduct) =>
+    Math.min(
+      order.length,
+      ...product.collections.nodes
+        .map((item) => order.indexOf(item.handle))
+        .filter((index) => index >= 0),
+    );
   return [...products].sort(
     (a, b) =>
-      capsuleRankOf(a) - capsuleRankOf(b) ||
-      clothingCategoryRank(a) - clothingCategoryRank(b),
+      rank(a) - rank(b) || clothingCategoryRank(a) - clothingCategoryRank(b),
   );
 }
 
