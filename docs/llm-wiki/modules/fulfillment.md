@@ -126,6 +126,45 @@ Printful feeds and the USD fixed feed read it, and nothing re-quotes it at
 fetch time. The weekly rebuild keeps the table inside the feeds' 2%
 allowance; a table left for months can fall behind the exchange rate.
 
+## The Weekly Rebuild
+
+`.github/workflows/shipping-fees.yml` runs `npm run shipping-fees` against
+`main` every Monday at 04:23 UTC, and on demand (Actions → Shipping fee
+table → Run workflow).
+
+- Job `quote` (`contents: read` only): `npm ci`, then the script with the
+  repository secrets `PUBLIC_STORE_DOMAIN` and `PUBLIC_STOREFRONT_API_TOKEN`
+  in its environment. `scripts/lib/env.mjs` reads `.env` and lets the
+  environment win; CI has no `.env`, so the secrets must hold the same
+  values as the local file. It compares the written table with `main`
+  ignoring the date the script stamps in, and hands a changed table to the
+  next job as an artifact.
+- Job `propose` (`contents` and `pull-requests: write`; installs and runs
+  nothing from the repository): force-pushes `automation/shipping-fees`
+  (`main` plus one commit with the table) and opens, or updates, one pull
+  request "Shipping fee table: checkout quotes of <date>" with the diff.
+  When checkout charges what `main` says again, it closes that pull request
+  and deletes the branch. Nothing merges it; merging deploys the table.
+- "Not written: ..." (a shipping group or a US fixed line charged two
+  fees) fails `quote`, and no pull request is opened: change the group map
+  in `app/lib/printfulShipping.ts` or the rates in
+  `app/lib/merchantFeedShipping.ts` first.
+- Cost: a run makes 9 Storefront carts (one per probe country, 20 s apart),
+  and Shopify analytics counts each as a visit that added to cart. Hence
+  weekly, no retry, and a re-run is 9 more carts.
+- The workflow token's push starts no push run, and GitHub holds the
+  `pull_request` runs of a pull request the token opens until someone with
+  write access selects **Approve workflows to run**. The `Validate` job of
+  `oxygen-deployment-1000130920.yml` admits pull requests opened by
+  `github-actions[bot]` for that reason; that workflow can also be run by
+  hand on a branch (it validates and never deploys).
+- Repository settings it needs: the two secrets above, and "Allow GitHub
+  Actions to create and approve pull requests" (Settings → Actions →
+  General). Without the latter the table reaches the branch, the job fails
+  and names the setting.
+- GitHub turns off scheduled workflows in a public repository after 60 days
+  with no repository activity.
+
 ## Corrections (2026-09-11)
 
 - Print and slip tokens are signed over a purpose (`print` / `slip`) as well

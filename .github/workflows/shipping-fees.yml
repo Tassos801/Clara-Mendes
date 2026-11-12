@@ -1,0 +1,220 @@
+# Weekly rebuild of the shipping fee table (app/lib/printfulShippingFees.ts).
+#
+# Product pages and the Merchant Center feeds read that table and never ask
+# checkout, so it is only as true as its last rebuild. This quotes checkout
+# again once a week and, when an amount moved, proposes the new table in one
+# pull request. Only the owner merges it.
+#
+# Cost: every run of the first job creates 9 Storefront carts (one per probe
+# country), and Shopify analytics counts each cart as a visit that added to
+# cart. So: once a week, no retry, and a full re-run is 9 more carts.
+name: Shipping fee table
+
+on:
+  schedule:
+    # Mondays 04:23 UTC. Not more often: see the cost above.
+    - cron: "23 4 * * 1"
+  workflow_dispatch:
+
+# Jobs declare their own least-privilege permissions.
+permissions: {}
+
+# One rebuild at a time. A second one waits; none is cancelled half-way.
+concurrency:
+  group: shipping-fees
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  TABLE: app/lib/printfulShippingFees.ts
+  # Owned by this workflow: every run replaces it with main plus one commit.
+  BRANCH: automation/shipping-fees
+
+jobs:
+  quote:
+    name: Quote checkout
+    # A fork has no store to quote.
+    if: github.repository == 'Tassos801/Clara-Mendes'
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    # This job runs the dependencies' code, so it can only read.
+    permissions:
+      contents: read
+    outputs:
+      changed: ${{ steps.compare.outputs.changed }}
+      base: ${{ steps.compare.outputs.base }}
+      quoted_on: ${{ steps.compare.outputs.quoted_on }}
+    steps:
+      - name: Check the store secrets
+        env:
+          PUBLIC_STORE_DOMAIN: ${{ secrets.PUBLIC_STORE_DOMAIN }}
+          PUBLIC_STOREFRONT_API_TOKEN: ${{ secrets.PUBLIC_STOREFRONT_API_TOKEN }}
+        run: |
+          missing=0
+          for name in PUBLIC_STORE_DOMAIN PUBLIC_STOREFRONT_API_TOKEN; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Repository secret $name is not set (Settings > Secrets and variables > Actions). No cart was created."
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Setup node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Exits 1 and writes nothing when a shipping group or a fixed line is
+      # charged two fees ("Not written: ..."). That fails the run; it is not
+      # retried.
+      - name: Quote checkout and rebuild the table
+        env:
+          PUBLIC_STORE_DOMAIN: ${{ secrets.PUBLIC_STORE_DOMAIN }}
+          PUBLIC_STOREFRONT_API_TOKEN: ${{ secrets.PUBLIC_STOREFRONT_API_TOKEN }}
+        run: npm run shipping-fees
+
+      # The script stamps today's date into the file on every run. Only a
+      # changed amount, group or line is worth a pull request. Line endings
+      # are ignored, as the script's own --check does.
+      - name: Compare with main
+        id: compare
+        run: |
+          undated() { tr -d '\r' | sed -E 's/[0-9]{4}-[0-9]{2}-[0-9]{2}/DATE/g'; }
+          git show "HEAD:$TABLE" | undated > "$RUNNER_TEMP/table-main"
+          undated < "$TABLE" > "$RUNNER_TEMP/table-quoted"
+          quoted_on=$(sed -nE "s/^export const PRINTFUL_FEES_QUOTED_ON = '([0-9-]+)';\$/\1/p" "$TABLE")
+          if [ -z "$quoted_on" ]; then
+            echo "::error::$TABLE has no PRINTFUL_FEES_QUOTED_ON line: the generator's output changed shape."
+            exit 1
+          fi
+          if cmp -s "$RUNNER_TEMP/table-main" "$RUNNER_TEMP/table-quoted"; then
+            changed=false
+          else
+            changed=true
+          fi
+          {
+            echo "changed=$changed"
+            echo "base=$(git rev-parse HEAD)"
+            echo "quoted_on=$quoted_on"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Keep the new table for the next job
+        if: steps.compare.outputs.changed == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: shipping-fee-table
+          path: ${{ env.TABLE }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Say what a failure means
+        if: failure()
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          **No table was proposed.** Read the log of the step that failed.
+          "Not written" names the shipping group or fixed line that checkout
+          charges two fees for: the group map in `app/lib/printfulShipping.ts`
+          or the rates in `app/lib/merchantFeedShipping.ts` need a change first.
+          Anything else is the Storefront API or the secrets.
+
+          Do not re-run before the cause is fixed: every run of this job is 9
+          more carts.
+          EOF
+
+  propose:
+    name: Propose the new table
+    needs: quote
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    # Installs no dependency and runs nothing from the repository.
+    permissions:
+      contents: write # push the branch
+      pull-requests: write # open, update or close its pull request
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      CHANGED: ${{ needs.quote.outputs.changed }}
+      QUOTED_ON: ${{ needs.quote.outputs.quoted_on }}
+      REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      # This repository's own open pull request from the branch, if any.
+      OWN_PR: "map(select(.isCrossRepository | not)) | .[0].number // empty"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.quote.outputs.base }}
+
+      - name: Fetch the new table
+        if: env.CHANGED == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: shipping-fee-table
+          path: ${{ runner.temp }}/shipping-fee-table
+
+      - name: Push the table to its branch
+        if: env.CHANGED == 'true'
+        run: |
+          cp "$RUNNER_TEMP/shipping-fee-table/$(basename "$TABLE")" "$TABLE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch --create "$BRANCH"
+          git commit --quiet --message "Shipping fee table: checkout quotes of $QUOTED_ON" -- "$TABLE"
+          git push --force origin "$BRANCH"
+
+      # A push made with the workflow token starts no push run. GitHub holds
+      # the pull request's runs until someone with write access approves
+      # them; the Validate job admits pull requests opened by this bot.
+      - name: Open or update the pull request
+        if: env.CHANGED == 'true'
+        run: |
+          title="Shipping fee table: checkout quotes of $QUOTED_ON"
+          body="$RUNNER_TEMP/pull-request.md"
+          {
+            echo "The weekly rebuild ([run]($RUN_URL)) quoted checkout on $QUOTED_ON. It no longer charges what \`$TABLE\` on \`main\` says:"
+            echo
+            echo '```diff'
+            git diff --no-color --unified=7 HEAD~1 HEAD -- "$TABLE" | sed '1,4d'
+            echo '```'
+            echo
+            echo "Product pages and the Merchant Center feeds read this table. Merging deploys it; until then both keep the fees on \`main\`."
+            echo
+            echo "- GitHub holds the checks of a pull request opened by a workflow: select **Approve workflows to run** in the merge box to start \`Validate\` (lint, typecheck, tests, build; it never deploys). If no such button shows, run *Storefront 1000130920* on \`$BRANCH\` from the Actions tab."
+            echo "- A later run replaces this branch and updates this pull request, or closes it when checkout charges what \`main\` says again. Do not commit to the branch by hand."
+            echo "- Opened by \`.github/workflows/shipping-fees.yml\`. Nothing merges this automatically."
+          } > "$body"
+
+          number=$(gh pr list --head "$BRANCH" --base main --state open --json number,isCrossRepository --jq "$OWN_PR")
+          if [ -n "$number" ]; then
+            gh api --silent --method PATCH "repos/$GH_REPO/pulls/$number" --field title="$title" --field body=@"$body"
+            echo "Fees changed: pull request #$number now holds the table quoted on $QUOTED_ON." >> "$GITHUB_STEP_SUMMARY"
+          elif url=$(gh pr create --base main --head "$BRANCH" --title "$title" --body-file "$body"); then
+            echo "Fees changed: opened $url with the table quoted on $QUOTED_ON." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::error::The new table is on the branch $BRANCH, but the pull request could not be opened. Is 'Allow GitHub Actions to create and approve pull requests' ticked (Settings > Actions > General)? Open it by hand at $REPO_URL/compare/main...$BRANCH?expand=1. Do not re-run the workflow for this: that quotes checkout again (9 more carts)."
+            exit 1
+          fi
+
+      # Last week's proposal, never merged, and checkout is back at main's fees.
+      - name: Close a proposal that is out of date
+        if: env.CHANGED != 'true'
+        run: |
+          number=$(gh pr list --head "$BRANCH" --base main --state open --json number,isCrossRepository --jq "$OWN_PR")
+          if [ -n "$number" ]; then
+            gh pr close "$number" --comment "Checkout charges what the table on \`main\` says again ([run]($RUN_URL), $QUOTED_ON), so this proposal is out of date."
+            git push origin --delete "$BRANCH"
+            echo "Checkout charges what the table on main says again: closed pull request #$number." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Checkout still charges what the table on main says (checked $QUOTED_ON). Nothing to propose." >> "$GITHUB_STEP_SUMMARY"
+          fi

@@ -2386,3 +2386,20 @@ a row no table prices is left out. The cart-quote code and its mutations
 are gone from `app/lib/merchantFeed.server.ts`; the 6-hour response cache
 stays for the catalogue read. See
 [fulfillment](modules/fulfillment.md#where-the-promises-render).
+
+## 2026-11-12 — Weekly shipping fee rebuild in GitHub Actions
+
+`.github/workflows/shipping-fees.yml` runs `npm run shipping-fees` on `main`
+every Monday at 04:23 UTC (and by hand). A read-only job quotes checkout;
+when an amount, group or line differs from `main` (the date stamp aside), a
+second job with no dependencies installed force-pushes
+`automation/shipping-fees` and opens or updates one pull request with the
+diff, and closes it once checkout matches `main` again. "Not written: ..."
+fails the run and proposes nothing. Each run makes 9 Storefront carts, so no
+retries. It needs the repository secrets `PUBLIC_STORE_DOMAIN` and
+`PUBLIC_STOREFRONT_API_TOKEN` and "Allow GitHub Actions to create and approve
+pull requests". The `Validate` job now also runs on pull requests opened by
+`github-actions[bot]` (after **Approve workflows to run**), and the
+Storefront workflow can be run by hand to validate a branch. Tested against a
+mocked Storefront API and GitHub CLI only; the first real run is the
+schedule's. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).

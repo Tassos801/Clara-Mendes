@@ -3,11 +3,18 @@
 # - Pull requests run the full validation suite and never deploy.
 # - Branch pushes deploy an Oxygen preview only after validation passes.
 # - Pushes to main deploy production only after validation passes.
+# - A manual run validates the chosen branch and never deploys.
+#
+# shipping-fees.yml pushes its branch and opens its pull request with the
+# workflow token. GitHub starts no push run for that push and holds the pull
+# request's runs until someone with write access approves them, so Validate
+# also runs on pull requests opened by github-actions[bot].
 name: Storefront 1000130920
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 # Jobs declare their own least-privilege permissions.
 permissions: {}
@@ -15,8 +22,12 @@ permissions: {}
 jobs:
   validate:
     name: Validate
-    # PRs from the same repo would otherwise run twice (push + pull_request)
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    # PRs from the same repo would otherwise run twice (push + pull_request);
+    # a bot's push starts no push run, so its PRs validate here.
+    if: >-
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name != github.repository ||
+      github.event.pull_request.user.login == 'github-actions[bot]'
     timeout-minutes: 20
     runs-on: ubuntu-latest
     permissions:
