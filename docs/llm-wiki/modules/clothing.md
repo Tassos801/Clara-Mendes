@@ -43,6 +43,11 @@ Before/after map and prepared Shopify changes:
   country; `-- --check` compares only). Run it weekly and after any change
   to Printful's shipping profiles or a new garment type. Page views never
   create carts (Shopify counts each cart as a visit with an add to cart).
+  The Merchant Center feeds read the same table (EU and US fees; see
+  [fulfillment](fulfillment.md)), so a garment type without a shipping
+  group in `printfulShipping.ts` is left out of the feeds until the group
+  map knows it and the table is rebuilt. The US cart of the rebuild also
+  quotes the fixed lines' USD rates for the USD feed.
 - `/collections/counter-diagonal` has its own hero. Page art:
   `scripts/build-counter-diagonal-art.mjs` (plain JPEG / palette PNG).
 - Tests: `scripts/counterDiagonalStorefront.node-test.mjs`.

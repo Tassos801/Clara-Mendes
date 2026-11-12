@@ -2373,3 +2373,16 @@ designer (William Morris). New unreleased collection `museum-masterpieces`
 Printful mug families; its supplied files sit on a plain off-white mount with
 no AI (`<launchDir>/museum/seven-products-mm`). Test:
 `scripts/museumSources.node-test.mjs`.
+
+## 2026-11-12 — Merchant feeds read the fee tables, no carts
+
+The Merchant Center feeds no longer create Storefront carts to quote
+shipping (about four a day, each counted as a visit with an add to cart).
+The Printful feeds read `app/lib/printfulShippingFees.ts`; the USD fixed
+feed reads `US_FIXED_SHIPPING_FEES`, which `npm run shipping-fees` now also
+writes from its US cart. Fees that follow the exchange rate are stated 2%
+above the table, rounded up (Google: "match or slightly overestimate");
+a row no table prices is left out. The cart-quote code and its mutations
+are gone from `app/lib/merchantFeed.server.ts`; the 6-hour response cache
+stays for the catalogue read. See
+[fulfillment](modules/fulfillment.md#where-the-promises-render).

@@ -76,14 +76,38 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
   same windows.
 - Merchant Center feeds: `/feeds/google-merchant.txt` (every line with a
   fixed EUR rate) and `/feeds/google-merchant-printful.txt` (Printful mugs,
-  cushions and blankets, EU only), built by `app/lib/merchantFeed.ts` and
-  fetched by Merchant Center daily. Each item carries its own shipping: the
-  rates per shipping profile live in `app/lib/merchantFeedShipping.ts`, the
-  handling and transit days come from the constants above. The Printful
-  profiles hold USD rates that Shopify converts daily, so that feed quotes
-  them from a one-item cart per line on each build. Responses are cached for
-  6 hours; a failed build answers 503 so Merchant Center keeps the last good
-  fetch.
+  cushions, blankets and clothing, EU only), their USD twins for the United
+  States (`-us.txt`) and `/feeds/meta-country-us.txt`, built by
+  `app/lib/merchantFeed.ts` and fetched daily. Each item carries its own
+  shipping; the handling and transit days come from the constants above. A
+  feed only reads the catalogue and never creates a cart (Shopify counts
+  every cart as a visit that added to cart; until 2026-11-12 the feeds
+  quoted about four carts a day). The rates come from checked-in tables:
+  - Fixed lines, EUR: `FIXED_RATES` in `app/lib/merchantFeedShipping.ts`,
+    one table per shipping profile.
+  - Printful lines: `app/lib/printfulShippingFees.ts`, the checkout quotes
+    `npm run shipping-fees` writes (see [clothing](clothing.md)): the EU fee
+    for the 26 EU countries, the US fee for the USD feed. The feeds publish
+    Printful shipping nowhere else, so the table's other regions (CH, NO,
+    CA, AU, JP) are for product pages only.
+  - Fixed lines, USD: `US_FIXED_SHIPPING_FEES` in the same generated file.
+    Checkout converts the EUR US rate and rounds it up to a whole dollar,
+    so it moves a dollar at a time with the exchange rate (prints: $17 on
+    2026-11-05, $16 on 2026-11-12).
+  - Google's product data specification asks to "match or slightly
+    overestimate" the shipping cost. A fee that follows the exchange rate
+    between rebuilds (Printful's EUR fees, the fixed lines' USD rates) is
+    stated `FEED_EXCHANGE_ALLOWANCE_PERCENT` (2%) above the table, rounded
+    up: to the cent in EUR, to the next dollar for the fixed USD rates.
+    Printful's USD fees do not move and are stated exactly.
+  - A row no table prices (a Printful garment type without a shipping
+    group, a fixed line with no US rate) is left out of that feed and named
+    in a `console.warn`; listed without `shipping`, Merchant Center would
+    price it from the account settings.
+  - Responses are cached for 6 hours, so the catalogue is read at most once
+    per window; a failed build answers 503 so Merchant Center keeps the
+    last good fetch. Test: `scripts/merchantFeed.node-test.mjs` runs every
+    feed route's loader with a `storefront.mutate` that throws.
 
 ## Changing A Window
 
@@ -96,7 +120,11 @@ lives in Shopify admin and does not update from code.
 
 A rate or a zone changed in a Shopify shipping profile must change in
 `app/lib/merchantFeedShipping.ts` in the same PR, or the feeds advertise the
-old rate. Printful rates need no change.
+old rate. After a change to a US rate there, or to a Printful shipping
+profile, run `npm run shipping-fees` and commit the table it writes: the
+Printful feeds and the USD fixed feed read it, and nothing re-quotes it at
+fetch time. The weekly rebuild keeps the table inside the feeds' 2%
+allowance; a table left for months can fall behind the exchange rate.
 
 ## Corrections (2026-09-11)
 
@@ -182,7 +210,8 @@ variant offer would bloat each product page. Since 2026-11-12 an offer also carr
 `shippingRate` where `FIXED_RATES` (`app/lib/merchantFeedShipping.ts`) has the
 line, one `OfferShippingDetails` per rate (Cyprus, rest of the EU), equal to the
 EUR feed (`scripts/offerShippingRate.node-test.mjs`); Printful lines and the US
-market carry no rate, because their feed rates come from cart quotes. The paid-order webhook needs a
+market carry no rate, because their feed rates follow the exchange rate (the fee
+table's checkout quotes plus the feeds' allowance). The paid-order webhook needs a
 postcode (`app/lib/sky/fulfilment.ts`), so a Your Sky or phone-case order to
 a country without postcodes (for example Hong Kong or the UAE) lands as
 "needs attention" for a manual Prodigi order.

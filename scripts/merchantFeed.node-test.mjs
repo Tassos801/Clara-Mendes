@@ -1,20 +1,32 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {readFileSync} from 'node:fs';
+import {createRequire} from 'node:module';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
+import ts from 'typescript';
 import {
   FEED_COLUMNS,
+  FEED_CURRENCY,
   META_COUNTRY_COLUMNS,
+  hasFeedShipping,
   merchantFeedRows,
   merchantFeedTsv,
   metaCountryFeedTsv,
 } from '../app/lib/merchantFeed.ts';
 import {
   FEED_EU_COUNTRIES,
+  FEED_EXCHANGE_ALLOWANCE_PERCENT,
   FEED_INTERNATIONAL_COUNTRIES,
+  FIXED_RATES,
   SHIPPING_COLUMN,
+  feedAmount,
+  usFixedRate,
 } from '../app/lib/merchantFeedShipping.ts';
+import {
+  PRINTFUL_SHIPPING_FEES,
+  US_FIXED_SHIPPING_FEES,
+} from '../app/lib/printfulShippingFees.ts';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');
@@ -57,6 +69,14 @@ const inUsd = (catalog) =>
       })),
     },
   }));
+
+// What the feeds state for the fee table's rows: a EUR fee follows the
+// dollar between rebuilds, so it carries the allowance; a USD fee is exact.
+const FEES = PRINTFUL_SHIPPING_FEES;
+const euFee = (group) => feedAmount({...FEES[group].EU, about: true});
+const usFee = (group) => FEES[group].US.amount;
+const EU = {market: 'CY', includeUs: true};
+const US = {market: 'US'};
 
 const STUDIO = 'Clara Mendes Original';
 const MUSEUM = ['Museum Reproduction', 'Katsushika Hokusai'];
@@ -197,6 +217,15 @@ const CATALOG = [
     [variant('CD-CAP', {Color: 'Black'}, '29.99')],
     APPROVED,
   ),
+  // A garment type the fee table has no shipping group for yet.
+  product(
+    'counter-diagonal-dress',
+    'Counter-Diagonal Dress',
+    'Dresses',
+    ['clara-mendes-clothing', 'Counter-Diagonal', 'Made to order'],
+    [variant('CD-DRESS-M', {Size: 'M'}, '69.99')],
+    APPROVED,
+  ),
   // Clothing without the storefront approvals never reaches a feed.
   product(
     'counter-diagonal-draft-tee',
@@ -206,24 +235,6 @@ const CATALOG = [
     [variant('CD-TEE-M', {Size: 'M'}, '29.99')],
   ),
 ];
-const EU_QUOTES = {
-  mug: '4.84',
-  'cushion-cover': '4.48',
-  'cushion-insert': '12.39',
-  blanket: '6.55',
-  'apparel:studio-tank-fixture': '4.95',
-  'apparel:counter-diagonal-premium-hoodie': '6.71',
-  'apparel:counter-diagonal-cap': '4.59',
-};
-const PRINTFUL_EUR = {
-  market: 'CY',
-  includeUs: true,
-  quotes: {
-    eu: EU_QUOTES,
-    cyprus: {...EU_QUOTES, 'apparel:studio-tank-fixture': '3.99'},
-  },
-};
-
 const parse = (tsv) =>
   tsv
     .replace(/\n$/, '')
@@ -244,6 +255,11 @@ const byId = (tsv) => {
 };
 const rate = (item, country) =>
   item.shipping.find((s) => s.startsWith(`${country}:`));
+// The Printful rows a feed lists, as the server filters them.
+const printfulRows = (catalog, market = 'CY') =>
+  merchantFeedRows(catalog, 'printful', market).filter((row) =>
+    hasFeedShipping(row, market === 'US' ? US : EU),
+  );
 
 test('the fixed feed lists every fixed-rate line and nothing else', () => {
   const ids = merchantFeedRows(CATALOG, 'fixed').map((r) => r.id);
@@ -260,24 +276,28 @@ test('the fixed feed lists every fixed-rate line and nothing else', () => {
 
 test('the Printful feed lists mugs, cushions, blankets and listed clothing', () => {
   const rows = merchantFeedRows(CATALOG, 'printful');
+  // Each row carries the fee table's EU fee for its shipping group.
+  const eu = (group) => ({...FEES[group].EU, about: true});
   assert.deepEqual(
-    rows.map((r) => [r.id, r.line, r.quoteKey]),
+    rows.map((r) => [r.id, r.line, r.printfulFee]),
     [
-      ['CM-FW-01-MUG11-PF', 'mug', 'mug'],
-      ['CM-FW-01-CUSH18-C', 'cushion-cover', 'cushion-cover'],
-      ['CM-FW-01-CUSH18-I', 'cushion-insert', 'cushion-insert'],
-      ['CM-QC-121-MM-XS', 'apparel', 'apparel:studio-tank-fixture'],
-      ['CD-HOOD-M', 'apparel', 'apparel:counter-diagonal-premium-hoodie'],
-      ['CD-HOOD-L', 'apparel', 'apparel:counter-diagonal-premium-hoodie'],
-      ['CD-CAP', 'apparel', 'apparel:counter-diagonal-cap'],
+      ['CM-FW-01-MUG11-PF', 'mug', eu('mug')],
+      ['CM-FW-01-CUSH18-C', 'cushion-cover', eu('light')],
+      ['CM-FW-01-CUSH18-I', 'cushion-insert', eu('cushion-insert')],
+      ['CM-QC-121-MM-XS', 'apparel', eu('light')],
+      ['CD-HOOD-M', 'apparel', eu('hoodie')],
+      ['CD-HOOD-L', 'apparel', eu('hoodie')],
+      ['CD-CAP', 'apparel', eu('cap')],
+      ['CD-DRESS-M', 'apparel', null],
     ],
   );
+  // Fixed lines read FIXED_RATES instead.
+  for (const row of merchantFeedRows(CATALOG, 'fixed'))
+    assert.equal(row.printfulFee, null, row.id);
 });
 
 test('clothing carries the apparel attributes and its capsule label', () => {
-  const items = byId(
-    merchantFeedTsv(merchantFeedRows(CATALOG, 'printful'), PRINTFUL_EUR),
-  );
+  const items = byId(merchantFeedTsv(printfulRows(CATALOG), EU));
   const hoodie = items['CD-HOOD-M'];
   assert.equal(hoodie.title, 'Counter-Diagonal Premium Hoodie — M, Bone');
   assert.equal(hoodie.item_group_id, 'counter-diagonal-premium-hoodie');
@@ -375,14 +395,13 @@ test('fixed lines carry checkout rates and the page promise', () => {
   assert.equal(rate(items['CM-POT-BLUSH'], 'US'), undefined);
 });
 
-test('Printful lines ship in the EU only, at the quoted rate and Printful windows', () => {
-  const items = byId(
-    merchantFeedTsv(merchantFeedRows(CATALOG, 'printful'), PRINTFUL_EUR),
-  );
+test('Printful lines ship in the EU only, at the fee table rate and Printful windows', () => {
+  const items = byId(merchantFeedTsv(printfulRows(CATALOG), EU));
   const mug = items['CM-FW-01-MUG11-PF'];
+  // One fee across the EU, Cyprus included; nowhere else, never the US.
   assert.deepEqual(
     mug.shipping,
-    FEED_EU_COUNTRIES.map((c) => `${c}:4.84 EUR:3:6:5:10`),
+    FEED_EU_COUNTRIES.map((c) => `${c}:${euFee('mug')} EUR:3:6:5:10`),
   );
   assert.equal(
     mug.google_product_category,
@@ -392,27 +411,84 @@ test('Printful lines ship in the EU only, at the quoted rate and Printful window
     items['CM-FW-01-CUSH18-I'].title,
     'The Great Wave off Kanagawa Cushion by Hokusai — 18 × 18 in, with insert',
   );
-  assert.equal(rate(items['CM-FW-01-CUSH18-I'], 'DE'), 'DE:12.39 EUR:3:8:5:10');
-  assert.equal(rate(items['CM-FW-01-CUSH18-C'], 'CY'), 'CY:4.48 EUR:3:8:5:10');
-  // A profile that prices Cyprus apart (Quiet Current) keeps both rates.
+  assert.equal(
+    rate(items['CM-FW-01-CUSH18-I'], 'DE'),
+    `DE:${euFee('cushion-insert')} EUR:3:8:5:10`,
+  );
+  // A cover alone ships as a light piece.
+  assert.equal(
+    rate(items['CM-FW-01-CUSH18-C'], 'CY'),
+    `CY:${euFee('light')} EUR:3:8:5:10`,
+  );
   const tank = items['CM-QC-121-MM-XS'];
-  assert.equal(rate(tank, 'CY'), 'CY:3.99 EUR:3:8:5:10');
-  assert.equal(rate(tank, 'DE'), 'DE:4.95 EUR:3:8:5:10');
+  assert.equal(rate(tank, 'CY'), `CY:${euFee('light')} EUR:3:8:5:10`);
   assert.equal(rate(tank, 'US'), undefined);
-  assert.equal(rate(items['CD-HOOD-L'], 'FR'), 'FR:6.71 EUR:3:8:5:10');
+  assert.equal(
+    rate(items['CD-HOOD-L'], 'FR'),
+    `FR:${euFee('hoodie')} EUR:3:8:5:10`,
+  );
+  assert.equal(items['CD-CAP'].shipping.length, 26);
 });
 
-test('a Printful item without a Cyprus quote is not listed in Cyprus', () => {
-  const rows = merchantFeedRows(CATALOG, 'printful');
-  const {cyprus, ...rest} = PRINTFUL_EUR.quotes;
-  const noCap = {...cyprus};
-  delete noCap['apparel:counter-diagonal-cap'];
-  const items = byId(
-    merchantFeedTsv(rows, {...PRINTFUL_EUR, quotes: {...rest, cyprus: noCap}}),
+test('the feed states a moving fee slightly above the table, never below', () => {
+  // Google: "Match or slightly overestimate the cost customers would pay."
+  assert.equal(FEED_EXCHANGE_ALLOWANCE_PERCENT, 2);
+  const about = (amount) => ({amount, currencyCode: 'EUR', about: true});
+  assert.equal(feedAmount(about('4.47')), '4.56');
+  assert.equal(feedAmount(about('4.83')), '4.93');
+  assert.equal(feedAmount(about('6.53')), '6.67');
+  assert.equal(feedAmount(about('12.35')), '12.60');
+  assert.equal(feedAmount(about('10.00')), '10.20');
+  // A fee that does not move with the exchange rate is stated as is.
+  assert.equal(feedAmount({amount: '8.79', currencyCode: 'USD'}), '8.79');
+  // Checkout charges the fixed lines' US rate in whole dollars.
+  const usd = (amount) => ({amount, currencyCode: 'USD', about: true});
+  assert.equal(feedAmount(usd('16.00'), 100), '17.00');
+  assert.equal(feedAmount(usd('28.00'), 100), '29.00');
+  for (const group of Object.keys(FEES)) {
+    const table = Number(FEES[group].EU.amount);
+    const stated = Number(euFee(group));
+    assert.ok(stated >= table, group);
+    assert.ok(stated <= table * 1.02 + 0.01, group);
+    assert.equal(usFee(group), FEES[group].US.amount);
+  }
+});
+
+test('the fee table prices every fixed line that ships to the US, in whole dollars', () => {
+  const shipsToUs = Object.keys(FIXED_RATES).filter((line) =>
+    Object.values(FIXED_RATES[line].international ?? {}).some((countries) =>
+      countries.includes('US'),
+    ),
   );
-  assert.equal(rate(items['CD-CAP'], 'CY'), undefined);
-  assert.equal(items['CD-CAP'].shipping.length, 25);
-  assert.equal(rate(items['CD-HOOD-M'], 'CY'), 'CY:6.71 EUR:3:8:5:10');
+  assert.deepEqual(shipsToUs, ['print', 'mounted', 'canvas']);
+  assert.deepEqual(Object.keys(US_FIXED_SHIPPING_FEES), shipsToUs);
+  for (const line of shipsToUs) {
+    const fee = US_FIXED_SHIPPING_FEES[line];
+    assert.equal(fee.currencyCode, 'USD', line);
+    assert.match(fee.amount, /^\d+\.00$/, line);
+    // The next dollar up: the allowance for a rate that follows the dollar.
+    assert.equal(
+      usFixedRate(line),
+      `${Number(fee.amount) + 1}.00`,
+      line,
+    );
+  }
+  for (const line of ['framed', 'card', 'pot'])
+    assert.equal(usFixedRate(line), null, line);
+});
+
+test('a Printful piece the fee table has no group for is left out, not guessed', () => {
+  const rows = merchantFeedRows(CATALOG, 'printful');
+  const dress = rows.find((row) => row.id === 'CD-DRESS-M');
+  assert.equal(hasFeedShipping(dress, EU), false);
+  assert.equal(hasFeedShipping(dress, US), false);
+  assert.ok(rows.filter((row) => row !== dress).every((row) => hasFeedShipping(row, EU)));
+  assert.equal(byId(merchantFeedTsv(printfulRows(CATALOG), EU))['CD-DRESS-M'], undefined);
+  // Asked to write it anyway, the feed fails rather than list it unpriced.
+  assert.throws(
+    () => merchantFeedTsv(rows, EU),
+    /No CY delivery rate for CD-DRESS-M/,
+  );
 });
 
 test('the EUR feeds drop the US once the US market sells in USD', () => {
@@ -431,32 +507,21 @@ test('the EUR feeds drop the US once the US market sells in USD', () => {
   assert.equal(rate(after['CM-QF-01-8X10'], 'CA'), 'CA:17.99 EUR:2:4:7:20');
 });
 
-test('the USD feeds list the US only, at quoted US rates and ?country=US links', () => {
+test('the USD feeds list the US only, at fee table rates and ?country=US links', () => {
   const catalog = inUsd(CATALOG);
   const fixed = merchantFeedRows(catalog, 'fixed', 'US');
+  // Cards, framed prints and pots have no US rate: the server leaves them out.
+  const shipping = fixed.filter((row) => hasFeedShipping(row, US));
   assert.deepEqual(
-    [...new Set(fixed.map((r) => r.quoteKey))],
-    [
-      'print:Art Prints',
-      'card:Postcards',
-      'print:Personalised Art',
-      'framed:Personalised Art',
-      'pot:Plant Pots',
-      'print:Hanger Prints',
-      'framed:Framed Art',
-    ],
+    fixed.filter((row) => !shipping.includes(row)).map((row) => row.id),
+    ['CM-QF-POST-7X5', 'CM-SKY-8X10-NAT', 'CM-POT-BLUSH', 'CM-FW-01-CFP16X20'],
   );
-  // The server drops rows Shopify can't deliver to the US (no quote).
-  const quotes = {
-    'print:Art Prints': '12.99',
-    'print:Personalised Art': '12.99',
-    'print:Hanger Prints': '12.99',
-  };
-  const shipping = fixed.filter((r) => quotes[r.quoteKey]);
-  const items = byId(merchantFeedTsv(shipping, {market: 'US', quotes}));
+  const items = byId(merchantFeedTsv(shipping, US));
   const print = items['CM-QF-01-8X10'];
   assert.equal(print.price, '26.99 USD');
-  assert.deepEqual(print.shipping, ['US:12.99 USD:2:4:7:15']);
+  assert.deepEqual(print.shipping, [
+    `US:${usFixedRate('print')} USD:2:4:7:15`,
+  ]);
   assert.equal(
     print.link,
     'https://shopclaramendes.com/products/quiet-form-i-art-print?country=US&Size=8+%C3%97+10+in&Presentation=Unframed',
@@ -467,24 +532,19 @@ test('the USD feeds list the US only, at quoted US rates and ?country=US links',
     'CM-SKY-8X10-UNF',
   ]);
 
-  const printful = merchantFeedRows(catalog, 'printful', 'US');
-  const us = byId(
-    merchantFeedTsv(printful, {
-      market: 'US',
-      quotes: {
-        mug: '5.99',
-        'cushion-cover': '5.49',
-        'cushion-insert': '13.49',
-        'apparel:studio-tank-fixture': '5.49',
-        'apparel:counter-diagonal-premium-hoodie': '8.79',
-        'apparel:counter-diagonal-cap': '4.69',
-      },
-    }),
-  );
-  assert.deepEqual(us['CD-HOOD-M'].shipping, ['US:8.79 USD:3:8:7:15']);
+  const us = byId(merchantFeedTsv(printfulRows(catalog, 'US'), US));
+  // Printful's dollar rates are fixed, so the feed states them exactly.
+  assert.deepEqual(us['CD-HOOD-M'].shipping, [
+    `US:${usFee('hoodie')} USD:3:8:7:15`,
+  ]);
+  assert.deepEqual(us['CM-FW-01-MUG11-PF'].shipping, [
+    `US:${usFee('mug')} USD:3:6:7:15`,
+  ]);
+  assert.deepEqual(us['CD-CAP'].shipping, [`US:${usFee('cap')} USD:3:8:7:15`]);
   assert.equal(us['CD-HOOD-M'].price, '58.49 USD');
   assert.equal(us['CD-HOOD-M'].custom_label_0, 'Counter-Diagonal');
   assert.match(us['CD-HOOD-M'].link, /\?country=US&Size=M&Color=Bone$/);
+  assert.equal(us['CD-DRESS-M'], undefined);
 });
 
 test('the USD feeds refuse prices that are not in USD', () => {
@@ -496,10 +556,11 @@ test('the USD feeds refuse prices that are not in USD', () => {
     () => merchantFeedRows(inUsd(CATALOG), 'printful', 'CY'),
     /CY prices are in USD, not EUR/,
   );
+  // A line with no US rate is the server's to leave out, never to guess.
   const rows = merchantFeedRows(inUsd(CATALOG), 'fixed', 'US');
   assert.throws(
-    () => merchantFeedTsv(rows, {market: 'US', quotes: {}}),
-    /No US checkout rate for print:Art Prints/,
+    () => merchantFeedTsv(rows, US),
+    /No US delivery rate for CM-QF-POST-7X5/,
   );
 });
 
@@ -530,13 +591,6 @@ test('the Meta country feed overrides price, link and availability by id', () =>
   assert.equal(byKey['CM-QF-01-8X10'][2], 'Quiet Form I Art Print');
   assert.equal(byKey['CD-TEE-M'], undefined);
   for (const row of rows) assert.equal(row.length, header.length);
-});
-
-test('a Printful row without a quoted rate fails instead of guessing', () => {
-  assert.throws(
-    () => merchantFeedTsv(merchantFeedRows(CATALOG, 'printful')),
-    /No checkout rate for mug/,
-  );
 });
 
 test('the fixed feed has no Printful items, so no clothing', () => {
@@ -599,4 +653,138 @@ test('US zones: acrylic and metal pay the upper General rate, canvas its own', (
   assert.equal(rate(canvas, 'US'), 'US:23.99 EUR:2:4:7:20');
   assert.equal(rate(canvas, 'JP'), 'JP:29.99 EUR:2:4:7:20');
   assert.equal(rate(canvas, 'CY'), 'CY:3.99 EUR:2:4:5:10');
+});
+
+/** Execute a real feed route loader (the route file, transpiled as it is). */
+function loadRoute(name) {
+  const file = path.join(ROOT, `app/routes/${name}.tsx`);
+  const localRequire = createRequire(file);
+  const output = ts.transpileModule(readFileSync(file, 'utf8'), {
+    compilerOptions: {
+      module: ts.ModuleKind.CommonJS,
+      target: ts.ScriptTarget.ES2022,
+    },
+  }).outputText;
+  const exports = {};
+  const load = (specifier) =>
+    specifier.startsWith('~/lib/')
+      ? localRequire(path.join(ROOT, `app/${specifier.slice(2)}.ts`))
+      : localRequire(specifier);
+  new Function('exports', 'require', output)(exports, load);
+  return exports;
+}
+
+test('every feed route answers from catalogue reads and the tables, without a cart', async (t) => {
+  // The Cache API of the worker runtime, in memory.
+  const cached = new Map();
+  globalThis.caches = {
+    open: async () => ({
+      match: async (key) => cached.get(key)?.clone(),
+      put: async (key, response) => void cached.set(key, response),
+    }),
+  };
+  t.after(() => delete globalThis.caches);
+  const warnings = [];
+  t.mock.method(console, 'warn', (...args) => warnings.push(args.join(' ')));
+
+  const queries = [];
+  const mutations = [];
+  const storefront = {
+    CacheShort: () => ({}),
+    query: async (query, {variables}) => {
+      assert.doesNotMatch(query, /\bmutation\b|cartCreate|cartLinesUpdate/);
+      queries.push(query.match(/query (\w+)/)[1]);
+      // The US market sells in USD.
+      if (query.includes('query FeedMarketCurrency'))
+        return {
+          localization: {
+            country: {currency: {isoCode: FEED_CURRENCY[variables.country]}},
+          },
+        };
+      return {
+        products: {
+          nodes: variables.country === 'US' ? inUsd(CATALOG) : CATALOG,
+          pageInfo: {hasNextPage: false, endCursor: null},
+        },
+      };
+    },
+    // What the old feeds did for every quote: a cart, which Shopify counts
+    // as a visit that added to cart.
+    mutate: async (mutation) => {
+      mutations.push(mutation);
+      throw new Error('A feed must not create a cart');
+    },
+  };
+  const fetchFeed = async (name) => {
+    const {loader} = loadRoute(`feeds.${name}[.txt]`);
+    const response = await loader({
+      request: new Request(`https://shopclaramendes.com/feeds/${name}.txt`),
+      context: {storefront},
+      params: {},
+    });
+    assert.equal(response.status, 200, name);
+    assert.match(response.headers.get('Content-Type'), /^text\/plain/);
+    return response.text();
+  };
+
+  const site = byId(await fetchFeed('google-merchant'));
+  assert.equal(rate(site['CM-QF-01-8X10'], 'DE'), 'DE:16.00 EUR:2:4:5:10');
+  // The US market sells in USD, so the EUR feed leaves the US to the USD one.
+  assert.equal(rate(site['CM-QF-01-8X10'], 'US'), undefined);
+  assert.equal(site['CM-FW-01-MUG11-PF'], undefined);
+
+  const printful = byId(await fetchFeed('google-merchant-printful'));
+  assert.deepEqual(
+    printful['CD-HOOD-M'].shipping,
+    FEED_EU_COUNTRIES.map((c) => `${c}:${euFee('hoodie')} EUR:3:8:5:10`),
+  );
+  assert.equal(
+    rate(printful['CM-FW-01-MUG11-PF'], 'CY'),
+    `CY:${euFee('mug')} EUR:3:6:5:10`,
+  );
+  assert.equal(printful['CD-DRESS-M'], undefined);
+
+  const siteUs = byId(await fetchFeed('google-merchant-us'));
+  assert.deepEqual(Object.keys(siteUs).sort(), [
+    'CM-FW-01-HANG-A3-BLK',
+    'CM-QF-01-8X10',
+    'CM-SKY-8X10-UNF',
+  ]);
+  assert.deepEqual(siteUs['CM-QF-01-8X10'].shipping, [
+    `US:${usFixedRate('print')} USD:2:4:7:15`,
+  ]);
+
+  const printfulUs = byId(await fetchFeed('google-merchant-printful-us'));
+  assert.deepEqual(printfulUs['CD-HOOD-M'].shipping, [
+    `US:${usFee('hoodie')} USD:3:8:7:15`,
+  ]);
+  assert.deepEqual(printfulUs['CM-FW-01-CUSH18-I'].shipping, [
+    `US:${usFee('cushion-insert')} USD:3:8:7:15`,
+  ]);
+
+  const [metaHeader, ...meta] = parse(await fetchFeed('meta-country-us'));
+  assert.deepEqual(metaHeader, [...META_COUNTRY_COLUMNS]);
+  assert.ok(meta.some((row) => row[0] === 'CD-HOOD-M' && row[3] === '58.49 USD'));
+
+  assert.deepEqual(mutations, []);
+  // One catalogue read per feed, and the US currency for the two EUR feeds.
+  assert.deepEqual(queries.sort(), [
+    ...Array(2).fill('FeedMarketCurrency'),
+    ...Array(5).fill('MerchantFeedProducts'),
+  ]);
+  // Rows without a rate were left out and named in the log.
+  assert.equal(warnings.length, 3);
+  assert.match(warnings[0], /printful, EUR\): 1 items .* counter-diagonal-dress$/);
+  assert.match(warnings[1], /fixed, USD\): 4 items/);
+  assert.match(warnings[2], /printful, USD\): 1 items .* counter-diagonal-dress$/);
+
+  // A repeat request inside the cache window reads nothing.
+  await fetchFeed('google-merchant-printful');
+  assert.equal(queries.length, 7);
+});
+
+test('the feed server holds no cart mutation', () => {
+  const server = read('app/lib/merchantFeed.server.ts');
+  assert.doesNotMatch(server, /\.mutate\(|\bmutation\b|cartCreate|cartLinesUpdate/);
+  assert.doesNotMatch(read('storefrontapi.generated.d.ts'), /FeedQuote/);
 });
