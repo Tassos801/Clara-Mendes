@@ -526,7 +526,10 @@
         "note": "The printed area leaves out the plain indigo borders of the cloth and the Morris & Company mark on the right selvedge, so blankets, cushions and mugs show the pattern only. The canvas framing is listed only because every entry needs one shape; no canvas product is planned."
       },
       "approval": {
-        "approved": false
+        "approved": true,
+        "by": "Tassos",
+        "at": "2026-11-12",
+        "note": "Owner approved the printed area (pattern only, without the plain borders and the selvedge mark) after reviewing the top-ten board."
       }
     }
   }

@@ -488,6 +488,53 @@
       "slug": "museum-masterpieces",
       "copy": "Part of Museum Masterpieces, a Clara Mendes selection of nineteenth- and early twentieth-century paintings and one William Morris pattern from museum open-access collections.",
       "suppliedFiles": "museum/seven-products-mm",
+      "suppliedApprovals": {
+        "getty-90.PA.20": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "met-436535": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "getty-95.PA.63": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "met-436819": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "rijks-SK-A-2344": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "yale-12507": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "cma-1960.81": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "cma-1941.14": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        },
+        "met-438817": {
+          "at": "2026-11-12",
+          "by": "Tassos",
+          "note": "Owner approved the supplied (plain-mount) files as they are after reviewing the top-ten board; the work has no approved crop."
+        }
+      },
       "families": {
         "printful-mug": {
           "prices": {

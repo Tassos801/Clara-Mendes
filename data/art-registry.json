@@ -205,7 +205,9 @@
       ],
       "curatorNote": "Three paintings from his last two years in the south of France: the asylum garden at Saint-Rémy, a wheat field under a cypress, and the café in Arles he painted by night. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:15.709Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Netherlands",
@@ -241,7 +243,9 @@
       ],
       "curatorNote": "Two of Monet’s long looks at one subject: wheatstacks on a winter morning from the 1891 series, and the water-lily pond at Giverny that occupied his last years. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:16.921Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "France",
@@ -276,7 +280,9 @@
       ],
       "curatorNote": "Klimt painted Mäda Primavesi, the nine-year-old daughter of a banker and patron of the Wiener Werkstätte, standing square to the viewer against a field of flowers. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:18.202Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Austria",
@@ -313,7 +319,9 @@
       ],
       "curatorNote": "The Milkmaid is one of Vermeer’s few scenes of work: a kitchen maid pouring milk by the window, with bread on the table and the wall behind her left almost bare. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:19.965Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "Netherlands",
@@ -348,7 +356,9 @@
       ],
       "curatorNote": "Strawberry Thief, designed in 1883, shows the thrushes that took strawberries from Morris’s kitchen garden at Kelmscott Manor; this length of the printed cotton was made by Morris & Co. Throw blankets, cushions and mugs keep the full composition of the printed pattern as the museum photographed it, without the cloth’s plain borders, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:21.557Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "United Kingdom",
@@ -385,7 +395,9 @@
       ],
       "curatorNote": "Renoir painted flowers throughout his life; these roses from about 1890 are loosely brushed in warm reds and creams. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:23.355Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "France",
@@ -421,7 +433,9 @@
       ],
       "curatorNote": "The Dance Class (1874) shows a rehearsal at the Paris Opéra, with the ballet master Jules Perrot leaning on his stick while the dancers wait their turn. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
       "approval": {
-        "approved": false
+        "approved": true,
+        "at": "2026-11-12T08:43:24.983Z",
+        "by": "Tassos"
       },
       "tags": {
         "country": "France",
@@ -1721,10 +1735,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:26.446Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:27.923Z"
         }
       }
     },
@@ -1766,11 +1784,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:29.185Z"
         },
         "master": {
-          "status": "pending",
-          "at": "2026-11-12T07:56:09.806Z"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:30.781Z"
         }
       },
       "trim": {
@@ -1821,10 +1842,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:35.012Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:36.352Z"
         }
       }
     },
@@ -1866,10 +1891,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:37.690Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:38.962Z"
         }
       }
     },
@@ -1911,10 +1940,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:43.085Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:44.426Z"
         }
       }
     },
@@ -1956,10 +1989,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:32.177Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:33.650Z"
         }
       }
     },
@@ -2001,11 +2038,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:51.146Z"
         },
         "master": {
-          "status": "pending",
-          "at": "2026-11-12T07:56:10.697Z"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:52.525Z"
         }
       },
       "trim": {
@@ -2056,10 +2096,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:45.712Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:46.992Z"
         }
       }
     },
@@ -2101,10 +2145,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:48.341Z"
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:49.876Z"
         }
       }
     },
@@ -2146,11 +2194,14 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:40.441Z"
         },
         "master": {
-          "status": "pending",
-          "at": "2026-11-12T07:56:11.674Z"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:41.750Z"
         }
       },
       "trim": {
