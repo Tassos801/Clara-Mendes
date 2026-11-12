@@ -34,6 +34,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
 | `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all.          |
 | `/clothing`                                     | `app/routes/clothing.tsx`            | Clothing destination: eligible garments; category links and sort above 8 pieces, capsule filter from 2 capsules, "Show more" past 12, colourway looks. See [Clothing](clothing.md). |
+| `/gifts`                                        | `app/routes/gifts.tsx`               | Gift edit: curated handles (`app/lib/giftPage.ts`) kept only when live and buyable by the buyer, grouped Under/€30–60/Over in the buyer's currency; Your Sky as a link tile; Christmas order-by dates for EU/US buyers in season. In the sitemap, the footer Shop column and the homepage rail (2nd circle). |
 | `/collections/clothing`                         | `app/routes/collections.clothing.tsx`| Permanent (301) redirect to `/clothing`, query string kept.                     |
 | `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
 | `/cart`                                         | `app/routes/cart.tsx`                | Cart page loader/action and cart mutation endpoint for `CartForm`.              |
@@ -44,6 +45,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/pages/:handle`                                | `app/routes/pages.$handle.tsx`       | Shopify pages.                                                                  |
 | `/blogs` and blog/article routes                | `app/routes/blogs.*.tsx`             | Journal. `/blogs/karina-of-time` ("Karina of Time"; καρίνα = keel) renders the designed index: revolving cover ring (flat scroll row on mobile/reduced-motion/no-JS), issue ledger, mailto issue-request foot. Empty state shows capsule plates; noindex until articles exist. Other handles get a plain fallback. |
 | `/robots.txt`, `/sitemap.xml`, sitemap children | bracketed route files                | SEO crawler routes.                                                             |
+| `/llms.txt`, `/<IndexNow key>.txt`               | `[llms.txt].tsx`, key route         | AI-crawler map built from the released catalogs (`app/lib/llmsTxt.ts`); IndexNow key file (`app/lib/indexNow.ts`, submit with `scripts/indexnow-submit.mjs`). |
 | `/manifest.webmanifest`              | `app/routes/[manifest.webmanifest].tsx` | "Add to Home Screen" manifest (`app/lib/webManifest.ts`); icons in `public/icons/` from `scripts/build-app-icons.mjs`. |
 
 ## Home Page

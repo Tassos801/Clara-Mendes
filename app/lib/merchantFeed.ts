@@ -298,6 +298,26 @@ function itemFor(p: FeedProduct, o: Record<string, string>) {
   return art ?? clothingItem(p, o);
 }
 
+/**
+ * The fixed-rate shipping table (FIXED_RATES) one variant ships on, as its
+ * feed row would: null for Printful lines (rates quoted from carts) and for
+ * anything the feeds don't list. Product JSON-LD uses it, so the page and the
+ * feed advertise the same rate.
+ */
+export function fixedRateLineFor(
+  product: Pick<FeedProduct, 'handle' | 'productType' | 'tags'>,
+  selectedOptions: ReadonlyArray<{name: string; value: string}>,
+): FixedRateLine | null {
+  const options = Object.fromEntries(
+    selectedOptions.map((option) => [option.name, option.value]),
+  );
+  const line = itemFor(
+    {...product, title: '', description: '', variants: {nodes: []}},
+    options,
+  )?.line;
+  return line && !isPrintfulLine(line) ? line : null;
+}
+
 // One quote prices every row with the same key: a fixed line per product
 // type, a museum Printful line, or one clothing product (Printful files
 // garments into different shipping profiles).

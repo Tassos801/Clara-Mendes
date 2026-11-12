@@ -34,12 +34,15 @@ Before/after map and prepared Shopify changes:
   approval metafields). `counter-diagonal-hoodie` (AOP) and
   `counter-diagonal-classic-hoodie` are `false` in `PRODUCT_RELEASE_FLAGS`,
   so they never list even if published.
-- PDP: `quotesClothingShipping` / `quoteClothingShipping`
-  (`app/lib/clothingShipping*.ts`) price one piece to the buyer's country
-  with a throwaway cart (no checkout), cached an hour per piece and country;
-  `ClothingShippingQuoteLine` shows it in the market's currency. No fixed
-  table: Printful's profiles set the rates (USD, converted daily). No
-  delivery window yet (no verified Printful source in the repo).
+- PDP: `printfulShippingFee` (`app/lib/printfulShipping.ts`) reads one
+  piece's fee to the buyer's country from `printfulShippingFees.ts`, keyed
+  by shipping group (hoodie, tee, cap, light, mug, blanket, cushion-insert)
+  and region (EU, US, CH, NO, CA, AU, JP); `ClothingShippingQuoteLine`
+  shows it ("about" for EUR, which follows Printful's USD rates). The table
+  is rebuilt by `npm run shipping-fees` (9 quote carts, one per probe
+  country; `-- --check` compares only). Run it weekly and after any change
+  to Printful's shipping profiles or a new garment type. Page views never
+  create carts (Shopify counts each cart as a visit with an add to cart).
 - `/collections/counter-diagonal` has its own hero. Page art:
   `scripts/build-counter-diagonal-art.mjs` (plain JPEG / palette PNG).
 - Tests: `scripts/counterDiagonalStorefront.node-test.mjs`.
