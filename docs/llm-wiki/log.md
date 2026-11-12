@@ -2403,3 +2403,12 @@ pull requests". The `Validate` job now also runs on pull requests opened by
 Storefront workflow can be run by hand to validate a branch. Tested against a
 mocked Storefront API and GitHub CLI only; the first real run is the
 schedule's. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+
+## 2026-11-12 — Shipping fee rebuild: 90-minute timeout
+
+A full `npm run shipping-fees` now takes about 30 minutes (one cart line
+swap per listed Printful piece per probe country, about 1,300 for 147
+pieces). The weekly workflow's `quote` job had a 20-minute timeout, which
+would have stopped every run after its carts were made and before the table
+was written; it is now 90 minutes. See
+[fulfillment](modules/fulfillment.md#the-weekly-rebuild).
