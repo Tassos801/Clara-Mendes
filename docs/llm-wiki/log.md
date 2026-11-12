@@ -2450,3 +2450,15 @@ the original photo's grey-white walls (only the tree lights, candles and lamp
 glow warm), as `hero-christmas-neutral*.jpg` (new names, because browsers
 keep `public/` files for a year).
 
+## 2026-11-12 — Hero spotlight on phones
+
+The homepage hero's sharp spotlight followed only a mouse, so phones saw a
+still, mostly sharp photo. Touch screens now get a smaller spotlight
+(170 px radius) that drifts slowly over the room on its own and follows a
+finger on the hero, drifting again 2 s after the finger lifts
+(`app/lib/heroSpotlight.ts`, effect in `app/routes/_index.tsx`,
+`[data-touch-spot]` styles). Only the sharp layer's mask moves; the blurred
+layer stays still, so the frame stays cheap (59 fps on a 4x slowed CPU in
+phone emulation). Reduced motion keeps the still hero, and the loop sleeps
+while the hero is off screen. Tests: `scripts/heroSpotlight.node-test.mjs`.
+
