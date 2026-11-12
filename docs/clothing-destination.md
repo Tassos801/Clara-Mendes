@@ -232,10 +232,12 @@ It reads the Admin and Storefront APIs, makes no change, and refuses
 - **Shipping rates on the page.** The rate table on the product page, the
   "Shipping from" line and the Quiet Current collection subtitle are fixed to
   the four Quiet Current handles (`APPAREL_SHIPPING_RATES`). Every other
-  garment (Counter-Diagonal) shows checkout's own fee for one piece to the
-  buyer's country, from a throwaway one-piece cart in the buyer's market
-  currency, cached for an hour (`app/lib/clothingShipping.server.ts`). No line
-  appears when the piece does not ship there or the quote fails. The
+  garment (and the museum mugs, blankets and cushions) shows checkout's fee
+  for one piece to the buyer's country from a checked-in table
+  (`app/lib/printfulShipping.ts`, amounts in `printfulShippingFees.ts`,
+  rebuilt by `npm run shipping-fees`). Page views never create a cart:
+  Shopify counts every cart as a visit with an add to cart. No line appears
+  when the piece does not ship there or the table has no row for it. The
   `/clothing` page shows the "Shipping from" line only while every piece is
   Quiet Current.
 - **Editorial block for a new capsule.** Add an entry to `CAPSULE_STORIES` in

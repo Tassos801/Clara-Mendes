@@ -2310,3 +2310,14 @@ catalog black), and the twelve artist activewear products (exact handles,
 `isArtistActivewear` in `app/lib/storefrontBasics.ts`) take Printful's
 all-over windows: "Processes in 2–7 business days", dispatch 3–8.
 
+## 2026-11-12 — Printful fees from a table, no carts on page views
+
+Product pages no longer create a Storefront cart to read the shipping fee
+(each cart counted as a no-referrer visit with an add to cart in Shopify
+analytics). Clothing and the museum mugs, blankets and cushions read the
+fee from `app/lib/printfulShippingFees.ts`, rebuilt by
+`npm run shipping-fees`. Printful's own `/v2/shipping-rates` does not match
+checkout, so the table comes from checkout quotes. EU buyers also see the
+flat Prodigi rate on prints, hangers, acrylic and metal, canvas, framed and
+cards (`app/lib/fixedShippingFee.ts`, from `merchantFeedShipping.ts`). See
+[clothing](modules/clothing.md).

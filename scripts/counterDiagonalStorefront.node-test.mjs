@@ -251,56 +251,6 @@ function loadRoute(name) {
   return exports;
 }
 
-// --- PDP shipping line: checkout's own fee for one piece, per buyer country ---
-const {cheapestShippingQuote, quotesClothingShipping, QUOTE_ADDRESSES} = await import('../app/lib/clothingShipping.ts');
-const {quoteClothingShipping} = await import('../app/lib/clothingShipping.server.ts');
-
-test('only clothing without its own rate table gets a live quote', () => {
-  assert.equal(quotesClothingShipping(heavyweight), true);
-  assert.equal(quotesClothingShipping(cap), true);
-  assert.equal(quotesClothingShipping(tank), false);
-  assert.equal(quotesClothingShipping({handle: 'where-mist-rests', productType: 'Art Prints', tags: []}), false);
-  assert.deepEqual(
-    cheapestShippingQuote([
-      {estimatedCost: {amount: '10.7', currencyCode: 'USD'}},
-      {estimatedCost: {amount: '4.85', currencyCode: 'USD'}},
-    ]),
-    {amount: '4.85', currencyCode: 'USD'},
-  );
-  assert.equal(cheapestShippingQuote([]), null);
-});
-
-test('the quote is a one-piece cart in the buyer market; failures show no line', async () => {
-  const calls = [];
-  const storefront = {
-    mutate: async (mutation, {variables}) => {
-      calls.push({mutation, variables});
-      return {cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [
-        {estimatedCost: {amount: '10.70', currencyCode: 'USD'}},
-        {estimatedCost: {amount: '4.85', currencyCode: 'USD'}},
-      ]}]}}}};
-    },
-  };
-  assert.deepEqual(await quoteClothingShipping(storefront, 'gid://shopify/ProductVariant/1', 'US'), {amount: '4.85', currencyCode: 'USD'});
-  const {variables, mutation} = calls[0];
-  assert.match(mutation, /@inContext\(country: \$country\)/);
-  assert.match(mutation, /cartCreate/);
-  // A throwaway cart: it never asks for a checkout URL.
-  assert.doesNotMatch(mutation, /checkoutUrl/);
-  assert.equal(variables.country, 'US');
-  assert.deepEqual(variables.input.lines, [{merchandiseId: 'gid://shopify/ProductVariant/1', quantity: 1}]);
-  assert.deepEqual(variables.input.delivery.addresses[0].address.deliveryAddress, {countryCode: 'US', ...QUOTE_ADDRESSES.US});
-  // EU countries price by code alone.
-  await quoteClothingShipping(storefront, 'gid://shopify/ProductVariant/1', 'CY');
-  assert.deepEqual(calls[1].variables.input.delivery.addresses[0].address.deliveryAddress, {countryCode: 'CY'});
-
-  const none = {mutate: async () => ({cartCreate: {cart: {deliveryGroups: {nodes: []}}}})};
-  assert.equal(await quoteClothingShipping(none, 'gid://shopify/ProductVariant/1', 'GB'), null);
-  const broken = {mutate: async () => { throw new Error('Storefront down'); }};
-  assert.equal(await quoteClothingShipping(broken, 'gid://shopify/ProductVariant/1', 'CY'), null);
-  assert.equal(await quoteClothingShipping(storefront, null, 'CY'), null);
-});
-
 // --- Printful windows for Counter-Diagonal (cd-apparel readback, 2026-11-05) ---
 const {fulfilmentWindows, counterDiagonalTechnique} = await import('../app/lib/storefrontBasics.ts');
 
@@ -331,18 +281,3 @@ test('Counter-Diagonal gets Printful windows by technique; other new garments st
   assert.deepEqual(fulfilmentWindows('Studio Top', 'quiet-current-studio-tank'), embroidered);
 });
 
-test('a slow first quote shows no line now and finishes in the background', async () => {
-  let release;
-  const slow = {mutate: () => new Promise((resolve) => { release = () => resolve({cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [{estimatedCost: {amount: '4.69', currencyCode: 'USD'}}]}]}}}}); })};
-  const background = [];
-  const quote = await quoteClothingShipping(slow, 'gid://shopify/ProductVariant/9', 'US', {timeoutMs: 20, waitUntil: (promise) => background.push(promise)});
-  assert.equal(quote, null);
-  assert.equal(background.length, 1, 'the pending quote is handed to waitUntil');
-  release();
-  await background[0];
-  // A quick answer is returned straight away and nothing is left running.
-  const fast = {mutate: async () => ({cartCreate: {cart: {deliveryGroups: {nodes: [{deliveryOptions: [{estimatedCost: {amount: '4.45', currencyCode: 'EUR'}}]}]}}}})};
-  const idle = [];
-  assert.deepEqual(await quoteClothingShipping(fast, 'gid://shopify/ProductVariant/9', 'CY', {timeoutMs: 1000, waitUntil: (p) => idle.push(p)}), {amount: '4.45', currencyCode: 'EUR'});
-  assert.equal(idle.length, 0);
-});

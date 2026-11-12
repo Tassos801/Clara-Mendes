@@ -149,8 +149,8 @@ import {parseApparelDescription} from '~/lib/apparelCopy';
 import {isClothingProduct, isRetiredClothingHandle} from '~/lib/clothing';
 import {clothingSwatchBackground} from '~/lib/clothingPresentation';
 import {imagesForColour, isColourOptionName} from '~/lib/garmentColours';
-import {quotesClothingShipping} from '~/lib/clothingShipping';
-import {quoteClothingShipping} from '~/lib/clothingShipping.server';
+import {fixedShippingFee} from '~/lib/fixedShippingFee';
+import {printfulShippingFee, shippingFeeText} from '~/lib/printfulShipping';
 import {
   APPAREL_SHIPPING_DETAIL_ID,
   ApparelShippingLine,
@@ -716,26 +716,22 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           .then((result) => result.product?.images.nodes ?? null)
           .catch(() => null)
       : Promise.resolve(null);
-  const [reachedProduct, relatedProducts, clothingShipping] = await Promise.all([
+  const [reachedProduct, relatedProducts] = await Promise.all([
     withVariantReach(context.storefront, product),
     withDeliveryReach(
       context.storefront,
       museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
     ),
-    // Counter-Diagonal ships at Printful's per-country rates: quote
-    // checkout's fee for one piece to this buyer (cached, never blocks long).
-    // Quiet Current's rate table is in EUR, so a US (USD) buyer gets
-    // checkout's fee instead.
-    quotesClothingShipping(product) ||
-    (isQuietCurrentProduct(product.handle) && buyerCountry === 'US')
-      ? quoteClothingShipping(
-          context.storefront,
-          product.selectedOrFirstAvailableVariant?.id,
-          buyerCountry,
-          {waitUntil: context.waitUntil},
-        )
-      : Promise.resolve(null),
   ]);
+  // Checkout's fee for one piece to this buyer from checked-in tables:
+  // Printful pieces (clothing, museum mugs, blankets, cushions) and, for EU
+  // buyers, Prodigi's flat rates. Never a cart: Shopify counts each cart as
+  // a visit that added to cart.
+  const feeVariant = product.selectedOrFirstAvailableVariant;
+  const clothingShipping =
+    printfulShippingFee(product, feeVariant, buyerCountry, {
+      ships: Boolean(feeVariant?.availableForSale),
+    }) ?? fixedShippingFee(product, feeVariant, buyerCountry);
   const allImages = await colourImages;
   const selectedColour =
     product.selectedOrFirstAvailableVariant?.selectedOptions.find((option) =>
@@ -1895,7 +1891,7 @@ function ProductPage() {
               {!showApparelTable && clothingShipping ? (
                 <>
                   Shipping to {deliveryCountry.phrase} is{' '}
-                  {formatMoney(clothingShipping)} for this piece; more pieces
+                  {shippingFeeText(clothingShipping)} for this piece; more pieces
                   can change the fee.{' '}
                 </>
               ) : null}

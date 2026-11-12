@@ -50,16 +50,15 @@ test('Your Sky reads the live USD price for US buyers, unframed only', () => {
   );
 });
 
-test('the clothing page names no fixed fee and the PDP quotes the US', () => {
+test('the clothing page names no fixed fee and the PDP prices the US from the table', () => {
   // Each garment's product page quotes its own fee in the buyer's currency;
   // /clothing names no figure, so no euro amount reaches a US buyer.
   const clothing = read('app/routes/clothing.tsx');
   assert.doesNotMatch(clothing, /€|APPAREL_SHIPPING_FROM_EUR|shippingFrom/);
   assert.match(clothing, /Each product page shows the fee for your country; checkout\s+confirms it for your address\./);
   const pdp = read('app/routes/products.$handle.tsx');
-  assert.match(
-    pdp,
-    /isQuietCurrentProduct\(product\.handle\) && buyerCountry === 'US'/,
-  );
+  // The fee comes from the checked-in table, which refuses a fee whose
+  // currency is not the buyer's (scripts/printfulShippingFees.node-test.mjs).
+  assert.match(pdp, /printfulShippingFee\(/);
   assert.match(pdp, /showApparelTable = isQuietCurrent && !clothingShipping/);
 });

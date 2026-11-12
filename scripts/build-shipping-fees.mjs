@@ -1,0 +1,296 @@
+#!/usr/bin/env node
+/**
+ * Rebuilds app/lib/printfulShippingFees.ts: checkout's standard shipping fee
+ * for one Printful piece per shipping group and region (see
+ * app/lib/printfulShipping.ts), read from real Storefront cart quotes.
+ *
+ *   npm run shipping-fees            quote, check, write the table
+ *   npm run shipping-fees -- --check quote and compare, write nothing
+ *                                    (exit 1 when the table is out of date)
+ *
+ * Shopify counts every cart as a visit that added to cart, so this makes
+ * one cart per probe country (9) and swaps its single line through one
+ * variant of every listed Printful product (about 45 line updates per
+ * cart, no new carts). No checkout, no order. Carts are created 20 s apart:
+ * a burst of new carts gets the IP throttled, which also blocks add-to-cart
+ * on the live site from that IP.
+ *
+ * It stops without writing when two EU probe countries disagree or when
+ * products of one group are charged different fees (the group map in
+ * printfulShipping.ts needs a change then).
+ */
+import {writeFileSync, readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {getRequiredEnv, envWithLocalDefaults} from './lib/env.mjs';
+
+const {PRINTFUL_FEE_REGIONS, PRINTFUL_SHIPPING_GROUPS, printfulShippingGroup} =
+  await import('../app/lib/printfulShipping.ts');
+
+const OUTPUT = resolve('app/lib/printfulShippingFees.ts');
+const API_VERSION = '2025-10';
+const CART_GAP_MS = 20_000;
+const SWAP_GAP_MS = 300;
+
+// Printful prices the US, Canada, Australia and Japan by state or
+// prefecture, so a country code alone gets no rate there. Public
+// landmarks, used only to price delivery.
+const QUOTE_ADDRESSES = {
+  US: {city: 'New York', zip: '10001', provinceCode: 'NY'},
+  CA: {city: 'Toronto', zip: 'M5V 2T6', provinceCode: 'ON'},
+  AU: {city: 'Sydney', zip: '2000', provinceCode: 'NSW'},
+  JP: {city: 'Tokyo', zip: '100-0001', provinceCode: 'JP-13'},
+};
+
+const env = envWithLocalDefaults();
+const domain = getRequiredEnv(env, 'PUBLIC_STORE_DOMAIN');
+const token = getRequiredEnv(env, 'PUBLIC_STOREFRONT_API_TOKEN');
+const check = process.argv.includes('--check');
+const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
+
+async function storefront(query, variables) {
+  const response = await fetch(
+    `https://${domain}/api/${API_VERSION}/graphql.json`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': token,
+      },
+      body: JSON.stringify({query, variables}),
+    },
+  );
+  const body = await response.json();
+  if (body.errors) throw new Error(JSON.stringify(body.errors).slice(0, 400));
+  return body.data;
+}
+
+/** One variant per (product, group): every listed Printful piece. */
+async function quoteItems() {
+  const items = [];
+  let after = null;
+  do {
+    const data = await storefront(
+      `query ($after: String) {
+        products(first: 100, after: $after, query: "status:active") {
+          pageInfo { hasNextPage endCursor }
+          nodes {
+            handle productType tags
+            variants(first: 100) {
+              nodes { id availableForSale selectedOptions { name value } }
+            }
+          }
+        }
+      }`,
+      {after},
+    );
+    for (const product of data.products.nodes) {
+      const seen = new Set();
+      for (const variant of product.variants.nodes) {
+        const group = printfulShippingGroup(product, variant.selectedOptions);
+        if (!group || seen.has(group) || !variant.availableForSale) continue;
+        seen.add(group);
+        items.push({handle: product.handle, group, variantId: variant.id});
+      }
+    }
+    after = data.products.pageInfo.hasNextPage
+      ? data.products.pageInfo.endCursor
+      : null;
+  } while (after);
+  // Garments sell everywhere the table covers, so a hoodie opens each cart.
+  return items.sort(
+    (a, b) => (a.group === 'hoodie' ? 0 : 1) - (b.group === 'hoodie' ? 0 : 1),
+  );
+}
+
+const CART = `fragment QuoteCart on Cart {
+  id
+  lines(first: 1) { nodes { id merchandise { ... on ProductVariant { id } } } }
+  deliveryGroups(first: 5) {
+    nodes { deliveryOptions { estimatedCost { amount currencyCode } } }
+  }
+}`;
+const CREATE = `mutation ($input: CartInput!, $country: CountryCode)
+@inContext(country: $country) {
+  cartCreate(input: $input) { cart { ...QuoteCart } userErrors { message } }
+} ${CART}`;
+const SWAP = `mutation ($cartId: ID!, $lines: [CartLineUpdateInput!]!, $country: CountryCode)
+@inContext(country: $country) {
+  cartLinesUpdate(cartId: $cartId, lines: $lines) {
+    cart { ...QuoteCart } userErrors { message }
+  }
+} ${CART}`;
+
+function cheapest(cart) {
+  const costs = cart.deliveryGroups.nodes
+    .flatMap((group) => group.deliveryOptions)
+    .map((option) => option.estimatedCost)
+    .filter((cost) => Number.isFinite(Number(cost.amount)));
+  if (!costs.length) return null;
+  const low = costs.reduce((a, b) =>
+    Number(b.amount) < Number(a.amount) ? b : a,
+  );
+  return {
+    amount: Number(low.amount).toFixed(2),
+    currencyCode: low.currencyCode,
+  };
+}
+
+let carts = 0;
+let swaps = 0;
+
+/** handle#group -> fee (or null: no rate there) for one country. */
+async function quoteCountry(country, items) {
+  const fees = new Map();
+  let cart = null;
+  let failedCreates = 0;
+  for (const item of items) {
+    const key = `${item.handle}#${item.group}`;
+    let result;
+    if (!cart) {
+      if (carts) await sleep(CART_GAP_MS);
+      carts++;
+      result = (
+        await storefront(CREATE, {
+          country,
+          input: {
+            buyerIdentity: {countryCode: country},
+            delivery: {
+              addresses: [
+                {
+                  address: {
+                    deliveryAddress: {
+                      countryCode: country,
+                      ...QUOTE_ADDRESSES[country],
+                    },
+                  },
+                  selected: true,
+                  validationStrategy: 'COUNTRY_CODE_ONLY',
+                },
+              ],
+            },
+            lines: [{merchandiseId: item.variantId, quantity: 1}],
+          },
+        })
+      ).cartCreate;
+    } else {
+      swaps++;
+      result = (
+        await storefront(SWAP, {
+          country,
+          cartId: cart.id,
+          lines: [
+            {
+              id: cart.lines.nodes[0].id,
+              merchandiseId: item.variantId,
+              quantity: 1,
+            },
+          ],
+        })
+      ).cartLinesUpdate;
+      await sleep(SWAP_GAP_MS);
+    }
+    // Not for sale in this market: the line is refused, so no fee.
+    const line = result?.cart?.lines.nodes[0];
+    if (line?.merchandise?.id !== item.variantId) {
+      fees.set(key, null);
+      if (!cart && ++failedCreates > 2)
+        throw new Error(`No quote cart for ${country}`);
+      continue;
+    }
+    cart = result.cart;
+    fees.set(key, cheapest(cart));
+  }
+  return fees;
+}
+
+const same = (a, b) =>
+  a === b ||
+  (a && b && a.amount === b.amount && a.currencyCode === b.currencyCode);
+const show = (fee) => (fee ? `${fee.amount} ${fee.currencyCode}` : 'none');
+
+const items = await quoteItems();
+const problems = [];
+const table = Object.fromEntries(PRINTFUL_SHIPPING_GROUPS.map((g) => [g, {}]));
+for (const group of PRINTFUL_SHIPPING_GROUPS) {
+  if (!items.some((item) => item.group === group))
+    problems.push(`No listed product in group ${group}`);
+}
+
+for (const [region, {probes}] of Object.entries(PRINTFUL_FEE_REGIONS)) {
+  const perProbe = [];
+  for (const country of probes) {
+    perProbe.push([country, await quoteCountry(country, items)]);
+    console.error(`quoted ${country}`);
+  }
+  for (const group of PRINTFUL_SHIPPING_GROUPS) {
+    const quotes = items
+      .filter((item) => item.group === group)
+      .flatMap((item) =>
+        perProbe.map(([country, fees]) => ({
+          where: `${item.handle} ${country}`,
+          fee: fees.get(`${item.handle}#${item.group}`),
+        })),
+      );
+    if (!quotes.length) continue;
+    const first = quotes[0].fee;
+    const odd = quotes.filter((quote) => !same(quote.fee, first));
+    if (odd.length) {
+      problems.push(
+        `${group} in ${region}: ${quotes[0].where} ${show(first)}, but ${odd
+          .slice(0, 4)
+          .map((quote) => `${quote.where} ${show(quote.fee)}`)
+          .join(', ')}`,
+      );
+      continue;
+    }
+    if (first) table[group][region] = first;
+  }
+}
+
+console.error(
+  `${carts} carts, ${swaps} line updates, ${items.length} products quoted`,
+);
+if (problems.length) {
+  console.error(`Not written:\n- ${problems.join('\n- ')}`);
+  process.exit(1);
+}
+
+const lines = PRINTFUL_SHIPPING_GROUPS.map((group) => {
+  const regions = Object.entries(table[group])
+    .map(
+      ([region, fee]) =>
+        `    ${region}: {amount: '${fee.amount}', currencyCode: '${fee.currencyCode}'},`,
+    )
+    .join('\n');
+  const key = /^[a-z]+$/.test(group) ? group : `'${group}'`;
+  return `  ${key}: {\n${regions}\n  },`;
+});
+const today = new Date().toISOString().slice(0, 10);
+const source = (
+  date,
+) => `// Generated by \`npm run shipping-fees\` (scripts/build-shipping-fees.mjs)
+// from checkout quotes on ${date}. Do not edit by hand: rebuild instead.
+// A region missing from a group means that group does not ship there.
+export const PRINTFUL_FEES_QUOTED_ON = '${date}';
+
+export const PRINTFUL_SHIPPING_FEES = {
+${lines.join('\n')}
+} as const;
+`;
+
+if (check) {
+  // Git may check the file out with CRLF line endings.
+  const current = readFileSync(OUTPUT, 'utf8').replace(/\r\n/g, '\n');
+  const quotedOn = current.match(/PRINTFUL_FEES_QUOTED_ON = '([\d-]+)'/)?.[1];
+  if (current === source(quotedOn)) {
+    console.error(`Table quoted on ${quotedOn} still matches checkout.`);
+  } else {
+    console.error(
+      `Table quoted on ${quotedOn} no longer matches checkout; run npm run shipping-fees.`,
+    );
+    process.exit(1);
+  }
+} else {
+  writeFileSync(OUTPUT, source(today));
+  console.error(`Wrote ${OUTPUT}`);
+}
