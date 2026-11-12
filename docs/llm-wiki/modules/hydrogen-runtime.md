@@ -95,7 +95,9 @@ plain sRGB JPEGs and PNGs pass through as they are, but WebP and ICC-tagged
 JPEGs are re-encoded into larger JPEGs (a transparent WebP into a PNG about
 five times its size), and `?width=` parameters are ignored. So the
 storefront never shows a `public/` WebP; images ship as compressed JPEGs
-(palette PNGs if transparent) at 2–3× the size they are shown:
+(palette PNGs if transparent) at 2–3× the size they are shown. They are
+served with `Cache-Control: public, max-age=31536000`, so a changed picture
+must get a new file name (browsers keep the old one for a year):
 
 - the hero backdrop in three files picked by media query
   (`app/lib/heroBackdrop.ts`, preloaded with the same queries) and the

@@ -2432,3 +2432,12 @@ sizes. The old `hero-interior*.jpg` files stay; point `HERO_BACKDROP`
 line-rail circles are new square pictures in one festive style, all local
 360 px JPEGs (Gifts and Clothing no longer load from the Shopify CDN). See
 [brand voice](brand-voice.md#line-rail).
+
+## 2026-11-12 — Changed public/ pictures need new file names
+
+Oxygen serves `public/` files with `Cache-Control: public, max-age=31536000`,
+so a picture replaced under the same name stays old for a year in any
+browser that saw it. The Christmas rail circles moved to
+`public/images/line-rail/<key>-christmas.jpg`; the earlier pictures are back
+at the plain names for after the season (their `lineRail.ts` entries are in
+commit 183134e). Rule: a changed image in `public/` always gets a new name.
