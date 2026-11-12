@@ -1,4 +1,4 @@
-import {useEffect, useRef} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Link, useLoaderData, useNavigate} from 'react-router';
 import type {Route} from './+types/_index';
 import {BrandLogo} from '~/components/BrandLogo';
@@ -20,6 +20,13 @@ import {
   HERO_BACKDROP_MEDIA,
   heroBackdropPreloads,
 } from '~/lib/heroBackdrop';
+import {
+  SPOTLIGHT_EASE,
+  TOUCH_RESUME_DELAY_MS,
+  TOUCH_SPOTLIGHT_RADIUS_PX,
+  spotlightDriftPoint,
+  touchPointInHero,
+} from '~/lib/heroSpotlight';
 
 /** Set on <html> once the hero's glass pill has scrolled out of view. */
 const HOME_PAST_HERO_CLASS = 'home-past-hero';
@@ -50,6 +57,10 @@ export default function Homepage() {
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
   const headerRef = useRef<HTMLElement | null>(null);
+  const heroRef = useRef<HTMLElement | null>(null);
+  // True on touch screens once the drifting spotlight runs (homeCss
+  // [data-touch-spot]); server HTML and reduced motion keep the still hero.
+  const [touchSpot, setTouchSpot] = useState(false);
   const outlineRef = useRef<HTMLDivElement | null>(null);
   const orbRef = useRef<HTMLButtonElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
@@ -115,6 +126,88 @@ export default function Homepage() {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('resize', onResize);
       cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Touch screens have no hover, so the spotlight drifts slowly over the
+    // room and follows a finger on the hero (app/lib/heroSpotlight.ts).
+    // The blurred layer stays still; only the sharp layer's mask moves,
+    // which keeps the frame cheap on phones. Reduced motion keeps the
+    // still hero, and the loop sleeps while the hero is off screen.
+    if (
+      window.matchMedia('(hover: hover) and (pointer: fine)').matches ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+    const hero = heroRef.current;
+    if (!hero) return;
+    setTouchSpot(true);
+
+    const start = performance.now();
+    let {x, y} = spotlightDriftPoint(0);
+    let target = {x, y};
+    let touching = false;
+    let resumeAt = 0;
+    let raf = 0;
+
+    const tick = (now: number) => {
+      if (!touching && now >= resumeAt) {
+        target = spotlightDriftPoint(now - start);
+      }
+      x += (target.x - x) * SPOTLIGHT_EASE;
+      y += (target.y - y) * SPOTLIGHT_EASE;
+      hero.style.setProperty('--x', `${x.toFixed(2)}%`);
+      hero.style.setProperty('--y', `${y.toFixed(2)}%`);
+      raf = requestAnimationFrame(tick);
+    };
+    const run = () => {
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+    const sleep = () => {
+      cancelAnimationFrame(raf);
+      raf = 0;
+    };
+
+    const onTouch = (event: TouchEvent) => {
+      const touch = event.touches[0];
+      if (!touch) return;
+      touching = true;
+      target = touchPointInHero(
+        touch.clientX,
+        touch.clientY,
+        hero.getBoundingClientRect(),
+      );
+    };
+    const onRelease = () => {
+      touching = false;
+      resumeAt = performance.now() + TOUCH_RESUME_DELAY_MS;
+    };
+
+    // Passive, so a finger on the hero still scrolls the page.
+    hero.addEventListener('touchstart', onTouch, {passive: true});
+    hero.addEventListener('touchmove', onTouch, {passive: true});
+    hero.addEventListener('touchend', onRelease);
+    hero.addEventListener('touchcancel', onRelease);
+
+    const observer =
+      typeof IntersectionObserver === 'undefined'
+        ? null
+        : new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) run();
+            else sleep();
+          });
+    if (observer) observer.observe(hero);
+    else run();
+
+    return () => {
+      sleep();
+      observer?.disconnect();
+      hero.removeEventListener('touchstart', onTouch);
+      hero.removeEventListener('touchmove', onTouch);
+      hero.removeEventListener('touchend', onRelease);
+      hero.removeEventListener('touchcancel', onRelease);
     };
   }, []);
 
@@ -196,7 +289,12 @@ export default function Homepage() {
         data={[organizationSchema(seoUrl), websiteSchema(seoUrl)]}
       />
 
-      <section className="home-root" aria-labelledby="home-title">
+      <section
+        ref={heroRef}
+        className="home-root"
+        data-touch-spot={touchSpot ? '' : undefined}
+        aria-labelledby="home-title"
+      >
         <div className="hm-layer-sharp" />
         <div ref={blurRef} className="hm-layer-blur" />
         <div className="hm-noise-overlay" />
@@ -386,6 +484,21 @@ html:has(.home-root) main {
   .hm-layer-blur {
     background-image: url(${HERO_BACKDROP.mobile});
   }
+}
+
+/* Touch screens ([data-touch-spot], set by the drift effect): the blurred
+   layer covers the hero and stays still, and the sharp layer above it
+   shows through a smaller soft circle that moves with --x / --y. */
+.home-root[data-touch-spot] .hm-layer-blur {
+  -webkit-mask-image: none;
+  mask-image: none;
+  z-index: 1;
+}
+
+.home-root[data-touch-spot] .hm-layer-sharp {
+  z-index: 2;
+  -webkit-mask-image: radial-gradient(circle ${TOUCH_SPOTLIGHT_RADIUS_PX}px at var(--x, 50%) var(--y, 50%), black 0%, black 30%, transparent 100%);
+  mask-image: radial-gradient(circle ${TOUCH_SPOTLIGHT_RADIUS_PX}px at var(--x, 50%) var(--y, 50%), black 0%, black 30%, transparent 100%);
 }
 
 .hm-noise-overlay {
