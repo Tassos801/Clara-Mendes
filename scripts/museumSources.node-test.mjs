@@ -523,3 +523,63 @@ test('re-reading committed evidence reproduces every registered record', () => {
     assert.deepEqual(rebuilt, artwork, artwork.id);
   }
 });
+
+/** A committed evidence file, parsed. */
+const evidence = (id) =>
+  JSON.parse(
+    readFileSync(path.join(REPO_ROOT, 'data/museum-evidence', `${id}.json`), 'utf8'),
+  );
+
+test('Getty, Rijksmuseum and Yale records normalise with their rights, image and credit', () => {
+  const irises = museumSourceFor('getty').normalize(evidence('getty-90.PA.20'));
+  assert.equal(irises.objectId, '90.PA.20');
+  assert.equal(irises.artistDisplayName, 'Vincent van Gogh');
+  assert.equal(irises.publicDomain, true);
+  assert.match(irises.imageUrl, /^https:\/\/media\.getty\.edu\/iiif\/image\/[0-9a-f-]+\/full\/max\/0\/default\.jpg$/);
+  assert.equal(irises.creditLine, 'The J. Paul Getty Museum, Los Angeles');
+  assert.equal(
+    registry.sourceCredit({creditLine: irises.creditLine, institution: 'The J. Paul Getty Museum', museum: 'getty'}),
+    'The J. Paul Getty Museum, Los Angeles',
+  );
+
+  const milkmaid = museumSourceFor('rijks').normalize(evidence('rijks-SK-A-2344'));
+  assert.equal(milkmaid.objectId, 'SK-A-2344');
+  assert.equal(milkmaid.title, 'The Milkmaid');
+  assert.equal(milkmaid.artistDisplayName, 'Johannes Vermeer');
+  assert.equal(milkmaid.publicDomain, true);
+  assert.match(milkmaid.imageUrl, /^https:\/\/iiif\.micr\.io\/[A-Za-z0-9]+\/full\/max\/0\/default\.jpg$/);
+
+  const cafe = museumSourceFor('yale').normalize(evidence('yale-12507'));
+  assert.equal(cafe.objectId, '12507');
+  assert.equal(cafe.accessionNumber, '1961.18.34');
+  assert.equal(cafe.artistDisplayName, 'Vincent van Gogh');
+  assert.equal(cafe.artistPrefix, '');
+  assert.equal(cafe.publicDomain, true);
+  assert.deepEqual(cafe.pixels, {height: 5848, width: 7408});
+});
+
+test('a record without a public-domain mark is not public domain', () => {
+  const record = evidence('rijks-SK-A-2344');
+  for (const subject of record.subject_of)
+    for (const carrier of subject.digitally_carried_by ?? [])
+      for (const note of carrier.referred_to_by ?? [])
+        note.content = 'http://rightsstatements.org/vocab/InC/1.0/';
+  assert.equal(museumSourceFor('rijks').normalize(record).publicDomain, false);
+  const yale = evidence('yale-12507');
+  yale.metadata = yale.metadata.filter((entry) => Object.values(entry.label)[0][0] !== 'Copyright Statement');
+  assert.equal(museumSourceFor('yale').normalize(yale).publicDomain, false);
+});
+
+test('new museum ids parse with their own prefixes', () => {
+  assert.equal(parseArtworkRef('getty-90.PA.20').museum, 'getty');
+  assert.equal(parseArtworkRef('rijks-SK-A-2344').objectId, 'SK-A-2344');
+  assert.equal(parseArtworkRef('yale-12507').museum, 'yale');
+  assert.throws(() => parseArtworkRef('yale-abc'));
+});
+
+test('a Cleveland textile with no artist falls back to its designer', () => {
+  const record = evidence('cma-1937.696');
+  const candidate = cma.normalizeCmaArtwork(record);
+  assert.equal(candidate.artistDisplayName, 'William Morris');
+  assert.deepEqual(attributionIssues(candidate), []);
+});

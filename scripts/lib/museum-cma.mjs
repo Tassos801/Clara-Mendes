@@ -87,9 +87,13 @@ function pixels(image) {
 export function normalizeCmaArtwork(raw) {
   const record = raw?.data ?? raw;
   const objectId = text(record?.accession_number);
-  const artists = (record?.creators ?? []).filter(
-    (creator) => text(creator?.role).toLowerCase() === 'artist',
-  );
+  const byRole = (role) =>
+    (record?.creators ?? []).filter(
+      (creator) => text(creator?.role).toLowerCase() === role,
+    );
+  // Textiles and wallpapers name their maker as the designer (William
+  // Morris, "designed by"); a work with no artist falls back to them.
+  const artists = byRole('artist').length ? byRole('artist') : byRole('designer');
   const [first] = artists;
   const full = record?.images?.full;
   const title = text(record?.title);

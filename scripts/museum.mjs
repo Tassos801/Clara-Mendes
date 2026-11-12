@@ -15,7 +15,8 @@
  *     matches titles; --sizes reads each image's pixel size from its first
  *     256 KB, or from the record where the museum states it)
  *   npm run museum -- fetch <artwork id> --artist <artist id> [--short-title "…"]
- *     (met-45434 or a bare Met object id, aic-8991, cma-1967.215)
+ *     (met-45434 or a bare Met object id, aic-8991, cma-1967.215,
+ *     getty-90.PA.20, rijks-SK-A-2344, yale-12507; search covers met, aic, cma)
  *   npm run museum -- qualify [artwork id …]
  *
  * Owner decisions — run only on the owner's explicit instruction:
@@ -408,7 +409,7 @@ async function search() {
 async function fetchArtwork() {
   if (!positional[0])
     throw new Error(
-      'Usage: npm run museum -- fetch <artwork id> --artist <artist id> (met-45434, aic-8991, cma-1967.215)',
+      'Usage: npm run museum -- fetch <artwork id> --artist <artist id> (met-45434, aic-8991, cma-1967.215, getty-90.PA.20, rijks-SK-A-2344, yale-12507)',
     );
   const {museum, objectId, source} = parseArtworkRef(positional[0]);
   const artist = findArtist(options.artist ?? '', registry);
@@ -419,7 +420,11 @@ async function fetchArtwork() {
   if (artist.kind !== 'historical')
     throw new Error(`${artist.id} is not a historical artist`);
 
-  const {json, raw} = await getJson(source.objectUrl(objectId), {source});
+  // Museums whose records live at an opaque URL find it first.
+  const recordUrl = source.resolveObjectUrl
+    ? await source.resolveObjectUrl(objectId, (url) => getJson(url, {source}))
+    : source.objectUrl(objectId);
+  const {json, raw} = await getJson(recordUrl, {source});
   const candidate = source.normalize(json);
   if (candidate.objectId !== objectId)
     throw new Error(
