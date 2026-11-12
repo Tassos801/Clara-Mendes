@@ -11,6 +11,7 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 
 const LABELS = [
   'Prints',
+  'Gifts',
   'Artists',
   'Clothing',
   'Book Nooks',
@@ -76,6 +77,7 @@ test('every line released gives the full rail in order', () => {
   });
   assert.deepEqual(keys(entries), [
     'prints',
+    'gifts',
     'artists',
     'clothing',
     'book-nooks',

@@ -24,6 +24,8 @@ import type {Route} from './+types/products.$handle';
 import {storefrontImageLoader} from '~/lib/imageLoader';
 import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
+import {requestToday} from '~/lib/christmasDelivery';
 import {
   focusPhoneModelPicker,
   PhoneModelPicker,
@@ -782,6 +784,8 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
     skyTheme: DEFAULT_SKY_THEME,
+    // "Today" for the Christmas order-by line (components/ChristmasOrderBy).
+    christmasToday: requestToday(request),
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
@@ -1364,6 +1368,8 @@ function ProductPage() {
                   : `${RETURN_WINDOW_DAYS}-day returns`}
               </span>
             </div>
+
+            <ChristmasOrderBy />
 
             {kitSpecRows.length > 0 ? (
               <dl className="product-kit-specs" aria-label="Kit at a glance">

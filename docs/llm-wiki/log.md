@@ -2310,3 +2310,12 @@ catalog black), and the twelve artist activewear products (exact handles,
 `isArtistActivewear` in `app/lib/storefrontBasics.ts`) take Printful's
 all-over windows: "Processes in 2–7 business days", dispatch 3–8.
 
+## 2026-11-12 — Gift page and Christmas order-by dates
+
+`/gifts` (`app/routes/gifts.tsx`, `app/lib/giftPage.ts`): museum blankets,
+mugs and cushions lead, then framed prints, phone cases, book nooks, Your Sky
+and wall art, grouped by price in the buyer's currency; only products the
+buyer can buy. Christmas order-by dates per fulfilment line and region in
+`app/lib/christmasDelivery.ts`, shown on the gift page and as one line on
+product pages. Linked from the footer Shop column and the homepage rail.
+See [fulfillment](modules/fulfillment.md#2026-11-12---christmas-order-by-dates).
