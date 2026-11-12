@@ -90,7 +90,9 @@ Read-only (safe anytime):
 
 ## Deployment
 
-`.github/workflows/oxygen-deployment-1000130920.yml`: every push and PR runs lint → typecheck → test → build; deploys run only after validation, from push events. `main` deploys production; other branches get isolated Oxygen previews. Deployments queue per branch so an older run can never overwrite a newer one. The only secret used is `OXYGEN_DEPLOYMENT_TOKEN_1000130920`.
+`.github/workflows/oxygen-deployment-1000130920.yml`: every push and PR runs lint → typecheck → test → build; deploys run only after validation, from push events. `main` deploys production; other branches get isolated Oxygen previews. Deployments queue per branch so an older run can never overwrite a newer one. Its only secret is `OXYGEN_DEPLOYMENT_TOKEN_1000130920`.
+
+`.github/workflows/shipping-fees.yml`: every Monday it runs `npm run shipping-fees` on `main` (9 Storefront carts) and, when checkout charges something the table does not say, opens or updates one pull request from `automation/shipping-fees`. It needs the repository secrets `PUBLIC_STORE_DOMAIN` and `PUBLIC_STOREFRONT_API_TOKEN` (same values as `.env`) and "Allow GitHub Actions to create and approve pull requests". Approve the workflows on its pull request to run `Validate`. See `docs/llm-wiki/modules/fulfillment.md#the-weekly-rebuild`.
 
 ## Product reviews
 
