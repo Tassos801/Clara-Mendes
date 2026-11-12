@@ -65,12 +65,13 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         image: {
           src: '/images/line-rail/prints.jpg',
           width: 360,
-          height: 450,
+          height: 360,
         },
       },
     ],
     // The gift edit (/gifts): museum art on blankets, mugs and more. The
-    // circle shows Hiroshige's fireworks blanket (Artists shows the Wave).
+    // circle shows Hiroshige's fireworks blanket tied with a bow (Artists
+    // shows Van Gogh's Irises on a mug).
     [
       true,
       {
@@ -78,9 +79,9 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Gifts',
         href: GIFTS_PATH,
         image: {
-          src: 'https://cdn.shopify.com/s/files/1/1027/6533/0766/files/cm-floating-world-fireworks-at-ryogoku-bridge-blanket.webp?v=1792155060&width=360',
+          src: '/images/line-rail/gifts.jpg',
           width: 360,
-          height: 450,
+          height: 360,
         },
       },
     ],
@@ -92,7 +93,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         href: '/artists',
         image: {
           src: '/images/line-rail/artists.jpg',
-          width: 450,
+          width: 360,
           height: 360,
         },
       },
@@ -104,9 +105,9 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Clothing',
         href: '/clothing',
         image: {
-          src: 'https://cdn.shopify.com/s/files/1/1027/6533/0766/files/01-moss-flat-front_e847210a-10f9-4c6c-b296-0eedb07b5afd.jpg?width=320',
-          width: 320,
-          height: 400,
+          src: '/images/line-rail/clothing.jpg',
+          width: 360,
+          height: 360,
         },
       },
     ],
@@ -119,7 +120,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         image: {
           src: '/images/line-rail/book-nooks.jpg',
           width: 360,
-          height: 450,
+          height: 360,
         },
       },
     ],
@@ -132,9 +133,8 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         image: {
           src: '/images/line-rail/cases.jpg',
           width: 360,
-          height: 551,
+          height: 360,
         },
-        objectPosition: '50% 40%',
       },
     ],
     [
@@ -146,7 +146,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         image: {
           src: '/images/line-rail/your-sky.jpg',
           width: 360,
-          height: 450,
+          height: 360,
         },
       },
     ],
