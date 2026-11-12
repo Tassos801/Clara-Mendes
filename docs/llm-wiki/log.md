@@ -2421,3 +2421,14 @@ and line swaps after any network failure or a 5xx, a cart create only when
 it never reached Shopify, so a retry never makes a second cart. A run that
 morning had died on one DNS failure after 5 carts and kept no quotes. See
 [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+
+## 2026-11-12 — Christmas hero and new rail circles
+
+The homepage and shop hero now show the same room dressed for Christmas
+(a lit fir tree, candles, gifts, a garland): an edit of the interior photo
+made with the Codex image tool, as `hero-christmas*.jpg` in the same three
+sizes. The old `hero-interior*.jpg` files stay; point `HERO_BACKDROP`
+(`app/lib/heroBackdrop.ts`) back at them after the season. The eight
+line-rail circles are new square pictures in one festive style, all local
+360 px JPEGs (Gifts and Clothing no longer load from the Shopify CDN). See
+[brand voice](brand-voice.md#line-rail).

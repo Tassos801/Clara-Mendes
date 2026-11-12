@@ -6,11 +6,16 @@
  * JPEGs) into larger full-size JPEGs. So the backdrop ships as three
  * compressed JPEGs: phones get the 1700 px file, desktops 1920 px, and
  * screens that need more pixels (high density or very wide) 2560 px.
+ *
+ * Christmas 2026: the same room dressed for the season (fir tree, gifts,
+ * garland, knit throw), an AI edit of the interior photo made with Codex.
+ * After the season, point these back at the hero-interior files, which
+ * stay in public/images/backdrops.
  */
 export const HERO_BACKDROP = {
-  mobile: '/images/backdrops/hero-interior-mobile.jpg',
-  desktop: '/images/backdrops/hero-interior-1920.jpg',
-  large: '/images/backdrops/hero-interior.jpg',
+  mobile: '/images/backdrops/hero-christmas-mobile.jpg',
+  desktop: '/images/backdrops/hero-christmas-1920.jpg',
+  large: '/images/backdrops/hero-christmas.jpg',
 } as const;
 
 /**

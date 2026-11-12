@@ -52,8 +52,11 @@ page, and the rail leads there. Design:
 ## Line rail
 
 `app/lib/lineRail.ts` lists the product lines as circles under the hero
-(Prints, Artists, Clothing, Book Nooks, Cases, Your Sky, Pots), each with a
-link and a decorative picture; `app/components/LineRail.tsx` renders them, one
+(Prints, Gifts, Artists, Clothing, Book Nooks, Cases, Your Sky, Pots), each
+with a link and a decorative picture (since 12 Nov 2026 one set of square
+still lifes on a warm cream backdrop with small Christmas touches, made with
+the Codex image tool from our own product photos, 360 px JPEGs in
+`public/images/line-rail/`); `app/components/LineRail.tsx` renders them, one
 centred row on desktop and a snap-scrolling row on phones. A line shows only
 when released, with the navigation's gates (`publicArtists`,
 `releasedBookNooks`, `PRODUCT_RELEASE_FLAGS`, `PERSONALISED_RELEASE_FLAGS`).
