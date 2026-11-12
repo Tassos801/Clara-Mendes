@@ -685,10 +685,7 @@ export type MerchantFeedProductsQuery = {
         };
         variants: {
           nodes: Array<
-            Pick<
-              StorefrontAPI.ProductVariant,
-              'id' | 'sku' | 'availableForSale'
-            > & {
+            Pick<StorefrontAPI.ProductVariant, 'sku' | 'availableForSale'> & {
               price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
               selectedOptions: Array<
                 Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
@@ -708,89 +705,6 @@ export type FeedMarketCurrencyQueryVariables = StorefrontAPI.Exact<{
 
 export type FeedMarketCurrencyQuery = {
   localization: {country: {currency: Pick<StorefrontAPI.Currency, 'isoCode'>}};
-};
-
-export type FeedQuoteCartFragment = Pick<StorefrontAPI.Cart, 'id'> & {
-  lines: {
-    nodes: Array<
-      | Pick<StorefrontAPI.CartLine, 'id'>
-      | Pick<StorefrontAPI.ComponentizableCartLine, 'id'>
-    >;
-  };
-  deliveryGroups: {
-    nodes: Array<{
-      deliveryOptions: Array<{
-        estimatedCost: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-      }>;
-    }>;
-  };
-};
-
-export type FeedQuoteCreateMutationVariables = StorefrontAPI.Exact<{
-  input: StorefrontAPI.CartInput;
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-}>;
-
-export type FeedQuoteCreateMutation = {
-  cartCreate?: StorefrontAPI.Maybe<{
-    cart?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.Cart, 'id'> & {
-        lines: {
-          nodes: Array<
-            | Pick<StorefrontAPI.CartLine, 'id'>
-            | Pick<StorefrontAPI.ComponentizableCartLine, 'id'>
-          >;
-        };
-        deliveryGroups: {
-          nodes: Array<{
-            deliveryOptions: Array<{
-              estimatedCost: Pick<
-                StorefrontAPI.MoneyV2,
-                'amount' | 'currencyCode'
-              >;
-            }>;
-          }>;
-        };
-      }
-    >;
-    userErrors: Array<Pick<StorefrontAPI.CartUserError, 'message'>>;
-  }>;
-};
-
-export type FeedQuoteSwapMutationVariables = StorefrontAPI.Exact<{
-  cartId: StorefrontAPI.Scalars['ID']['input'];
-  lines:
-    | Array<StorefrontAPI.CartLineUpdateInput>
-    | StorefrontAPI.CartLineUpdateInput;
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-}>;
-
-export type FeedQuoteSwapMutation = {
-  cartLinesUpdate?: StorefrontAPI.Maybe<{
-    cart?: StorefrontAPI.Maybe<
-      Pick<StorefrontAPI.Cart, 'id'> & {
-        lines: {
-          nodes: Array<
-            | Pick<StorefrontAPI.CartLine, 'id'>
-            | Pick<StorefrontAPI.ComponentizableCartLine, 'id'>
-          >;
-        };
-        deliveryGroups: {
-          nodes: Array<{
-            deliveryOptions: Array<{
-              estimatedCost: Pick<
-                StorefrontAPI.MoneyV2,
-                'amount' | 'currencyCode'
-              >;
-            }>;
-          }>;
-        };
-      }
-    >;
-    userErrors: Array<Pick<StorefrontAPI.CartUserError, 'message'>>;
-  }>;
 };
 
 export type ClaraProductCardFragment = Pick<
@@ -3574,7 +3488,7 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
-  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        collections(first: 20) {\n          nodes {\n            handle\n            title\n            clothingKind: metafield(\n              namespace: "custom"\n              key: "collection_kind"\n            ) {\n              type\n              value\n            }\n          }\n        }\n        variants(first: 100) {\n          nodes {\n            id\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        collections(first: 20) {\n          nodes {\n            handle\n            title\n            clothingKind: metafield(\n              namespace: "custom"\n              key: "collection_kind"\n            ) {\n              type\n              value\n            }\n          }\n        }\n        variants(first: 100) {\n          nodes {\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: MerchantFeedProductsQuery;
     variables: MerchantFeedProductsQueryVariables;
   };
@@ -3696,16 +3610,7 @@ interface GeneratedQueryTypes {
   };
 }
 
-interface GeneratedMutationTypes {
-  '#graphql\n  mutation FeedQuoteCreate(\n    $input: CartInput!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartCreate(input: $input) {\n      cart {\n        ...FeedQuoteCart\n      }\n      userErrors {\n        message\n      }\n    }\n  }\n  #graphql\n  fragment FeedQuoteCart on Cart {\n    id\n    lines(first: 1) {\n      nodes {\n        id\n      }\n    }\n    deliveryGroups(first: 5) {\n      nodes {\n        deliveryOptions {\n          estimatedCost {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n': {
-    return: FeedQuoteCreateMutation;
-    variables: FeedQuoteCreateMutationVariables;
-  };
-  '#graphql\n  mutation FeedQuoteSwap(\n    $cartId: ID!\n    $lines: [CartLineUpdateInput!]!\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    cartLinesUpdate(cartId: $cartId, lines: $lines) {\n      cart {\n        ...FeedQuoteCart\n      }\n      userErrors {\n        message\n      }\n    }\n  }\n  #graphql\n  fragment FeedQuoteCart on Cart {\n    id\n    lines(first: 1) {\n      nodes {\n        id\n      }\n    }\n    deliveryGroups(first: 5) {\n      nodes {\n        deliveryOptions {\n          estimatedCost {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n\n': {
-    return: FeedQuoteSwapMutation;
-    variables: FeedQuoteSwapMutationVariables;
-  };
-}
+interface GeneratedMutationTypes {}
 
 declare module '@shopify/hydrogen' {
   interface StorefrontQueries extends GeneratedQueryTypes {}

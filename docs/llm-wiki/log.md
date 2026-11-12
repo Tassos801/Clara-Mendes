@@ -2358,3 +2358,16 @@ checkout, so the table comes from checkout quotes. EU buyers also see the
 flat Prodigi rate on prints, hangers, acrylic and metal, canvas, framed and
 cards (`app/lib/fixedShippingFee.ts`, from `merchantFeedShipping.ts`). See
 [clothing](modules/clothing.md).
+
+## 2026-11-12 — Merchant feeds read the fee tables, no carts
+
+The Merchant Center feeds no longer create Storefront carts to quote
+shipping (about four a day, each counted as a visit with an add to cart).
+The Printful feeds read `app/lib/printfulShippingFees.ts`; the USD fixed
+feed reads `US_FIXED_SHIPPING_FEES`, which `npm run shipping-fees` now also
+writes from its US cart. Fees that follow the exchange rate are stated 2%
+above the table, rounded up (Google: "match or slightly overestimate");
+a row no table prices is left out. The cart-quote code and its mutations
+are gone from `app/lib/merchantFeed.server.ts`; the 6-hour response cache
+stays for the catalogue read. See
+[fulfillment](modules/fulfillment.md#where-the-promises-render).

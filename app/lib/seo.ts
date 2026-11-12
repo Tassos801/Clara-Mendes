@@ -349,9 +349,9 @@ function dayRange(window: string) {
  * The EUR shipping rate per EU country for one variant, from the same fixed
  * tables the Merchant Center feeds publish (app/lib/merchantFeedShipping.ts):
  * Cyprus pays `cyprus`, the rest of the EU `eu`. Null where no static rate
- * exists (Printful lines, whose feed rates come from cart quotes, and any
- * line the feeds don't list) and outside the default (EUR) market: the USD
- * feeds quote the US from a cart too.
+ * exists (Printful lines, whose fees follow the exchange rate, and any line
+ * the feeds don't list) and outside the default (EUR) market: the US rate in
+ * USD follows the exchange rate too.
  */
 function staticEuRates({
   currency,

@@ -2,7 +2,10 @@
 /**
  * Rebuilds app/lib/printfulShippingFees.ts: checkout's standard shipping fee
  * for one Printful piece per shipping group and region (see
- * app/lib/printfulShipping.ts), read from real Storefront cart quotes.
+ * app/lib/printfulShipping.ts), and what a US buyer pays in USD for each
+ * fixed-rate line that ships there (app/lib/merchantFeedShipping.ts), read
+ * from real Storefront cart quotes. Product pages and the Merchant Center
+ * feeds read the table, so neither creates a cart.
  *
  *   npm run shipping-fees            quote, check, write the table
  *   npm run shipping-fees -- --check quote and compare, write nothing
@@ -11,13 +14,15 @@
  * Shopify counts every cart as a visit that added to cart, so this makes
  * one cart per probe country (9) and swaps its single line through one
  * variant of every listed Printful product (about 45 line updates per
- * cart, no new carts). No checkout, no order. Carts are created 20 s apart:
+ * cart, no new carts); the US cart goes on through one variant per fixed
+ * line and product type. No checkout, no order. Carts are created 20 s apart:
  * a burst of new carts gets the IP throttled, which also blocks add-to-cart
  * on the live site from that IP.
  *
- * It stops without writing when two EU probe countries disagree or when
+ * It stops without writing when two EU probe countries disagree, when
  * products of one group are charged different fees (the group map in
- * printfulShipping.ts needs a change then).
+ * printfulShipping.ts needs a change then), or when a fixed line is charged
+ * two US rates.
  */
 import {writeFileSync, readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
@@ -25,6 +30,17 @@ import {getRequiredEnv, envWithLocalDefaults} from './lib/env.mjs';
 
 const {PRINTFUL_FEE_REGIONS, PRINTFUL_SHIPPING_GROUPS, printfulShippingGroup} =
   await import('../app/lib/printfulShipping.ts');
+const {fixedRateLineFor} = await import('../app/lib/merchantFeed.ts');
+const {FIXED_RATES} = await import('../app/lib/merchantFeedShipping.ts');
+
+// The fixed lines with a US rate (in EUR) in the feeds' table.
+const US_FIXED_LINES = Object.entries(FIXED_RATES)
+  .filter(([, rates]) =>
+    Object.values(rates.international ?? {}).some((countries) =>
+      countries.includes('US'),
+    ),
+  )
+  .map(([line]) => line);
 
 const OUTPUT = resolve('app/lib/printfulShippingFees.ts');
 const API_VERSION = '2025-10';
@@ -64,9 +80,15 @@ async function storefront(query, variables) {
   return body.data;
 }
 
-/** One variant per (product, group): every listed Printful piece. */
+/**
+ * One variant per (product, group): every listed Printful piece. And, for
+ * the US cart only, one variant per fixed line and product type (group
+ * `fixed:<line>`): the General profile's US rate depends on the order value,
+ * so each type that shares a line is quoted.
+ */
 async function quoteItems() {
   const items = [];
+  const fixed = new Map();
   let after = null;
   do {
     const data = await storefront(
@@ -87,7 +109,16 @@ async function quoteItems() {
       const seen = new Set();
       for (const variant of product.variants.nodes) {
         const group = printfulShippingGroup(product, variant.selectedOptions);
-        if (!group || seen.has(group) || !variant.availableForSale) continue;
+        if (!variant.availableForSale) continue;
+        const line = fixedRateLineFor(product, variant.selectedOptions);
+        const type = `${line}:${product.productType}`;
+        if (US_FIXED_LINES.includes(line) && !fixed.has(type))
+          fixed.set(type, {
+            handle: product.handle,
+            group: `fixed:${line}`,
+            variantId: variant.id,
+          });
+        if (!group || seen.has(group)) continue;
         seen.add(group);
         items.push({handle: product.handle, group, variantId: variant.id});
       }
@@ -97,9 +128,10 @@ async function quoteItems() {
       : null;
   } while (after);
   // Garments sell everywhere the table covers, so a hoodie opens each cart.
-  return items.sort(
+  items.sort(
     (a, b) => (a.group === 'hoodie' ? 0 : 1) - (b.group === 'hoodie' ? 0 : 1),
   );
+  return {items, fixedItems: [...fixed.values()]};
 }
 
 const CART = `fragment QuoteCart on Cart {
@@ -208,9 +240,10 @@ const same = (a, b) =>
   (a && b && a.amount === b.amount && a.currencyCode === b.currencyCode);
 const show = (fee) => (fee ? `${fee.amount} ${fee.currencyCode}` : 'none');
 
-const items = await quoteItems();
+const {items, fixedItems} = await quoteItems();
 const problems = [];
 const table = Object.fromEntries(PRINTFUL_SHIPPING_GROUPS.map((g) => [g, {}]));
+const usFixed = {};
 for (const group of PRINTFUL_SHIPPING_GROUPS) {
   if (!items.some((item) => item.group === group))
     problems.push(`No listed product in group ${group}`);
@@ -219,8 +252,30 @@ for (const group of PRINTFUL_SHIPPING_GROUPS) {
 for (const [region, {probes}] of Object.entries(PRINTFUL_FEE_REGIONS)) {
   const perProbe = [];
   for (const country of probes) {
-    perProbe.push([country, await quoteCountry(country, items)]);
+    const quoted = country === 'US' ? [...items, ...fixedItems] : items;
+    perProbe.push([country, await quoteCountry(country, quoted)]);
     console.error(`quoted ${country}`);
+  }
+  if (region === 'US') {
+    const fees = perProbe[0][1];
+    for (const line of US_FIXED_LINES) {
+      const quotes = fixedItems
+        .filter((item) => item.group === `fixed:${line}`)
+        .map((item) => ({
+          where: item.handle,
+          fee: fees.get(`${item.handle}#${item.group}`),
+        }));
+      if (!quotes.length) continue;
+      const first = quotes[0].fee;
+      const odd = quotes.filter((quote) => !same(quote.fee, first));
+      if (odd.length)
+        problems.push(
+          `${line} line in the US: ${quotes[0].where} ${show(first)}, but ${odd
+            .map((quote) => `${quote.where} ${show(quote.fee)}`)
+            .join(', ')}`,
+        );
+      else if (first) usFixed[line] = first;
+    }
   }
   for (const group of PRINTFUL_SHIPPING_GROUPS) {
     const quotes = items
@@ -248,23 +303,25 @@ for (const [region, {probes}] of Object.entries(PRINTFUL_FEE_REGIONS)) {
 }
 
 console.error(
-  `${carts} carts, ${swaps} line updates, ${items.length} products quoted`,
+  `${carts} carts, ${swaps} line updates, ${items.length} products and ${fixedItems.length} fixed-line types quoted`,
 );
 if (problems.length) {
   console.error(`Not written:\n- ${problems.join('\n- ')}`);
   process.exit(1);
 }
 
+const feeSource = (fee) =>
+  `{amount: '${fee.amount}', currencyCode: '${fee.currencyCode}'}`;
 const lines = PRINTFUL_SHIPPING_GROUPS.map((group) => {
   const regions = Object.entries(table[group])
-    .map(
-      ([region, fee]) =>
-        `    ${region}: {amount: '${fee.amount}', currencyCode: '${fee.currencyCode}'},`,
-    )
+    .map(([region, fee]) => `    ${region}: ${feeSource(fee)},`)
     .join('\n');
   const key = /^[a-z]+$/.test(group) ? group : `'${group}'`;
   return `  ${key}: {\n${regions}\n  },`;
 });
+const usFixedLines = Object.entries(usFixed).map(
+  ([line, fee]) => `  ${line}: ${feeSource(fee)},`,
+);
 const today = new Date().toISOString().slice(0, 10);
 const source = (
   date,
@@ -275,6 +332,13 @@ export const PRINTFUL_FEES_QUOTED_ON = '${date}';
 
 export const PRINTFUL_SHIPPING_FEES = {
 ${lines.join('\n')}
+} as const;
+
+// What a US buyer pays for one item of a fixed-rate line (the EUR tables in
+// merchantFeedShipping.ts): checkout converts the line's US rate to USD and
+// rounds it up to a whole dollar. A line missing here has no US rate.
+export const US_FIXED_SHIPPING_FEES = {
+${usFixedLines.join('\n')}
 } as const;
 `;
 

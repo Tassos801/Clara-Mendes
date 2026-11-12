@@ -298,7 +298,10 @@ test that asserts it.
     `shipping` value for the US at the rate a New York cart quotes. They
     answer **503 until the US market sells in USD**, so they can be merged
     first. Lines Shopify can't deliver to the US (framed, cards, pots) are
-    left out.
+    left out. *Since 2026-11-12 the feeds create no cart: the US rates come
+    from the table `npm run shipping-fees` writes
+    (`app/lib/printfulShippingFees.ts`), the fixed lines' a dollar above
+    the quote (see `docs/llm-wiki/modules/fulfillment.md`).*
   - `/feeds/meta-country-us.txt`: a Meta catalog **country feed** (`id`,
     `override` = US, USD `price`, `link`, `availability`) for the items of
     the two EUR feeds; items not for sale in the US read out of stock.

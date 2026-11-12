@@ -1,3 +1,5 @@
+import type {ShippingFee} from './printfulShipping.ts';
+import {US_FIXED_SHIPPING_FEES} from './printfulShippingFees.ts';
 import {
   APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
   DELIVERY_EU_BUSINESS_DAYS,
@@ -19,9 +21,11 @@ import {
 // shipping profile changes in Shopify, change this table in the same PR: the
 // product page shows these rates to EU buyers too (fixedShippingFee.ts).
 //
-// These EUR tables feed the EUR feeds only. The USD feeds for the United
-// States (once it is its own USD market) quote every rate from a US cart
-// instead, so they follow Shopify's conversion without a second table.
+// These EUR tables feed the EUR feeds only. A US buyer pays Shopify's USD
+// conversion of the US rate, rounded up to a dollar; the USD feed reads it
+// from the checkout quotes `npm run shipping-fees` checks in
+// (US_FIXED_SHIPPING_FEES), as the Printful lines read theirs. No feed
+// creates a cart: Shopify counts every cart as a visit that added to cart.
 
 // The EU-27 minus Slovenia, which Google Shopping does not list.
 // prettier-ignore
@@ -164,7 +168,48 @@ export function shippingCells(
   return [...eu, ...international];
 }
 
-/** The USD feeds' single `shipping` value: the quoted US checkout rate. */
+/** The USD feeds' single `shipping` value: the US checkout rate. */
 export function usShippingCell(amount: string, handling: string) {
   return `US:${amount} USD:${handling}:${TRANSIT_US}`;
+}
+
+// Google's product data specification, `shipping`: "Match or slightly
+// overestimate the cost customers would pay." A fee that moves with the
+// exchange rate between rebuilds of the fee table (printfulShippingFees.ts)
+// cannot match checkout to the cent, so the feed states it this much higher,
+// rounded up. It covers a 2% move since the last rebuild (the table is
+// rebuilt weekly); a fee that does not move (`about` unset) is stated as is.
+export const FEED_EXCHANGE_ALLOWANCE_PERCENT = 2;
+
+/**
+ * The amount a feed states for a fee from the fee table. `stepCents` is the
+ * smallest step checkout charges the fee in.
+ */
+export function feedAmount(fee: ShippingFee, stepCents = 1) {
+  if (!fee.about) return fee.amount;
+  const cents =
+    Math.round(Number(fee.amount) * 100) *
+    (100 + FEED_EXCHANGE_ALLOWANCE_PERCENT);
+  return (
+    (Math.ceil(cents / (100 * stepCents)) * stepCents) /
+    100
+  ).toFixed(2);
+}
+
+/**
+ * The USD amount the US feed states for a fixed line, or null when the line
+ * does not ship to the US. Checkout converts the line's EUR rate and rounds
+ * it up to a whole dollar, so the fee moves a dollar at a time (prints paid
+ * $17 on 2026-11-05 and $16 a week later) and the allowance lands on the
+ * next dollar.
+ */
+export function usFixedRate(line: FixedRateLine) {
+  const fee = (
+    US_FIXED_SHIPPING_FEES as Partial<
+      Record<FixedRateLine, {amount: string; currencyCode: string}>
+    >
+  )[line];
+  return fee?.currencyCode === 'USD'
+    ? feedAmount({...fee, about: true}, 100)
+    : null;
 }

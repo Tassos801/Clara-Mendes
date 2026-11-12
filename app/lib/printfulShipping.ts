@@ -8,8 +8,9 @@ import {
 
 /**
  * Shipping fees for the pieces Printful makes (clothing, and the museum
- * mugs, blankets and cushions), shown on the product page without touching
- * a cart. Printful's Shopify app files these products into its own shipping
+ * mugs, blankets and cushions), shown on the product page and stated in the
+ * Merchant Center feeds (merchantFeed.ts) without touching a cart.
+ * Printful's Shopify app files these products into its own shipping
  * profiles, one flat rate per profile and destination zone (set from
  * Printful's USD rates, so the EUR amounts move a cent or two as the
  * exchange rate does). The fee therefore depends on the product group and
@@ -17,9 +18,9 @@ import {
  *
  * The amounts live in `printfulShippingFees.ts`, written by
  * `npm run shipping-fees` from real checkout quotes (one cart per probe
- * country, see scripts/build-shipping-fees.mjs). A page view never creates a
- * cart: Shopify counts every cart as a visit that added to cart, which is
- * what the old per-view quote did to the store's analytics.
+ * country, see scripts/build-shipping-fees.mjs). Neither a page view nor a
+ * feed fetch creates a cart: Shopify counts every cart as a visit that added
+ * to cart, which is what the old quotes did to the store's analytics.
  */
 export type ShippingFee = {
   amount: string;

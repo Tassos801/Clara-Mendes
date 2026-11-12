@@ -9,10 +9,13 @@ import {
   FIXED_RATES,
   HANDLING,
   SHIPPING_COLUMN,
+  feedAmount,
   shippingCells,
+  usFixedRate,
   usShippingCell,
   type FixedRateLine,
 } from './merchantFeedShipping.ts';
+import {printfulShippingFee, type ShippingFee} from './printfulShipping.ts';
 import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 
 // Merchant Center product feeds as tab-separated text, two per market:
@@ -25,7 +28,10 @@ import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 //     feeds.google-merchant-printful-us[.txt].tsx
 // plus feeds.meta-country-us[.txt].tsx, the US country feed for the Meta
 // catalog. Merchant Center and Meta fetch them daily, so prices, stock and
-// new products follow the store without file uploads.
+// new products follow the store without file uploads. A feed only reads the
+// catalogue: every delivery rate comes from a checked-in table (the fixed EUR
+// rates in merchantFeedShipping.ts, checkout quotes in
+// printfulShippingFees.ts), never from a cart.
 //
 // Item ids are SKUs and titles follow the manual uploads (2026-08-12 to
 // 2026-10-29), so switching to the fetched feeds kept every offer. An item
@@ -54,7 +60,6 @@ export const FEED_CURRENCY: Record<FeedMarket, string> = {CY: 'EUR', US: 'USD'};
 export const CAPSULE_TAGS = ['Counter-Diagonal'] as const;
 
 export type FeedVariant = {
-  id: string;
   sku?: string | null;
   availableForSale: boolean;
   price: {amount: string; currencyCode: string};
@@ -86,24 +91,22 @@ export type PrintfulLine =
   'mug' | 'cushion-cover' | 'cushion-insert' | 'blanket' | 'apparel';
 /** The shipping table an item uses: a fixed one, or a Printful profile. */
 export type FeedLine = FixedRateLine | PrintfulLine;
-/** Checkout rate (in the feed's currency) per quote key, from cart quotes. */
-export type Quotes = Record<string, string>;
-/** Where a feed's `shipping` values come from. */
+/** The market a feed's `shipping` values are for. */
 export type FeedShipping =
   | {
       market: 'CY';
       /** False once the US market sells in USD: the USD feeds list the US. */
       includeUs: boolean;
-      /** Printful lines: the German (EU) and Cyprus checkout quotes. */
-      quotes?: {eu: Quotes; cyprus: Quotes};
     }
-  | {market: 'US'; quotes: Quotes};
+  | {market: 'US'};
 
 export type FeedRow = Record<(typeof FEED_COLUMNS)[number], string> & {
   line: FeedLine;
-  /** Rows with one key share a shipping profile, so one quote prices them. */
-  quoteKey: string;
-  variantId: string;
+  /**
+   * Printful lines: checkout's fee to the row's market (the EU for the EUR
+   * feeds) from the fee table, or null when the table has none for the piece.
+   */
+  printfulFee: ShippingFee | null;
   /** The Shopify product title, without the size or colour (Meta cards). */
   productTitle: string;
 };
@@ -300,9 +303,9 @@ function itemFor(p: FeedProduct, o: Record<string, string>) {
 
 /**
  * The fixed-rate shipping table (FIXED_RATES) one variant ships on, as its
- * feed row would: null for Printful lines (rates quoted from carts) and for
- * anything the feeds don't list. Product JSON-LD uses it, so the page and the
- * feed advertise the same rate.
+ * feed row would: null for Printful lines (their fees come from the Printful
+ * fee table) and for anything the feeds don't list. Product JSON-LD uses it,
+ * so the page and the feed advertise the same rate.
  */
 export function fixedRateLineFor(
   product: Pick<FeedProduct, 'handle' | 'productType' | 'tags'>,
@@ -316,14 +319,6 @@ export function fixedRateLineFor(
     options,
   )?.line;
   return line && !isPrintfulLine(line) ? line : null;
-}
-
-// One quote prices every row with the same key: a fixed line per product
-// type, a museum Printful line, or one clothing product (Printful files
-// garments into different shipping profiles).
-function quoteKeyFor(p: FeedProduct, line: FeedLine) {
-  if (line === 'apparel') return `apparel:${p.handle}`;
-  return isPrintfulLine(line) ? line : `${line}:${p.productType}`;
 }
 
 /**
@@ -363,9 +358,10 @@ export function merchantFeedRows(
         custom_label_0: '',
         ...item,
         id: v.sku,
-        variantId: v.id,
+        printfulFee: isPrintfulLine(item.line)
+          ? printfulShippingFee(p, v, market)
+          : null,
         productTitle: p.title.replace(/\s+/g, ' ').trim().slice(0, 150),
-        quoteKey: quoteKeyFor(p, item.line),
         item_group_id: p.handle,
         title: item.title.slice(0, 150),
         description: p.description.replace(/\s+/g, ' ').trim().slice(0, 4900),
@@ -389,32 +385,49 @@ function handlingFor(line: FeedLine) {
     : HANDLING.cutSew;
 }
 
+/** One row's `shipping` values; none when no table has a rate for it. */
 function rowShipping(row: FeedRow, shipping: FeedShipping) {
   const handling = handlingFor(row.line);
   if (shipping.market === 'US') {
-    const rate = shipping.quotes[row.quoteKey];
-    if (!rate) throw new Error(`No US checkout rate for ${row.quoteKey}`);
-    return [usShippingCell(rate, handling)];
+    const rate = isPrintfulLine(row.line)
+      ? row.printfulFee && feedAmount(row.printfulFee)
+      : usFixedRate(row.line);
+    return rate ? [usShippingCell(rate, handling)] : [];
   }
   const omit = shipping.includeUs ? [] : ['US'];
   if (!isPrintfulLine(row.line))
     return shippingCells(FIXED_RATES[row.line], handling, omit);
-  // Printful profiles charge one rate across Europe; Cyprus is quoted too,
-  // because the Quiet Current profile prices it apart. No Cyprus quote: the
-  // item doesn't list Cyprus.
-  const eu = shipping.quotes?.eu[row.quoteKey];
-  if (!eu) throw new Error(`No checkout rate for ${row.quoteKey}`);
-  const cyprus = shipping.quotes?.cyprus[row.quoteKey];
-  const cells = shippingCells({cyprus: cyprus ?? eu, eu}, handling, omit);
-  return cyprus ? cells : cells.filter((cell) => !cell.startsWith('CY:'));
+  // Printful charges one fee across the EU, Cyprus included (the fee table's
+  // rebuild quotes Cyprus, Germany and Slovakia and stops if they differ).
+  if (!row.printfulFee) return [];
+  const eu = feedAmount(row.printfulFee);
+  return shippingCells({cyprus: eu, eu}, handling, omit);
 }
 
-/** Header row, then one row per item; shipping columns repeat per country. */
+/**
+ * False for a row no table prices in the feed's market: a line that does not
+ * ship to the US, or a Printful piece the fee table has no group or fee for
+ * (printfulShipping.ts). The feed leaves such a row out: listed without its
+ * own `shipping`, Merchant Center would price it from the account settings.
+ */
+export function hasFeedShipping(row: FeedRow, shipping: FeedShipping) {
+  return rowShipping(row, shipping).length > 0;
+}
+
+/**
+ * Header row, then one row per item; shipping columns repeat per country.
+ * Throws on a row without a rate rather than guess one (see hasFeedShipping).
+ */
 export function merchantFeedTsv(
   rows: FeedRow[],
   shipping: FeedShipping = {market: 'CY', includeUs: true},
 ) {
-  const cells = rows.map((row) => rowShipping(row, shipping));
+  const cells = rows.map((row) => {
+    const values = rowShipping(row, shipping);
+    if (!values.length)
+      throw new Error(`No ${shipping.market} delivery rate for ${row.id}`);
+    return values;
+  });
   const width = Math.max(0, ...cells.map((c) => c.length));
   const pad = (values: string[]) => [
     ...values,

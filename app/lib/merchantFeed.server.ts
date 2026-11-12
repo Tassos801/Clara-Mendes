@@ -5,47 +5,23 @@ import type {
 } from 'storefrontapi.generated';
 import {
   FEED_CURRENCY,
+  hasFeedShipping,
   merchantFeedRows,
   merchantFeedTsv,
   metaCountryFeedTsv,
   type FeedMarket,
   type FeedProduct,
-  type FeedRow,
-  type Quotes,
+  type FeedShipping,
 } from './merchantFeed.ts';
 
 export type MerchantFeed = 'fixed' | 'printful' | 'meta-country';
 
 // Merchant Center and Meta fetch each feed once a day; any other request gets
-// the cached copy, so the catalogue reads and the cart quotes run at most
-// once per window.
+// the cached copy, so the catalogue is read at most once per window. A feed
+// only reads: delivery rates come from the checked-in tables, never from a
+// cart (Shopify counts every cart as a visit that added to cart).
 const CACHE_SECONDS = 6 * 60 * 60;
 const MAX_PAGES = 20;
-
-type QuoteCountry = 'CY' | 'DE' | 'US';
-
-// Public landmarks, used only to price delivery (no checkout, no order).
-const QUOTE_ADDRESSES: Record<QuoteCountry, Record<string, string>> = {
-  CY: {
-    address1: 'Plateia Eleftherias 1',
-    city: 'Nicosia',
-    zip: '1011',
-    countryCode: 'CY',
-  },
-  DE: {
-    address1: 'Pariser Platz 1',
-    city: 'Berlin',
-    zip: '10117',
-    countryCode: 'DE',
-  },
-  US: {
-    address1: '350 5th Ave',
-    city: 'New York',
-    provinceCode: 'NY',
-    zip: '10118',
-    countryCode: 'US',
-  },
-};
 
 async function loadProducts(storefront: Storefront, market: FeedMarket) {
   const products: FeedProduct[] = [];
@@ -74,91 +50,6 @@ async function marketCurrency(storefront: Storefront, country: FeedMarket) {
   return data.localization.country.currency.isoCode;
 }
 
-type QuoteCart = {
-  id: string;
-  lines: {nodes: Array<{id: string}>};
-  deliveryGroups: {
-    nodes: Array<{
-      deliveryOptions: Array<{
-        estimatedCost: {amount: string; currencyCode: string};
-      }>;
-    }>;
-  };
-};
-
-/**
- * Checkout's delivery rate for each quote key in one country: one cart with
- * a single line, swapped to the next key's variant each time (Shopify
- * throttles a burst of new carts, not line updates). A key whose product
- * Shopify can't deliver there gets no quote. No checkout, no order.
- */
-async function quoteRates(
-  storefront: Storefront,
-  country: QuoteCountry,
-  rows: FeedRow[],
-): Promise<Quotes> {
-  const currency = country === 'US' ? 'USD' : 'EUR';
-  const variants = new Map<string, string>();
-  for (const row of rows)
-    if (!variants.has(row.quoteKey)) variants.set(row.quoteKey, row.variantId);
-
-  const quotes: Quotes = {};
-  let cart: QuoteCart | null = null;
-  for (const [key, variantId] of variants) {
-    const result:
-      | {cart?: QuoteCart | null; userErrors: Array<{message: string}>}
-      | null
-      | undefined = cart
-      ? (
-          await storefront.mutate(FEED_QUOTE_SWAP_MUTATION, {
-            variables: {
-              country,
-              language: 'EN',
-              cartId: cart.id,
-              lines: [
-                {
-                  id: cart.lines.nodes[0].id,
-                  merchandiseId: variantId,
-                  quantity: 1,
-                },
-              ],
-            },
-          })
-        ).cartLinesUpdate
-      : (
-          await storefront.mutate(FEED_QUOTE_CREATE_MUTATION, {
-            variables: {
-              country,
-              language: 'EN',
-              input: {
-                buyerIdentity: {countryCode: country},
-                delivery: {
-                  addresses: [
-                    {
-                      address: {deliveryAddress: QUOTE_ADDRESSES[country]},
-                      selected: true,
-                    },
-                  ],
-                },
-                lines: [{merchandiseId: variantId, quantity: 1}],
-              },
-            },
-          })
-        ).cartCreate;
-    if (!result?.cart || result.userErrors.length)
-      throw new Error(
-        `Quote cart (${country}) failed: ${result?.userErrors.map((e) => e.message).join('; ') || 'no cart'}`,
-      );
-    cart = result.cart;
-    const amounts = cart.deliveryGroups.nodes
-      .flatMap((group) => group.deliveryOptions)
-      .filter((option) => option.estimatedCost.currencyCode === currency)
-      .map((option) => Number(option.estimatedCost.amount));
-    if (amounts.length) quotes[key] = Math.min(...amounts).toFixed(2);
-  }
-  return quotes;
-}
-
 async function buildFeed(
   storefront: Storefront,
   feed: MerchantFeed,
@@ -180,24 +71,24 @@ async function buildFeed(
   const rows = merchantFeedRows(products, feed, market);
   if (!rows.length) throw new Error(`The ${market} ${feed} feed has no items`);
 
-  if (market === 'US') {
-    // Every US rate comes from a US cart, so it follows Shopify's USD
-    // conversion. A row Shopify can't deliver to the US is left out.
-    const quotes = await quoteRates(storefront, 'US', rows);
-    const shipping = rows.filter((row) => quotes[row.quoteKey]);
-    if (!shipping.length) throw new Error('No US delivery quotes');
-    return merchantFeedTsv(shipping, {market: 'US', quotes});
-  }
-
   // The EUR feeds keep listing the US until the US market sells in USD; from
   // then on the USD feeds list it.
-  const includeUs = (await marketCurrency(storefront, 'US')) === 'EUR';
-  if (feed === 'fixed') return merchantFeedTsv(rows, {market: 'CY', includeUs});
-  const [eu, cyprus] = await Promise.all([
-    quoteRates(storefront, 'DE', rows),
-    quoteRates(storefront, 'CY', rows),
-  ]);
-  return merchantFeedTsv(rows, {market: 'CY', includeUs, quotes: {eu, cyprus}});
+  const shipping: FeedShipping =
+    market === 'US'
+      ? {market}
+      : {market, includeUs: (await marketCurrency(storefront, 'US')) === 'EUR'};
+
+  // A row the tables have no rate for is left out, not listed without one.
+  const listed = rows.filter((row) => hasFeedShipping(row, shipping));
+  if (!listed.length) throw new Error(`No ${market} ${feed} delivery rates`);
+  if (listed.length < rows.length) {
+    const left = rows.filter((row) => !listed.includes(row));
+    console.warn(
+      `Merchant feed (${feed}, ${FEED_CURRENCY[market]}): ${left.length} items have no delivery rate and are left out:`,
+      [...new Set(left.map((row) => row.item_group_id))].join(', '),
+    );
+  }
+  return merchantFeedTsv(listed, shipping);
 }
 
 /**
@@ -291,7 +182,6 @@ const MERCHANT_FEED_PRODUCTS_QUERY = `#graphql
         }
         variants(first: 100) {
           nodes {
-            id
             sku
             availableForSale
             price {
@@ -323,62 +213,4 @@ const FEED_MARKET_CURRENCY_QUERY = `#graphql
       }
     }
   }
-` as const;
-
-const FEED_QUOTE_CART_FRAGMENT = `#graphql
-  fragment FeedQuoteCart on Cart {
-    id
-    lines(first: 1) {
-      nodes {
-        id
-      }
-    }
-    deliveryGroups(first: 5) {
-      nodes {
-        deliveryOptions {
-          estimatedCost {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-  }
-` as const;
-
-const FEED_QUOTE_CREATE_MUTATION = `#graphql
-  mutation FeedQuoteCreate(
-    $input: CartInput!
-    $country: CountryCode
-    $language: LanguageCode
-  ) @inContext(country: $country, language: $language) {
-    cartCreate(input: $input) {
-      cart {
-        ...FeedQuoteCart
-      }
-      userErrors {
-        message
-      }
-    }
-  }
-  ${FEED_QUOTE_CART_FRAGMENT}
-` as const;
-
-const FEED_QUOTE_SWAP_MUTATION = `#graphql
-  mutation FeedQuoteSwap(
-    $cartId: ID!
-    $lines: [CartLineUpdateInput!]!
-    $country: CountryCode
-    $language: LanguageCode
-  ) @inContext(country: $country, language: $language) {
-    cartLinesUpdate(cartId: $cartId, lines: $lines) {
-      cart {
-        ...FeedQuoteCart
-      }
-      userErrors {
-        message
-      }
-    }
-  }
-  ${FEED_QUOTE_CART_FRAGMENT}
 ` as const;

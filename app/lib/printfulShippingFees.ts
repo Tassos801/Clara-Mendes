@@ -68,3 +68,12 @@ export const PRINTFUL_SHIPPING_FEES = {
     JP: {amount: '50.13', currencyCode: 'EUR'},
   },
 } as const;
+
+// What a US buyer pays for one item of a fixed-rate line (the EUR tables in
+// merchantFeedShipping.ts): checkout converts the line's US rate to USD and
+// rounds it up to a whole dollar. A line missing here has no US rate.
+export const US_FIXED_SHIPPING_FEES = {
+  print: {amount: '16.00', currencyCode: 'USD'},
+  mounted: {amount: '28.00', currencyCode: 'USD'},
+  canvas: {amount: '28.00', currencyCode: 'USD'},
+} as const;
