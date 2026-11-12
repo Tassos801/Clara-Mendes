@@ -55,9 +55,10 @@ export type Review = {
 
 /**
  * Museums with an adapter in scripts/lib/museum-<key>.mjs: The Met, the Art
- * Institute of Chicago and the Cleveland Museum of Art.
+ * Institute of Chicago, the Cleveland Museum of Art, the J. Paul Getty
+ * Museum, the Rijksmuseum and Yale University Art Gallery.
  */
-export type MuseumKey = 'met' | 'aic' | 'cma';
+export type MuseumKey = 'met' | 'aic' | 'cma' | 'getty' | 'rijks' | 'yale';
 
 export type ArtworkSource = {
   apiUrl: string;
@@ -168,6 +169,24 @@ export const MUSEUMS: Record<
     shortName: 'Cleveland Museum of Art',
     rightsDesignation:
       'Public domain: The Cleveland Museum of Art Open Access (CC0)',
+  },
+  getty: {
+    // Its credit line is "The J. Paul Getty Museum, Los Angeles".
+    creditNamesInstitution: true,
+    institution: 'The J. Paul Getty Museum',
+    shortName: 'Getty Museum',
+    rightsDesignation: 'Public domain: Getty Open Content Program (CC0)',
+  },
+  rijks: {
+    institution: 'Rijksmuseum',
+    shortName: 'Rijksmuseum',
+    rightsDesignation:
+      'Public domain: Rijksmuseum open data (Public Domain Mark / CC0)',
+  },
+  yale: {
+    institution: 'Yale University Art Gallery',
+    shortName: 'Yale University Art Gallery',
+    rightsDesignation: 'Public domain: Yale University Art Gallery open access',
   },
 };
 

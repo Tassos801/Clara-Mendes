@@ -2720,6 +2720,661 @@
           }
         }
       ]
+    },
+    {
+      "slug": "museum-masterpieces",
+      "title": "Museum Masterpieces",
+      "kind": "museum",
+      "note": "Paintings and one Morris textile from Van Gogh, Monet, Klimt, Vermeer, Renoir and Degas, from museum open-access collections",
+      "skuCode": "MM",
+      "collectionCopy": "Part of Museum Masterpieces, a Clara Mendes selection of nineteenth- and early twentieth-century paintings and one William Morris pattern from museum open-access collections, each reproduced whole.",
+      "seoSuffix": "A museum masterpiece reproduced whole from a public-domain museum original.",
+      "publications": [
+        "Clara Mendes",
+        "Clara Mendes Headless"
+      ],
+      "variants": [
+        {
+          "size": "8x10",
+          "finish": "Unframed",
+          "priceEUR": "26.99",
+          "providerSku": "ART-FAP-EMA-8X10"
+        },
+        {
+          "size": "16x20",
+          "finish": "Unframed",
+          "priceEUR": "35.99",
+          "providerSku": "ART-FAP-EMA-16X20"
+        },
+        {
+          "size": "20x24",
+          "finish": "Unframed",
+          "priceEUR": "44.99",
+          "providerSku": "GLOBAL-FAP-20X24"
+        }
+      ],
+      "prints": [
+        {
+          "slug": "irises",
+          "title": "Irises",
+          "sequence": 1,
+          "artworkId": "getty-90.PA.20",
+          "orientation": "landscape",
+          "description": "Van Gogh painted these irises in the asylum garden at Saint-Rémy in May 1889, within his first week there: blue-violet blooms crowding the frame over sharp green leaves and red-brown earth, with a single white iris at the left.",
+          "alt": "Van Gogh’s Irises: a dense bed of blue and violet irises with long green leaves over reddish soil, one white iris at the left and orange flowers behind.",
+          "palette": "Ultramarine, violet, viridian, ochre, red earth",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Irises print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "irises-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Irises print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "irises-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Irises print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "irises-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Irises print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "irises-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 7122,
+            "nativeWidth": 9021,
+            "sourceSha256": "850f8998766eb8d626207e3f7b4a1f55050ed60dbeed65b2741e5b02f5ba01ba"
+          }
+        },
+        {
+          "slug": "wheat-field-with-cypresses",
+          "title": "Wheat Field with Cypresses",
+          "sequence": 2,
+          "artworkId": "met-436535",
+          "orientation": "landscape",
+          "description": "A ripe wheat field near Saint-Rémy in the summer of 1889, a dark cypress rising on the right against swirling white clouds and pale hills, all laid on in thick, curling strokes.",
+          "alt": "Van Gogh’s Wheat Field with Cypresses: a yellow wheat field below green olive trees and a tall dark cypress, under a blue sky with swirling white clouds.",
+          "palette": "Wheat yellow, cypress green, cobalt blue, cloud white",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Wheat Field with Cypresses print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "wheat-field-with-cypresses-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Wheat Field with Cypresses print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "wheat-field-with-cypresses-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Wheat Field with Cypresses print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "wheat-field-with-cypresses-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Wheat Field with Cypresses print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "wheat-field-with-cypresses-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2899,
+            "nativeWidth": 3720,
+            "sourceSha256": "b46d02a42fd3bb13b022cefc5beaa997b1d7a28cd7b53e4413d940aa0dc4014d"
+          }
+        },
+        {
+          "slug": "wheatstacks-snow-effect-morning",
+          "title": "Wheatstacks, Snow Effect, Morning",
+          "sequence": 3,
+          "artworkId": "getty-95.PA.63",
+          "orientation": "landscape",
+          "description": "Two wheatstacks in a snowy field near Giverny on a winter morning in 1891, the low sun turning the snow pink and the stacks’ shadows blue, from Monet’s series of the same subject in changing light.",
+          "alt": "Monet’s Wheatstacks, Snow Effect, Morning: two snow-capped wheatstacks in a white field, long blue shadows and a pale pink sky behind a line of trees.",
+          "palette": "Snow white, rose pink, lavender blue, straw",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Wheatstacks, Snow Effect, Morning print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "wheatstacks-snow-effect-morning-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Wheatstacks, Snow Effect, Morning print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "wheatstacks-snow-effect-morning-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Wheatstacks, Snow Effect, Morning print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "wheatstacks-snow-effect-morning-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Wheatstacks, Snow Effect, Morning print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "wheatstacks-snow-effect-morning-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 6994,
+            "nativeWidth": 10877,
+            "sourceSha256": "66189e7cae5e4f8ff9a8af075884683a5174dfaea7ce7772749621761a1d7e92"
+          }
+        },
+        {
+          "slug": "mada-primavesi",
+          "title": "Mäda Primavesi",
+          "sequence": 4,
+          "artworkId": "met-436819",
+          "orientation": "portrait",
+          "description": "Klimt’s 1912–13 portrait of the nine-year-old Mäda Primavesi, standing square to the viewer in a white dress against a lilac wall, with flowers at her feet.",
+          "alt": "Klimt’s Mäda Primavesi: a young girl in a white dress with flowered trim stands with hands on hips before a lilac background scattered with small flowers.",
+          "palette": "Lilac, white, rose, leaf green",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Mäda Primavesi print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "mada-primavesi-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 354,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Mäda Primavesi print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "mada-primavesi-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 259,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Mäda Primavesi print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "mada-primavesi-study.png",
+              "placement": {
+                "left": 440,
+                "top": 488,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Mäda Primavesi print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "mada-primavesi-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 570,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3877,
+            "nativeWidth": 2876,
+            "sourceSha256": "708f5e75a0d13796630a208308d61dcbbefeb0222917dada970f1c3d1e28ba42"
+          }
+        },
+        {
+          "slug": "the-milkmaid",
+          "title": "The Milkmaid",
+          "sequence": 5,
+          "artworkId": "rijks-SK-A-2344",
+          "orientation": "portrait",
+          "description": "A kitchen maid pours milk into an earthenware bowl beside a window, bread on the table before her, in Vermeer’s painting of about 1660; the light falls across her yellow bodice and blue apron.",
+          "alt": "Vermeer’s The Milkmaid: a woman in a yellow bodice and blue apron pours milk from a jug at a table with bread, lit by a window at the left.",
+          "palette": "Lead-tin yellow, ultramarine, warm white, bread brown",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "The Milkmaid print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "the-milkmaid-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 354,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "The Milkmaid print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "the-milkmaid-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 259,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "The Milkmaid print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "the-milkmaid-study.png",
+              "placement": {
+                "left": 440,
+                "top": 488,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "The Milkmaid print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "the-milkmaid-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 570,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 5177,
+            "nativeWidth": 4649,
+            "sourceSha256": "cfbda18087b0a5ef1d404da40095bcbd6b94c87f1338cbb6ae4a5466f57147d4"
+          }
+        },
+        {
+          "slug": "strawberry-thief",
+          "title": "Strawberry Thief",
+          "sequence": 6,
+          "artworkId": "cma-1937.696",
+          "orientation": "landscape",
+          "description": "Thrushes stealing strawberries among flowers and leaves on a deep indigo ground: William Morris’s 1883 pattern, in a length of the printed cotton made by Morris & Co.",
+          "alt": "William Morris’s Strawberry Thief: pairs of speckled thrushes with strawberries among red, white and yellow flowers and green leaves on a dark indigo ground.",
+          "palette": "Indigo, madder red, weld yellow, cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Strawberry Thief print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "strawberry-thief-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Strawberry Thief print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "strawberry-thief-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Strawberry Thief print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "strawberry-thief-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Strawberry Thief print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "strawberry-thief-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 11298,
+            "nativeWidth": 12792,
+            "sourceSha256": "cec116afe04e393c6e9aa92697f2bb50495e6c08db24db980072b626f6ea646c"
+          }
+        },
+        {
+          "slug": "the-night-cafe",
+          "title": "The Night Café",
+          "sequence": 7,
+          "artworkId": "yale-12507",
+          "orientation": "landscape",
+          "description": "The all-night café on Place Lamartine in Arles, September 1888: a billiard table under glowing lamps, red walls and a green ceiling, and a few late customers at the tables.",
+          "alt": "Van Gogh’s The Night Café: a billiard table in the middle of a café with red walls, a green ceiling and yellow lamps, a waiter in white and customers at small tables.",
+          "palette": "Blood red, emerald green, lamp yellow, orange",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "The Night Café print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "the-night-cafe-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "The Night Café print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "the-night-cafe-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "The Night Café print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "the-night-cafe-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "The Night Café print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "the-night-cafe-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 5848,
+            "nativeWidth": 7408,
+            "sourceSha256": "a445d912b91966cd7ce1ffeb2be7a04e86860faad83c79e49ca0edffd450fc02"
+          }
+        },
+        {
+          "slug": "water-lilies-agapanthus",
+          "title": "Water Lilies (Agapanthus)",
+          "sequence": 8,
+          "artworkId": "cma-1960.81",
+          "orientation": "landscape",
+          "description": "A long panel of the water-lily pond at Giverny, painted between about 1915 and 1926: lily pads drifting across lilac and blue reflections, with a fringe of green at the lower edge.",
+          "alt": "Monet’s Water Lilies (Agapanthus): a wide view of a pond with floating lily pads on lilac, blue and green water.",
+          "palette": "Lilac, pond blue, sage green, rose",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Water Lilies (Agapanthus) print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "water-lilies-agapanthus-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Water Lilies (Agapanthus) print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "water-lilies-agapanthus-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Water Lilies (Agapanthus) print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "water-lilies-agapanthus-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Water Lilies (Agapanthus) print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "water-lilies-agapanthus-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 2970,
+            "nativeWidth": 6388,
+            "sourceSha256": "e364977fd43cfcd13fbd338b0581f4b55c697d0b71cd731d864eb14d099dbed7"
+          }
+        },
+        {
+          "slug": "roses-in-a-vase",
+          "title": "Roses in a Vase",
+          "sequence": 9,
+          "artworkId": "cma-1941.14",
+          "orientation": "landscape",
+          "description": "Full-blown red, pink and cream roses in a green vase, painted by Renoir in about 1890 with loose, warm strokes against a brown ground.",
+          "alt": "Renoir’s Roses in a Vase: a bunch of red, pink and cream roses in a dark green vase on a table against a warm brown background.",
+          "palette": "Rose red, blush pink, cream, bottle green",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Roses in a Vase print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "roses-in-a-vase-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Roses in a Vase print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "roses-in-a-vase-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Roses in a Vase print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "roses-in-a-vase-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Roses in a Vase print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "roses-in-a-vase-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 10586,
+            "nativeWidth": 14577,
+            "sourceSha256": "c9fdb890dc9cd32b89951e48161160a9f988be05f721fff702e8eea6943d7e91"
+          }
+        },
+        {
+          "slug": "the-dance-class",
+          "title": "The Dance Class",
+          "sequence": 10,
+          "artworkId": "met-438817",
+          "orientation": "portrait",
+          "description": "A rehearsal room at the Paris Opéra in 1874: dancers in white tutus wait and stretch while the ballet master leans on his stick.",
+          "alt": "Degas’s The Dance Class: ballerinas in white tutus with coloured sashes in a pale green rehearsal room, an old ballet master with a cane at the centre.",
+          "palette": "Tutu white, celadon green, rose, umber",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "The Dance Class print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "the-dance-class-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 354,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "The Dance Class print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "the-dance-class-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 259,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "The Dance Class print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "the-dance-class-study.png",
+              "placement": {
+                "left": 440,
+                "top": 488,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "The Dance Class print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "the-dance-class-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 570,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 3810,
+            "nativeWidth": 3520,
+            "sourceSha256": "10059dd5a1da4ea6bf30e778c0d1a334e1ea104018415a93e4c79525a73bdeaf"
+          }
+        }
+      ]
     }
   ]
 }

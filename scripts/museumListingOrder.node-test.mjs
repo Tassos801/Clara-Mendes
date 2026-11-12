@@ -89,7 +89,7 @@ test('the catalogs rank all 120 Floating World products, prints first', () => {
 test('museum products split the shop by the museum collection tags', () => {
   assert.equal(
     museumTagClause(),
-    '(tag:"Floating World" OR tag:"Line and Colour")',
+    '(tag:"Floating World" OR tag:"Line and Colour" OR tag:"Museum Masterpieces")',
   );
   assert.equal(museumTagClause(FLOATING_WORLD_ONLY), '(tag:"Floating World")');
   assert.equal(

@@ -176,6 +176,272 @@
       "approval": {
         "approved": false
       }
+    },
+    {
+      "id": "vincent-van-gogh",
+      "slug": "van-gogh",
+      "name": "Vincent van Gogh",
+      "sortName": "Gogh, Vincent van",
+      "aliases": [
+        "Van Gogh",
+        "Vincent Willem van Gogh",
+        "Vincent van Gogh"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1853",
+        "year": 1853
+      },
+      "died": {
+        "display": "1890",
+        "year": 1890
+      },
+      "nationality": "Dutch",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q5582",
+      "bio": "Vincent van Gogh (1853–1890) was a Dutch painter who worked as an art dealer, a teacher and a lay preacher before he turned to art around 1880. After years of dark peasant scenes in the Netherlands he moved to Paris in 1886, where his colour brightened, and in 1888 to Arles in the south of France. He spent his last year at the asylum in Saint-Rémy and in Auvers-sur-Oise, where he died in 1890, having made most of his paintings in the last decade of his life.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500115588",
+        "https://www.wikidata.org/wiki/Q5582"
+      ],
+      "curatorNote": "Three paintings from his last two years in the south of France: the asylum garden at Saint-Rémy, a wheat field under a cypress, and the café in Arles he painted by night. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:15.709Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "Netherlands",
+        "era": "Late 19th century",
+        "movement": "Post-Impressionism"
+      }
+    },
+    {
+      "id": "claude-monet",
+      "slug": "monet",
+      "name": "Claude Monet",
+      "sortName": "Monet, Claude",
+      "aliases": [
+        "Monet",
+        "Claude Oscar Monet",
+        "Claude Monet"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1840",
+        "year": 1840
+      },
+      "died": {
+        "display": "1926",
+        "year": 1926
+      },
+      "nationality": "French",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q296",
+      "bio": "Claude Monet (1840–1926) was a French painter and a founder of Impressionism; his Impression, Sunrise, shown in 1874, gave the movement its name. From the 1890s he painted the same subject again and again in changing light, in series of wheatstacks, poplars and the façade of Rouen Cathedral. From 1883 he lived at Giverny, where he made the garden and water-lily pond that he painted for the last three decades of his life.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500019484",
+        "https://www.wikidata.org/wiki/Q296"
+      ],
+      "curatorNote": "Two of Monet’s long looks at one subject: wheatstacks on a winter morning from the 1891 series, and the water-lily pond at Giverny that occupied his last years. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:16.921Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "France",
+        "era": "Late 19th century",
+        "movement": "Impressionism"
+      }
+    },
+    {
+      "id": "gustav-klimt",
+      "slug": "klimt",
+      "name": "Gustav Klimt",
+      "sortName": "Klimt, Gustav",
+      "aliases": [
+        "Klimt",
+        "Gustav Klimt"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1862",
+        "year": 1862
+      },
+      "died": {
+        "display": "1918",
+        "year": 1918
+      },
+      "nationality": "Austrian",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q34661",
+      "bio": "Gustav Klimt (1862–1918) was an Austrian painter who trained at the Vienna School of Arts and Crafts and began with decorative commissions for theatres and museums. In 1897 he was a founder and the first president of the Vienna Secession. His portraits and allegories, some laid with gold leaf, combine flat ornament with closely painted faces and hands.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500030531",
+        "https://www.wikidata.org/wiki/Q34661"
+      ],
+      "curatorNote": "Klimt painted Mäda Primavesi, the nine-year-old daughter of a banker and patron of the Wiener Werkstätte, standing square to the viewer against a field of flowers. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:18.202Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "Austria",
+        "era": "Early 20th century",
+        "movement": "Vienna Secession"
+      }
+    },
+    {
+      "id": "johannes-vermeer",
+      "slug": "vermeer",
+      "name": "Johannes Vermeer",
+      "sortName": "Vermeer, Johannes",
+      "aliases": [
+        "Vermeer",
+        "Jan Vermeer",
+        "Johannes Vermeer",
+        "Vermeer van Delft"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1632",
+        "year": 1632
+      },
+      "died": {
+        "display": "1675",
+        "year": 1675
+      },
+      "nationality": "Dutch",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q41264",
+      "bio": "Johannes Vermeer (1632–1675) was a Dutch painter who spent his life in Delft, where he joined the painters’ guild in 1653. Fewer than forty paintings are attributed to him. Most show one or two figures in a quiet interior lit from a window at the left, painted slowly and with costly pigments such as natural ultramarine.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500032927",
+        "https://www.wikidata.org/wiki/Q41264"
+      ],
+      "curatorNote": "The Milkmaid is one of Vermeer’s few scenes of work: a kitchen maid pouring milk by the window, with bread on the table and the wall behind her left almost bare. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:19.965Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "Netherlands",
+        "era": "Dutch Golden Age",
+        "movement": "Dutch Golden Age painting"
+      }
+    },
+    {
+      "id": "william-morris",
+      "slug": "william-morris",
+      "name": "William Morris",
+      "sortName": "Morris, William",
+      "aliases": [
+        "Morris",
+        "William Morris"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1834",
+        "year": 1834
+      },
+      "died": {
+        "display": "1896",
+        "year": 1896
+      },
+      "nationality": "British",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q182589",
+      "bio": "William Morris (1834–1896) was an English designer, writer and socialist and a leading figure of the Arts and Crafts movement. In 1861 he co-founded the decorating firm that became Morris & Co., which made wallpapers, printed and woven textiles, furniture and stained glass. Many of his patterns draw on the plants and birds of the English countryside; in 1891 he founded the Kelmscott Press.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500030629",
+        "https://www.wikidata.org/wiki/Q182589"
+      ],
+      "curatorNote": "Strawberry Thief, designed in 1883, shows the thrushes that took strawberries from Morris’s kitchen garden at Kelmscott Manor; this length of the printed cotton was made by Morris & Co. Throw blankets, cushions and mugs keep the full composition of the printed pattern as the museum photographed it, without the cloth’s plain borders, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:21.557Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "United Kingdom",
+        "era": "Victorian era",
+        "movement": "Arts and Crafts"
+      }
+    },
+    {
+      "id": "pierre-auguste-renoir",
+      "slug": "renoir",
+      "name": "Pierre-Auguste Renoir",
+      "sortName": "Renoir, Pierre-Auguste",
+      "aliases": [
+        "Renoir",
+        "Auguste Renoir",
+        "Pierre Auguste Renoir",
+        "Pierre-Auguste Renoir"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1841",
+        "year": 1841
+      },
+      "died": {
+        "display": "1919",
+        "year": 1919
+      },
+      "nationality": "French",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q39931",
+      "bio": "Pierre-Auguste Renoir (1841–1919) was a French painter who trained as a painter of porcelain before studying art in Paris, where he met Monet, Sisley and Bazille. He showed at the first Impressionist exhibitions and became known for scenes of Parisian leisure, portraits and nudes. In his last years he lived at Cagnes-sur-Mer and kept painting despite severe arthritis.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500115467",
+        "https://www.wikidata.org/wiki/Q39931"
+      ],
+      "curatorNote": "Renoir painted flowers throughout his life; these roses from about 1890 are loosely brushed in warm reds and creams. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:23.355Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "France",
+        "era": "Late 19th century",
+        "movement": "Impressionism"
+      }
+    },
+    {
+      "id": "edgar-degas",
+      "slug": "degas",
+      "name": "Edgar Degas",
+      "sortName": "Degas, Edgar",
+      "aliases": [
+        "Degas",
+        "Hilaire-Germain-Edgar Degas",
+        "Edgar Degas"
+      ],
+      "kind": "historical",
+      "born": {
+        "display": "1834",
+        "year": 1834
+      },
+      "died": {
+        "display": "1917",
+        "year": 1917
+      },
+      "nationality": "French",
+      "lifeDatesSource": "https://www.wikidata.org/wiki/Q46373",
+      "bio": "Edgar Degas (1834–1917) was a French painter, printmaker and sculptor who trained in the classical tradition and admired Ingres. He showed at most of the Impressionist exhibitions, though he called himself a realist, and he worked in oil, pastel and monotype as well as wax. Dancers of the Paris Opéra, at rehearsal more often than on stage, were his most frequent subject.",
+      "bioSources": [
+        "http://vocab.getty.edu/page/ulan/500115194",
+        "https://www.wikidata.org/wiki/Q46373"
+      ],
+      "curatorNote": "The Dance Class (1874) shows a rehearsal at the Paris Opéra, with the ballet master Jules Perrot leaning on his stick while the dancers wait their turn. Throw blankets, cushions and mugs keep the full composition as the museum photographed it, set on a plain off-white mount.",
+      "approval": {
+        "approved": true,
+        "at": "2026-11-12T08:43:24.983Z",
+        "by": "Tassos"
+      },
+      "tags": {
+        "country": "France",
+        "era": "Late 19th century",
+        "movement": "Impressionism"
+      }
     }
   ],
   "artworks": [
@@ -1429,6 +1695,523 @@
         "at": "2026-10-15T18:05:55.348Z",
         "by": "Tassos",
         "note": "Owner decision 2026-10-15: trim the wall and its shadow outside the white strip frame; the frame stays"
+      }
+    },
+    {
+      "id": "getty-90.PA.20",
+      "artistId": "vincent-van-gogh",
+      "title": "Irises",
+      "shortTitle": "Irises",
+      "date": "1889",
+      "medium": "Oil on canvas",
+      "dimensions": "Unframed: 74.3 × 94.3 cm (29 1/4 × 37 1/8 in.)",
+      "source": {
+        "museum": "getty",
+        "institution": "The J. Paul Getty Museum",
+        "objectId": "90.PA.20",
+        "accessionNumber": "90.PA.20",
+        "objectUrl": "https://www.getty.edu/art/collection/object/103JNH",
+        "apiUrl": "https://data.getty.edu/museum/collection/object/c88b3df0-de91-4f5b-a9ef-7b2b9a6d8abb",
+        "imageUrl": "https://media.getty.edu/iiif/image/8c255d80-7382-46db-9fa8-892c0d37247e/full/max/0/default.jpg",
+        "artistDisplayName": "Vincent van Gogh",
+        "artistPrefix": "",
+        "creditLine": "The J. Paul Getty Museum, Los Angeles",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: Getty Open Content Program (CC0)",
+          "evidenceUrl": "https://www.getty.edu/projects/open-content-program/"
+        },
+        "evidenceFile": "data/museum-evidence/getty-90.PA.20.json",
+        "fetchedAt": "2026-11-12T07:50:18.640Z",
+        "metadataSha256": "3768d905706d4af8d6739ce3a0c9bcbce647680b5a8b8e47a01af2b5a209783c"
+      },
+      "original": {
+        "fileName": "getty-90.PA.20.jpg",
+        "sha256": "850f8998766eb8d626207e3f7b4a1f55050ed60dbeed65b2741e5b02f5ba01ba",
+        "bytes": 27883707,
+        "contentType": "image/jpeg",
+        "width": 9021,
+        "height": 7122
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:26.446Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:27.923Z"
+        }
+      }
+    },
+    {
+      "id": "met-436535",
+      "artistId": "vincent-van-gogh",
+      "title": "Wheat Field with Cypresses",
+      "shortTitle": "Wheat Field with Cypresses",
+      "date": "1889",
+      "medium": "Oil on canvas",
+      "dimensions": "28 13/16 × 36 3/4 in. (73.2 × 93.4 cm)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "436535",
+        "accessionNumber": "1993.132",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/436535",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436535",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP-42549-001.jpg",
+        "artistDisplayName": "Vincent van Gogh",
+        "artistPrefix": "",
+        "creditLine": "Purchase, The Annenberg Foundation Gift, 1993",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-436535.json",
+        "fetchedAt": "2026-11-12T07:50:25.511Z",
+        "metadataSha256": "497e0d1cd9166d27f6ef9b5e551b0cd8bafbcf1a5e134f364ba406b3a1f57d62"
+      },
+      "original": {
+        "fileName": "met-436535.jpg",
+        "sha256": "b46d02a42fd3bb13b022cefc5beaa997b1d7a28cd7b53e4413d940aa0dc4014d",
+        "bytes": 8291194,
+        "contentType": "image/jpeg",
+        "width": 4000,
+        "height": 3184
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:29.185Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:30.781Z"
+        }
+      },
+      "trim": {
+        "top": 150,
+        "right": 140,
+        "bottom": 135,
+        "left": 140,
+        "at": "2026-11-12T07:56:09.805Z",
+        "by": "Claude Code (proposed 2026-11-12; owner confirms at master review)",
+        "note": "Black photographic surround and the unpainted tacking edge of the canvas; stops at the painted surface."
+      }
+    },
+    {
+      "id": "met-436819",
+      "artistId": "gustav-klimt",
+      "title": "Mäda Primavesi (1903–2000)",
+      "shortTitle": "Mäda Primavesi",
+      "date": "1912–13",
+      "medium": "Oil on canvas",
+      "dimensions": "59 x 43 1/2 in. (149.9 x 110.5 cm)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "436819",
+        "accessionNumber": "64.148",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/436819",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/436819",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP243354.jpg",
+        "artistDisplayName": "Gustav Klimt",
+        "artistPrefix": "",
+        "creditLine": "Gift of André and Clara Mertens, in memory of her mother, Jenny Pulitzer Steiner, 1964",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-436819.json",
+        "fetchedAt": "2026-11-12T07:50:36.690Z",
+        "metadataSha256": "c7518c1feeea9c5ff2cdd6c71dd022848a455e1a8d7d3245f19b38cc50722b0a"
+      },
+      "original": {
+        "fileName": "met-436819.jpg",
+        "sha256": "708f5e75a0d13796630a208308d61dcbbefeb0222917dada970f1c3d1e28ba42",
+        "bytes": 3740645,
+        "contentType": "image/jpeg",
+        "width": 2876,
+        "height": 3877
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:35.012Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:36.352Z"
+        }
+      }
+    },
+    {
+      "id": "rijks-SK-A-2344",
+      "artistId": "johannes-vermeer",
+      "title": "The Milkmaid",
+      "shortTitle": "The Milkmaid",
+      "date": "c. 1660",
+      "medium": "Oil on canvas",
+      "dimensions": "height 45.5 cm x width 41 cm",
+      "source": {
+        "museum": "rijks",
+        "institution": "Rijksmuseum",
+        "objectId": "SK-A-2344",
+        "accessionNumber": "SK-A-2344",
+        "objectUrl": "https://www.rijksmuseum.nl/en/collection/SK-A-2344",
+        "apiUrl": "https://id.rijksmuseum.nl/200108369",
+        "imageUrl": "https://iiif.micr.io/QkOGy/full/max/0/default.jpg",
+        "artistDisplayName": "Johannes Vermeer",
+        "artistPrefix": "",
+        "creditLine": "Purchased with the support of the Vereniging Rembrandt",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: Rijksmuseum open data (Public Domain Mark / CC0)",
+          "evidenceUrl": "https://data.rijksmuseum.nl/policy/information-and-data-policy"
+        },
+        "evidenceFile": "data/museum-evidence/rijks-SK-A-2344.json",
+        "fetchedAt": "2026-11-12T07:50:40.142Z",
+        "metadataSha256": "fd6299fd1617e693fb34d1967a74d0c9b808b3c5ba0ed247f90b1dd7341c633f"
+      },
+      "original": {
+        "fileName": "rijks-SK-A-2344.jpg",
+        "sha256": "cfbda18087b0a5ef1d404da40095bcbd6b94c87f1338cbb6ae4a5466f57147d4",
+        "bytes": 5026944,
+        "contentType": "image/jpeg",
+        "width": 4649,
+        "height": 5177
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:37.690Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:38.962Z"
+        }
+      }
+    },
+    {
+      "id": "yale-12507",
+      "artistId": "vincent-van-gogh",
+      "title": "Le café de nuit (The Night Café)",
+      "shortTitle": "The Night Café",
+      "date": "1888",
+      "medium": "Oil on canvas",
+      "dimensions": "28 1/2 × 36 1/4 in. (72.4 × 92.1 cm)",
+      "source": {
+        "museum": "yale",
+        "institution": "Yale University Art Gallery",
+        "objectId": "12507",
+        "accessionNumber": "1961.18.34",
+        "objectUrl": "https://artgallery.yale.edu/collections/objects/12507",
+        "apiUrl": "https://manifests.collections.yale.edu/yuag/obj/12507",
+        "imageUrl": "https://images.collections.yale.edu/iiif/2/yuag:3b072179-2fc7-42bc-87cc-9ee4d782b270/full/full/0/default.jpg",
+        "artistDisplayName": "Vincent van Gogh",
+        "artistPrefix": "",
+        "creditLine": "Bequest of Stephen Carlton Clark, B.A. 1903",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: Yale University Art Gallery open access",
+          "evidenceUrl": "https://artgallery.yale.edu/using-collection/using-images/rights-and-reproductions"
+        },
+        "evidenceFile": "data/museum-evidence/yale-12507.json",
+        "fetchedAt": "2026-11-12T07:50:43.547Z",
+        "metadataSha256": "7f8a4dd34d782b3a2bf3846cf3619596b10f6208065224aac12ada14f0bf97b1"
+      },
+      "original": {
+        "fileName": "yale-12507.jpg",
+        "sha256": "a445d912b91966cd7ce1ffeb2be7a04e86860faad83c79e49ca0edffd450fc02",
+        "bytes": 8009271,
+        "contentType": "image/jpeg",
+        "width": 7408,
+        "height": 5848
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:43.085Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:44.426Z"
+        }
+      }
+    },
+    {
+      "id": "getty-95.PA.63",
+      "artistId": "claude-monet",
+      "title": "Wheatstacks, Snow Effect, Morning (Meules, Effet de Neige, Le Matin)",
+      "shortTitle": "Wheatstacks, Snow Effect, Morning",
+      "date": "1891",
+      "medium": "Oil on canvas",
+      "dimensions": "Unframed: 64.8 × 100.3 cm (25 1/2 × 39 1/2 in.)",
+      "source": {
+        "museum": "getty",
+        "institution": "The J. Paul Getty Museum",
+        "objectId": "95.PA.63",
+        "accessionNumber": "95.PA.63",
+        "objectUrl": "https://www.getty.edu/art/collection/object/103RK8",
+        "apiUrl": "https://data.getty.edu/museum/collection/object/9a9cebf1-6d57-4153-aeac-3d5aa0ad9b2c",
+        "imageUrl": "https://media.getty.edu/iiif/image/c7a070ce-bae3-4424-8ad3-55e3dea5e1ff/full/max/0/default.jpg",
+        "artistDisplayName": "Claude Monet",
+        "artistPrefix": "",
+        "creditLine": "The J. Paul Getty Museum, Los Angeles",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: Getty Open Content Program (CC0)",
+          "evidenceUrl": "https://www.getty.edu/projects/open-content-program/"
+        },
+        "evidenceFile": "data/museum-evidence/getty-95.PA.63.json",
+        "fetchedAt": "2026-11-12T07:50:57.123Z",
+        "metadataSha256": "b2293b43f788151efe422f6a2ec791dd3df99110c31d7973194e040374ee4c2f"
+      },
+      "original": {
+        "fileName": "getty-95.PA.63.jpg",
+        "sha256": "66189e7cae5e4f8ff9a8af075884683a5174dfaea7ce7772749621761a1d7e92",
+        "bytes": 30463363,
+        "contentType": "image/jpeg",
+        "width": 10877,
+        "height": 6994
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:32.177Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:33.650Z"
+        }
+      }
+    },
+    {
+      "id": "met-438817",
+      "artistId": "edgar-degas",
+      "title": "The Dance Class",
+      "shortTitle": "The Dance Class",
+      "date": "1874",
+      "medium": "Oil on canvas",
+      "dimensions": "32 7/8 x 30 3/8 in. (83.5 x 77.2 cm)",
+      "source": {
+        "museum": "met",
+        "institution": "The Metropolitan Museum of Art",
+        "objectId": "438817",
+        "accessionNumber": "1987.47.1",
+        "objectUrl": "https://www.metmuseum.org/art/collection/search/438817",
+        "apiUrl": "https://collectionapi.metmuseum.org/public/collection/v1/objects/438817",
+        "imageUrl": "https://images.metmuseum.org/CRDImages/ep/original/DP-20101-001.jpg",
+        "artistDisplayName": "Edgar Degas",
+        "artistPrefix": "",
+        "creditLine": "Bequest of Mrs. Harry Payne Bingham, 1986",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Met Open Access (CC0)",
+          "evidenceUrl": "https://github.com/metmuseum/openaccess"
+        },
+        "evidenceFile": "data/museum-evidence/met-438817.json",
+        "fetchedAt": "2026-11-12T07:51:04.746Z",
+        "metadataSha256": "7058f24fab513155c8ec08773a83c36c2255e579e81eed3295b76f9d6a7d93d5"
+      },
+      "original": {
+        "fileName": "met-438817.jpg",
+        "sha256": "10059dd5a1da4ea6bf30e778c0d1a334e1ea104018415a93e4c79525a73bdeaf",
+        "bytes": 5207233,
+        "contentType": "image/jpeg",
+        "width": 3710,
+        "height": 4000
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:51.146Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:52.525Z"
+        }
+      },
+      "trim": {
+        "top": 95,
+        "right": 95,
+        "bottom": 95,
+        "left": 95,
+        "at": "2026-11-12T07:56:10.697Z",
+        "by": "Claude Code (proposed 2026-11-12; owner confirms at master review)",
+        "note": "Black photographic surround and the brown paper tape round the canvas edge; stops at the painted surface."
+      }
+    },
+    {
+      "id": "cma-1960.81",
+      "artistId": "claude-monet",
+      "title": "Water Lilies (Agapanthus)",
+      "shortTitle": "Water Lilies (Agapanthus)",
+      "date": "c. 1915–26",
+      "medium": "Oil on canvas",
+      "dimensions": "Framed: 204.9 x 430.3 x 6 cm (80 11/16 x 169 7/16 x 2 3/8 in.); Unframed: 201.3 x 425.6 cm (79 1/4 x 167 9/16 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1960.81",
+        "accessionNumber": "1960.81",
+        "objectUrl": "https://clevelandart.org/art/1960.81",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1960.81",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1960.81/1960.81_full.tif",
+        "artistDisplayName": "Claude Monet",
+        "artistPrefix": "",
+        "creditLine": "John L. Severance Fund and an anonymous gift",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1960.81.json",
+        "fetchedAt": "2026-11-12T07:51:08.797Z",
+        "metadataSha256": "c2e2cfd811a56802b8a5c0cc8d5c016e95d38904f32c0d8e59e2be5b51ade92a"
+      },
+      "original": {
+        "fileName": "cma-1960.81.tif",
+        "sha256": "e364977fd43cfcd13fbd338b0581f4b55c697d0b71cd731d864eb14d099dbed7",
+        "bytes": 56933532,
+        "contentType": "image/tiff",
+        "width": 6388,
+        "height": 2970
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:45.712Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:46.992Z"
+        }
+      }
+    },
+    {
+      "id": "cma-1941.14",
+      "artistId": "pierre-auguste-renoir",
+      "title": "Roses in a Vase",
+      "shortTitle": "Roses in a Vase",
+      "date": "c. 1890",
+      "medium": "Oil on fabric",
+      "dimensions": "Unframed: 25.5 x 34 cm (10 1/16 x 13 3/8 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1941.14",
+        "accessionNumber": "1941.14",
+        "objectUrl": "https://clevelandart.org/art/1941.14",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1941.14",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1941.14/1941.14_full.tif",
+        "artistDisplayName": "Pierre-Auguste Renoir",
+        "artistPrefix": "",
+        "creditLine": "Gift of Mrs. Henry White Cannon",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1941.14.json",
+        "fetchedAt": "2026-11-12T07:51:16.671Z",
+        "metadataSha256": "62884b24cf9356dfa5b356d9f0da690cdde57aaa1481750d9ea5027d22ebf60c"
+      },
+      "original": {
+        "fileName": "cma-1941.14.tif",
+        "sha256": "c9fdb890dc9cd32b89951e48161160a9f988be05f721fff702e8eea6943d7e91",
+        "bytes": 462956718,
+        "contentType": "image/tiff",
+        "width": 14577,
+        "height": 10586
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:48.341Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:49.876Z"
+        }
+      }
+    },
+    {
+      "id": "cma-1937.696",
+      "artistId": "william-morris",
+      "title": "Strawberry Thief",
+      "shortTitle": "Strawberry Thief",
+      "date": "c 1936",
+      "medium": "Plain weave cotton, discharge printed",
+      "dimensions": "Overall: 88.3 x 99.1 cm (34 3/4 x 39 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1937.696",
+        "accessionNumber": "1937.696",
+        "objectUrl": "https://clevelandart.org/art/1937.696",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1937.696",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1937.696/1937.696_full.tif",
+        "artistDisplayName": "William Morris",
+        "artistPrefix": "",
+        "creditLine": "Gift of Mrs. Henry Chisholm",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1937.696.json",
+        "fetchedAt": "2026-11-12T07:53:24.305Z",
+        "metadataSha256": "b3d12776086994946e00fce2eb68e21243d6bdcd70c5e8cae218afe6781f0590"
+      },
+      "original": {
+        "fileName": "cma-1937.696.tif",
+        "sha256": "cec116afe04e393c6e9aa92697f2bb50495e6c08db24db980072b626f6ea646c",
+        "bytes": 471769632,
+        "contentType": "image/tiff",
+        "width": 13272,
+        "height": 11848
+      },
+      "reviews": {
+        "rights": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:40.441Z"
+        },
+        "master": {
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-12T08:43:41.750Z"
+        }
+      },
+      "trim": {
+        "top": 260,
+        "right": 240,
+        "bottom": 290,
+        "left": 240,
+        "at": "2026-11-12T07:56:11.673Z",
+        "by": "Claude Code (proposed 2026-11-12; owner confirms at master review)",
+        "note": "Grey photographic backdrop and the frayed edge of the cloth; the unprinted blue borders stay in the master and are left out by the printed area in data/museum-crops.json."
       }
     }
   ]
