@@ -2441,3 +2441,12 @@ browser that saw it. The Christmas rail circles moved to
 `public/images/line-rail/<key>-christmas.jpg`; the earlier pictures are back
 at the plain names for after the season (their `lineRail.ts` entries are in
 commit 183134e). Rule: a changed image in `public/` always gets a new name.
+
+## 2026-11-12 — Christmas hero: neutral colours
+
+The first Christmas hero had amber walls; with the hero's sepia filters the
+homepage looked muddy yellow-brown. It is replaced by a Codex edit that keeps
+the original photo's grey-white walls (only the tree lights, candles and lamp
+glow warm), as `hero-christmas-neutral*.jpg` (new names, because browsers
+keep `public/` files for a year).
+

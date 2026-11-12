@@ -8,14 +8,17 @@
  * screens that need more pixels (high density or very wide) 2560 px.
  *
  * Christmas 2026: the same room dressed for the season (fir tree, gifts,
- * garland, knit throw), an AI edit of the interior photo made with Codex.
- * After the season, point these back at the hero-interior files, which
- * stay in public/images/backdrops.
+ * garland, knit throw), an AI edit of the interior photo made with Codex,
+ * kept to the original's neutral grey-white walls (the hero filters add
+ * sepia, so a warm photo turns amber). Browsers keep public/ files for a
+ * year, so a new picture always gets a new file name. After the season,
+ * point these back at the hero-interior files, which stay in
+ * public/images/backdrops.
  */
 export const HERO_BACKDROP = {
-  mobile: '/images/backdrops/hero-christmas-mobile.jpg',
-  desktop: '/images/backdrops/hero-christmas-1920.jpg',
-  large: '/images/backdrops/hero-christmas.jpg',
+  mobile: '/images/backdrops/hero-christmas-neutral-mobile.jpg',
+  desktop: '/images/backdrops/hero-christmas-neutral-1920.jpg',
+  large: '/images/backdrops/hero-christmas-neutral.jpg',
 } as const;
 
 /**
