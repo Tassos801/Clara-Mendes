@@ -246,6 +246,18 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
      (`MOU-DI-20X30`, finish `matte`), cushion 18 or 22 in × cover or
      insert, mug 11 oz, blanket 50 × 60. A square work whose files are
      landscape takes `suppliedLayout`.
+   - A wide work's blanket file holds the work a quarter-turn anticlockwise
+     (manifest `rotated_90`) so it fills the portrait print. Its preview
+     turns it back: the blanket shown landscape, the art upright (blanket
+     `previewRenderer` 2). A preview renderer change makes released products'
+     assets stale: run `prepare <collection> --family <f>` in every
+     collection that offers the family, then `media`.
+   - `media <collection> --family <f> [--apply]` brings staged and released
+     galleries up to date: the current preview first, the scene second when
+     `<launch>/<collection>/<family>/scene/<handle>.jpg` exists (a Printful
+     photo template holding the print file), then every image the product
+     already had, in order. Images are matched by pixels; it only adds and
+     reorders (the owner deletes outdated images in the admin).
    - Prodigi maps these per variant: each size prints its own file (the
      metal print reuses the 8 × 12 acrylic file). In the dashboard: Choose
      product, search the SKU, set Frame colour or Finish, Select, Add image

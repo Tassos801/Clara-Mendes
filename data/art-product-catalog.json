@@ -6301,11 +6301,11 @@
       "assets": {
         "box": null,
         "ppi": 62.6,
-        "preparedAt": "2026-10-16T12:34:55.794Z",
+        "preparedAt": "2026-11-12T07:28:28.896Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/the-great-wave-off-kanagawa-blanket.webp",
-          "sha256": "13b1f7a48ab39ddb95bdabad640e52d548c72e484d60d0c3bdf398e97a83f884",
+          "sha256": "6fada8a6aea8a72321171c880559f1598e9277284143de30338db82265afe76d",
           "width": 1600
         },
         "print": {
@@ -6326,7 +6326,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163637657934",
@@ -6350,11 +6350,11 @@
       "assets": {
         "box": null,
         "ppi": 62.3,
-        "preparedAt": "2026-10-16T12:34:57.063Z",
+        "preparedAt": "2026-11-12T07:28:36.848Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/hodogaya-on-the-tokaido-blanket.webp",
-          "sha256": "2e5a0626c30c06f10138006ddec19524cbe115b2acc846e96b106b677f69226a",
+          "sha256": "f410e2fe787918fd7fe496ef93492490467d7fb7f20860ab2ff98805e37959e4",
           "width": 1600
         },
         "print": {
@@ -6375,7 +6375,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b79262bb56435abbc9a5891ba140de8e5255581744f4423e4dcf6a49a1205851\",\"trim\":[0,98,0,0],\"area\":{\"left\":0.018,\"top\":0.004,\"right\":0.982,\"bottom\":0.968},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163637821774",
@@ -6399,11 +6399,11 @@
       "assets": {
         "box": null,
         "ppi": 62,
-        "preparedAt": "2026-10-16T12:34:58.317Z",
+        "preparedAt": "2026-11-12T07:28:44.288Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/sekiya-village-on-the-sumida-river-blanket.webp",
-          "sha256": "a578310cad12e8a4c097f8b8029de5a30f792a8daca3a9bcb4f6924a312600dc",
+          "sha256": "493398a428397e918951d3bbaa6af26e8def04a81278260881708267a4eabc24",
           "width": 1600
         },
         "print": {
@@ -6424,7 +6424,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"d5b399d8b1b3a06d2a2d52bdd462c1f9d8da685f82e0b43694345d682966232f\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.023,\"top\":0.03,\"right\":0.982,\"bottom\":0.974},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163637887310",
@@ -6448,11 +6448,11 @@
       "assets": {
         "box": null,
         "ppi": 63,
-        "preparedAt": "2026-10-16T12:34:59.418Z",
+        "preparedAt": "2026-11-12T07:28:52.085Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/tago-bay-near-ejiri-on-the-tokaido-blanket.webp",
-          "sha256": "24da2e7c6e5d071d4767cdbc4e658f7dae1e0e94c1fd7ff25d3fe9f827c0353f",
+          "sha256": "525ebfd3249f5de3805b7b7e2c11832a72b0662016ec7644ecdf99af1e5d9845",
           "width": 1600
         },
         "print": {
@@ -6473,7 +6473,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"5e9beb2ca1ef0608376450997d2e2246cf8d1c79a9f750db61b5463ec25e6c37\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.02,\"right\":0.986,\"bottom\":0.983},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163637985614",
@@ -6497,11 +6497,11 @@
       "assets": {
         "box": null,
         "ppi": 61.7,
-        "preparedAt": "2026-10-16T12:35:00.458Z",
+        "preparedAt": "2026-11-12T07:28:57.491Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/ushibori-in-hitachi-province-blanket.webp",
-          "sha256": "1179663bd0ec4067a5c778f722cfe513e484b731976dc25826e0d829ce1eb6ba",
+          "sha256": "89daef56c1c03e32f9d9755ee1b744918676570cd7ee3d1af85a26fa9251616a",
           "width": 1600
         },
         "print": {
@@ -6522,7 +6522,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"578a9168762421dd5a26fd006e4e278390e54f4fa2df528ec2df69f51dfb4d92\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.014,\"top\":0.026,\"right\":0.986,\"bottom\":0.979},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163638182222",
@@ -6546,11 +6546,11 @@
       "assets": {
         "box": null,
         "ppi": 62.4,
-        "preparedAt": "2026-10-16T12:35:01.563Z",
+        "preparedAt": "2026-11-12T07:29:02.981Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/yoshida-on-the-tokaido-blanket.webp",
-          "sha256": "59e9ce68096e9b2af7bb317e6b491d8ce7ac603f0302621fff48c30f6ae9807a",
+          "sha256": "e3ae16db26a164f3df913c9cbfab3d825563ff79aa1131665381670ae1184769",
           "width": 1600
         },
         "print": {
@@ -6571,7 +6571,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"c07c7cabf8a47eb2b32f0e447729efe91d3d3b78fb352c92e8207bad1b67e342\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.009,\"top\":0.011,\"right\":0.989,\"bottom\":0.984},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163638411598",
@@ -6595,11 +6595,11 @@
       "assets": {
         "box": null,
         "ppi": 60.9,
-        "preparedAt": "2026-10-16T12:35:02.611Z",
+        "preparedAt": "2026-11-12T07:29:08.862Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/nissaka-sayo-no-nakayama-blanket.webp",
-          "sha256": "f14a16ed652384166913fa503ade7ab7801687bfd65705a31725db1984480a28",
+          "sha256": "bba6dde3ba439cf460f72aee8dc63da82d88fd696bf268dc10fe3a0cceee0df6",
           "width": 1600
         },
         "print": {
@@ -6620,7 +6620,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"553c707b6c84f5f5af0a0d3ae2c4efd16351c71858baece472dc2a2db310e68c\",\"trim\":[0,62,0,0],\"area\":{\"left\":0.03,\"top\":0.025,\"right\":0.97,\"bottom\":0.975},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163638640974",
@@ -6644,7 +6644,7 @@
       "assets": {
         "box": null,
         "ppi": 62.4,
-        "preparedAt": "2026-10-16T12:35:03.634Z",
+        "preparedAt": "2026-11-12T07:29:09.973Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/fireworks-at-ryogoku-bridge-blanket.webp",
@@ -6669,7 +6669,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"84bf671b8378b577c19b6fa7a8b19ac4d68ad3712e8be4d0492e34f17d09d773\",\"trim\":[0,81,0,0],\"area\":{\"left\":0.016,\"top\":0.005,\"right\":0.967,\"bottom\":0.982},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163638870350",
@@ -6693,7 +6693,7 @@
       "assets": {
         "box": null,
         "ppi": 56.6,
-        "preparedAt": "2026-10-16T12:35:04.659Z",
+        "preparedAt": "2026-11-12T07:29:11.126Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/kinryusan-temple-at-asakusa-blanket.webp",
@@ -6718,7 +6718,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"6ed32dcb004f76b8cb3bb79229bb41888bc535a0078462c455de14c8fb27a641\",\"trim\":[0,40,0,0],\"area\":{\"left\":0.089,\"top\":0.055,\"right\":0.95,\"bottom\":0.956},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163639099726",
@@ -6742,7 +6742,7 @@
       "assets": {
         "box": null,
         "ppi": 56.8,
-        "preparedAt": "2026-10-16T12:35:05.627Z",
+        "preparedAt": "2026-11-12T07:29:12.242Z",
         "preview": {
           "height": 2000,
           "path": "floating-world/blanket/web/sudden-shower-over-shin-ohashi-bridge-and-atake-blanket.webp",
@@ -6767,7 +6767,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"17c1ee8bd3a8089d11bd83a6728351b1609a523887d693f81c9a6aee36134a31\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.082,\"top\":0.047,\"right\":0.927,\"bottom\":0.941},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163639394638",
@@ -10654,7 +10654,7 @@
       "assets": {
         "box": null,
         "ppi": 59.7,
-        "preparedAt": "2026-10-16T12:39:14.942Z",
+        "preparedAt": "2026-11-12T07:29:19.240Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/improvisation-no-30-cannons-blanket.webp",
@@ -10679,7 +10679,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"af3931235d0e368f46c3a23530d319f7b8ba541c1e330420aac8256139cd6f11\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.997},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163651191118",
@@ -10703,11 +10703,11 @@
       "assets": {
         "box": null,
         "ppi": 50,
-        "preparedAt": "2026-10-16T12:39:16.038Z",
+        "preparedAt": "2026-11-12T07:29:25.333Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/landscape-with-two-poplars-blanket.webp",
-          "sha256": "c5841e7132ca0b93d1fb20e69b70aa5190b3b878cfd5da86ac932c54ef38e2ad",
+          "sha256": "89e2aa490585414d60bab83b6fbec98a5396e64f5af0783f037232619b117af8",
           "width": 1600
         },
         "print": {
@@ -10728,7 +10728,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"53bdaab4bd639f7f8b183b098c38258e4df56bfe6dce5ca01de401dac6fccc73\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163651486030",
@@ -10752,11 +10752,11 @@
       "assets": {
         "box": null,
         "ppi": 48.7,
-        "preparedAt": "2026-10-16T12:39:17.042Z",
+        "preparedAt": "2026-11-12T07:29:30.635Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/houses-at-murnau-blanket.webp",
-          "sha256": "bb71aeb43d2f34fe8686eb13cec9ab4122ff3b5418489c35e8d171c41863060b",
+          "sha256": "ea6c7acc59cffc29557e4b077a01f1de44f14627eb5f60620c9f840518d69033",
           "width": 1600
         },
         "print": {
@@ -10777,7 +10777,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"116d4797f881e3034137435c0a661b682f139702160faf5d5f4a172d19188df3\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":1},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163651748174",
@@ -10801,11 +10801,11 @@
       "assets": {
         "box": null,
         "ppi": 48.4,
-        "preparedAt": "2026-10-16T12:39:18.035Z",
+        "preparedAt": "2026-11-12T07:29:35.945Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/painting-with-troika-blanket.webp",
-          "sha256": "db8821769e78354c56d67e26fe572600f9d2ac966b9c41637c2583fc61fbf7fc",
+          "sha256": "8df008a49dc86a7df0074f5871e5472e4d49fc08078f692f41be9e772b84d1ab",
           "width": 1600
         },
         "print": {
@@ -10826,7 +10826,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null,\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163652010318",
@@ -10850,11 +10850,11 @@
       "assets": {
         "box": null,
         "ppi": 45,
-        "preparedAt": "2026-10-16T12:39:19.080Z",
+        "preparedAt": "2026-11-12T07:29:41.327Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/painting-with-green-center-blanket.webp",
-          "sha256": "9df31ea574e0e5d3a0c66ce93cc87842dee0ecf172e8004e532223b57d2e8f33",
+          "sha256": "e80eb706bc56127206da3423e40ed08cfd670b249d4a09afec0ff219d3ae910d",
           "width": 1600
         },
         "print": {
@@ -10875,7 +10875,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"05400a0bf4e1df3b12073d047b25f509f186d173175af5a51fbe8330469f5091\",\"trim\":[0,0,0,0],\"area\":null,\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163652239694",
@@ -10899,7 +10899,7 @@
       "assets": {
         "box": null,
         "ppi": 159.5,
-        "preparedAt": "2026-10-16T12:39:20.106Z",
+        "preparedAt": "2026-11-12T07:29:42.455Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/composition-with-red-yellow-and-blue-blanket.webp",
@@ -10924,7 +10924,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163652567374",
@@ -10948,11 +10948,11 @@
       "assets": {
         "box": null,
         "ppi": 60,
-        "preparedAt": "2026-10-16T12:39:20.889Z",
+        "preparedAt": "2026-11-12T07:29:44.777Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/lozenge-composition-blanket.webp",
-          "sha256": "842284b62bec255c7947f2eea9e188afaeb97e639e6dd9b58667fb409320d192",
+          "sha256": "91fe01ca0a8975e9d89c753f8de9fd2a685d85de4f1b77e86ef32af5536523d1",
           "width": 1600
         },
         "print": {
@@ -10973,7 +10973,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"849bf75773f45feb48d115bd6e98a7617e7c25899939685438642a797441b55f\",\"trim\":[0,0,0,0],\"area\":null,\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163652763982",
@@ -10997,7 +10997,7 @@
       "assets": {
         "box": null,
         "ppi": 43.6,
-        "preparedAt": "2026-10-16T12:39:21.924Z",
+        "preparedAt": "2026-11-12T07:29:45.796Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/composition-no-1-gray-red-blanket.webp",
@@ -11022,7 +11022,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"75b0234331e6eac8a4827e451375ebf1e6a178a3a1bce52643d2fd271dc802fa\",\"trim\":[0,0,0,0],\"area\":null,\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163652960590",
@@ -11046,7 +11046,7 @@
       "assets": {
         "box": null,
         "ppi": 87.5,
-        "preparedAt": "2026-10-16T12:39:23.090Z",
+        "preparedAt": "2026-11-12T07:29:47.029Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/chrysanthemum-blanket.webp",
@@ -11071,7 +11071,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"da1581a05852b19c3e7c949964efe886d01d5ff3c89e4238a0d500b7d0f07691\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.005,\"top\":0.005,\"right\":0.995,\"bottom\":0.995},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163653222734",
@@ -11095,11 +11095,11 @@
       "assets": {
         "box": null,
         "ppi": 76.8,
-        "preparedAt": "2026-10-16T12:39:24.255Z",
+        "preparedAt": "2026-11-12T07:29:51.795Z",
         "preview": {
           "height": 2000,
           "path": "line-and-colour/blanket/web/field-with-young-trees-blanket.webp",
-          "sha256": "cf82e24ccadac39cfd1f7c5ac4f7676c8ba2ff76b45eaa9d887ddbd4e2ee95bd",
+          "sha256": "1575ab5f4d6339bc6ef72cb7827e1d7e823ba29bb2d79e95ea34e28cdb0956ae",
           "width": 1600
         },
         "print": {
@@ -11120,7 +11120,7 @@
             "width": 7500
           }
         },
-        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98}}"
+        "sourceSignature": "{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1a7ec7f8679353b865fd54a53a8e97170013b2827c9d34488af1bb18831a2c9e\",\"trim\":[0,0,0,0],\"area\":{\"left\":0,\"top\":0,\"right\":1,\"bottom\":0.98},\"preview\":2}"
       },
       "shopify": {
         "productId": "gid://shopify/Product/16163653484878",

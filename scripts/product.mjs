@@ -108,6 +108,7 @@ const familyMode = flags.has('--families') || option('family') !== undefined;
 const FAMILY_STEPS = [
   'handoff',
   'mapped',
+  'media',
   'prepare',
   'printful',
   'release',

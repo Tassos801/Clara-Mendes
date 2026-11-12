@@ -478,6 +478,18 @@ export async function renderFamilyPreview(plan, printFile, {masks} = {}) {
   return onLinen(size, layers);
 }
 
+/**
+ * Whether a blanket's preview turns its file back a quarter-turn: the lead
+ * file was recorded as turned (manifest `rotated_90`) to fill the portrait
+ * print area.
+ */
+export function blanketTurnedBack(plan) {
+  return (
+    plan.family === 'blanket' &&
+    plan.files.some((file) => file.provenance?.rotated90 === true)
+  );
+}
+
 /** The hanger's wooden strips, by colour (the preview shows oak). */
 const OAK = ['#caa77a', '#a98458'];
 
@@ -499,10 +511,18 @@ export async function renderSuppliedPreview(plan, leadFile) {
           ? PRINTFUL_MUG_MM.wrap / 4
           : PRINTFUL_MUG_MM.front,
     });
-  const file = await sharp(leadFile).metadata();
+  // A wide work's blanket file holds it a quarter-turn anticlockwise (PIL
+  // rotate(90) in the supplied files' export) so it fills the 50 × 60 in
+  // print. A blanket has no top: show it turned back, landscape, with the
+  // art upright — the same pixels, only rotated.
+  const turnedBack = blanketTurnedBack(plan);
+  const lead = turnedBack
+    ? await sharp(leadFile).rotate(90).png().toBuffer()
+    : leadFile;
+  const file = await sharp(lead).metadata();
   const aspect = file.width / file.height;
   const art = async (box) =>
-    sharp(leadFile)
+    sharp(lead)
       .resize(box.width, box.height, {fit: 'fill', kernel: 'lanczos3'})
       .png()
       .toBuffer();
@@ -590,7 +610,7 @@ export async function renderSuppliedPreview(plan, leadFile) {
     const piece = place(size, aspect, {
       lift: 20,
       maxHeight: cushion ? 1240 : 1500,
-      maxWidth: cushion ? 1240 : 1260,
+      maxWidth: cushion ? 1240 : turnedBack ? 1400 : 1260,
     });
     const radius = Math.round(piece.width * (cushion ? 0.07 : 0.015));
     const outline = svg(

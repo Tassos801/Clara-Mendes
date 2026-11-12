@@ -877,6 +877,49 @@ export function familyImageAlt(product, {collection, registry = ART_REGISTRY}) {
   return `${print.title} by ${artist.name} as ${/^[aeiou]/i.test(noun) ? 'an' : 'a'} ${product.family === 'phone-case' ? 'matte tough phone case, shown on iPhone 16 Pro' : noun}`;
 }
 
+/** Where a product's scene (a supplier photo template with its file) lives. */
+export function familyScenePath(product) {
+  return `${product.collection}/${product.family}/scene/${product.handle}.jpg`;
+}
+
+/**
+ * The gallery a family product should show after `media`: its current
+ * preview first, its scene second (when it has one), then every image
+ * already on the product in its present order. Nothing is removed: an
+ * outdated preview moves behind the new images for the owner to delete.
+ * `live` is the product's media in gallery order, each {id, preview, scene}
+ * (whether that image shows the current preview / the scene's pixels).
+ * Returns the uploads needed and the final order (`'preview'`/`'scene'`
+ * stand for images still to upload).
+ */
+export function familyGalleryPlan(live, {scene = false} = {}) {
+  const preview = live.find((media) => media.preview);
+  const shown = scene
+    ? live.find((media) => media.scene && !media.preview)
+    : null;
+  const upload = [
+    ...(preview ? [] : ['preview']),
+    ...(scene && !shown ? ['scene'] : []),
+  ];
+  const kept = live
+    .filter((media) => media !== preview && media !== shown)
+    .map((media) => media.id);
+  const order = [
+    preview?.id ?? 'preview',
+    ...(scene ? [shown?.id ?? 'scene'] : []),
+    ...kept,
+  ];
+  return {
+    inPlace:
+      upload.length === 0 &&
+      order.length === live.length &&
+      order.every((id, index) => live[index].id === id),
+    kept,
+    order,
+    upload,
+  };
+}
+
 /**
  * One handoff row per variant of the products mapped in a supplier's
  * dashboard: Prodigi channel families (`route` 'channel', the default) or

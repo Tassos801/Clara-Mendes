@@ -2310,3 +2310,17 @@ catalog black), and the twelve artist activewear products (exact handles,
 `isArtistActivewear` in `app/lib/storefrontBasics.ts`) take Printful's
 all-over windows: "Processes in 2–7 business days", dispatch 3–8.
 
+
+## 2026-11-12 — Museum blankets pictured upright
+
+A wide work's blanket print file holds the work a quarter-turn anticlockwise
+so it fills the portrait 50 × 60 in print (correct; unchanged). The shopper
+preview drew that file as it is, so twelve released blankets showed their
+art on its side. The preview now turns such a blanket back to landscape with
+the art upright (`blanketTurnedBack` in `scripts/lib/art-product-assets.mjs`,
+`previewRenderer: 2` on the blanket family, which joins its source
+signature). New family step `npm run product -- media <collection> --family
+<f> [--apply]` adds the current preview (and a scene image when one exists)
+to a live gallery and moves it first; it never deletes media. Runbook:
+[Supplied-file families](../add-products-runbook.md). Test:
+`scripts/blanketPreview.node-test.mjs`.
