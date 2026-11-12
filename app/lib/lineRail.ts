@@ -9,11 +9,13 @@ import {
   SKY_PRODUCT_HANDLE,
 } from './catalogFilters.ts';
 import {YOUR_SKY_PAGE} from './featurePages.ts';
+import {GIFTS_PATH} from './giftPage.ts';
 import {TOUGH_CASE_HANDLE} from './toughCase.ts';
 
 export type LineRailEntry = {
   key:
     | 'prints'
+    | 'gifts'
     | 'artists'
     | 'clothing'
     | 'book-nooks'
@@ -62,6 +64,21 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         href: '/collections/all?type=Art+Prints',
         image: {
           src: '/images/line-rail/prints.jpg',
+          width: 360,
+          height: 450,
+        },
+      },
+    ],
+    // The gift edit (/gifts): museum art on blankets, mugs and more. The
+    // circle shows Hiroshige's fireworks blanket (Artists shows the Wave).
+    [
+      true,
+      {
+        key: 'gifts',
+        label: 'Gifts',
+        href: GIFTS_PATH,
+        image: {
+          src: 'https://cdn.shopify.com/s/files/1/1027/6533/0766/files/cm-floating-world-fireworks-at-ryogoku-bridge-blanket.webp?v=1792155060&width=360',
           width: 360,
           height: 450,
         },

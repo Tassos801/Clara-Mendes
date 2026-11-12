@@ -19,6 +19,7 @@ import {artistPath, publicArtists} from './artistShops.ts';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from './bookNooks.ts';
 import {shopCapsulePath} from './capsules.ts';
 import {listGalleryPages} from './galleryPages.ts';
+import {GIFTS_PATH} from './giftPage.ts';
 import {releasedPrintCollections} from './printCatalog.ts';
 import {STOREFRONT_ORIGIN} from './storefrontBasics.ts';
 
@@ -33,6 +34,7 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   '/',
   '/collections/all',
   '/clothing',
+  GIFTS_PATH,
   '/pastel-forms',
   ...(releasedBookNooks().length ? [BOOK_NOOKS_PATH] : []),
   // Artist shops exist only for approved artists with a released product.
