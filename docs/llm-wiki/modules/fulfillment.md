@@ -151,7 +151,18 @@ table → Run workflow).
   `app/lib/merchantFeedShipping.ts` first.
 - Cost: a run makes 9 Storefront carts (one per probe country, 20 s apart),
   and Shopify analytics counts each as a visit that added to cart. Hence
-  weekly, no retry, and a re-run is 9 more carts.
+  weekly, the job is never re-run by itself, and a re-run is 9 more carts.
+- Network failures: the script resends a request a network failure stopped,
+  up to four times, 15 to 60 s apart (`scripts/lib/storefront-request.mjs`,
+  test `scripts/storefrontRequest.node-test.mjs`). Reads and line swaps are
+  resent after any network failure or a 5xx; a cart create only when it
+  never reached Shopify (DNS, refused or timed-out connection), so a retry
+  never makes a second cart. A throttle (429 or 430) or a GraphQL error is
+  not resent. Before this, one DNS failure on 2026-11-12 ended a run after
+  5 carts and kept none of their quotes.
+- Duration: a full run took about 25 minutes on 2026-11-12 (147 products
+  through 9 carts, about one second per line swap); the job's timeout is 45
+  minutes, since a timed-out run has spent its carts for nothing.
 - The workflow token's push starts no push run, and GitHub holds the
   `pull_request` runs of a pull request the token opens until someone with
   write access selects **Approve workflows to run**. The `Validate` job of

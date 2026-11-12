@@ -7,7 +7,9 @@
 #
 # Cost: every run of the first job creates 9 Storefront carts (one per probe
 # country), and Shopify analytics counts each cart as a visit that added to
-# cart. So: once a week, no retry, and a full re-run is 9 more carts.
+# cart. So: once a week, and the job is never re-run by itself: a full re-run
+# is 9 more carts. Within a run the script resends a request a network
+# failure stopped, but never a cart create that may have reached Shopify.
 name: Shipping fee table
 
 on:
@@ -38,7 +40,10 @@ jobs:
     name: Quote checkout
     # A fork has no store to quote.
     if: github.repository == 'Tassos801/Clara-Mendes'
-    timeout-minutes: 20
+    # A full run took about 25 minutes on 2026-11-12 (147 products through 9
+    # carts), plus up to 150 s for each request the script resends. A run
+    # stopped by the timeout has spent its 9 carts for nothing.
+    timeout-minutes: 45
     runs-on: ubuntu-latest
     # This job runs the dependencies' code, so it can only read.
     permissions:

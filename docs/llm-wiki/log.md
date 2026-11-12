@@ -2403,3 +2403,14 @@ pull requests". The `Validate` job now also runs on pull requests opened by
 Storefront workflow can be run by hand to validate a branch. Tested against a
 mocked Storefront API and GitHub CLI only; the first real run is the
 schedule's. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+
+## 2026-11-12 — Fee-table rebuild survives network failures
+
+`npm run shipping-fees` resends a request a network failure stopped, up to
+four times, 15 to 60 s apart (`scripts/lib/storefront-request.mjs`): reads
+and line swaps after any network failure or a 5xx, a cart create only when
+it never reached Shopify, so a retry never makes a second cart. A run that
+morning had died on one DNS failure after 5 carts and kept no quotes. The
+weekly workflow's quote job gets 45 minutes instead of 20: a full run took
+about 25 (147 products through 9 carts), and a timed-out run wastes its
+carts. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
