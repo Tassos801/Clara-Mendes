@@ -149,6 +149,9 @@ table → Run workflow).
   fees) fails `quote`, and no pull request is opened: change the group map
   in `app/lib/printfulShipping.ts` or the rates in
   `app/lib/merchantFeedShipping.ts` first.
+- Duration: one cart line swap per listed Printful piece per probe country
+  (about 1,300 for 147 pieces), roughly 30 minutes; the `quote` job's
+  timeout is 90 minutes. A timeout mid-run spends carts and writes nothing.
 - Cost: a run makes 9 Storefront carts (one per probe country, 20 s apart),
   and Shopify analytics counts each as a visit that added to cart. Hence
   weekly, no retry, and a re-run is 9 more carts.
