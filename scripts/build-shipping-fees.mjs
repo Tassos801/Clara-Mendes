@@ -17,7 +17,7 @@
  * 2026-11-12, no new carts); the US cart goes on through one variant per
  * fixed line and product type. No checkout, no order. Carts are created 20 s
  * apart: a burst of new carts gets the IP throttled, which also blocks
- * add-to-cart on the live site from that IP. A full run takes about 25
+ * add-to-cart on the live site from that IP. A full run takes about 30
  * minutes.
  *
  * A request a network failure stopped is sent again, up to four times, 15

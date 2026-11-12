@@ -40,10 +40,10 @@ jobs:
     name: Quote checkout
     # A fork has no store to quote.
     if: github.repository == 'Tassos801/Clara-Mendes'
-    # A full run took about 25 minutes on 2026-11-12 (147 products through 9
-    # carts), plus up to 150 s for each request the script resends. A run
-    # stopped by the timeout has spent its 9 carts for nothing.
-    timeout-minutes: 45
+    # The script swaps one cart line per listed Printful piece per country
+    # (about 1,300 swaps for 147 pieces): roughly 30 minutes, growing with
+    # the catalogue. A timeout mid-run spends carts and writes nothing.
+    timeout-minutes: 90
     runs-on: ubuntu-latest
     # This job runs the dependencies' code, so it can only read.
     permissions:

@@ -2404,13 +2404,20 @@ Storefront workflow can be run by hand to validate a branch. Tested against a
 mocked Storefront API and GitHub CLI only; the first real run is the
 schedule's. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
 
+## 2026-11-12 — Shipping fee rebuild: 90-minute timeout
+
+A full `npm run shipping-fees` now takes about 30 minutes (one cart line
+swap per listed Printful piece per probe country, about 1,300 for 147
+pieces). The weekly workflow's `quote` job had a 20-minute timeout, which
+would have stopped every run after its carts were made and before the table
+was written; it is now 90 minutes. See
+[fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+
 ## 2026-11-12 — Fee-table rebuild survives network failures
 
 `npm run shipping-fees` resends a request a network failure stopped, up to
 four times, 15 to 60 s apart (`scripts/lib/storefront-request.mjs`): reads
 and line swaps after any network failure or a 5xx, a cart create only when
 it never reached Shopify, so a retry never makes a second cart. A run that
-morning had died on one DNS failure after 5 carts and kept no quotes. The
-weekly workflow's quote job gets 45 minutes instead of 20: a full run took
-about 25 (147 products through 9 carts), and a timed-out run wastes its
-carts. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+morning had died on one DNS failure after 5 carts and kept no quotes. See
+[fulfillment](modules/fulfillment.md#the-weekly-rebuild).
