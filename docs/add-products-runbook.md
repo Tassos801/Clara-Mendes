@@ -195,7 +195,9 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    the owner can accept one work below it, by recording it in that family's
    `ppiExceptions` (`"<artwork id>": {"minPpi", "by", "at", "note"}`, never
    below 150). `prepare` then accepts that work at that floor, and release
-   stops if the file falls below its floor again.
+   stops if the file falls below its floor again. Throw blankets are the
+   exception to "never below 150": the owner accepts lower blanket files
+   case by case (recorded exceptions run from 43 ppi).
    The same verbs take `--families` (every family the collection offers)
    or `--family <f>[,<f>]`:
    - `npm run product -- prepare <collection> --families [--only a,b]` adds

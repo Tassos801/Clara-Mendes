@@ -2324,3 +2324,18 @@ signature). New family step `npm run product -- media <collection> --family
 to a live gallery and moves it first; it never deletes media. Runbook:
 [Supplied-file families](../add-products-runbook.md). Test:
 `scripts/blanketPreview.node-test.mjs`.
+
+## 2026-11-12 — Museum Masterpieces: three more open-access museums
+
+`npm run museum -- fetch` now also takes the J. Paul Getty Museum
+(`getty-<accession>`, CC0 Open Content, record found by SPARQL), the
+Rijksmuseum (`rijks-<object number>`, image under the Public Domain Mark or
+CC0) and Yale University Art Gallery (`yale-<object id>`, manifest
+"Copyright Statement: Public domain"). Adapters:
+`scripts/lib/museum-{getty,rijks,yale}.mjs`; `search` still covers met, aic
+and cma only. A Cleveland textile with no "artist" creator falls back to its
+designer (William Morris). New unreleased collection `museum-masterpieces`
+(ten works, seven new artists awaiting approval) with blanket, cushion and
+Printful mug families; its supplied files sit on a plain off-white mount with
+no AI (`<launchDir>/museum/seven-products-mm`). Test:
+`scripts/museumSources.node-test.mjs`.
