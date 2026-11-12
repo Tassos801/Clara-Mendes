@@ -16,7 +16,8 @@ import {
 // (prints, hanger, acrylic and metal prints, unframed Your Sky), "Canvas 16x20", "Framed Your Sky",
 // "Letter post - cards & postcards" (EU only) and "Pastel Forms plant pots".
 // A country missing from a table means that line does not ship there. When a
-// shipping profile changes in Shopify, change this table in the same PR.
+// shipping profile changes in Shopify, change this table in the same PR: the
+// product page shows these rates to EU buyers too (fixedShippingFee.ts).
 //
 // These EUR tables feed the EUR feeds only. The USD feeds for the United
 // States (once it is its own USD market) quote every rate from a US cart

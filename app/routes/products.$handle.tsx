@@ -24,6 +24,8 @@ import type {Route} from './+types/products.$handle';
 import {storefrontImageLoader} from '~/lib/imageLoader';
 import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
+import {requestToday} from '~/lib/christmasDelivery';
 import {
   focusPhoneModelPicker,
   PhoneModelPicker,
@@ -109,6 +111,7 @@ import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
 import {deriveCardPricing} from '~/lib/productCardPricing';
 import {recordRecentlyViewed} from '~/lib/recentlyViewed';
 import {getProductDescription, getProductLede} from '~/lib/productCopy';
+import {museumMetaDescription} from '~/lib/museumProductFacts';
 import {
   clampCarouselIndex,
   cycleCarouselIndex,
@@ -149,8 +152,8 @@ import {parseApparelDescription} from '~/lib/apparelCopy';
 import {isClothingProduct, isRetiredClothingHandle} from '~/lib/clothing';
 import {clothingSwatchBackground} from '~/lib/clothingPresentation';
 import {imagesForColour, isColourOptionName} from '~/lib/garmentColours';
-import {quotesClothingShipping} from '~/lib/clothingShipping';
-import {quoteClothingShipping} from '~/lib/clothingShipping.server';
+import {fixedShippingFee} from '~/lib/fixedShippingFee';
+import {printfulShippingFee, shippingFeeText} from '~/lib/printfulShipping';
 import {
   APPAREL_SHIPPING_DETAIL_ID,
   ApparelShippingLine,
@@ -396,7 +399,10 @@ function absoluteImageUrl(url?: string | null) {
 
 export const meta: Route.MetaFunction = ({data}) => {
   const product = data?.product;
-  const description = product ? getProductDescription(product) : null;
+  // Museum products lead with what they are (type, size, work, artist).
+  const description =
+    data?.museumMetaDescription ??
+    (product ? getProductDescription(product) : null);
 
   return buildSeoMeta({
     description:
@@ -716,26 +722,22 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           .then((result) => result.product?.images.nodes ?? null)
           .catch(() => null)
       : Promise.resolve(null);
-  const [reachedProduct, relatedProducts, clothingShipping] = await Promise.all([
+  const [reachedProduct, relatedProducts] = await Promise.all([
     withVariantReach(context.storefront, product),
     withDeliveryReach(
       context.storefront,
       museumRelated ?? [...capsuleSiblings, ...bestSellingFill],
     ),
-    // Counter-Diagonal ships at Printful's per-country rates: quote
-    // checkout's fee for one piece to this buyer (cached, never blocks long).
-    // Quiet Current's rate table is in EUR, so a US (USD) buyer gets
-    // checkout's fee instead.
-    quotesClothingShipping(product) ||
-    (isQuietCurrentProduct(product.handle) && buyerCountry === 'US')
-      ? quoteClothingShipping(
-          context.storefront,
-          product.selectedOrFirstAvailableVariant?.id,
-          buyerCountry,
-          {waitUntil: context.waitUntil},
-        )
-      : Promise.resolve(null),
   ]);
+  // Checkout's fee for one piece to this buyer from checked-in tables:
+  // Printful pieces (clothing, museum mugs, blankets, cushions) and, for EU
+  // buyers, Prodigi's flat rates. Never a cart: Shopify counts each cart as
+  // a visit that added to cart.
+  const feeVariant = product.selectedOrFirstAvailableVariant;
+  const clothingShipping =
+    printfulShippingFee(product, feeVariant, buyerCountry, {
+      ships: Boolean(feeVariant?.availableForSale),
+    }) ?? fixedShippingFee(product, feeVariant, buyerCountry);
   const allImages = await colourImages;
   const selectedColour =
     product.selectedOrFirstAvailableVariant?.selectedOptions.find((option) =>
@@ -781,7 +783,10 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     relatedProducts,
     reviews,
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
+    museumMetaDescription: museumMetaDescription(product.handle),
     skyTheme: DEFAULT_SKY_THEME,
+    // "Today" for the Christmas order-by line (components/ChristmasOrderBy).
+    christmasToday: requestToday(request),
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
@@ -1365,6 +1370,8 @@ function ProductPage() {
               </span>
             </div>
 
+            <ChristmasOrderBy />
+
             {kitSpecRows.length > 0 ? (
               <dl className="product-kit-specs" aria-label="Kit at a glance">
                 {kitSpecRows.map((row) => (
@@ -1895,7 +1902,7 @@ function ProductPage() {
               {!showApparelTable && clothingShipping ? (
                 <>
                   Shipping to {deliveryCountry.phrase} is{' '}
-                  {formatMoney(clothingShipping)} for this piece; more pieces
+                  {shippingFeeText(clothingShipping)} for this piece; more pieces
                   can change the fee.{' '}
                 </>
               ) : null}

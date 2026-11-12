@@ -57,8 +57,6 @@ import {
   heroNamesShipping,
   usCollectionHero,
 } from '~/lib/collectionHeroes';
-import {quoteClothingShipping} from '~/lib/clothingShipping.server';
-import {formatMoney} from '~/lib/money';
 import {
   buildCollectionProductFilters,
   extractFacetOptions,
@@ -144,24 +142,18 @@ export const meta: Route.MetaFunction = ({data}) => {
 };
 
 /**
- * The collection's hero. A hero that names a shipping fee (Quiet Current, in
- * EUR) reads checkout's own fee for a US (USD) buyer instead, so no euro
- * figure reaches a dollar page (docs/us-market, A3).
+ * The collection's hero. A hero that names a shipping fee in EUR shows a US
+ * (USD) buyer its US wording without a figure, so no euro amount reaches a
+ * dollar page (docs/us-market, A3). No cart is quoted for it: Shopify counts
+ * each cart as a visit that added to cart.
  */
-async function collectionHeroFor(
+function collectionHeroFor(
   context: Route.LoaderArgs['context'],
   handle: string,
-  variantId: string | null | undefined,
 ) {
   if (context.storefront.i18n.country !== 'US' || !heroNamesShipping(handle))
     return collectionHero(handle);
-  const quote = await quoteClothingShipping(
-    context.storefront,
-    variantId,
-    'US',
-    {waitUntil: context.waitUntil},
-  );
-  return usCollectionHero(handle, quote ? formatMoney(quote) : null);
+  return usCollectionHero(handle, null);
 }
 
 export async function loader({context, params, request}: Route.LoaderArgs) {
@@ -355,11 +347,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       data.collection.description || BRAND.shopAll.collectionFallback,
     facets,
     heading: data.collection.title,
-    hero: await collectionHeroFor(
-      context,
-      data.collection.handle,
-      filterDemoProducts(products.nodes)[0]?.cardVariant?.nodes[0]?.id,
-    ),
+    hero: collectionHeroFor(context, data.collection.handle),
     products: {
       ...products,
       // Labelled where they don't ship to the buyer, not "Sold out".

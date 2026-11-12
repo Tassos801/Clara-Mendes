@@ -170,6 +170,11 @@ export type ArtFamilySpec = {
   printfulPlacements?: string[];
   /** Printful's technique (route 'printful'): it sets the PDP's windows. */
   printfulTechnique?: PrintfulTechnique;
+  /**
+   * Bumped when a supplied family's shopper preview changes pixels (the
+   * files themselves are not rendered here), so `prepare` draws it again.
+   */
+  previewRenderer?: number;
   /** The lead file (the first variant's), for summaries and previews. */
   file: FileSpec;
   /**
@@ -742,6 +747,9 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
     suppliedFiles: {'blanket-50x60': fixed(7500, 9000, 150)},
     printfulPlacements: ['default'],
     printfulTechnique: 'sublimation',
+    // 2: a wide work's preview turns the blanket back to landscape, so the
+    // art reads upright (a blanket has no top).
+    previewRenderer: 2,
     file: {height: 9000, width: 7500, dpi: 150, followsOrientation: false},
     minPpi: 150,
     tags: ['Blankets'],
@@ -1226,6 +1234,9 @@ export function familySourceSignature(
         ? [trim.left, trim.top, trim.right, trim.bottom]
         : [0, 0, 0, 0],
       area: crops.crops[product.artworkId]?.area ?? null,
+      // Only families whose preview changed carry it, so the others'
+      // recorded signatures stay as they are.
+      ...(spec.previewRenderer ? {preview: spec.previewRenderer} : {}),
     });
   const crop = familyCrop(product.family, product.artworkId, {
     crops,

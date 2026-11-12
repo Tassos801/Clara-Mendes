@@ -2310,3 +2310,51 @@ catalog black), and the twelve artist activewear products (exact handles,
 `isArtistActivewear` in `app/lib/storefrontBasics.ts`) take Printful's
 all-over windows: "Processes in 2–7 business days", dispatch 3–8.
 
+
+## 2026-11-12 — Museum blankets pictured upright
+
+A wide work's blanket print file holds the work a quarter-turn anticlockwise
+so it fills the portrait 50 × 60 in print (correct; unchanged). The shopper
+preview drew that file as it is, so twelve released blankets showed their
+art on its side. The preview now turns such a blanket back to landscape with
+the art upright (`blanketTurnedBack` in `scripts/lib/art-product-assets.mjs`,
+`previewRenderer: 2` on the blanket family, which joins its source
+signature). New family step `npm run product -- media <collection> --family
+<f> [--apply]` adds the current preview (and a scene image when one exists)
+to a live gallery and moves it first; it never deletes media. Runbook:
+[Supplied-file families](../add-products-runbook.md). Test:
+`scripts/blanketPreview.node-test.mjs`.
+
+## 2026-11-12 — Gift page and Christmas order-by dates
+
+`/gifts` (`app/routes/gifts.tsx`, `app/lib/giftPage.ts`): museum blankets,
+mugs and cushions lead, then framed prints, phone cases, book nooks, Your Sky
+and wall art, grouped by price in the buyer's currency; only products the
+buyer can buy. Christmas order-by dates per fulfilment line and region in
+`app/lib/christmasDelivery.ts`, shown on the gift page and as one line on
+product pages. Linked from the footer Shop column and the homepage rail.
+See [fulfillment](modules/fulfillment.md#2026-11-12---christmas-order-by-dates).
+
+## 2026-11-12 — What AI assistants crawl
+
+`/llms.txt` is a route now (`app/routes/[llms.txt].tsx`, `app/lib/llmsTxt.ts`),
+not `public/llms.txt`: museum collections, product types (with size, dispatch
+window and reach), artists and clothing lines come from the released catalogs
+and the listed clothing, so a release lists itself
+(`scripts/llmsTxt.node-test.mjs`). Product JSON-LD offers carry `shippingRate`
+from the feeds' fixed tables. Museum product meta descriptions lead with
+type, size, work and artist (`app/lib/museumProductFacts.ts`,
+`scripts/museumMeta.node-test.mjs`), and `buildSeoMeta` cuts on a word. IndexNow:
+key route plus `scripts/indexnow-submit.mjs` (dry run unless `--apply`).
+
+## 2026-11-12 — Printful fees from a table, no carts on page views
+
+Product pages no longer create a Storefront cart to read the shipping fee
+(each cart counted as a no-referrer visit with an add to cart in Shopify
+analytics). Clothing and the museum mugs, blankets and cushions read the
+fee from `app/lib/printfulShippingFees.ts`, rebuilt by
+`npm run shipping-fees`. Printful's own `/v2/shipping-rates` does not match
+checkout, so the table comes from checkout quotes. EU buyers also see the
+flat Prodigi rate on prints, hangers, acrylic and metal, canvas, framed and
+cards (`app/lib/fixedShippingFee.ts`, from `merchantFeedShipping.ts`). See
+[clothing](modules/clothing.md).

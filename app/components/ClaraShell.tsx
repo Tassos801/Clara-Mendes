@@ -220,6 +220,9 @@ function ClaraFooter() {
             <li>
               <Link to="/collections/all">Shop all</Link>
             </li>
+            <li>
+              <Link to="/gifts">Gifts</Link>
+            </li>
             {HAS_ARTISTS ? (
               <li>
                 <Link to="/artists">Artists</Link>

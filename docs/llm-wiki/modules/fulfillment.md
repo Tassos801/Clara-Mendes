@@ -178,7 +178,11 @@ cards EUR 2.90):
 Outside the EU, import taxes and duties are payable by the recipient (DDU);
 the shipping policy, PDP shipping text and llms.txt say so. Structured data
 keeps `SHIPPING_COUNTRY_CODES` to the EU-27: repeating ~180 regions on every
-variant offer would bloat each product page. The paid-order webhook needs a
+variant offer would bloat each product page. Since 2026-11-12 an offer also carries
+`shippingRate` where `FIXED_RATES` (`app/lib/merchantFeedShipping.ts`) has the
+line, one `OfferShippingDetails` per rate (Cyprus, rest of the EU), equal to the
+EUR feed (`scripts/offerShippingRate.node-test.mjs`); Printful lines and the US
+market carry no rate, because their feed rates come from cart quotes. The paid-order webhook needs a
 postcode (`app/lib/sky/fulfilment.ts`), so a Your Sky or phone-case order to
 a country without postcodes (for example Hong Kong or the UAE) lands as
 "needs attention" for a manual Prodigi order.
@@ -293,3 +297,23 @@ the activewear windows, 2–7 and 3–8. `readsUsDelivery` excludes them
 (`printful`), so US buyers read the generic EU + elsewhere wording until
 Printful's US transit is verified. The Line and Colour Prodigi mug keeps
 Prodigi's windows.
+
+## 2026-11-12 - Christmas order-by dates
+
+`app/lib/christmasDelivery.ts` computes one order-by date per fulfilment
+line (Prodigi art, Prodigi cases, Printful blankets and mugs, Printful
+cushions, Printful printed clothing, Printful activewear and embroidery,
+book nooks) and region (EU-27, US): the longest dispatch window from
+`fulfilmentWindows` plus the longest delivery window the product page prints,
+plus a margin, counted back in business days from 24 December (book nooks:
+calendar days, 7-day margin). The margin is 2 business days when the
+partner's own published Standard deadline covers the line and 4 when it does
+not. The shown date is the earlier of that and the partner's deadline
+(`PARTNER_DEADLINES`, by year, with the source URL). Lines show from
+1 November; each disappears the day after its date, and nothing shows after
+25 December. "Today" is the store's date in Nicosia, or `?today=YYYY-MM-DD`.
+The gift page lists the dates; product pages show one line
+(`app/components/ChristmasOrderBy.tsx`). Changing a window here moves the
+dates. Re-read Printful's and Prodigi's pages each year: Prodigi's 2026 page
+was still incomplete on 12 Nov (no Standard date for fine-art prints).
+Test: `scripts/christmasDelivery.node-test.mjs`.

@@ -16,6 +16,7 @@
  *   npm run product -- printful <collection> --family <printful family> [--apply] [--files <json>]
  *   npm run product -- mapped   <collection> --family <printful family> --printful <readback.json>
  *   npm run product -- release  <collection> --family <f> [--only a,b] [--apply]
+ *   npm run product -- media    <collection> --family <f> [--only a,b] [--apply]
  *   npm run product -- verify   <collection> --families [--origin https://…]
  *
  * Only data/art-product-catalog.json and files under the launch folder (and,
@@ -61,8 +62,10 @@ import {
   descriptionText,
   familyAssetPlan,
   familyHandoffRows,
+  familyGalleryPlan,
   familyImageAlt,
   familyReadbackIssues,
+  familyScenePath,
   familyReleaseBlockers,
   familyStageAction,
   familyStatus,
@@ -126,8 +129,40 @@ export function createFamilySteps({
   const absolute = (relativePath) =>
     path.join(launchRoot, ...relativePath.split('/'));
 
-  function saveArtCatalog() {
-    const problems = validateArtProductCatalog(artCatalog);
+  /**
+   * The problems less "released without current assets" on products of the
+   * selected families in other collections (`here`: in this one too), which
+   * `prepare` of their own collection refreshes (a renderer change touches
+   * every collection).
+   */
+  function withoutStaleRenders(problems, {here = false} = {}) {
+    const elsewhere = new Set(
+      artCatalog.products
+        .filter(
+          (product) =>
+            (here || product.collection !== collection.slug) &&
+            families.includes(product.family),
+        )
+        .map((product) => product.handle),
+    );
+    return problems.filter((problem) => {
+      const stale = /^art-product (\S+): released without current assets$/.exec(
+        problem,
+      );
+      return !stale || !elsewhere.has(stale[1]);
+    });
+  }
+
+  function saveArtCatalog({allowStaleElsewhere = false} = {}) {
+    const all = validateArtProductCatalog(artCatalog);
+    const problems = allowStaleElsewhere ? withoutStaleRenders(all) : all;
+    if (problems.length < all.length)
+      console.log(
+        `Still stale in other collections (run prepare there too): ${all
+          .filter((problem) => !problems.includes(problem))
+          .map((problem) => problem.split(' ')[1].replace(/:$/, ''))
+          .join(', ')}`,
+      );
     if (problems.length)
       throw new Error(
         `refusing to write an invalid data/art-product-catalog.json:\n- ${problems.join('\n- ')}`,
@@ -391,7 +426,12 @@ export function createFamilySteps({
     );
     for (const {family, print, reason} of skipped)
       console.log(`Skipped ${print} ${family}: ${reason}.`);
-    assertValid();
+    // A released product of these families whose renderer changed has
+    // stale assets until `prepare` draws them again, in this collection or
+    // the next one run; every other problem stops the run.
+    assertValid(
+      withoutStaleRenders(validateArtProductCatalog(artCatalog), {here: true}),
+    );
     const products = selected().filter(
       (product) => !FAMILY_SPECS[product.family].suppliedFiles,
     );
@@ -555,7 +595,7 @@ export function createFamilySteps({
       throw new Error(
         `Assets failed their checks:\n- ${problems.join('\n- ')}`,
       );
-    saveArtCatalog();
+    saveArtCatalog({allowStaleElsewhere: true});
 
     const prepared = [...products, ...supplied];
     const byFamily = families
@@ -1465,6 +1505,248 @@ export function createFamilySteps({
     return target.resourceUrl;
   }
 
+  // ---------------------------------------------------------------- media --
+
+  /**
+   * Brings a staged product's gallery up to date with its prepared images,
+   * released products included: the current preview first (a renderer
+   * change, such as blankets turned back upright), then its scene when one
+   * was made (`<launch>/<collection>/<family>/scene/<handle>.jpg`, a
+   * supplier photo template holding the print file), then every image it
+   * already has, in their order. It only adds and reorders media: no image
+   * is deleted (the owner removes outdated ones), and no print file, copy,
+   * price or variant is touched. Live images are matched by pixels (Shopify
+   * re-encodes uploads). Dry run unless --apply.
+   */
+  async function media() {
+    const products = selected().filter((product) => product.shopify?.productId);
+    assert.ok(products.length, 'no staged products selected');
+    requirePrepared(products);
+    const admin = await helpers.adminClient();
+
+    async function liveGallery(product) {
+      const {data} = await admin(
+        `query FamilyGallery($id: ID!) { product(id: $id) { id handle status
+          media(first: 50) { nodes { id alt status mediaContentType ... on MediaImage { image { url width height } } } } } }`,
+        {id: product.shopify.productId},
+      );
+      assert.equal(data.product?.handle, product.handle);
+      return data.product;
+    }
+    const matches = async (url, file) => {
+      if (!url || !existsSync(file)) return false;
+      const response = await fetch(url);
+      if (!response.ok) return false;
+      const result = await compareDeployedImage(
+        Buffer.from(await response.arrayBuffer()),
+        readFileSync(file),
+      );
+      return result.ok;
+    };
+    async function planFor(product) {
+      const live = await liveGallery(product);
+      const previewFile = absolute(product.assets.preview.path);
+      const sceneFile = absolute(familyScenePath(product));
+      const scene = existsSync(sceneFile);
+      const nodes = [];
+      for (const node of live.media.nodes)
+        nodes.push({
+          alt: node.alt,
+          id: node.id,
+          preview: await matches(node.image?.url, previewFile),
+          scene: scene && (await matches(node.image?.url, sceneFile)),
+          status: node.status,
+          url: node.image?.url ?? null,
+        });
+      return {
+        live,
+        nodes,
+        plan: familyGalleryPlan(nodes, {scene}),
+        previewFile,
+        product,
+        sceneFile: scene ? sceneFile : null,
+      };
+    }
+
+    const work = [];
+    for (const product of products) work.push(await planFor(product));
+    const describe = (entry, id) => {
+      if (id === 'preview') return 'NEW preview (upload)';
+      if (id === 'scene') return 'NEW scene (upload)';
+      const node = entry.nodes.find((media) => media.id === id);
+      return `${id.split('/').pop()}${node.preview ? ' (= current preview)' : node.scene ? ' (= scene)' : ' (kept)'}`;
+    };
+    console.table(
+      work.map((entry) => ({
+        handle: entry.product.handle,
+        status: entry.live.status,
+        now: entry.nodes.length,
+        upload: entry.plan.upload.join(', ') || '-',
+        after: entry.plan.order.length,
+        action: entry.plan.inPlace ? 'in place' : 'add / reorder',
+      })),
+    );
+    const report = work.map((entry) => ({
+      handle: entry.product.handle,
+      productId: entry.product.shopify.productId,
+      status: entry.live.status,
+      before: entry.nodes.map(({alt, id, preview, scene, url}) => ({
+        alt,
+        id,
+        preview,
+        scene,
+        url,
+      })),
+      upload: entry.plan.upload.map((kind) => ({
+        kind,
+        file: kind === 'preview' ? entry.previewFile : entry.sceneFile,
+        sha256: fileSha(
+          kind === 'preview' ? entry.previewFile : entry.sceneFile,
+        ),
+      })),
+      after: entry.plan.order.map((id) => describe(entry, id)),
+      inPlace: entry.plan.inPlace,
+    }));
+    if (!apply) {
+      const file = writeJson(`media-families-dry-run-${helpers.stamp()}.json`, {
+        collection: collection.slug,
+        dryRun: true,
+        families,
+        products: report,
+      });
+      for (const entry of report.filter((row) => !row.inPlace))
+        console.log(`${entry.handle}: ${entry.after.join(' → ')}`);
+      console.log(
+        `Dry run — nothing written to Shopify. ${report.filter((row) => !row.inPlace).length} of ${report.length} galleries would change (add + reorder only; nothing removed). Saved ${file}. Re-run with --apply.`,
+      );
+      return;
+    }
+
+    const results = [];
+    for (const entry of work) {
+      if (entry.plan.inPlace) continue;
+      const {product} = entry;
+      const alt = familyImageAlt(product, {collection});
+      const uploads = {
+        preview: {
+          alt,
+          file: entry.previewFile,
+          mime: 'image/webp',
+          name: `cm-${collection.slug}-${product.handle}-${product.assets.preview.sha256.slice(0, 8)}.webp`,
+        },
+        scene: {
+          alt: `${alt}, in a room`,
+          file: entry.sceneFile,
+          mime: 'image/jpeg',
+          name: `cm-${collection.slug}-${product.handle}-scene.jpg`,
+        },
+      };
+      if (entry.plan.upload.length) {
+        const staged = [];
+        for (const kind of entry.plan.upload) {
+          const upload = uploads[kind];
+          staged.push({
+            alt: upload.alt,
+            mediaContentType: 'IMAGE',
+            originalSource: await helpers.uploadImage(
+              admin,
+              upload.file,
+              upload.name,
+              upload.mime,
+            ),
+          });
+        }
+        const result = await admin(
+          `mutation AddFamilyMedia($product: ProductUpdateInput!, $media: [CreateMediaInput!]) {
+            productUpdate(product: $product, media: $media) { product { id } userErrors { field message } }
+          }`,
+          {media: staged, product: {id: product.shopify.productId}},
+        );
+        mutationErrors(
+          result.data.productUpdate,
+          `Add media ${product.handle}`,
+        );
+      }
+      // Wait for the new images, then find them by pixels.
+      let fresh = null;
+      for (let attempt = 0; attempt < 40; attempt += 1) {
+        fresh = await planFor(product);
+        const ready = fresh.live.media.nodes.every(
+          (node) => node.status === 'READY',
+        );
+        if (ready && fresh.plan.upload.length === 0) break;
+        if (fresh.live.media.nodes.some((node) => node.status === 'FAILED'))
+          throw new Error(`${product.handle}: an uploaded image FAILED`);
+        await helpers.delay(1500);
+      }
+      assert.equal(
+        fresh.plan.upload.length,
+        0,
+        `${product.handle}: new images not READY or not matched`,
+      );
+      const moves = fresh.plan.order
+        .map((id, index) => ({id, newPosition: String(index)}))
+        .filter(({id}, index) => fresh.nodes[index]?.id !== id);
+      if (moves.length) {
+        const reordered = await admin(
+          `mutation OrderFamilyMedia($id: ID!, $moves: [MoveInput!]!) {
+            productReorderMedia(id: $id, moves: $moves) { job { done id } mediaUserErrors { code field message } }
+          }`,
+          {id: product.shopify.productId, moves},
+        );
+        const payload = reordered.data.productReorderMedia;
+        mutationErrors(
+          {userErrors: payload.mediaUserErrors},
+          `Order media ${product.handle}`,
+        );
+        for (let attempt = 0; payload.job && !payload.job.done; attempt += 1) {
+          assert.ok(
+            attempt < 30,
+            `${product.handle}: media order job timed out`,
+          );
+          await helpers.delay(1000);
+          const {data} = await admin(
+            `query($id: ID!) { job(id: $id) { done } }`,
+            {
+              id: payload.job.id,
+            },
+          );
+          if (data.job?.done) break;
+        }
+      }
+      const after = await planFor(product);
+      // Every image it had is still there; the new order holds.
+      const kept = entry.nodes.map((node) => node.id);
+      const missing = kept.filter(
+        (id) => !after.nodes.some((node) => node.id === id),
+      );
+      assert.equal(missing.length, 0, `${product.handle}: media disappeared`);
+      assert.ok(after.plan.inPlace, `${product.handle}: gallery order differs`);
+      results.push({
+        handle: product.handle,
+        gallery: after.nodes.map(({alt, id, preview, scene, url}) => ({
+          alt,
+          id,
+          preview,
+          scene,
+          url,
+        })),
+      });
+      console.log(
+        `VERIFIED ${product.handle}: ${after.nodes.length} images, preview first`,
+      );
+    }
+    const file = writeJson(`media-families-${helpers.stamp()}.json`, {
+      collection: collection.slug,
+      families,
+      products: report,
+      results,
+    });
+    console.log(
+      `Updated ${results.length} gallery(ies); nothing removed. Evidence ${file}. The storefront reads the new first image at once (no deploy); the Merchant feeds pick it up on their next fetch.`,
+    );
+  }
+
   // -------------------------------------------------------------- release --
 
   async function release() {
@@ -1819,6 +2101,7 @@ export function createFamilySteps({
   return {
     handoff: checked(handoff),
     mapped: checked(mapped),
+    media: checked(media),
     printful: checked(printful),
     prepare,
     release: checked(release),

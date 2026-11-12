@@ -1,6 +1,8 @@
 import type {ClaraCardProduct} from '../components/ClaraProductCard.tsx';
 import {deriveCardPricing} from './productCardPricing.ts';
 import {BRAND} from '../content/brand.ts';
+import {fixedRateLineFor} from './merchantFeed.ts';
+import {FIXED_RATES} from './merchantFeedShipping.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
   DELIVERY_US_BUSINESS_DAYS,
@@ -301,6 +303,7 @@ export function productSchema({
               productType,
               productHandle,
               printfulTechnique,
+              selectedOptions: listedVariants[0]?.selectedOptions,
               tags,
               url,
             })
@@ -343,12 +346,52 @@ function dayRange(window: string) {
 }
 
 /**
+ * The EUR shipping rate per EU country for one variant, from the same fixed
+ * tables the Merchant Center feeds publish (app/lib/merchantFeedShipping.ts):
+ * Cyprus pays `cyprus`, the rest of the EU `eu`. Null where no static rate
+ * exists (Printful lines, whose feed rates come from cart quotes, and any
+ * line the feeds don't list) and outside the default (EUR) market: the USD
+ * feeds quote the US from a cart too.
+ */
+function staticEuRates({
+  currency,
+  market,
+  productHandle,
+  productType,
+  selectedOptions,
+  tags,
+}: {
+  currency: string;
+  market: SchemaMarket;
+  productHandle?: string | null;
+  productType?: string | null;
+  selectedOptions?: ReadonlyArray<{name: string; value: string}>;
+  tags?: string[] | null;
+}): Map<string, string> | null {
+  if (market !== null || currency !== 'EUR' || !productHandle) return null;
+  const line = fixedRateLineFor(
+    {handle: productHandle, productType: productType ?? '', tags: tags ?? []},
+    selectedOptions ?? [],
+  );
+  if (!line) return null;
+  const rates = FIXED_RATES[line];
+  return new Map(
+    SHIPPING_COUNTRY_CODES.map((country) => [
+      country,
+      country === 'CY' ? rates.cyprus : rates.eu,
+    ]),
+  );
+}
+
+/**
  * Shipping and return enrichments for Offer nodes, mirroring the published
  * promises: the product type's dispatch window (prints 2–4 business days,
  * Printful activewear 3–8), delivery after dispatch (EU 5–10, or the US
- * 7–15 on a US buyer's page; storefrontBasics constants), and the refund
- * policy's returns (merchantReturnPolicy below). Google reads these for
- * shipping/returns annotations on product results.
+ * 7–15 on a US buyer's page; storefrontBasics constants), the shipping
+ * rate where a static one exists (one OfferShippingDetails per rate, see
+ * staticEuRates), and the refund policy's returns (merchantReturnPolicy
+ * below). Google reads these for shipping/returns annotations on product
+ * results.
  */
 function offerShippingDetails(
   productType?: string | null,
@@ -356,6 +399,7 @@ function offerShippingDetails(
   tags?: string[] | null,
   printfulTechnique?: PrintfulTechnique | null,
   market: SchemaMarket = null,
+  rates: Map<string, string> | null = null,
 ) {
   const windows = fulfilmentWindows(
     productType,
@@ -364,9 +408,13 @@ function offerShippingDetails(
     printfulTechnique,
   );
   if (!windows) return undefined;
-  return {
+  const countries = schemaCountries(market);
+  const details = (destinations: string[], rate?: string) => ({
     '@type': 'OfferShippingDetails',
-    shippingDestination: schemaCountries(market).map((country) => ({
+    shippingRate: rate
+      ? {'@type': 'MonetaryAmount', value: rate, currency: 'EUR'}
+      : undefined,
+    shippingDestination: destinations.map((country) => ({
       '@type': 'DefinedRegion',
       addressCountry: country,
     })),
@@ -387,7 +435,19 @@ function offerShippingDetails(
         unitCode: 'DAY',
       },
     },
-  };
+  });
+  if (!rates) return details(countries);
+  // One block per rate, countries in their usual order.
+  const byRate = new Map<string, string[]>();
+  for (const country of countries) {
+    const rate = rates.get(country);
+    if (!rate) continue;
+    byRate.set(rate, [...(byRate.get(rate) ?? []), country]);
+  }
+  const blocks = [...byRate].map(([rate, destinations]) =>
+    details(destinations, rate),
+  );
+  return blocks.length === 1 ? blocks[0] : blocks;
 }
 
 /**
@@ -431,6 +491,7 @@ function offerFromPrice({
   productType,
   productHandle,
   printfulTechnique,
+  selectedOptions,
   tags,
   url,
 }: {
@@ -438,6 +499,8 @@ function offerFromPrice({
   market?: SchemaMarket;
   includeCommerceDetails?: boolean;
   price: MoneyAmount;
+  /** The variant's options: they pick its shipping table (Your Sky framing). */
+  selectedOptions?: ReadonlyArray<{name: string; value: string}>;
   productType?: string | null;
   productHandle?: string | null;
   printfulTechnique?: PrintfulTechnique | null;
@@ -457,6 +520,14 @@ function offerFromPrice({
           tags,
           printfulTechnique,
           market,
+          staticEuRates({
+            currency: price.currencyCode,
+            market,
+            productHandle,
+            productType,
+            selectedOptions,
+            tags,
+          }),
         )
       : undefined,
     hasMerchantReturnPolicy: includeCommerceDetails
@@ -518,6 +589,7 @@ function productVariantSchema({
       productType,
       productHandle,
       printfulTechnique,
+      selectedOptions: variant.selectedOptions,
       tags,
       url: variantUrl.toString(),
     }),
@@ -569,5 +641,9 @@ function truncate(value: string, maxLength: number) {
   const normalized = value.replace(/\s+/g, ' ').trim();
   if (normalized.length <= maxLength) return normalized;
 
-  return `${normalized.slice(0, maxLength - 3).trimEnd()}...`;
+  // Cut at the last word boundary that fits, never mid-word.
+  const room = normalized.slice(0, maxLength - 2);
+  const cut = room.lastIndexOf(' ');
+  const head = cut > maxLength / 2 ? room.slice(0, cut) : room.slice(0, -1);
+  return `${head.replace(/[\s,;:.–—-]+$/, '')}...`;
 }
