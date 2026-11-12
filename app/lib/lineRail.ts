@@ -44,6 +44,11 @@ const POT_HANDLES: readonly string[] = pastelPots.designs.map(
 );
 
 /**
+ * Christmas 2026: every circle shows a `-christmas.jpg` picture. Files in
+ * public/ are cached by browsers for a year, so a changed picture always
+ * gets a new file name. The earlier pictures still sit at the plain names;
+ * this file at commit 183134e has their entries for after the season.
+ *
  * The released product lines, in rail order; an unreleased line never
  * appears. The homepage renders one circle per entry under the hero, so the
  * gates match the primary navigation's (app/lib/navLinks.ts).
@@ -63,7 +68,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Prints',
         href: '/collections/all?type=Art+Prints',
         image: {
-          src: '/images/line-rail/prints.jpg',
+          src: '/images/line-rail/prints-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -79,7 +84,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Gifts',
         href: GIFTS_PATH,
         image: {
-          src: '/images/line-rail/gifts.jpg',
+          src: '/images/line-rail/gifts-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -92,7 +97,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Artists',
         href: '/artists',
         image: {
-          src: '/images/line-rail/artists.jpg',
+          src: '/images/line-rail/artists-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -105,7 +110,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Clothing',
         href: '/clothing',
         image: {
-          src: '/images/line-rail/clothing.jpg',
+          src: '/images/line-rail/clothing-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -118,7 +123,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Book Nooks',
         href: BOOK_NOOKS_PATH,
         image: {
-          src: '/images/line-rail/book-nooks.jpg',
+          src: '/images/line-rail/book-nooks-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -131,7 +136,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Cases',
         href: `/products/${TOUGH_CASE_HANDLE}`,
         image: {
-          src: '/images/line-rail/cases.jpg',
+          src: '/images/line-rail/cases-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -144,7 +149,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Your Sky',
         href: YOUR_SKY_PAGE.path,
         image: {
-          src: '/images/line-rail/your-sky.jpg',
+          src: '/images/line-rail/your-sky-christmas.jpg',
           width: 360,
           height: 360,
         },
@@ -159,7 +164,7 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
         label: 'Pots',
         href: '/pastel-forms',
         image: {
-          src: '/images/line-rail/pots.jpg',
+          src: '/images/line-rail/pots-christmas.jpg',
           width: 360,
           height: 360,
         },
