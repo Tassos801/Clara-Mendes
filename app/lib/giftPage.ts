@@ -18,6 +18,9 @@ export const GIFT_SECTIONS = [
     label: 'Throw blankets',
     handles: [
       'the-great-wave-off-kanagawa-blanket',
+      'irises-blanket',
+      'wheat-field-with-cypresses-blanket',
+      'strawberry-thief-blanket',
       'fireworks-at-ryogoku-bridge-blanket',
       'sudden-shower-over-shin-ohashi-bridge-and-atake-blanket',
       'composition-with-red-yellow-and-blue-blanket',
@@ -30,6 +33,9 @@ export const GIFT_SECTIONS = [
     label: 'Mugs',
     handles: [
       'the-great-wave-off-kanagawa-mug',
+      'irises-mug',
+      'the-night-cafe-mug',
+      'water-lilies-agapanthus-mug',
       'fireworks-at-ryogoku-bridge-mug',
       'sudden-shower-over-shin-ohashi-bridge-and-atake-mug',
       'tago-bay-near-ejiri-on-the-tokaido-mug',
@@ -40,6 +46,9 @@ export const GIFT_SECTIONS = [
     label: 'Cushions',
     handles: [
       'the-great-wave-off-kanagawa-cushion',
+      'strawberry-thief-cushion',
+      'irises-cushion',
+      'roses-in-a-vase-cushion',
       'kinryusan-temple-at-asakusa-cushion',
       'composition-with-red-yellow-and-blue-cushion',
       'painting-with-troika-cushion',

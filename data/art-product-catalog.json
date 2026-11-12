@@ -11253,9 +11253,9 @@
       "artworkId": "getty-90.PA.20",
       "title": "Irises Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-01-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"31f823661ba209e70a82d9c41b98677bcd10e51be839a49d19460fa57a90859d","printfulSyncProductId":"492712261","printfulSyncVariantId":"5636208865","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-01-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"31f823661ba209e70a82d9c41b98677bcd10e51be839a49d19460fa57a90859d","printfulSyncProductId":"492712261","printfulSyncVariantId":"5636208865","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11302,9 +11302,9 @@
       "artworkId": "met-436535",
       "title": "Wheat Field with Cypresses Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-02-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"0259e27d3a4260fbc927dd916678ef714f9dc8c054a03aa2a4597a0289cd80d9","printfulSyncProductId":"492712264","printfulSyncVariantId":"5636208893","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-02-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"0259e27d3a4260fbc927dd916678ef714f9dc8c054a03aa2a4597a0289cd80d9","printfulSyncProductId":"492712264","printfulSyncVariantId":"5636208893","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11351,9 +11351,9 @@
       "artworkId": "getty-95.PA.63",
       "title": "Wheatstacks, Snow Effect, Morning Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-03-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"df8f7f977df254a0cb093529b8eec3d60ee494345941db83498353662a7d4ce0","printfulSyncProductId":"492712283","printfulSyncVariantId":"5636208912","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-03-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"df8f7f977df254a0cb093529b8eec3d60ee494345941db83498353662a7d4ce0","printfulSyncProductId":"492712283","printfulSyncVariantId":"5636208912","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11400,9 +11400,9 @@
       "artworkId": "met-436819",
       "title": "Mäda Primavesi Mug",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-04-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"efbf48795c93a156bc09366ad9731afc52b08bc86a6634920b659dd86029c818","printfulSyncProductId":"492712284","printfulSyncVariantId":"5636208915","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-04-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"efbf48795c93a156bc09366ad9731afc52b08bc86a6634920b659dd86029c818","printfulSyncProductId":"492712284","printfulSyncVariantId":"5636208915","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11449,9 +11449,9 @@
       "artworkId": "rijks-SK-A-2344",
       "title": "The Milkmaid Mug",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-05-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"31f93b2bd03660802b62b04adfcbcb9d72bd3df4ea69e8f7ce13bc5009666fcd","printfulSyncProductId":"492712286","printfulSyncVariantId":"5636208917","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-05-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"31f93b2bd03660802b62b04adfcbcb9d72bd3df4ea69e8f7ce13bc5009666fcd","printfulSyncProductId":"492712286","printfulSyncVariantId":"5636208917","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11498,9 +11498,9 @@
       "artworkId": "cma-1937.696",
       "title": "Strawberry Thief Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-06-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"0c49970c32935feee8836d4e56d9a52d1c176e0304261f648ed6633726330767","printfulSyncProductId":"492712289","printfulSyncVariantId":"5636208981","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-06-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"0c49970c32935feee8836d4e56d9a52d1c176e0304261f648ed6633726330767","printfulSyncProductId":"492712289","printfulSyncVariantId":"5636208981","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11547,9 +11547,9 @@
       "artworkId": "yale-12507",
       "title": "The Night Café Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-07-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"904444ea2105c6515eba79904ae29cc492ae6247e1144a0c40b71bbbc7b26bdd","printfulSyncProductId":"492712291","printfulSyncVariantId":"5636209003","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-07-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"904444ea2105c6515eba79904ae29cc492ae6247e1144a0c40b71bbbc7b26bdd","printfulSyncProductId":"492712291","printfulSyncVariantId":"5636209003","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11596,9 +11596,9 @@
       "artworkId": "cma-1960.81",
       "title": "Water Lilies (Agapanthus) Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-08-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"34b3eb56bb1a5f21d1e1f81cf0aa7060805825bd0c956b4b7de4a2faece21ef1","printfulSyncProductId":"492712293","printfulSyncVariantId":"5636209005","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-08-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"34b3eb56bb1a5f21d1e1f81cf0aa7060805825bd0c956b4b7de4a2faece21ef1","printfulSyncProductId":"492712293","printfulSyncVariantId":"5636209005","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11645,9 +11645,9 @@
       "artworkId": "cma-1941.14",
       "title": "Roses in a Vase Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-09-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"54a5309b2337303dcc51c84649137aa3a6d5cdf4f684686fe6838afe99d169fe","printfulSyncProductId":"492712295","printfulSyncVariantId":"5636209008","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-09-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"54a5309b2337303dcc51c84649137aa3a6d5cdf4f684686fe6838afe99d169fe","printfulSyncProductId":"492712295","printfulSyncVariantId":"5636209008","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11694,9 +11694,9 @@
       "artworkId": "met-438817",
       "title": "The Dance Class Mug",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-10-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c2eb2652aae309b574c388662aef02edc3a26b5219b2ad66fa0f8d605459c191","printfulSyncProductId":"492712297","printfulSyncVariantId":"5636209030","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-10-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"c2eb2652aae309b574c388662aef02edc3a26b5219b2ad66fa0f8d605459c191","printfulSyncProductId":"492712297","printfulSyncVariantId":"5636209030","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11743,12 +11743,12 @@
       "artworkId": "getty-90.PA.20",
       "title": "Irises Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-01-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209031","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-01-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209032","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-01-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209033","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-01-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209034","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-01-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209031","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-01-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209032","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-01-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209033","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-01-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"8417297af3e67b1e2bc5dfa42ef3a847e854b374c0e76eea76ae4319734e11a9","printfulSyncProductId":"492712298","printfulSyncVariantId":"5636209034","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11798,12 +11798,12 @@
       "artworkId": "met-436535",
       "title": "Wheat Field with Cypresses Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-02-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209048","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-02-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209049","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-02-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209050","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-02-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209051","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-02-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209048","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-02-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209049","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-02-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209050","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-02-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a932d3dc3d82d3cba2a8b6bd721a5d9c17e84205e77138adf60ebad17035afef","printfulSyncProductId":"492712300","printfulSyncVariantId":"5636209051","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11853,12 +11853,12 @@
       "artworkId": "getty-95.PA.63",
       "title": "Wheatstacks, Snow Effect, Morning Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-03-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209064","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-03-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209065","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-03-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209066","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-03-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209067","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-03-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209064","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-03-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209065","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-03-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209066","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-03-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"7061a1e3b427b3f67eae5fee7d7413a208fce1ce7f8485fff514ab0953894b2d","printfulSyncProductId":"492712313","printfulSyncVariantId":"5636209067","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11908,12 +11908,12 @@
       "artworkId": "met-436819",
       "title": "Mäda Primavesi Cushion",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-04-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209071","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-04-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209072","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-04-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209073","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-04-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209074","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-04-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209071","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-04-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209072","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-04-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209073","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-04-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3b068b5d1f1f1f72322c31c0633626966602916e292dc69cf44df7d2673f0aca","printfulSyncProductId":"492712317","printfulSyncVariantId":"5636209074","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -11963,12 +11963,12 @@
       "artworkId": "rijks-SK-A-2344",
       "title": "The Milkmaid Cushion",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-05-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209092","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-05-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209093","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-05-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209094","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-05-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209095","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-05-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209092","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-05-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209093","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-05-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209094","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-05-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"6955d0117518195ef9d467dd31e415c2a419deba4a30f24de82e15ba4e82b9dc","printfulSyncProductId":"492712322","printfulSyncVariantId":"5636209095","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12018,12 +12018,12 @@
       "artworkId": "cma-1937.696",
       "title": "Strawberry Thief Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-06-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209114","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-06-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209115","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-06-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209116","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-06-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209117","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-06-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209114","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-06-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209115","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-06-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209116","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-06-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"a553dc8c20df5a00483d645e3e2108737cdf63411d1d9b459e29792fdc35f7b4","printfulSyncProductId":"492712325","printfulSyncVariantId":"5636209117","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12073,12 +12073,12 @@
       "artworkId": "yale-12507",
       "title": "The Night Café Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-07-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209143","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-07-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209144","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-07-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209145","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-07-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209146","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-07-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209143","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-07-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209144","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-07-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209145","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-07-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"9a351ed22c1929e2d374e5dd2d2583a1f1a26f64cb1432785728322a4deed90f","printfulSyncProductId":"492712328","printfulSyncVariantId":"5636209146","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12128,12 +12128,12 @@
       "artworkId": "cma-1960.81",
       "title": "Water Lilies (Agapanthus) Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-08-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209156","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-08-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209157","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-08-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209158","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-08-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209159","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-08-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209156","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-08-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209157","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-08-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209158","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-08-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"446db6b08a6dae5f1de4509bacfbbf94acca9dafb173126e7e1a721c93d80f3d","printfulSyncProductId":"492712329","printfulSyncVariantId":"5636209159","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12183,12 +12183,12 @@
       "artworkId": "cma-1941.14",
       "title": "Roses in a Vase Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-09-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209189","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-09-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209190","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-09-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209191","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-09-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209192","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-09-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209189","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-09-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209190","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-09-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209191","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-09-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"06f841faa63501a554611c4487e6fe19aa6b8cfef6629867252ac7653f0a1a22","printfulSyncProductId":"492712332","printfulSyncVariantId":"5636209192","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12238,12 +12238,12 @@
       "artworkId": "met-438817",
       "title": "The Dance Class Cushion",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-10-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209216","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-10-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209217","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-10-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209218","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-10-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209219","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-10-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209216","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-10-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209217","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-10-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209218","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-10-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"c6f863a00d0568f9d68b534f8d76aa09d22a29f522725589c3f814cb4ed315b9","printfulSyncProductId":"492712344","printfulSyncVariantId":"5636209219","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12293,9 +12293,9 @@
       "artworkId": "getty-90.PA.20",
       "title": "Irises Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"50113a1698275777c63beef96fd07d87dbb94fb3edbdaf7f4124d1424448dabb","printfulSyncProductId":"492712352","printfulSyncVariantId":"5636209227","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"50113a1698275777c63beef96fd07d87dbb94fb3edbdaf7f4124d1424448dabb","printfulSyncProductId":"492712352","printfulSyncVariantId":"5636209227","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12342,9 +12342,9 @@
       "artworkId": "met-436535",
       "title": "Wheat Field with Cypresses Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-02-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"52ca5386aac8d11558fc7fb3992a70196320883388634c9e630f195cba7150c5","printfulSyncProductId":"492712354","printfulSyncVariantId":"5636209236","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-02-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"52ca5386aac8d11558fc7fb3992a70196320883388634c9e630f195cba7150c5","printfulSyncProductId":"492712354","printfulSyncVariantId":"5636209236","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12391,9 +12391,9 @@
       "artworkId": "getty-95.PA.63",
       "title": "Wheatstacks, Snow Effect, Morning Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"976963b4763d454392a30417acf6aebf8f7f57295f576db03ae78b64950e150f","printfulSyncProductId":"492712356","printfulSyncVariantId":"5636209238","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"976963b4763d454392a30417acf6aebf8f7f57295f576db03ae78b64950e150f","printfulSyncProductId":"492712356","printfulSyncVariantId":"5636209238","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12440,9 +12440,9 @@
       "artworkId": "met-436819",
       "title": "Mäda Primavesi Throw Blanket",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-04-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4dc5d7bf7bc8d07b98d1b64300b7707c3d7c2058d5638a4282839c746b60e44f","printfulSyncProductId":"492712361","printfulSyncVariantId":"5636209246","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-04-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"4dc5d7bf7bc8d07b98d1b64300b7707c3d7c2058d5638a4282839c746b60e44f","printfulSyncProductId":"492712361","printfulSyncVariantId":"5636209246","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12489,9 +12489,9 @@
       "artworkId": "rijks-SK-A-2344",
       "title": "The Milkmaid Throw Blanket",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-05-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"927b0d7562cc813955d455442132ece4c212bfe4b87b05c41462f39cbc56e1d6","printfulSyncProductId":"492712390","printfulSyncVariantId":"5636209279","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-05-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"927b0d7562cc813955d455442132ece4c212bfe4b87b05c41462f39cbc56e1d6","printfulSyncProductId":"492712390","printfulSyncVariantId":"5636209279","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12538,9 +12538,9 @@
       "artworkId": "cma-1937.696",
       "title": "Strawberry Thief Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-06-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"309c22074068e992ac93d39f35656b9721e1cd5302873f8aaf196605d4c63a5f","printfulSyncProductId":"492712411","printfulSyncVariantId":"5636209313","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-06-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"309c22074068e992ac93d39f35656b9721e1cd5302873f8aaf196605d4c63a5f","printfulSyncProductId":"492712411","printfulSyncVariantId":"5636209313","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12587,9 +12587,9 @@
       "artworkId": "yale-12507",
       "title": "The Night Café Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-07-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"65cb0486e43db1e7692918fab1b75112851eca0f6ab701e5658000779bd32e60","printfulSyncProductId":"492712412","printfulSyncVariantId":"5636209316","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-07-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"65cb0486e43db1e7692918fab1b75112851eca0f6ab701e5658000779bd32e60","printfulSyncProductId":"492712412","printfulSyncVariantId":"5636209316","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12636,9 +12636,9 @@
       "artworkId": "cma-1960.81",
       "title": "Water Lilies (Agapanthus) Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-08-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"e668e5392016addf80b0cf3ca8769c0ee06e388d529d1218b6d6d1e74956f01b","printfulSyncProductId":"492712420","printfulSyncVariantId":"5636209329","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-08-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"e668e5392016addf80b0cf3ca8769c0ee06e388d529d1218b6d6d1e74956f01b","printfulSyncProductId":"492712420","printfulSyncVariantId":"5636209329","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12685,9 +12685,9 @@
       "artworkId": "cma-1941.14",
       "title": "Roses in a Vase Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-09-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"290d90d31e05f9614406b5dd9723fa1577fee024c1e1a99b925d80c6e02095ab","printfulSyncProductId":"492712432","printfulSyncVariantId":"5636209344","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-09-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"290d90d31e05f9614406b5dd9723fa1577fee024c1e1a99b925d80c6e02095ab","printfulSyncProductId":"492712432","printfulSyncVariantId":"5636209344","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12734,9 +12734,9 @@
       "artworkId": "met-438817",
       "title": "The Dance Class Throw Blanket",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-10-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3b27db8490d32eeffe357f6d00f6a6c947e61b41a49a2b06381d1e697b669fe6","printfulSyncProductId":"492712451","printfulSyncVariantId":"5636209365","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-10-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3b27db8490d32eeffe357f6d00f6a6c947e61b41a49a2b06381d1e697b669fe6","printfulSyncProductId":"492712451","printfulSyncVariantId":"5636209365","verified":true,"verifiedAt":"2026-11-12","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
