@@ -13,11 +13,17 @@
  *
  * Shopify counts every cart as a visit that added to cart, so this makes
  * one cart per probe country (9) and swaps its single line through one
- * variant of every listed Printful product (about 45 line updates per
- * cart, no new carts); the US cart goes on through one variant per fixed
- * line and product type. No checkout, no order. Carts are created 20 s apart:
- * a burst of new carts gets the IP throttled, which also blocks add-to-cart
- * on the live site from that IP.
+ * variant of every listed Printful product (147 line updates per cart on
+ * 2026-11-12, no new carts); the US cart goes on through one variant per
+ * fixed line and product type. No checkout, no order. Carts are created 20 s
+ * apart: a burst of new carts gets the IP throttled, which also blocks
+ * add-to-cart on the live site from that IP. A full run takes about 30
+ * minutes.
+ *
+ * A request a network failure stopped is sent again, up to four times, 15
+ * to 60 s apart, unless it is a cart create that may have reached Shopify
+ * (scripts/lib/storefront-request.mjs): a DNS failure halfway no longer
+ * throws away the carts already quoted.
  *
  * It stops without writing when two EU probe countries disagree, when
  * products of one group are charged different fees (the group map in
@@ -27,6 +33,7 @@
 import {writeFileSync, readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {getRequiredEnv, envWithLocalDefaults} from './lib/env.mjs';
+import {storefrontRequest} from './lib/storefront-request.mjs';
 
 const {PRINTFUL_FEE_REGIONS, PRINTFUL_SHIPPING_GROUPS, printfulShippingGroup} =
   await import('../app/lib/printfulShipping.ts');
@@ -63,21 +70,19 @@ const token = getRequiredEnv(env, 'PUBLIC_STOREFRONT_API_TOKEN');
 const check = process.argv.includes('--check');
 const sleep = (ms) => new Promise((done) => setTimeout(done, ms));
 
-async function storefront(query, variables) {
-  const response = await fetch(
-    `https://${domain}/api/${API_VERSION}/graphql.json`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Storefront-Access-Token': token,
-      },
-      body: JSON.stringify({query, variables}),
-    },
-  );
-  const body = await response.json();
-  if (body.errors) throw new Error(JSON.stringify(body.errors).slice(0, 400));
-  return body.data;
+/**
+ * Reads and line swaps are `repeatable`: sending one twice leaves the store
+ * as sending it once does. A cart create is not.
+ */
+function storefront(query, variables, {repeatable = true, label} = {}) {
+  return storefrontRequest({
+    endpoint: `https://${domain}/api/${API_VERSION}/graphql.json`,
+    token,
+    query,
+    variables,
+    repeatable,
+    label,
+  });
 }
 
 /**
@@ -104,6 +109,7 @@ async function quoteItems() {
         }
       }`,
       {after},
+      {label: 'catalogue read'},
     );
     for (const product of data.products.nodes) {
       const seen = new Set();
@@ -182,42 +188,50 @@ async function quoteCountry(country, items) {
       if (carts) await sleep(CART_GAP_MS);
       carts++;
       result = (
-        await storefront(CREATE, {
-          country,
-          input: {
-            buyerIdentity: {countryCode: country},
-            delivery: {
-              addresses: [
-                {
-                  address: {
-                    deliveryAddress: {
-                      countryCode: country,
-                      ...QUOTE_ADDRESSES[country],
+        await storefront(
+          CREATE,
+          {
+            country,
+            input: {
+              buyerIdentity: {countryCode: country},
+              delivery: {
+                addresses: [
+                  {
+                    address: {
+                      deliveryAddress: {
+                        countryCode: country,
+                        ...QUOTE_ADDRESSES[country],
+                      },
                     },
+                    selected: true,
+                    validationStrategy: 'COUNTRY_CODE_ONLY',
                   },
-                  selected: true,
-                  validationStrategy: 'COUNTRY_CODE_ONLY',
-                },
-              ],
+                ],
+              },
+              lines: [{merchandiseId: item.variantId, quantity: 1}],
             },
-            lines: [{merchandiseId: item.variantId, quantity: 1}],
           },
-        })
+          {repeatable: false, label: `${country} cart create`},
+        )
       ).cartCreate;
     } else {
       swaps++;
       result = (
-        await storefront(SWAP, {
-          country,
-          cartId: cart.id,
-          lines: [
-            {
-              id: cart.lines.nodes[0].id,
-              merchandiseId: item.variantId,
-              quantity: 1,
-            },
-          ],
-        })
+        await storefront(
+          SWAP,
+          {
+            country,
+            cartId: cart.id,
+            lines: [
+              {
+                id: cart.lines.nodes[0].id,
+                merchandiseId: item.variantId,
+                quantity: 1,
+              },
+            ],
+          },
+          {label: `${country} line swap`},
+        )
       ).cartLinesUpdate;
       await sleep(SWAP_GAP_MS);
     }

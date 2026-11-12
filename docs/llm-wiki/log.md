@@ -2412,3 +2412,12 @@ pieces). The weekly workflow's `quote` job had a 20-minute timeout, which
 would have stopped every run after its carts were made and before the table
 was written; it is now 90 minutes. See
 [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+
+## 2026-11-12 — Fee-table rebuild survives network failures
+
+`npm run shipping-fees` resends a request a network failure stopped, up to
+four times, 15 to 60 s apart (`scripts/lib/storefront-request.mjs`): reads
+and line swaps after any network failure or a 5xx, a cart create only when
+it never reached Shopify, so a retry never makes a second cart. A run that
+morning had died on one DNS failure after 5 carts and kept no quotes. See
+[fulfillment](modules/fulfillment.md#the-weekly-rebuild).

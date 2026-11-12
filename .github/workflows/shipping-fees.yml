@@ -7,7 +7,9 @@
 #
 # Cost: every run of the first job creates 9 Storefront carts (one per probe
 # country), and Shopify analytics counts each cart as a visit that added to
-# cart. So: once a week, no retry, and a full re-run is 9 more carts.
+# cart. So: once a week, and the job is never re-run by itself: a full re-run
+# is 9 more carts. Within a run the script resends a request a network
+# failure stopped, but never a cart create that may have reached Shopify.
 name: Shipping fee table
 
 on:
