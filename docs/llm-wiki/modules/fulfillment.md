@@ -108,6 +108,12 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
     per window; a failed build answers 503 so Merchant Center keeps the
     last good fetch. Test: `scripts/merchantFeed.node-test.mjs` runs every
     feed route's loader with a `storefront.mutate` that throws.
+  - Museum titles name the artist ("Irises Throw Blanket by Van Gogh —
+    50 × 60 in"), because Shopping matches searches mostly on the title.
+    The artist comes from the art registry by product handle
+    (`artistProducts()`, `artistShortName()` in `app/lib/artistShops.ts`),
+    so a new museum product needs no feed edit; the old artist-tag list is
+    the fallback.
 
 ## Changing A Window
 

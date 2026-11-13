@@ -250,9 +250,21 @@ export function artistMeta(
   ].filter((value): value is string => Boolean(value));
 }
 
-/** "Hokusai" from "Hokusai, Katsushika", for "Shop Hokusai". */
+/**
+ * "Hokusai" from "Hokusai, Katsushika", for "Shop Hokusai". A lower-case
+ * name particle stays with the surname: "Gogh, Vincent van" gives
+ * "Van Gogh", never "Gogh".
+ */
 export function artistShortName(artist: Pick<Artist, 'name' | 'sortName'>) {
-  return artist.sortName.split(',')[0].trim() || artist.name;
+  const [surname = '', given = ''] = artist.sortName
+    .split(',')
+    .map((part) => part.trim());
+  if (!surname) return artist.name;
+  const words = given.split(/\s+/);
+  let start = words.length;
+  while (start > 0 && /^\p{Ll}/u.test(words[start - 1])) start -= 1;
+  const name = [...words.slice(start), surname].join(' ');
+  return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
 /** The first sentence of owner-approved text, kept to a card's length. */
