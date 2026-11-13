@@ -267,6 +267,39 @@ export function artistShortName(artist: Pick<Artist, 'name' | 'sortName'>) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+let shortNamesByHandle: Map<string, string> | undefined;
+
+/**
+ * The short name of a product's registered artist, by Shopify handle:
+ * "Van Gogh" for `irises-blanket`. Feed titles and page titles share it.
+ */
+export function artistShortNameForHandle(handle: string) {
+  shortNamesByHandle ??= new Map(
+    artistProducts().flatMap((entry) => {
+      const artist = findArtist(entry.artistId);
+      return artist ? [[entry.handle, artistShortName(artist)] as const] : [];
+    }),
+  );
+  return shortNamesByHandle.get(handle);
+}
+
+/**
+ * A museum product's title for search results and structured data:
+ * "Irises Throw Blanket by Van Gogh". The Shopify title carries no artist;
+ * the page shows the artist in its own line. Other products keep their title.
+ */
+export function museumSeoTitle(product: {
+  handle: string;
+  tags?: readonly string[] | null;
+  title: string;
+}) {
+  if (!product.tags?.includes('Museum Reproduction')) return product.title;
+  const name = artistShortNameForHandle(product.handle);
+  return name && !product.title.includes(name)
+    ? `${product.title} by ${name}`
+    : product.title;
+}
+
 /** The first sentence of owner-approved text, kept to a card's length. */
 export function firstSentence(text: string) {
   const sentence = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;

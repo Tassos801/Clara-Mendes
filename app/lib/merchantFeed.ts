@@ -1,5 +1,4 @@
-import {artistProducts, artistShortName} from './artistShops.ts';
-import {findArtist} from './artRegistry.ts';
+import {artistShortNameForHandle} from './artistShops.ts';
 import {isListedProduct} from './catalogFilters.ts';
 import {
   clothingCapsules,
@@ -133,21 +132,13 @@ const ARTISTS = [
   'Piet Mondrian',
 ];
 
-let artistNamesByHandle: Map<string, string> | undefined;
-
 /**
  * The artist a museum title names: "Hokusai", "Van Gogh". The art registry
  * knows every museum product by handle; the tag list covers the rest.
  */
 function artistSurname(p: Pick<FeedProduct, 'handle' | 'tags'>) {
-  artistNamesByHandle ??= new Map(
-    artistProducts().flatMap((entry) => {
-      const artist = findArtist(entry.artistId);
-      return artist ? [[entry.handle, artistShortName(artist)] as const] : [];
-    }),
-  );
   return (
-    artistNamesByHandle.get(p.handle) ??
+    artistShortNameForHandle(p.handle) ??
     ARTISTS.find((a) => p.tags.includes(a))
       ?.split(' ')
       .at(-1)

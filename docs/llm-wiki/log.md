@@ -2473,3 +2473,14 @@ registry by product handle, so all 60 rows say "by Van Gogh", "by Monet",
 Hokusai rows. `artistShortName()` keeps a name particle with the surname
 ("Van Gogh", not "Gogh"), which also fixes the /artists description. Tests in
 `scripts/merchantFeed.node-test.mjs` and `scripts/artistShops.node-test.mjs`.
+
+## 2026-11-13 — Artist names in museum page titles
+
+Museum product pages now name the artist in the page `<title>`,
+`og:title` / `twitter:title` and the JSON-LD Product `name`:
+"Irises Throw Blanket by Van Gogh | Clara Mendes". `museumSeoTitle()` in
+`app/lib/artistShops.ts` adds " by <Artist>" only to products tagged
+`Museum Reproduction` whose handle is in the art registry, and never twice.
+The Shopify titles, the on-page heading and the feeds are unchanged; the
+feed and the page share `artistShortNameForHandle()`. Tests in
+`scripts/artistShops.node-test.mjs`.

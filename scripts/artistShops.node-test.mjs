@@ -845,3 +845,41 @@ test("a curator's note names only product types the artist's shop lists", () => 
   }
   assert.ok(checked.includes('kandinsky') && checked.includes('mondrian'));
 });
+
+test('a museum page title names the artist; other products keep their title', () => {
+  const museum = ['Museum Reproduction'];
+  assert.equal(
+    shops.museumSeoTitle({
+      handle: 'irises-blanket',
+      tags: museum,
+      title: 'Irises Throw Blanket',
+    }),
+    'Irises Throw Blanket by Van Gogh',
+  );
+  // Never twice.
+  assert.equal(
+    shops.museumSeoTitle({
+      handle: 'irises-blanket',
+      tags: museum,
+      title: 'Irises Throw Blanket by Van Gogh',
+    }),
+    'Irises Throw Blanket by Van Gogh',
+  );
+  // A studio design and an unknown handle stay as they are.
+  assert.equal(
+    shops.museumSeoTitle({
+      handle: 'quiet-form-i-art-print',
+      tags: ['Clara Mendes Original'],
+      title: 'Quiet Form I Art Print',
+    }),
+    'Quiet Form I Art Print',
+  );
+  assert.equal(
+    shops.museumSeoTitle({
+      handle: 'no-such-product',
+      tags: museum,
+      title: 'Unknown Work Mug',
+    }),
+    'Unknown Work Mug',
+  );
+});

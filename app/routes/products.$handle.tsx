@@ -51,6 +51,7 @@ import {getCapsulePage} from '~/lib/capsulePages';
 import {
   collectPages,
   museumPairings,
+  museumSeoTitle,
   productArtworkCredit,
 } from '~/lib/artistShops';
 import {artProductPage, FAMILY_SPECS} from '~/lib/artProductCatalog';
@@ -409,7 +410,8 @@ export const meta: Route.MetaFunction = ({data}) => {
       description ||
       'Shop this Clara Mendes product through secure Shopify checkout.',
     image: absoluteImageUrl(product?.featuredImage?.url),
-    title: product?.title ?? 'Product',
+    // Search results name the artist: "Irises Throw Blanket by Van Gogh".
+    title: product ? museumSeoTitle(product) : 'Product',
     type: 'product',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/products`,
   });
@@ -1182,7 +1184,7 @@ function ProductPage() {
                   }
                 : undefined,
             sku: selectedVariant?.sku,
-            title: product.title,
+            title: museumSeoTitle(product),
             url: seoUrl,
             vendor: product.vendor,
             variants: schemaVariants,
