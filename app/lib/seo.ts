@@ -90,6 +90,8 @@ export function getCanonicalUrl(_request: Request, pathname: string) {
   return new URL(pathname, STOREFRONT_ORIGIN).toString();
 }
 
+const TITLE_MAX = 62;
+
 export function buildSeoMeta({
   description,
   image,
@@ -98,14 +100,16 @@ export function buildSeoMeta({
   type = 'website',
   url,
 }: SeoMetaInput) {
-  const metaTitle = title.includes(SITE_NAME)
-    ? title
-    : `${title} | ${SITE_NAME}`;
+  // The brand suffix goes only where it fits: a long product title keeps
+  // its words ("... by Hokusai") rather than ending in "| Clara...".
+  const branded = `${title} | ${SITE_NAME}`;
+  const metaTitle =
+    title.includes(SITE_NAME) || branded.length > TITLE_MAX ? title : branded;
   const metaDescription = truncate(description, 155);
   const shareImage = image || DEFAULT_SHARE_IMAGE;
 
   return [
-    {title: truncate(metaTitle, 62)},
+    {title: truncate(metaTitle, TITLE_MAX)},
     {name: 'description', content: metaDescription},
     {
       name: 'robots',

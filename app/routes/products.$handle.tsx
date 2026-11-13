@@ -52,6 +52,7 @@ import {
   collectPages,
   museumPairings,
   productArtworkCredit,
+  titleWithArtist,
 } from '~/lib/artistShops';
 import {artProductPage, FAMILY_SPECS} from '~/lib/artProductCatalog';
 import {
@@ -409,7 +410,10 @@ export const meta: Route.MetaFunction = ({data}) => {
       description ||
       'Shop this Clara Mendes product through secure Shopify checkout.',
     image: absoluteImageUrl(product?.featuredImage?.url),
-    title: product?.title ?? 'Product',
+    // Search titles name the artist; the heading has its own byline.
+    title: product
+      ? titleWithArtist(product.title, product.handle, product.tags)
+      : 'Product',
     type: 'product',
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/products`,
   });
@@ -1182,7 +1186,7 @@ function ProductPage() {
                   }
                 : undefined,
             sku: selectedVariant?.sku,
-            title: product.title,
+            title: titleWithArtist(product.title, product.handle, product.tags),
             url: seoUrl,
             vendor: product.vendor,
             variants: schemaVariants,

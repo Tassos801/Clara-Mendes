@@ -267,6 +267,54 @@ export function artistShortName(artist: Pick<Artist, 'name' | 'sortName'>) {
   return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+// Artist tags of the first museum lines, for a product the art registry
+// does not list.
+const TAGGED_ARTISTS = [
+  'Katsushika Hokusai',
+  'Utagawa Hiroshige',
+  'Vasily Kandinsky',
+  'Piet Mondrian',
+];
+
+let artistNamesByHandle: Map<string, string> | undefined;
+
+/**
+ * The artist a museum product title names: "Hokusai", "Van Gogh". The art
+ * registry knows every museum product by handle; the tag list covers the
+ * rest. Undefined for a studio product.
+ */
+export function productArtistName(
+  handle: string | null | undefined,
+  tags: readonly string[] = [],
+) {
+  artistNamesByHandle ??= new Map(
+    artistProducts().flatMap((entry) => {
+      const artist = findArtist(entry.artistId);
+      return artist ? [[entry.handle, artistShortName(artist)] as const] : [];
+    }),
+  );
+  return (
+    (handle ? artistNamesByHandle.get(handle.toLowerCase()) : undefined) ??
+    TAGGED_ARTISTS.find((name) => tags.includes(name))
+      ?.split(' ')
+      .at(-1)
+  );
+}
+
+/**
+ * A museum product title with its artist, for search: "Irises Throw Blanket"
+ * becomes "Irises Throw Blanket by Van Gogh". The Shopify title, order emails
+ * and the page heading keep the plain title; the heading has its own byline.
+ */
+export function titleWithArtist(
+  title: string,
+  handle: string | null | undefined,
+  tags: readonly string[] = [],
+) {
+  const artist = productArtistName(handle, tags);
+  return artist && !title.includes(artist) ? `${title} by ${artist}` : title;
+}
+
 /** The first sentence of owner-approved text, kept to a card's length. */
 export function firstSentence(text: string) {
   const sentence = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
