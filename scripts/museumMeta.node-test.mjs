@@ -12,6 +12,7 @@ import {
   sizePhrase,
 } from '../app/lib/museumProductFacts.ts';
 import {PRINT_CATALOG, printHandle} from '../app/lib/printCatalog.ts';
+import {titleWithArtist} from '../app/lib/artistShops.ts';
 import {buildSeoMeta} from '../app/lib/seo.ts';
 
 // What each family's description must open with.
@@ -126,4 +127,61 @@ test('buildSeoMeta never cuts a word in half', () => {
   const content = meta.find((tag) => tag.name === 'description').content;
   assert.ok(content.length <= 155);
   assert.match(content, /word\.\.\.$/);
+});
+
+test('museum page titles name the artist; studio titles stay as they are', () => {
+  assert.equal(
+    titleWithArtist('Irises Throw Blanket', 'irises-blanket'),
+    'Irises Throw Blanket by Van Gogh',
+  );
+  assert.equal(
+    titleWithArtist('The Milkmaid Mug', 'the-milkmaid-mug'),
+    'The Milkmaid Mug by Vermeer',
+  );
+  assert.equal(
+    titleWithArtist(
+      'The Great Wave off Kanagawa Throw Blanket',
+      'the-great-wave-off-kanagawa-blanket',
+    ),
+    'The Great Wave off Kanagawa Throw Blanket by Hokusai',
+  );
+  // An artist tag covers a product the registry does not list.
+  assert.equal(
+    titleWithArtist('Some Work Cushion', 'unlisted-cushion', ['Piet Mondrian']),
+    'Some Work Cushion by Mondrian',
+  );
+  // Never twice.
+  assert.equal(
+    titleWithArtist('Irises by Van Gogh', 'irises-blanket'),
+    'Irises by Van Gogh',
+  );
+  assert.equal(
+    titleWithArtist('Quiet Form I Art Print', 'quiet-form-i-art-print'),
+    'Quiet Form I Art Print',
+  );
+});
+
+test('a title too long for the brand suffix keeps its words', () => {
+  const title = (meta) => meta.find((tag) => 'title' in tag).title;
+  const ogTitle = (meta) =>
+    meta.find((tag) => tag.property === 'og:title').content;
+  const short = buildSeoMeta({
+    description: 'd',
+    title: 'Irises Mug by Van Gogh',
+    url: 'https://x',
+  });
+  assert.equal(title(short), 'Irises Mug by Van Gogh | Clara Mendes');
+  const long = buildSeoMeta({
+    description: 'd',
+    title: 'The Great Wave off Kanagawa Throw Blanket by Hokusai',
+    url: 'https://x',
+  });
+  assert.equal(
+    title(long),
+    'The Great Wave off Kanagawa Throw Blanket by Hokusai',
+  );
+  assert.equal(
+    ogTitle(long),
+    'The Great Wave off Kanagawa Throw Blanket by Hokusai',
+  );
 });

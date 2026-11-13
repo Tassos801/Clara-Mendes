@@ -2473,3 +2473,16 @@ registry by product handle, so all 60 rows say "by Van Gogh", "by Monet",
 Hokusai rows. `artistShortName()` keeps a name particle with the surname
 ("Van Gogh", not "Gogh"), which also fixes the /artists description. Tests in
 `scripts/merchantFeed.node-test.mjs` and `scripts/artistShops.node-test.mjs`.
+
+## 2026-11-13 — Artist names in museum product page titles
+
+Museum product pages had no artist in the browser title, the share title or
+the JSON-LD `name`: "Irises Throw Blanket | Clara Mendes". They now say
+"Irises Throw Blanket by Van Gogh | Clara Mendes", from
+`titleWithArtist()` in `app/lib/artistShops.ts` (art registry by handle,
+four artist tags as the fallback). The feed uses the same helper, so feed
+and page titles stay the same. The Shopify title, the page heading (it has
+its own byline), order emails and Printful keep the plain title.
+`buildSeoMeta()` now leaves out " | Clara Mendes" when the title would pass
+62 characters with it, so a long title keeps "by Hokusai" instead of ending
+in "| Clara...". Tests in `scripts/museumMeta.node-test.mjs`.
