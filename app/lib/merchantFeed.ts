@@ -1,3 +1,5 @@
+import {artistProducts, artistShortName} from './artistShops.ts';
+import {findArtist} from './artRegistry.ts';
 import {isListedProduct} from './catalogFilters.ts';
 import {
   clothingCapsules,
@@ -122,12 +124,35 @@ const ART =
 const CARD =
   'Arts & Entertainment > Party & Celebration > Gift Giving > Greeting & Note Cards';
 const PAPER = 'Archival matte paper';
+// Artist tags of the first museum lines, for a product the art registry
+// does not list.
 const ARTISTS = [
   'Katsushika Hokusai',
   'Utagawa Hiroshige',
   'Vasily Kandinsky',
   'Piet Mondrian',
 ];
+
+let artistNamesByHandle: Map<string, string> | undefined;
+
+/**
+ * The artist a museum title names: "Hokusai", "Van Gogh". The art registry
+ * knows every museum product by handle; the tag list covers the rest.
+ */
+function artistSurname(p: Pick<FeedProduct, 'handle' | 'tags'>) {
+  artistNamesByHandle ??= new Map(
+    artistProducts().flatMap((entry) => {
+      const artist = findArtist(entry.artistId);
+      return artist ? [[entry.handle, artistShortName(artist)] as const] : [];
+    }),
+  );
+  return (
+    artistNamesByHandle.get(p.handle) ??
+    ARTISTS.find((a) => p.tags.includes(a))
+      ?.split(' ')
+      .at(-1)
+  );
+}
 
 // Museum product types (Floating World, Line and Colour): shipping table,
 // Google category and material. 'printful' lines resolve per variant.
@@ -218,9 +243,7 @@ function museumItem(p: FeedProduct, o: Record<string, string>): Item | null {
   const spec = MUSEUM[p.productType];
   if (!spec) return null;
   const [table, category, material] = spec;
-  const surname = ARTISTS.find((a) => p.tags.includes(a))
-    ?.split(' ')
-    .at(-1);
+  const surname = artistSurname(p);
   const name =
     surname && !p.title.includes(surname)
       ? `${p.title} by ${surname}`

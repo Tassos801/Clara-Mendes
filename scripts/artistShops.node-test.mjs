@@ -668,6 +668,21 @@ test('the homepage artist feature lists public artists only, from data', () => {
   const [hokusai] = feature.artists;
   assert.equal(hokusai.name, 'Katsushika Hokusai');
   assert.equal(hokusai.shortName, 'Hokusai');
+  // A name particle stays with the surname.
+  assert.equal(
+    shops.artistShortName({
+      name: 'Vincent van Gogh',
+      sortName: 'Gogh, Vincent van',
+    }),
+    'Van Gogh',
+  );
+  assert.equal(
+    shops.artistShortName({
+      name: 'Pierre-Auguste Renoir',
+      sortName: 'Renoir, Pierre-Auguste',
+    }),
+    'Renoir',
+  );
   assert.equal(hokusai.path, '/artists/hokusai');
   assert.equal(hokusai.products, 1);
   assert.equal(hokusai.works, 1);

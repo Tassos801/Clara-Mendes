@@ -366,6 +366,49 @@ test('titles, links and attributes match the manual uploads', () => {
   );
 });
 
+test('museum titles name the artist from the art registry, not only from tags', () => {
+  // Museum Masterpieces products carry no artist tag.
+  const tags = ['Museum Reproduction', 'Museum Masterpieces'];
+  const items = byId(
+    merchantFeedTsv(
+      printfulRows([
+        product('irises-blanket', 'Irises Throw Blanket', 'Blankets', tags, [
+          variant('CM-MM-01-BLANKET50X60', {Size: '50 × 60 in'}, '64.99'),
+        ]),
+        product('the-milkmaid-mug', 'The Milkmaid Mug', 'Mugs', tags, [
+          variant('CM-MM-05-MUG11-PF', {Size: '11 oz'}, '24.99'),
+        ]),
+        product(
+          'strawberry-thief-cushion',
+          'Strawberry Thief Cushion',
+          'Cushions',
+          tags,
+          [
+            variant(
+              'CM-MM-06-CUSH22-I',
+              {Size: '22 × 22 in', Filling: 'With insert'},
+              '69.99',
+            ),
+          ],
+        ),
+      ]),
+      EU,
+    ),
+  );
+  assert.equal(
+    items['CM-MM-01-BLANKET50X60'].title,
+    'Irises Throw Blanket by Van Gogh — 50 × 60 in',
+  );
+  assert.equal(
+    items['CM-MM-05-MUG11-PF'].title,
+    'The Milkmaid Mug by Vermeer — 11 oz',
+  );
+  assert.equal(
+    items['CM-MM-06-CUSH22-I'].title,
+    'Strawberry Thief Cushion by Morris — 22 × 22 in, with insert',
+  );
+});
+
 test('fixed lines carry checkout rates and the page promise', () => {
   const items = byId(merchantFeedTsv(merchantFeedRows(CATALOG, 'fixed')));
   const print = items['CM-QF-01-8X10'];

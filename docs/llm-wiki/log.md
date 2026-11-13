@@ -2462,3 +2462,14 @@ layer stays still, so the frame stays cheap (59 fps on a 4x slowed CPU in
 phone emulation). Reduced motion keeps the still hero, and the loop sleeps
 while the hero is off screen. Tests: `scripts/heroSpotlight.node-test.mjs`.
 
+
+## 2026-11-13 — Artist names in museum feed titles
+
+The ten Museum Masterpieces works (mugs, cushions, blankets) reached the
+Merchant Center feeds without an artist: "Irises Throw Blanket — 50 × 60 in".
+The feed found the artist only from four artist tags. It now reads the art
+registry by product handle, so all 60 rows say "by Van Gogh", "by Monet",
+"by Klimt", "by Vermeer", "by Morris", "by Renoir" or "by Degas", like the
+Hokusai rows. `artistShortName()` keeps a name particle with the surname
+("Van Gogh", not "Gogh"), which also fixes the /artists description. Tests in
+`scripts/merchantFeed.node-test.mjs` and `scripts/artistShops.node-test.mjs`.
