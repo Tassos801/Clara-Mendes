@@ -2,8 +2,11 @@
 
 **Repository:** https://github.com/Tassos801/Clara-Mendes  
 **Owner:** Tassos  
-**State on 2026-11-13:** account ready, **no campaign exists, nothing is
-spent.** The build waits for Google Ads to list the Merchant Center products.
+**State on 2026-11-14** — `Shopping EU home` exists in Google Ads and is
+**paused**. Its automated stop rule is **enabled**. The campaign's Products
+view, filtered to the museum product families, listed **64 items**. The
+live EUR Printful feed contained **168 items** across those families. The
+Google Ads rows inspected showed **Pending initial review**.
 
 This repository is public. Budget, bids, margins, sales and traffic figures
 are **not** in this file. The owner has them; ask in chat. The full working
@@ -13,9 +16,10 @@ notes with those figures are on the office PC:
 
 ## Goal
 
-One Standard Shopping campaign for museum-art blankets, cushions and mugs,
-built and **paused**, then one message to the owner with screenshots. The
-owner says "publish" in chat before anything is enabled.
+Launch one Standard Shopping campaign for museum-art blankets, cushions
+and mugs. Review product eligibility and campaign settings, then share the
+findings and screenshots with the owner. The owner says "publish" in chat
+before the campaign is enabled.
 
 ## Decisions (owner, 2026-11-13; do not re-open)
 
@@ -47,21 +51,21 @@ owner says "publish" in chat before anything is enabled.
 - In Google Ads: auto-tagging on, auto-apply off, account-level final URL
   suffix
   `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={product_id}`.
+- The campaign is created and paused. Google Ads shows campaign-level
+  negative keywords and an enabled automated rule to pause
+  `Shopping EU home`.
 
-## Blocked on
+## Product review
 
-Google Ads → new campaign → Shopping says "There are no products in this
-Merchant Center account" and the feed label list is empty. Shopping ads was
-switched on only on 2026-11-13 and Merchant Center shows the items "Under
-review" for it. Google's review can take up to 3 business days.
+Check Campaigns → `Shopping EU home` → Products after the next feed sync.
+Compare the listed item IDs with
+[/feeds/google-merchant-printful.txt](https://shopclaramendes.com/feeds/google-merchant-printful.txt).
+Use the Status and Issues columns to check whether initial review has
+cleared before asking the owner to publish.
 
-**How to check:** Google Ads → Campaigns → Products. When it lists products
-(or the feed label list shows `CLARA-PRINTS-EUR`), continue with "Next".
+## Before publishing
 
-## Next
-
-1. **Create the campaign.** Google Ads → New campaign → Skip the business
-   step → "Create a campaign without guidance" → Shopping.
+1. **Review the existing campaign settings** against the build plan.
 
    | Setting | Value |
    |---|---|
@@ -76,10 +80,8 @@ review" for it. Google's review can take up to 3 business days.
    | Languages | All |
    | Ad group | `EU museum home` |
 
-   The form may have no "create paused" switch. Set a future start date if it
-   offers one, and **pause the campaign the moment it is saved.**
-2. **Product groups.** Subdivide All products by category, then each category
-   by Item ID. **Exclude "Everything else"** at both levels.
+2. **Check product groups.** The build plan subdivides All products by
+   category and then Item ID, with "Everything else" excluded at both levels.
    - Categories: `Blankets`, `Throw Pillows`, `Mugs` (the Google categories in
      `app/lib/merchantFeed.ts`, `MUSEUM`).
    - Our items are the feed rows of those categories; ids start with `CM-`.
@@ -92,9 +94,8 @@ review" for it. Google's review can take up to 3 business days.
    - Why Item ID and not category alone: Merchant Center holds about 19 items
      that Google crawled by itself (ids like `16163650961742_cm-lc-10-…`),
      some of them cushions. They must not serve.
-3. **Negative keywords** (campaign level, broad): free, diy, pattern, crochet,
-   wallpaper, tattoo, lego, puzzle, poster, original, painting value, meaning,
-   museum, tickets, download, svg, png, shirt, hoodie, phone case.
+3. **Review campaign-level negative keywords.** Google Ads shows 31 entries
+   using broad and phrase match.
 4. **Check.** The ad group's Products tab lists only our ids. Take
    screenshots: settings, product group tree with bids, locations, three ad
    previews (a blanket, a cushion, a mug).
@@ -131,13 +132,16 @@ Until then: an order from an ad shows `utm_source=google`, the campaign id in
    "found by Google" in Merchant Center.
 3. **Do not change** Merchant Center account-level shipping (the Shopify app
    rewrites it) or the Meta ads.
-4. **Stop rule:** the owner has a spend and click limit without an order; ask
-   for it and pause the campaign when it is reached.
+4. **Stop rule.** The owner sets the limits. Read the current thresholds in
+   Google Ads → Tools → Bulk actions → Rules.
 5. **Public repository:** no budget, bid, margin, sales or traffic figures in
    branch names, commits, pull requests or files.
 6. Proof for every step: a screenshot. No step is "done" without one.
 
-## Known small follow-ups
+## Storefront
 
-- A buyer who lands from an ad on a `?country=CY` link sees "Shipping to
-  Cyprus" on the product page. The amount and currency are right for the EU.
+The live EUR feed points to `?country=CY`, so ad landings currently show
+"Shipping to Cyprus". [PR #200](https://github.com/Tassos801/Clara-Mendes/pull/200)
+lets a visitor in another euro-area country see their own shipping
+destination on the same landing URL. Confirm the destination and selected
+variant price on production after the storefront change ships.

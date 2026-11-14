@@ -44,6 +44,7 @@ Source: local Shopify Hydrogen storefront repository at
 
 ## Operations
 
+- [Google Shopping handoff](../google-shopping/HANDOFF.md) - Campaign status, product review and publishing steps for museum blankets, cushions and mugs.
 - [Local Development And Launch](operations/local-development-and-launch.md) - Commands, environment variables, validation, launch gates, and deployment notes.
 - [Shopify Admin Cleanup](operations/shopify-admin-cleanup.md) - Off-theme products/collections and Admin cleanup source notes.
 - [Original Art Launch](../original-art-launch.md) - Fifteen-product owned-art catalog, extension asset lab, staging, supplier gates, and reset sequence.

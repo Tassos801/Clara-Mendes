@@ -22,14 +22,13 @@ listings, is planned on `claude/us-market`. Before continuing it, read
 Cyprus/EU setup, and make every change follow the buyer's country. One
 active writer at a time (named in status.md).
 
-## Active Google Shopping workstream (2026-11-13)
+## Active Google Shopping workstream (2026-11-14)
 
-A first Google Shopping campaign for the museum blankets, cushions and mugs
-is being prepared. The Google Ads account exists and is linked to Merchant
-Center; no campaign exists yet. Before continuing it on any PC, read
-[`docs/google-shopping/HANDOFF.md`](docs/google-shopping/HANDOFF.md). Budget
-and bid figures are not in the repository: ask the owner. Nothing is
-published without the owner's "publish" in chat.
+`Shopping EU home` is paused in Google Ads while the museum blankets,
+cushions and mugs complete their Shopping ads review. Before continuing on
+any PC, read [`docs/google-shopping/HANDOFF.md`](docs/google-shopping/HANDOFF.md).
+Ask the owner for budget and bid figures. The owner says "publish" in chat
+before the campaign is enabled.
 
 This repository has a maintained Karpathy-style LLM wiki at:
 
