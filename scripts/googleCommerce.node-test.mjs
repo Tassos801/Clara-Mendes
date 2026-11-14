@@ -73,6 +73,20 @@ assert.equal(getLocaleFromRequest(pinned('?country=US', 'DE'), 'FR').country, 'U
 assert.equal(getLocaleFromRequest(pinned('?Size=8x10&country=de', 'US')).country, 'DE');
 assert.equal(getLocaleFromRequest(pinned('?country=KP', 'US')).country, 'US');
 assert.equal(getLocaleFromRequest(pinned('?country=zz', 'US'), 'FR').country, 'FR');
+// A euro-area visitor on a euro-area pin keeps their own country (same EUR
+// prices, their own shipping line); everyone else, Googlebot included, gets
+// the pin.
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'DE')).country, 'DE');
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'IE')).country, 'IE');
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'US'), 'NL').country, 'NL');
+assert.equal(getLocaleFromRequest(pinned('?country=DE', 'CY')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=CY')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'GB')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'PL')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'CA')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=CY', 'DE'), 'GB').country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=US', 'DE')).country, 'US');
+assert.equal(getLocaleFromRequest(pinned('?country=CA', 'DE')).country, 'CA');
 assert.equal(visitorMarketCountry(pinned('?country=US', 'DE')), 'DE');
 assert.equal(visitorMarketCountry(pinned('?country=US', 'DE'), 'FR'), 'FR');
 assert.equal(visitorMarketCountry(pinned('', 'KP')), 'CY');
