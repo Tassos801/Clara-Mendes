@@ -24,11 +24,11 @@ active writer at a time (named in status.md).
 
 ## Active Google Shopping workstream (2026-11-14)
 
-`Shopping EU home` is paused in Google Ads while the museum blankets,
-cushions and mugs complete their Shopping ads review. Before continuing on
-any PC, read [`docs/google-shopping/HANDOFF.md`](docs/google-shopping/HANDOFF.md).
-Ask the owner for budget and bid figures. The owner says "publish" in chat
-before the campaign is enabled.
+`Shopping EU home` is enabled in Google Ads after the owner's approval on
+14 November. The museum blankets, cushions and mugs are in Shopping ads
+review. Before continuing on any PC, read
+[`docs/google-shopping/HANDOFF.md`](docs/google-shopping/HANDOFF.md).
+The owner decides budget, bids and any campaign restart.
 
 This repository has a maintained Karpathy-style LLM wiki at:
 

@@ -2,11 +2,12 @@
 
 **Repository:** https://github.com/Tassos801/Clara-Mendes  
 **Owner:** Tassos  
-**State on 2026-11-14** — `Shopping EU home` exists in Google Ads and is
-**paused**. Its automated stop rule is **enabled**. The campaign's Products
-view, filtered to the museum product families, listed **64 items**. The
-live EUR Printful feed contained **168 items** across those families. The
-Google Ads rows inspected showed **Pending initial review**.
+**State on 2026-11-14** — The owner approved starting `Shopping EU home`
+that day. Google Ads shows the campaign as **Enabled** and **Eligible**
+with a start date of 14 November. Its automated stop rule is **enabled**.
+The campaign's Products view, filtered to the museum families, listed
+**85 items** out of **168** in the EUR Printful feed. The rows inspected
+showed **Pending initial review**.
 
 This repository is public. Budget, bids, margins, sales and traffic figures
 are **not** in this file. The owner has them; ask in chat. The full working
@@ -16,10 +17,9 @@ notes with those figures are on the office PC:
 
 ## Goal
 
-Launch one Standard Shopping campaign for museum-art blankets, cushions
-and mugs. Review product eligibility and campaign settings, then share the
-findings and screenshots with the owner. The owner says "publish" in chat
-before the campaign is enabled.
+Run one Standard Shopping campaign for museum-art blankets, cushions
+and mugs. Monitor product eligibility and campaign delivery, then review
+orders attributed to Shopping clicks with the owner.
 
 ## Decisions (owner, 2026-11-13; do not re-open)
 
@@ -51,19 +51,18 @@ before the campaign is enabled.
 - In Google Ads: auto-tagging on, auto-apply off, account-level final URL
   suffix
   `utm_source=google&utm_medium=cpc&utm_campaign={campaignid}&utm_content={product_id}`.
-- The campaign is created and paused. Google Ads shows campaign-level
-  negative keywords and an enabled automated rule to pause
-  `Shopping EU home`.
+- Google Ads shows campaign-level negative keywords and an enabled
+  automated rule to pause `Shopping EU home`.
 
 ## Product review
 
 Check Campaigns → `Shopping EU home` → Products after the next feed sync.
 Compare the listed item IDs with
 [/feeds/google-merchant-printful.txt](https://shopclaramendes.com/feeds/google-merchant-printful.txt).
-Use the Status and Issues columns to check whether initial review has
-cleared before asking the owner to publish.
+Use the Status and Issues columns to track which products clear initial
+review. Check impressions to confirm the campaign has started serving.
 
-## Before publishing
+## Campaign setup and follow-up
 
 1. **Review the existing campaign settings** against the build plan.
 
@@ -99,12 +98,11 @@ cleared before asking the owner to publish.
 4. **Check.** The ad group's Products tab lists only our ids. Take
    screenshots: settings, product group tree with bids, locations, three ad
    previews (a blanket, a cushion, a mug).
-5. **Ask the owner once**, with the screenshots: go-ahead to publish, and
-   whether to pause the Meta ads campaign that still runs.
-6. **After "publish":** enable; check the same day (eligible, no
-   disapprovals) and the next day (impressions, clicks, landing page). Day 3
-   and day 7: add negative keywords from the search terms report and move
-   items between tiers.
+5. **Authorization.** The owner approved starting `Shopping EU home` on
+   14 November. Refer Meta campaign decisions to the owner.
+6. **After launch.** Check impressions, clicks and landing pages once
+   products clear review. Use search terms and product results to evaluate
+   negative keywords and item tiers.
 
 ## Purchase tracking (decided approach, not set up yet)
 

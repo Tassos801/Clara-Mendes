@@ -2511,3 +2511,12 @@ include the Cyprus destination for EUR feed links opened with a saved
 US choice and USD feed links opened with a saved German choice. The
 [Shopping handoff](../google-shopping/HANDOFF.md#storefront) records the
 production and checkout checks.
+
+## 2026-11-14 — Google Shopping campaign enabled
+
+The owner approved starting `Shopping EU home` on 14 November. Google Ads
+showed the campaign as Enabled and Eligible with that start date. The
+automated stop rule was enabled. The campaign's Products view listed 85
+museum items and the checked rows showed Pending initial review. The
+[Shopping handoff](../google-shopping/HANDOFF.md) records the launch
+status and purchase measurement setup.
