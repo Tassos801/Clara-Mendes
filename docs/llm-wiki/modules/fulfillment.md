@@ -402,3 +402,13 @@ The gift page lists the dates; product pages show one line
 dates. Re-read Printful's and Prodigi's pages each year: Prodigi's 2026 page
 was still incomplete on 12 Nov (no Standard date for fine-art prints).
 Test: `scripts/christmasDelivery.node-test.mjs`.
+
+## 2026-11-14 - Euro-area destinations on feed landings
+
+[PR #200](https://github.com/Tassos801/Clara-Mendes/pull/200) lets a known
+euro-area visitor keep their own country when the URL pins a euro-area
+market. The visitor country comes from the saved choice or Oxygen
+geolocation. A valid pin applies when either country is outside the euro
+area or the visitor country is unknown. The EUR feed keeps `?country=CY`.
+The USD feed keeps `?country=US`. The resolver is in
+[`app/lib/markets.ts`](../../../app/lib/markets.ts).

@@ -209,9 +209,8 @@ const US_MARKET_COUNTRIES = [
   {code: 'US', currency: 'USD', name: 'United States'},
 ] as const;
 
-// EU-27 (markets "Cyprus" + "European Union"), then the UK, which is in no
-// market yet but stays resolvable so a UK visitor's locale is explicit.
-export const MARKET_COUNTRIES = [
+// EU-27: the markets "Cyprus" and "European Union".
+const EU_MARKET_COUNTRIES = [
   {code: 'AT', currency: 'EUR', name: 'Austria'},
   {code: 'BE', currency: 'EUR', name: 'Belgium'},
   {code: 'BG', currency: 'EUR', name: 'Bulgaria'},
@@ -239,6 +238,12 @@ export const MARKET_COUNTRIES = [
   {code: 'SI', currency: 'EUR', name: 'Slovenia'},
   {code: 'ES', currency: 'EUR', name: 'Spain'},
   {code: 'SE', currency: 'SEK', name: 'Sweden'},
+] as const;
+
+// The EU-27, then the UK, which is in no market yet but stays resolvable so
+// a UK visitor's locale is explicit.
+export const MARKET_COUNTRIES = [
+  ...EU_MARKET_COUNTRIES,
   {code: 'GB', currency: 'GBP', name: 'United Kingdom'},
   ...US_MARKET_COUNTRIES,
   ...INTERNATIONAL_MARKET_COUNTRIES,
@@ -248,6 +253,12 @@ export type MarketCountryCode = (typeof MARKET_COUNTRIES)[number]['code'];
 
 const MARKET_COUNTRY_CODES = new Set<string>(
   MARKET_COUNTRIES.map(({code}) => code),
+);
+
+const EURO_AREA_COUNTRY_CODES = new Set<string>(
+  EU_MARKET_COUNTRIES.filter(({currency}) => currency === 'EUR').map(
+    ({code}) => code,
+  ),
 );
 
 export function normalizeMarketCountry(
@@ -272,8 +283,9 @@ export function marketCountryName(code: unknown): string | null {
 // `?country=XX` on a page URL pins that one request to a market country, so a
 // Merchant Center feed for one market (e.g. `?country=CY` for the EUR feed,
 // `?country=US` for the USD feed) lands on a page in its own currency even
-// though Googlebot crawls from the US. It never touches the visitor's saved
-// choice (`/locale`) and canonical URLs drop it (`getCanonicalUrl`).
+// when crawled from abroad. When both countries are in the euro area, a
+// known visitor country takes precedence. The URL pin applies to the
+// request only, and `getCanonicalUrl` drops it.
 export const MARKET_URL_PARAM = 'country';
 
 /** The market a page URL pins, or null when it pins none (or an unknown one). */
@@ -296,12 +308,18 @@ export function resolveMarketCountry({
   explicitCountry?: unknown;
   oxygenCountry?: unknown;
 }): MarketCountryCode {
-  return (
-    normalizeMarketCountry(pinnedCountry) ??
+  const pin = normalizeMarketCountry(pinnedCountry);
+  const visitor =
     normalizeMarketCountry(explicitCountry) ??
-    normalizeMarketCountry(oxygenCountry) ??
-    DEFAULT_MARKET_COUNTRY
-  );
+    normalizeMarketCountry(oxygenCountry);
+
+  if (!pin) return visitor ?? DEFAULT_MARKET_COUNTRY;
+
+  return visitor &&
+    EURO_AREA_COUNTRY_CODES.has(pin) &&
+    EURO_AREA_COUNTRY_CODES.has(visitor)
+    ? visitor
+    : pin;
 }
 
 /**
