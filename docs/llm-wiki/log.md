@@ -2500,3 +2500,14 @@ Budget, bid and sales figures stay out of the repository.
 is paused and its automated stop rule is enabled. Google Ads showed 64
 products under the campaign's museum-family filter. The live EUR Printful
 feed listed 168. The inspected Ads rows still showed pending initial review.
+
+## 2026-11-14 — Shopping landing pages verified in production
+
+[PR #200](https://github.com/Tassos801/Clara-Mendes/pull/200) deployed to
+Oxygen from `de6b914`. On the live product pages, 96 checks confirmed
+the delivery destination, selected variant price and structured offer
+using the campaign countries as saved delivery choices. Covered cases
+include the Cyprus destination for EUR feed links opened with a saved
+US choice and USD feed links opened with a saved German choice. The
+[Shopping handoff](../google-shopping/HANDOFF.md#storefront) records the
+production and checkout checks.

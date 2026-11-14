@@ -140,8 +140,12 @@ Until then: an order from an ad shows `utm_source=google`, the campaign id in
 
 ## Storefront
 
-The live EUR feed points to `?country=CY`, so ad landings currently show
-"Shipping to Cyprus". [PR #200](https://github.com/Tassos801/Clara-Mendes/pull/200)
-lets a visitor in another euro-area country see their own shipping
-destination on the same landing URL. Confirm the destination and selected
-variant price on production after the storefront change ships.
+[PR #200](https://github.com/Tassos801/Clara-Mendes/pull/200) went live on
+14 November in [the production Oxygen deployment](https://github.com/Tassos801/Clara-Mendes/actions/runs/43592324123).
+The EUR feed uses `?country=CY`. On 12 exact feed links, production showed
+the saved delivery destination for Germany, the Netherlands, Ireland,
+Austria and Belgium. The Cyprus page appeared for a saved US shopper on
+the same links. The checked prices and structured offers matched the
+feeds, including both cushion sizes with inserts and the USD links.
+The 18 × 18 in Great Wave cushion with insert reached checkout at €64.99.
+The browser's test cart showed `Cart 0` after removal and reload.
