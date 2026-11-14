@@ -2486,3 +2486,11 @@ its own byline), order emails and Printful keep the plain title.
 `buildSeoMeta()` now leaves out " | Clara Mendes" when the title would pass
 62 characters with it, so a long title keeps "by Hokusai" instead of ending
 in "| Clara...". Tests in `scripts/museumMeta.node-test.mjs`.
+
+## 2026-11-14 — Euro-area destinations on feed landings
+
+[PR #200](https://github.com/Tassos801/Clara-Mendes/pull/200) lets euro-area
+visitors see their shipping destination on EUR feed URLs. The country in
+the URL applies when there is no usable visitor country. See
+[Fulfillment](modules/fulfillment.md#2026-11-14---euro-area-destinations-on-feed-landings)
+and `scripts/googleCommerce.node-test.mjs`.

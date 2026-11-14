@@ -54,9 +54,8 @@ assert.equal(getLocaleFromRequest(request('US'), 'FR').country, 'FR');
 assert.equal(getLocaleFromRequest(request('GB')).country, 'GB');
 assert.equal(normalizeMarketCountry(' uk '), null);
 
-// A `?country=` pin (Merchant Center landing links) beats the saved choice
-// and geolocation for that request only; unknown or blocked codes are
-// ignored, and the visitor's own market (consent) never reads the pin.
+// A valid `?country=` pin sets the market for that request. The visitor's
+// own market (used for consent) ignores the pin.
 const pinned = (query, country) =>
   new Request(
     `https://shopclaramendes.com/products/quiet-form-i-art-print${query}`,
@@ -73,14 +72,14 @@ assert.equal(getLocaleFromRequest(pinned('?country=US', 'DE'), 'FR').country, 'U
 assert.equal(getLocaleFromRequest(pinned('?Size=8x10&country=de', 'US')).country, 'DE');
 assert.equal(getLocaleFromRequest(pinned('?country=KP', 'US')).country, 'US');
 assert.equal(getLocaleFromRequest(pinned('?country=zz', 'US'), 'FR').country, 'FR');
-// A euro-area visitor on a euro-area pin keeps their own country (same EUR
-// prices, their own shipping line); everyone else, Googlebot included, gets
-// the pin.
+// The visitor keeps their own country when it and the pin are in the euro area.
 assert.equal(getLocaleFromRequest(pinned('?country=CY', 'DE')).country, 'DE');
 assert.equal(getLocaleFromRequest(pinned('?country=CY', 'IE')).country, 'IE');
 assert.equal(getLocaleFromRequest(pinned('?country=CY', 'US'), 'NL').country, 'NL');
 assert.equal(getLocaleFromRequest(pinned('?country=DE', 'CY')).country, 'CY');
 assert.equal(getLocaleFromRequest(pinned('?country=CY')).country, 'CY');
+assert.equal(getLocaleFromRequest(pinned('?country=DE')).country, 'DE');
+assert.equal(getLocaleFromRequest(pinned('?country=DE', 'KP')).country, 'DE');
 assert.equal(getLocaleFromRequest(pinned('?country=CY', 'GB')).country, 'CY');
 assert.equal(getLocaleFromRequest(pinned('?country=CY', 'PL')).country, 'CY');
 assert.equal(getLocaleFromRequest(pinned('?country=CY', 'CA')).country, 'CY');

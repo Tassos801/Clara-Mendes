@@ -255,6 +255,12 @@ const MARKET_COUNTRY_CODES = new Set<string>(
   MARKET_COUNTRIES.map(({code}) => code),
 );
 
+const EURO_AREA_COUNTRY_CODES = new Set<string>(
+  EU_MARKET_COUNTRIES.filter(({currency}) => currency === 'EUR').map(
+    ({code}) => code,
+  ),
+);
+
 export function normalizeMarketCountry(
   value: unknown,
 ): MarketCountryCode | null {
@@ -277,10 +283,9 @@ export function marketCountryName(code: unknown): string | null {
 // `?country=XX` on a page URL pins that one request to a market country, so a
 // Merchant Center feed for one market (e.g. `?country=CY` for the EUR feed,
 // `?country=US` for the USD feed) lands on a page in its own currency even
-// though Googlebot crawls from the US. A visitor in another euro-area country
-// keeps their own country (`pageMarketCountry`). It never touches the
-// visitor's saved choice (`/locale`) and canonical URLs drop it
-// (`getCanonicalUrl`).
+// when crawled from abroad. When both countries are in the euro area, a
+// known visitor country takes precedence. The URL pin applies to the
+// request only, and `getCanonicalUrl` drops it.
 export const MARKET_URL_PARAM = 'country';
 
 /** The market a page URL pins, or null when it pins none (or an unknown one). */
@@ -303,12 +308,18 @@ export function resolveMarketCountry({
   explicitCountry?: unknown;
   oxygenCountry?: unknown;
 }): MarketCountryCode {
-  return (
-    normalizeMarketCountry(pinnedCountry) ??
+  const pin = normalizeMarketCountry(pinnedCountry);
+  const visitor =
     normalizeMarketCountry(explicitCountry) ??
-    normalizeMarketCountry(oxygenCountry) ??
-    DEFAULT_MARKET_COUNTRY
-  );
+    normalizeMarketCountry(oxygenCountry);
+
+  if (!pin) return visitor ?? DEFAULT_MARKET_COUNTRY;
+
+  return visitor &&
+    EURO_AREA_COUNTRY_CODES.has(pin) &&
+    EURO_AREA_COUNTRY_CODES.has(visitor)
+    ? visitor
+    : pin;
 }
 
 /**
@@ -326,42 +337,17 @@ export function visitorMarketCountry(
   });
 }
 
-// EU countries that sell in euros. Every one of them shows the same EUR
-// prices (checked 2026-11-14 for blankets, cushions and mugs in CY, DE, NL,
-// IE, AT and BE), so a page pinned to one of them can name another.
-const EURO_AREA_COUNTRY_CODES = new Set<string>(
-  EU_MARKET_COUNTRIES.filter(({currency}) => currency === 'EUR').map(
-    ({code}) => code,
-  ),
-);
-
-/**
- * The market a request's page shows. A `?country=` pin decides the market
- * (so Googlebot, crawling from the US, sees a Cyprus link in euros), but a
- * visitor in another euro-area country keeps their own country: a German
- * buyer arriving from a `?country=CY` ad sees "Shipping to Germany" at the
- * same price. Any other visitor (US, UK, International) gets the pin as is.
- */
-export function pageMarketCountry(
-  request: Request,
-  explicitCountry?: unknown,
-): MarketCountryCode {
-  const pinned = pinnedMarketCountry(request.url);
-  const visitor = visitorMarketCountry(request, explicitCountry);
-  if (!pinned) return visitor;
-  return EURO_AREA_COUNTRY_CODES.has(pinned) &&
-    EURO_AREA_COUNTRY_CODES.has(visitor)
-    ? visitor
-    : pinned;
-}
-
 export function getLocaleFromRequest(
   request: Request,
   explicitCountry?: unknown,
 ): I18nBase {
   return {
     language: 'EN',
-    country: pageMarketCountry(request, explicitCountry) as I18nBase['country'],
+    country: resolveMarketCountry({
+      pinnedCountry: pinnedMarketCountry(request.url),
+      explicitCountry,
+      oxygenCountry: request.headers.get('oxygen-buyer-country'),
+    }) as I18nBase['country'],
   };
 }
 
