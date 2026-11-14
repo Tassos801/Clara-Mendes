@@ -2486,3 +2486,17 @@ its own byline), order emails and Printful keep the plain title.
 `buildSeoMeta()` now leaves out " | Clara Mendes" when the title would pass
 62 characters with it, so a long title keeps "by Hokusai" instead of ending
 in "| Clara...". Tests in `scripts/museumMeta.node-test.mjs`.
+
+## 2026-11-13 — Google Shopping hand-over note
+
+`docs/google-shopping/HANDOFF.md` records the state of the first Google
+Shopping campaign: decisions, what is set up in Google Ads and Merchant
+Center, what it waits for, and the build steps. `AGENTS.md` points to it.
+Budget, bid and sales figures stay out of the repository.
+
+## 2026-11-14 — Google Shopping campaign status
+
+[The handoff](../google-shopping/HANDOFF.md) records that `Shopping EU home`
+is paused and its automated stop rule is enabled. Google Ads showed 64
+products under the campaign's museum-family filter. The live EUR Printful
+feed listed 168. The inspected Ads rows still showed pending initial review.
