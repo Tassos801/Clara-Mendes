@@ -26,9 +26,16 @@ test('error summaries keep status, outcome, fields and codes but never values', 
 
 test('a request that outlives timeoutMs becomes a retryable 504 ProdigiRequestError', async () => {
   const realFetch = globalThis.fetch;
+  // AbortSignal.timeout's timer does not keep Node's event loop alive, and a
+  // real request's socket would; hold the loop open the same way, or Node can
+  // end the test before the timeout fires (it did on CI).
   globalThis.fetch = (_url, init) =>
     new Promise((_resolve, reject) => {
-      init.signal.addEventListener('abort', () => reject(init.signal.reason));
+      const socket = setTimeout(() => {}, 10_000);
+      init.signal.addEventListener('abort', () => {
+        clearTimeout(socket);
+        reject(init.signal.reason);
+      });
     });
   try {
     const prodigi = createProdigiClient({PRODIGI_API_KEY: 'test'}, {timeoutMs: 20});
