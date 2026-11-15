@@ -25,7 +25,7 @@ export default function Contact() {
           We&apos;re here to <i>help</i>.
         </h1>
         <p>
-          Whether it&apos;s an order question, a product inquiry, or something else
+          Whether it&apos;s an order question, a product enquiry, or something else
           entirely — we&apos;d love to hear from you.
         </p>
       </header>
