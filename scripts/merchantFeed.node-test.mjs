@@ -580,14 +580,50 @@ test('the USD feeds list the US only, at fee table rates and ?country=US links',
   assert.deepEqual(us['CD-HOOD-M'].shipping, [
     `US:${usFee('hoodie')} USD:3:8:7:15`,
   ]);
+  // Printful's US transit for the museum home goods isn't verified, so they
+  // keep the international window their product page prints; clothing reads
+  // the US one.
   assert.deepEqual(us['CM-FW-01-MUG11-PF'].shipping, [
-    `US:${usFee('mug')} USD:3:6:7:15`,
+    `US:${usFee('mug')} USD:3:6:7:20`,
+  ]);
+  assert.deepEqual(us['CM-FW-01-CUSH18-C'].shipping, [
+    `US:${usFee('light')} USD:3:8:7:20`,
   ]);
   assert.deepEqual(us['CD-CAP'].shipping, [`US:${usFee('cap')} USD:3:8:7:15`]);
   assert.equal(us['CD-HOOD-M'].price, '58.49 USD');
   assert.equal(us['CD-HOOD-M'].custom_label_0, 'Counter-Diagonal');
   assert.match(us['CD-HOOD-M'].link, /\?country=US&Size=M&Color=Bone$/);
   assert.equal(us['CD-DRESS-M'], undefined);
+});
+
+test('a mug, blanket or cushion Printful does not make stays out of the Printful feeds', () => {
+  // The Line and Colour mug is a Prodigi product (art catalogue route
+  // 'channel'); a Prodigi blanket extension is not in the art catalogue.
+  const catalog = [
+    product('lozenge-composition-mug', 'Lozenge Composition Mug', 'Mugs', MUSEUM, [
+      variant('CM-LC-07-MUG11', {Size: '11 oz'}, '24.99'),
+    ]),
+    product(
+      'art-premium-fleece-blanket-30x40',
+      'Art Premium Fleece Blanket',
+      'Blankets',
+      MUSEUM,
+      [variant('CM-BLANK-30X40', {Size: '30 × 40 in'}, '79')],
+    ),
+    product('irises-blanket', 'Irises Throw Blanket', 'Blankets', MUSEUM, [
+      variant('CM-MM-01-BLANKET50X60', {Size: '50 × 60 in'}, '64.99'),
+    ]),
+  ];
+  for (const feed of ['fixed', 'printful'])
+    for (const [market, prices] of [
+      ['CY', catalog],
+      ['US', inUsd(catalog)],
+    ])
+      assert.deepEqual(
+        merchantFeedRows(prices, feed, market).map((row) => row.id),
+        feed === 'printful' ? ['CM-MM-01-BLANKET50X60'] : [],
+        `${feed} ${market}`,
+      );
 });
 
 test('the USD feeds refuse prices that are not in USD', () => {
@@ -802,7 +838,7 @@ test('every feed route answers from catalogue reads and the tables, without a ca
     `US:${usFee('hoodie')} USD:3:8:7:15`,
   ]);
   assert.deepEqual(printfulUs['CM-FW-01-CUSH18-I'].shipping, [
-    `US:${usFee('cushion-insert')} USD:3:8:7:15`,
+    `US:${usFee('cushion-insert')} USD:3:8:7:20`,
   ]);
 
   const [metaHeader, ...meta] = parse(await fetchFeed('meta-country-us'));

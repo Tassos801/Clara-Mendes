@@ -5,6 +5,7 @@ import {fixedRateLineFor} from './merchantFeed.ts';
 import {FIXED_RATES} from './merchantFeedShipping.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DELIVERY_US_BUSINESS_DAYS,
   fulfilmentWindows,
   isPersonalisedProductType,
@@ -431,9 +432,14 @@ function offerShippingDetails(
       },
       transitTime: {
         '@type': 'QuantitativeValue',
+        // Printful's museum mugs, blankets and cushions (technique set)
+        // keep the international window in the US, as on their page and in
+        // the USD feed: Printful's US transit isn't verified.
         ...dayRange(
           market === 'US'
-            ? DELIVERY_US_BUSINESS_DAYS
+            ? printfulTechnique
+              ? DELIVERY_INTERNATIONAL_BUSINESS_DAYS
+              : DELIVERY_US_BUSINESS_DAYS
             : DELIVERY_EU_BUSINESS_DAYS,
         ),
         unitCode: 'DAY',
