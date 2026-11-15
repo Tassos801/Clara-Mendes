@@ -3,7 +3,12 @@ import {readdirSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
-import {CSP_IMG_SRC, CSP_SCRIPT_SRC} from '../app/lib/csp.ts';
+import {
+  CSP_FRAME_SRC,
+  CSP_GOOGLE_CONNECT_SRC,
+  CSP_IMG_SRC,
+  CSP_SCRIPT_SRC,
+} from '../app/lib/csp.ts';
 
 const APP_DIR = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -30,10 +35,11 @@ assert.match(
 // Every entry is a quoted CSP keyword, a bare scheme, or an https origin —
 // the quoting mistake ("'blob:'" instead of 'blob:') would silently disable
 // a source in the served header.
-for (const source of CSP_IMG_SRC) {
+// A leading `*.` subdomain wildcard is valid CSP; a wildcard TLD is not.
+for (const source of [...CSP_IMG_SRC, ...CSP_GOOGLE_CONNECT_SRC]) {
   assert.match(
     source,
-    /^'(?:self|none|unsafe-inline|unsafe-eval)'$|^[a-z][a-z0-9+.-]*:$|^https:\/\/[a-z0-9.-]+$/,
+    /^'(?:self|none|unsafe-inline|unsafe-eval)'$|^[a-z][a-z0-9+.-]*:$|^https:\/\/(?:\*\.)?[a-z0-9-]+(?:\.[a-z0-9-]+)+$/,
     `malformed img-src entry: ${source}`,
   );
 }
@@ -87,3 +93,20 @@ for (const {scheme, signal} of schemeSignals) {
     );
   }
 }
+
+// Hosts Google's tag CSP guide lists for GA4 + Google Ads; the store's home
+// ccTLD is spelled out because CSP cannot wildcard a TLD.
+for (const host of [
+  'https://*.google-analytics.com',
+  'https://*.google.com',
+  'https://www.google.com.cy',
+  'https://*.g.doubleclick.net',
+  'https://pagead2.googlesyndication.com',
+]) {
+  assert.ok(CSP_IMG_SRC.includes(host), `img-src must list ${host}`);
+  assert.ok(CSP_GOOGLE_CONNECT_SRC.includes(host), `connect-src must list ${host}`);
+}
+assert.ok(
+  CSP_FRAME_SRC.includes('https://www.googletagmanager.com'),
+  'frame-src must list googletagmanager (Google tag CSP guide)',
+);
