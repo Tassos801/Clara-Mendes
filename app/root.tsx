@@ -26,6 +26,7 @@ import {getCartOrNull} from '~/lib/cart';
 import {normalizeGtmContainerId} from '~/lib/googleCommerce';
 import {normalizeMetaPixelId} from '~/lib/metaPixel';
 import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
+import {NEWSLETTER_WELCOME_SESSION_KEY} from '~/lib/newsletter';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import clothingStyles from '~/styles/clothing.css?url';
@@ -91,6 +92,13 @@ export function Layout({children}: {children?: React.ReactNode}) {
   );
 }
 
+function takeNewsletterWelcomeCode(session: Route.LoaderArgs['context']['session']) {
+  const code = session.get(NEWSLETTER_WELCOME_SESSION_KEY);
+  if (code === undefined) return null;
+  session.unset(NEWSLETTER_WELCOME_SESSION_KEY);
+  return typeof code === 'string' && code ? code : null;
+}
+
 export async function loader({context, request}: Route.LoaderArgs) {
   const {env, storefront} = context;
 
@@ -121,7 +129,11 @@ export async function loader({context, request}: Route.LoaderArgs) {
     gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
     metaPixelId: normalizeMetaPixelId(env.PUBLIC_META_PIXEL_ID),
     newsletter: {
-      welcomeCode: env.NEWSLETTER_WELCOME_CODE?.trim() || null,
+      // Whether an offer exists, never the code itself: this loader's data
+      // is serialised into every page for every visitor.
+      welcomeOffer: Boolean(env.NEWSLETTER_WELCOME_CODE?.trim()),
+      // Set only by a no-JS sign-up on the page it redirects to; read once.
+      welcomeCode: takeNewsletterWelcomeCode(context.session),
     },
   };
 }

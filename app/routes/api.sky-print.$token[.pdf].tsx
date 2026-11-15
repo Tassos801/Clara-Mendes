@@ -11,7 +11,10 @@ import {decodeSkyToken} from '~/lib/sky/sign.server';
 import {platePath, SKY_THEMES} from '~/lib/sky/themes';
 
 // Per-isolate cache: plates are static public assets (fonts: fonts.server).
-const plateCache = new Map<string, Promise<Uint8Array | null>>();
+// Resolved bytes only, never an in-flight promise: on Oxygen/workerd a
+// request must not await a promise created by another request (see
+// adminToken.server.ts), so each request without a cached plate fetches it.
+const plateCache = new Map<string, Uint8Array>();
 
 async function fetchBytes(url: URL) {
   const res = await fetch(url.toString());
@@ -19,17 +22,17 @@ async function fetchBytes(url: URL) {
   return new Uint8Array(await res.arrayBuffer());
 }
 
-function loadPlate(base: URL, path: string) {
-  let plate = plateCache.get(path);
-  if (!plate) {
-    plate = fetchBytes(new URL(path, base)).catch((error: unknown) => {
-      console.error('sky-print: plate unavailable', error);
-      plateCache.delete(path);
-      return null;
-    });
+async function loadPlate(base: URL, path: string) {
+  const cached = plateCache.get(path);
+  if (cached) return cached;
+  try {
+    const plate = await fetchBytes(new URL(path, base));
     plateCache.set(path, plate);
+    return plate;
+  } catch (error: unknown) {
+    console.error('sky-print: plate unavailable', error);
+    return null;
   }
-  return plate;
 }
 
 /**
