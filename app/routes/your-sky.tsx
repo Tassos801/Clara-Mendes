@@ -6,7 +6,13 @@ import {
   type StudioProduct,
   type StudioVariant,
 } from '~/components/SkyStudio';
+import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
 import {StructuredData} from '~/components/StructuredData';
+import {
+  christmasLineFor,
+  christmasRegionFor,
+  requestToday,
+} from '~/lib/christmasDelivery';
 import {loadFeaturePage} from '~/lib/featurePageLoader';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
 import {SKY_PRESET_EVENT} from '~/lib/sky/configuratorState';
@@ -61,6 +67,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
   return {
     ...feature,
     buyerCountry: context.storefront.i18n.country,
+    // "Today" for the Christmas order-by line (components/ChristmasOrderBy).
+    christmasToday: requestToday(request),
     deliveryCountry: countryPhrase(context.storefront.i18n.country),
     // Unframed maps ship to the US (Storefront readback, 2026-10-18).
     usDelivery: readsUsDelivery({buyerCountry: context.storefront.i18n.country}),
@@ -68,8 +76,20 @@ export async function loader({context, request}: Route.LoaderArgs) {
 }
 
 export default function YourSkyPage() {
-  const {buyerCountry, deliveryCountry, product, seoUrl, skyTheme, usDelivery} =
-    useLoaderData<typeof loader>();
+  const {
+    buyerCountry,
+    christmasToday,
+    deliveryCountry,
+    product,
+    seoUrl,
+    skyTheme,
+    usDelivery,
+  } = useLoaderData<typeof loader>();
+  // Your Sky ships to the buyer when any map does (framed maps reach fewer
+  // countries than unframed ones).
+  const shipsToBuyer = product.variants.nodes.some(
+    (variant) => variant.availableForSale,
+  );
   // Structured data follows a US buyer's market when the map ships there,
   // else the default market (see products.$handle).
   const schema = structuredDataView<StudioVariant>(
@@ -125,6 +145,11 @@ export default function YourSkyPage() {
           <h1 id="your-sky-headline">{page.hero.headline}</h1>
           <p className="your-sky-hero-sub">{page.hero.sub}</p>
           <p className="your-sky-hero-price">{heroPriceLine}</p>
+          <ChristmasOrderBy
+            line={shipsToBuyer ? christmasLineFor(product) : null}
+            region={christmasRegionFor(buyerCountry)}
+            today={christmasToday}
+          />
           <a className="primary-button your-sky-hero-cta" href="#design">
             {page.hero.cta}
           </a>

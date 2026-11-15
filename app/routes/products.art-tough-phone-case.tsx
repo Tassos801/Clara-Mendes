@@ -2,6 +2,12 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Link, redirect, useLoaderData, useNavigate} from 'react-router';
 import {Analytics, getSelectedProductOptions, ShopPayButton} from '@shopify/hydrogen';
 import type {Route} from './+types/products.art-tough-phone-case';
+import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
+import {
+  christmasLineFor,
+  christmasRegionFor,
+  requestToday,
+} from '~/lib/christmasDelivery';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {
   focusPhoneModelPicker,
@@ -139,6 +145,8 @@ export async function loader({context, request}: Route.LoaderArgs) {
     usDelivery: readsUsDelivery({buyerCountry: context.storefront.i18n.country}),
     // The page's market, so the Recently viewed rail reads the same one.
     marketCountry: context.storefront.i18n.country,
+    // "Today" for the Christmas order-by line (components/ChristmasOrderBy).
+    christmasToday: requestToday(request),
     phone,
     product,
     seoUrl: getCanonicalUrl(request, `/products/${TOUGH_CASE_HANDLE}`),
@@ -160,6 +168,7 @@ export default function ToughCasePage() {
     artwork,
     artworkImage,
     artworks,
+    christmasToday,
     marketCountry,
     phone,
     product,
@@ -177,6 +186,9 @@ export default function ToughCasePage() {
   const atcRef = useRef<HTMLDivElement>(null);
   const price = variant?.price ?? product.priceRange.minVariantPrice;
   const canBuy = Boolean(variant?.availableForSale);
+  // Until a model is chosen there is no variant to judge; the button asks
+  // for the phone, and the chip keeps the made-to-order promise.
+  const chipAvailable = !phone || canBuy;
   const buttonLabel = !phone
     ? 'Choose your phone'
     : canBuy
@@ -323,12 +335,21 @@ export default function ToughCasePage() {
               compareAtPrice={variant?.compareAtPrice}
             />
             <div className="product-availability-row" aria-label="Purchase status">
-              <span className="product-availability-chip is-available">
-                Made to order
+              <span
+                className={`product-availability-chip ${
+                  chipAvailable ? 'is-available' : 'is-unavailable'
+                }`}
+              >
+                {chipAvailable ? 'Made to order' : 'Unavailable'}
               </span>
               <span>Printed for your exact model</span>
               <span>{RETURN_WINDOW_DAYS}-day returns</span>
             </div>
+            <ChristmasOrderBy
+              line={chipAvailable ? christmasLineFor(product) : null}
+              region={christmasRegionFor(marketCountry)}
+              today={christmasToday}
+            />
           </div>
 
           <div className="product-options">
