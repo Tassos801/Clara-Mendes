@@ -240,7 +240,7 @@ export function groupGifts<T extends GiftCandidate>(
 export const GIFT_PAGE_COPY = {
   seoTitle: 'Art Gifts — Museum Art on Blankets, Mugs & More',
   metaDescription:
-    'Art gifts made to order: Hokusai, Hiroshige, Kandinsky and Mondrian on throw blankets, mugs and cushions, plus framed prints, phone cases and book nooks.',
+    'Art gifts made to order: Hokusai, Van Gogh, Monet, Klimt, Mondrian and more on blankets, mugs and cushions, plus framed prints, phone cases and book nooks.',
   eyebrow: 'Gifts',
   title: 'Art Gifts',
   subtitle:
