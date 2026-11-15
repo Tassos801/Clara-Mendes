@@ -220,7 +220,7 @@ test('the real /clothing loader leads with Counter-Diagonal and drops the retire
   assert.equal(data.hero.eyebrow, 'New · Counter-Diagonal');
   assert.equal(data.hero.text, 'Hoodies, sweatshirts, tees, long sleeves, hats and totes in one geometric design, inspired by Theo van Doesburg. Made for you after you order.');
   assert.equal(data.hero.looksImage.src, '/images/clothing/counter-diagonal-looks.w1280.jpg');
-  assert.equal(data.description, 'Clara Mendes Clothing: Counter-Diagonal, an original design inspired by Theo van Doesburg, on hoodies, sweatshirts, tees, long sleeves, hats and totes. Made to order.');
+  assert.equal(data.description, 'Clara Mendes Clothing: Counter-Diagonal, our own design inspired by Theo van Doesburg, on hoodies, sweatshirts, tees, long sleeves, hats and totes. Made to order.');
   assert.deepEqual(data.categories.map((c) => c.slug), ['hoodies-sweatshirts', 'tees-long-sleeves', 'accessories']);
   assert.deepEqual(data.lineChips, [{handle: 'counter-diagonal', title: 'Counter-Diagonal', count: 7}]);
 

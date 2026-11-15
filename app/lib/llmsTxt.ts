@@ -387,7 +387,7 @@ export function buildLlmsTxt({
   const clothingLine = clothing?.types.length
     ? [
         `- [Clothing](https://shopclaramendes.com/clothing): ${joinAnd(clothing.types)}`,
-        `  in ${numberWord(clothing.lines.length)} original ${clothing.lines.length === 1 ? 'design' : 'designs'}${
+        `  in ${numberWord(clothing.lines.length)} ${clothing.lines.length === 1 ? 'design' : 'designs'} of our own${
           clothing.lines.length
             ? ` — ${clothing.lines
                 .map((line) => {
