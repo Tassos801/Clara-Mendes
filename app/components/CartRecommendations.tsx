@@ -7,6 +7,7 @@ import {useAside} from '~/components/Aside';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import type {CartLayout} from '~/components/CartMain';
 import {
+  cardQuickAddMode,
   deriveCardPricing,
   formatCardPriceLabel,
 } from '~/lib/productCardPricing';
@@ -95,17 +96,20 @@ function CartRecommendationRow({
   product: ClaraCardProduct;
 }) {
   const product = withCuratedImages(storefrontProduct);
-  const candidateVariant = product.cardVariant?.nodes?.[0];
+  const variant = product.cardVariant?.nodes?.[0];
   const isClassicFrame = product.handle === CLASSIC_FRAME_HANDLE;
-  const variant = candidateVariant;
   const image = isClassicFrame
     ? (product.images?.nodes?.[0] ?? product.featuredImage)
     : (product.featuredImage ?? product.images?.nodes?.[0]);
-  // "From <min released price>" — the Add button adds the first variant,
-  // which is that min-price 8 × 10, so the label stays truthful.
+  // "From <min released price>" — Add is offered only where the first
+  // variant is the one to buy (a single variant, or an art print's min-price
+  // 8 × 10), so the label stays truthful. A size, colour or phone model the
+  // shopper has not picked opens the product page instead, as on the cards.
   const priceLabel = formatCardPriceLabel(deriveCardPricing(product));
+  const mode = cardQuickAddMode(product, variant);
+  const title = curatedDisplayTitle(product);
 
-  if (!variant) return null;
+  if (!variant || mode === 'unavailable') return null;
 
   return (
     <li className="cart-recs-row">
@@ -130,42 +134,53 @@ function CartRecommendationRow({
           prefetch="intent"
           to={`/products/${product.handle}`}
         >
-          {curatedDisplayTitle(product)}
+          {title}
         </Link>
         {priceLabel ? (
           <span className="cart-recs-price">{priceLabel}</span>
         ) : null}
       </div>
-      <AddToCartButton
-        analytics={{
-          products: [
+      {mode === 'choose' ? (
+        <Link
+          aria-label={`Choose options for ${title}`}
+          className="cart-recs-add cart-recs-choose"
+          onClick={onNavigate}
+          prefetch="intent"
+          to={`/products/${product.handle}`}
+        >
+          Choose
+        </Link>
+      ) : (
+        <AddToCartButton
+          analytics={{
+            products: [
+              {
+                productGid: product.id,
+                variantGid: variant.id,
+                name: product.title,
+                variantName: variant.title,
+                brand: product.vendor || 'Clara Mendes',
+                price: variant.price.amount,
+                currency: variant.price.currencyCode,
+                quantity: 1,
+                category: product.productType || undefined,
+                sku: variant.sku || undefined,
+              },
+            ],
+          }}
+          ariaLabel={`Add ${title} to cart`}
+          className="cart-recs-add"
+          lines={[
             {
-              productGid: product.id,
-              variantGid: variant.id,
-              name: product.title,
-              variantName: variant.title,
-              brand: product.vendor || 'Clara Mendes',
-              price: variant.price.amount,
-              currency: variant.price.currencyCode,
+              merchandiseId: variant.id,
               quantity: 1,
-              category: product.productType || undefined,
-              sku: variant.sku || undefined,
+              selectedVariant: variant,
             },
-          ],
-        }}
-        ariaLabel={`Add ${product.title} to cart`}
-        className="cart-recs-add"
-        lines={[
-          {
-            merchandiseId: variant.id,
-            quantity: 1,
-            selectedVariant: variant,
-          },
-        ]}
-        showErrors={false}
-      >
-        Add
-      </AddToCartButton>
+          ]}
+        >
+          Add
+        </AddToCartButton>
+      )}
     </li>
   );
 }
@@ -185,7 +200,7 @@ const recsCss = `
   letter-spacing: 0.22em;
   margin: 0;
   text-transform: uppercase;
-  color: rgba(38, 35, 31, 0.62);
+  color: rgba(38, 35, 31, 0.7);
 }
 
 .cart-recs-list {
@@ -199,6 +214,7 @@ const recsCss = `
 .cart-recs-row {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
 }
 
@@ -277,7 +293,13 @@ const recsCss = `
   transition: background 220ms ease, color 220ms ease;
 }
 
-.cart-recs-add:hover:not(:disabled) {
+.cart-recs-choose {
+  align-items: center;
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.cart-recs-add:hover:not(:disabled):not([aria-disabled='true']) {
   background: var(--color-ink, #26231f);
   color: #fff;
 }
@@ -286,5 +308,17 @@ const recsCss = `
   background: var(--color-ink, #26231f);
   color: rgba(255, 255, 255, 0.7);
   cursor: progress;
+}
+
+/* A refused add (sold out since the suggestions were cached) wraps onto
+   its own line under the row instead of squeezing the title. */
+.cart-recs-row form {
+  display: contents;
+}
+
+.cart-recs-row .cart-form-error {
+  flex-basis: 100%;
+  font-size: 0.78rem;
+  margin: 0;
 }
 `;
