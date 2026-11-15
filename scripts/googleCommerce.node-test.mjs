@@ -409,7 +409,49 @@ assert.match(robots, /User-agent: Googlebot\n/);
 assert.match(robots, /User-agent: Googlebot-Image\nAllow: \//);
 assert.ok(!robots.includes('Disallow: /policies/'));
 // Case print files are for the lab; every agent block keeps them unindexed.
-assert.equal(robots.match(/Disallow: \/print-files\//g).length, 5);
+// MJ12bot and Pinterest have named groups, which replace `*`.
+assert.equal(robots.match(/Disallow: \/print-files\//g).length, 7);
+for (const group of robots.split(/\n\s*\n/)) {
+  if (/User-agent: (MJ12bot|Pinterest)/.test(group)) {
+    assert.match(group, /Disallow: \/cart\n/);
+    assert.match(group, /Disallow: \/account\n/);
+  }
+}
+// The storefront's own facet parameters are blocked on listing pages; the
+// capsule views and the feeds' ?country= product links stay crawlable.
+const robotsBlocks = (path) =>
+  robots
+    .split(/\n\s*\n/)
+    .find((group) => group.startsWith('User-agent: *'))
+    .split('\n')
+    .filter((line) => line.startsWith('Disallow: '))
+    .map((line) => line.slice('Disallow: '.length))
+    .some((rule) => {
+      const pattern = rule
+        .split('*')
+        .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&'))
+        .join('.*');
+      return new RegExp(`^${pattern}`).test(path);
+    });
+for (const path of [
+  '/collections/all?sort=price-asc',
+  '/collections/all?capsule=quiet&type=Art+Prints',
+  '/collections/quiet-form?available=1',
+  '/collections/all?cursor=abc&direction=next',
+  '/clothing?sort=price-desc',
+  '/artists/hokusai?vendor=x',
+]) {
+  assert.ok(robotsBlocks(path), path);
+}
+for (const path of [
+  '/collections/all?capsule=quiet',
+  '/collections/quiet-form',
+  '/products/orbital-silence-art-print?country=US&Size=M',
+  '/clothing',
+  '/policies/refund-policy',
+]) {
+  assert.ok(!robotsBlocks(path), path);
+}
 assert.match(robots, /Sitemap: https:\/\/shopclaramendes\.com\/sitemap\.xml/);
 
 for (const handle of POLICY_HANDLES) {
