@@ -3,6 +3,7 @@ import {data, useLoaderData} from 'react-router';
 import type {Route} from './+types/cart';
 import {CartMain} from '~/components/CartMain';
 import {getCartOrNull} from '~/lib/cart';
+import {DEFAULT_CART_ERROR} from '~/lib/cartFormErrors';
 import {
   marketingAttributionToCartAttributes,
   MARKETING_ATTRIBUTION_INPUT_NAME,
@@ -31,7 +32,7 @@ export async function action({request, context}: Route.ActionArgs) {
   const {action, inputs} = CartForm.getFormInput(formData);
 
   if (!action) {
-    throw new Error('No cart action was submitted.');
+    return data({errors: [{message: DEFAULT_CART_ERROR}]}, {status: 400});
   }
 
   let status = 200;
@@ -43,77 +44,87 @@ export async function action({request, context}: Route.ActionArgs) {
   let submittedMerchandiseIds: string[] = [];
   let warnedLines: Parameters<typeof relevantCartWarnings>[0]['lines'];
 
-  switch (action) {
-    case CartForm.ACTIONS.AttributesUpdateInput:
-      result = await cart.updateAttributes(inputs.attributes);
-      break;
-    case CartForm.ACTIONS.LinesAdd: {
-      // Personalised star-map lines arrive unsigned from the browser; the
-      // server validates them and attaches the HMAC before they enter the
-      // cart, so the webhook can trust what it later fulfils.
-      const signed = await signSkyCartLines(
-        inputs.lines,
-        context.env.SKY_SIGNING_SECRET,
-      );
-      if (!signed.ok) {
-        return data({errors: [{message: signed.error}]}, {status: 400});
+  // A Storefront outage, rate limit or dropped connection must come back to
+  // the form that submitted as a message beside its control (CartFormError),
+  // not throw to the root error boundary and replace the whole page.
+  try {
+    switch (action) {
+      case CartForm.ACTIONS.AttributesUpdateInput:
+        result = await cart.updateAttributes(inputs.attributes);
+        break;
+      case CartForm.ACTIONS.LinesAdd: {
+        // Personalised star-map lines arrive unsigned from the browser; the
+        // server validates them and attaches the HMAC before they enter the
+        // cart, so the webhook can trust what it later fulfils.
+        const signed = await signSkyCartLines(
+          inputs.lines,
+          context.env.SKY_SIGNING_SECRET,
+        );
+        if (!signed.ok) {
+          return data({errors: [{message: signed.error}]}, {status: 400});
+        }
+        const added = await cart.addLines(signed.lines);
+        submittedMerchandiseIds = signed.lines.map(
+          (line) => line.merchandiseId,
+        );
+        warnedLines = added.cart?.lines?.nodes;
+        // Shopify keeps a sold-out line at quantity zero and only warns; drop
+        // it again so the cart holds what the customer actually got, and let
+        // the warning travel back to the form as the failure message.
+        result = await removeUnfulfilledLines({
+          result: added,
+          removeLines: (lineIds) =>
+            cart.removeLines(lineIds, {cartId: added.cart?.id}),
+        });
+        result = await updateCartAttribution({
+          cart,
+          formData,
+          result,
+        });
+        break;
       }
-      const added = await cart.addLines(signed.lines);
-      submittedMerchandiseIds = signed.lines.map((line) => line.merchandiseId);
-      warnedLines = added.cart?.lines?.nodes;
-      // Shopify keeps a sold-out line at quantity zero and only warns; drop
-      // it again so the cart holds what the customer actually got, and let
-      // the warning travel back to the form as the failure message.
-      result = await removeUnfulfilledLines({
-        result: added,
-        removeLines: (lineIds) =>
-          cart.removeLines(lineIds, {cartId: added.cart?.id}),
-      });
-      result = await updateCartAttribution({
-        cart,
-        formData,
-        result,
-      });
-      break;
+      case CartForm.ACTIONS.LinesUpdate:
+        submittedLineIds = (inputs.lines as Array<{id: string}>).map(
+          (line) => line.id,
+        );
+        result = await cart.updateLines(inputs.lines);
+        break;
+      case CartForm.ACTIONS.LinesRemove:
+        submittedLineIds = inputs.lineIds as string[];
+        result = await cart.removeLines(inputs.lineIds);
+        break;
+      case CartForm.ACTIONS.DiscountCodesUpdate: {
+        const formDiscountCode = formData.get('discountCode');
+        const discountCodes = [
+          ...(typeof formDiscountCode === 'string' && formDiscountCode
+            ? [formDiscountCode]
+            : []),
+          ...((inputs.discountCodes as string[] | undefined) ?? []),
+        ];
+        result = await cart.updateDiscountCodes(discountCodes);
+        break;
+      }
+      case CartForm.ACTIONS.GiftCardCodesAdd: {
+        const formGiftCardCode = formData.get('giftCardCode');
+        const giftCardCodes =
+          typeof formGiftCardCode === 'string' && formGiftCardCode
+            ? [formGiftCardCode]
+            : ((inputs.giftCardCodes as string[] | undefined) ?? []);
+        result = await cart.addGiftCardCodes(giftCardCodes);
+        break;
+      }
+      case CartForm.ACTIONS.GiftCardCodesRemove:
+        result = await cart.removeGiftCardCodes(inputs.giftCardCodes);
+        break;
+      case CartForm.ACTIONS.BuyerIdentityUpdate:
+        result = await cart.updateBuyerIdentity(inputs.buyerIdentity);
+        break;
+      default:
+        return data({errors: [{message: DEFAULT_CART_ERROR}]}, {status: 400});
     }
-    case CartForm.ACTIONS.LinesUpdate:
-      submittedLineIds = (inputs.lines as Array<{id: string}>).map(
-        (line) => line.id,
-      );
-      result = await cart.updateLines(inputs.lines);
-      break;
-    case CartForm.ACTIONS.LinesRemove:
-      submittedLineIds = inputs.lineIds as string[];
-      result = await cart.removeLines(inputs.lineIds);
-      break;
-    case CartForm.ACTIONS.DiscountCodesUpdate: {
-      const formDiscountCode = formData.get('discountCode');
-      const discountCodes = [
-        ...(typeof formDiscountCode === 'string' && formDiscountCode
-          ? [formDiscountCode]
-          : []),
-        ...((inputs.discountCodes as string[] | undefined) ?? []),
-      ];
-      result = await cart.updateDiscountCodes(discountCodes);
-      break;
-    }
-    case CartForm.ACTIONS.GiftCardCodesAdd: {
-      const formGiftCardCode = formData.get('giftCardCode');
-      const giftCardCodes =
-        typeof formGiftCardCode === 'string' && formGiftCardCode
-          ? [formGiftCardCode]
-          : ((inputs.giftCardCodes as string[] | undefined) ?? []);
-      result = await cart.addGiftCardCodes(giftCardCodes);
-      break;
-    }
-    case CartForm.ACTIONS.GiftCardCodesRemove:
-      result = await cart.removeGiftCardCodes(inputs.giftCardCodes);
-      break;
-    case CartForm.ACTIONS.BuyerIdentityUpdate:
-      result = await cart.updateBuyerIdentity(inputs.buyerIdentity);
-      break;
-    default:
-      throw new Error(`${action} is not a supported cart action.`);
+  } catch (error) {
+    console.error('Cart action failed.', {action, error});
+    return data({errors: [{message: DEFAULT_CART_ERROR}]}, {status: 502});
   }
 
   const cartResult = result?.cart;
