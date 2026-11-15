@@ -103,8 +103,8 @@ test('the founder letter is complete and the portrait exists', () => {
 test('the newsletter copy and forms are wired', () => {
   assert.match(BRAND.newsletter.success('WELCOME10'), /WELCOME10/);
   assert.doesNotMatch(BRAND.newsletter.success(null), /code/i);
-  assert.match(BRAND.newsletter.footerLine('X'), /10 % off/);
-  assert.doesNotMatch(BRAND.newsletter.footerLine(null), /10 %/);
+  assert.match(BRAND.newsletter.footerLine('X'), /10% off/);
+  assert.doesNotMatch(BRAND.newsletter.footerLine(null), /10%/);
   const form = readFileSync(path.join(ROOT, 'app/components/NewsletterForm.tsx'), 'utf8');
   assert.match(form, /action=\{NEWSLETTER_ACTION\}|action="\/api\/subscribe"/);
   assert.match(form, /NEWSLETTER_HONEYPOT_FIELD/);

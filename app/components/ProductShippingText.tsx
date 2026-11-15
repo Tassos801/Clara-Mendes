@@ -72,7 +72,7 @@ export function ProductShippingText({
     <>
       {isPlantPot ? (
         <>
-          Pot-only orders: EUR 6.99 shipping across the EU and EUR 11.99 to
+          Pot-only orders: €6.99 shipping across the EU and €11.99 to
           most other countries (not the US), by untracked post from the UK.
           Mixed orders may combine shipping charges at checkout.{' '}
         </>

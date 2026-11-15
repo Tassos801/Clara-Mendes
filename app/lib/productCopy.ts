@@ -26,7 +26,7 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
   'art-snap-phone-case':
     'Clara Mendes artwork wrapped edge to edge around a slim snap phone case. Impact-resistant polycarbonate with an all-over matte print, made to order for iPhone 15, iPhone 15 Pro, iPhone 15 Plus and iPhone 15 Pro Max.',
   'classic-framed-art-print-16x20':
-    'A Natural classic picture frame sold without artwork, available in 8 × 10, 16 × 20, and 20 × 24 inch sizes. Satin-laminated solid wood, a 20 mm face, shatterproof clear Perspex, removable backing, and a wall hanger are included; print and decorative mat are not included.',
+    'A Natural classic picture frame sold without artwork, available in 8 × 10, 16 × 20, and 20 × 24 inch sizes. Satin-laminated solid wood, a 20 mm face, shatterproof clear Perspex, removable backing, and a wall hanger are included; print and mount are not included.',
   'fine-art-greeting-card':
     'Clara Mendes artwork on a blank 5 × 7 inch greeting card, printed to order. Heavyweight 324gsm Mohawk fine-art card with a kraft envelope, left blank inside for your own words; choose the art capsule that suits the occasion. Sent by letter post.',
   'fine-art-postcard':

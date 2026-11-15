@@ -35,14 +35,14 @@ export const BRAND = {
   },
   newsletter: {
     footerLine: (code: string | null) =>
-      `Letters from Nicosia — new work first${code ? ', 10 % off your first order' : ''}.`,
+      `Letters from Nicosia — new work first${code ? ', 10% off your first order' : ''}.`,
     label: 'Email address',
     placeholder: 'your@email.com',
     button: 'Sign me up',
     submitting: 'Signing you up…',
     success: (code: string | null) =>
       code
-        ? `You're in. Your code: ${code} — 10 % off your first order.`
+        ? `You're in. Your code: ${code} — 10% off your first order.`
         : "You're in. New work reaches you first.",
     already: "You're already on the list. New work reaches you first.",
     invalid: "That doesn't look like an email address.",
