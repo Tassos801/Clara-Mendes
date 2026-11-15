@@ -161,17 +161,23 @@ function KarinaJournal({
   const articles = blog.articles.nodes;
   const hasArticles = articles.length > 0;
 
-  // Newest issue carries the highest number: the ledger renders newest
-  // first, so number down from the count on the current page.
-  const issueNumber = (index: number) =>
-    String(articles.length - index).padStart(2, '0');
+  // BLOGS_QUERY lists newest first (PUBLISHED_AT, reverse), so the newest
+  // issue carries the highest number. Numbers are fixed per article before
+  // the covers drop imageless issues, so a cover and its ledger row agree.
+  const issueNumbers = new Map(
+    articles.map((article, index) => [
+      article.id,
+      String(articles.length - index).padStart(2, '0'),
+    ]),
+  );
+  const issueNumber = (id: string) => issueNumbers.get(id) ?? '';
 
   const issueCovers: Cover[] = articles
     .filter((article) => article.image)
-    .map((article, index) => ({
+    .map((article) => ({
       key: article.id,
       href: `/blogs/${blog.handle}/${article.handle}`,
-      label: `Issue ${issueNumber(index)}`,
+      label: `Issue ${issueNumber(article.id)}`,
       title: article.title,
       imageData: article.image!,
     }));
@@ -244,7 +250,7 @@ function KarinaJournal({
       <section className="kot-ledger" data-chapter="linen" aria-label="Issues">
         {hasArticles ? (
           <ol className="kot-ledger-list">
-            {articles.map((article, index) => (
+            {articles.map((article) => (
               <li key={article.id} data-reveal>
                 <Link
                   className="kot-ledger-row"
@@ -252,7 +258,7 @@ function KarinaJournal({
                   prefetch="intent"
                 >
                   <span className="kot-ledger-issue">
-                    Issue {issueNumber(index)}
+                    Issue {issueNumber(article.id)}
                   </span>
                   <span className="kot-ledger-main">
                     <span className="kot-ledger-title">{article.title}</span>
@@ -1052,7 +1058,9 @@ const BLOGS_QUERY = `#graphql
         first: $first,
         last: $last,
         before: $startCursor,
-        after: $endCursor
+        after: $endCursor,
+        sortKey: PUBLISHED_AT,
+        reverse: true
       ) {
         nodes {
           ...ArticleItem

@@ -77,6 +77,7 @@ import {
   type ClothingCategoryCount,
   type ClothingCapsule,
 } from '~/lib/clothing';
+import {clothingFilterUrl} from '~/lib/clothingPresentation';
 
 export type CollectionLink = {
   id: string;
@@ -179,29 +180,14 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
   const capsule = getShopCapsuleBySlug(searchParams.get('capsule'));
-  const clothing = await loadClothingProducts(context.storefront);
-  const productTypes = [
-    ...new Set([
-      ...SHOP_PRODUCT_TYPES,
-      ...clothing
-        .map((product) => product.productType)
-        .filter((type): type is string => Boolean(type)),
-    ]),
-  ];
+  // Clothing only adds tabs: a failed read leaves the shop listing up.
+  const clothingLoad = loadClothingProducts(context.storefront).catch(
+    () => [],
+  );
   const isBookNooks =
     facetSelection.productTypes.length === 1 &&
     facetSelection.productTypes[0] === 'Book Nooks' &&
     SHOP_PRODUCT_TYPES.includes('Book Nooks');
-  const normalizedProductTypes = normalizeSingleProductTypeSearch(
-    searchParams,
-    productTypes,
-  );
-
-  if (normalizedProductTypes) {
-    const queryString = normalizedProductTypes.toString();
-    throw redirect(`/collections/all${queryString ? `?${queryString}` : ''}`);
-  }
-
   const searchQuery = [
     buildProductsSearchQuery(facetSelection),
     capsule ? buildCapsuleTagQuery(capsule) : null,
@@ -212,23 +198,47 @@ export async function loader({context, request}: Route.LoaderArgs) {
   // "Featured" lists the studio's products first, rotated by product line
   // (app/lib/listingLines.ts), and museum reproductions after them, prints
   // first (app/lib/museumListingOrder.ts); explicit sorts keep Shopify's
-  // order across the whole shop.
+  // order across the whole shop. It loads alongside the clothing read; the
+  // type redirect below still wins, so its outcome is only awaited after.
   const museumClause = featuredMuseumClause(sort);
-  const data = museumClause
-    ? await loadFeaturedListing({
+  const listingLoad = museumClause
+    ? loadFeaturedListing({
         museumClause,
         paginationVariables,
         request,
         searchQuery: searchQuery || null,
         storefront: context.storefront,
       })
-    : await context.storefront.query(ALL_COLLECTION_QUERY, {
+    : context.storefront.query(ALL_COLLECTION_QUERY, {
         variables: {
           ...paginationVariables,
           ...getProductsSortInput(sort),
           query: searchQuery || null,
         },
       });
+  // Settled here so a redirect thrown first leaves no unhandled rejection.
+  (listingLoad as Promise<unknown>).catch(() => {});
+
+  const clothing = await clothingLoad;
+  const productTypes = [
+    ...new Set([
+      ...SHOP_PRODUCT_TYPES,
+      ...clothing
+        .map((product) => product.productType)
+        .filter((type): type is string => Boolean(type)),
+    ]),
+  ];
+  const normalizedProductTypes = normalizeSingleProductTypeSearch(
+    searchParams,
+    productTypes,
+  );
+
+  if (normalizedProductTypes) {
+    const queryString = normalizedProductTypes.toString();
+    throw redirect(`/collections/all${queryString ? `?${queryString}` : ''}`);
+  }
+
+  const data = await listingLoad;
   ensurePaginatedData(request, data);
 
   return {
@@ -420,19 +430,33 @@ export function CollectionView({data}: {data: CollectionViewData}) {
     data.activeHandle === 'all'
       ? `/collections/all${capsuleSearch(activeCapsule)}`
       : collectionPath(data.activeHandle);
+  // Type tabs stay on the collection they were opened from.
+  const listingPath = `/collections/${data.activeHandle}`;
+  // A clothing line's tabs open /clothing filtered to that line, which is
+  // where the garment categories live (?capsule=…&category=…).
+  const lineParams = new URLSearchParams(
+    data.clothingOnly &&
+      data.clothingNavigation?.capsules.some(
+        (capsule) => capsule.handle === data.activeHandle,
+      )
+      ? {capsule: data.activeHandle}
+      : {},
+  );
   const productCategories = [
     {
       active: !activeProductType,
       label: data.clothingOnly ? 'All clothing' : 'All products',
       path: data.clothingOnly
-        ? '/clothing'
-        : `/collections/all${categorySearch(null)}`,
+        ? lineParams.size
+          ? clothingFilterUrl(lineParams, 'category', '')
+          : '/clothing'
+        : `${listingPath}${categorySearch(null)}`,
     },
     ...(data.clothingOnly
       ? (data.clothingNavigation?.categories ?? []).map((category) => ({
           active: false,
           label: category.label,
-          path: `/clothing?category=${category.slug}#pieces`,
+          path: clothingFilterUrl(lineParams, 'category', category.slug),
         }))
       : data.facets.productTypes
           .filter(
@@ -443,7 +467,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
           .map((option) => ({
             active: activeProductType === option.label,
             label: option.label,
-            path: `/collections/all${categorySearch(option.label)}`,
+            path: `${listingPath}${categorySearch(option.label)}`,
           }))),
     ...(!data.clothingOnly && data.clothingNavigation?.categories.length
       ? [{active: false, label: 'Clothing', path: '/clothing'}]
@@ -732,13 +756,7 @@ export function CollectionView({data}: {data: CollectionViewData}) {
         }) => (
           <>
             <p className="cv-count">
-              {typeof data.totalCount === 'number'
-                ? `Showing ${nodes.length} of ${data.totalCount} ${
-                    data.totalCount === 1 ? 'product' : 'products'
-                  }`
-                : `${nodes.length}${hasNextPage ? '+' : ''} ${
-                    nodes.length === 1 && !hasNextPage ? 'product' : 'products'
-                  }`}
+              {listingCountLabel(nodes.length, hasNextPage, data.totalCount)}
             </p>
 
             {nodes.length > 0 ? (
@@ -901,6 +919,23 @@ function useInView() {
   }, [node]);
 
   return {ref: setNode, inView};
+}
+
+/**
+ * "Showing 24 of 278 products" when the total is known (the in-memory
+ * Featured order). Explicit sorts page through Shopify without a total, so
+ * while more remain the label counts only what is shown, never "24+".
+ */
+function listingCountLabel(
+  shown: number,
+  hasNextPage: boolean,
+  totalCount?: number,
+) {
+  const noun = (count: number) => (count === 1 ? 'product' : 'products');
+  if (typeof totalCount === 'number')
+    return `Showing ${shown} of ${totalCount} ${noun(totalCount)}`;
+  if (hasNextPage) return `Showing ${shown} ${noun(shown)}, more as you scroll`;
+  return `${shown} ${noun(shown)}`;
 }
 
 function splitTitle(str: string): {italic: string; rest: string} {
