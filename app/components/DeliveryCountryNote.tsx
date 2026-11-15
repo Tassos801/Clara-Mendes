@@ -1,4 +1,5 @@
 import {useId} from 'react';
+import {useSearchParams} from 'react-router';
 import type {DeliveryCountryChoice} from '~/lib/deliveryReach';
 
 /**
@@ -20,6 +21,10 @@ export function DeliveryCountryNote({
   redirectTo: string;
 }) {
   const selectId = useId();
+  // Set by the /locale action when it could not switch the country
+  // (MARKET_ERROR_PARAM in markets.server.ts).
+  const [searchParams] = useSearchParams();
+  const failed = searchParams.has('country-error');
 
   return (
     <div className="delivery-country-note">
@@ -44,6 +49,11 @@ export function DeliveryCountryNote({
             Update
           </button>
         </form>
+      ) : null}
+      {failed ? (
+        <p role="alert">
+          We couldn&rsquo;t change the delivery country. Please try again.
+        </p>
       ) : null}
     </div>
   );
