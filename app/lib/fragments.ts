@@ -177,6 +177,13 @@ export const CART_QUERY_FRAGMENT = `#graphql
       code
       applicable
     }
+    # Order-level discounts (a code taking 10% off the order) land here, not
+    # on the lines, and are not part of subtotalAmount.
+    discountAllocations {
+      discountedAmount {
+        ...Money
+      }
+    }
   }
 ` as const;
 
