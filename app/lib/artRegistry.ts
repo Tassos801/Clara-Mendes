@@ -196,6 +196,28 @@ export const MUSEUMS: Record<
  * died in `year - 71` or earlier clears this time screen in `year`. It is an
  * initial screen, not legal clearance.
  */
+const MONTHS =
+  'January|February|March|April|May|June|July|August|September|October|November|December';
+
+/**
+ * An artwork's date as the shop shows it. The registry keeps each museum's
+ * own wording (scripts/museumSources.node-test.mjs pins it to the evidence),
+ * so captions and artist pages tidy it here: one circa form ("c."), the
+ * British day-month order, and no calendar-cycle prefix.
+ * "ca. 1830–32" → "c. 1830–32", "c 1936" → "c. 1936",
+ * "snake year 1857" → "1857", "January 18, 1911" → "18 January 1911".
+ */
+export function displayArtworkDate(date: string): string;
+export function displayArtworkDate(date: string | null | undefined): string | null;
+export function displayArtworkDate(date: string | null | undefined) {
+  if (!date) return date === '' ? '' : null;
+  return date
+    .trim()
+    .replace(/^(?:ca\.?|c\.?|circa)\s*(?=\d)/i, 'c. ')
+    .replace(/^[a-z]+ year (?=\d{4}\b)/i, '')
+    .replace(new RegExp(`^(${MONTHS}) (\\d{1,2}), (\\d{4})$`), '$2 $1 $3');
+}
+
 export function lifePlusSeventyCutoff(year: number) {
   return year - 71;
 }
