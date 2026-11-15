@@ -248,6 +248,11 @@ const PAGE_INFO_FRAGMENT = `#graphql
   }
 ` as const;
 
+/** Listed products per results page; the Load more step. */
+const SEARCH_PAGE_SIZE = 8;
+/** Extra whole pages one short page may read on into. */
+const SEARCH_FILL_REQUESTS = 4;
+
 // NOTE: https://shopify.dev/docs/api/storefront/latest/queries/search
 export const SEARCH_QUERY = `#graphql
   query RegularSearch(
@@ -309,6 +314,41 @@ export const SEARCH_QUERY = `#graphql
   ${PAGE_INFO_FRAGMENT}
 ` as const;
 
+/** The products connection alone, for filling a short results page. */
+const SEARCH_PRODUCTS_QUERY = `#graphql
+  query RegularSearchProducts(
+    $country: CountryCode
+    $endCursor: String
+    $first: Int
+    $language: LanguageCode
+    $last: Int
+    $term: String!
+    $startCursor: String
+  ) @inContext(country: $country, language: $language) {
+    products: search(
+      after: $endCursor,
+      before: $startCursor,
+      first: $first,
+      last: $last,
+      query: $term,
+      sortKey: RELEVANCE,
+      types: [PRODUCT],
+      unavailableProducts: HIDE,
+    ) {
+      nodes {
+        ...on Product {
+          ...SearchProduct
+        }
+      }
+      pageInfo {
+        ...PageInfoFragment
+      }
+    }
+  }
+  ${SEARCH_PRODUCT_FRAGMENT}
+  ${PAGE_INFO_FRAGMENT}
+` as const;
+
 /**
  * Regular search fetcher
  */
@@ -321,7 +361,9 @@ async function regularSearch({
 >): Promise<RegularSearchReturn> {
   const {storefront} = context;
   const url = new URL(request.url);
-  const variables = getPaginationVariables(request, {pageBy: 8});
+  const variables = getPaginationVariables(request, {
+    pageBy: SEARCH_PAGE_SIZE,
+  });
   const term = getSearchTerm(url);
   const type = 'regular';
 
@@ -351,12 +393,53 @@ async function regularSearch({
     console.error('Search returned partial results.', errors);
   }
 
+  // Unlisted products are dropped after Shopify pages the results, so a
+  // short page reads on into the next whole page (same direction) until it
+  // holds a page of listed products or the results end. Whole pages keep
+  // the cursors honest: nothing is skipped or shown twice, and Load more
+  // only appears while Shopify has more.
+  const backward = 'last' in variables;
+  let products = items.products.nodes.filter((product) =>
+    isListedProduct(product),
+  );
+  let pageInfo = items.products.pageInfo;
+  for (
+    let fill = 0;
+    products.length < SEARCH_PAGE_SIZE && fill < SEARCH_FILL_REQUESTS;
+    fill += 1
+  ) {
+    const more = backward ? pageInfo.hasPreviousPage : pageInfo.hasNextPage;
+    if (!more) break;
+    const next = await storefront.query(SEARCH_PRODUCTS_QUERY, {
+      variables: backward
+        ? {last: SEARCH_PAGE_SIZE, startCursor: pageInfo.startCursor, term}
+        : {first: SEARCH_PAGE_SIZE, endCursor: pageInfo.endCursor, term},
+    });
+    if (!next.products?.nodes) break;
+    const listed = next.products.nodes.filter((product) =>
+      isListedProduct(product),
+    );
+    const nextInfo = next.products.pageInfo;
+    if (backward) {
+      products = [...listed, ...products];
+      pageInfo = {
+        ...pageInfo,
+        hasPreviousPage: nextInfo.hasPreviousPage,
+        startCursor: nextInfo.startCursor,
+      };
+    } else {
+      products = [...products, ...listed];
+      pageInfo = {
+        ...pageInfo,
+        endCursor: nextInfo.endCursor,
+        hasNextPage: nextInfo.hasNextPage,
+      };
+    }
+  }
+
   const filteredItems = {
     ...items,
-    products: {
-      ...items.products,
-      nodes: items.products.nodes.filter((product) => isListedProduct(product)),
-    },
+    products: {...items.products, nodes: products, pageInfo},
   };
 
   const total = Object.values(filteredItems).reduce(

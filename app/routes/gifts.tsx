@@ -29,7 +29,6 @@ import {
   GIFT_HANDLES,
   GIFT_PAGE_COPY,
   GIFTS_PATH,
-  giftProductQuery,
   groupGifts,
 } from '~/lib/giftPage';
 import {DEFAULT_MARKET_COUNTRY} from '~/lib/markets';
@@ -72,31 +71,22 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const today = requestToday(request);
   const region = christmasRegionFor(buyerCountry);
 
-  // Handles and euro prices from the default market (handle isn't a
-  // searchable field, so the query selects the curated product types).
-  const index = await storefront.query(GIFT_INDEX_QUERY, {
-    variables: {
-      country: DEFAULT_MARKET_COUNTRY,
-      query: giftProductQuery(),
-    },
-  });
-  const curated = new Set(GIFT_HANDLES);
-  const indexed = index.products.nodes.filter((node) =>
-    curated.has(node.handle),
-  );
+  // Each curated handle is read directly, so none drops out however large
+  // the catalogue grows: euro prices from the default market, and the cards
+  // (currency and availability) in the buyer's market, both at once.
+  const [index, cards] = await Promise.all([
+    storefront.query<GiftHandlesResult<GiftIndexProduct>>(GIFT_INDEX_QUERY, {
+      variables: {country: DEFAULT_MARKET_COUNTRY},
+    }),
+    storefront.query<GiftHandlesResult<ClaraCardProduct>>(GIFT_CARDS_QUERY),
+  ]);
   const eurPrices = new Map(
-    indexed.map((node) => [node.handle, node.priceRange.minVariantPrice]),
+    giftHandleNodes(index).map((node) => [
+      node.handle,
+      node.priceRange.minVariantPrice,
+    ]),
   );
-
-  // The cards in the buyer's market: their currency and availability.
-  const cards = indexed.length
-    ? await storefront.query(GIFT_CARDS_QUERY, {
-        variables: {ids: indexed.map((node) => node.id)},
-      })
-    : {nodes: []};
-  const products = cards.nodes.flatMap((node) =>
-    node?.__typename === 'Product' ? [node as unknown as ClaraCardProduct] : [],
-  );
+  const products = giftHandleNodes(cards);
 
   // Your Sky lives on its own page; it joins the bands as a link tile.
   const skyProduct = products.find(
@@ -476,39 +466,46 @@ const giftsCss = `
 }
 `;
 
-const GIFT_INDEX_QUERY = `#graphql
-  query GiftIndex(
-    $country: CountryCode
-    $language: LanguageCode
-    $query: String!
-  ) @inContext(country: $country, language: $language) {
-    products(first: 250, query: $query) {
-      nodes {
-        id
-        handle
-        priceRange {
-          minVariantPrice {
-            amount
-            currencyCode
-          }
-        }
-      }
-    }
-  }
-` as const;
+type GiftIndexProduct = {
+  handle: string;
+  priceRange: {minVariantPrice: MoneyAmount};
+};
 
-const GIFT_CARDS_QUERY = `#graphql
-  query GiftCards(
+/** One aliased field per curated handle: `g0`, `g1`, … in GIFT_HANDLES order. */
+type GiftHandlesResult<T> = {[alias: `g${number}`]: T | null};
+
+function giftHandleNodes<T>(result: GiftHandlesResult<T>): T[] {
+  return GIFT_HANDLES.flatMap((_, index) => {
+    const node = result[`g${index}`];
+    return node ? [node] : [];
+  });
+}
+
+/**
+ * Aliased `product(handle:)` fields for every curated handle. Built from
+ * GIFT_HANDLES, so it is not a codegen document; the loader types it.
+ */
+function giftHandlesQuery(name: string, selection: string) {
+  const fields = GIFT_HANDLES.map(
+    (handle, index) =>
+      `g${index}: product(handle: ${JSON.stringify(handle)}) { ${selection} }`,
+  ).join('\n    ');
+  return `
+  query ${name}(
     $country: CountryCode
-    $ids: [ID!]!
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
-    nodes(ids: $ids) {
-      __typename
-      ... on Product {
-        ...ClaraProductCard
-      }
-    }
-  }
-  ${PRODUCT_CARD_FRAGMENT}
-` as const;
+    ${fields}
+  }`;
+}
+
+const GIFT_INDEX_QUERY = giftHandlesQuery(
+  'GiftIndex',
+  'handle priceRange { minVariantPrice { amount currencyCode } }',
+);
+
+const GIFT_CARDS_QUERY = `${giftHandlesQuery(
+  'GiftCards',
+  '...ClaraProductCard',
+)}
+  ${PRODUCT_CARD_FRAGMENT}`;
