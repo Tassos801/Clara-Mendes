@@ -27,6 +27,7 @@ import {
   SKY_THEME_LABELS,
   toCartAttributes,
   type SkyThemeId,
+  unprintableCharacters,
 } from '~/lib/sky/params';
 import {
   SKY_FINISH_LABELS,
@@ -102,6 +103,9 @@ export function SkyStudio({
   const introRef = useRef<HTMLDivElement>(null);
   const [showSticky, setShowSticky] = useState(false);
   const [giftNote, setGiftNote] = useState('');
+  // The slip is set in the same fonts as the map, and leaves out what they
+  // can't print (emoji, CJK, …); say so before checkout, not on paper.
+  const unprintableInNote = unprintableCharacters(giftNote.replace(/\s/g, ' '));
 
   const skySize = skySizeFromOptions(selectedVariant?.selectedOptions);
   const skyFinish = skyFinishFromOptions(selectedVariant?.selectedOptions);
@@ -334,6 +338,9 @@ export function SkyStudio({
                   Gift note <em>(optional)</em>
                 </label>
                 <textarea
+                  aria-describedby={
+                    unprintableInNote.length ? 'sky-gift-note-warning' : undefined
+                  }
                   id="sky-gift-note"
                   maxLength={GIFT_NOTE_MAX}
                   onChange={(event) => setGiftNote(event.target.value)}
@@ -350,6 +357,16 @@ export function SkyStudio({
                     {[...giftNote].length}/{GIFT_NOTE_MAX}
                   </span>
                 </p>
+                {unprintableInNote.length ? (
+                  <p
+                    className="sky-gift-note-warning"
+                    id="sky-gift-note-warning"
+                    role="status"
+                  >
+                    {unprintableInNote.map((ch) => `“${ch}”`).join(' ')}{' '}
+                    can’t be printed on the card and will be left out.
+                  </p>
+                ) : null}
               </div>
               <p>
                 We print exactly this artwork. Screen colour and natural wood
