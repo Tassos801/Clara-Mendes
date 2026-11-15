@@ -1,6 +1,23 @@
 import type {MarketCountryCode} from './markets.ts';
-import {MARKET_SESSION_KEY, normalizeMarketCountry} from './markets.ts';
-import {toLocalPath} from './redirect.ts';
+import {
+  MARKET_SESSION_KEY,
+  MARKET_URL_PARAM,
+  normalizeMarketCountry,
+} from './markets.ts';
+import {toLocalPath, withSearchParams} from './redirect.ts';
+
+/**
+ * Set on the page a failed country choice returns to (a plain form post has
+ * no component to render the error on), so the form can say so.
+ */
+export const MARKET_ERROR_PARAM = 'country-error';
+
+/** A local path without the `?country=` pin: the buyer's choice must win. */
+function withoutMarketPin(path: string) {
+  const url = new URL(path, 'http://local.invalid');
+  url.searchParams.delete(MARKET_URL_PARAM);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
 
 type MarketCartResult = {
   cart?: {
@@ -100,20 +117,28 @@ export async function processMarketSelectionRequest({
   session: MarketActionSession;
 }) {
   const formData = await request.formData();
+  const returnTo = toLocalPath(formData.get('redirectTo')) ?? '/';
+  // A failure goes back to the page as it was, flagged.
+  const failed = <T extends {status: number; error: string}>(failure: T) => ({
+    ...failure,
+    ok: false as const,
+    destination: withSearchParams(
+      returnTo,
+      new URLSearchParams([[MARKET_ERROR_PARAM, '1']]),
+    ),
+  });
   const requestedCountry = normalizeMarketCountry(formData.get('country'));
   if (!requestedCountry) {
-    return {
-      ok: false as const,
+    return failed({
       status: 400,
       error: 'Choose a supported delivery country.',
-    };
+    });
   }
   if (!availableCountries.includes(requestedCountry)) {
-    return {
-      ok: false as const,
+    return failed({
       status: 422,
       error: 'That delivery country is not currently available at checkout.',
-    };
+    });
   }
 
   const selection = await applyMarketSelection({
@@ -122,18 +147,18 @@ export async function processMarketSelectionRequest({
     session,
   });
 
-  if (!selection.ok) return selection;
+  if (!selection.ok) return failed(selection);
 
   const cartId = selection.result.cart?.id;
   const headers = cartId ? cart.setCartId(cartId) : new Headers();
   headers.append('Set-Cookie', await session.commit());
 
-  const destination = toLocalPath(formData.get('redirectTo')) ?? '/';
-
   return {
     ok: true as const,
     country: selection.country,
-    destination,
+    // A `?country=` pin in the page URL outranks the saved choice
+    // (markets.ts), so it is dropped, or the old country would win again.
+    destination: withoutMarketPin(returnTo),
     headers,
     status: 303,
   };

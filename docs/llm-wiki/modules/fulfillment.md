@@ -380,8 +380,13 @@ business days at every facility (printful.com/fulfillment-updates, read
 day. Cushions are "All-over synthetic" cut-and-sew (3–7 at partners) and take
 the activewear windows, 2–7 and 3–8. `readsUsDelivery` excludes them
 (`printful`), so US buyers read the generic EU + elsewhere wording until
-Printful's US transit is verified. The Line and Colour Prodigi mug keeps
-Prodigi's windows.
+Printful's US transit is verified. The USD feed and the US Offer
+`transitTime` use the same 7–20 window for these pieces; clothing and Prodigi
+lines keep 7–15. The Line and Colour Prodigi mug keeps Prodigi's windows.
+Printful's fee groups and feed lines for mugs, blankets and cushions require
+the art-catalogue family's `printful` route (`isPrintfulArtProduct`,
+`app/lib/printfulShipping.ts`), so a Prodigi mug, blanket or cushion gets no
+Printful fee and stays out of the feeds until it has its own table.
 
 ## 2026-11-12 - Christmas order-by dates
 
@@ -397,8 +402,13 @@ not. The shown date is the earlier of that and the partner's deadline
 (`PARTNER_DEADLINES`, by year, with the source URL). Lines show from
 1 November; each disappears the day after its date, and nothing shows after
 25 December. "Today" is the store's date in Nicosia, or `?today=YYYY-MM-DD`.
-The gift page lists the dates; product pages show one line
-(`app/components/ChristmasOrderBy.tsx`). Changing a window here moves the
+The gift page lists the dates; product pages, `/your-sky` and
+`/products/art-tough-phone-case` show one line
+(`app/components/ChristmasOrderBy.tsx`; the last two pass line, region and
+today from their own loaders). The homepage and shop hero backdrop and the
+line-rail circles use their Christmas pictures in the same season
+(`heroBackdropFor`, `lineRailEntries({today})`), chosen when the module
+loads. Changing a window here moves the
 dates. Re-read Printful's and Prodigi's pages each year: Prodigi's 2026 page
 was still incomplete on 12 Nov (no Standard date for fine-art prints).
 Test: `scripts/christmasDelivery.node-test.mjs`.

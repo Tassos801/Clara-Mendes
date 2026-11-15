@@ -291,6 +291,19 @@ test('the product page renders the line from one self-contained component', () =
   assert.match(route, /christmasToday: requestToday\(request\)/);
 });
 
+test('Your Sky and the art phone case show the line too, from their own loaders', () => {
+  for (const [file, type, line] of [
+    ['app/routes/your-sky.tsx', 'Personalised Art', 'prodigi-art'],
+    ['app/routes/products.art-tough-phone-case.tsx', 'Phone Cases', 'prodigi-cases'],
+  ]) {
+    const route = readFileSync(path.join(ROOT, file), 'utf8');
+    assert.match(route, /christmasToday: requestToday\(request\)/, file);
+    assert.match(route, /<ChristmasOrderBy\s+line=\{[^}]*christmasLineFor\(product\)/, file);
+    assert.match(route, /region=\{christmasRegionFor\(/, file);
+    assert.equal(christmasLineFor({productType: type}), line, file);
+  }
+});
+
 test('US buyers are not told about framed prints or cards', () => {
   assert.match(christmasLineLabel('prodigi-art', 'eu'), /framed/);
   assert.doesNotMatch(christmasLineLabel('prodigi-art', 'us'), /framed|cards/);

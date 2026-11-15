@@ -1,4 +1,4 @@
-import {data, redirect} from 'react-router';
+import {redirect} from 'react-router';
 import type {Route} from './+types/locale';
 import {processMarketSelectionRequest} from '~/lib/markets.server';
 import {
@@ -30,9 +30,9 @@ export async function action({request, context}: Route.ActionArgs) {
     session: context.session,
   });
 
-  if (!selection.ok) {
-    return data({error: selection.error}, {status: selection.status});
-  }
+  // A plain form post has no page to show an error on here: go back to it,
+  // flagged (MARKET_ERROR_PARAM), instead of rendering raw JSON.
+  if (!selection.ok) return redirect(selection.destination, 303);
 
   return redirect(selection.destination, {
     status: selection.status,

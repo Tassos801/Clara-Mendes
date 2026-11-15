@@ -301,6 +301,25 @@ test('a US buyer who can buy the item gets USD offers with US shipping', () => {
   assert.deepEqual(offer.hasMerchantReturnPolicy.applicableCountry, ['US']);
 });
 
+test('a US buyer of a Printful museum blanket reads the international transit', () => {
+  const offer = offerOf(
+    productSchema({
+      availableForSale: true,
+      market: 'US',
+      description: 'A throw blanket.',
+      productType: 'Blankets',
+      productHandle: 'irises-blanket',
+      printfulTechnique: 'sublimation',
+      title: 'Irises Throw Blanket',
+      url: 'https://shopclaramendes.com/products/irises-blanket',
+      variants: [usd(1, true, '64.99')],
+    }),
+  );
+  const {transitTime, handlingTime} = offer.shippingDetails.deliveryTime;
+  assert.deepEqual([transitTime.minValue, transitTime.maxValue], [7, 20]);
+  assert.deepEqual([handlingTime.minValue, handlingTime.maxValue], [3, 6]);
+});
+
 test('a US buyer of an item that does not ship there reads the Cyprus offer', () => {
   const card = usd(1, false, '9.00');
   const reached = markOutOfReachVariants(

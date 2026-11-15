@@ -1,3 +1,4 @@
+import {artProductByHandle, FAMILY_SPECS} from './artProductCatalog.ts';
 import {isClothingProduct} from './clothing.ts';
 import {formatMoney} from './money.ts';
 import {PRINTFUL_SHIPPING_FEES} from './printfulShippingFees.ts';
@@ -106,6 +107,19 @@ const CLOTHING_GROUPS: Record<string, PrintfulShippingGroup> = {
 };
 
 /**
+ * True for a museum product Printful makes: its art-catalogue family is on
+ * the 'printful' route. A mug, blanket or cushion another partner makes (the
+ * Line and Colour Prodigi mug, the Prodigi cushion and blanket extensions)
+ * shares the product type but none of Printful's fees, windows or feeds.
+ */
+export function isPrintfulArtProduct(handle?: string | null) {
+  const product = artProductByHandle(handle);
+  return product ? FAMILY_SPECS[product.family]?.route === 'printful' : false;
+}
+
+const HOME_GOODS_TYPES = ['Mugs', 'Blankets', 'Cushions'];
+
+/**
  * The Printful shipping group of one variant, or null for anything else
  * (Prodigi lines, Quiet Current, a garment type the table has not been
  * built for): those pages show no fee line from this table.
@@ -115,6 +129,8 @@ export function printfulShippingGroup(
   selectedOptions: readonly SelectedOption[] = [],
 ): PrintfulShippingGroup | null {
   const type = product.productType?.trim() ?? '';
+  if (HOME_GOODS_TYPES.includes(type) && !isPrintfulArtProduct(product.handle))
+    return null;
   if (type === 'Mugs') return 'mug';
   if (type === 'Blankets') return 'blanket';
   if (type === 'Cushions') {
