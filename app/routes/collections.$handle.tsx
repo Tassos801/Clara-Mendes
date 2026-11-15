@@ -424,7 +424,7 @@ export default function Collection() {
   return <CollectionView data={data as ShopifyCollectionLoaderData} />;
 }
 
-/** Cinematic palette per capsule, matching each capsule's temperature. */
+/** Chapter name per capsule (marks the section for the chapter reveals). */
 const CAPSULE_CHAPTER: Record<string, string> = {
   'quiet-form': 'linen',
   'patina-blue': 'ink',

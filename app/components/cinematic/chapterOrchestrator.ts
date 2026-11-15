@@ -1,20 +1,12 @@
 /**
  * Scroll orchestration for the cinematic experience.
  *
- * Scans the DOM for `[data-chapter]` sections and (a) retargets the painted
- * background palette while a chapter crosses the viewport's middle band and
- * (b) reveals its `[data-reveal]` children with a staggered rise/fade, once
- * per page visit. Built on IntersectionObserver and the Web Animations API,
+ * Scans the DOM for `[data-chapter]` sections and reveals their
+ * `[data-reveal]` children with a staggered rise/fade, once per page visit. Built on IntersectionObserver and the Web Animations API,
  * so it needs no scroll library and no layout reads while scrolling.
  * Framework-free so it can be re-run on every client-side navigation and
  * fully reverted in between.
  */
-import {DEFAULT_PALETTE, isPaletteName, type PaletteName} from './paintedShader';
-
-type OrchestratorOptions = {
-  setTargetPalette: (palette: PaletteName) => void;
-};
-
 export type ScanOptions = {
   /**
    * False when booting partway through a visit: chapters the visitor has
@@ -29,9 +21,6 @@ export type ChapterOrchestrator = {
   scan: (options?: ScanOptions) => void;
   destroy: () => void;
 };
-
-/** A chapter's palette applies while it crosses the 45%–55% band. */
-const PALETTE_BAND = '-45% 0px -45% 0px';
 
 /**
  * Reveals start when a chapter's top passes 78% of the viewport height.
@@ -51,17 +40,12 @@ const REVEAL_EASING = 'cubic-bezier(0.25, 1, 0.5, 1)';
 const REVEAL_DURATION_MS = 1100;
 const REVEAL_STAGGER_MS = 100;
 
-export function createChapterOrchestrator({
-  setTargetPalette,
-}: OrchestratorOptions): ChapterOrchestrator {
-  let paletteObserver: IntersectionObserver | null = null;
+export function createChapterOrchestrator(): ChapterOrchestrator {
   let revealObserver: IntersectionObserver | null = null;
   let animations: Animation[] = [];
 
   const revert = () => {
-    paletteObserver?.disconnect();
     revealObserver?.disconnect();
-    paletteObserver = null;
     revealObserver = null;
     for (const animation of animations) animation.cancel();
     animations = [];
@@ -69,7 +53,6 @@ export function createChapterOrchestrator({
 
   const scan = ({revealOnScreen = true}: ScanOptions = {}) => {
     revert();
-    setTargetPalette(DEFAULT_PALETTE);
 
     const chapters = Array.from(
       document.querySelectorAll<HTMLElement>('[data-chapter]'),
@@ -77,18 +60,6 @@ export function createChapterOrchestrator({
     if (chapters.length === 0) return;
 
     const pending = new Map<Element, Animation[]>();
-
-    paletteObserver = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          const palette = (entry.target as HTMLElement).dataset.chapter;
-          if (entry.isIntersecting && isPaletteName(palette)) {
-            setTargetPalette(palette);
-          }
-        }
-      },
-      {rootMargin: PALETTE_BAND},
-    );
 
     revealObserver = new IntersectionObserver(
       (entries, observer) => {
@@ -105,10 +76,6 @@ export function createChapterOrchestrator({
     );
 
     for (const chapter of chapters) {
-      if (isPaletteName(chapter.dataset.chapter)) {
-        paletteObserver.observe(chapter);
-      }
-
       const reveals = chapter.querySelectorAll<HTMLElement>('[data-reveal]');
       if (reveals.length === 0) continue;
       if (

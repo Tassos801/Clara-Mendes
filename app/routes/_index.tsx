@@ -432,8 +432,7 @@ html:has(.home-root) main {
 }
 
 .commerce-home {
-  /* Translucent wash lets the cinematic painted canvas breathe through;
-     falls back to the solid page body background without WebGL */
+  /* Translucent wash over the solid page body background */
   background: color-mix(in srgb, var(--color-page) 85%, transparent);
 }
 

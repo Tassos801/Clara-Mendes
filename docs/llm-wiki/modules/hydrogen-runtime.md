@@ -81,12 +81,12 @@ Shopify's `hydrogenRoutes()` wrapper.
 - React `18.3.1`
 - React Router `7.12.0`
 - Vite `6.4.2`
-- Lenis for desktop smooth scrolling; the painted background is plain
-  WebGL and the chapter reveals use IntersectionObserver and the Web
-  Animations API (`app/components/cinematic/`), so the whole cinematic
-  layer is one ~9 kB gzip chunk, loaded once the page has loaded and the
-  visitor first scrolls, touches, moves the mouse or presses a key (a cold
-  WebGL context costs the main thread ~200 ms)
+- Lenis for desktop smooth scrolling; the chapter reveals use
+  IntersectionObserver and the Web Animations API
+  (`app/components/cinematic/`), loaded as one small chunk once the page
+  has loaded and the visitor first scrolls, touches, moves the mouse or
+  presses a key. The painted WebGL background was removed on 2026-11-15:
+  it sat under the body's opaque page colour and never showed.
 
 ## Images from public/
 

@@ -4,7 +4,6 @@ import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
-import {hexToLinear} from '../app/components/cinematic/paintRenderer.ts';
 import {BRAND} from '../app/content/brand.ts';
 import {artistProducts} from '../app/lib/artistShops.ts';
 import {
@@ -75,7 +74,6 @@ test('the cinematic layer needs no Three.js or GSAP', () => {
     'app/components/cinematic/CinematicProvider.tsx',
     'app/components/cinematic/cinematicExperience.ts',
     'app/components/cinematic/chapterOrchestrator.ts',
-    'app/components/cinematic/paintRenderer.ts',
   ]) {
     assert.doesNotMatch(read(file), /from 'three'|from 'gsap|import\('(three|gsap)/);
   }
@@ -86,17 +84,11 @@ test('the cinematic layer needs no Three.js or GSAP', () => {
   assert.match(provider, /await import\('\.\/cinematicExperience'\)/);
   assert.match(provider, /const pageLoaded = useAfterPageLoad\(\);/);
   assert.match(provider, /if \(!pageLoaded \|\| interacted\) return;/);
-  assert.match(provider, /if \(!canvas \|\| !interacted\) return;/);
+  assert.match(provider, /if \(!interacted\) return;/);
+  // No hidden WebGL paint: nothing draws behind the page colour.
+  assert.doesNotMatch(provider, /<canvas/);
+  assert.doesNotMatch(read('app/components/cinematic/cinematicExperience.ts'), /getContext\(|<canvas/);
   assert.match(provider, /handle\.scan\(\{revealOnScreen: false\}\)/);
-});
-
-test('palettes convert to linear light exactly as Three.js did', () => {
-  const [r, g, b] = hexToLinear('#f4f0e6');
-  assert.ok(Math.abs(r - 0.9047) < 1e-3, `r ${r}`);
-  assert.ok(Math.abs(g - 0.8714) < 1e-3, `g ${g}`);
-  assert.ok(Math.abs(b - 0.7913) < 1e-3, `b ${b}`);
-  assert.deepEqual(hexToLinear('#000000'), [0, 0, 0]);
-  assert.deepEqual(hexToLinear('#ffffff'), [1, 1, 1]);
 });
 
 test('the hero backdrop ships as plain JPEGs with one preload per query', () => {

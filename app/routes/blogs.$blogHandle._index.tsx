@@ -325,8 +325,7 @@ function formatIssueDate(publishedAt?: string | null) {
  * motion and without JS) as a scroll-snap row; motion-friendly visitors
  * on every viewport get the slow 3D carousel — on phones the side
  * covers clip past the band's edges, which reads as the ring passing
- * through frame. Rotation pauses while hovered or focused. The
- * cinematic WebGL background runs its own ticker, so one more
+ * through frame. Rotation pauses while hovered or focused. A
  * transform-only rAF stays cheap.
  */
 function CoverRing({covers}: {covers: Cover[]}) {

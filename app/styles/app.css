@@ -4095,22 +4095,7 @@ button {
   }
 }
 
-/* ── Cinematic painted background ─────────────────────────────────── */
-
-.cinematic-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 1.6s ease;
-}
-
-.cinematic-canvas.is-active {
-  opacity: 1;
-}
+/* ── Cinematic motion layer (Lenis) ───────────────────────────────── */
 
 /* Native smooth-scroll must yield to Lenis when it drives the scroll */
 html.lenis,
