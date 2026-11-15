@@ -278,7 +278,7 @@ function KarinaJournal({
             <span className="kot-ledger-main">
               <span className="kot-ledger-title">At the press</span>
               <span className="kot-ledger-excerpt">
-                The first dispatch is being written — notes on the five
+                The first dispatch is being written — notes on the
                 capsules, how the prints are made, and the rooms they live in.
                 It publishes right here.
               </span>

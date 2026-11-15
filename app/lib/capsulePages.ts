@@ -86,7 +86,7 @@ const CAPSULE_PAGE_CONTENT: Record<string, CapsulePageContent> = {
       'Three coordinated collage-style prints in terracotta, ochre, olive and cobalt. Warm Mediterranean rhythm, giclée-printed on archival matte art paper.',
     subtitle: 'Warm collage rhythms in terracotta, ochre, olive, and cobalt.',
     editorial: [
-      'Sunlit Mosaic assembles torn-edge shapes the way strong afternoon light breaks a courtyard into pieces: terracotta and ochre doing the warmth, olive steadying it, cobalt appearing in small, deliberate flashes. It is the most rhythmic of the five capsules — collage wall art that keeps a room lively without shouting.',
+      'Sunlit Mosaic assembles torn-edge shapes the way strong afternoon light breaks a courtyard into pieces: terracotta and ochre doing the warmth, olive steadying it, cobalt appearing in small, deliberate flashes. It is the most rhythmic of the founding capsules — collage wall art that keeps a room lively without shouting.',
       'Each of the three originals is giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. The warm palette flatters kitchens, breakfast corners, and any room with natural wood; hang the trio in a loose cluster rather than a strict row to let the mosaic idea carry.',
     ],
     pdpBlurb:
