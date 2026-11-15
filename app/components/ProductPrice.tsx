@@ -9,13 +9,26 @@ export function ProductPrice({
   compareAtPrice?: MoneyAmount | null;
   price?: MoneyAmount | null;
 }) {
+  // Only a compare-at price above the current one is a saving; Shopify keeps
+  // stale or equal compare-at values that would otherwise read as a sale.
+  const onSale =
+    price &&
+    compareAtPrice &&
+    compareAtPrice.currencyCode === price.currencyCode &&
+    Number(compareAtPrice.amount) > Number(price.amount);
+
   return (
     <div aria-label="Price" className="product-price" role="group">
       {!price ? (
         <span>&nbsp;</span>
-      ) : compareAtPrice ? (
+      ) : onSale ? (
         <span className="product-price-on-sale">
-          {formatMoney(price)} <s>{formatMoney(compareAtPrice)}</s>
+          <span className="sr-only">Sale price </span>
+          {formatMoney(price)}{' '}
+          <s>
+            <span className="sr-only">Regular price </span>
+            {formatMoney(compareAtPrice)}
+          </s>
         </span>
       ) : (
         formatMoney(price)
