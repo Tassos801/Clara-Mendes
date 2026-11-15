@@ -79,11 +79,13 @@ export function OriginalArtPreview({
             formattedPrice && liveProduct?.hasPriceRange
               ? `From ${formattedPrice}`
               : formattedPrice;
+          // Without a live read (the shop fallback) nothing is known about
+          // availability, so the card claims none: these prints are released.
           const status = liveProduct
             ? liveProduct.availableForSale
               ? 'Available now'
               : 'Sold out'
-            : 'Coming soon';
+            : null;
           const content = (
             <>
               <div className="original-art-card__image">
@@ -93,7 +95,9 @@ export function OriginalArtPreview({
                   loading="lazy"
                   src={item.image}
                 />
-                <span className="original-art-card__status">{status}</span>
+                {status ? (
+                  <span className="original-art-card__status">{status}</span>
+                ) : null}
               </div>
               <div className="original-art-card__copy">
                 <p className="original-art-card__capsule">{item.capsule}</p>
@@ -102,9 +106,7 @@ export function OriginalArtPreview({
                 <div className="original-art-card__meta">
                   {item.palette ? <span>{item.palette}</span> : <span />}
                   <span>
-                    {liveProduct
-                      ? (price ?? 'View product')
-                      : 'Not yet released'}
+                    {liveProduct ? (price ?? 'View product') : 'View print'}
                   </span>
                 </div>
               </div>
@@ -122,9 +124,15 @@ export function OriginalArtPreview({
               {content}
             </Link>
           ) : (
-            <article className="original-art-card" key={item.handle}>
+            <Link
+              aria-label={`View ${item.shortTitle}`}
+              className="original-art-card original-art-card--link"
+              key={item.handle}
+              prefetch="intent"
+              to={`/products/${item.handle}`}
+            >
               {content}
-            </article>
+            </Link>
           );
         })}
       </div>
