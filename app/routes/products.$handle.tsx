@@ -1328,6 +1328,7 @@ function ProductPage() {
 
             <div
               className="product-availability-row"
+              role="group"
               aria-label="Purchase status"
             >
               <span
@@ -1537,7 +1538,11 @@ function ProductPage() {
           <div className="product-buy-box">
             <div className="quantity-row">
               <span>Quantity</span>
-              <div className="quantity-control" aria-label="Product quantity">
+              <div
+                className="quantity-control"
+                role="group"
+                aria-label="Product quantity"
+              >
                 <button
                   type="button"
                   onClick={() => setQuantity((value) => Math.max(1, value - 1))}
@@ -2508,7 +2513,11 @@ function ProductGalleryCarousel({
                 {String(slideCount).padStart(2, '0')}
               </span>
             </p>
-            <div className="product-gallery-dots" aria-label="Gallery slides">
+            <div
+              className="product-gallery-dots"
+              role="group"
+              aria-label="Gallery slides"
+            >
               {Array.from({length: slideCount}, (_, index) => (
                 <button
                   className={`product-gallery-dot ${
