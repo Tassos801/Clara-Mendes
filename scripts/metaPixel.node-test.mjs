@@ -103,6 +103,9 @@ test('loading adds fbevents.js once and queues init, events and consent', () => 
     scripts.map((s) => [s.src, s.async]),
     [[META_PIXEL_SCRIPT, true]],
   );
+  // Client navigations are counted once, by MetaPixelAnalytics, not again
+  // by fbevents.js's own history listener.
+  assert.equal(runtime.window.fbq.disablePushState, true);
 
   assert.equal(trackMetaEvent('PageView', undefined, runtime), true);
   assert.equal(
