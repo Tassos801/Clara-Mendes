@@ -259,7 +259,8 @@ const marketActionResult = await processMarketSelectionRequest({
   request: new Request('https://shopclaramendes.com/locale', {
     body: new URLSearchParams({
       country: 'US',
-      redirectTo: '/products/quiet-form-i?size=large#details',
+      // The feed's `?country=` pin is dropped, or it would win again.
+      redirectTo: '/products/quiet-form-i?country=US&size=large#details',
     }),
     method: 'POST',
   }),
@@ -311,6 +312,8 @@ const failedMarketAction = await processMarketSelectionRequest({
 });
 assert.equal(failedMarketAction.ok, false);
 assert.equal(failedMarketAction.status, 400);
+// A plain form post goes back flagged, never to a foreign origin.
+assert.equal(failedMarketAction.destination, '/?country-error=1');
 assert.equal(failedActionCommitted, false);
 
 let unavailableMarketUpdated = false;
@@ -341,6 +344,38 @@ const unavailableMarketAction = await processMarketSelectionRequest({
 assert.equal(unavailableMarketAction.ok, false);
 assert.equal(unavailableMarketAction.status, 422);
 assert.equal(unavailableMarketUpdated, false);
+
+const pinnedFailure = await processMarketSelectionRequest({
+  availableCountries: ['CY', 'US'],
+  cart: {
+    async updateBuyerIdentity() {
+      assert.fail('unavailable market must not update the cart');
+    },
+    setCartId() {
+      assert.fail('unavailable market must not write a cart cookie');
+    },
+  },
+  request: new Request('https://shopclaramendes.com/locale', {
+    body: new URLSearchParams({
+      country: 'GB',
+      redirectTo: '/products/irises-mug?country=US#buy',
+    }),
+    method: 'POST',
+  }),
+  session: {
+    async commit() {
+      assert.fail('unavailable market must not write a session cookie');
+    },
+    set() {
+      assert.fail('unavailable market must not persist a session');
+    },
+  },
+});
+// A failed choice returns to the page as it was, pin included.
+assert.equal(
+  pinnedFailure.destination,
+  '/products/irises-mug?country=US&country-error=1#buy',
+);
 
 // Consent Mode remains denied until Shopify Customer Privacy grants each
 // category. Commerce data is emitted only when both privacy checks agree.
