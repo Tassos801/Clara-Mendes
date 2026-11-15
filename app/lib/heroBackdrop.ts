@@ -1,3 +1,6 @@
+// Relative imports keep this module loadable by the plain-Node test runner.
+import {christmasSeason, storeToday} from './christmasDelivery.ts';
+
 /**
  * The interior photograph behind the homepage and shop heroes.
  *
@@ -7,19 +10,41 @@
  * compressed JPEGs: phones get the 1700 px file, desktops 1920 px, and
  * screens that need more pixels (high density or very wide) 2560 px.
  *
- * Christmas 2026: the same room dressed for the season (fir tree, gifts,
+ * Christmas: the same room dressed for the season (fir tree, gifts,
  * garland, knit throw), an AI edit of the interior photo made with Codex,
  * kept to the original's neutral grey-white walls (the hero filters add
  * sepia, so a warm photo turns amber). Browsers keep public/ files for a
- * year, so a new picture always gets a new file name. After the season,
- * point these back at the hero-interior files, which stay in
- * public/images/backdrops.
+ * year, so a new picture always gets a new file name. It shows while
+ * christmasSeason (1 November to 25 December, the store's date) is open,
+ * and the interior photo the rest of the year.
  */
-export const HERO_BACKDROP = {
+const INTERIOR_BACKDROP = {
+  mobile: '/images/backdrops/hero-interior-mobile.jpg',
+  desktop: '/images/backdrops/hero-interior-1920.jpg',
+  large: '/images/backdrops/hero-interior.jpg',
+} as const;
+
+const CHRISTMAS_BACKDROP = {
   mobile: '/images/backdrops/hero-christmas-neutral-mobile.jpg',
   desktop: '/images/backdrops/hero-christmas-neutral-1920.jpg',
   large: '/images/backdrops/hero-christmas-neutral.jpg',
 } as const;
+
+export type HeroBackdrop = Record<'mobile' | 'desktop' | 'large', string>;
+
+/** The backdrop files for a store date (YYYY-MM-DD). */
+export function heroBackdropFor(today: string): HeroBackdrop {
+  return christmasSeason(today) === 'open'
+    ? CHRISTMAS_BACKDROP
+    : INTERIOR_BACKDROP;
+}
+
+/**
+ * The backdrop for the date this module loads on. The route stylesheets and
+ * preload links read it at module scope, so it changes season when the
+ * server's module is next loaded (a deploy or a fresh worker), not mid-run.
+ */
+export const HERO_BACKDROP: HeroBackdrop = heroBackdropFor(storeToday());
 
 /**
  * One query per file, shared by the route stylesheets and the preload
