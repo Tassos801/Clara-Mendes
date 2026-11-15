@@ -25,7 +25,8 @@ import {storefrontImageLoader} from '~/lib/imageLoader';
 import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
-import {requestToday} from '~/lib/christmasDelivery';
+import {christmasRegionForVisitor, requestToday} from '~/lib/christmasDelivery';
+import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
 import {
   focusPhoneModelPicker,
   PhoneModelPicker,
@@ -709,6 +710,15 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // a sold-out one; the default-market reads tell the two apart (free for a
   // buyer in Cyprus or when everything is buyable).
   const buyerCountry = context.storefront.i18n.country;
+  // Where the visitor really is (saved choice, then geolocation). It differs
+  // from buyerCountry only on a feed link pinning another market
+  // (`?country=CY` opened in Poland); prices and availability stay the
+  // pinned market's, but the shipping fee and Christmas date follow the
+  // visitor so they never quote Cyprus to someone in Poland or Japan.
+  const visitorCountry = visitorMarketCountry(
+    request,
+    context.session.get(MARKET_SESSION_KEY),
+  );
   // A garment in several fabric colours shows the chosen colour's images:
   // the first ten images may all be one colour, so read every image here.
   const colourNames = isClothingProduct(product)
@@ -739,9 +749,9 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   // a visit that added to cart.
   const feeVariant = product.selectedOrFirstAvailableVariant;
   const clothingShipping =
-    printfulShippingFee(product, feeVariant, buyerCountry, {
+    printfulShippingFee(product, feeVariant, visitorCountry, {
       ships: Boolean(feeVariant?.availableForSale),
-    }) ?? fixedShippingFee(product, feeVariant, buyerCountry);
+    }) ?? fixedShippingFee(product, feeVariant, visitorCountry);
   const allImages = await colourImages;
   const selectedColour =
     product.selectedOrFirstAvailableVariant?.selectedOptions.find((option) =>
@@ -789,8 +799,12 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     seoUrl: getCanonicalUrl(request, `/products/${product.handle}`),
     museumMetaDescription: museumMetaDescription(product.handle),
     skyTheme: DEFAULT_SKY_THEME,
-    // "Today" for the Christmas order-by line (components/ChristmasOrderBy).
+    // "Today" and region for the Christmas order-by line
+    // (components/ChristmasOrderBy).
     christmasToday: requestToday(request),
+    christmasRegion: christmasRegionForVisitor(buyerCountry, visitorCountry),
+    // The country the shipping-fee line names (see visitorCountry).
+    feeCountryPhrase: countryPhrase(visitorCountry),
     storeDomain: context.env.PUBLIC_STORE_DOMAIN,
   };
 }
@@ -811,6 +825,7 @@ function ProductPage() {
     classicFrameCrossSell,
     clothingShipping,
     deliveryCountry,
+    feeCountryPhrase,
     museumCase,
     phoneCaseCrossSell,
     product,
@@ -1322,7 +1337,7 @@ function ProductPage() {
             ) : clothingShipping ? (
               <ClothingShippingQuoteLine
                 quote={clothingShipping}
-                countryPhrase={deliveryCountry.phrase}
+                countryPhrase={feeCountryPhrase}
               />
             ) : null}
 
@@ -1910,7 +1925,7 @@ function ProductPage() {
               {showApparelTable ? <ApparelShippingRates /> : null}
               {!showApparelTable && clothingShipping ? (
                 <>
-                  Shipping to {deliveryCountry.phrase} is{' '}
+                  Shipping to {feeCountryPhrase} is{' '}
                   {shippingFeeText(clothingShipping)} for this piece; more pieces
                   can change the fee.{' '}
                 </>

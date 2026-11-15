@@ -3,7 +3,6 @@ import type {loader} from '~/routes/products.$handle';
 import {
   christmasLineFor,
   christmasNotice,
-  christmasRegionFor,
   christmasRegionName,
   formatOrderByDate,
   type ChristmasLine,
@@ -14,7 +13,7 @@ import {
 type OrderByProps = {
   /** The fulfilment line (christmasLineFor); null when it has no date. */
   line: ChristmasLine | null;
-  /** christmasRegionFor(the buyer's country). */
+  /** christmasRegionFor(the buyer's country), or christmasRegionForVisitor on a product page. */
   region: ChristmasRegion | null;
   /** requestToday(request), from the route's loader. */
   today: IsoDate;
@@ -42,7 +41,7 @@ export function ChristmasOrderBy(props: Partial<OrderByProps>) {
     );
   }
   if (!data?.christmasToday) return null;
-  const {artProduct, christmasToday, deliveryCountry, product} = data;
+  const {artProduct, christmasRegion, christmasToday, product} = data;
   const shipsToBuyer = product.variants.nodes.some(
     (variant) => variant.availableForSale,
   );
@@ -55,7 +54,7 @@ export function ChristmasOrderBy(props: Partial<OrderByProps>) {
         tags: product.tags,
         printfulTechnique: artProduct?.printfulTechnique ?? null,
       })}
-      region={christmasRegionFor(deliveryCountry.code)}
+      region={christmasRegion}
       today={christmasToday}
     />
   );
