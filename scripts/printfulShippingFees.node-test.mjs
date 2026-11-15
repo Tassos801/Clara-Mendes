@@ -191,6 +191,9 @@ test('the product page loader shows the fee without any cart mutation', async ()
     context: {
       env: {PUBLIC_STORE_DOMAIN: 'example.myshopify.com'},
       waitUntil: () => {},
+      // The visitor's saved country: the same market the page shows, as for
+      // any visitor who did not arrive on a feed link pinning another one.
+      session: {get: () => country},
       storefront: {
         i18n: {country, language: 'EN'},
         CacheShort: () => ({}),

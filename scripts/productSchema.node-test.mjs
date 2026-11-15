@@ -66,36 +66,41 @@ test('staged sizes stay out; one offered size is a plain Product', () => {
 });
 
 test('offer handling time follows the exact released product dispatch window', () => {
-  const handling = (productType, productHandle) =>
+  const details = (productType, productHandle, tags) =>
     productSchema({
       ...base,
       productType,
       productHandle,
+      tags,
       variants: [variant(1, '8 × 10 in', '29.99')],
-    }).offers.shippingDetails.deliveryTime;
+    }).offers.shippingDetails;
 
-  const print = handling('Art Prints');
+  // A print on a fixed-rate line states its rate and the print windows.
+  const print = [
+    details('Art Prints', 'the-great-wave-off-kanagawa-art-print', [
+      'Museum Reproduction',
+      'Katsushika Hokusai',
+    ]),
+  ].flat()[0];
+  assert.ok(print.shippingRate.value);
   assert.deepEqual(
-    [print.handlingTime.minValue, print.handlingTime.maxValue],
+    [print.deliveryTime.handlingTime.minValue, print.deliveryTime.handlingTime.maxValue],
     [2, 4],
   );
   assert.deepEqual(
-    [print.transitTime.minValue, print.transitTime.maxValue],
+    [print.deliveryTime.transitTime.minValue, print.deliveryTime.transitTime.maxValue],
     [5, 10],
   );
 
-  const leggings = handling('Yoga Leggings', 'quiet-current-high-waist-leggings');
-  assert.deepEqual(
-    [leggings.handlingTime.minValue, leggings.handlingTime.maxValue],
-    [3, 8],
-  );
-  assert.deepEqual(
-    [leggings.transitTime.minValue, leggings.transitTime.maxValue],
-    [5, 10],
+  // Google requires a rate in OfferShippingDetails: a line with no static
+  // rate (Printful activewear) states no block; the feed carries its window.
+  assert.equal(
+    details('Yoga Leggings', 'quiet-current-high-waist-leggings'),
+    undefined,
   );
 });
 
-test('Printful museum products carry Printful’s window, not Prodigi’s', () => {
+test('Printful museum products state no shipping block (no static rate)', () => {
   const handling = (printfulTechnique) => {
     const schema = productSchema({
       ...base,
@@ -109,21 +114,22 @@ test('Printful museum products carry Printful’s window, not Prodigi’s', () =
       .filter(Boolean)
       .map((time) => [time.minValue, time.maxValue]);
   };
-  assert.deepEqual(handling('cut-sew'), [[3, 8], [3, 8]]);
-  assert.deepEqual(handling('sublimation'), [[3, 6], [3, 6]]);
-  assert.deepEqual(handling(undefined), [[2, 4], [2, 4]]);
+  // Their windows are in the Printful feeds (merchantFeed tests), not here.
+  assert.deepEqual(handling('cut-sew'), []);
+  assert.deepEqual(handling('sublimation'), []);
 });
 
-test('every variant offer of a garment carries the Printful window', () => {
+test('no variant offer of a Printful garment states a rate-less shipping block', () => {
   const schema = productSchema({
     ...base,
     productType: 'Sports Bra',
     productHandle: 'quiet-current-studio-bra',
     variants: [variant(1, 'S', '69.00'), variant(2, 'M', '69.00')],
   });
+  assert.equal(schema.offers.shippingDetails, undefined);
   for (const node of schema.hasVariant) {
-    const {handlingTime} = node.offers.shippingDetails.deliveryTime;
-    assert.deepEqual([handlingTime.minValue, handlingTime.maxValue], [3, 8]);
+    assert.equal(node.offers.shippingDetails, undefined);
+    assert.ok(node.offers.hasMerchantReturnPolicy);
   }
 });
 

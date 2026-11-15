@@ -264,7 +264,7 @@ const usd = (id, availableForSale, amount = '41.00') => ({
 });
 const offerOf = (schema) => schema.offers ?? schema.hasVariant[0].offers;
 
-test('a US buyer who can buy the item gets USD offers with US shipping', () => {
+test('a US buyer who can buy the item gets USD offers and US returns', () => {
   // Your Sky: the unframed map ships to the US, the framed one doesn't.
   const framed = usd(2, false, '103.00');
   const variants = markOutOfReachVariants(
@@ -292,16 +292,13 @@ test('a US buyer who can buy the item gets USD offers with US shipping', () => {
   );
   assert.equal(offer.priceCurrency, 'USD');
   assert.equal(offer.price, '41.00');
-  assert.deepEqual(
-    offer.shippingDetails.shippingDestination.map((d) => d.addressCountry),
-    ['US'],
-  );
-  assert.equal(offer.shippingDetails.deliveryTime.transitTime.minValue, 7);
-  assert.equal(offer.shippingDetails.deliveryTime.transitTime.maxValue, 15);
+  // No static US rate, so no shipping block (Google requires a rate in
+  // one); the USD feed states the US fee and window.
+  assert.equal(offer.shippingDetails, undefined);
   assert.deepEqual(offer.hasMerchantReturnPolicy.applicableCountry, ['US']);
 });
 
-test('a US buyer of a Printful museum blanket reads the international transit', () => {
+test('a US buyer of a Printful museum blanket gets no rate-less shipping block', () => {
   const offer = offerOf(
     productSchema({
       availableForSale: true,
@@ -315,9 +312,9 @@ test('a US buyer of a Printful museum blanket reads the international transit', 
       variants: [usd(1, true, '64.99')],
     }),
   );
-  const {transitTime, handlingTime} = offer.shippingDetails.deliveryTime;
-  assert.deepEqual([transitTime.minValue, transitTime.maxValue], [7, 20]);
-  assert.deepEqual([handlingTime.minValue, handlingTime.maxValue], [3, 6]);
+  // Its 7–20 day US window is in the USD Printful feed (merchantFeed tests).
+  assert.equal(offer.shippingDetails, undefined);
+  assert.equal(offer.priceCurrency, 'USD');
 });
 
 test('a US buyer of an item that does not ship there reads the Cyprus offer', () => {
@@ -343,11 +340,12 @@ test('a US buyer of an item that does not ship there reads the Cyprus offer', ()
   assert.equal(offer.priceCurrency, 'EUR');
   assert.equal(offer.price, '7.20');
   assert.equal(offer.availability, 'https://schema.org/InStock');
-  const countries = offer.shippingDetails.shippingDestination.map(
-    (d) => d.addressCountry,
-  );
-  assert.ok(countries.includes('CY') && !countries.includes('US'));
-  assert.equal(offer.shippingDetails.deliveryTime.transitTime.maxValue, 10);
+  // The Cyprus offer never names the US as a destination or return country.
+  for (const block of [offer.shippingDetails ?? []].flat()) {
+    const countries = block.shippingDestination.map((d) => d.addressCountry);
+    assert.ok(countries.includes('CY') && !countries.includes('US'));
+  }
+  assert.ok(!offer.hasMerchantReturnPolicy.applicableCountry.includes('US'));
 });
 
 test('every other buyer keeps the default-market structured data exactly', () => {
