@@ -104,29 +104,3 @@ test('the rail component swipes on phones and names links by label', () => {
   assert.match(source, /suppressHydrationWarning/);
   assert.match(source, /loading=\{index < 2 \? 'eager' : 'lazy'\}/);
 });
-
-test('the Christmas pictures show 1 November to 25 December, then revert', async () => {
-  const {heroBackdropFor} = await import('../app/lib/heroBackdrop.ts');
-  const srcs = (today) =>
-    lineRailEntries({
-      artists: 1,
-      bookNooks: 1,
-      personalisedFlags: {[SKY_PRODUCT_HANDLE]: true},
-      productFlags: {[TOUGH_CASE_HANDLE]: true, [POT_HANDLE]: true},
-      today,
-    }).map((entry) => entry.image.src);
-  for (const today of ['2026-11-01', '2026-12-25']) {
-    assert.ok(srcs(today).every((src) => src.endsWith('-christmas.jpg')), today);
-    assert.match(heroBackdropFor(today).large, /hero-christmas-neutral\.jpg$/);
-  }
-  for (const today of ['2026-10-31', '2026-12-26', '2027-01-15']) {
-    const year = srcs(today);
-    assert.ok(year.every((src) => !src.includes('christmas')), today);
-    assert.equal(year.length, 8);
-    assert.equal(heroBackdropFor(today).large, '/images/backdrops/hero-interior.jpg');
-  }
-  // Every local picture exists in public/.
-  for (const src of [...srcs('2026-12-01'), ...srcs('2027-01-15')])
-    if (src.startsWith('/'))
-      assert.ok(readFileSync(path.join(ROOT, 'public', src)), src);
-});
