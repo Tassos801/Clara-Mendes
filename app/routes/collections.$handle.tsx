@@ -5,9 +5,9 @@ import type {Route} from './+types/collections.$handle';
 import {
   buildCollectionAnalyticsProducts,
   CollectionView,
-  heroBackdropMeta,
   SHOP_PRODUCT_TYPES,
 } from './collections.all';
+import {heroBackdropMeta} from '~/lib/heroBackdrop';
 import type {
   CollectionLink,
   CollectionProductConnection,
@@ -116,7 +116,7 @@ type ShopifyCollectionLoaderData = CollectionViewData & {
   kind?: undefined;
 };
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, matches}) => {
   if (
     data &&
     'kind' in data &&
@@ -138,7 +138,7 @@ export const meta: Route.MetaFunction = ({data}) => {
     url: collection?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
   // Collections without their own hero paint the shared interior.
-  return collection && !collection.hero ? [...seo, ...heroBackdropMeta()] : seo;
+  return collection && !collection.hero ? [...seo, ...heroBackdropMeta(matches)] : seo;
 };
 
 /**

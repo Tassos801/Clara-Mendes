@@ -27,6 +27,8 @@ import {normalizeGtmContainerId} from '~/lib/googleCommerce';
 import {normalizeMetaPixelId} from '~/lib/metaPixel';
 import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
 import {NEWSLETTER_WELCOME_SESSION_KEY} from '~/lib/newsletter';
+import {requestToday} from '~/lib/christmasDelivery';
+import {heroBackdropFor, heroBackdropVars} from '~/lib/heroBackdrop';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import clothingStyles from '~/styles/clothing.css?url';
@@ -103,6 +105,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const {env, storefront} = context;
 
   return {
+    // The hero backdrop for today's date (Christmas 1 Nov to 6 Jan), read
+    // per request: on Oxygen a module's top level has no usable clock.
+    heroBackdrop: heroBackdropFor(requestToday(request)),
     cart: getCartOrNull(context.cart),
     shop: getShopAnalytics({
       storefront,
@@ -154,6 +159,9 @@ export default function App() {
       <MarketingAttributionCapture />
       <GoogleCommerceAnalytics containerId={data.gtmContainerId} />
       <MetaPixelAnalytics pixelId={data.metaPixelId} />
+      <style suppressHydrationWarning>
+        {heroBackdropVars(data.heroBackdrop)}
+      </style>
       <ClaraShell cart={data.cart}>
         <Outlet />
       </ClaraShell>

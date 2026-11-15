@@ -2533,6 +2533,20 @@ A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
   pinned in `SITEMAP_INDEX_TYPES`; robots facet rules come from
   `LISTING_PATHS` and `LISTING_PARAMS`; skip link; text tokens
   `--color-clay-ink` and `--color-moss-ink`.
-- Not done: choosing the Christmas hero and rail pictures by date. A
-  module-scope version was reverted because Oxygen has no clock at global
-  scope; it needs the hero CSS and preload links to take loader data.
+- Owner decisions the same day:
+  - The Christmas hero and line-rail pictures now switch by date, per
+    request: 1 November to 6 January (`christmasPicturesSeason`, longer
+    than the 25 December order-by season). The root loader picks the
+    backdrop (`heroBackdropFor(requestToday(request))`) and sets
+    `--hero-backdrop-*` CSS variables the hero stylesheets paint; routes
+    preload the root's choice through `meta` (`heroBackdropMeta(matches)`);
+    the homepage loader picks the rail pictures. Never at module scope: on
+    Oxygen a module's top level has no usable clock. `?today=` previews a
+    date.
+  - The hidden WebGL paint is gone (it sat under the body's opaque page
+    colour); Lenis and the chapter reveals stay.
+  - Reviews: every write orders `custom.reviews` approved first, then
+    pending drafts, and drops deleted ones (`orderReviewGids`), so drafts
+    can never push approved reviews out of the first 50. Approval in
+    Shopify Admin is unchanged.
+  - The founder's letter says "clothing" instead of the retired tank top.

@@ -10,7 +10,8 @@ import type {Route} from './+types/_index';
 import {BrandLogo} from '~/components/BrandLogo';
 import {LineRail} from '~/components/LineRail';
 import {PRIMARY_LINKS} from '~/lib/navLinks';
-import {LINE_RAIL_ENTRIES} from '~/lib/lineRail';
+import {lineRailEntries} from '~/lib/lineRail';
+import {requestToday} from '~/lib/christmasDelivery';
 import {BRAND} from '~/content/brand';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
@@ -26,7 +27,7 @@ import {RETURN_WINDOW_DAYS, STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import {
   HERO_BACKDROP,
   HERO_BACKDROP_MEDIA,
-  heroBackdropPreloads,
+  heroBackdropMeta,
 } from '~/lib/heroBackdrop';
 import {
   SPOTLIGHT_EASE,
@@ -39,27 +40,30 @@ import {
 /** Set on <html> once the hero's glass pill has scrolled out of view. */
 const HOME_PAST_HERO_CLASS = 'home-past-hero';
 
-export const meta: Route.MetaFunction = ({data}) => {
-  return buildSeoMeta({
+// The hero background is a CSS image; preload the one file (phone,
+// desktop or large) the stylesheet will paint, for the backdrop the root
+// loader chose for today (app/lib/heroBackdrop.ts).
+export const meta: Route.MetaFunction = ({data, matches}) => [
+  ...buildSeoMeta({
     description: BRAND.seo.homeDescription,
     title: BRAND.seo.homeTitle,
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/`,
-  });
-};
-
-// The hero background is a CSS image; preload the one file (phone,
-// desktop or large) the stylesheet will paint (app/lib/heroBackdrop.ts).
-export const links: Route.LinksFunction = () => heroBackdropPreloads();
+  }),
+  ...heroBackdropMeta(matches),
+];
 
 // Every section is static (the rail is release-gated data; the sign-up is
-// the footer's), so the homepage makes no Storefront call; the loader only
-// resolves the canonical URL.
+// the footer's), so the homepage makes no Storefront call; the loader
+// resolves the canonical URL and picks the rail pictures for today's date.
 export function loader({request}: Route.LoaderArgs) {
-  return {seoUrl: getCanonicalUrl(request, '/')};
+  return {
+    lineRail: lineRailEntries({today: requestToday(request)}),
+    seoUrl: getCanonicalUrl(request, '/'),
+  };
 }
 
 export default function Homepage() {
-  const {seoUrl} = useLoaderData<typeof loader>();
+  const {lineRail, seoUrl} = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
   const cart = useRouteLoaderData<typeof rootLoader>('root')?.cart;
   const navigate = useNavigate();
@@ -397,7 +401,7 @@ export default function Homepage() {
         <div ref={outlineRef} className="hm-cursor-outline" />
       </section>
 
-      <LineRail entries={LINE_RAIL_ENTRIES} />
+      <LineRail entries={lineRail} />
 
       <p className="home-trust-line" data-chapter="linen">
         <Link to="/policies/shipping-policy">International delivery</Link>
@@ -468,7 +472,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(${HERO_BACKDROP.desktop});
+  background-image: ${HERO_BACKDROP.desktop};
   background-size: cover;
   background-position: center;
   z-index: 1;
@@ -479,7 +483,7 @@ html:has(.home-root) main {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background-image: url(${HERO_BACKDROP.desktop});
+  background-image: ${HERO_BACKDROP.desktop};
   background-size: cover;
   background-position: center;
   filter: blur(30px) brightness(0.8) sepia(0.3);
@@ -492,14 +496,14 @@ html:has(.home-root) main {
 @media ${HERO_BACKDROP_MEDIA.large} {
   .hm-layer-sharp,
   .hm-layer-blur {
-    background-image: url(${HERO_BACKDROP.large});
+    background-image: ${HERO_BACKDROP.large};
   }
 }
 
 @media ${HERO_BACKDROP_MEDIA.mobile} {
   .hm-layer-sharp,
   .hm-layer-blur {
-    background-image: url(${HERO_BACKDROP.mobile});
+    background-image: ${HERO_BACKDROP.mobile};
   }
 }
 

@@ -37,7 +37,8 @@ test('the short homepage renders its sections in order', () => {
     [...order].sort((a, b) => a - b),
     'sections out of order',
   );
-  assert.match(homepageSource, /<LineRail entries=\{LINE_RAIL_ENTRIES\} \/>/);
+  assert.match(homepageSource, /<LineRail entries=\{lineRail\} \/>/);
+  assert.match(homepageSource, /lineRail: lineRailEntries\(\{today: requestToday\(request\)\}\)/);
   // One quiet service line, each half linking to its policy; the sign-up
   // is the footer's, as on every other page.
   assert.match(homepageSource, /to="\/policies\/shipping-policy"/);
@@ -49,10 +50,7 @@ test('the short homepage renders its sections in order', () => {
 });
 
 test('the homepage makes no Storefront call and the cut sections stay gone', () => {
-  assert.match(
-    homepageSource,
-    /return \{seoUrl: getCanonicalUrl\(request, '\/'\)\};/,
-  );
+  assert.match(homepageSource, /seoUrl: getCanonicalUrl\(request, '\/'\),/);
   assert.doesNotMatch(
     homepageSource,
     /home-curiosity|HeroTiles|OriginalArtPreview|HOMEPAGE_QUERY|HOME_TILE_PRICES_QUERY|storefront\.query|hc-tile/,
@@ -66,13 +64,11 @@ test('the homepage makes no Storefront call and the cut sections stay gone', () 
   }
 });
 
-test('links() only preloads the hero images', () => {
+test('meta preloads only the hero images the root chose for today', () => {
   // The three backdrop preloads live in app/lib/heroBackdrop.ts
   // (scripts/siteSpeed.node-test.mjs pins them).
-  assert.match(
-    homepageSource,
-    /export const links: Route\.LinksFunction = \(\) => heroBackdropPreloads\(\);/,
-  );
+  assert.match(homepageSource, /\.\.\.heroBackdropMeta\(matches\),/);
+  assert.doesNotMatch(homepageSource, /export const links/);
 });
 
 test('the site header returns once the hero pill scrolls away', () => {

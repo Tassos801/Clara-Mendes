@@ -52,7 +52,7 @@ import type {CollectionHero} from '~/lib/collectionHeroes';
 import {
   HERO_BACKDROP,
   HERO_BACKDROP_MEDIA,
-  heroBackdropPreloads,
+  heroBackdropMeta,
 } from '~/lib/heroBackdrop';
 import {
   ListingCursorError,
@@ -149,7 +149,7 @@ export type CollectionViewData = {
   totalCount?: number;
 };
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, matches}) => {
   const heading = data?.heading;
   const isCapsule = Boolean(data?.activeCapsule) && heading;
 
@@ -164,13 +164,8 @@ export const meta: Route.MetaFunction = ({data}) => {
     url: data?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
   // The shop hero paints the shared interior; preload the file it uses.
-  return data ? [...seo, ...heroBackdropMeta()] : seo;
+  return data ? [...seo, ...heroBackdropMeta(matches)] : seo;
 };
-
-/** heroBackdropPreloads() as meta descriptors, for routes whose hero depends on loader data. */
-export function heroBackdropMeta() {
-  return heroBackdropPreloads().map((link) => ({tagName: 'link', ...link}));
-}
 
 export async function loader({context, request}: Route.LoaderArgs) {
   const paginationVariables = getPaginationVariables(request, {
@@ -1141,7 +1136,7 @@ const collectionCss = `
   background-color: var(--cv-bg-base);
   background-image:
     linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-    url(${HERO_BACKDROP.desktop});
+    ${HERO_BACKDROP.desktop};
   background-size: cover;
   background-position: center 40%;
   color: #fff;
@@ -1724,7 +1719,7 @@ const collectionCss = `
   .cv-hero {
     background-image:
       linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-      url(${HERO_BACKDROP.large});
+      ${HERO_BACKDROP.large};
   }
 }
 
@@ -1739,7 +1734,7 @@ const collectionCss = `
   .cv-hero {
     background-image:
       linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
-      url(${HERO_BACKDROP.mobile});
+      ${HERO_BACKDROP.mobile};
     min-height: auto;
     padding: calc(var(--header-height) + 28px) 18px 26px;
   }

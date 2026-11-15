@@ -380,6 +380,17 @@ export function christmasSeason(today: IsoDate): ChristmasSeason {
 }
 
 /**
+ * The festive homepage and shop pictures (hero backdrop, line-rail circles)
+ * run a little longer than the order-by season: 1 November to 6 January,
+ * the store's date.
+ */
+const PICTURES_END = '01-06';
+export function christmasPicturesSeason(today: IsoDate): ChristmasSeason {
+  const monthDay = today.slice(5);
+  return monthDay >= SEASON_START || monthDay <= PICTURES_END ? 'open' : 'off';
+}
+
+/**
  * What a product page or the gift page may say today: the order-by date
  * while it is still ahead (or today), otherwise nothing.
  */
