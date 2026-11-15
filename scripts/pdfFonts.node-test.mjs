@@ -50,3 +50,16 @@ test('the loader rejects a transcoded (WOFF2) font and recovers once TrueType is
     globalThis.fetch = realFetch;
   }
 });
+
+test('once loaded, the fonts are served from resolved bytes without another fetch', async () => {
+  const realFetch = globalThis.fetch;
+  globalThis.fetch = async () => {
+    throw new Error('fetch should not run for cached fonts');
+  };
+  try {
+    const fonts = await loadSkyFonts(new URL('https://shop.example/api/sky-print/y.pdf'));
+    assert.equal(fonts.regular.byteLength, ttf.regular.byteLength);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+});

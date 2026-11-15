@@ -17,7 +17,11 @@ export const PDF_FONT_PATHS = {
   italic: '/fonts/pdf/EBGaramond-Italic.bin',
 } as const;
 
-let fontsPromise: Promise<SkyFonts> | null = null;
+// Resolved bytes only, never an in-flight promise: on Oxygen/workerd a
+// request must not await a promise created by another request (see
+// adminToken.server.ts), so a request that finds no cached fonts fetches
+// its own copy.
+let cachedFonts: SkyFonts | null = null;
 
 /** TrueType (0x00010000 or 'true') — the only font program PDFs embed here. */
 export function isTrueTypeFont(bytes: Uint8Array) {
@@ -41,17 +45,14 @@ async function fetchTrueType(url: URL) {
   return bytes;
 }
 
-export function loadSkyFonts(base: URL): Promise<SkyFonts> {
-  fontsPromise ??= Promise.all([
+export async function loadSkyFonts(base: URL): Promise<SkyFonts> {
+  if (cachedFonts) return cachedFonts;
+  const [regular, italic] = await Promise.all([
     fetchTrueType(new URL(PDF_FONT_PATHS.regular, base)),
     fetchTrueType(new URL(PDF_FONT_PATHS.italic, base)),
-  ])
-    .then(([regular, italic]) => ({regular, italic}))
-    .catch((error: unknown) => {
-      fontsPromise = null;
-      throw error;
-    });
-  return fontsPromise;
+  ]);
+  cachedFonts = {regular, italic};
+  return cachedFonts;
 }
 
 /**
