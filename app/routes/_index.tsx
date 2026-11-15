@@ -1,5 +1,11 @@
-import {useEffect, useRef, useState} from 'react';
-import {Link, useLoaderData, useNavigate} from 'react-router';
+import {Suspense, useEffect, useRef, useState} from 'react';
+import {
+  Await,
+  Link,
+  useLoaderData,
+  useNavigate,
+  useRouteLoaderData,
+} from 'react-router';
 import type {Route} from './+types/_index';
 import {BrandLogo} from '~/components/BrandLogo';
 import {LineRail} from '~/components/LineRail';
@@ -8,6 +14,8 @@ import {LINE_RAIL_ENTRIES} from '~/lib/lineRail';
 import {BRAND} from '~/content/brand';
 import {StructuredData} from '~/components/StructuredData';
 import {useAside} from '~/components/Aside';
+import {CartCount} from '~/components/ClaraShell';
+import type {loader as rootLoader} from '~/root';
 import {
   buildSeoMeta,
   getCanonicalUrl,
@@ -53,6 +61,7 @@ export function loader({request}: Route.LoaderArgs) {
 export default function Homepage() {
   const {seoUrl} = useLoaderData<typeof loader>();
   const {open, type: asideType} = useAside();
+  const cart = useRouteLoaderData<typeof rootLoader>('root')?.cart;
   const navigate = useNavigate();
   const blurRef = useRef<HTMLDivElement | null>(null);
   const dotRef = useRef<HTMLDivElement | null>(null);
@@ -344,9 +353,18 @@ export default function Homepage() {
                 className="hm-icon-button"
                 type="button"
                 onClick={() => open('cart')}
-                aria-label="Cart"
+                aria-expanded={asideType === 'cart'}
                 aria-haspopup="dialog"
               >
+                {/* Named like the shell's cart button: "Cart" and the count. */}
+                <span className="sr-only">
+                  Cart{' '}
+                  <Suspense fallback="0">
+                    <Await resolve={cart}>
+                      <CartCount />
+                    </Await>
+                  </Suspense>
+                </span>
                 <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                   <path d="M4 6.5h12l-1 11H5l-1-11Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
                   <path d="M7 8V5.5a3 3 0 0 1 6 0V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
@@ -356,7 +374,7 @@ export default function Homepage() {
           </header>
 
           <div className="hm-hero-text">
-            <h1 ref={titleRef} id="home-title" className="hm-prompt-main">
+            <h1 ref={titleRef} id="home-title" className="hm-prompt-main" tabIndex={-1}>
               {BRAND.hero.headline}
             </h1>
           </div>

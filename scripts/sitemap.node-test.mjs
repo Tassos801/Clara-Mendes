@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {releasedPrintCollections} from '../app/lib/printCatalog.ts';
 import {releasedBookNooks} from '../app/lib/bookNooks.ts';
 import {
@@ -208,7 +209,7 @@ assert.equal(
 // manual collections, legacy handles) must not be advertised either — the
 // live Shopify sitemap listed two empty "everyday living" collections.
 {
-  const {isValidSitemapRequest, sitemapLink} =
+  const {isValidSitemapRequest, SITEMAP_INDEX_TYPES, sitemapLink} =
     await import('../app/lib/sitemap.ts');
   const collectionsXml = [
     '<urlset>',
@@ -252,4 +253,19 @@ assert.equal(
   assert.equal(isValidSitemapRequest('products', 'abc'), false);
   assert.equal(isValidSitemapRequest('products', '0'), false);
   assert.equal(isValidSitemapRequest(undefined, '1'), false);
+
+  // Every child sitemap the index lists must be served: no metaobjects
+  // (Hydrogen's default index adds them; the storefront has no such pages).
+  for (const type of SITEMAP_INDEX_TYPES) {
+    assert.equal(isValidSitemapRequest(type, '1'), true, type);
+  }
+  assert.ok(!SITEMAP_INDEX_TYPES.some((type) => /metaobject/i.test(type)));
+  assert.equal(isValidSitemapRequest('metaobjects', '1'), false);
+  assert.match(
+    readFileSync(
+      new URL('../app/routes/[sitemap.xml].tsx', import.meta.url),
+      'utf8',
+    ),
+    /types: \[\.\.\.SITEMAP_INDEX_TYPES\]/,
+  );
 }

@@ -1,5 +1,5 @@
 import {Suspense, useEffect, useState} from 'react';
-import {Await, Link, NavLink, useAsyncValue} from 'react-router';
+import {Await, Link, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
@@ -32,11 +32,23 @@ export function ClaraShell({
   cart: Promise<CartApiQueryFragment | null>;
   children: React.ReactNode;
 }) {
+  // The homepage's hero carries its own header inside <main>, so its skip
+  // link goes past that header to the headline.
+  const {pathname} = useLocation();
+
   return (
     <Aside.Provider>
       <CinematicProvider>
+        <a
+          className="skip-link"
+          href={pathname === '/' ? '#home-title' : '#main'}
+        >
+          Skip to content
+        </a>
         <ClaraHeader cart={cart} />
-        <main>{children}</main>
+        <main id="main" tabIndex={-1}>
+          {children}
+        </main>
         <ClaraFooter />
         <ClaraCartDrawer cart={cart} />
         <ClaraMobileNav />
@@ -190,7 +202,7 @@ function ClaraHeader({cart}: {cart: Promise<CartApiQueryFragment | null>}) {
   );
 }
 
-function CartCount() {
+export function CartCount() {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
   return <>{cart?.totalQuantity ?? 0}</>;

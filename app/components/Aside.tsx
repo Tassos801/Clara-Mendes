@@ -4,7 +4,6 @@ import {
   useCallback,
   useContext,
   useEffect,
-  useId,
   useRef,
   useState,
 } from 'react';
@@ -18,55 +17,9 @@ type AsideContextValue = {
   close: () => void;
 };
 
-/**
- * A side bar component with Overlay
- * @example
- * ```jsx
- * <Aside type="search" heading="SEARCH">
- *  <input type="search" />
- *  ...
- * </Aside>
- * ```
- */
-export function Aside({
-  children,
-  heading,
-  type,
-}: {
-  children?: React.ReactNode;
-  type: AsideType;
-  heading: React.ReactNode;
-}) {
-  const {type: activeType, close} = useAside();
-  const expanded = type === activeType;
-  const id = useId();
-
-  return (
-    <div
-      aria-hidden={!expanded}
-      aria-modal={expanded}
-      className={`overlay ${expanded ? 'expanded' : ''}`}
-      role="dialog"
-      aria-labelledby={id}
-    >
-      <button className="close-outside" onClick={close} />
-      {/* data-lenis-prevent keeps drawer scrolling native under smooth scroll */}
-      <aside data-aside-panel={type} data-lenis-prevent>
-        <header>
-          <h3 id={id}>{heading}</h3>
-          <button className="close reset" onClick={close} aria-label="Close">
-            &times;
-          </button>
-        </header>
-        <main>{children}</main>
-      </aside>
-    </div>
-  );
-}
-
 const AsideContext = createContext<AsideContextValue | null>(null);
 
-Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
+function AsideProvider({children}: {children: ReactNode}) {
   const [type, setType] = useState<AsideType>('closed');
   const returnFocusRef = useRef<HTMLElement | null>(null);
   const close = useCallback(() => setType('closed'), []);
@@ -134,7 +87,10 @@ Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
       {children}
     </AsideContext.Provider>
   );
-};
+}
+
+/** The drawer state the shell's cart, menu and search panels share. */
+export const Aside = {Provider: AsideProvider};
 
 export function useAside() {
   const aside = useContext(AsideContext);

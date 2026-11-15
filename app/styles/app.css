@@ -9,6 +9,10 @@
   --color-mist: #dfe4dc;
   --color-clay: #9c6f5d;
   --color-moss: #6f7769;
+  /* Small text in clay or moss: the decorative tones above fall under
+     4.5:1 on the page colour (2.73:1 and 2.92:1). */
+  --color-clay-ink: #6a4334;
+  --color-moss-ink: #4f5a4b;
   --color-deep: #3c3831;
   --glass-blur: 22px;
   --glass-border: rgba(255, 255, 255, 0.68);
@@ -55,6 +59,32 @@ img {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+/* Hidden until a keyboard user tabs to it: the first stop on every page. */
+.skip-link {
+  background: var(--color-ink);
+  border-radius: 999px;
+  color: var(--color-paper);
+  font-size: 0.95rem;
+  left: 16px;
+  padding: 10px 18px;
+  position: fixed;
+  top: 12px;
+  transform: translateY(calc(-100% - 24px));
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  outline: 2px solid var(--color-paper);
+  outline-offset: 2px;
+  transform: none;
+}
+
+/* Skip-link targets take focus programmatically; no ring on the region. */
+#main:focus,
+#home-title:focus {
+  outline: none;
 }
 
 .sr-only {
@@ -1380,7 +1410,7 @@ button {
 .product-availability-chip.is-unavailable {
   background: rgba(156, 111, 93, 0.12);
   border-color: rgba(156, 111, 93, 0.34);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
 }
 
 /* Kit at a glance: the facts a shelf of book nooks is compared on. */
@@ -1848,7 +1878,7 @@ button {
 }
 
 .product-format-choice-copy .eyebrow {
-  color: var(--color-moss);
+  color: var(--color-moss-ink);
   margin: 0;
 }
 
@@ -2108,13 +2138,13 @@ button {
   box-shadow:
     -30px 0 80px rgba(0, 0, 0, 0.2),
     var(--glass-highlight);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  display: flex;
+  flex-direction: column;
   height: 100%;
   max-width: min(440px, 100vw);
   overscroll-behavior: contain;
-  overflow-y: auto;
-  padding: 24px;
+  overflow: hidden;
+  padding: 0;
   position: absolute;
   right: 0;
   top: 0;
@@ -2695,7 +2725,7 @@ button {
 }
 
 .cart-form-error {
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   font-size: 0.88rem;
   margin: 8px 0 0;
 }
@@ -3364,7 +3394,7 @@ button {
 
 .policy-body-content a {
   border-bottom: 1px solid currentColor;
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   transition: opacity 180ms ease;
 }
 
@@ -3500,10 +3530,6 @@ button {
   select,
   textarea {
     font-size: 16px;
-  }
-
-  .cart-drawer {
-    padding: 18px;
   }
 
   .cart-drawer-header button {
@@ -3987,7 +4013,7 @@ button {
 
 .contact-link {
   border-bottom: 1px solid var(--color-clay);
-  color: var(--color-clay);
+  color: var(--color-clay-ink);
   font-size: 0.95rem;
   padding-bottom: 2px;
   transition: opacity 180ms ease;
@@ -5448,13 +5474,6 @@ html.lenis body {
 }
 
 /* ── Cart drawer: header, scrolling body, pinned checkout ── */
-.cart-drawer {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  padding: 0;
-}
-
 .cart-drawer-header {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
   flex: none;
@@ -5881,10 +5900,6 @@ html.lenis body {
 }
 
 @media (max-width: 480px) {
-  .cart-drawer {
-    padding: 0;
-  }
-
   .cart-drawer-header {
     padding-left: 18px;
   }
@@ -6443,11 +6458,11 @@ html.lenis body {
 
 /* ── Contrast on the purchase path (WCAG AA for small text) ── */
 .product-availability-chip.is-available {
-  color: #4f5a4b;
+  color: var(--color-moss-ink);
 }
 
 .cart-line-remove {
-  color: #7e5141;
+  color: var(--color-clay-ink);
 }
 
 /* ── Connection notice: above drawers and pinned bars, clear of the home

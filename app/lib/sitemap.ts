@@ -227,15 +227,21 @@ export function injectCustomSitemapEntry(indexXml: string, origin: string) {
 /** The one journal today; its articles live under it, not under `/articles`. */
 export const JOURNAL_BLOG_HANDLE = 'karina-of-time';
 
-/** The child sitemap types Hydrogen's `getSitemap` knows how to build. */
-export const SITEMAP_TYPES: ReadonlySet<string> = new Set([
+/**
+ * The Shopify child sitemaps the index lists and the `sitemap.$type.$page`
+ * route serves. Hydrogen's default index also lists `metaObjects`, which
+ * this storefront has no pages for, so the index passes these explicitly.
+ */
+export const SITEMAP_INDEX_TYPES = [
   'products',
-  'collections',
   'pages',
+  'collections',
   'articles',
   'blogs',
-  'metaobjects',
-]);
+] as const;
+
+/** The child sitemap types Hydrogen's `getSitemap` knows how to build. */
+export const SITEMAP_TYPES: ReadonlySet<string> = new Set(SITEMAP_INDEX_TYPES);
 
 /**
  * Storefront URL for a Shopify sitemap resource. Hydrogen hands over the

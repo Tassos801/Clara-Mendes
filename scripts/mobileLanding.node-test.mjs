@@ -5,6 +5,8 @@ import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+const shellSkipLink = () =>
+  readFileSync(path.join(ROOT, 'app/components/ClaraShell.tsx'), 'utf8');
 const homepageSource = readFileSync(
   path.join(ROOT, 'app/routes/_index.tsx'),
   'utf8',
@@ -62,7 +64,9 @@ test('the hero holds the headline and the "Enter the shop" orb', () => {
   for (const gone of ['hm-prompt-sub', 'hm-hero-action']) {
     assert.doesNotMatch(homepageSource, new RegExp(gone), gone);
   }
-  assert.match(homepageSource, /<h1 ref=\{titleRef\} id="home-title" className="hm-prompt-main">/);
+  // tabIndex -1: the skip link on the homepage lands on the headline.
+  assert.match(homepageSource, /<h1 ref=\{titleRef\} id="home-title" className="hm-prompt-main" tabIndex=\{-1\}>/);
+  assert.match(shellSkipLink(), /pathname === '\/' \? '#home-title' : '#main'/);
   // The orb came back the same day, on phones too: it is the hero's only
   // way into the shop, so phones place it in flow below the words.
   assert.match(homepageSource, /aria-label="Enter the shop"/);
