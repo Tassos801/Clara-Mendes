@@ -346,9 +346,10 @@ function CartLineQuantity({line, title}: {line: CartLine; title: string}) {
       >
         <CartLineUpdateButton lines={[{id: lineId, quantity: steps.decrease}]}>
           <button
+            aria-disabled={!steps.canDecrease || !!isOptimistic || undefined}
             aria-label={`Decrease quantity of ${title}`}
-            disabled={!steps.canDecrease || !!isOptimistic}
             name="decrease-quantity"
+            onClick={ignoreWhenInactive}
             value={steps.decrease}
           >
             <span aria-hidden>&#8722;</span>
@@ -362,7 +363,10 @@ function CartLineQuantity({line, title}: {line: CartLine; title: string}) {
             aria-label={`Increase quantity of ${title}`}
             name="increase-quantity"
             value={steps.increase}
-            disabled={!steps.canIncrease || !!isOptimistic || unavailable}
+            aria-disabled={
+              !steps.canIncrease || !!isOptimistic || unavailable || undefined
+            }
+            onClick={ignoreWhenInactive}
           >
             <span aria-hidden>&#43;</span>
           </button>
@@ -372,7 +376,7 @@ function CartLineQuantity({line, title}: {line: CartLine; title: string}) {
         ariaLabel={`Remove ${title}`}
         className="cart-line-remove"
         lineIds={[lineId]}
-        disabled={!!isOptimistic}
+        inactive={!!isOptimistic}
       />
       <CartFormError data={updateFetcher.data} />
       <CartFormError data={removeFetcher.data} />
@@ -389,12 +393,16 @@ function CartLineRemoveButton({
   ariaLabel,
   className,
   lineIds,
-  disabled,
+  disabled = false,
+  inactive = false,
 }: {
   ariaLabel?: string;
   className?: string;
   lineIds: string[];
-  disabled: boolean;
+  /** Hidden (the closed swipe action): out of the tab order entirely. */
+  disabled?: boolean;
+  /** Busy: stays focusable but ignores activation. */
+  inactive?: boolean;
 }) {
   return (
     <CartForm
@@ -405,9 +413,11 @@ function CartLineRemoveButton({
     >
       {(fetcher) => (
         <button
+          aria-disabled={inactive || fetcher.state !== 'idle' || undefined}
           aria-label={ariaLabel}
           className={className}
-          disabled={disabled || fetcher.state !== 'idle'}
+          disabled={disabled}
+          onClick={ignoreWhenInactive}
           type="submit"
         >
           {fetcher.state === 'idle' ? 'Remove' : 'Removing…'}
@@ -436,6 +446,17 @@ function CartLineUpdateButton({
       {children}
     </CartForm>
   );
+}
+
+/**
+ * Busy and unavailable controls use aria-disabled rather than disabled: a
+ * disabled button drops keyboard focus to <body> mid-update, so the next
+ * Tab (or closing the drawer) starts again from the top of the page.
+ */
+function ignoreWhenInactive(event: React.MouseEvent<HTMLButtonElement>) {
+  if (event.currentTarget.getAttribute('aria-disabled') === 'true') {
+    event.preventDefault();
+  }
 }
 
 /**

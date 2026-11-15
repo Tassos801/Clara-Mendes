@@ -1,5 +1,7 @@
 import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
 import {
+  DEFAULT_CART_ERROR,
   getCartFormErrorMessages,
   getInapplicableDiscountMessages,
 } from '../app/lib/cartFormErrors.ts';
@@ -96,4 +98,21 @@ assert.deepEqual(
     {code: 'nope', applicable: false},
   ]),
   ['“NOPE” can’t be applied to this cart.'],
+);
+
+// A Storefront outage or rate limit during a cart change comes back to the
+// submitting form in the shape above, never as a thrown error that replaces
+// the page with the root error boundary.
+const cartRouteSource = await readFile(
+  new URL('../app/routes/cart.tsx', import.meta.url),
+  'utf8',
+);
+assert.match(
+  cartRouteSource,
+  /console\.error\('Cart action failed\.'[^\n]*\n\s*return data\(\{errors: \[\{message: DEFAULT_CART_ERROR\}\]\}, \{status: 502\}\);/,
+);
+assert.doesNotMatch(cartRouteSource, /throw new Error/);
+assert.deepEqual(
+  getCartFormErrorMessages({errors: [{message: DEFAULT_CART_ERROR}]}),
+  [DEFAULT_CART_ERROR],
 );

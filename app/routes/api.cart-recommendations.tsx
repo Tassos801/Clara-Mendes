@@ -2,6 +2,7 @@ import type {Route} from './+types/api.cart-recommendations';
 import type {ClaraCardProduct} from '~/components/ClaraProductCard';
 import {filterDemoProducts} from '~/lib/catalogFilters';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
+import {cardQuickAddMode} from '~/lib/productCardPricing';
 
 const MAX_RECOMMENDATIONS = 4;
 const MAX_SEED_PRODUCTS = 2;
@@ -27,8 +28,12 @@ export async function loader({context, request}: Route.LoaderArgs) {
     for (const product of filterDemoProducts(candidates)) {
       if (recommendations.length >= MAX_RECOMMENDATIONS) return;
       if (excludedIds.has(product.id)) continue;
+      // The row adds a lone (or art-print) first variant and otherwise links
+      // to the product page to choose, so anything still buyable qualifies.
       const variant = product.cardVariant?.nodes?.[0];
-      if (!variant || variant.availableForSale === false) continue;
+      if (!variant || cardQuickAddMode(product, variant) === 'unavailable') {
+        continue;
+      }
       excludedIds.add(product.id);
       recommendations.push(product);
     }

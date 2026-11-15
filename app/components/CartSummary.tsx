@@ -55,18 +55,40 @@ export function CartCheckoutBar({cart}: CartSummaryProps) {
 
 function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
   const updating = Boolean(cart?.isOptimistic);
+  const subtotal = cart?.cost?.subtotalAmount;
+  const total = cart?.cost?.totalAmount;
+  // An order-level code (10% off the order, say) is not part of the
+  // subtotal or of any line; without this row the chip shows but the
+  // saving does not.
+  const discount = cartLevelDiscount(cart?.discountAllocations);
+  const showTotal =
+    Boolean(subtotal?.amount && total?.amount) &&
+    Number(total?.amount) < Number(subtotal?.amount);
+
   return (
     <div className="cart-totals" aria-busy={updating || undefined}>
       <dl className="cart-subtotal">
         <dt>Subtotal</dt>
-        <dd>
-          {cart?.cost?.subtotalAmount?.amount ? (
-            <Money data={cart.cost.subtotalAmount} />
-          ) : (
-            '-'
-          )}
-        </dd>
+        <dd>{subtotal?.amount ? <Money data={subtotal} /> : '-'}</dd>
       </dl>
+      {discount ? (
+        <dl className="cart-subtotal cart-subtotal--discount">
+          <dt>Discount</dt>
+          <dd>
+            <span aria-hidden="true">−</span>
+            <span className="sr-only">minus </span>
+            <Money data={discount} />
+          </dd>
+        </dl>
+      ) : null}
+      {showTotal && total ? (
+        <dl className="cart-subtotal cart-subtotal--total">
+          <dt>Estimated total</dt>
+          <dd>
+            <Money data={total} />
+          </dd>
+        </dl>
+      ) : null}
       <p className="cart-totals-note">
         {updating
           ? 'Updating your cart…'
@@ -74,6 +96,21 @@ function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
       </p>
     </div>
   );
+}
+
+/** The sum of the cart-level discount allocations, or null when none. */
+function cartLevelDiscount(
+  allocations: CartApiQueryFragment['discountAllocations'] | undefined,
+) {
+  const amounts = (allocations ?? [])
+    .map((allocation) => allocation?.discountedAmount)
+    .filter((amount) => amount && Number(amount.amount) > 0);
+  if (!amounts.length || !amounts[0]) return null;
+  const sum = amounts.reduce(
+    (total, amount) => total + Number(amount?.amount ?? 0),
+    0,
+  );
+  return {...amounts[0], amount: sum.toFixed(2)};
 }
 
 function CartCheckoutActions({cart}: {cart: CartSummaryProps['cart']}) {
@@ -179,14 +216,31 @@ function CartDiscounts({
   discountsHeadingId: string;
   discountCodeInputId: string;
 }) {
+  const discountCodeInput = useRef<HTMLInputElement>(null);
+  const applyFetcher = useFetcher({key: DISCOUNT_APPLY_FETCHER_KEY});
+  const allCodes = discountCodes?.map(({code}) => code) ?? [];
   const codes: string[] =
     discountCodes
       ?.filter((discount) => discount.applicable)
       ?.map(({code}) => code) || [];
   // Shopify keeps an unknown or unmet code on the cart with
   // `applicable: false` and reports no error, so the cart itself is the
-  // only place the refusal shows up.
-  const [inapplicableMessage] = getInapplicableDiscountMessages(discountCodes);
+  // only place the refusal shows up. Each one gets its own Remove, which
+  // resubmits every other code, so a stale code never gets stuck.
+  const inapplicable =
+    discountCodes?.filter((discount) => discount.applicable === false) ?? [];
+
+  useEffect(() => {
+    // Clear the code only once Shopify accepted the request; a refused one
+    // stays in the field beside its message so the customer can correct it.
+    if (
+      applyFetcher.data &&
+      getCartFormErrorMessages(applyFetcher.data).length === 0 &&
+      discountCodeInput.current
+    ) {
+      discountCodeInput.current.value = '';
+    }
+  }, [applyFetcher.data]);
 
   return (
     <section aria-label="Discounts" className="cart-code-section">
@@ -209,8 +263,33 @@ function CartDiscounts({
         </div>
       </dl>
 
+      {inapplicable.map((discount) => {
+        const [message] = getInapplicableDiscountMessages([discount]);
+        return (
+          <UpdateDiscountForm
+            discountCodes={allCodes.filter((code) => code !== discount.code)}
+            key={discount.code}
+          >
+            <div className="cart-discount cart-discount--inapplicable">
+              <p className="cart-form-error" role="alert">
+                {message}
+              </p>
+              <button
+                type="submit"
+                aria-label={`Remove discount code ${discount.code.toUpperCase()}`}
+              >
+                Remove
+              </button>
+            </div>
+          </UpdateDiscountForm>
+        );
+      })}
+
       {/* Show an input to apply a discount */}
-      <UpdateDiscountForm discountCodes={codes}>
+      <UpdateDiscountForm
+        discountCodes={codes}
+        fetcherKey={DISCOUNT_APPLY_FETCHER_KEY}
+      >
         <div className="cart-code-row">
           <label htmlFor={discountCodeInputId} className="sr-only">
             Discount code
@@ -223,31 +302,32 @@ function CartDiscounts({
             type="text"
             name="discountCode"
             placeholder="Discount code"
+            ref={discountCodeInput}
             spellCheck={false}
           />
           <button type="submit" aria-label="Apply discount code">
             Apply
           </button>
         </div>
-        {inapplicableMessage ? (
-          <p className="cart-form-error" role="alert">
-            {inapplicableMessage}
-          </p>
-        ) : null}
       </UpdateDiscountForm>
     </section>
   );
 }
 
+const DISCOUNT_APPLY_FETCHER_KEY = 'discount-code-apply';
+
 function UpdateDiscountForm({
   discountCodes,
+  fetcherKey,
   children,
 }: {
   discountCodes?: string[];
+  fetcherKey?: string;
   children: React.ReactNode;
 }) {
   return (
     <CartForm
+      fetcherKey={fetcherKey}
       route="/cart"
       action={CartForm.ACTIONS.DiscountCodesUpdate}
       inputs={{
