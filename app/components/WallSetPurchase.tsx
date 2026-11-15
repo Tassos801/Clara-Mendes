@@ -14,6 +14,7 @@ import {
   WALL_GUIDE_SIZES,
   wallGuideFileName,
   wallSetLinesForSize,
+  wallSetPartialAddCount,
   wallSetVariantForSize,
   type WallSet,
   type WallSetVariant,
@@ -59,6 +60,9 @@ export function WallSetPurchase({
 
   const built = bySize[size];
   const {open} = useAside();
+  // Prints that reached the cart when one of the three had sold out since
+  // the page was cached; the sold-out print is named by the form error.
+  const [partialAdded, setPartialAdded] = useState<number | null>(null);
   const analytics = useMemo(() => {
     if (!built) return undefined;
     return {
@@ -144,7 +148,10 @@ export function WallSetPurchase({
                   className={`wall-set-size${size === option ? ' is-active' : ''}`}
                   disabled={!available}
                   key={option}
-                  onClick={() => setSize(option)}
+                  onClick={() => {
+                    setSize(option);
+                    setPartialAdded(null);
+                  }}
                   type="button"
                 >
                   <span>{PRINT_SIZE_SPECS[option].label}</span>
@@ -175,11 +182,30 @@ export function WallSetPurchase({
             className="primary-button wall-set-add"
             disabled={!built}
             lines={built?.lines ?? []}
+            onSettled={(data) =>
+              setPartialAdded(
+                wallSetPartialAddCount(data, built?.lines.length ?? 0),
+              )
+            }
             onSuccess={() => open('cart')}
             pendingChildren="Adding the wall…"
           >
             Add the wall to cart — 3 prints
           </AddToCartButton>
+          {partialAdded ? (
+            <p className="wall-set-partial" role="status">
+              {partialAdded === 1
+                ? 'Only 1 of the 3 prints was added to your cart.'
+                : `Only ${partialAdded} of the 3 prints were added to your cart.`}{' '}
+              <button
+                className="text-link"
+                onClick={() => open('cart')}
+                type="button"
+              >
+                View cart
+              </button>
+            </p>
+          ) : null}
           <a
             className="text-link wall-set-guide"
             href={`/api/hanging-guide/${wallGuideFileName(set.slug, size)}`}
@@ -305,6 +331,18 @@ const wallSetCss = `
 
 .wall-set-guide {
   font-size: 0.85rem;
+}
+
+.wall-set-partial {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.wall-set-partial .text-link {
+  background: transparent;
+  box-shadow: none;
+  color: inherit;
+  font: inherit;
 }
 
 @media (max-width: 720px) {

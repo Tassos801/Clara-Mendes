@@ -11,6 +11,7 @@ import {
   wallGuideFileName,
   wallGuideGeometry,
   wallSetLinesForSize,
+  wallSetPartialAddCount,
   wallSetsContainingHandle,
 } from '../app/lib/wallSets.ts';
 
@@ -205,3 +206,53 @@ assert.equal(wallSetLinesForSize([quietForm, oddSize, midnight], '8x10'), null);
 // Missing a member entirely → null.
 assert.equal(wallSetLinesForSize([quietForm, neoDeco], '16x20'), null);
 
+// Each line carries a selectedVariant so Hydrogen's optimistic cart can show
+// the print while the add is in flight (it logs an error per line without).
+const described = (product, title) => ({
+  ...product,
+  id: `gid://shopify/Product/${product.handle}`,
+  title,
+  featuredImage: {url: `https://cdn.example/${product.handle}.jpg`},
+});
+const optimistic = wallSetLinesForSize(
+  [
+    described(quietForm, 'Quiet Form I Art Print'),
+    described(neoDeco, 'Neo Deco II Art Print'),
+    described(midnight, 'Midnight Garden II Art Print'),
+  ],
+  '16x20',
+);
+for (const line of optimistic.lines) {
+  assert.equal(line.selectedVariant.id, line.merchandiseId);
+  assert.ok(line.selectedVariant.product.handle);
+  assert.ok(line.selectedVariant.product.title);
+  assert.ok(line.selectedVariant.image.url);
+  assert.equal('variants' in line.selectedVariant.product, false);
+}
+assert.equal(
+  optimistic.lines[0].selectedVariant.product.id,
+  'gid://shopify/Product/quiet-form-i-art-print',
+);
+
+// Partial add: one print sold out since the page was cached.
+const soldOut = {
+  code: 'MERCHANDISE_OUT_OF_STOCK',
+  message: "The product 'Neo Deco II Art Print' is already sold out.",
+  target: 'gid://shopify/CartLine/2?cart=1',
+};
+assert.equal(wallSetPartialAddCount({warnings: [soldOut]}, 3), 2);
+assert.equal(wallSetPartialAddCount({warnings: [soldOut, soldOut]}, 3), 1);
+// All sold out, a clean add, or an outright refusal are not partial.
+assert.equal(
+  wallSetPartialAddCount({warnings: [soldOut, soldOut, soldOut]}, 3),
+  null,
+);
+assert.equal(wallSetPartialAddCount({warnings: [], userErrors: []}, 3), null);
+assert.equal(
+  wallSetPartialAddCount(
+    {errors: [{message: 'Storefront request failed.'}], warnings: [soldOut]},
+    3,
+  ),
+  null,
+);
+assert.equal(wallSetPartialAddCount(undefined, 3), null);

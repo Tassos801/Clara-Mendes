@@ -1,5 +1,6 @@
 // Relative imports keep this module loadable by the plain-Node test runner,
 // which cannot resolve the Vite "~" alias.
+import {OUT_OF_STOCK_WARNING_CODE} from './cartLineWarnings.ts';
 import {
   PRINT_SIZE_SPECS,
   type PrintSizeKey,
@@ -87,7 +88,8 @@ const WALL_SETS: WallSet[] = [
     slug: 'terracotta-gallery-wall',
     kind: 'mix',
     name: 'The Terracotta Thread',
-    story: 'Sienna and clay warmth stitched together by small flashes of cobalt.',
+    story:
+      'Sienna and clay warmth stitched together by small flashes of cobalt.',
     handles: [
       'quiet-form-iii-art-print',
       'sunlit-mosaic-ii-art-print',
@@ -98,7 +100,8 @@ const WALL_SETS: WallSet[] = [
     slug: 'ink-and-cream-gallery-wall',
     kind: 'mix',
     name: 'Ink & Cream',
-    story: 'Charcoal, ink and oxblood carried on ivory — contrast that stays calm.',
+    story:
+      'Charcoal, ink and oxblood carried on ivory — contrast that stays calm.',
     handles: [
       'quiet-form-i-art-print',
       'neo-deco-ii-art-print',
@@ -122,9 +125,9 @@ export function getWallSet(slug?: string | null): WallSet | null {
 export function wallSetsContainingHandle(handle?: string | null): WallSet[] {
   const normalized = handle?.trim().toLowerCase();
   if (!normalized) return [];
-  return WALL_SETS.filter((set) =>
-    set.handles.includes(normalized),
-  ).sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'capsule' ? -1 : 1));
+  return WALL_SETS.filter((set) => set.handles.includes(normalized)).sort(
+    (a, b) => (a.kind === b.kind ? 0 : a.kind === 'capsule' ? -1 : 1),
+  );
 }
 
 export const WALL_GUIDE_SIZES = ['8x10', '16x20', '20x24'] as const;
@@ -175,6 +178,22 @@ export type WallSetVariant = {
 export type WallSetProductLike = {
   handle: string;
   variants: WallSetVariant[];
+  // Optional product details carried into each line's `selectedVariant`, so
+  // the cart can show the print optimistically while the add is in flight.
+  id?: string;
+  title?: string;
+  vendor?: string;
+  productType?: string;
+  featuredImage?: {url: string; altText?: string | null} | null;
+};
+
+export type WallSetLine = {
+  merchandiseId: string;
+  quantity: 1;
+  selectedVariant: WallSetVariant & {
+    image: {url: string; altText?: string | null} | null;
+    product: Omit<WallSetProductLike, 'variants'>;
+  };
 };
 
 // Explicit per-size matching — deliberately no default, unlike
@@ -216,15 +235,26 @@ export function wallSetLinesForSize(
   products: WallSetProductLike[],
   size: PrintSizeKey,
 ): {
-  lines: Array<{merchandiseId: string; quantity: 1}>;
+  lines: WallSetLine[];
   total: {amount: string; currencyCode: string};
 } | null {
   if (products.length !== 3) return null;
   const variants: WallSetVariant[] = [];
+  const lines: WallSetLine[] = [];
   for (const product of products) {
     const found = wallSetVariantForSize(product, size);
     if (!found) return null;
     variants.push(found);
+    const {variants: _variants, ...details} = product;
+    lines.push({
+      merchandiseId: found.id,
+      quantity: 1,
+      selectedVariant: {
+        ...found,
+        image: product.featuredImage ?? null,
+        product: details,
+      },
+    });
   }
   const currencyCode = variants[0].price.currencyCode;
   if (variants.some((entry) => entry.price.currencyCode !== currencyCode)) {
@@ -235,7 +265,35 @@ export function wallSetLinesForSize(
     0,
   );
   return {
-    lines: variants.map((entry) => ({merchandiseId: entry.id, quantity: 1})),
+    lines,
     total: {amount: total.toFixed(2), currencyCode},
   };
+}
+
+/**
+ * How many prints of a wall actually reached the cart, when only some did.
+ * A print that sold out after the page was cached comes back as an
+ * out-of-stock warning while the others are added (the cart action drops
+ * the empty line), so the form must say the wall is incomplete rather than
+ * only naming the sold-out print. Null when the add fully succeeded, fully
+ * failed, or was refused outright.
+ */
+export function wallSetPartialAddCount(
+  data: unknown,
+  submitted: number,
+): number | null {
+  if (!data || typeof data !== 'object') return null;
+  const {errors, userErrors, warnings} = data as {
+    errors?: unknown;
+    userErrors?: unknown;
+    warnings?: unknown;
+  };
+  if (Array.isArray(errors) && errors.length) return null;
+  if (Array.isArray(userErrors) && userErrors.length) return null;
+  const failed = (Array.isArray(warnings) ? warnings : []).filter(
+    (warning) =>
+      (warning as {code?: unknown} | null)?.code === OUT_OF_STOCK_WARNING_CODE,
+  ).length;
+  const added = submitted - failed;
+  return failed > 0 && added > 0 ? added : null;
 }
