@@ -435,7 +435,10 @@ function offerShippingDetails(
       },
     },
   });
-  if (!rates) return details(countries);
+  // Google requires shippingRate in OfferShippingDetails and flags a block
+  // without one, so a line with no known rate (Printful pieces, the US
+  // market) states no shipping block at all rather than a partial one.
+  if (!rates) return undefined;
   // One block per rate, countries in their usual order.
   const byRate = new Map<string, string[]>();
   for (const country of countries) {
@@ -446,6 +449,7 @@ function offerShippingDetails(
   const blocks = [...byRate].map(([rate, destinations]) =>
     details(destinations, rate),
   );
+  if (blocks.length === 0) return undefined;
   return blocks.length === 1 ? blocks[0] : blocks;
 }
 

@@ -29,7 +29,12 @@ import {
   publicArtistBySlug,
   type ArtistFacetGroup,
 } from '~/lib/artistShops';
-import {artworkCreditLine, lifeDatesLabel, MUSEUMS} from '~/lib/artRegistry';
+import {
+  artworkCreditLine,
+  displayArtworkDate,
+  lifeDatesLabel,
+  MUSEUMS,
+} from '~/lib/artRegistry';
 import {filterDemoProducts} from '~/lib/catalogFilters';
 import {withDeliveryReach} from '~/lib/deliveryReach.server';
 import {PRODUCT_CARD_FRAGMENT} from '~/lib/productCardFragment';
@@ -123,7 +128,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     },
     artworks: artworks.map((artwork) => ({
       credit: artworkCreditLine(artwork),
-      date: artwork.date,
+      date: displayArtworkDate(artwork.date),
       id: artwork.id,
       medium: artwork.medium,
       museum: MUSEUMS[artwork.source.museum].shortName,

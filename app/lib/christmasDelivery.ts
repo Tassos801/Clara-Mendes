@@ -511,6 +511,24 @@ export function christmasLineLabel(
   return region === 'us' && spec.usLabel ? spec.usLabel : spec.label;
 }
 
+/**
+ * The region a product page's order-by line may use. A feed link can pin a
+ * market other than the visitor's own (`?country=CY` opened in Poland or
+ * Japan), and the page's availability is the pinned market's. The line
+ * shows only when the visitor's own region is the pinned market's region,
+ * so it never states a date for a region the page did not check: a
+ * Japanese visitor gets no EU date, a US visitor on a Cyprus link none.
+ */
+export function christmasRegionForVisitor(
+  pinnedCountry?: string | null,
+  visitorCountry?: string | null,
+): ChristmasRegion | null {
+  const pinned = christmasRegionFor(pinnedCountry);
+  return pinned && pinned === christmasRegionFor(visitorCountry ?? pinnedCountry)
+    ? pinned
+    : null;
+}
+
 export function christmasRegionName(region: ChristmasRegion) {
   return region === 'eu' ? 'the EU' : 'the US';
 }

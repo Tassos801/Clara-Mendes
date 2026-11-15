@@ -2550,3 +2550,23 @@ A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
     can never push approved reviews out of the first 50. Approval in
     Shopify Admin is unchanged.
   - The founder's letter says "clothing" instead of the retired tank top.
+
+## 2026-11-15 — Audit follow-ups (owner decisions, second round)
+
+- Feed links: on a product page opened from a link pinning another market
+  (`?country=CY` in Poland, Japan or the US), prices and availability stay
+  the pinned market's, but the shipping-fee line uses the visitor's own
+  country (`visitorMarketCountry`) and the Christmas line shows only when
+  the visitor's region matches the pinned market's
+  (`christmasRegionForVisitor`). No known fee for the visitor: no fee line.
+- Product JSON-LD states no `shippingDetails` where no static rate is known
+  (US market, Printful pieces, our own founding prints): Google requires
+  `shippingRate` in a block. Fixed-rate EU lines keep rated blocks; fees and
+  windows for the rest are in the Merchant Center feeds.
+- Museum dates display through `displayArtworkDate` (c., British day-month
+  order, no "snake year" prefix); the registry keeps the museums' wording.
+- Your Sky warns under the gift note about characters the slip font can't
+  set (`unprintableCharacters`).
+- Not done: newsletter double opt-in. Shopify's API docs don't say that
+  writing `PENDING` consent sends the confirmation email, so it would risk
+  leaving every new sign-up unconfirmed; see issue #202.

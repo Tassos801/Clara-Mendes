@@ -13,6 +13,7 @@ import {
   findArtist,
   findArtwork,
   type ArtRegistry,
+  displayArtworkDate,
 } from './artRegistry.ts';
 import {
   PRINT_CATALOG,
@@ -148,7 +149,7 @@ export function museumProductFacts(
       sizes,
       work: print.title,
       artist: who.artist.name,
-      date: who.artwork.date || null,
+      date: displayArtworkDate(who.artwork.date),
       caption: print.description,
     };
   }
@@ -169,7 +170,7 @@ export function museumProductFacts(
       sizes: sizes.length ? `, ${sizePhrase(sizes)}` : '',
       work: print.title,
       artist: who.artist.name,
-      date: who.artwork.date || null,
+      date: displayArtworkDate(who.artwork.date),
       caption: print.description,
     };
   }

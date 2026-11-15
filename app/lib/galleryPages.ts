@@ -241,7 +241,7 @@ const GALLERY_PAGE_CONTENT: Record<string, GalleryPageContent> = {
     editorial: [
       'Minimalist wall art has a coldness problem: grey abstracts and thin line drawings that make a room feel staged rather than lived in. This edit takes the other route. Quiet Form’s arches and grounded curves are minimal in structure but warm in material — ivory, oat, terracotta, charcoal — and the two Sunlit Mosaic pieces included here add just enough rhythm to keep restraint from tipping into emptiness.',
       'The pieces suit the rooms minimalism actually lives in: a study that needs order, a hallway that should breathe, a bedroom pared back to essentials. Because the palette stays within a hand-span of warmth, any two prints from this page hang together without planning — the discipline is built into the compositions, not imposed by the frame.',
-      'Each print is our own composition, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper, in 8 × 10, 16 × 20, and 20 × 24 in. Wide mats and pale frames push these further toward gallery quiet; frameless rails or oak edges keep them domestic. Either way, give them margin — warm minimalism is mostly generous spacing.',
+      'Each print is our own composition, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper, in 8 × 10, 16 × 20, and 20 × 24 in. Wide mounts and pale frames push these further toward gallery quiet; frameless rails or oak edges keep them domestic. Either way, give them margin — warm minimalism is mostly generous spacing.',
     ],
     handles: [...QF, 'sunlit-mosaic-i-art-print', 'sunlit-mosaic-iii-art-print'],
     related: ['terracotta-wall-art', 'bedroom-wall-art'],

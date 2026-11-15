@@ -136,7 +136,7 @@ const MUSEUM: Record<string, [FixedRateLine | 'printful', string, string]> = {
   'Art Prints': ['print', ART, PAPER],
   'Hanger Prints': ['print', ART, `${PAPER} with wooden hanger`],
   'Acrylic Prints': ['mounted', ART, '10 mm high-gloss acrylic'],
-  'Metal Prints': ['mounted', ART, 'Matt aluminium (Dibond)'],
+  'Metal Prints': ['mounted', ART, 'Matte aluminium (Dibond)'],
   'Canvas Art': ['canvas', ART, 'Stretched canvas'],
   'Framed Art': ['framed', ART, `Natural wood frame, ${PAPER.toLowerCase()}`],
   Cards: ['card', CARD, 'Fine-art card with envelope'],

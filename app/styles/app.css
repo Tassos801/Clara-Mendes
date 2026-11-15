@@ -5031,6 +5031,13 @@ html.lenis body {
   font-variant-numeric: tabular-nums;
 }
 
+/* Characters the slip font can't set (SkyStudio): one plain line. */
+.sky-gift-note p.sky-gift-note-warning {
+  color: #8f3127;
+  display: block;
+  margin-top: 4px;
+}
+
 .sky-cart-attributes {
   color: var(--color-muted);
   font-size: 0.8rem;

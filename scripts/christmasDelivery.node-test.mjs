@@ -309,3 +309,19 @@ test('US buyers are not told about framed prints or cards', () => {
   assert.doesNotMatch(christmasLineLabel('prodigi-art', 'us'), /framed|cards/);
   assert.equal(christmasLineLabel('printful-home', 'us'), 'Blankets and mugs');
 });
+
+test('a feed link pinning another market shows a date only for the same region', async () => {
+  const {christmasRegionForVisitor} = await import('../app/lib/christmasDelivery.ts');
+  // No pin: visitor and market agree.
+  assert.equal(christmasRegionForVisitor('CY', 'CY'), 'eu');
+  assert.equal(christmasRegionForVisitor('US', 'US'), 'us');
+  // ?country=CY opened in Poland: still the EU date.
+  assert.equal(christmasRegionForVisitor('CY', 'PL'), 'eu');
+  // ?country=CY opened in Japan or the US: no date, never the EU one.
+  assert.equal(christmasRegionForVisitor('CY', 'JP'), null);
+  assert.equal(christmasRegionForVisitor('CY', 'US'), null);
+  // ?country=US opened in Germany: no US date.
+  assert.equal(christmasRegionForVisitor('US', 'DE'), null);
+  // Unknown visitor falls back to the market.
+  assert.equal(christmasRegionForVisitor('CY', null), 'eu');
+});

@@ -177,17 +177,13 @@ test('Cyprus and the rest of the EU are separate shipping blocks', () => {
   assert.equal(card.shippingDestination.length, 27);
 });
 
-test('no static rate, no shippingRate: Printful lines and the US market', () => {
-  const blanket = schemaFor(BLANKET).offers.shippingDetails;
-  assert.equal(blanket['@type'], 'OfferShippingDetails');
-  assert.equal(blanket.shippingRate, undefined);
-  assert.ok(blanket.deliveryTime);
-  const us = schemaFor(PRODUCTS[2], 'US').offers.shippingDetails;
-  assert.equal(us.shippingRate, undefined);
-  assert.deepEqual(
-    us.shippingDestination.map((r) => r.addressCountry),
-    ['US'],
-  );
+test('no static rate, no shipping block: Printful lines and the US market', () => {
+  // Google flags OfferShippingDetails without a shippingRate, so these
+  // state none rather than a partial block.
+  assert.equal(schemaFor(BLANKET).offers.shippingDetails, undefined);
+  assert.equal(schemaFor(PRODUCTS[2], 'US').offers.shippingDetails, undefined);
+  // Returns still apply there.
+  assert.ok(schemaFor(PRODUCTS[2], 'US').offers.hasMerchantReturnPolicy);
 });
 
 test('the JSON-LD survives a JSON round trip with schema.org types only', () => {
