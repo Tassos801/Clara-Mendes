@@ -21,6 +21,7 @@ import {
   printfulShippingFee,
   type ShippingFee,
 } from './printfulShipping.ts';
+import {getProductDescription} from './productCopy.ts';
 import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 
 // Merchant Center product feeds as tab-separated text, two per market:
@@ -359,7 +360,12 @@ export function merchantFeedRows(
         productTitle: p.title.replace(/\s+/g, ' ').trim().slice(0, 150),
         item_group_id: p.handle,
         title: item.title.slice(0, 150),
-        description: p.description.replace(/\s+/g, ' ').trim().slice(0, 4900),
+        // The description the product page shows: supplier placeholder
+        // phrases stripped (productCopy.ts), curated copy where it exists.
+        description: getProductDescription(p)
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 4900),
         link: `https://shopclaramendes.com/products/${p.handle}?${params}`,
         image_link: image,
         price: `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`,

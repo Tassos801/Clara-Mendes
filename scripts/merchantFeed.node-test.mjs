@@ -596,6 +596,26 @@ test('the USD feeds list the US only, at fee table rates and ?country=US links',
   assert.equal(us['CD-DRESS-M'], undefined);
 });
 
+test('the feed description is the cleaned copy the product page shows', () => {
+  const [row] = merchantFeedRows(
+    [
+      product(
+        'quiet-form-i-art-print',
+        'Quiet Form I Art Print',
+        'Art Prints',
+        [STUDIO],
+        [variant('CM-QF-01-8X10', {Size: '8 × 10 in'})],
+        {
+          description:
+            'A quiet balance.An original print. Supplier reference: QF-01 Shipping and returns details to be added before launch.',
+        },
+      ),
+    ],
+    'fixed',
+  );
+  assert.equal(row.description, 'A quiet balance. An original print.');
+});
+
 test('a mug, blanket or cushion Printful does not make stays out of the Printful feeds', () => {
   // The Line and Colour mug is a Prodigi product (art catalogue route
   // 'channel'); a Prodigi blanket extension is not in the art catalogue.
