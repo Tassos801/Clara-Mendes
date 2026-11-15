@@ -18,6 +18,7 @@ import {loadClothingProducts} from '~/lib/clothing.server';
 import {CLOTHING_ARTISTS} from '~/lib/clothingArtists';
 import {capsuleStoryData} from '~/lib/clothingEditorial';
 import {formatMoney, type MoneyAmount} from '~/lib/money';
+import {deriveCardPricing} from '~/lib/productCardPricing';
 import {breadcrumbSchema, buildSeoMeta} from '~/lib/seo';
 import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 import styles from '~/styles/artists.css?url';
@@ -80,8 +81,15 @@ export async function loader({context}: Route.LoaderArgs) {
   const rows = artists.flatMap(({artist, products}) => {
     const listed = products.filter((product) => live.has(product.handle));
     if (!listed.length) return [];
-    const prices = listed.map(
-      (product) => live.get(product.handle)!.priceRange.minVariantPrice,
+    // "From" follows what this buyer can buy: availableForSale is per buyer
+    // country, so a US buyer is not quoted the price of a card that doesn't
+    // ship there. With nothing buyable the row still prices every work.
+    const liveListed = listed.map((product) => live.get(product.handle)!);
+    const buyable = liveListed.filter((product) => product.availableForSale);
+    const prices = (buyable.length ? buyable : liveListed).map(
+      (product) =>
+        (buyable.length ? deriveCardPricing(product).price : null) ??
+        product.priceRange.minVariantPrice,
     );
     const entry = artistIndexEntry(artist, listed);
     return [
@@ -416,6 +424,7 @@ const ARTISTS_INDEX_QUERY = `#graphql
           type
           value
         }
+        availableForSale
         featuredImage {
           url
         }
@@ -423,6 +432,16 @@ const ARTISTS_INDEX_QUERY = `#graphql
           minVariantPrice {
             amount
             currencyCode
+          }
+        }
+        # Released prices only, as the product cards price (productCardPricing).
+        sizeVariants: variants(first: 10) {
+          nodes {
+            availableForSale
+            price {
+              amount
+              currencyCode
+            }
           }
         }
       }
