@@ -34,10 +34,42 @@ ${generalDisallowRules({sitemapUrl})}
 
 User-agent: MJ12bot
 Crawl-Delay: 10
+${generalDisallowRules({sitemapUrl})}
 
 User-agent: Pinterest
 Crawl-delay: 1
+${generalDisallowRules({sitemapUrl})}
 `.trim();
+}
+
+// A named group replaces the `*` group for that crawler, so every group
+// above repeats the general rules.
+
+/** Listing pages whose sort, facet and pagination URLs repeat the list. */
+const LISTING_PATHS = ['/collections/', '/clothing', '/artists/'];
+
+/**
+ * The storefront's own sort, facet and cursor parameters (collectionSort.ts,
+ * catalogFacets.ts, Hydrogen pagination). `?capsule=` stays crawlable: it is
+ * a canonical, indexable shop view.
+ */
+const LISTING_PARAMS = [
+  'sort',
+  'type',
+  'vendor',
+  'min',
+  'max',
+  'available',
+  'cursor',
+];
+
+function listingParamRules() {
+  return LISTING_PATHS.flatMap((path) =>
+    LISTING_PARAMS.flatMap((param) => [
+      `Disallow: ${path}*?${param}=`,
+      `Disallow: ${path}*&${param}=`,
+    ]),
+  ).join('\n');
 }
 
 /**
@@ -58,6 +90,7 @@ Disallow: /*/collections/*+*
 Disallow: /*/collections/*%2B*
 Disallow: /*/collections/*%2b*
 Disallow: /*/collections/*filter*&*filter*
+${listingParamRules()}
 Disallow: /blogs/*+*
 Disallow: /blogs/*%2B*
 Disallow: /blogs/*%2b*

@@ -60,7 +60,7 @@ const RANGE = [
   ...SHOP_CAPSULES.filter((capsule) => capsule.kind === 'museum').map(
     (capsule) => ({
       name: capsule.title,
-      note: `${capsule.note}, from museum open-access collections: prints, framed prints, canvas, cards and phone cases.`,
+      note: `${capsule.note}, as prints, wall art, cards, phone cases and gifts.`,
       released: true,
       to: shopCapsulePath(capsule.slug),
     }),

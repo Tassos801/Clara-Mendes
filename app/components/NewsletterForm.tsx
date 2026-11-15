@@ -4,7 +4,7 @@ import type {loader as rootLoader} from '~/root';
 import {BRAND} from '~/content/brand';
 import {NEWSLETTER_ACTION, NEWSLETTER_HONEYPOT_FIELD} from '~/lib/newsletter';
 
-type Reply = {ok: boolean; status?: string; error?: string};
+type Reply = {ok: boolean; status?: string; error?: string; welcomeCode?: string | null};
 
 const COPY = BRAND.newsletter;
 
@@ -30,7 +30,6 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
   const fetcher = useFetcher<Reply>();
   const root = useRouteLoaderData<typeof rootLoader>('root');
   const location = useLocation();
-  const code = root?.newsletter.welcomeCode ?? null;
   const params = new URLSearchParams(location.search);
   const fromRedirect: Reply | undefined =
     params.get('subscribed') === '1'
@@ -39,6 +38,16 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
         ? {ok: false, error: params.get('reason') ?? 'failed'}
         : undefined;
   const reply = fetcher.data ?? fromRedirect;
+  // The code arrives only for this subscriber: in the fetcher's reply, or
+  // after a no-JS sign-up from the root loader's one-time session read. A
+  // hand-typed ?subscribed=1 shows the plain confirmation without a code.
+  const code = fetcher.data
+    ? (fetcher.data.welcomeCode ?? null)
+    : fromRedirect?.ok
+      ? (root?.newsletter.welcomeCode ?? null)
+      : null;
+  // footerLine only checks whether an offer exists, so it never needs the code.
+  const offer = root?.newsletter.welcomeOffer ? 'offer' : null;
   const text = message(reply, code);
   const isError = Boolean(reply && !reply.ok);
   const busy = fetcher.state !== 'idle';
@@ -54,7 +63,7 @@ export function NewsletterForm({variant}: {variant: 'footer' | 'feature'}) {
   return (
     <div className={`newsletter newsletter--${variant}`}>
       {variant === 'footer' ? (
-        <p className="newsletter__line">{COPY.footerLine(code)}</p>
+        <p className="newsletter__line">{COPY.footerLine(offer)}</p>
       ) : null}
       <fetcher.Form ref={formRef} method="post" action={NEWSLETTER_ACTION} className="newsletter__form">
         {/* Only once hydrated: a plain no-JS post must get the ?subscribed= redirect, not JSON. */}

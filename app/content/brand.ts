@@ -20,7 +20,7 @@ export const BRAND = {
     paragraphs: [
       "Clara Mendes is a name I chose for a feeling, not a person. I'm Tassos Dimitriou, and I run it from Nicosia.",
       'It began with fifteen prints, five small families of three, made because I wanted walls that felt calm and alive at the same time. I compose each piece on screen, live with it for a while, edit, set most of it aside, and prepare the few that survive for paper that does them justice.',
-      'Then it got interesting. The same eye went onto phone cases, a tank top, four pastel pots, a shelf of tiny worlds, and a borrowed wave from Hokusai. Every product page tells you how a thing is made and how it reaches you.',
+      'Then it got interesting. The same eye went onto phone cases, clothing, four pastel pots, a shelf of tiny worlds, and a borrowed wave from Hokusai. Every product page tells you how a thing is made and how it reaches you.',
       "I don't know what we'll make next. I know it will be chosen with care, printed to order, and never boring.",
     ],
     signature: '— Tassos',
@@ -35,14 +35,14 @@ export const BRAND = {
   },
   newsletter: {
     footerLine: (code: string | null) =>
-      `Letters from Nicosia — new work first${code ? ', 10 % off your first order' : ''}.`,
+      `Letters from Nicosia — new work first${code ? ', 10% off your first order' : ''}.`,
     label: 'Email address',
     placeholder: 'your@email.com',
     button: 'Sign me up',
     submitting: 'Signing you up…',
     success: (code: string | null) =>
       code
-        ? `You're in. Your code: ${code} — 10 % off your first order.`
+        ? `You're in. Your code: ${code} — 10% off your first order.`
         : "You're in. New work reaches you first.",
     already: "You're already on the list. New work reaches you first.",
     invalid: "That doesn't look like an email address.",

@@ -1,10 +1,10 @@
 import type {ClaraCardProduct} from '../components/ClaraProductCard.tsx';
-import {deriveCardPricing} from './productCardPricing.ts';
 import {BRAND} from '../content/brand.ts';
 import {fixedRateLineFor} from './merchantFeed.ts';
 import {FIXED_RATES} from './merchantFeedShipping.ts';
 import {
   DELIVERY_EU_BUSINESS_DAYS,
+  DELIVERY_INTERNATIONAL_BUSINESS_DAYS,
   DELIVERY_US_BUSINESS_DAYS,
   fulfilmentWindows,
   isPersonalisedProductType,
@@ -131,6 +131,14 @@ export function buildSeoMeta({
   ];
 }
 
+// The profiles the footer links (ClaraShell ClaraFooter); a test keeps the
+// two lists in step.
+export const SOCIAL_PROFILE_URLS = [
+  'https://www.instagram.com/shopclaramendes/',
+  'https://www.pinterest.com/shopclaramendes/',
+  'https://www.facebook.com/shopclaramendes',
+];
+
 export function organizationSchema(url: string) {
   const origin = new URL(url).origin;
 
@@ -142,6 +150,7 @@ export function organizationSchema(url: string) {
     logo: `${origin}/images/brand/clara-mendes-logo.png`,
     description: DEFAULT_META_DESCRIPTION,
     founder: {'@type': 'Person', name: BRAND.letter.founder.name},
+    sameAs: SOCIAL_PROFILE_URLS,
   };
 }
 
@@ -153,11 +162,6 @@ export function websiteSchema(url: string) {
     '@type': 'WebSite',
     name: SITE_NAME,
     url: origin,
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: `${origin}/search?q={search_term_string}`,
-      'query-input': 'required name=search_term_string',
-    },
   };
 }
 
@@ -187,24 +191,10 @@ export function collectionSchema({
         itemListElement: products.slice(0, 24).map((product, index) => ({
           '@type': 'ListItem',
           position: index + 1,
+          // A plain summary list: Product and Offer markup stays on the
+          // product page, where availability and the buyer's market are known.
           url: new URL(`/products/${product.handle}`, url).toString(),
-          item: {
-            '@type': 'Product',
-            name: product.title,
-            image: product.featuredImage?.url,
-            // Same released-floor rule as the visible cards: a staged size
-            // must never set the advertised price.
-            offers: (() => {
-              const price = deriveCardPricing(product).price;
-              return price
-                ? offerFromPrice({
-                    includeCommerceDetails: false,
-                    price,
-                    url: new URL(`/products/${product.handle}`, url).toString(),
-                  })
-                : undefined;
-            })(),
-          },
+          name: product.title,
         })),
       },
     ],
@@ -431,9 +421,14 @@ function offerShippingDetails(
       },
       transitTime: {
         '@type': 'QuantitativeValue',
+        // Printful's museum mugs, blankets and cushions (technique set)
+        // keep the international window in the US, as on their page and in
+        // the USD feed: Printful's US transit isn't verified.
         ...dayRange(
           market === 'US'
-            ? DELIVERY_US_BUSINESS_DAYS
+            ? printfulTechnique
+              ? DELIVERY_INTERNATIONAL_BUSINESS_DAYS
+              : DELIVERY_US_BUSINESS_DAYS
             : DELIVERY_EU_BUSINESS_DAYS,
         ),
         unitCode: 'DAY',
@@ -480,7 +475,9 @@ function merchantReturnPolicy(
     returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
     merchantReturnDays: RETURN_WINDOW_DAYS,
     returnMethod: 'https://schema.org/ReturnByMail',
-    returnFees: 'https://schema.org/ReturnShippingFees',
+    // Ordinary returns go back by post at the buyer's cost
+    // (docs/shopify-policies-drafts.md, "Return shipping").
+    returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility',
   };
 }
 

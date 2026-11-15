@@ -222,6 +222,21 @@ const PRODUCT_REVIEWS_METAFIELD_QUERY = `#graphql
   }
 `;
 
+const REVIEW_STATUSES_QUERY = `#graphql
+  query ReviewStatuses($ids: [ID!]!) {
+    nodes(ids: $ids) {
+      ... on Metaobject {
+        id
+        capabilities {
+          publishable {
+            status
+          }
+        }
+      }
+    }
+  }
+`;
+
 const METAFIELDS_SET_MUTATION = `#graphql
   mutation ReviewMetafieldsSet($metafields: [MetafieldsSetInput!]!) {
     metafieldsSet(metafields: $metafields) {
@@ -372,7 +387,8 @@ async function uploadPhoto(admin: AdminClient, photo: File): Promise<string> {
 
 /**
  * Validate, upload photos, create a DRAFT (pending moderation) review
- * metaobject, and append its GID to the product's custom.reviews metafield.
+ * metaobject, and add its GID to the product's custom.reviews metafield
+ * behind every approved review (see orderReviewGids).
  */
 export async function submitReview(
   env: Env,
@@ -431,18 +447,18 @@ export async function submitReview(
     throw new Error('metaobjectCreate returned no metaobject id.');
   }
 
-  // 3. Add the review GID to the product's custom.reviews metafield, newest
-  //    first: the storefront reads only the first 50 references, so an
-  //    appended review would never appear once a product has more. Re-read
-  //    right before writing to keep the read-modify-write window short.
+  // 3. Add the review GID to the product's custom.reviews metafield. The
+  //    storefront reads only the first 50 references and drafts come back
+  //    as nulls, so approved reviews go first and pending drafts after them
+  //    (orderReviewGids); a flood of drafts can then never push an approved
+  //    review off the page. Re-read right before writing to keep the
+  //    read-modify-write window short.
   const {gids: existingGids} = await readProductReviewGids(
     admin,
     input.productGid,
   );
-  const nextGids = [
-    reviewGid,
-    ...existingGids.filter((gid) => gid !== reviewGid),
-  ];
+  const statuses = await readReviewStatuses(admin, existingGids);
+  const nextGids = orderReviewGids(existingGids, statuses, reviewGid);
 
   const set = await admin<{
     metafieldsSet: {
@@ -524,6 +540,50 @@ export async function markReviewHelpful(
 }
 
 // --- Helpers -----------------------------------------------------------------
+
+/**
+ * The product's review list after adding `newGid` (a fresh DRAFT): approved
+ * (ACTIVE) reviews first, then pending ones, the new review at the front of
+ * the pending group. Each group keeps its existing order, which is newest
+ * first, so a review approved in Shopify Admin moves up to its place among
+ * the approved ones on the next write. Reviews deleted in Admin (no status)
+ * drop out. Status is ACTIVE or DRAFT; anything else counts as pending.
+ */
+export function orderReviewGids(
+  existing: readonly string[],
+  statuses: ReadonlyMap<string, string>,
+  newGid: string,
+): string[] {
+  const approved: string[] = [];
+  const pending: string[] = [];
+  const seen = new Set<string>([newGid]);
+  for (const gid of existing) {
+    if (seen.has(gid)) continue;
+    seen.add(gid);
+    const status = statuses.get(gid);
+    if (status === undefined) continue;
+    (status === 'ACTIVE' ? approved : pending).push(gid);
+  }
+  return [...approved, newGid, ...pending];
+}
+
+/** Publish status of each review GID (missing = deleted), 250 per call. */
+async function readReviewStatuses(admin: AdminClient, gids: readonly string[]) {
+  const statuses = new Map<string, string>();
+  for (let start = 0; start < gids.length; start += 250) {
+    const result = await admin<{
+      nodes: Array<{
+        id?: string;
+        capabilities?: {publishable?: {status?: string | null} | null} | null;
+      } | null>;
+    }>(REVIEW_STATUSES_QUERY, {ids: gids.slice(start, start + 250)});
+    for (const node of result.nodes ?? []) {
+      if (!node?.id) continue;
+      statuses.set(node.id, node.capabilities?.publishable?.status ?? 'DRAFT');
+    }
+  }
+  return statuses;
+}
 
 async function readProductReviewGids(admin: AdminClient, productGid: string) {
   const current = await admin<{

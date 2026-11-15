@@ -12,6 +12,10 @@ import {
   printfulShippingGroup,
   shippingFeeText,
 } from '../app/lib/printfulShipping.ts';
+import {
+  ART_PRODUCT_CATALOG,
+  FAMILY_SPECS,
+} from '../app/lib/artProductCatalog.ts';
 import {PRINTFUL_SHIPPING_FEES} from '../app/lib/printfulShippingFees.ts';
 import {fixedShippingFee} from '../app/lib/fixedShippingFee.ts';
 
@@ -48,6 +52,35 @@ test('Printful pieces map to the shipping groups their profiles charge alike', (
   assert.equal(printfulShippingGroup(garment('great-wave-tough-case', 'Phone Cases')), null);
   assert.equal(printfulShippingGroup(garment('quiet-current-studio-tank', 'Studio Top')), null);
   assert.equal(printfulShippingGroup(garment('counter-diagonal-dress', 'Dresses')), null);
+});
+
+test('only products Printful makes get a mug, blanket or cushion group', () => {
+  // Every Printful-route product in the art catalogue keeps its group, so
+  // today's fees and feed rows are unchanged.
+  const expected = {'printful-mug': 'mug', blanket: 'blanket', cushion: null};
+  let printful = 0;
+  for (const product of ART_PRODUCT_CATALOG.products) {
+    const spec = FAMILY_SPECS[product.family];
+    if (!['Mugs', 'Blankets', 'Cushions'].includes(spec.productType)) continue;
+    const piece = garment(product.handle, spec.productType);
+    if (spec.route !== 'printful') {
+      // The Line and Colour Prodigi mug.
+      assert.equal(printfulShippingGroup(piece), null, product.handle);
+      continue;
+    }
+    printful += 1;
+    if (product.family === 'cushion') {
+      assert.equal(printfulShippingGroup(piece, [{name: 'Filling', value: 'Cover only'}]), 'light', product.handle);
+      assert.equal(printfulShippingGroup(piece, [{name: 'Filling', value: 'With insert'}]), 'cushion-insert', product.handle);
+    } else {
+      assert.equal(printfulShippingGroup(piece), expected[product.family], product.handle);
+    }
+  }
+  assert.ok(printful >= 80);
+  // Prodigi extensions of the same types, outside the art catalogue.
+  assert.equal(printfulShippingGroup(garment('art-premium-fleece-blanket-30x40', 'Blankets')), null);
+  assert.equal(printfulShippingGroup(garment('art-linen-cushion-24x24', 'Cushions')), null);
+  assert.equal(printfulShippingFee(garment('lozenge-composition-mug', 'Mugs'), variant('EUR'), 'DE'), null);
 });
 
 test('every EU country is one region; the table covers each group in the EU and the US', () => {

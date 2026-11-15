@@ -2,6 +2,7 @@ import {normalizeMetaPixelId} from './metaPixel.ts';
 
 type Fbq = ((...args: unknown[]) => void) & {
   callMethod?: (...args: unknown[]) => void;
+  disablePushState?: boolean;
   loaded?: boolean;
   push?: Fbq;
   queue: unknown[];
@@ -63,6 +64,10 @@ export function initializeMetaPixel(
     runtime.document.head.appendChild(script);
   }
 
+  // fbevents.js otherwise fires its own PageView on every history
+  // pushState/replaceState; MetaPixelAnalytics already tracks PageView on
+  // Hydrogen's PAGE_VIEWED, so it stays the single owner of page views.
+  win.fbq.disablePushState = true;
   win.fbq('init', id);
   return true;
 }

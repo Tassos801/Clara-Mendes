@@ -5,6 +5,7 @@ import {
   isValidEmail,
   NEWSLETTER_HONEYPOT_FIELD,
   normalizeEmail,
+  welcomeCodeFor,
 } from '../app/lib/newsletter.ts';
 import {subscribeEmail} from '../app/lib/newsletter.server.ts';
 import {ReviewsNotConfiguredError} from '../app/lib/reviews.server.ts';
@@ -96,4 +97,12 @@ test('without an admin token the feature reports itself disabled', async () => {
   const result = await subscribeEmail({PUBLIC_STORE_DOMAIN: 'x.myshopify.com'}, {email: 'a@b.co'});
   assert.equal(result.status, 'disabled');
   assert.ok(new ReviewsNotConfiguredError() instanceof Error);
+});
+
+test('the welcome code goes only to a new subscriber, and only when configured', () => {
+  assert.equal(welcomeCodeFor('subscribed', ' WELCOME10 '), 'WELCOME10');
+  assert.equal(welcomeCodeFor('already', 'WELCOME10'), null);
+  assert.equal(welcomeCodeFor('disabled', 'WELCOME10'), null);
+  assert.equal(welcomeCodeFor('subscribed', '  '), null);
+  assert.equal(welcomeCodeFor('subscribed', undefined), null);
 });

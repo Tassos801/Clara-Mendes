@@ -17,7 +17,9 @@ import {
   roundLimit,
 } from '../app/lib/giftPage.ts';
 import {CUSTOM_SITEMAP_PATHS} from '../app/lib/sitemap.ts';
-import {LINE_RAIL_ENTRIES} from '../app/lib/lineRail.ts';
+import {lineRailEntries} from '../app/lib/lineRail.ts';
+
+const LINE_RAIL_ENTRIES = lineRailEntries();
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');

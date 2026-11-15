@@ -16,7 +16,12 @@ import {
   usShippingCell,
   type FixedRateLine,
 } from './merchantFeedShipping.ts';
-import {printfulShippingFee, type ShippingFee} from './printfulShipping.ts';
+import {
+  isPrintfulArtProduct,
+  printfulShippingFee,
+  type ShippingFee,
+} from './printfulShipping.ts';
+import {getProductDescription} from './productCopy.ts';
 import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 
 // Merchant Center product feeds as tab-separated text, two per market:
@@ -124,7 +129,9 @@ const CARD =
   'Arts & Entertainment > Party & Celebration > Gift Giving > Greeting & Note Cards';
 const PAPER = 'Archival matte paper';
 // Museum product types (Floating World, Line and Colour): shipping table,
-// Google category and material. 'printful' lines resolve per variant.
+// Google category and material. 'printful' lines resolve per variant, and
+// only for products Printful makes (isPrintfulArtProduct); a Prodigi mug,
+// blanket or cushion has no table yet and stays out of the feeds.
 const MUSEUM: Record<string, [FixedRateLine | 'printful', string, string]> = {
   'Art Prints': ['print', ART, PAPER],
   'Hanger Prints': ['print', ART, `${PAPER} with wooden hanger`],
@@ -212,6 +219,7 @@ function museumItem(p: FeedProduct, o: Record<string, string>): Item | null {
   const spec = MUSEUM[p.productType];
   if (!spec) return null;
   const [table, category, material] = spec;
+  if (table === 'printful' && !isPrintfulArtProduct(p.handle)) return null;
   const name = titleWithArtist(p.title, p.handle, p.tags);
   const hanger = o.Hanger?.toLowerCase();
   const extra = hanger
@@ -352,7 +360,12 @@ export function merchantFeedRows(
         productTitle: p.title.replace(/\s+/g, ' ').trim().slice(0, 150),
         item_group_id: p.handle,
         title: item.title.slice(0, 150),
-        description: p.description.replace(/\s+/g, ' ').trim().slice(0, 4900),
+        // The description the product page shows: supplier placeholder
+        // phrases stripped (productCopy.ts), curated copy where it exists.
+        description: getProductDescription(p)
+          .replace(/\s+/g, ' ')
+          .trim()
+          .slice(0, 4900),
         link: `https://shopclaramendes.com/products/${p.handle}?${params}`,
         image_link: image,
         price: `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`,
@@ -380,7 +393,13 @@ function rowShipping(row: FeedRow, shipping: FeedShipping) {
     const rate = isPrintfulLine(row.line)
       ? row.printfulFee && feedAmount(row.printfulFee)
       : usFixedRate(row.line);
-    return rate ? [usShippingCell(rate, handling)] : [];
+    // Printful's US transit for the museum home goods isn't verified, so
+    // they keep the international window; clothing reads the US one.
+    const transit =
+      isPrintfulLine(row.line) && row.line !== 'apparel'
+        ? 'international'
+        : 'us';
+    return rate ? [usShippingCell(rate, handling, transit)] : [];
   }
   const omit = shipping.includeUs ? [] : ['US'];
   if (!isPrintfulLine(row.line))

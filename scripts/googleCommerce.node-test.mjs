@@ -259,7 +259,8 @@ const marketActionResult = await processMarketSelectionRequest({
   request: new Request('https://shopclaramendes.com/locale', {
     body: new URLSearchParams({
       country: 'US',
-      redirectTo: '/products/quiet-form-i?size=large#details',
+      // The feed's `?country=` pin is dropped, or it would win again.
+      redirectTo: '/products/quiet-form-i?country=US&size=large#details',
     }),
     method: 'POST',
   }),
@@ -311,6 +312,8 @@ const failedMarketAction = await processMarketSelectionRequest({
 });
 assert.equal(failedMarketAction.ok, false);
 assert.equal(failedMarketAction.status, 400);
+// A plain form post goes back flagged, never to a foreign origin.
+assert.equal(failedMarketAction.destination, '/?country-error=1');
 assert.equal(failedActionCommitted, false);
 
 let unavailableMarketUpdated = false;
@@ -341,6 +344,38 @@ const unavailableMarketAction = await processMarketSelectionRequest({
 assert.equal(unavailableMarketAction.ok, false);
 assert.equal(unavailableMarketAction.status, 422);
 assert.equal(unavailableMarketUpdated, false);
+
+const pinnedFailure = await processMarketSelectionRequest({
+  availableCountries: ['CY', 'US'],
+  cart: {
+    async updateBuyerIdentity() {
+      assert.fail('unavailable market must not update the cart');
+    },
+    setCartId() {
+      assert.fail('unavailable market must not write a cart cookie');
+    },
+  },
+  request: new Request('https://shopclaramendes.com/locale', {
+    body: new URLSearchParams({
+      country: 'GB',
+      redirectTo: '/products/irises-mug?country=US#buy',
+    }),
+    method: 'POST',
+  }),
+  session: {
+    async commit() {
+      assert.fail('unavailable market must not write a session cookie');
+    },
+    set() {
+      assert.fail('unavailable market must not persist a session');
+    },
+  },
+});
+// A failed choice returns to the page as it was, pin included.
+assert.equal(
+  pinnedFailure.destination,
+  '/products/irises-mug?country=US&country-error=1#buy',
+);
 
 // Consent Mode remains denied until Shopify Customer Privacy grants each
 // category. Commerce data is emitted only when both privacy checks agree.
@@ -409,7 +444,49 @@ assert.match(robots, /User-agent: Googlebot\n/);
 assert.match(robots, /User-agent: Googlebot-Image\nAllow: \//);
 assert.ok(!robots.includes('Disallow: /policies/'));
 // Case print files are for the lab; every agent block keeps them unindexed.
-assert.equal(robots.match(/Disallow: \/print-files\//g).length, 5);
+// MJ12bot and Pinterest have named groups, which replace `*`.
+assert.equal(robots.match(/Disallow: \/print-files\//g).length, 7);
+for (const group of robots.split(/\n\s*\n/)) {
+  if (/User-agent: (MJ12bot|Pinterest)/.test(group)) {
+    assert.match(group, /Disallow: \/cart\n/);
+    assert.match(group, /Disallow: \/account\n/);
+  }
+}
+// The storefront's own facet parameters are blocked on listing pages; the
+// capsule views and the feeds' ?country= product links stay crawlable.
+const robotsBlocks = (path) =>
+  robots
+    .split(/\n\s*\n/)
+    .find((group) => group.startsWith('User-agent: *'))
+    .split('\n')
+    .filter((line) => line.startsWith('Disallow: '))
+    .map((line) => line.slice('Disallow: '.length))
+    .some((rule) => {
+      const pattern = rule
+        .split('*')
+        .map((part) => part.replace(/[.+?^${}()|[\]\\]/g, '\\$&'))
+        .join('.*');
+      return new RegExp(`^${pattern}`).test(path);
+    });
+for (const path of [
+  '/collections/all?sort=price-asc',
+  '/collections/all?capsule=quiet&type=Art+Prints',
+  '/collections/quiet-form?available=1',
+  '/collections/all?cursor=abc&direction=next',
+  '/clothing?sort=price-desc',
+  '/artists/hokusai?vendor=x',
+]) {
+  assert.ok(robotsBlocks(path), path);
+}
+for (const path of [
+  '/collections/all?capsule=quiet',
+  '/collections/quiet-form',
+  '/products/orbital-silence-art-print?country=US&Size=M',
+  '/clothing',
+  '/policies/refund-policy',
+]) {
+  assert.ok(!robotsBlocks(path), path);
+}
 assert.match(robots, /Sitemap: https:\/\/shopclaramendes\.com\/sitemap\.xml/);
 
 for (const handle of POLICY_HANDLES) {

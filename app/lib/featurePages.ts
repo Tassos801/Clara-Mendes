@@ -92,7 +92,7 @@ export const YOUR_SKY_PAGE: FeaturePage = {
   how: [
     {
       title: 'Astronomically accurate',
-      body: 'Star positions, the Moon and the visible planets are computed for your place and minute from the Hipparcos catalogue and astronomy-engine, then drawn above the true horizon.',
+      body: 'Star positions, the Moon and the visible planets are computed for your place and minute from the Yale Bright Star Catalogue and astronomy-engine, then drawn above the true horizon.',
     },
     {
       title: 'Printed like the art',

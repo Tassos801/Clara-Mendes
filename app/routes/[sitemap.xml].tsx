@@ -1,6 +1,6 @@
 import type {Route} from './+types/[sitemap.xml]';
 import {getSitemapIndex} from '@shopify/hydrogen';
-import {injectCustomSitemapEntry} from '~/lib/sitemap';
+import {injectCustomSitemapEntry, SITEMAP_INDEX_TYPES} from '~/lib/sitemap';
 
 export async function loader({
   request,
@@ -9,6 +9,7 @@ export async function loader({
   const shopifyIndex = await getSitemapIndex({
     storefront,
     request,
+    types: [...SITEMAP_INDEX_TYPES],
   });
 
   const xml = injectCustomSitemapEntry(

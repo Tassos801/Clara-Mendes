@@ -5,9 +5,9 @@ import type {Route} from './+types/collections.$handle';
 import {
   buildCollectionAnalyticsProducts,
   CollectionView,
-  heroBackdropMeta,
   SHOP_PRODUCT_TYPES,
 } from './collections.all';
+import {heroBackdropMeta} from '~/lib/heroBackdrop';
 import type {
   CollectionLink,
   CollectionProductConnection,
@@ -116,7 +116,7 @@ type ShopifyCollectionLoaderData = CollectionViewData & {
   kind?: undefined;
 };
 
-export const meta: Route.MetaFunction = ({data}) => {
+export const meta: Route.MetaFunction = ({data, matches}) => {
   if (
     data &&
     'kind' in data &&
@@ -138,7 +138,7 @@ export const meta: Route.MetaFunction = ({data}) => {
     url: collection?.seoUrl ?? `${STOREFRONT_ORIGIN}/collections/all`,
   });
   // Collections without their own hero paint the shared interior.
-  return collection && !collection.hero ? [...seo, ...heroBackdropMeta()] : seo;
+  return collection && !collection.hero ? [...seo, ...heroBackdropMeta(matches)] : seo;
 };
 
 /**
@@ -270,7 +270,24 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   const searchParams = new URL(request.url).searchParams;
   const sort = getCollectionSortValue(searchParams);
   const facetSelection = parseFacetSelection(searchParams);
-  const clothing = await loadClothingProducts(context.storefront);
+  const productFilters = buildCollectionProductFilters(facetSelection);
+  // Clothing only adds tabs: a failed read leaves the collection up. The
+  // listing loads alongside it; the type redirect below still wins, so the
+  // listing's outcome is only awaited after it.
+  const clothingLoad = loadClothingProducts(context.storefront).catch(
+    () => [],
+  );
+  const listingLoad = context.storefront.query(COLLECTION_QUERY, {
+    variables: {
+      ...paginationVariables,
+      ...getCollectionProductsSortInput(sort),
+      filters: productFilters.length > 0 ? productFilters : null,
+      handle,
+    },
+  });
+  // Settled here so a redirect thrown first leaves no unhandled rejection.
+  listingLoad.catch(() => {});
+  const clothing = await clothingLoad;
   const supportedTypes = [
     ...new Set([
       ...SHOP_PRODUCT_TYPES,
@@ -291,16 +308,7 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
     );
   }
 
-  const productFilters = buildCollectionProductFilters(facetSelection);
-
-  const data = await context.storefront.query(COLLECTION_QUERY, {
-    variables: {
-      ...paginationVariables,
-      ...getCollectionProductsSortInput(sort),
-      filters: productFilters.length > 0 ? productFilters : null,
-      handle,
-    },
-  });
+  const data = await listingLoad;
   ensurePaginatedData(request, data);
 
   if (!data.collection) {
@@ -330,10 +338,20 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           isClothingProductType(option.label),
         )));
 
+  const activeHandle = data.collection.handle;
   return {
     clothingOnly,
     clothingNavigation: {
-      categories: clothingCategories(clothing),
+      // A clothing line's tabs name only the categories it has pieces in.
+      categories: clothingCategories(
+        clothingOnly
+          ? clothing.filter((product) =>
+              product.collections.nodes.some(
+                (collection) => collection.handle === activeHandle,
+              ),
+            )
+          : clothing,
+      ),
       capsules: clothingCapsules(clothing).filter(
         (capsule) => !isOffThemeCollectionHandle(capsule.handle),
       ),
@@ -406,7 +424,7 @@ export default function Collection() {
   return <CollectionView data={data as ShopifyCollectionLoaderData} />;
 }
 
-/** Cinematic palette per capsule, matching each capsule's temperature. */
+/** Chapter name per capsule (marks the section for the chapter reveals). */
 const CAPSULE_CHAPTER: Record<string, string> = {
   'quiet-form': 'linen',
   'patina-blue': 'ink',

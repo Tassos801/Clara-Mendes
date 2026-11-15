@@ -30,8 +30,10 @@ export default {
 
       const response = await handleRequest(request);
 
+      // Append, never set: a route may already have set its own cookie (the
+      // cart id when a cart is created), and overwriting it would orphan it.
       if (hydrogenContext.session.isPending) {
-        response.headers.set(
+        response.headers.append(
           'Set-Cookie',
           await hydrogenContext.session.commit(),
         );

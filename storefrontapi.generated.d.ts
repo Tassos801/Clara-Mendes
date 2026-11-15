@@ -513,6 +513,9 @@ export type CartApiQueryFragment = Pick<
   discountCodes: Array<
     Pick<StorefrontAPI.CartDiscountCode, 'code' | 'applicable'>
   >;
+  discountAllocations: Array<{
+    discountedAmount: Pick<StorefrontAPI.MoneyV2, 'currencyCode' | 'amount'>;
+  }>;
 };
 
 export type MenuItemFragment = Pick<
@@ -1173,7 +1176,12 @@ export type ArtistsIndexQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        'handle' | 'title' | 'vendor' | 'productType' | 'tags'
+        | 'handle'
+        | 'title'
+        | 'vendor'
+        | 'productType'
+        | 'tags'
+        | 'availableForSale'
       > & {
         storefrontApproved?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'type' | 'value'>
@@ -1186,6 +1194,13 @@ export type ArtistsIndexQuery = {
           minVariantPrice: Pick<
             StorefrontAPI.MoneyV2,
             'amount' | 'currencyCode'
+          >;
+        };
+        sizeVariants: {
+          nodes: Array<
+            Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+            }
           >;
         };
       }
@@ -2084,149 +2099,6 @@ export type ShopCollectionLinksQuery = {
       }
     >;
   };
-};
-
-export type GiftIndexQueryVariables = StorefrontAPI.Exact<{
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-  query: StorefrontAPI.Scalars['String']['input'];
-}>;
-
-export type GiftIndexQuery = {
-  products: {
-    nodes: Array<
-      Pick<StorefrontAPI.Product, 'id' | 'handle'> & {
-        priceRange: {
-          minVariantPrice: Pick<
-            StorefrontAPI.MoneyV2,
-            'amount' | 'currencyCode'
-          >;
-        };
-      }
-    >;
-  };
-};
-
-export type GiftCardsQueryVariables = StorefrontAPI.Exact<{
-  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
-  ids:
-    | Array<StorefrontAPI.Scalars['ID']['input']>
-    | StorefrontAPI.Scalars['ID']['input'];
-  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
-}>;
-
-export type GiftCardsQuery = {
-  nodes: Array<
-    StorefrontAPI.Maybe<
-      | {
-          __typename:
-            | 'AppliedGiftCard'
-            | 'Article'
-            | 'Blog'
-            | 'Cart'
-            | 'CartLine'
-            | 'Collection'
-            | 'Comment'
-            | 'Company'
-            | 'CompanyContact'
-            | 'CompanyLocation'
-            | 'ComponentizableCartLine'
-            | 'ExternalVideo'
-            | 'GenericFile'
-            | 'Location'
-            | 'MailingAddress'
-            | 'Market'
-            | 'MediaImage'
-            | 'MediaPresentation'
-            | 'Menu'
-            | 'MenuItem';
-        }
-      | {
-          __typename:
-            | 'Metafield'
-            | 'Metaobject'
-            | 'Model3d'
-            | 'Order'
-            | 'Page'
-            | 'ProductOption'
-            | 'ProductOptionValue'
-            | 'ProductVariant'
-            | 'Shop'
-            | 'ShopPayInstallmentsFinancingPlan'
-            | 'ShopPayInstallmentsFinancingPlanTerm'
-            | 'ShopPayInstallmentsProductVariantPricing'
-            | 'ShopPolicy'
-            | 'TaxonomyCategory'
-            | 'UrlRedirect'
-            | 'Video';
-        }
-      | ({__typename: 'Product'} & Pick<
-          StorefrontAPI.Product,
-          'id' | 'handle' | 'title' | 'vendor' | 'productType' | 'tags'
-        > & {
-            storefrontApproved?: StorefrontAPI.Maybe<
-              Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-            >;
-            fulfillmentVerified?: StorefrontAPI.Maybe<
-              Pick<StorefrontAPI.Metafield, 'type' | 'value'>
-            >;
-            featuredImage?: StorefrontAPI.Maybe<
-              Pick<
-                StorefrontAPI.Image,
-                'id' | 'url' | 'altText' | 'width' | 'height'
-              >
-            >;
-            images: {
-              nodes: Array<
-                Pick<
-                  StorefrontAPI.Image,
-                  'id' | 'url' | 'altText' | 'width' | 'height'
-                >
-              >;
-            };
-            priceRange: {
-              minVariantPrice: Pick<
-                StorefrontAPI.MoneyV2,
-                'amount' | 'currencyCode'
-              >;
-              maxVariantPrice: Pick<
-                StorefrontAPI.MoneyV2,
-                'amount' | 'currencyCode'
-              >;
-            };
-            sizeVariants: {
-              nodes: Array<
-                Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
-                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-                }
-              >;
-            };
-            cardVariant: {
-              nodes: Array<
-                Pick<
-                  StorefrontAPI.ProductVariant,
-                  'id' | 'availableForSale' | 'barcode' | 'sku' | 'title'
-                > & {
-                  compareAtPrice?: StorefrontAPI.Maybe<
-                    Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
-                  >;
-                  image?: StorefrontAPI.Maybe<
-                    Pick<
-                      StorefrontAPI.Image,
-                      'id' | 'url' | 'altText' | 'width' | 'height'
-                    >
-                  >;
-                  price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
-                  product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
-                  selectedOptions: Array<
-                    Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
-                  >;
-                }
-              >;
-            };
-          })
-    >
-  >;
 };
 
 export type PageQueryVariables = StorefrontAPI.Exact<{
@@ -3195,6 +3067,83 @@ export type RegularSearchQuery = {
   };
 };
 
+export type RegularSearchProductsQueryVariables = StorefrontAPI.Exact<{
+  country?: StorefrontAPI.InputMaybe<StorefrontAPI.CountryCode>;
+  endCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
+  first?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  language?: StorefrontAPI.InputMaybe<StorefrontAPI.LanguageCode>;
+  last?: StorefrontAPI.InputMaybe<StorefrontAPI.Scalars['Int']['input']>;
+  term: StorefrontAPI.Scalars['String']['input'];
+  startCursor?: StorefrontAPI.InputMaybe<
+    StorefrontAPI.Scalars['String']['input']
+  >;
+}>;
+
+export type RegularSearchProductsQuery = {
+  products: {
+    nodes: Array<
+      {__typename: 'Product'} & Pick<
+        StorefrontAPI.Product,
+        | 'handle'
+        | 'id'
+        | 'publishedAt'
+        | 'title'
+        | 'trackingParameters'
+        | 'vendor'
+        | 'productType'
+        | 'tags'
+      > & {
+          storefrontApproved?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+          >;
+          fulfillmentVerified?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.Metafield, 'type' | 'value'>
+          >;
+          featuredImage?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.Image, 'url' | 'altText' | 'width' | 'height'>
+          >;
+          priceRange: {
+            minVariantPrice: Pick<
+              StorefrontAPI.MoneyV2,
+              'amount' | 'currencyCode'
+            >;
+          };
+          sizeVariants: {
+            nodes: Array<
+              Pick<StorefrontAPI.ProductVariant, 'availableForSale'> & {
+                price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              }
+            >;
+          };
+          selectedOrFirstAvailableVariant?: StorefrontAPI.Maybe<
+            Pick<StorefrontAPI.ProductVariant, 'id'> & {
+              image?: StorefrontAPI.Maybe<
+                Pick<
+                  StorefrontAPI.Image,
+                  'url' | 'altText' | 'width' | 'height'
+                >
+              >;
+              price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              compareAtPrice?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+              >;
+              selectedOptions: Array<
+                Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
+              >;
+              product: Pick<StorefrontAPI.Product, 'handle' | 'title'>;
+            }
+          >;
+        }
+    >;
+    pageInfo: Pick<
+      StorefrontAPI.PageInfo,
+      'hasNextPage' | 'hasPreviousPage' | 'startCursor' | 'endCursor'
+    >;
+  };
+};
+
 export type PredictiveArticleFragment = {__typename: 'Article'} & Pick<
   StorefrontAPI.Article,
   'id' | 'title' | 'handle' | 'trackingParameters'
@@ -3516,7 +3465,7 @@ interface GeneratedQueryTypes {
     return: ArtistShopQuery;
     variables: ArtistShopQueryVariables;
   };
-  '#graphql\n  query ArtistsIndex(\n    $after: String\n    $country: CountryCode\n    $language: LanguageCode\n    $query: String!\n  ) @inContext(country: $country, language: $language) {\n    products(first: 100, after: $after, query: $query) {\n      nodes {\n        handle\n        title\n        vendor\n        productType\n        tags\n        storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n    }\n  }\n': {
+  '#graphql\n  query ArtistsIndex(\n    $after: String\n    $country: CountryCode\n    $language: LanguageCode\n    $query: String!\n  ) @inContext(country: $country, language: $language) {\n    products(first: 100, after: $after, query: $query) {\n      nodes {\n        handle\n        title\n        vendor\n        productType\n        tags\n        storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n          type\n          value\n        }\n        availableForSale\n        featuredImage {\n          url\n        }\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n        # Released prices only, as the product cards price (productCardPricing).\n        sizeVariants: variants(first: 10) {\n          nodes {\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n          }\n        }\n      }\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n    }\n  }\n': {
     return: ArtistsIndexQuery;
     variables: ArtistsIndexQueryVariables;
   };
@@ -3524,7 +3473,7 @@ interface GeneratedQueryTypes {
     return: ArticleQuery;
     variables: ArticleQueryVariables;
   };
-  '#graphql\n  query Blog(\n    $language: LanguageCode\n    $blogHandle: String!\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(language: $language) {\n    blog(handle: $blogHandle) {\n      title\n      handle\n      seo {\n        title\n        description\n      }\n      articles(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor\n      ) {\n        nodes {\n          ...ArticleItem\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n\n      }\n    }\n  }\n  fragment ArticleItem on Article {\n    author: authorV2 {\n      name\n    }\n    excerpt\n    handle\n    id\n    image {\n      id\n      altText\n      url\n      width\n      height\n    }\n    publishedAt\n    title\n    blog {\n      handle\n    }\n  }\n': {
+  '#graphql\n  query Blog(\n    $language: LanguageCode\n    $blogHandle: String!\n    $first: Int\n    $last: Int\n    $startCursor: String\n    $endCursor: String\n  ) @inContext(language: $language) {\n    blog(handle: $blogHandle) {\n      title\n      handle\n      seo {\n        title\n        description\n      }\n      articles(\n        first: $first,\n        last: $last,\n        before: $startCursor,\n        after: $endCursor,\n        sortKey: PUBLISHED_AT,\n        reverse: true\n      ) {\n        nodes {\n          ...ArticleItem\n        }\n        pageInfo {\n          hasPreviousPage\n          hasNextPage\n          endCursor\n          startCursor\n        }\n\n      }\n    }\n  }\n  fragment ArticleItem on Article {\n    author: authorV2 {\n      name\n    }\n    excerpt\n    handle\n    id\n    image {\n      id\n      altText\n      url\n      width\n      height\n    }\n    publishedAt\n    title\n    blog {\n      handle\n    }\n  }\n': {
     return: BlogQuery;
     variables: BlogQueryVariables;
   };
@@ -3555,14 +3504,6 @@ interface GeneratedQueryTypes {
   '#graphql\n  query ShopCollectionLinks(\n    $country: CountryCode\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    collections(first: 24) {\n      nodes {\n        id\n        handle\n        title\n        products(first: 4) {\n          nodes {\n            ...ClaraProductCard\n          }\n        }\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
     return: ShopCollectionLinksQuery;
     variables: ShopCollectionLinksQueryVariables;
-  };
-  '#graphql\n  query GiftIndex(\n    $country: CountryCode\n    $language: LanguageCode\n    $query: String!\n  ) @inContext(country: $country, language: $language) {\n    products(first: 250, query: $query) {\n      nodes {\n        id\n        handle\n        priceRange {\n          minVariantPrice {\n            amount\n            currencyCode\n          }\n        }\n      }\n    }\n  }\n': {
-    return: GiftIndexQuery;
-    variables: GiftIndexQueryVariables;
-  };
-  '#graphql\n  query GiftCards(\n    $country: CountryCode\n    $ids: [ID!]!\n    $language: LanguageCode\n  ) @inContext(country: $country, language: $language) {\n    nodes(ids: $ids) {\n      __typename\n      ... on Product {\n        ...ClaraProductCard\n      }\n    }\n  }\n  #graphql\n  fragment ClaraProductCard on Product {\n    id\n    handle\n    title\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") {\n      type\n      value\n    }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") {\n      type\n      value\n    }\n    featuredImage {\n      id\n      url\n      altText\n      width\n      height\n    }\n    images(first: 4) {\n      nodes {\n        id\n        url\n        altText\n        width\n        height\n      }\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n      maxVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing: staged size\n    # variants exist in Shopify at full price with availableForSale=false,\n    # so cards must never price off priceRange alone. Prints are audit-pinned\n    # to exactly three variants and extension families share one price, so\n    # first: 10 always covers every distinct purchasable price.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    cardVariant: variants(first: 1) {\n      nodes {\n        id\n        availableForSale\n        barcode\n        compareAtPrice {\n          amount\n          currencyCode\n        }\n        image {\n          id\n          url\n          altText\n          width\n          height\n        }\n        price {\n          amount\n          currencyCode\n        }\n        product {\n          handle\n          title\n        }\n        selectedOptions {\n          name\n          value\n        }\n        sku\n        title\n      }\n    }\n  }\n\n': {
-    return: GiftCardsQuery;
-    variables: GiftCardsQueryVariables;
   };
   '#graphql\n  query Page(\n    $language: LanguageCode,\n    $country: CountryCode,\n    $handle: String!\n  )\n  @inContext(language: $language, country: $country) {\n    page(handle: $handle) {\n      handle\n      id\n      title\n      body\n      seo {\n        description\n        title\n      }\n    }\n  }\n': {
     return: PageQuery;
@@ -3599,6 +3540,10 @@ interface GeneratedQueryTypes {
   '#graphql\n  query RegularSearch(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $term: String!\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    # Articles and pages are not paginated: a fixed page size keeps these\n    # valid when the products connection is walked backwards ($last only).\n    articles: search(\n      query: $term,\n      types: [ARTICLE],\n      first: 8,\n    ) {\n      nodes {\n        ...on Article {\n          ...SearchArticle\n        }\n      }\n    }\n    pages: search(\n      query: $term,\n      types: [PAGE],\n      first: 8,\n    ) {\n      nodes {\n        ...on Page {\n          ...SearchPage\n        }\n      }\n    }\n    products: search(\n      after: $endCursor,\n      before: $startCursor,\n      first: $first,\n      last: $last,\n      query: $term,\n      sortKey: RELEVANCE,\n      types: [PRODUCT],\n      unavailableProducts: HIDE,\n    ) {\n      nodes {\n        ...on Product {\n          ...SearchProduct\n        }\n      }\n      pageInfo {\n        ...PageInfoFragment\n      }\n    }\n  }\n  #graphql\n  fragment SearchProduct on Product {\n    __typename\n    handle\n    id\n    publishedAt\n    title\n    trackingParameters\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing — mirrors the\n    # ClaraProductCard fragment: staged size variants exist in Shopify at\n    # full price with availableForSale=false and must never set the floor.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(\n      selectedOptions: []\n      ignoreUnknownOptions: true\n      caseInsensitiveMatch: true\n    ) {\n      id\n      image {\n        url\n        altText\n        width\n        height\n      }\n      price {\n        amount\n        currencyCode\n      }\n      compareAtPrice {\n        amount\n        currencyCode\n      }\n      selectedOptions {\n        name\n        value\n      }\n      product {\n        handle\n        title\n      }\n    }\n  }\n\n  #graphql\n  fragment SearchPage on Page {\n     __typename\n     handle\n    id\n    title\n    trackingParameters\n  }\n\n  #graphql\n  fragment SearchArticle on Article {\n    __typename\n    handle\n    id\n    title\n    trackingParameters\n    blog {\n      handle\n    }\n  }\n\n  #graphql\n  fragment PageInfoFragment on PageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n\n': {
     return: RegularSearchQuery;
     variables: RegularSearchQueryVariables;
+  };
+  '#graphql\n  query RegularSearchProducts(\n    $country: CountryCode\n    $endCursor: String\n    $first: Int\n    $language: LanguageCode\n    $last: Int\n    $term: String!\n    $startCursor: String\n  ) @inContext(country: $country, language: $language) {\n    products: search(\n      after: $endCursor,\n      before: $startCursor,\n      first: $first,\n      last: $last,\n      query: $term,\n      sortKey: RELEVANCE,\n      types: [PRODUCT],\n      unavailableProducts: HIDE,\n    ) {\n      nodes {\n        ...on Product {\n          ...SearchProduct\n        }\n      }\n      pageInfo {\n        ...PageInfoFragment\n      }\n    }\n  }\n  #graphql\n  fragment SearchProduct on Product {\n    __typename\n    handle\n    id\n    publishedAt\n    title\n    trackingParameters\n    vendor\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }\n    featuredImage {\n      url\n      altText\n      width\n      height\n    }\n    priceRange {\n      minVariantPrice {\n        amount\n        currencyCode\n      }\n    }\n    # Released-price sample for guard-safe "From" pricing — mirrors the\n    # ClaraProductCard fragment: staged size variants exist in Shopify at\n    # full price with availableForSale=false and must never set the floor.\n    sizeVariants: variants(first: 10) {\n      nodes {\n        availableForSale\n        price {\n          amount\n          currencyCode\n        }\n      }\n    }\n    selectedOrFirstAvailableVariant(\n      selectedOptions: []\n      ignoreUnknownOptions: true\n      caseInsensitiveMatch: true\n    ) {\n      id\n      image {\n        url\n        altText\n        width\n        height\n      }\n      price {\n        amount\n        currencyCode\n      }\n      compareAtPrice {\n        amount\n        currencyCode\n      }\n      selectedOptions {\n        name\n        value\n      }\n      product {\n        handle\n        title\n      }\n    }\n  }\n\n  #graphql\n  fragment PageInfoFragment on PageInfo {\n    hasNextPage\n    hasPreviousPage\n    startCursor\n    endCursor\n  }\n\n': {
+    return: RegularSearchProductsQuery;
+    variables: RegularSearchProductsQueryVariables;
   };
   '#graphql\n  query PredictiveSearch(\n    $country: CountryCode\n    $language: LanguageCode\n    $limit: Int!\n    $limitScope: PredictiveSearchLimitScope!\n    $term: String!\n    $types: [PredictiveSearchType!]\n  ) @inContext(country: $country, language: $language) {\n    predictiveSearch(\n      limit: $limit,\n      limitScope: $limitScope,\n      query: $term,\n      types: $types,\n    ) {\n      articles {\n        ...PredictiveArticle\n      }\n      collections {\n        ...PredictiveCollection\n      }\n      pages {\n        ...PredictivePage\n      }\n      products {\n        ...PredictiveProduct\n      }\n      queries {\n        ...PredictiveQuery\n      }\n    }\n  }\n  #graphql\n  fragment PredictiveArticle on Article {\n    __typename\n    id\n    title\n    handle\n    blog {\n      handle\n    }\n    image {\n      url\n      altText\n      width\n      height\n    }\n    trackingParameters\n  }\n\n  #graphql\n  fragment PredictiveCollection on Collection {\n    __typename\n    id\n    title\n    handle\n    image {\n      url\n      altText\n      width\n      height\n    }\n    trackingParameters\n  }\n\n  #graphql\n  fragment PredictivePage on Page {\n    __typename\n    id\n    title\n    handle\n    trackingParameters\n  }\n\n  #graphql\n  fragment PredictiveProduct on Product {\n    __typename\n    id\n    title\n    handle\n    productType\n    tags\n    storefrontApproved: metafield(namespace: "custom", key: "storefront_approved") { type value }\n    fulfillmentVerified: metafield(namespace: "custom", key: "fulfillment_verified") { type value }\n    vendor\n    trackingParameters\n    selectedOrFirstAvailableVariant(\n      selectedOptions: []\n      ignoreUnknownOptions: true\n      caseInsensitiveMatch: true\n    ) {\n      id\n      image {\n        url\n        altText\n        width\n        height\n      }\n      price {\n        amount\n        currencyCode\n      }\n    }\n  }\n\n  #graphql\n  fragment PredictiveQuery on SearchQuerySuggestion {\n    __typename\n    text\n    styledText\n    trackingParameters\n  }\n\n': {
     return: PredictiveSearchQuery;

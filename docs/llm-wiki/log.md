@@ -2494,3 +2494,59 @@ visitors see their shipping destination on EUR feed URLs. The country in
 the URL applies when there is no usable visitor country. See
 [Fulfillment](modules/fulfillment.md#2026-11-14---euro-area-destinations-on-feed-landings)
 and `scripts/googleCommerce.node-test.mjs`.
+
+## 2026-11-15 — Shop audit: purchase path, browsing, server, markets, copy, SEO
+
+A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
+`fix-browse`, `fix-server`, `fix-markets`, `fix-copy` and `fix-seo`.
+
+- Cart: the `/cart` action never throws; failures come back as `{errors}`
+  (400 or 502). Order-level discounts come from `cart.discountAllocations`
+  (not part of `subtotalAmount`). Cart suggestions follow
+  `cardQuickAddMode`: clothing, cases and canvas link to the product page
+  instead of one-tap Add. Busy buttons use `aria-disabled`.
+- Browsing: search fills short pages from whole following pages; `/gifts`
+  reads its curated handles directly; the journal sorts newest first;
+  clothing-line tabs keep `capsule=`; a clothing load failure no longer
+  takes down the shop pages. Tests in `scripts/browseListings.node-test.mjs`.
+- Server: `server.ts` appends the session cookie. Reviews and helpful votes
+  are throttled per IP in memory per isolate (blunts bursts only). The
+  newsletter welcome code reaches only the new subscriber (JSON reply, or
+  once through the session without JavaScript). The orders/paid webhook
+  logs `orders/paid NEEDS ATTENTION order <id> (<name>):`, redacts Prodigi
+  error bodies and gives Prodigi 4 s. Per-isolate font and plate caches hold
+  finished downloads only. `fbq.disablePushState` is set.
+- Markets: Printful fees, windows and feed lines are keyed on the art
+  catalogue's `printful` route (`isPrintfulArtProduct`), not product type;
+  US transit for Printful mugs, blankets and cushions is 7–20 in the feed
+  and JSON-LD. The delivery-country form drops the `?country=` pin on
+  success and returns `?country-error=1` on failure. Your Sky and the art
+  phone case show the Christmas order-by line. Feeds send the product
+  page's description.
+- Copy: our own work is never "original(s)" (the copy guard now catches
+  the plural and "original composition/design/print"); British spellings.
+  Registry dates must match the museum evidence word for word
+  (`museumSources.node-test.mjs`), so date tidying needs a display
+  formatter.
+- SEO and shell: `returnFees` is `ReturnFeesCustomerResponsibility`;
+  collection ItemLists are plain `ListItem`s; sitemap index types are
+  pinned in `SITEMAP_INDEX_TYPES`; robots facet rules come from
+  `LISTING_PATHS` and `LISTING_PARAMS`; skip link; text tokens
+  `--color-clay-ink` and `--color-moss-ink`.
+- Owner decisions the same day:
+  - The Christmas hero and line-rail pictures now switch by date, per
+    request: 1 November to 6 January (`christmasPicturesSeason`, longer
+    than the 25 December order-by season). The root loader picks the
+    backdrop (`heroBackdropFor(requestToday(request))`) and sets
+    `--hero-backdrop-*` CSS variables the hero stylesheets paint; routes
+    preload the root's choice through `meta` (`heroBackdropMeta(matches)`);
+    the homepage loader picks the rail pictures. Never at module scope: on
+    Oxygen a module's top level has no usable clock. `?today=` previews a
+    date.
+  - The hidden WebGL paint is gone (it sat under the body's opaque page
+    colour); Lenis and the chapter reveals stay.
+  - Reviews: every write orders `custom.reviews` approved first, then
+    pending drafts, and drops deleted ones (`orderReviewGids`), so drafts
+    can never push approved reviews out of the first 50. Approval in
+    Shopify Admin is unchanged.
+  - The founder's letter says "clothing" instead of the retired tank top.

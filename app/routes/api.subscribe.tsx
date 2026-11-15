@@ -3,7 +3,9 @@ import type {Route} from './+types/api.subscribe';
 import {
   isValidEmail,
   NEWSLETTER_HONEYPOT_FIELD,
+  NEWSLETTER_WELCOME_SESSION_KEY,
   normalizeEmail,
+  welcomeCodeFor,
 } from '~/lib/newsletter';
 import {subscribeEmail} from '~/lib/newsletter.server';
 
@@ -57,7 +59,10 @@ export async function action({request, context}: Route.ActionArgs) {
   const wantsHtml = !request.headers.get('accept')?.includes('application/json')
     && form.get('_fetcher') !== '1';
   const redirectTo = safeRedirect(form.get('redirectTo'));
-  const answer = (body: {ok: boolean; status?: string; error?: string}, status = 200) =>
+  const answer = (
+    body: {ok: boolean; status?: string; error?: string; welcomeCode?: string | null},
+    status = 200,
+  ) =>
     wantsHtml
       ? redirect(
           `${redirectTo}${redirectTo.includes('?') ? '&' : '?'}subscribed=${body.ok ? 1 : 0}${
@@ -78,7 +83,14 @@ export async function action({request, context}: Route.ActionArgs) {
   try {
     const result = await subscribeEmail(context.env, {email});
     if (result.status === 'disabled') return answer({ok: false, error: 'disabled'}, 503);
-    return answer({ok: true, status: result.status});
+    // The code goes only to this subscriber: in the JSON reply, or (no-JS
+    // redirect) through the session, never in the redirect URL.
+    const welcomeCode = welcomeCodeFor(result.status, context.env.NEWSLETTER_WELCOME_CODE);
+    if (wantsHtml) {
+      if (welcomeCode) context.session.set(NEWSLETTER_WELCOME_SESSION_KEY, welcomeCode);
+      return answer({ok: true, status: result.status});
+    }
+    return answer({ok: true, status: result.status, welcomeCode});
   } catch (error) {
     const detail = error instanceof Error ? error.message : String(error);
     if (/ACCESS_DENIED|not approved to access/i.test(detail)) {

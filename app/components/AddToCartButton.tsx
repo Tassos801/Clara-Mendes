@@ -21,6 +21,7 @@ export function AddToCartButton({
   children,
   disabled,
   lines,
+  onSettled,
   onSuccess,
   pendingChildren,
   showErrors = true,
@@ -31,6 +32,8 @@ export function AddToCartButton({
   children: React.ReactNode;
   disabled?: boolean;
   lines: Array<OptimisticCartLineInput>;
+  /** Called with the action response after every submit, success or not. */
+  onSettled?: (data: unknown) => void;
   onSuccess?: () => void;
   pendingChildren?: React.ReactNode;
   showErrors?: boolean;
@@ -44,6 +47,7 @@ export function AddToCartButton({
           className={className}
           disabled={disabled}
           fetcher={fetcher}
+          onSettled={onSettled}
           onSuccess={onSuccess}
           pendingChildren={pendingChildren}
           showErrors={showErrors}
@@ -62,6 +66,7 @@ function AddToCartButtonContent({
   className,
   disabled,
   fetcher,
+  onSettled,
   onSuccess,
   pendingChildren,
   showErrors,
@@ -72,6 +77,7 @@ function AddToCartButtonContent({
   className?: string;
   disabled?: boolean;
   fetcher: CartFetcher;
+  onSettled?: (data: unknown) => void;
   onSuccess?: () => void;
   pendingChildren?: React.ReactNode;
   showErrors: boolean;
@@ -102,11 +108,12 @@ function AddToCartButtonContent({
     if (!wasSubmitting.current || fetcher.data === undefined) return;
 
     wasSubmitting.current = false;
+    onSettled?.(fetcher.data);
 
     if (getCartFormErrorMessages(fetcher.data).length === 0) {
       onSuccess?.();
     }
-  }, [analytics, fetcher.data, fetcher.state, onSuccess]);
+  }, [analytics, fetcher.data, fetcher.state, onSettled, onSuccess]);
 
   return (
     <>
@@ -117,13 +124,23 @@ function AddToCartButtonContent({
         defaultValue=""
         ref={attributionInputRef}
       />
+      {/* Busy uses aria-disabled, not disabled: a disabled button drops
+          keyboard focus to <body>, so closing the cart drawer afterwards
+          would send the shopper back to the top of the page. */}
       <button
         aria-busy={isBusy}
+        aria-disabled={isBusy || undefined}
         aria-label={ariaLabel}
         className={className}
         type="submit"
-        disabled={disabled || isBusy}
-        onClick={refreshMarketingAttribution}
+        disabled={disabled}
+        onClick={(event) => {
+          if (isBusy) {
+            event.preventDefault();
+            return;
+          }
+          refreshMarketingAttribution();
+        }}
         onPointerDown={refreshMarketingAttribution}
       >
         {isBusy && pendingChildren ? pendingChildren : children}

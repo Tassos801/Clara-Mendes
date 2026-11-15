@@ -168,9 +168,18 @@ export function shippingCells(
   return [...eu, ...international];
 }
 
-/** The USD feeds' single `shipping` value: the US checkout rate. */
-export function usShippingCell(amount: string, handling: string) {
-  return `US:${amount} USD:${handling}:${TRANSIT_US}`;
+/**
+ * The USD feeds' single `shipping` value: the US checkout rate. `transit`
+ * 'international' keeps the generic non-EU window for lines whose US transit
+ * is not verified (Printful's museum mugs, blankets and cushions), as their
+ * product pages do (readsUsDelivery in storefrontBasics.ts).
+ */
+export function usShippingCell(
+  amount: string,
+  handling: string,
+  transit: 'us' | 'international' = 'us',
+) {
+  return `US:${amount} USD:${handling}:${transit === 'us' ? TRANSIT_US : TRANSIT_INTERNATIONAL}`;
 }
 
 // Google's product data specification, `shipping`: "Match or slightly

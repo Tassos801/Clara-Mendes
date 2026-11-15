@@ -244,8 +244,8 @@ export const GIFT_PAGE_COPY = {
   eyebrow: 'Gifts',
   title: 'Art Gifts',
   subtitle:
-    'Famous paintings on things people use every day, made to order for the person you have in mind.',
-  lead: 'The Great Wave on a throw blanket, Hiroshige’s fireworks on a mug, Mondrian on a cushion. The paintings are public-domain works from museum collections, and each piece is printed when you order it. Below are the ones we would give, with wall art, phone cases, book nooks and a star map of a night that mattered, grouped by price.',
+    'Famous artworks on things people use every day, made to order for the person you have in mind.',
+  lead: 'The Great Wave on a throw blanket, Hiroshige’s fireworks on a mug, Mondrian on a cushion. The works are public domain, from museum collections, and each piece is printed when you order it. Below are the ones we would give, with wall art, phone cases, book nooks and a star map of a night that mattered, grouped by price.',
   heroAlt:
     'The Great Wave off Kanagawa by Katsushika Hokusai printed as a throw blanket',
   christmasHeading: 'Order by these dates for Christmas',

@@ -1328,6 +1328,7 @@ function ProductPage() {
 
             <div
               className="product-availability-row"
+              role="group"
               aria-label="Purchase status"
             >
               <span
@@ -1537,7 +1538,11 @@ function ProductPage() {
           <div className="product-buy-box">
             <div className="quantity-row">
               <span>Quantity</span>
-              <div className="quantity-control" aria-label="Product quantity">
+              <div
+                className="quantity-control"
+                role="group"
+                aria-label="Product quantity"
+              >
                 <button
                   type="button"
                   onClick={() => setQuantity((value) => Math.max(1, value - 1))}
@@ -1725,7 +1730,7 @@ function ProductPage() {
             {isPlantPot ? (
               <>
                 <ProductDetail label="Pot" defaultOpen>
-                  Glossy ceramic, 9 cm diameter x 10.2 cm high, with a drainage
+                  Glossy ceramic, 9 cm diameter × 10.2 cm high, with a drainage
                   hole and white rim and interior.
                 </ProductDetail>
                 <ProductDetail label="Included" defaultOpen>
@@ -1799,7 +1804,7 @@ function ProductPage() {
                 </ProductDetail>
                 <ProductDetail label="Included" defaultOpen>
                   Frame, Perspex glazing, backing, and wall hanger only. Print,
-                  artwork, and decorative mat are not included.
+                  artwork and mount are not included.
                 </ProductDetail>
               </>
             ) : null}
@@ -2062,7 +2067,7 @@ function ProductPage() {
                     ? 'Book nooks'
                     : relatedFromCapsule
                       ? 'From the same capsule'
-                      : 'Also in the catalog'}
+                      : 'Also in the catalogue'}
               </p>
               <h2 id="related">
                 {relatedFromBookNooks ? 'More small worlds' : 'Pair with'}
@@ -2508,7 +2513,11 @@ function ProductGalleryCarousel({
                 {String(slideCount).padStart(2, '0')}
               </span>
             </p>
-            <div className="product-gallery-dots" aria-label="Gallery slides">
+            <div
+              className="product-gallery-dots"
+              role="group"
+              aria-label="Gallery slides"
+            >
               {Array.from({length: slideCount}, (_, index) => (
                 <button
                   className={`product-gallery-dot ${

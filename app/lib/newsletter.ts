@@ -40,3 +40,18 @@ export function buildConsentInput(now: Date = new Date()): ConsentInput {
 }
 
 export type SubscribeStatus = 'subscribed' | 'already' | 'disabled';
+
+/**
+ * Session key carrying the welcome code from a no-JS sign-up to the page it
+ * redirects to; the root loader reads it once and unsets it.
+ */
+export const NEWSLETTER_WELCOME_SESSION_KEY = 'newsletterWelcomeCode';
+
+/**
+ * The welcome code is only ever sent to the browser that just subscribed:
+ * never in the root loader for every visitor, never to an address that was
+ * already on the list, never in a URL.
+ */
+export function welcomeCodeFor(status: SubscribeStatus, configured: string | undefined) {
+  return status === 'subscribed' ? configured?.trim() || null : null;
+}

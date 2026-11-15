@@ -3,6 +3,7 @@ import {
   createProdigiClient,
   ProdigiNotConfiguredError,
   ProdigiRequestError,
+  summarizeProdigiError,
 } from '~/lib/prodigi.server';
 import {verifyShopifyWebhook} from '~/lib/shopifyWebhook.server';
 import {
@@ -13,6 +14,23 @@ import {STOREFRONT_ORIGIN} from '~/lib/storefrontBasics';
 
 /** Prodigi statuses that mean the payload itself is wrong. */
 const PRODIGI_REJECTED_PAYLOAD = new Set([400, 409, 422]);
+
+/**
+ * Shopify abandons a delivery after ~5 s, so Prodigi gets ~4 s; a timeout
+ * answers 502 and Shopify retries (the idempotency key makes that safe).
+ */
+const PRODIGI_TIMEOUT_MS = 4_000;
+
+/**
+ * One greppable line per order that was acknowledged but not sent to the
+ * lab, for the replay script (scripts/sky-replay-order.mjs). Order id and
+ * name only: no customer data.
+ */
+function logNeedsAttention(order: ShopifyOrderWebhook, detail: string) {
+  console.error(
+    `orders/paid NEEDS ATTENTION order ${order.id} (${order.name}): ${detail}`,
+  );
+}
 
 export async function loader() {
   return new Response('Method Not Allowed', {status: 405});
@@ -34,8 +52,15 @@ export async function action({request, context}: Route.ActionArgs) {
   const {env} = context;
   const rawBody = await request.text();
   const secret = env.SHOPIFY_WEBHOOK_SECRET;
+  if (!secret) {
+    // Every delivery fails until this is set, and Shopify drops a
+    // subscription that keeps failing, so say so loudly.
+    console.error(
+      'orders/paid: SHOPIFY_WEBHOOK_SECRET is not set; rejecting the delivery with 401. Set it in the Oxygen environment, or paid orders never reach Prodigi.',
+    );
+    return new Response('Unauthorized', {status: 401});
+  }
   if (
-    !secret ||
     !(await verifyShopifyWebhook(
       rawBody,
       request.headers.get('X-Shopify-Hmac-Sha256'),
@@ -72,14 +97,12 @@ export async function action({request, context}: Route.ActionArgs) {
   if (build.kind === 'problem') {
     // Retrying cannot fix a bad signature or an unmapped SKU; log for the
     // replay script (scripts/sky-replay-order.mjs) and acknowledge.
-    console.error(
-      `orders/paid: order ${order.id} (${order.name}) needs attention: ${build.reason}`,
-    );
+    logNeedsAttention(order, build.reason);
     return new Response('Needs attention', {status: 200});
   }
 
   try {
-    const prodigi = createProdigiClient(env);
+    const prodigi = createProdigiClient(env, {timeoutMs: PRODIGI_TIMEOUT_MS});
     const response = await prodigi.createOrder(build.payload);
     console.warn(
       `orders/paid: ${order.name} → Prodigi${prodigi.isSandbox ? ' sandbox' : ''} ${response.outcome} ${response.order?.id ?? ''}`,
@@ -99,13 +122,23 @@ export async function action({request, context}: Route.ActionArgs) {
       // way, so acknowledge and log for the replay script instead of
       // exhausting Shopify's retries. Auth, rate-limit, network and server
       // failures still answer 502 so a rotated key or an outage gets them.
-      console.error(
-        `orders/paid: order ${order.id} (${order.name}) needs attention: Prodigi ${error.status}`,
-        error.body,
+      // The body can echo the recipient, so only its codes and fields.
+      logNeedsAttention(
+        order,
+        `Prodigi rejected the order: ${summarizeProdigiError(error.status, error.body)}`,
       );
       return new Response('Needs attention', {status: 200});
     }
-    console.error(`orders/paid: Prodigi call failed for ${order.name}`, error);
+    // Retryable (auth, rate limit, network, timeout, 5xx): Shopify retries.
+    const detail =
+      error instanceof ProdigiRequestError
+        ? summarizeProdigiError(error.status, error.body)
+        : error instanceof Error
+          ? `${error.name}: ${error.message}`
+          : String(error);
+    console.error(
+      `orders/paid: Prodigi call failed for order ${order.id} (${order.name}), Shopify will retry: ${detail}`,
+    );
     return new Response('Prodigi error', {status: 502});
   }
 }

@@ -1,4 +1,4 @@
-const DEFAULT_CART_ERROR = 'We could not update the cart. Please try again.';
+export const DEFAULT_CART_ERROR = 'We could not update the cart. Please try again.';
 
 export const CART_OFFLINE_MESSAGE =
   'You’re offline. Check your connection, then try again — your cart is unchanged.';

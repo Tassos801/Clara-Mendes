@@ -101,7 +101,7 @@ test('a capsule without an editorial entry gets a generic hero', () => {
   // Editorial entries keep their own wording.
   assert.equal(clothingPageHero('counter-diagonal', 'tees', {title: 'Counter-Diagonal', madeToOrder: true}).eyebrow, 'New · Counter-Diagonal');
   // No capsule at all: the general wording.
-  assert.deepEqual(clothingPageHero(null, null, null), {eyebrow: null, title: 'Clothing, with an artistic touch.', text: 'Original designs inspired by modern artists, made for you after you order.', cta: 'Shop clothing'});
+  assert.deepEqual(clothingPageHero(null, null, null), {eyebrow: null, title: 'Clothing, with an artistic touch.', text: 'Our own designs inspired by modern artists, made for you after you order.', cta: 'Shop clothing'});
   // Several lines: the hero names each line and each artist.
   assert.deepEqual(
     clothingLinesHero(
@@ -115,12 +115,12 @@ test('a capsule without an editorial entry gets a generic hero', () => {
     {
       eyebrow: 'Three lines · Made to order',
       title: 'Clothing, with an artistic touch.',
-      text: 'Counter-Diagonal, Free Abyss and Circle Rhythm: three original designs, inspired by Theo van Doesburg, Kazimir Malevich and Sophie Taeuber-Arp. Made for you after you order.',
+      text: 'Counter-Diagonal, Free Abyss and Circle Rhythm: three designs of our own, inspired by Theo van Doesburg, Kazimir Malevich and Sophie Taeuber-Arp. Made for you after you order.',
       cta: 'Shop all clothing',
     },
   );
   // A line without a credit leaves the artists out rather than guess.
-  assert.equal(clothingLinesHero([{title: 'A', credit: 'Inspired by X'}, {title: 'B', credit: null}], false).text, 'A and B: two original designs.');
+  assert.equal(clothingLinesHero([{title: 'A', credit: 'Inspired by X'}, {title: 'B', credit: null}], false).text, 'A and B: two designs of our own.');
 });
 
 test('the generic story is the collection description and image', () => {
@@ -173,7 +173,7 @@ test('the real /clothing loader lists a new capsule with its generic block', asy
   assert.equal(data.lines[1].credit, null);
   // Several lines: the hero names them all, with no single line's emblem.
   assert.equal(data.hero.eyebrow, 'Four lines · Made to order');
-  assert.match(data.hero.text, /^Counter-Diagonal, Rhythm, Suprema and Sea Line: four original designs\./);
+  assert.match(data.hero.text, /^Counter-Diagonal, Rhythm, Suprema and Sea Line: four designs of our own\./);
   assert.equal(data.hero.accent, null);
 
   // One line alone leads with its own (here generic) hero.
@@ -182,7 +182,7 @@ test('the real /clothing loader lists a new capsule with its generic block', asy
   assert.equal(alone.hero.text, 'Hoodies and tees from the Suprema collection. Made for you after you order.');
   assert.equal(alone.hero.accent, null);
   assert.equal(alone.hero.looksImage, null);
-  assert.equal(alone.description, 'Clara Mendes Clothing: Suprema, an original design, on hoodies and tees. Made to order.');
+  assert.equal(alone.description, 'Clara Mendes Clothing: Suprema, our own design, on hoodies and tees. Made to order.');
 });
 
 test('an artist quote becomes the pull-quote, never the lede', () => {

@@ -5,6 +5,23 @@
  * array fully defines the image policy. scripts/csp.node-test.mjs scans app/
  * for scheme usage and fails when a scheme in use is missing from this list.
  */
+/**
+ * Hosts Google's tag CSP guide
+ * (developers.google.com/tag-platform/security/guides/csp, read 2026-11-15)
+ * lists for GA4 with Ads features and Google Ads conversions, in both img-src
+ * and connect-src. CSP cannot wildcard a TLD, so `www.google.<TLD>` is spelled
+ * out per country: Cyprus is the store's home market. The guide names no
+ * `*.analytics.google.com` or `td.doubleclick.net`; `*.g.doubleclick.net`
+ * covers stats.g.doubleclick.net.
+ */
+const GOOGLE_TAG_HOSTS = [
+  'https://*.google-analytics.com',
+  'https://*.google.com',
+  'https://www.google.com.cy',
+  'https://*.g.doubleclick.net',
+  'https://pagead2.googlesyndication.com',
+];
+
 export const CSP_IMG_SRC = [
   "'self'",
   'data:',
@@ -17,6 +34,7 @@ export const CSP_IMG_SRC = [
   'https://www.google.com',
   'https://www.googleadservices.com',
   'https://googleads.g.doubleclick.net',
+  ...GOOGLE_TAG_HOSTS,
   // Meta pixel image beacon (app/lib/metaPixel.client.ts).
   'https://www.facebook.com',
 ];
@@ -47,6 +65,9 @@ export const CSP_GOOGLE_CONNECT_SRC = [
   'https://www.google.com',
   'https://www.googleadservices.com',
   'https://googleads.g.doubleclick.net',
+  ...GOOGLE_TAG_HOSTS,
+  // Google Ads conversion / remarketing (connect-src only in the guide).
+  'https://ad.doubleclick.net',
 ];
 
 // Meta pixel events (fbevents.js sends to facebook.com/tr).
@@ -65,4 +86,6 @@ export const CSP_FRAME_SRC = [
   'https://cdn.shopify.com',
   'https://shopify.com',
   'https://www.facebook.com',
+  // Google's tag CSP guide lists this frame for GA4 and Google Ads tags.
+  'https://www.googletagmanager.com',
 ];

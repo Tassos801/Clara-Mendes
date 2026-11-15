@@ -445,7 +445,7 @@
           "sequence": 1,
           "description": "Sunlight grazes the folded surface of a coastal limestone cliff, turning weathered stone into a study of line and shadow.",
           "alt": "Black-and-white image of sunlit limestone folds receding into deep shadow.",
-          "palette": "Black, white, silver gray",
+          "palette": "Black, white, silver grey",
           "rooms": [
             {
               "key": "living-room",
@@ -538,7 +538,7 @@
           "sequence": 2,
           "description": "A single curling ripple crosses a still tidal pool, where dark water, shallow sand and reflected sky meet.",
           "alt": "Black-and-white image of a curling ripple on a dark tidal pool reflecting clouded sky.",
-          "palette": "Black, white, silver gray",
+          "palette": "Black, white, silver grey",
           "rooms": [
             {
               "key": "living-room",
@@ -631,7 +631,7 @@
           "sequence": 3,
           "description": "Bare branches trace fine lines across a mist-filled woodland, with distant trunks fading softly from view.",
           "alt": "Black-and-white image of bare winter branches against a foggy woodland.",
-          "palette": "Black, white, silver gray",
+          "palette": "Black, white, silver grey",
           "rooms": [
             {
               "key": "living-room",
@@ -724,7 +724,7 @@
           "sequence": 4,
           "description": "A fern frond catches a narrow band of light before the forest floor falls away into darkness.",
           "alt": "Black-and-white image of a backlit fern frond arching into a dark forest background.",
-          "palette": "Black, white, silver gray",
+          "palette": "Black, white, silver grey",
           "rooms": [
             {
               "key": "living-room",
@@ -817,7 +817,7 @@
           "sequence": 5,
           "description": "Layered mountain ridges rise through morning mist, their forms reduced to luminous bands of light and shade.",
           "alt": "Black-and-white image of mist filling a mountain valley between dark layered ridges.",
-          "palette": "Black, white, silver gray",
+          "palette": "Black, white, silver grey",
           "rooms": [
             {
               "key": "living-room",
@@ -2725,9 +2725,9 @@
       "slug": "museum-masterpieces",
       "title": "Museum Masterpieces",
       "kind": "museum",
-      "note": "Paintings and one Morris textile from Van Gogh, Monet, Klimt, Vermeer, Renoir and Degas, from museum open-access collections",
+      "note": "Paintings by Van Gogh, Monet, Klimt, Vermeer, Renoir and Degas, and one William Morris textile, from museum open-access collections",
       "skuCode": "MM",
-      "collectionCopy": "Part of Museum Masterpieces, a Clara Mendes selection of nineteenth- and early twentieth-century paintings and one William Morris pattern from museum open-access collections, each reproduced whole.",
+      "collectionCopy": "Part of Museum Masterpieces, a Clara Mendes selection of paintings from Vermeer to Klimt, and one William Morris pattern, from museum open-access collections, each reproduced whole.",
       "seoSuffix": "A museum masterpiece reproduced whole from a public-domain museum original.",
       "publications": [
         "Clara Mendes",

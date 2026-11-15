@@ -34,7 +34,7 @@ import {
   skyFinishFromOptions,
   skySizeFromOptions,
 } from '~/lib/sky/products';
-import {PRODUCTION_WINDOW_BUSINESS_DAYS} from '~/lib/storefrontBasics';
+import {DISPATCH_WINDOW_BUSINESS_DAYS} from '~/lib/storefrontBasics';
 
 export type StudioVariant = {
   id: string;
@@ -251,7 +251,7 @@ export function SkyStudio({
                     : 'Unavailable'}
               </span>
               <span>
-                Processes in {PRODUCTION_WINDOW_BUSINESS_DAYS} business days
+                Dispatched in {DISPATCH_WINDOW_BUSINESS_DAYS} business days
               </span>
               {/* Personalised orders are non-returnable under the refund
                   policy; only its damaged/defective promise applies. */}

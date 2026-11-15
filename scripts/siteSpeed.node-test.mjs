@@ -4,7 +4,6 @@ import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 import sharp from 'sharp';
-import {hexToLinear} from '../app/components/cinematic/paintRenderer.ts';
 import {BRAND} from '../app/content/brand.ts';
 import {artistProducts} from '../app/lib/artistShops.ts';
 import {
@@ -23,12 +22,17 @@ import {
 import {YOUR_SKY_PAGE} from '../app/lib/featurePages.ts';
 import {listGalleryPages} from '../app/lib/galleryPages.ts';
 import {
-  HERO_BACKDROP,
+  CHRISTMAS_BACKDROP,
   HERO_BACKDROP_MEDIA,
+  heroBackdropMeta,
   heroBackdropPreloads,
+  heroBackdropVars,
+  INTERIOR_BACKDROP,
 } from '../app/lib/heroBackdrop.ts';
 import {storefrontImageLoader} from '../app/lib/imageLoader.ts';
-import {LINE_RAIL_ENTRIES} from '../app/lib/lineRail.ts';
+import {lineRailEntries} from '../app/lib/lineRail.ts';
+
+const LINE_RAIL_ENTRIES = lineRailEntries();
 import {STOREFRONT_IMAGE_COPIES} from './lib/storefront-images.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -75,7 +79,6 @@ test('the cinematic layer needs no Three.js or GSAP', () => {
     'app/components/cinematic/CinematicProvider.tsx',
     'app/components/cinematic/cinematicExperience.ts',
     'app/components/cinematic/chapterOrchestrator.ts',
-    'app/components/cinematic/paintRenderer.ts',
   ]) {
     assert.doesNotMatch(read(file), /from 'three'|from 'gsap|import\('(three|gsap)/);
   }
@@ -86,50 +89,54 @@ test('the cinematic layer needs no Three.js or GSAP', () => {
   assert.match(provider, /await import\('\.\/cinematicExperience'\)/);
   assert.match(provider, /const pageLoaded = useAfterPageLoad\(\);/);
   assert.match(provider, /if \(!pageLoaded \|\| interacted\) return;/);
-  assert.match(provider, /if \(!canvas \|\| !interacted\) return;/);
+  assert.match(provider, /if \(!interacted\) return;/);
+  // No hidden WebGL paint: nothing draws behind the page colour.
+  assert.doesNotMatch(provider, /<canvas/);
+  assert.doesNotMatch(read('app/components/cinematic/cinematicExperience.ts'), /getContext\(|<canvas/);
   assert.match(provider, /handle\.scan\(\{revealOnScreen: false\}\)/);
 });
 
-test('palettes convert to linear light exactly as Three.js did', () => {
-  const [r, g, b] = hexToLinear('#f4f0e6');
-  assert.ok(Math.abs(r - 0.9047) < 1e-3, `r ${r}`);
-  assert.ok(Math.abs(g - 0.8714) < 1e-3, `g ${g}`);
-  assert.ok(Math.abs(b - 0.7913) < 1e-3, `b ${b}`);
-  assert.deepEqual(hexToLinear('#000000'), [0, 0, 0]);
-  assert.deepEqual(hexToLinear('#ffffff'), [1, 1, 1]);
-});
-
 test('the hero backdrop ships as plain JPEGs with one preload per query', () => {
-  for (const src of Object.values(HERO_BACKDROP)) assertPlainJpeg(src);
+  for (const backdrop of [INTERIOR_BACKDROP, CHRISTMAS_BACKDROP]) {
+    for (const src of Object.values(backdrop)) assertPlainJpeg(src);
 
-  const preloads = heroBackdropPreloads();
-  assert.deepEqual(
-    preloads.map((link) => [link.href, link.media]),
-    [
-      [HERO_BACKDROP.mobile, HERO_BACKDROP_MEDIA.mobile],
-      [HERO_BACKDROP.desktop, HERO_BACKDROP_MEDIA.desktop],
-      [HERO_BACKDROP.large, HERO_BACKDROP_MEDIA.large],
-    ],
-  );
-  for (const link of preloads) {
-    assert.equal(link.rel, 'preload');
-    assert.equal(link.as, 'image');
-    // Not held back behind the render-blocking stylesheets.
-    assert.equal(link.fetchpriority, 'high');
+    const preloads = heroBackdropPreloads(backdrop);
+    assert.deepEqual(
+      preloads.map((link) => [link.href, link.media]),
+      [
+        [backdrop.mobile, HERO_BACKDROP_MEDIA.mobile],
+        [backdrop.desktop, HERO_BACKDROP_MEDIA.desktop],
+        [backdrop.large, HERO_BACKDROP_MEDIA.large],
+      ],
+    );
+    for (const link of preloads) {
+      assert.equal(link.rel, 'preload');
+      assert.equal(link.as, 'image');
+      // Not held back behind the render-blocking stylesheets.
+      assert.equal(link.fetchpriority, 'high');
+    }
   }
 
-  // Both heroes paint from the shared files under the shared queries.
+  // The root picks the backdrop per request and sets the CSS variables
+  // both heroes paint; each route preloads the root's choice.
+  assert.match(heroBackdropVars(INTERIOR_BACKDROP), /--hero-backdrop-large:url\(\/images\/backdrops\/hero-interior\.jpg\)/);
+  const root = read('app/root.tsx');
+  assert.match(root, /heroBackdrop: heroBackdropFor\(requestToday\(request\)\)/);
+  assert.match(root, /heroBackdropVars\(data\.heroBackdrop\)/);
+  const preloadFromRoot = heroBackdropMeta([{id: 'root', data: {heroBackdrop: CHRISTMAS_BACKDROP}}]);
+  assert.equal(preloadFromRoot[2].href, CHRISTMAS_BACKDROP.large);
+  assert.equal(preloadFromRoot[2].tagName, 'link');
+
+  // Both heroes paint from the shared variables under the shared queries.
   for (const file of ['app/routes/_index.tsx', 'app/routes/collections.all.tsx']) {
     const source = read(file);
-    assert.match(source, /url\(\$\{HERO_BACKDROP\.desktop\}\)/, file);
+    assert.match(source, /background-image:[^;]*\$\{HERO_BACKDROP\.desktop\}/, file);
     assert.match(source, /@media \$\{HERO_BACKDROP_MEDIA\.large\}/, file);
-    assert.match(source, /url\(\$\{HERO_BACKDROP\.mobile\}\)/, file);
+    assert.match(source, /\$\{HERO_BACKDROP\.mobile\}/, file);
+    assert.doesNotMatch(source, /url\(\$\{HERO_BACKDROP/, file);
     assert.doesNotMatch(source, /hero-interior[^'"`)]*\.webp/, file);
+    assert.match(source, /heroBackdropMeta\(matches\)/, file);
   }
-  assert.match(
-    read('app/routes/_index.tsx'),
-    /export const links: Route\.LinksFunction = \(\) => heroBackdropPreloads\(\);/,
-  );
 });
 
 test('rail circles are small plain JPEGs', () => {
