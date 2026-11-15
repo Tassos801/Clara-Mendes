@@ -1,7 +1,14 @@
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import test from 'node:test';
 
-import {productSchema} from '../app/lib/seo.ts';
+import {
+  collectionSchema,
+  organizationSchema,
+  productSchema,
+  SOCIAL_PROFILE_URLS,
+  websiteSchema,
+} from '../app/lib/seo.ts';
 
 const variant = (id, size, amount, availableForSale = true) => ({
   availableForSale,
@@ -158,6 +165,48 @@ test('personalised offers permit no returns; prints keep the 30-day window', () 
         'https://schema.org/MerchantReturnFiniteReturnWindow',
       );
       assert.equal(policy.merchantReturnDays, 30);
+      assert.equal(policy.returnMethod, 'https://schema.org/ReturnByMail');
+      // The buyer pays return postage; ReturnShippingFees would also need a
+      // returnShippingFeesAmount.
+      assert.equal(
+        policy.returnFees,
+        'https://schema.org/ReturnFeesCustomerResponsibility',
+      );
     }
   }
+});
+
+test('collection ItemLists carry plain ListItems, not Product offers', () => {
+  const schema = collectionSchema({
+    description: 'Prints.',
+    products: [
+      {handle: 'orbital-silence-art-print', title: 'Orbital Silence Art Print'},
+      {handle: 'quiet-current-art-print', title: 'Quiet Current Art Print'},
+    ],
+    title: 'Prints',
+    url: 'https://shopclaramendes.com/collections/prints',
+  });
+  const list = schema['@graph'].find((node) => node['@type'] === 'ItemList');
+  assert.deepEqual(list.itemListElement[1], {
+    '@type': 'ListItem',
+    position: 2,
+    url: 'https://shopclaramendes.com/products/quiet-current-art-print',
+    name: 'Quiet Current Art Print',
+  });
+  assert.doesNotMatch(JSON.stringify(schema), /"Product"|"Offer"/);
+});
+
+test('the Organization lists the footer social profiles; WebSite has no SearchAction', () => {
+  const origin = 'https://shopclaramendes.com/';
+  assert.deepEqual(organizationSchema(origin).sameAs, SOCIAL_PROFILE_URLS);
+  const shell = readFileSync(
+    new URL('../app/components/ClaraShell.tsx', import.meta.url),
+    'utf8',
+  );
+  const footer = shell.slice(shell.indexOf('function ClaraFooter()'));
+  const footerHrefs = [
+    ...footer.matchAll(/href="(https:\/\/[^"]+)"/g),
+  ].map((match) => match[1]);
+  assert.deepEqual(footerHrefs, SOCIAL_PROFILE_URLS);
+  assert.equal(websiteSchema(origin).potentialAction, undefined);
 });
