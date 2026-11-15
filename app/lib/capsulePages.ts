@@ -57,11 +57,11 @@ const CAPSULE_PAGE_CONTENT: Record<string, CapsulePageContent> = {
     slug: 'neo-deco',
     seoTitle: 'Neo Deco — Graphic Geometric Art Deco Prints',
     metaDescription:
-      'Three coordinated geometric art prints — black structure with oxblood, green and muted gold. Deco-inspired originals, giclée-printed on archival paper.',
+      'Three coordinated geometric art prints — black structure with oxblood, green and muted gold. Deco-inspired prints of our own on archival paper.',
     subtitle: 'Graphic black geometry with oxblood, green, and muted gold.',
     editorial: [
       'Neo Deco borrows the discipline of 1920s ornament — repeated arcs, fans, and stepped lines — and strips it back to essentials. Black does the structural work; oxblood, green, and muted gold appear only where they earn their place. The result is geometric wall art with the confidence of Art Deco and none of its gilt excess.',
-      'All three originals are giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. One print gives an entryway or office a sharp focal point; the trio, hung with even spacing, turns a dining wall into deliberate pattern. Frame in thin black for the full period effect.',
+      'All three prints are giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. One print gives an entryway or office a sharp focal point; the trio, hung with even spacing, turns a dining wall into deliberate pattern. Frame in thin black for the full period effect.',
     ],
     pdpBlurb:
       'Part of Neo Deco — three graphic compositions of black geometry with oxblood, green, and gold.',
@@ -74,7 +74,7 @@ const CAPSULE_PAGE_CONTENT: Record<string, CapsulePageContent> = {
     subtitle: 'Layered moonlit botanicals in navy, plum, teal, and copper.',
     editorial: [
       'Midnight Garden is botanical art after dark: leaf and bloom shapes layered into navy shadow, with plum, teal, and copper surfacing where the moonlight lands. Instead of the bright, literal florals most botanical prints repeat, these read as depth — a garden remembered rather than photographed.',
-      'The capsule’s three originals are giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. Dark art prints do their best work in rooms with warm lamps and evening use: bedrooms, snug living corners, a moody dining wall. Hang the set vertically in a stairwell for a slow reveal.',
+      'The capsule’s three prints are giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. Dark art prints do their best work in rooms with warm lamps and evening use: bedrooms, snug living corners, a moody dining wall. Hang the set vertically in a stairwell for a slow reveal.',
     ],
     pdpBlurb:
       'Part of Midnight Garden — three moonlit botanical layers in navy, plum, teal, and copper.',
@@ -86,8 +86,8 @@ const CAPSULE_PAGE_CONTENT: Record<string, CapsulePageContent> = {
       'Three coordinated collage-style prints in terracotta, ochre, olive and cobalt. Warm Mediterranean rhythm, giclée-printed on archival matte art paper.',
     subtitle: 'Warm collage rhythms in terracotta, ochre, olive, and cobalt.',
     editorial: [
-      'Sunlit Mosaic assembles torn-edge shapes the way strong afternoon light breaks a courtyard into pieces: terracotta and ochre doing the warmth, olive steadying it, cobalt appearing in small, deliberate flashes. It is the most rhythmic of the five capsules — collage wall art that keeps a room lively without shouting.',
-      'Each of the three originals is giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. The warm palette flatters kitchens, breakfast corners, and any room with natural wood; hang the trio in a loose cluster rather than a strict row to let the mosaic idea carry.',
+      'Sunlit Mosaic assembles torn-edge shapes the way strong afternoon light breaks a courtyard into pieces: terracotta and ochre doing the warmth, olive steadying it, cobalt appearing in small, deliberate flashes. It is the most rhythmic of the founding capsules — collage wall art that keeps a room lively without shouting.',
+      'Each of the three prints is giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper. The warm palette flatters kitchens, breakfast corners, and any room with natural wood; hang the trio in a loose cluster rather than a strict row to let the mosaic idea carry.',
     ],
     pdpBlurb:
       'Part of Sunlit Mosaic — three warm collage compositions in terracotta, ochre, olive, and cobalt.',

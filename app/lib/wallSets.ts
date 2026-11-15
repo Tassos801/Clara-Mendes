@@ -76,7 +76,7 @@ const WALL_SETS: WallSet[] = [
     kind: 'capsule',
     name: 'The Sunlit Mosaic Wall',
     story:
-      'Warm collage rhythm in a loose cluster — the liveliest of the five capsules.',
+      'Warm collage rhythm in a loose cluster — the liveliest of the founding capsules.',
     handles: [
       'sunlit-mosaic-i-art-print',
       'sunlit-mosaic-ii-art-print',

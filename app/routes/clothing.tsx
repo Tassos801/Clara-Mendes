@@ -56,7 +56,7 @@ function clothingDescription(
 ) {
   if (!lines.length) return FALLBACK_DESCRIPTION;
   const artists = lines.map((line) => inspiredByName(line.credit));
-  const designs = lines.length === 1 ? 'an original design' : 'original designs';
+  const designs = lines.length === 1 ? 'our own design' : 'our own designs';
   return `Clara Mendes Clothing: ${listWords(lines.map((line) => line.title))}, ${designs}${
     artists.every(Boolean)
       ? ` inspired by ${listWords(artists as string[])}`

@@ -10,7 +10,7 @@ import {
 export const meta: Route.MetaFunction = () => {
   return buildSeoMeta({
     description:
-      'Reach Clara Mendes for order questions, product inquiries, returns, or general support. Every message is answered within one business day.',
+      'Reach Clara Mendes for order questions, product enquiries, returns, or general support. Every message is answered within one business day.',
     title: 'Contact',
     url: `${STOREFRONT_ORIGIN}/contact`,
   });

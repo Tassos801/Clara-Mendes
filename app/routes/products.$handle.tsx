@@ -1725,7 +1725,7 @@ function ProductPage() {
             {isPlantPot ? (
               <>
                 <ProductDetail label="Pot" defaultOpen>
-                  Glossy ceramic, 9 cm diameter x 10.2 cm high, with a drainage
+                  Glossy ceramic, 9 cm diameter × 10.2 cm high, with a drainage
                   hole and white rim and interior.
                 </ProductDetail>
                 <ProductDetail label="Included" defaultOpen>
@@ -1799,7 +1799,7 @@ function ProductPage() {
                 </ProductDetail>
                 <ProductDetail label="Included" defaultOpen>
                   Frame, Perspex glazing, backing, and wall hanger only. Print,
-                  artwork, and decorative mat are not included.
+                  artwork and mount are not included.
                 </ProductDetail>
               </>
             ) : null}
@@ -2062,7 +2062,7 @@ function ProductPage() {
                     ? 'Book nooks'
                     : relatedFromCapsule
                       ? 'From the same capsule'
-                      : 'Also in the catalog'}
+                      : 'Also in the catalogue'}
               </p>
               <h2 id="related">
                 {relatedFromBookNooks ? 'More small worlds' : 'Pair with'}

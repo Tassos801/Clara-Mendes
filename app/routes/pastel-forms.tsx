@@ -101,7 +101,7 @@ export default function PastelForms() {
             </div>
             <div>
               <dt>Size</dt>
-              <dd>9 cm diameter x 10.2 cm high</dd>
+              <dd>9 cm diameter × 10.2 cm high</dd>
             </div>
             <div>
               <dt>Details</dt>
@@ -123,7 +123,7 @@ export default function PastelForms() {
                 View {selected.title}
               </Link>
               <p className="pastel-forms__delivery">
-                Pot-only orders: EUR 6.99 shipping across the EU and EUR 11.99
+                Pot-only orders: €6.99 shipping across the EU and €11.99
                 to most other countries (not the US). Sent from the UK by
                 untracked post. Import taxes, duties and carrier fees may be
                 payable on delivery and are not included. Checkout may use the

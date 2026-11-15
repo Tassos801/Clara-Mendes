@@ -59,7 +59,7 @@ export type CapsuleStory = {
 
 export const CLOTHING_PAGE_HERO = {
   title: 'Clothing, with an artistic touch.',
-  text: 'Original designs inspired by modern artists, made for you after you order.',
+  text: 'Our own designs inspired by modern artists, made for you after you order.',
 };
 
 const CAPSULE_STORIES: Record<string, CapsuleStory> = {
@@ -321,7 +321,7 @@ export function clothingLinesHero(
   return {
     eyebrow: `${count[0].toUpperCase()}${count.slice(1)} lines · Made to order`,
     title: CLOTHING_PAGE_HERO.title,
-    text: `${listWords(lines.map((line) => line.title))}: ${count} original designs${inspired}.${madeToOrder ? ' Made for you after you order.' : ''}`,
+    text: `${listWords(lines.map((line) => line.title))}: ${count} designs of our own${inspired}.${madeToOrder ? ' Made for you after you order.' : ''}`,
     cta: 'Shop all clothing',
   };
 }

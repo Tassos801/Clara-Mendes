@@ -22,6 +22,11 @@ const BANNED = [
   /something original/i,
   /original clara mendes/i,
   /objects with soul/i,
+  // Our own prints and designs are "our own", never "originals": the word
+  // is kept for the source image ("where each original is held").
+  /\boriginals\b/i,
+  /\boriginal (compositions?|designs?|prints?)\b/i,
+  /\b(an|each) original\b(?! (artwork|image|is held))/i,
 ];
 
 test('the hero carries the owner line, visible word for word', () => {
@@ -42,6 +47,24 @@ test('SEO descriptions fit the 155-character truncation', () => {
   assert.ok(BRAND.seo.defaultDescription.length <= 155);
   assert.ok(BRAND.seo.homeDescription.length <= 155);
   assert.ok(BRAND.ourStory.description.length <= 155);
+});
+
+test('the copy guard catches "originals" for our own work, not the source image', () => {
+  const caught = (text) => BANNED.some((pattern) => pattern.test(text));
+  for (const text of [
+    'Six curated originals in three sizes.',
+    'Every print is an original composition.',
+    'Each print is an original, giclée-printed.',
+    'three original designs, inspired by',
+    'five coordinated trios of original prints',
+  ])
+    assert.ok(caught(text), text);
+  for (const text of [
+    'A print of the original artwork.',
+    'where each original is held.',
+    'Six curated prints of our own in three sizes.',
+  ])
+    assert.ok(!caught(text), text);
 });
 
 test('no page claims "original art" as the brand again', () => {
@@ -80,8 +103,8 @@ test('the founder letter is complete and the portrait exists', () => {
 test('the newsletter copy and forms are wired', () => {
   assert.match(BRAND.newsletter.success('WELCOME10'), /WELCOME10/);
   assert.doesNotMatch(BRAND.newsletter.success(null), /code/i);
-  assert.match(BRAND.newsletter.footerLine('X'), /10 % off/);
-  assert.doesNotMatch(BRAND.newsletter.footerLine(null), /10 %/);
+  assert.match(BRAND.newsletter.footerLine('X'), /10% off/);
+  assert.doesNotMatch(BRAND.newsletter.footerLine(null), /10%/);
   const form = readFileSync(path.join(ROOT, 'app/components/NewsletterForm.tsx'), 'utf8');
   assert.match(form, /action=\{NEWSLETTER_ACTION\}|action="\/api\/subscribe"/);
   assert.match(form, /NEWSLETTER_HONEYPOT_FIELD/);

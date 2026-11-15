@@ -653,17 +653,17 @@ export const FAMILY_SPECS: Record<ArtProductFamily, ArtFamilySpec> = {
     noun: 'metal print',
     reproduction: SUPPLIED_REPRODUCTION,
     bullets: [
-      'Matt print on a 3 mm aluminium composite panel (Dibond)',
+      'Matte print on a 3 mm aluminium composite panel (Dibond)',
       'A hidden subframe holds it 15 mm off the wall; ready to hang',
     ],
     details: [
       {
         label: 'Metal',
-        text: `Matt giclée print on a 3 mm aluminium composite panel (Dibond), 8 × 12 in (20 × 30 cm). A hidden subframe holds it 15 mm off the wall; ready to hang. ${COLOURS}`,
+        text: `Matte giclée print on a 3 mm aluminium composite panel (Dibond), 8 × 12 in (20 × 30 cm). A hidden subframe holds it 15 mm off the wall; ready to hang. ${COLOURS}`,
       },
     ],
     seoSuffix:
-      'On an 8 × 12 in matt metal panel, from a public-domain museum image.',
+      'On an 8 × 12 in matte metal panel, from a public-domain museum image.',
     shippingReach: 'selected',
   },
   'printful-mug': {
