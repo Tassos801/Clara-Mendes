@@ -54,7 +54,7 @@ const GALLERY_PAGE_CONTENT: Record<string, GalleryPageContent> = {
     title: 'Terracotta Wall Art',
     subtitle: 'Clay, ochre, and oat — warmth that reads as light, not colour.',
     editorial: [
-      'Terracotta wall art works because the pigment behaves like late-afternoon light: it warms whatever hangs near it without demanding attention. This edit gathers the six prints in the catalog built on clay and ochre grounds — the collaged courtyard rhythms of Sunlit Mosaic and the softened architectural forms of Quiet Form — so the palette stays coherent whether you hang one print or a full wall.',
+      'Terracotta wall art works because the pigment behaves like late-afternoon light: it warms whatever hangs near it without demanding attention. This edit gathers the six prints in the catalogue built on clay and ochre grounds — the collaged courtyard rhythms of Sunlit Mosaic and the softened architectural forms of Quiet Form — so the palette stays coherent whether you hang one print or a full wall.',
       'The two families do different jobs. Sunlit Mosaic is the livelier of the pair, breaking terracotta into torn-edge pieces with olive and a flash of cobalt; it suits kitchens, breakfast corners, and rooms with natural wood. Quiet Form holds the same warmth still — arches and grounded curves in ivory, oat, and charcoal that let a bedroom or study keep its calm.',
       'Every print is our own composition, giclée-printed to order in archival pigment inks on 200gsm Enhanced Matte Art paper, in 8 × 10, 16 × 20, and 20 × 24 in. Terracotta sits naturally beside linen, rattan, walnut, and unglazed ceramics; frame in raw oak or thin black depending on whether the room leans soft or graphic.',
     ],

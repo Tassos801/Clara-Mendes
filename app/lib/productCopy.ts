@@ -38,7 +38,7 @@ const CURATED_PRODUCT_DESCRIPTIONS: Record<string, string> = {
   'clara-waffle-cotton-throw':
     'A quietly textured cotton throw for sofas, reading chairs, and slow evening rituals. The waffle weave adds depth without visual noise, making it easy to layer across calm interiors.',
   'drawer-reset-bundle':
-    'A compact organization set for bathroom drawers, vanity corners, and daily essentials. Use it to gather small pieces into clear zones while keeping counters and cabinets calmer.',
+    'A compact organisation set for bathroom drawers, vanity corners, and daily essentials. Use it to gather small pieces into clear zones while keeping counters and cabinets calmer.',
   'luma-tassel-cotton-throw':
     'A light cotton throw finished with understated tassels. Drape it over a sofa arm, fold it at the end of a bed, or keep it close for soft everyday layering.',
   'mara-linen-dining-placemat':

@@ -2062,7 +2062,7 @@ function ProductPage() {
                     ? 'Book nooks'
                     : relatedFromCapsule
                       ? 'From the same capsule'
-                      : 'Also in the catalog'}
+                      : 'Also in the catalogue'}
               </p>
               <h2 id="related">
                 {relatedFromBookNooks ? 'More small worlds' : 'Pair with'}
