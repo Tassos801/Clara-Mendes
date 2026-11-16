@@ -103,3 +103,23 @@ Sources: [Clothing](modules/clothing.md),
 [Clothing destination guide](../clothing-destination.md),
 [Catalogue audit](../audits/clothing-catalog-2026-10-08.md),
 `app/lib/catalogFilters.ts`, `app/lib/storefrontBasics.ts`.
+
+## European Art & Words blankets — 16 November 2026
+
+The [blanket plan](../superpowers/plans/2026-11-16-blanket-quotes-europe.md)
+records the owner direction and assigns the evidence needed to resolve:
+
+- Exact artwork and authenticated quotation/translation for all 14 artists,
+  including an explicitly credited studio-line alternative where no artist
+  quotation can be verified.
+- Exact supplier variant, European fulfilment locations, template, country
+  availability and delivered costs; Printful is a candidate, not a new-line
+  account verification.
+- Native-resolution and sample decisions, especially Houses at Murnau.
+- Final countries, prices, margins, sample budget and country-specific product
+  information/returns/tax treatment.
+- Distinct quote-blanket family support and true studio-authorship handling
+  for Counter-Diagonal, Free Abyss and Circle Rhythm.
+
+No uncertainty here should be converted into a catalogue fact or release
+approval without the corresponding evidence and owner decision.

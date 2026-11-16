@@ -1,5 +1,18 @@
 # Clara Mendes Storefront Knowledge Contract
 
+## Art & Words blanket planning workstream (2026-11-16)
+
+The European blanket line with discreet black quotations is planned on
+`codex/blanket-quotes-europe-2026-11-16`. For that task, start with
+[`docs/blanket-line/HANDOFF.md`](docs/blanket-line/HANDOFF.md),
+[`status.md`](docs/blanket-line/status.md) and the linked implementation plan.
+The next session is intended for 17 November 2026. The current checkpoint is
+documentation and one AI concept reference, not a product launch. One lead
+integrates the shared branch; parallel agents use separate worktrees and
+sub-branches with disjoint ownership. Do not overwrite existing live blankets
+or assume historical artist-shop approvals authorise this new line.
+This notice applies only to the blanket workstream.
+
 ## Active artist-shop workstream (2026-10-09)
 
 The public-domain art / dedicated artist-shop pilot is being built on

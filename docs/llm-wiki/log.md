@@ -2570,3 +2570,18 @@ A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
 - Not done: newsletter double opt-in. Shopify's API docs don't say that
   writing `PENDING` consent sends the confirmation email, so it would risk
   leaving every new sign-up unconfirmed; see issue #202.
+
+## 2026-11-16 — European Art & Words blanket plan
+
+Recorded the owner's requested blanket line across the 11 current museum
+artists and three artist-inspired studio directions, with original artwork
+colours and discreet black quotations. Added the
+[agent handoff](../blanket-line/HANDOFF.md), status, full implementation plan
+and the unchanged Kandinsky AI concept reference on
+`codex/blanket-quotes-europe-2026-11-16`, based on main `9de5486`.
+The plan covers quotation provenance, exact supplier templates, country-level
+European delivery and economics, source resolution, distinct quote-edition
+product identity and separate release evidence. No product staging, supplier
+orders, publication or runtime changes were made at this checkpoint.
+The documentation-only commit skips CI to avoid an automatic branch-preview
+deployment. Product and code implementation is future work.
