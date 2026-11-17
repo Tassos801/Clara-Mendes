@@ -722,7 +722,7 @@ checks that every storefront reader answers the same from both copies, so a
 new reader belongs in that test. The orders/paid webhook reads variant
 mappings and runs on the server only.
 
-## 2026-11-17 - Editions: Art & Words blankets (staged in data, unreleased)
+## 2026-11-17 - Editions: Art & Words blankets (staged as Drafts, unreleased)
 
 An edition collection sells a second product of a work another collection
 already sells, here a throw blanket with a short line of the artist's own
@@ -748,11 +748,18 @@ the owner's approval of that very file (`suppliedApprovals` with `sha256`);
 the work's crop approval or an approval of the plain file never passes it.
 Product titles add the collection title: "<Work> Throw Blanket, Art & Words".
 
-First three, prepared and unreleased: `the-great-wave-off-kanagawa-quote-blanket`,
+First three, staged and unreleased: `the-great-wave-off-kanagawa-quote-blanket`,
 `composition-with-red-yellow-and-blue-quote-blanket`,
 `painting-with-troika-quote-blanket` (base files measured 0.21, 0.29 and
 0.11/255 outside the boxes). Owner decisions of 2026-11-17 are recorded as
-their approvals; the two ppi exceptions (Great Wave 62, Troika 48) wait for
-the owner's confirmation. Not done: Shopify Drafts, Printful files and
-mapping, a physical sample (the first paid order is the check). Runbook:
-[add-products-runbook.md](../../add-products-runbook.md) step 6.
+their approvals. On 2026-11-17 they were staged as hidden Shopify Drafts and
+synced in Printful (catalogue variant 10986, files matched by md5); the
+Shopify ids and verified mappings are in the catalog. Not done: the owner's
+confirmation of the two ppi exceptions (Great Wave 62, Troika 48) and of the
+placeholder price (the plain blanket's), release, and a physical sample (the
+first paid order is the check). Runbook:
+[add-products-runbook.md](../../add-products-runbook.md) step 6. Their
+in-room scene photos are made by Codex on the owner's PC to
+[art-and-words-product-photos.md](../../art-and-words-product-photos.md):
+the words must read letter-perfect, or the face is repaired from the real
+file's pixels, and `media --family blanket` adds them after the preview.

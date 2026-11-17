@@ -2632,3 +2632,31 @@ base files (changed only inside the declared text boxes), need the owner's
 approval of the file itself, and their words, font and boxes are in the
 asset signature. Nothing was staged in Shopify or Printful. Details:
 [catalog-and-products.md](modules/catalog-and-products.md), runbook step 6.
+
+## 2026-11-17 — Art & Words blankets staged as hidden Drafts
+
+Staged the three `art-and-words` quote-edition blankets (Great Wave, Mondrian
+Composition with Red, Yellow, and Blue, Kandinsky Painting with Troika) with
+`stage --family blanket --apply`, synced them in Printful (`printful --apply`,
+catalogue variant 10986, print files matched by md5) and recorded the mapping
+with `mapped --printful`. Products stay Draft, unreleased, not published;
+`verify` shows all three handles 404 and out of the sitemap. Ids and mappings
+are in `data/art-product-catalog.json`. Release waits for the owner: confirm
+the two ppi exceptions (Great Wave 62, Troika 48) and the placeholder price
+(EUR 64.99, the plain blanket's), and check the three Drafts share the live
+Great Wave blanket's Printful shipping profile (they do per the staging
+readback). The runbook's "Free EU shipping – artist products" profile was
+never created; that is now an open question rather than a release step.
+Details: [catalog-and-products.md](modules/catalog-and-products.md), runbook
+step 6, [open-questions.md](open-questions.md).
+
+## 2026-11-17 — Art & Words blankets: Codex product-photo brief
+
+[art-and-words-product-photos.md](../art-and-words-product-photos.md) briefs
+a Codex session on the owner's PC to make one in-room scene per quote
+blanket: the files and scene paths, the exact quote, credit and brand text
+with their upright positions, a shot list, a word check with a
+pixel-composite fallback, the output spec and the `media --family blanket`
+step. The runbook's scene note now accepts such a photo. No images were
+made in this session (no Codex, launch folder or token in the cloud
+container).

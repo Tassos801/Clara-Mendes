@@ -1176,9 +1176,19 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
     assert.notEqual(base.variants[0].sku, product.variants[0].sku);
     assert.match(product.variants[0].sku, /^CM-AW-0[123]-BLANKET50X60$/);
     assert.equal(product.title, `${base.title}, Art & Words`);
-    assert.equal(product.released, false);
-    assert.equal(product.shopify, undefined);
-    assert.equal(product.variants[0].mapping.verified, false);
+    assert.equal(product.released, false); // the release commit flips this
+    // Staged as a hidden Draft and mapped in Printful (2026-11-17), not released.
+    assert.match(product.shopify.productId, /^gid:\/\/shopify\/Product\/\d+$/);
+    assert.notEqual(product.shopify.productId, base.shopify.productId);
+    assert.equal(product.variants[0].mapping.verified, true);
+    assert.equal(
+      product.variants[0].mapping.assetSha256,
+      product.assets.files['blanket-50x60'].sha256,
+    );
+    assert.notEqual(
+      product.variants[0].mapping.printfulSyncProductId,
+      base.variants[0].mapping.printfulSyncProductId,
+    );
     // A placeholder at the plain blanket's price, for the owner to confirm.
     assert.equal(product.variants[0].priceEUR, base.variants[0].priceEUR);
     // The words are on the file, and the copy says so.
@@ -1194,11 +1204,9 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
     assert.equal(file.provenance.masterSha256, record.base.sha256);
     assert.equal(file.ppi, base.assets.files['blanket-50x60'].ppi);
     assert.ok(file.provenance.edition.outsideMaxDifference <= 1);
-    // What is left before release is staging and mapping, nothing else.
-    assert.deepEqual(familyReleaseBlockers(product), [
-      'Shopify ids',
-      'a verified fulfilment mapping of the current file',
-    ]);
+    // Staging and mapping are done; no pipeline blocker remains. The owner
+    // still confirms the ppi exceptions and the price before release.
+    assert.deepEqual(familyReleaseBlockers(product), []);
   }
   // The live blankets are untouched by their editions.
   assert.equal(
