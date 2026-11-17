@@ -21,12 +21,12 @@ import {
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');
 
-test('the window opens at 00:00 on 20 November in Nicosia (22:00 UTC the day before)', () => {
-  assert.equal(BLACK_FRIDAY_START.toISOString(), '2026-11-19T22:00:00.000Z');
-  assert.equal(isBlackFridayWeek(new Date('2026-11-19T21:59:59.999Z')), false);
-  assert.equal(isBlackFridayWeek(new Date('2026-11-19T23:59:59+02:00')), false);
-  assert.equal(isBlackFridayWeek(new Date('2026-11-20T00:00:00+02:00')), true);
-  assert.equal(isBlackFridayWeek(new Date('2026-11-19T22:00:00Z')), true);
+test('the window opens at 00:00 on 17 November in Nicosia (22:00 UTC the day before)', () => {
+  assert.equal(BLACK_FRIDAY_START.toISOString(), '2026-11-16T22:00:00.000Z');
+  assert.equal(isBlackFridayWeek(new Date('2026-11-16T21:59:59.999Z')), false);
+  assert.equal(isBlackFridayWeek(new Date('2026-11-16T23:59:59+02:00')), false);
+  assert.equal(isBlackFridayWeek(new Date('2026-11-17T00:00:00+02:00')), true);
+  assert.equal(isBlackFridayWeek(new Date('2026-11-16T22:00:00Z')), true);
 });
 
 test('the window closes at the end of Monday 30 November in Nicosia', () => {
@@ -43,7 +43,7 @@ test('the window closes at the end of Monday 30 November in Nicosia', () => {
 });
 
 test('status is before, open or ended', () => {
-  assert.equal(blackFridayStatus(new Date('2026-11-17T12:00:00Z')), 'before');
+  assert.equal(blackFridayStatus(new Date('2026-11-16T12:00:00Z')), 'before');
   assert.equal(blackFridayStatus(new Date('2026-11-25T12:00:00Z')), 'open');
   assert.equal(
     blackFridayStatus(new Date('2026-12-01T00:00:00+02:00')),
@@ -64,7 +64,8 @@ test('a ?today= preview is judged at noon in Nicosia on that day', () => {
   assert.equal(isBlackFridayWeek(at('?today=2026-11-20')), true);
   assert.equal(isBlackFridayWeek(at('?today=2026-11-30')), true);
   assert.equal(isBlackFridayWeek(at('?today=2026-12-01')), false);
-  assert.equal(isBlackFridayWeek(at('?today=2026-11-19')), false);
+  assert.equal(isBlackFridayWeek(at('?today=2026-11-16')), false);
+  assert.equal(isBlackFridayWeek(at('?today=2026-11-17')), true);
   // Malformed or impossible dates fall back to the real time.
   assert.equal(at('?today=2026-11-31').getTime(), now.getTime());
   assert.equal(at('?today=soon').getTime(), now.getTime());

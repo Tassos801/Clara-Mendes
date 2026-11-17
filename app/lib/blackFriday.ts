@@ -1,5 +1,5 @@
 /**
- * Black Friday week 2026: Friday 20 November 00:00 to the end of Monday
+ * Black Friday week 2026: Tuesday 17 November 00:00 to the end of Monday
  * 30 November, shop time (Asia/Nicosia, UTC+2 in that period).
  *
  * The price reduction itself is three Shopify automatic discounts,
@@ -13,8 +13,8 @@
  * plus two variant rules). If a discount in admin changes, change this too.
  */
 
-/** First moment of the sale: Friday 20 November 2026, 00:00 in Nicosia. */
-export const BLACK_FRIDAY_START = new Date('2026-11-20T00:00:00+02:00');
+/** First moment of the sale: Tuesday 17 November 2026, 00:00 in Nicosia. */
+export const BLACK_FRIDAY_START = new Date('2026-11-17T00:00:00+02:00');
 /** First moment after the sale: Tuesday 1 December 2026, 00:00 in Nicosia. */
 export const BLACK_FRIDAY_END = new Date('2026-12-01T00:00:00+02:00');
 
@@ -240,8 +240,8 @@ export const BLACK_FRIDAY_COPY = {
   title: 'Black Friday week',
   seoTitle: 'Black Friday Week: 20% and 10% Off',
   metaDescription:
-    'Black Friday week at Clara Mendes, 20 to 30 November: 20% off blankets, cushions, mugs, phone cases, plant pots and prints, 10% off clothing, canvas and framed art.',
-  dates: 'Friday 20 November to Monday 30 November',
+    'Black Friday week at Clara Mendes, until 30 November: 20% off blankets, cushions, mugs, phone cases, plant pots and prints, 10% off clothing, canvas and framed art.',
+  dates: 'Until Monday 30 November',
   twenty:
     'Blankets, cushions, mugs, phone cases, plant pots, hanger prints, unframed art prints and Your Sky star maps (except framed 20 × 24 in).',
   ten: 'Clothing and activewear (except premium hoodies), tote bags, canvas and framed art.',
@@ -249,7 +249,7 @@ export const BLACK_FRIDAY_COPY = {
     'Not included: premium hoodies, caps and beanies, cards, postcards, book nooks, acrylic and metal prints, and framed art prints.',
   cart: 'The discount is taken off in your cart.',
   before:
-    'Black Friday week starts on Friday 20 November. Until then, everything is at its usual price.',
+    'Black Friday week has not started yet. Until then, everything is at its usual price.',
   ended:
     'Black Friday week has ended. Thank you for shopping with us; everything is back at its usual price.',
 } as const;
