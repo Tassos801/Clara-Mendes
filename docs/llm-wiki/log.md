@@ -2641,4 +2641,11 @@ Composition with Red, Yellow, and Blue, Kandinsky Painting with Troika) with
 catalogue variant 10986, print files matched by md5) and recorded the mapping
 with `mapped --printful`. Products stay Draft, unreleased, not published;
 `verify` shows all three handles 404 and out of the sitemap. Ids and mappings
-are in `data/art-product-catalog.json`. Release waits for the owner.
+are in `data/art-product-catalog.json`. Release waits for the owner: confirm
+the two ppi exceptions (Great Wave 62, Troika 48) and the placeholder price
+(EUR 64.99, the plain blanket's), and check the three Drafts share the live
+Great Wave blanket's Printful shipping profile (they do per the staging
+readback). The runbook's "Free EU shipping – artist products" profile was
+never created; that is now an open question rather than a release step.
+Details: [catalog-and-products.md](modules/catalog-and-products.md), runbook
+step 6, [open-questions.md](open-questions.md).

@@ -1176,7 +1176,7 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
     assert.notEqual(base.variants[0].sku, product.variants[0].sku);
     assert.match(product.variants[0].sku, /^CM-AW-0[123]-BLANKET50X60$/);
     assert.equal(product.title, `${base.title}, Art & Words`);
-    assert.equal(product.released, false);
+    assert.equal(product.released, false); // the release commit flips this
     // Staged as a hidden Draft and mapped in Printful (2026-11-17), not released.
     assert.match(product.shopify.productId, /^gid:\/\/shopify\/Product\/\d+$/);
     assert.notEqual(product.shopify.productId, base.shopify.productId);
@@ -1204,7 +1204,8 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
     assert.equal(file.provenance.masterSha256, record.base.sha256);
     assert.equal(file.ppi, base.assets.files['blanket-50x60'].ppi);
     assert.ok(file.provenance.edition.outsideMaxDifference <= 1);
-    // Staging and mapping are done; nothing blocks release but the owner's go.
+    // Staging and mapping are done; no pipeline blocker remains. The owner
+    // still confirms the ppi exceptions and the price before release.
     assert.deepEqual(familyReleaseBlockers(product), []);
   }
   // The live blankets are untouched by their editions.

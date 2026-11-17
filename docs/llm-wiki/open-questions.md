@@ -29,6 +29,16 @@ Sources: [Launch readiness](../launch-readiness.md), [README](../../README.md),
   controlled three-design sample batch?
 - Which products have passed physical inspection? The current "Excellent"
   status verifies file resolution only; none have passed a sample review.
+- Is the "Free EU shipping – artist products" profile still wanted? It was
+  never created: the seven-products range went live on General (log
+  2026-10-20) and the Printful blankets now sit in a Printful app profile
+  (blanket EU fee EUR 6.53 in `app/lib/printfulShippingFees.ts`), yet
+  `docs/add-products-runbook.md` (supplied-file families),
+  `docs/artist-shops/status.md` and the `release` dry-run note in
+  `scripts/lib/art-product-steps.mjs` still require it. Moving only some
+  blankets would split the blanket fee group (the `shipping-fees` rebuild
+  stops) and contradict the fee their pages show; either drop the
+  requirement or move whole families and rebuild the fee table together.
 
 Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md),
 [Original Art Launch](../original-art-launch.md).
