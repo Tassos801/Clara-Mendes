@@ -9,6 +9,7 @@ import {
   isUnreleasedExtensionHandle,
 } from '../app/lib/catalogFilters.ts';
 import {MUSEUM_CROPS} from '../app/lib/museumCrops.ts';
+import * as prints from '../app/lib/printCatalog.ts';
 import {PRINT_CATALOG} from '../app/lib/printCatalog.ts';
 import {getProductLede} from '../app/lib/productCopy.ts';
 import {buildProdigiOrderFromShopify} from '../app/lib/sky/fulfilment.ts';
@@ -17,20 +18,29 @@ import {
   TOUGH_CASE_PHONES,
   toughCasePhoneGroups,
 } from '../app/lib/toughCase.ts';
+import {compareEditionFile} from './lib/art-product-assets.mjs';
 import {
   buildFamilyProductInput,
+  editionDifference,
   familyAssetPlan,
   familyHandoffRows,
   familyReadbackIssues,
+  familyReleaseBlockers,
   familyStageAction,
   familyStatus,
   familySummary,
   formatArtProductCatalog,
   parseFamilyMappings,
+  printfulMappingFromReadback,
   selectFamilies,
   syncFamilyProducts,
 } from './lib/art-product-pipeline.mjs';
-import {MUSEUM_TAG, PENDING_TAGS} from './lib/product-pipeline.mjs';
+import {
+  assertPrintCollection,
+  buildProductSetInput,
+  MUSEUM_TAG,
+  PENDING_TAGS,
+} from './lib/product-pipeline.mjs';
 import {stagedArtProducts, stagedPrintCatalog} from './lib/staged-fixtures.mjs';
 
 const FLOATING_WORLD = PRINT_CATALOG.collections.find(
@@ -1125,5 +1135,412 @@ test('family sync adds a product only where its work qualifies', () => {
     existing.skipped.every(
       (entry) => !family.FAMILY_SPECS[entry.family].suppliedFiles,
     ),
+  );
+});
+
+// ------------------------------------------------- editions (Art & Words) --
+
+const EDITION = 'art-and-words';
+const EDITION_HANDLES = [
+  'the-great-wave-off-kanagawa-quote-blanket',
+  'composition-with-red-yellow-and-blue-quote-blanket',
+  'painting-with-troika-quote-blanket',
+];
+const editionCatalogs = () => ({
+  art: structuredClone(family.ART_PRODUCT_CATALOG),
+  print: structuredClone(PRINT_CATALOG),
+});
+const editionCollection = (catalog) =>
+  catalog.collections.find((entry) => entry.slug === EDITION);
+const byHandle = (catalog, handle) =>
+  catalog.products.find((product) => product.handle === handle);
+const waveEdition = (catalog) =>
+  byHandle(catalog, 'the-great-wave-off-kanagawa-quote-blanket');
+
+test('an edition is a second blanket of the same work, with its own handle, SKU and title', () => {
+  assert.deepEqual(family.validateArtProductCatalog(), []);
+  assert.deepEqual(shops.validateArtistLinks(), []);
+  const products = family.ART_PRODUCT_CATALOG.products.filter(
+    (product) => product.collection === EDITION,
+  );
+  assert.deepEqual(
+    products.map((product) => product.handle),
+    EDITION_HANDLES,
+  );
+  for (const product of products) {
+    const record = family.editionFileOf(product);
+    const base = byHandle(family.ART_PRODUCT_CATALOG, record.base.handle);
+    assert.equal(base.artworkId, product.artworkId);
+    assert.equal(base.family, product.family);
+    assert.notEqual(base.handle, product.handle);
+    assert.notEqual(base.variants[0].sku, product.variants[0].sku);
+    assert.match(product.variants[0].sku, /^CM-AW-0[123]-BLANKET50X60$/);
+    assert.equal(product.title, `${base.title}, Art & Words`);
+    assert.equal(product.released, false);
+    assert.equal(product.shopify, undefined);
+    assert.equal(product.variants[0].mapping.verified, false);
+    // A placeholder at the plain blanket's price, for the owner to confirm.
+    assert.equal(product.variants[0].priceEUR, base.variants[0].priceEUR);
+    // The words are on the file, and the copy says so.
+    assert.match(family.reproductionSentence(product.handle), /own words/);
+    assert.doesNotMatch(
+      family.reproductionSentence(product.handle),
+      /The work itself is unchanged/,
+    );
+    // The recorded check passed against the record as it stands.
+    const file = product.assets.files['blanket-50x60'];
+    assert.ok(family.editionFileChecked(file, record), product.handle);
+    assert.equal(file.provenance.aiFill, undefined);
+    assert.equal(file.provenance.masterSha256, record.base.sha256);
+    assert.equal(file.ppi, base.assets.files['blanket-50x60'].ppi);
+    assert.ok(file.provenance.edition.outsideMaxDifference <= 1);
+    // What is left before release is staging and mapping, nothing else.
+    assert.deepEqual(familyReleaseBlockers(product), [
+      'Shopify ids',
+      'a verified fulfilment mapping of the current file',
+    ]);
+  }
+  // The live blankets are untouched by their editions.
+  assert.equal(
+    family.reproductionSentence('the-great-wave-off-kanagawa-blanket'),
+    family.FAMILY_SPECS.blanket.reproduction,
+  );
+});
+
+test('an edition that collides with its base product by handle, SKU or identity is refused', () => {
+  // The same print slug: the handle (and so the product) collides.
+  {
+    const {art, print} = editionCatalogs();
+    const entry = editionCollection(print).prints[0];
+    entry.slug = 'the-great-wave-off-kanagawa';
+    const product = waveEdition(art);
+    product.print = entry.slug;
+    product.handle = 'the-great-wave-off-kanagawa-blanket';
+    product.title = 'The Great Wave off Kanagawa Throw Blanket, Art & Words';
+    const problems = family
+      .validateArtProductCatalog(art, {printCatalog: print})
+      .join('\n');
+    assert.match(problems, /the-great-wave-off-kanagawa-blanket: duplicate handle/);
+  }
+  // The base collection's SKU code: the SKU collides.
+  {
+    const {art, print} = editionCatalogs();
+    editionCollection(print).skuCode = 'FW';
+    waveEdition(art).variants[0].sku = 'CM-FW-01-BLANKET50X60';
+    assert.match(
+      prints.validatePrintCatalog(print).join('\n'),
+      /duplicate slug, skuCode or title "FW"/,
+    );
+    assert.match(
+      family.validateArtProductCatalog(art, {printCatalog: print}).join('\n'),
+      /duplicate SKU CM-FW-01-BLANKET50X60/,
+    );
+  }
+  // Without `edition` it is a second plain blanket of the work: refused.
+  {
+    const {art, print} = editionCatalogs();
+    delete editionCollection(print).edition;
+    const problems = family
+      .validateArtProductCatalog(art, {printCatalog: print})
+      .join('\n');
+    assert.match(problems, /met-39799 already has a blanket product/);
+    const links = shops
+      .validateArtistLinks({artProducts: art, catalog: print})
+      .join('\n');
+    assert.match(
+      links,
+      /art-and-words\/the-great-wave-off-kanagawa-quote: artwork met-39799 is already sold as floating-world\/the-great-wave-off-kanagawa/,
+    );
+    assert.match(
+      links,
+      /floating-world\/the-great-wave-off-kanagawa-blanket: artwork met-39799 is already sold as art-and-words\/the-great-wave-off-kanagawa-quote-blanket/,
+    );
+  }
+  // Two products of one work in the same edition: refused.
+  {
+    const {art, print} = editionCatalogs();
+    const second = structuredClone(editionCollection(print).prints[0]);
+    Object.assign(second, {sequence: 9, slug: 'the-great-wave-again-quote'});
+    editionCollection(print).prints.push(second);
+    const copy = structuredClone(waveEdition(art));
+    Object.assign(copy, {
+      handle: 'the-great-wave-again-quote-blanket',
+      print: second.slug,
+    });
+    copy.variants[0].sku = 'CM-AW-09-BLANKET50X60';
+    art.products.push(copy);
+    assert.match(
+      family.validateArtProductCatalog(art, {printCatalog: print}).join('\n'),
+      /met-39799 already has a blanket product in the art-and-words edition/,
+    );
+  }
+});
+
+test('the edition check passes text inside its boxes and fails a change anywhere else', async () => {
+  const sharp = (await import('sharp')).default;
+  const width = 256;
+  const height = 192;
+  const channels = 3;
+  // A busy base, so the JPEG round trip has real noise to absorb.
+  const raw = Buffer.alloc(width * height * channels);
+  for (let y = 0; y < height; y += 1)
+    for (let x = 0; x < width; x += 1) {
+      const offset = (y * width + x) * channels;
+      raw[offset] = 128 + Math.round(90 * Math.sin(x / 13 + y / 29));
+      raw[offset + 1] = 128 + Math.round(60 * Math.sin(x / 9) * Math.cos(y / 7));
+      raw[offset + 2] = 60 + Math.round(y / 2);
+    }
+  const jpeg = (pixels) =>
+    sharp(pixels, {raw: {channels, height, width}})
+      .jpeg({chromaSubsampling: '4:4:4', quality: 95})
+      .toBuffer();
+  const decoded = async (buffer) =>
+    sharp(buffer).removeAlpha().raw().toBuffer();
+  const base = await jpeg(raw);
+  const basePixels = await decoded(base);
+  const paint = (pixels, [left, top, right, bottom], value) => {
+    const out = Buffer.from(pixels);
+    for (let y = top; y < bottom; y += 1)
+      for (let x = left; x < right; x += 1)
+        for (let c = 0; c < channels; c += 1)
+          out[(y * width + x) * channels + c] = value;
+    return out;
+  };
+  const boxes = {credit: [40, 150, 120, 162], quote: [40, 100, 200, 140]};
+  // Lettering: dark strokes inside both boxes, re-encoded as JPEG.
+  let lettered = paint(basePixels, [44, 104, 196, 112], 17);
+  lettered = paint(lettered, [44, 124, 150, 132], 17);
+  lettered = paint(lettered, [42, 152, 110, 158], 17);
+  const check = await compareEditionFile(base, await jpeg(lettered), boxes);
+  assert.equal(check.status, 'ok', JSON.stringify(check));
+  assert.ok(check.outsideMaxDifference <= family.EDITION_CHECK.outsideMax);
+  assert.ok(check.boxPeaks.quote >= family.EDITION_CHECK.insideMin);
+  // A 6 × 6 px change of 40 levels outside the boxes is caught.
+  const touched = Buffer.from(lettered);
+  for (let y = 20; y < 26; y += 1)
+    for (let x = 200; x < 206; x += 1)
+      for (let c = 0; c < channels; c += 1) {
+        const offset = (y * width + x) * channels + c;
+        touched[offset] = Math.min(255, touched[offset] + 40);
+      }
+  const outside = await compareEditionFile(base, await jpeg(touched), boxes);
+  assert.equal(outside.status, 'failed');
+  assert.equal(outside.outsideCells[0].left, 192);
+  assert.equal(outside.outsideCells[0].top, 0);
+  // A declared box with nothing in it fails too.
+  const empty = await compareEditionFile(base, await jpeg(lettered), {
+    ...boxes,
+    signature: [200, 20, 240, 40],
+  });
+  assert.equal(empty.status, 'failed');
+  assert.equal(empty.boxPeaks.signature < family.EDITION_CHECK.insideMin, true);
+  // Re-encoding alone (no lettering) fails: the boxes must hold the words.
+  assert.equal(
+    (await compareEditionFile(base, await jpeg(basePixels), boxes)).status,
+    'failed',
+  );
+  // The pure check refuses images of different sizes.
+  assert.throws(
+    () =>
+      editionDifference(
+        Buffer.alloc(12),
+        Buffer.alloc(9),
+        {channels, height: 2, width: 2},
+        boxes,
+      ),
+    /differ in size/,
+  );
+});
+
+test('an edition file changed outside its text boxes, or never checked, cannot be released', () => {
+  const {art} = editionCatalogs();
+  const product = waveEdition(art);
+  const file = product.assets.files['blanket-50x60'];
+  file.provenance.edition = {
+    ...file.provenance.edition,
+    outsideCells: [{difference: 12.5, left: 4096, top: 640}],
+    status: 'failed',
+  };
+  assert.match(
+    family.validateArtProductCatalog(art).join('\n'),
+    /the-great-wave-off-kanagawa-quote-blanket 50x60: blanket-50x60 has no passed check against its base file/,
+  );
+  assert.ok(
+    familyReleaseBlockers(product, {catalog: art}).includes(
+      'every file checked against its base file: changed only inside its text boxes',
+    ),
+  );
+  // A plain file's AI-fill flag never stands in for the edition check.
+  delete file.provenance.edition;
+  file.provenance.aiFill = {block_identical: true, status: 'ok'};
+  assert.ok(
+    familyReleaseBlockers(product, {catalog: art}).includes(
+      'every file checked against its base file: changed only inside its text boxes',
+    ),
+  );
+  // The base file itself is not an edition file.
+  const {art: same} = editionCatalogs();
+  const base = waveEdition(same).assets.files['blanket-50x60'];
+  base.sha256 = family.editionFileOf(waveEdition(same), same).base.sha256;
+  assert.match(
+    family.validateArtProductCatalog(same).join('\n'),
+    /blanket-50x60 is its base file/,
+  );
+});
+
+test('a quote, font or box change makes the edition stale and its mapping unverified', () => {
+  const {art} = editionCatalogs();
+  const product = waveEdition(art);
+  const [variant] = product.variants;
+  const file = product.assets.files['blanket-50x60'];
+  const signature = family.familySourceSignature(product, {catalog: art});
+  assert.equal(signature, product.assets.sourceSignature);
+  // The signature carries the words, font and boxes; the base's does not.
+  const recorded = JSON.parse(JSON.parse(signature).edition);
+  assert.equal(recorded.quote, family.editionFileOf(product, art).quote);
+  assert.equal(recorded.credit, 'Katsushika Hokusai, 1834');
+  assert.match(recorded.font[1], /^[0-9a-f]{64}$/);
+  assert.equal(recorded.textBoxes.length, 3);
+  const base = byHandle(art, 'the-great-wave-off-kanagawa-blanket');
+  assert.equal('edition' in JSON.parse(family.familySourceSignature(base)), false);
+
+  // Mapped on today's file and record (what `mapped --printful` writes).
+  product.shopify = {
+    productId: 'gid://shopify/Product/1',
+    variantIds: {'50x60': 'gid://shopify/ProductVariant/2'},
+  };
+  const {mappings, problems} = printfulMappingFromReadback(
+    product,
+    {
+      sync_product: {external_id: '1', id: 77},
+      sync_variants: [
+        {
+          external_id: '2',
+          files: [{hash: 'abc', type: 'default'}],
+          id: 88,
+          synced: true,
+          variant_id: 10986,
+        },
+      ],
+    },
+    {fileFacts: () => ({md5: 'abc', name: 'x.jpg'}), today: '2026-11-17'},
+  );
+  assert.deepEqual(problems, []);
+  assert.equal(mappings['50x60'].sourceSignature, signature);
+  variant.mapping = mappings['50x60'];
+  assert.equal(family.variantMappingCurrent(product, variant, {catalog: art}), true);
+
+  for (const change of [
+    (record) => (record.quote = 'At a hundred and ten, every dot will seem alive.'),
+    (record) => (record.credit = 'Hokusai, 1834'),
+    (record) => (record.font.sha256 = '0'.repeat(64)),
+    (record) => (record.textBoxes.quote[0] += 1),
+  ]) {
+    const changed = structuredClone(art);
+    change(family.editionFileOf(waveEdition(changed), changed));
+    const stale = waveEdition(changed);
+    stale.variants[0].mapping = mappings['50x60'];
+    // The same file and sync ids, but no longer the words on record.
+    assert.equal(stale.variants[0].mapping.assetSha256, file.sha256);
+    assert.equal(
+      family.variantMappingCurrent(stale, stale.variants[0], {catalog: changed}),
+      false,
+    );
+    const blockers = familyReleaseBlockers(stale, {catalog: changed});
+    assert.ok(blockers.includes('current assets'), blockers.join(', '));
+    assert.ok(
+      blockers.includes('a verified fulfilment mapping of the current file'),
+    );
+    assert.ok(
+      blockers.includes(
+        'every file checked against its base file: changed only inside its text boxes',
+      ),
+    );
+    assert.equal(familyStatus(stale, {catalog: changed}).current, false);
+  }
+});
+
+test('an edition file needs the owner’s approval of that very file', () => {
+  const blocked = (art) =>
+    familyReleaseBlockers(waveEdition(art), {catalog: art}).includes(
+      'the owner’s approval of this edition file',
+    );
+  assert.equal(blocked(family.ART_PRODUCT_CATALOG), false);
+  // The Great Wave's crop is approved: that never passes an edition file.
+  assert.equal(MUSEUM_CROPS.crops['met-39799'].approval.approved, true);
+  {
+    const {art} = editionCatalogs();
+    delete editionCollection(art).suppliedApprovals['met-39799'];
+    assert.equal(blocked(art), true);
+  }
+  // An approval of the base (plain) file is not an approval of the edition.
+  {
+    const {art} = editionCatalogs();
+    const record = family.editionFileOf(waveEdition(art), art);
+    editionCollection(art).suppliedApprovals['met-39799'].sha256 =
+      record.base.sha256;
+    assert.equal(blocked(art), true);
+  }
+  // One without the file's sha256 is refused outright in an edition.
+  {
+    const {art} = editionCatalogs();
+    delete editionCollection(art).suppliedApprovals['met-39799'].sha256;
+    assert.match(
+      family.validateArtProductCatalog(art).join('\n'),
+      /suppliedApprovals met-39799 names the sha256 of the edition file approved/,
+    );
+    assert.equal(blocked(art), true);
+  }
+  // The plain collection's approvals do not reach the edition.
+  const lineAndColour = family.ART_PRODUCT_CATALOG.collections.find(
+    (entry) => entry.slug === 'line-and-colour',
+  );
+  assert.ok(lineAndColour.suppliedApprovals['aic-8983']);
+  {
+    const {art} = editionCatalogs();
+    delete editionCollection(art).suppliedApprovals['aic-8983'];
+    const troika = byHandle(art, 'painting-with-troika-quote-blanket');
+    assert.ok(
+      familyReleaseBlockers(troika, {catalog: art}).includes(
+        'the owner’s approval of this edition file',
+      ),
+    );
+  }
+  // ppi exceptions are the edition's own, dated, never copied.
+  const own = editionCollection(family.ART_PRODUCT_CATALOG).families.blanket
+    .ppiExceptions;
+  assert.deepEqual(Object.keys(own).sort(), ['aic-8983', 'met-39799']);
+  for (const exception of Object.values(own)) {
+    assert.equal(exception.at, '2026-11-17');
+    assert.match(exception.note, /owner to confirm/);
+  }
+});
+
+test('an edition is never staged, prepared or released as an art print', () => {
+  const edition = editionCollection(PRINT_CATALOG);
+  assert.equal(prints.isEditionCollection(edition), true);
+  assert.throws(
+    () => assertPrintCollection(edition, 'stage'),
+    /never art prints.*--family blanket/,
+  );
+  assert.throws(
+    () => buildProductSetInput(edition, edition.prints[0]),
+    /never art prints/,
+  );
+  assert.equal(assertPrintCollection(FLOATING_WORLD, 'stage'), FLOATING_WORLD);
+  // The data cannot make it one either.
+  const bad = structuredClone(PRINT_CATALOG);
+  const collection = editionCollection(bad);
+  collection.variants = structuredClone(FLOATING_WORLD.variants);
+  collection.prints[0].released = true;
+  collection.prints[0].rooms = structuredClone(FLOATING_WORLD.prints[0].rooms);
+  const problems = prints.validatePrintCatalog(bad).join('\n');
+  assert.match(problems, /an edition collection has no print variants/);
+  assert.match(problems, /an edition print is never released as a print/);
+  assert.match(problems, /an edition print has no room scenes/);
+  // Never an art print on the storefront or in the museum tool's links.
+  assert.equal(
+    computeSellableHandles().has('the-great-wave-off-kanagawa-quote-art-print'),
+    false,
   );
 });

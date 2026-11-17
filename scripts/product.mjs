@@ -44,6 +44,7 @@ import {validateArtistLinks} from '../app/lib/artistShops.ts';
 import {mutationErrors, resolveAdminClient} from './lib/admin.mjs';
 import {getRequiredEnv, loadLocalEnv, normalizeShopDomain} from './lib/env.mjs';
 import {
+  assertPrintCollection,
   assertPrintMediaTarget,
   buildProductSetInput,
   buildReleasedProductUpdateInput,
@@ -168,6 +169,12 @@ function status() {
     ? [findCollection(catalog, wanted)]
     : catalog.collections;
   for (const collection of collections) {
+    if (collection.edition) {
+      console.log(
+        `\n${collection.title} (${collection.slug}) — the "${collection.edition}" edition: family products only. Next: npm run product -- status ${collection.slug} --families`,
+      );
+      continue;
+    }
     const roomManifest = loadRoomManifest(collection);
     console.log(
       `\n${collection.title} (${collection.slug}) — ${describeVariants(collection)}`,
@@ -1273,7 +1280,8 @@ async function runFamilyStep() {
 function context({needsLaunchDir = true} = {}) {
   const slug = positional[0];
   if (!slug) throw new Error(`Usage: npm run product -- ${step} <collection>`);
-  const collection = findCollection(catalog, slug);
+  // Every print verb comes through here: an edition is never an art print.
+  const collection = assertPrintCollection(findCollection(catalog, slug), step);
   const launchDir = path.join(local.launchRoot, collection.slug);
   if (needsLaunchDir) mkdirSync(launchDir, {recursive: true});
   return {collection, launchDir, prints: selectPrints(collection, only)};

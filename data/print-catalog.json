@@ -3375,6 +3375,56 @@
           }
         }
       ]
+    },
+    {
+      "slug": "art-and-words",
+      "title": "Art & Words",
+      "kind": "museum",
+      "edition": "art-and-words",
+      "note": "Museum works with a short line of the artist’s own words set on them",
+      "skuCode": "AW",
+      "collectionCopy": "Part of Art & Words, a Clara Mendes edition of public-domain museum works with a short line of the artist’s own words, in our translation, set on the work in black type.",
+      "seoSuffix": "A museum work with the artist’s own words, from a public-domain museum image.",
+      "publications": [
+        "Clara Mendes",
+        "Clara Mendes Headless"
+      ],
+      "variants": [],
+      "prints": [
+        {
+          "slug": "the-great-wave-off-kanagawa-quote",
+          "title": "The Great Wave off Kanagawa",
+          "sequence": 1,
+          "artworkId": "met-39799",
+          "orientation": "landscape",
+          "description": "Hokusai’s towering wave curls over three fishing boats, and in the plain sky beside it a line from his own postscript of 1834 is set in small black type: “At a hundred and ten, every dot and every stroke will seem alive.” Translated from the Japanese by Clara Mendes.",
+          "alt": "Hokusai’s Great Wave on a throw blanket: a towering blue wave over three boats, with a two-line quotation and “Katsushika Hokusai, 1834” in small black type in the sky at right.",
+          "rooms": [],
+          "released": false
+        },
+        {
+          "slug": "composition-with-red-yellow-and-blue-quote",
+          "title": "Composition with Red, Yellow, and Blue",
+          "sequence": 2,
+          "artworkId": "cma-1967.215",
+          "orientation": "portrait",
+          "description": "Mondrian’s wide white square held by black lines, red, blue and yellow, with the full sentence from his letter of 29 January 1914 set in small black type in the white field: “On a flat plane I construct lines and colour combinations, to show universal beauty as consciously as I can.” Translated from the Dutch by Clara Mendes.",
+          "alt": "Mondrian’s Composition with Red, Yellow, and Blue on a throw blanket, with a four-line quotation and “Piet Mondrian, 1914” in small black type in the lower right of the large white field.",
+          "rooms": [],
+          "released": false
+        },
+        {
+          "slug": "painting-with-troika-quote",
+          "title": "Painting with Troika",
+          "sequence": 3,
+          "artworkId": "aic-8983",
+          "orientation": "landscape",
+          "description": "Kandinsky’s three-horse sleigh races along a red hilltop under a yellow and pink sky, and in the orange sky a sentence from his book On the Spiritual in Art (1912) is set in small black type: “Colour is a means of exerting a direct influence on the soul.” Translated from the German by Clara Mendes.",
+          "alt": "Kandinsky’s Painting with Troika on a throw blanket, with a two-line quotation and “Vasily Kandinsky, 1912” in small black type in the orange sky at upper right.",
+          "rooms": [],
+          "released": false
+        }
+      ]
     }
   ]
 }

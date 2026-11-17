@@ -54,7 +54,10 @@ const PASTEL_POTS = ['blush-arc', 'sage-stem', 'blue-drift', 'butter-sun'].map(
 
 /** Museum sheets on the artists index, at their own size (<= 263 CSS px). */
 const ARTIST_SHEETS = PRINT_CATALOG.collections
-  .filter((collection) => collectionKind(collection) === 'museum')
+  .filter(
+    (collection) =>
+      collectionKind(collection) === 'museum' && !collection.edition,
+  )
   .flatMap((collection) =>
     collection.prints.map((print) => {
       const sheet = printSheetImage(collection, print);

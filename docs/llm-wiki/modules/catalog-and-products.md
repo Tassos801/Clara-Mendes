@@ -721,3 +721,38 @@ read the other fields: `scripts/artProductCatalogForBrowser.node-test.mjs`
 checks that every storefront reader answers the same from both copies, so a
 new reader belongs in that test. The orders/paid webhook reads variant
 mappings and runs on the server only.
+
+## 2026-11-17 - Editions: Art & Words blankets (staged in data, unreleased)
+
+An edition collection sells a second product of a work another collection
+already sells, here a throw blanket with a short line of the artist's own
+words set on the work. Print catalog `edition: "art-and-words"` (SKU code
+`AW`) on a museum collection; its prints carry family products only (no
+variants, rooms or web image, never released; print verbs refuse it;
+`assertPrintCollection` in `scripts/lib/product-pipeline.mjs`). The
+one-product-per-artwork checks key on the edition too
+(`validateArtProductCatalog`, `validateArtistLinks`), so only a second
+edition product of a work collides. `scripts/museum.mjs` links each work to
+its plain print, and the artist shop shows an edition product with that
+print's image.
+
+`data/art-product-catalog.json` `editionFiles[<artwork>]` records the base
+product's file (handle, file key, sha256), the quote, credit, brand, font
+(name, sha256) and text boxes. They enter the asset signature, and an
+edition's Printful mapping records the signature it was verified on, so a
+change of words, font or boxes needs `prepare` and a new mapping. `prepare`
+compares each edition file with its base file (`EDITION_CHECK`: 32 px cells,
+boxes grown by 16 px, outside cells at most 1.0/255, each box at least 16);
+the result is `provenance.edition` (there is no AI-fill log). Release needs
+the owner's approval of that very file (`suppliedApprovals` with `sha256`);
+the work's crop approval or an approval of the plain file never passes it.
+Product titles add the collection title: "<Work> Throw Blanket, Art & Words".
+
+First three, prepared and unreleased: `the-great-wave-off-kanagawa-quote-blanket`,
+`composition-with-red-yellow-and-blue-quote-blanket`,
+`painting-with-troika-quote-blanket` (base files measured 0.21, 0.29 and
+0.11/255 outside the boxes). Owner decisions of 2026-11-17 are recorded as
+their approvals; the two ppi exceptions (Great Wave 62, Troika 48) wait for
+the owner's confirmation. Not done: Shopify Drafts, Printful files and
+mapping, a physical sample (the first paid order is the check). Runbook:
+[add-products-runbook.md](../../add-products-runbook.md) step 6.

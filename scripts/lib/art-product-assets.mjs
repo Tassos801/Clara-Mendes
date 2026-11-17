@@ -17,6 +17,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import {caseMasks, renderPreview} from '../generate-tough-case-assets.mjs';
 import {REPO_ROOT} from './product-pipeline.mjs';
+import {editionDifference} from './art-product-pipeline.mjs';
 
 const WARM_WHITE = {b: 230, g: 239, r: 244};
 const WHITE = {b: 255, g: 255, r: 255};
@@ -267,6 +268,34 @@ export async function compareDeployedImage(
     ok: meanDifference <= maxMeanDifference,
     size: {height: live.info.height, width: live.info.width},
   };
+}
+
+/**
+ * An edition file against its base file (EDITION_CHECK): both decoded to
+ * sRGB, compared cell by cell, changed only inside the text boxes. Returns
+ * the check `prepare` records, without the record key and base hash.
+ */
+export async function compareEditionFile(baseFile, editionFile, textBoxes) {
+  const decode = (buffer) =>
+    sharp(buffer)
+      .toColourspace('srgb')
+      .removeAlpha()
+      .raw()
+      .toBuffer({resolveWithObject: true});
+  const [base, edition] = await Promise.all([
+    decode(baseFile),
+    decode(editionFile),
+  ]);
+  if (
+    base.info.width !== edition.info.width ||
+    base.info.height !== edition.info.height ||
+    base.info.channels !== edition.info.channels
+  )
+    return {
+      detail: `${edition.info.width}×${edition.info.height} edition, ${base.info.width}×${base.info.height} base`,
+      status: 'failed',
+    };
+  return editionDifference(base.data, edition.data, base.info, textBoxes);
 }
 
 /** Facts read back from an encoded file. */
