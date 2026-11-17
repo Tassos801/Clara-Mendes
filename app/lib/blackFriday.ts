@@ -78,7 +78,6 @@ const TEN_TYPES = new Set(
     'T-Shirts',
     'Sweatshirts',
     'Long Sleeve Shirts',
-    'Hats',
     'Tote Bags',
     'Yoga Leggings',
     'Sports Bra',
@@ -88,6 +87,14 @@ const TEN_TYPES = new Set(
     'Framed Art',
   ].map((type) => type.toLowerCase()),
 );
+
+/**
+ * Products left out of the offer although their type is in it: the premium
+ * hoodies (the other hoodies stay in).
+ */
+export function isBlackFridayExcludedHandle(handle: string | null | undefined) {
+  return /-premium-hoodie$/.test(handle?.trim().toLowerCase() ?? '');
+}
 
 const ART_PRINTS = 'art prints';
 const PERSONALISED_ART = 'personalised art';
@@ -108,17 +115,19 @@ function isFramed20x24(variantTitle: string) {
  * - 20%: blankets, cushions, mugs, phone cases, plant pots, hanger prints;
  *   art prints, unframed variants only; personalised art, every variant
  *   except the framed 20 × 24 in ones.
- * - 10%: the clothing and activewear types, hats, tote bags, canvas and
- *   framed art.
- * - Nothing: cards, postcards, book nooks, acrylic and metal prints, and
- *   anything else.
+ * - 10%: the clothing and activewear types (not the premium hoodies), tote
+ *   bags, canvas and framed art.
+ * - Nothing: hats, premium hoodies, cards, postcards, book nooks, acrylic
+ *   and metal prints, and anything else.
  * A variant-dependent type with no variant title gets null: the line must
  * never promise a discount the selected variant does not have.
  */
 export function blackFridayDiscountPercent(
   productType: string | null | undefined,
   variantTitle?: string | null,
+  handle?: string | null,
 ): BlackFridayPercent | null {
+  if (isBlackFridayExcludedHandle(handle)) return null;
   const type = productType?.trim().toLowerCase() ?? '';
   if (TWENTY_TYPES.has(type)) return 20;
   if (TEN_TYPES.has(type)) return 10;
@@ -189,7 +198,6 @@ export const BLACK_FRIDAY_GROUPS: readonly BlackFridayGroup[] = [
       'T-Shirts',
       'Sweatshirts',
       'Long Sleeve Shirts',
-      'Hats',
       'Tote Bags',
       'Yoga Leggings',
       'Sports Bra',
@@ -236,9 +244,9 @@ export const BLACK_FRIDAY_COPY = {
   dates: 'Friday 20 November to Monday 30 November',
   twenty:
     'Blankets, cushions, mugs, phone cases, plant pots, hanger prints, unframed art prints and Your Sky star maps (except framed 20 × 24 in).',
-  ten: 'Clothing and activewear, hats, tote bags, canvas and framed art.',
+  ten: 'Clothing and activewear (except premium hoodies), tote bags, canvas and framed art.',
   excluded:
-    'Not included: cards, postcards, book nooks, acrylic and metal prints, and framed art prints.',
+    'Not included: premium hoodies, caps and beanies, cards, postcards, book nooks, acrylic and metal prints, and framed art prints.',
   cart: 'The discount is taken off in your cart.',
   before:
     'Black Friday week starts on Friday 20 November. Until then, everything is at its usual price.',

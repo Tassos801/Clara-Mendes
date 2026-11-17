@@ -9,6 +9,7 @@ import {buildCollectionAnalyticsProducts} from './collections.all';
 import {
   BLACK_FRIDAY_COPY,
   BLACK_FRIDAY_GROUPS,
+  isBlackFridayExcludedHandle,
   BLACK_FRIDAY_PATH,
   blackFridayNow,
   blackFridayStatus,
@@ -61,7 +62,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
     const products = interleave(
       group.productTypes.map((_, typeIndex) =>
         filterDemoProducts(data[`g${index}_${typeIndex}`]?.nodes ?? []).filter(
-          (product) => !nothingBuyable(product),
+          (product) =>
+            !nothingBuyable(product) &&
+            !isBlackFridayExcludedHandle(product.handle),
         ),
       ),
       GROUP_LIMIT,

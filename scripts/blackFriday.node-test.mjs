@@ -99,7 +99,6 @@ test('10% types take 10% on every variant', () => {
     'T-Shirts',
     'Sweatshirts',
     'Long Sleeve Shirts',
-    'Hats',
     'Tote Bags',
     'Yoga Leggings',
     'Sports Bra',
@@ -113,8 +112,31 @@ test('10% types take 10% on every variant', () => {
   assert.equal(blackFridayDiscountPercent('Framed Art', '16 × 20 in'), 10);
 });
 
+test('premium hoodies are left out by handle; other hoodies stay in', () => {
+  for (const handle of [
+    'counter-diagonal-premium-hoodie',
+    'free-abyss-premium-hoodie',
+    'circle-rhythm-premium-hoodie',
+  ]) {
+    assert.equal(
+      blackFridayDiscountPercent('Hoodies', 'Black / M', handle),
+      null,
+      handle,
+    );
+  }
+  assert.equal(
+    blackFridayDiscountPercent(
+      'Hoodies',
+      'Dust / M',
+      'counter-diagonal-heavyweight-hoodie',
+    ),
+    10,
+  );
+});
+
 test('excluded types get nothing', () => {
   for (const type of [
+    'Hats',
     'Cards',
     'Postcards',
     'Book Nooks',
