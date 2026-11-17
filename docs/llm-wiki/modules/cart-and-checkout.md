@@ -101,6 +101,15 @@ Since the 2026-10-06 mobile pass:
   loses their place. It also modulepreloads the `routes/cart` module once
   the page is idle so the first add to cart does not wait on code.
 
+- Line-level discounts: the `CartLine` fragment reads `cost.subtotalAmount`
+  (before line discounts) and `discountAllocations` (amount, plus `title`
+  for automatic/custom discounts, `code` for codes). A discounted line shows
+  its reduced total with the pre-discount price struck through and one row
+  per discount ("Black Friday 20% off −€x"). The cart subtotal already has
+  line discounts taken off; the totals add "Subtotal includes €x off."
+  Order-level code discounts stay their own "Discount" row. Rules:
+  `app/lib/cartDiscounts.ts`, `scripts/cartDiscounts.node-test.mjs`.
+
 Sources: `app/components/CartConnectionGuard.tsx`, `app/lib/cartFormErrors.ts`,
 `scripts/mobileShopping.node-test.mjs`.
 

@@ -2570,3 +2570,28 @@ A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
 - Not done: newsletter double opt-in. Shopify's API docs don't say that
   writing `PENDING` consent sends the confirmation email, so it would risk
   leaving every new sign-up unconfirmed; see issue #202.
+
+## 2026-11-17 — Black Friday week storefront (branch `claude/black-friday-week`)
+
+- Black Friday week, Fri 20 Nov 00:00 to the end of Mon 30 Nov 2026,
+  Asia/Nicosia. The price reduction is three Shopify automatic discounts
+  scheduled in admin for the same window ("Black Friday 20% off",
+  "Black Friday 20% off prints", "Black Friday 10% off"); product prices,
+  JSON-LD and feeds are unchanged.
+- `app/lib/blackFriday.ts`: window constants, `isBlackFridayWeek(now)`,
+  `blackFridayDiscountPercent(productType, variantTitle)` (20 / 10 / null;
+  art prints unframed only, personalised art except framed 20 × 24 in),
+  page groups and copy. `blackFridayNow(request)` honours the existing
+  `?today=YYYY-MM-DD` preview (noon Nicosia). If the discounts in admin
+  change, this file must change with them.
+- The root loader sets `blackFridayWeek` from the request time; no page
+  sends a document Cache-Control header, so the line turns itself off.
+  `BlackFridayAnnouncement` (in `ClaraShell`) is a fixed line above the
+  header pill; `--announcement-height` (SSR estimate, then measured) is added
+  to `--header-height` so page offsets make room. Checked at 320–1280 px in
+  a static mock: no horizontal overflow; three lines on phones.
+- `/black-friday` page; product pages show "Black Friday week: N% off, taken
+  off in your cart." for an eligible, available selected variant
+  (`BlackFridayProductLine`, also on the art phone case page).
+- Cart: line `discountAllocations` with titles and the pre-discount line
+  price were not read before; now shown (see Cart And Checkout).
