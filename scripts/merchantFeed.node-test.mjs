@@ -14,6 +14,7 @@ import {
   merchantFeedTsv,
   metaCountryFeedTsv,
 } from '../app/lib/merchantFeed.ts';
+import {feedImageUrl} from '../app/lib/merchantFeed.ts';
 import {
   FEED_EU_COUNTRIES,
   FEED_EXCHANGE_ALLOWANCE_PERCENT,
@@ -886,4 +887,22 @@ test('the feed server holds no cart mutation', () => {
   const server = read('app/lib/merchantFeed.server.ts');
   assert.doesNotMatch(server, /\.mutate\(|\bmutation\b|cartCreate|cartLinesUpdate/);
   assert.doesNotMatch(read('storefrontapi.generated.d.ts'), /FeedQuote/);
+});
+
+test('feed image links ask the Shopify CDN for a JPEG', () => {
+  assert.equal(
+    feedImageUrl('https://cdn.shopify.com/s/files/1/1/files/irises-blanket.webp?v=1794471372'),
+    'https://cdn.shopify.com/s/files/1/1/files/irises-blanket.webp?v=1794471372&format=pjpg',
+  );
+  assert.equal(
+    feedImageUrl('https://cdn.shopify.com/s/files/1/1/files/a.png'),
+    'https://cdn.shopify.com/s/files/1/1/files/a.png?format=pjpg',
+  );
+  // A link that already names a format, another host or a broken link stays.
+  for (const url of [
+    'https://cdn.shopify.com/s/files/1/1/files/a.webp?v=1&format=jpg',
+    'https://example.com/a.webp',
+    'not a link',
+  ])
+    assert.equal(feedImageUrl(url), url);
 });

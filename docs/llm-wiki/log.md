@@ -2603,3 +2603,12 @@ hoodies. `app/lib/blackFriday.ts` drops the Hats type and leaves the
 premium hoodies out by handle (`isBlackFridayExcludedHandle`); the
 product-page line, the `/black-friday` grids and the page copy follow. The
 automatic discount in Shopify admin was changed to match on the same day.
+
+## 2026-11-17 — Feed image links ask for a JPEG
+
+Every feed `image_link` on Shopify's CDN now carries `format=pjpg`
+(`feedImageUrl` in `app/lib/merchantFeed.ts`). The CDN picks the format
+from the Accept header, so a plain file link gives WebP to a fetcher that
+accepts it; Meta's catalogue takes JPEG or PNG only and had marked the
+Museum Masterpieces items "missing or invalid images". The new link also
+makes Meta fetch those images again. Prices, titles and ids are unchanged.
