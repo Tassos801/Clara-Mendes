@@ -6,6 +6,8 @@ import {useFetcher} from 'react-router';
 import {useMarketingCheckoutUrl} from '~/hooks/useMarketingCheckoutUrl';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
 import {CHECKOUT_PENDING_TIMEOUT_MS} from '~/lib/cartPresentation';
+import {cartLineSavings} from '~/lib/cartDiscounts';
+import {formatMoney} from '~/lib/money';
 import {
   getCartFormErrorMessages,
   getInapplicableDiscountMessages,
@@ -61,6 +63,9 @@ function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
   // subtotal or of any line; without this row the chip shows but the
   // saving does not.
   const discount = cartLevelDiscount(cart?.discountAllocations);
+  // Line-level discounts (automatic ones, like Black Friday week) are
+  // already taken off the subtotal; this says how much.
+  const lineSavings = cartLineSavings(cart?.lines?.nodes ?? []);
   const showTotal =
     Boolean(subtotal?.amount && total?.amount) &&
     Number(total?.amount) < Number(subtotal?.amount);
@@ -88,6 +93,11 @@ function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
             <Money data={total} />
           </dd>
         </dl>
+      ) : null}
+      {lineSavings && !updating ? (
+        <p className="cart-totals-note">
+          Subtotal includes {formatMoney(lineSavings)} off.
+        </p>
       ) : null}
       <p className="cart-totals-note">
         {updating

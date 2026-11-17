@@ -2,6 +2,7 @@ import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {Link, redirect, useLoaderData, useNavigate} from 'react-router';
 import {Analytics, getSelectedProductOptions, ShopPayButton} from '@shopify/hydrogen';
 import type {Route} from './+types/products.art-tough-phone-case';
+import {BlackFridayProductLine} from '~/components/BlackFridayProductLine';
 import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
 import {
   christmasLineFor,
@@ -334,6 +335,9 @@ export default function ToughCasePage() {
               price={price}
               compareAtPrice={variant?.compareAtPrice}
             />
+            {chipAvailable ? (
+              <BlackFridayProductLine productType={product.productType} />
+            ) : null}
             <div className="product-availability-row" aria-label="Purchase status">
               <span
                 className={`product-availability-chip ${

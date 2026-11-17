@@ -5,6 +5,7 @@ import {useEffect, useRef, useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {getSwipeIntent} from '~/lib/cartSwipe';
 import {formatMoney} from '~/lib/money';
+import {cartLineDiscounts, cartLineOriginalTotal} from '~/lib/cartDiscounts';
 import {
   cartLineThumbnail,
   cartQuantitySteps,
@@ -67,6 +68,10 @@ export function CartLineItem({
     line.quantity > 1 && line.cost?.amountPerQuantity
       ? formatMoney(line.cost.amountPerQuantity)
       : null;
+  // Automatic discounts (Black Friday week) are allocated to the line: show
+  // each one's title and amount, and the price before them struck through.
+  const discounts = cartLineDiscounts(line);
+  const originalTotal = discounts.length ? cartLineOriginalTotal(line) : null;
   const giftNote = line.attributes?.find(
     (attribute) => attribute.key === GIFT_NOTE_KEY,
   )?.value;
@@ -276,11 +281,28 @@ export function CartLineItem({
               </p>
             ) : null}
             <div className="cart-line-price">
-              <ProductPrice price={line?.cost?.totalAmount} />
+              <ProductPrice
+                price={line?.cost?.totalAmount}
+                compareAtPrice={originalTotal}
+              />
               {unitPrice ? (
                 <span className="cart-line-unit">{unitPrice} each</span>
               ) : null}
             </div>
+            {discounts.length > 0 ? (
+              <ul className="cart-line-discounts" aria-label="Discounts">
+                {discounts.map((discount) => (
+                  <li key={discount.label}>
+                    {discount.label}{' '}
+                    <span>
+                      <span aria-hidden="true">−</span>
+                      <span className="sr-only">minus </span>
+                      {formatMoney(discount.amount)}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
             {unavailable ? (
               <p className="cart-line-unavailable" role="status">
                 No longer available. Remove it to continue to checkout.

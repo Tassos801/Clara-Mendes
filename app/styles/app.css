@@ -5675,6 +5675,21 @@ html.lenis body {
   font-size: 0.84rem;
 }
 
+/* Automatic discounts on a line (app/lib/cartDiscounts.ts). */
+.cart-line-discounts {
+  color: var(--color-moss-ink, var(--color-ink));
+  display: grid;
+  font-size: 0.84rem;
+  gap: 2px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.cart-line-discounts span {
+  white-space: nowrap;
+}
+
 .cart-line-unavailable {
   background: rgba(156, 111, 93, 0.1);
   border-radius: 10px;
