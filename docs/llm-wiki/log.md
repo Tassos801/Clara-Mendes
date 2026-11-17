@@ -2627,3 +2627,10 @@ three proof quotes are cleared: Hokusai (1834 *Fugaku hyakkei* postscript),
 Mondrian (letter to Bremmer, 1914) and Kandinsky (1912, p. 49). The working
 Kandinsky line "touching the soul directly" was not faithful and is replaced.
 Documentation only; nothing in Shopify or Printful was changed.
+
+## 2026-11-17 — End-of-day handoff
+
+Rewrote [the blanket line status](../blanket-line/status.md): decisions,
+what is done, what is missing, how to continue on another PC. Added the
+final proof sheets and manifest under `docs/blanket-line/proofs/` and
+[the Black Friday week handoff](../black-friday/HANDOFF.md).

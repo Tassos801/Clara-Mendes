@@ -8,7 +8,7 @@
 
 **Base:** `9de548678eba6fe79bd86bf9d4ed963bab0a6f04`
 
-**Owner:** Tassos. **Next active writer:** unclaimed.
+**Owner:** Tassos. **Next active writer:** unclaimed. **State on 17 November:** see [status](status.md). The Black Friday sale has its own [handoff](../black-friday/HANDOFF.md).
 
 **Tracking issue:** [#205 — European blanket line](https://github.com/Tassos801/Clara-Mendes/issues/205). The issue links the current draft PR and is the coordination entry point.
 

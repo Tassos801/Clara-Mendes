@@ -1,0 +1,918 @@
+{
+  "generated_by": "final/scripts/build.py (base: proofs-r2/scripts/build.py)",
+  "date": "2026-11-17",
+  "font": {
+    "family": "EB Garamond",
+    "style": "Regular",
+    "full_name": "EB Garamond Regular",
+    "version": "Version 1.003",
+    "licence": "SIL Open Font License 1.1",
+    "file": "EBGaramond-Regular.ttf",
+    "sha256": "934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958",
+    "variable_font": false,
+    "weight": "Regular (400), real weight; no outline / faux bold",
+    "tracking_em": {
+      "quote": 0.03,
+      "credit_and_brand": 0.04
+    },
+    "leading": 1.28,
+    "colour": "#111111"
+  },
+  "px_per_mm": 5.905511811023622,
+  "min_stroke_mm": 1.3,
+  "stroke_rule": {
+    "smallest_font_px_reaching_1_3mm": 107,
+    "cap_height_mm_at_that_size": 11.9,
+    "credit_max_share_of_quote_size": 0.8,
+    "method": "anti-aliased coverage summed across one vertical stem at mid x-height/cap-height, median over l i h n m I, worst case over x offsets 0/.25/.5/.75 px; FreeType hinting snaps stems to whole pixels, so stems step 7 px (1.19 mm) -> 8 px (1.35 mm) at 108 px"
+  },
+  "insitu_note": "insitu_mid_xheight_median_run_px = median coverage of ALL strokes crossed by one row at mid x-height on the real mask (includes thin diagonals and curves, e.g. the M), so it is a cross-check, not the stem measure",
+  "edge_rule": {
+    "brief_min_mm": 76,
+    "brief_min_px": 449,
+    "design_px": 700
+  },
+  "designs": [
+    {
+      "id": "hokusai",
+      "handle": "the-great-wave-off-kanagawa-blanket",
+      "source": {
+        "path": "met-39799-blanket-50x60.jpg",
+        "sha256": "0f45829825b39d006dbd5b76ce23c32540d521cfc229a77dc026fdb8c3166b7b",
+        "catalog_sha256": "0f45829825b39d006dbd5b76ce23c32540d521cfc229a77dc026fdb8c3166b7b",
+        "sha256_matches_catalog": true,
+        "pixels": [
+          7500,
+          9000
+        ],
+        "mode": "RGB",
+        "icc_embedded": false,
+        "rotated90": true
+      },
+      "outputs": {
+        "print": {
+          "file": "the-great-wave-off-kanagawa-blanket-quote-print.jpg",
+          "sha256": "fcbf25b4c8a9f3120a381d16d2409937cd8560983f4714df89c87da2341e19a5",
+          "pixels": [
+            7500,
+            9000
+          ],
+          "mode": "RGB",
+          "icc_srgb_embedded": true,
+          "dpi": [
+            150,
+            150
+          ],
+          "jpeg": "quality 95, 4:4:4, sRGB ICC",
+          "bytes": 15812219
+        },
+        "upright": {
+          "file": "the-great-wave-off-kanagawa-blanket-quote-upright.jpg",
+          "sha256": "b515fe179a57d23420336a0f8a684c5c4c4f8ab642d40330ceb72d885a0326b6",
+          "pixels": [
+            1800,
+            1500
+          ]
+        },
+        "closeup": {
+          "file": "the-great-wave-off-kanagawa-blanket-quote-closeup.jpg",
+          "sha256": "c5dc2d9b13399b6f689ab2eb799715cb6aa8700c170e1391697dfd78a72f9f63",
+          "pixels": [
+            2400,
+            900
+          ],
+          "scale": "100 % print pixels",
+          "upright_crop_box_px": [
+            6107,
+            3533,
+            8507,
+            4433
+          ]
+        }
+      },
+      "quote": "At a hundred and ten, every dot and every stroke will seem alive.",
+      "quote_lines": [
+        "At a hundred and ten, every dot",
+        "and every stroke will seem alive."
+      ],
+      "credit": "Katsushika Hokusai, 1834",
+      "brand": "Clara Mendes",
+      "rotation": "text set on the upright artwork (print file turned 90 deg clockwise), then art + text turned back 90 deg anticlockwise into the portrait print file",
+      "position": "right side of the upright print, plain sky right of the wave crest and below the clouds (round two); brand lower right on the pale wave band",
+      "sizes": {
+        "quote": {
+          "font_px": 145,
+          "cap_px": 95.4,
+          "cap_mm": 16.2,
+          "stem_mm": 1.69,
+          "stem_by_glyph_px": {
+            "l": 10.0,
+            "i": 10.0,
+            "h": 12.49,
+            "n": 10.0,
+            "m": 10.0,
+            "I": 11.89
+          },
+          "hairline_mm": 1.02
+        },
+        "credit": {
+          "font_px": 107,
+          "cap_px": 70.4,
+          "cap_mm": 11.9,
+          "stem_mm": 1.35,
+          "stem_worst_subpixel_mm": 1.35,
+          "stem_by_glyph_px": {
+            "l": 7.0,
+            "i": 8.0,
+            "h": 9.71,
+            "n": 8.0,
+            "m": 8.0,
+            "I": 8.78
+          },
+          "share_of_quote_size": 0.738,
+          "capped_at_80pct": false,
+          "round_two": {
+            "font_px": 87,
+            "cap_mm": 9.7
+          }
+        },
+        "brand": {
+          "font_px": 107,
+          "cap_px": 70.4,
+          "cap_mm": 11.9,
+          "stem_mm": 1.35,
+          "stem_worst_subpixel_mm": 1.35,
+          "stem_by_glyph_px": {
+            "l": 7.0,
+            "i": 8.0,
+            "h": 9.71,
+            "n": 8.0,
+            "m": 8.0,
+            "I": 8.78
+          },
+          "round_two": {
+            "font_px": 74,
+            "cap_mm": 8.2
+          }
+        },
+        "insitu_mid_xheight_median_run_px": {
+          "quote_line1": 10.0,
+          "credit": 8.0,
+          "brand": 7.56
+        },
+        "quote_width_share_of_reading_width": 0.2096,
+        "credit_baseline_gap_px": 158.2,
+        "clear_space_quote_baseline_to_credit_cap_px": {
+          "round_two": 87.8,
+          "final": 87.8
+        }
+      },
+      "layout_upright": {
+        "canvas_px": [
+          9000,
+          7500
+        ],
+        "align": "right",
+        "anchor_x_px": 8250,
+        "quote_cap_top_px": 3760,
+        "brand_anchor": {
+          "x": 8215,
+          "baseline": 6600,
+          "align": "right"
+        }
+      },
+      "text_boxes_print_file": {
+        "quote": {
+          "box_px": [
+            3752,
+            751,
+            4082,
+            2636
+          ],
+          "edge_px": {
+            "left": 3752,
+            "top": 751,
+            "right": 3418,
+            "bottom": 6364
+          },
+          "edge_mm": {
+            "left": 635.3,
+            "top": 127.2,
+            "right": 578.8,
+            "bottom": 1077.6
+          }
+        },
+        "credit": {
+          "box_px": [
+            4124,
+            749,
+            4215,
+            1915
+          ],
+          "edge_px": {
+            "left": 4124,
+            "top": 749,
+            "right": 3285,
+            "bottom": 7085
+          },
+          "edge_mm": {
+            "left": 698.3,
+            "top": 126.8,
+            "right": 556.3,
+            "bottom": 1199.7
+          }
+        },
+        "quote_and_credit": {
+          "box_px": [
+            3752,
+            749,
+            4215,
+            2636
+          ],
+          "edge_px": {
+            "left": 3752,
+            "top": 749,
+            "right": 3285,
+            "bottom": 6364
+          },
+          "edge_mm": {
+            "left": 635.3,
+            "top": 126.8,
+            "right": 556.3,
+            "bottom": 1077.6
+          }
+        },
+        "brand": {
+          "box_px": [
+            6524,
+            788,
+            6602,
+            1399
+          ],
+          "edge_px": {
+            "left": 6524,
+            "top": 788,
+            "right": 898,
+            "bottom": 7601
+          },
+          "edge_mm": {
+            "left": 1104.7,
+            "top": 133.4,
+            "right": 152.1,
+            "bottom": 1287.1
+          }
+        },
+        "nearest_letter_to_any_edge_px": 749,
+        "nearest_letter_to_any_edge_mm": 126.8
+      },
+      "contrast": {
+        "ink": "#111111",
+        "method": "WCAG ratio of #111111 vs artwork under the box (median, 10th percentile)",
+        "quote": {
+          "box_median_luminance": 0.7235,
+          "box_median_contrast": 13.91,
+          "box_p10_contrast": 12.87,
+          "box_luminance_std": 0.0461,
+          "box_busyness_local_std": 0.0421,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 13.91,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        },
+        "credit": {
+          "box_median_luminance": 0.7088,
+          "box_median_contrast": 13.65,
+          "box_p10_contrast": 12.62,
+          "box_luminance_std": 0.047,
+          "box_busyness_local_std": 0.0423,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 13.65,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        },
+        "brand": {
+          "box_median_luminance": 0.5496,
+          "box_median_contrast": 10.78,
+          "box_p10_contrast": 9.56,
+          "box_luminance_std": 0.092,
+          "box_busyness_local_std": 0.0653,
+          "box_share_below_4_5": 0.0089,
+          "under_letters_median_contrast": 10.69,
+          "under_letters_share_below_4_5": 0.0035,
+          "under_letters_share_below_3": 0.001
+        }
+      },
+      "checks": {
+        "quote_matches_md": true,
+        "credit_md_section_line": "Katsushika Hokusai, 1834",
+        "credit_matches_md_section_line": true,
+        "credit_name_in_md_table_row": true,
+        "credit_year_in_md_line": true,
+        "source_sha256_ok": true,
+        "in_memory_pixels_changed_outside_letters": 0,
+        "letter_pixels": 108859,
+        "full_coverage_letter_pixels_exactly_111111": true,
+        "print_turned_back_equals_upright_composite": true,
+        "saved_jpeg_vs_source_outside_letters": {
+          "outside_mask_max_abs_diff": 15,
+          "outside_mask_mean_abs_diff": 0.0542
+        },
+        "output_7500x9000": true,
+        "orientation_same_as_source": true,
+        "edge_ge_76mm": true,
+        "edge_ge_700px": true,
+        "credit_stem_ge_1_3mm": true,
+        "brand_stem_ge_1_3mm": true,
+        "quote_stem_ge_1_3mm": true
+      }
+    },
+    {
+      "id": "mondrian-full",
+      "handle": "composition-with-red-yellow-and-blue-blanket",
+      "source": {
+        "path": "cma-1967.215-blanket-50x60.jpg",
+        "sha256": "96810dc02766071bc79df89999d58eca2e852c891360341d6f1eb9eae38b975a",
+        "catalog_sha256": "96810dc02766071bc79df89999d58eca2e852c891360341d6f1eb9eae38b975a",
+        "sha256_matches_catalog": true,
+        "pixels": [
+          7500,
+          9000
+        ],
+        "mode": "RGB",
+        "icc_embedded": false,
+        "rotated90": false
+      },
+      "outputs": {
+        "print": {
+          "file": "composition-with-red-yellow-and-blue-blanket-quote-print.jpg",
+          "sha256": "d283aa2d3435a9b72118e7b9fb7640112211e68db0614bb19b08ea5d17b0ad8b",
+          "pixels": [
+            7500,
+            9000
+          ],
+          "mode": "RGB",
+          "icc_srgb_embedded": true,
+          "dpi": [
+            150,
+            150
+          ],
+          "jpeg": "quality 95, 4:4:4, sRGB ICC",
+          "bytes": 20181518
+        },
+        "upright": {
+          "file": "composition-with-red-yellow-and-blue-blanket-quote-upright.jpg",
+          "sha256": "e9510c091097bb9ab9ac89ddc991ba79128829990dc439e3340dd565dcbddd0d",
+          "pixels": [
+            1500,
+            1800
+          ]
+        },
+        "closeup": {
+          "file": "composition-with-red-yellow-and-blue-blanket-quote-closeup.jpg",
+          "sha256": "b4a190e5a31cede909d9aa1dd76f31f0f529096ffe7508182258ab5f436f9671",
+          "pixels": [
+            2400,
+            1154
+          ],
+          "scale": "100 % print pixels",
+          "upright_crop_box_px": [
+            4769,
+            6323,
+            7169,
+            7477
+          ]
+        }
+      },
+      "quote": "On a flat plane I construct lines and colour combinations, to show universal beauty as consciously as I can.",
+      "quote_lines": [
+        "On a flat plane I construct",
+        "lines and colour combinations,",
+        "to show universal beauty",
+        "as consciously as I can."
+      ],
+      "credit": "Piet Mondrian, 1914",
+      "brand": "Clara Mendes",
+      "rotation": "none (portrait artwork)",
+      "position": "full sentence in four lines, lower right corner of the large white field (round two); brand at the hem in the lower left white field",
+      "sizes": {
+        "quote": {
+          "font_px": 130,
+          "cap_px": 85.5,
+          "cap_mm": 14.5,
+          "stem_mm": 1.52,
+          "stem_by_glyph_px": {
+            "l": 9.0,
+            "i": 9.0,
+            "h": 10.83,
+            "n": 9.0,
+            "m": 9.0,
+            "I": 10.66
+          },
+          "hairline_mm": 0.85
+        },
+        "credit": {
+          "font_px": 104,
+          "cap_px": 68.4,
+          "cap_mm": 11.6,
+          "stem_mm": 1.19,
+          "stem_worst_subpixel_mm": 1.19,
+          "stem_by_glyph_px": {
+            "l": 7.0,
+            "i": 7.0,
+            "h": 8.57,
+            "n": 7.0,
+            "m": 7.0,
+            "I": 8.53
+          },
+          "share_of_quote_size": 0.8,
+          "capped_at_80pct": true,
+          "round_two": {
+            "font_px": 78,
+            "cap_mm": 8.7
+          }
+        },
+        "brand": {
+          "font_px": 107,
+          "cap_px": 70.4,
+          "cap_mm": 11.9,
+          "stem_mm": 1.35,
+          "stem_worst_subpixel_mm": 1.35,
+          "stem_by_glyph_px": {
+            "l": 7.0,
+            "i": 8.0,
+            "h": 9.71,
+            "n": 8.0,
+            "m": 8.0,
+            "I": 8.78
+          },
+          "round_two": {
+            "font_px": 74,
+            "cap_mm": 8.2
+          }
+        },
+        "insitu_mid_xheight_median_run_px": {
+          "quote_line1": 9.0,
+          "credit": 7.0,
+          "brand": 7.56
+        },
+        "quote_width_share_of_reading_width": 0.2192,
+        "credit_baseline_gap_px": 147.1,
+        "clear_space_quote_baseline_to_credit_cap_px": {
+          "round_two": 78.7,
+          "final": 78.7
+        }
+      },
+      "layout_upright": {
+        "canvas_px": [
+          7500,
+          9000
+        ],
+        "align": "right",
+        "anchor_x_px": 6790,
+        "quote_cap_top_px": 6530,
+        "brand_anchor": {
+          "x": 800,
+          "baseline": 8180,
+          "align": "left"
+        }
+      },
+      "text_boxes_print_file": {
+        "quote": {
+          "box_px": [
+            5148,
+            6523,
+            6791,
+            7152
+          ],
+          "edge_px": {
+            "left": 5148,
+            "top": 6523,
+            "right": 709,
+            "bottom": 1848
+          },
+          "edge_mm": {
+            "left": 871.7,
+            "top": 1104.6,
+            "right": 120.1,
+            "bottom": 312.9
+          }
+        },
+        "credit": {
+          "box_px": [
+            5885,
+            7188,
+            6790,
+            7277
+          ],
+          "edge_px": {
+            "left": 5885,
+            "top": 7188,
+            "right": 710,
+            "bottom": 1723
+          },
+          "edge_mm": {
+            "left": 996.5,
+            "top": 1217.2,
+            "right": 120.2,
+            "bottom": 291.8
+          }
+        },
+        "quote_and_credit": {
+          "box_px": [
+            5148,
+            6523,
+            6791,
+            7277
+          ],
+          "edge_px": {
+            "left": 5148,
+            "top": 6523,
+            "right": 709,
+            "bottom": 1723
+          },
+          "edge_mm": {
+            "left": 871.7,
+            "top": 1104.6,
+            "right": 120.1,
+            "bottom": 291.8
+          }
+        },
+        "brand": {
+          "box_px": [
+            805,
+            8104,
+            1416,
+            8182
+          ],
+          "edge_px": {
+            "left": 805,
+            "top": 8104,
+            "right": 6084,
+            "bottom": 818
+          },
+          "edge_mm": {
+            "left": 136.3,
+            "top": 1372.3,
+            "right": 1030.2,
+            "bottom": 138.5
+          }
+        },
+        "nearest_letter_to_any_edge_px": 709,
+        "nearest_letter_to_any_edge_mm": 120.1
+      },
+      "contrast": {
+        "ink": "#111111",
+        "method": "WCAG ratio of #111111 vs artwork under the box (median, 10th percentile)",
+        "quote": {
+          "box_median_luminance": 0.7449,
+          "box_median_contrast": 14.29,
+          "box_p10_contrast": 13.22,
+          "box_luminance_std": 0.0541,
+          "box_busyness_local_std": 0.0524,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 14.36,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        },
+        "credit": {
+          "box_median_luminance": 0.7299,
+          "box_median_contrast": 14.03,
+          "box_p10_contrast": 12.86,
+          "box_luminance_std": 0.0501,
+          "box_busyness_local_std": 0.0503,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 14.03,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        },
+        "brand": {
+          "box_median_luminance": 0.722,
+          "box_median_contrast": 13.88,
+          "box_p10_contrast": 12.45,
+          "box_luminance_std": 0.0569,
+          "box_busyness_local_std": 0.0546,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 13.73,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        }
+      },
+      "checks": {
+        "quote_matches_md": true,
+        "credit_md_section_line": "Piet Mondrian, letter, 1914",
+        "credit_matches_md_section_line": false,
+        "credit_name_in_md_table_row": true,
+        "credit_year_in_md_line": true,
+        "source_sha256_ok": true,
+        "in_memory_pixels_changed_outside_letters": 0,
+        "letter_pixels": 130092,
+        "full_coverage_letter_pixels_exactly_111111": true,
+        "print_turned_back_equals_upright_composite": true,
+        "saved_jpeg_vs_source_outside_letters": {
+          "outside_mask_max_abs_diff": 10,
+          "outside_mask_mean_abs_diff": 0.0546
+        },
+        "output_7500x9000": true,
+        "orientation_same_as_source": true,
+        "edge_ge_76mm": true,
+        "edge_ge_700px": true,
+        "credit_stem_ge_1_3mm": false,
+        "brand_stem_ge_1_3mm": true,
+        "quote_stem_ge_1_3mm": true
+      }
+    },
+    {
+      "id": "kandinsky-troika",
+      "handle": "painting-with-troika-blanket",
+      "source": {
+        "path": "aic-8983-blanket-50x60.jpg",
+        "sha256": "b9fac32a4da16374f7e44be1ec1a8a5d5f0bca44b32bfb7842b3ff43591bd601",
+        "catalog_sha256": "b9fac32a4da16374f7e44be1ec1a8a5d5f0bca44b32bfb7842b3ff43591bd601",
+        "sha256_matches_catalog": true,
+        "pixels": [
+          7500,
+          9000
+        ],
+        "mode": "RGB",
+        "icc_embedded": false,
+        "rotated90": true
+      },
+      "outputs": {
+        "print": {
+          "file": "painting-with-troika-blanket-quote-print.jpg",
+          "sha256": "51a2c57ff1ed4a98604ec8193cf7b0acea94c56f66559871f7790d0ece320695",
+          "pixels": [
+            7500,
+            9000
+          ],
+          "mode": "RGB",
+          "icc_srgb_embedded": true,
+          "dpi": [
+            150,
+            150
+          ],
+          "jpeg": "quality 95, 4:4:4, sRGB ICC",
+          "bytes": 14778432
+        },
+        "upright": {
+          "file": "painting-with-troika-blanket-quote-upright.jpg",
+          "sha256": "882c4b3ff9130ea4a4612891ddca5a96e3ea06d01bc7e857581e68460efe3b08",
+          "pixels": [
+            1800,
+            1500
+          ]
+        },
+        "closeup": {
+          "file": "painting-with-troika-blanket-quote-closeup.jpg",
+          "sha256": "b587c18bb109acffae3d7e2b7ff689ce6521cdc87249b2e1e246531937c9237f",
+          "pixels": [
+            2400,
+            900
+          ],
+          "scale": "100 % print pixels",
+          "upright_crop_box_px": [
+            6116,
+            1007,
+            8516,
+            1907
+          ]
+        }
+      },
+      "quote": "Colour is a means of exerting a direct influence on the soul.",
+      "quote_lines": [
+        "Colour is a means of exerting",
+        "a direct influence on the soul."
+      ],
+      "credit": "Vasily Kandinsky, 1912",
+      "brand": "Clara Mendes",
+      "rotation": "text set on the upright artwork (print file turned 90 deg clockwise), then art + text turned back 90 deg anticlockwise into the portrait print file",
+      "position": "upper right sky, orange field between the pink and lavender bands (round two); brand on the pale peach ground right of the right-hand figure",
+      "sizes": {
+        "quote": {
+          "font_px": 151,
+          "cap_px": 99.4,
+          "cap_mm": 16.8,
+          "stem_mm": 1.86,
+          "stem_by_glyph_px": {
+            "l": 11.0,
+            "i": 11.0,
+            "h": 12.93,
+            "n": 11.0,
+            "m": 11.0,
+            "I": 12.38
+          },
+          "hairline_mm": 1.02
+        },
+        "credit": {
+          "font_px": 107,
+          "cap_px": 70.4,
+          "cap_mm": 11.9,
+          "stem_mm": 1.35,
+          "stem_worst_subpixel_mm": 1.35,
+          "stem_by_glyph_px": {
+            "l": 7.0,
+            "i": 8.0,
+            "h": 9.71,
+            "n": 8.0,
+            "m": 8.0,
+            "I": 8.78
+          },
+          "share_of_quote_size": 0.709,
+          "capped_at_80pct": false,
+          "round_two": {
+            "font_px": 91,
+            "cap_mm": 10.1
+          }
+        },
+        "brand": {
+          "font_px": 107,
+          "cap_px": 70.4,
+          "cap_mm": 11.9,
+          "stem_mm": 1.35,
+          "stem_worst_subpixel_mm": 1.35,
+          "stem_by_glyph_px": {
+            "l": 7.0,
+            "i": 8.0,
+            "h": 9.71,
+            "n": 8.0,
+            "m": 8.0,
+            "I": 8.78
+          },
+          "round_two": {
+            "font_px": 74,
+            "cap_mm": 8.2
+          }
+        },
+        "insitu_mid_xheight_median_run_px": {
+          "quote_line1": 11.0,
+          "credit": 7.95,
+          "brand": 7.56
+        },
+        "quote_width_share_of_reading_width": 0.2039,
+        "credit_baseline_gap_px": 161.5,
+        "clear_space_quote_baseline_to_credit_cap_px": {
+          "round_two": 91.1,
+          "final": 91.1
+        }
+      },
+      "layout_upright": {
+        "canvas_px": [
+          9000,
+          7500
+        ],
+        "align": "right",
+        "anchor_x_px": 8230,
+        "quote_cap_top_px": 1220,
+        "brand_anchor": {
+          "x": 8450,
+          "baseline": 5200,
+          "align": "right"
+        }
+      },
+      "text_boxes_print_file": {
+        "quote": {
+          "box_px": [
+            1211,
+            769,
+            1516,
+            2599
+          ],
+          "edge_px": {
+            "left": 1211,
+            "top": 769,
+            "right": 5984,
+            "bottom": 6401
+          },
+          "edge_mm": {
+            "left": 205.1,
+            "top": 130.2,
+            "right": 1013.3,
+            "bottom": 1083.9
+          }
+        },
+        "credit": {
+          "box_px": [
+            1598,
+            770,
+            1704,
+            1824
+          ],
+          "edge_px": {
+            "left": 1598,
+            "top": 770,
+            "right": 5796,
+            "bottom": 7176
+          },
+          "edge_mm": {
+            "left": 270.6,
+            "top": 130.4,
+            "right": 981.5,
+            "bottom": 1215.1
+          }
+        },
+        "quote_and_credit": {
+          "box_px": [
+            1211,
+            769,
+            1704,
+            2599
+          ],
+          "edge_px": {
+            "left": 1211,
+            "top": 769,
+            "right": 5796,
+            "bottom": 6401
+          },
+          "edge_mm": {
+            "left": 205.1,
+            "top": 130.2,
+            "right": 981.5,
+            "bottom": 1083.9
+          }
+        },
+        "brand": {
+          "box_px": [
+            5124,
+            553,
+            5202,
+            1164
+          ],
+          "edge_px": {
+            "left": 5124,
+            "top": 553,
+            "right": 2298,
+            "bottom": 7836
+          },
+          "edge_mm": {
+            "left": 867.7,
+            "top": 93.6,
+            "right": 389.1,
+            "bottom": 1326.9
+          }
+        },
+        "nearest_letter_to_any_edge_px": 553,
+        "nearest_letter_to_any_edge_mm": 93.6
+      },
+      "contrast": {
+        "ink": "#111111",
+        "method": "WCAG ratio of #111111 vs artwork under the box (median, 10th percentile)",
+        "quote": {
+          "box_median_luminance": 0.3121,
+          "box_median_contrast": 6.51,
+          "box_p10_contrast": 6.03,
+          "box_luminance_std": 0.0487,
+          "box_busyness_local_std": 0.0179,
+          "box_share_below_4_5": 0.0001,
+          "under_letters_median_contrast": 6.49,
+          "under_letters_share_below_4_5": 0.0001,
+          "under_letters_share_below_3": 0.0
+        },
+        "credit": {
+          "box_median_luminance": 0.3947,
+          "box_median_contrast": 8.0,
+          "box_p10_contrast": 6.77,
+          "box_luminance_std": 0.0692,
+          "box_busyness_local_std": 0.0269,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 7.97,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        },
+        "brand": {
+          "box_median_luminance": 0.4358,
+          "box_median_contrast": 8.74,
+          "box_p10_contrast": 7.96,
+          "box_luminance_std": 0.033,
+          "box_busyness_local_std": 0.0266,
+          "box_share_below_4_5": 0.0,
+          "under_letters_median_contrast": 8.74,
+          "under_letters_share_below_4_5": 0.0,
+          "under_letters_share_below_3": 0.0
+        }
+      },
+      "checks": {
+        "quote_matches_md": true,
+        "credit_md_section_line": "Wassily Kandinsky, 1912",
+        "credit_matches_md_section_line": false,
+        "credit_name_in_md_table_row": true,
+        "credit_year_in_md_line": true,
+        "source_sha256_ok": true,
+        "in_memory_pixels_changed_outside_letters": 0,
+        "letter_pixels": 107682,
+        "full_coverage_letter_pixels_exactly_111111": true,
+        "print_turned_back_equals_upright_composite": true,
+        "saved_jpeg_vs_source_outside_letters": {
+          "outside_mask_max_abs_diff": 18,
+          "outside_mask_mean_abs_diff": 0.0531
+        },
+        "output_7500x9000": true,
+        "orientation_same_as_source": true,
+        "edge_ge_76mm": true,
+        "edge_ge_700px": false,
+        "credit_stem_ge_1_3mm": true,
+        "brand_stem_ge_1_3mm": true,
+        "quote_stem_ge_1_3mm": true
+      }
+    }
+  ]
+}
