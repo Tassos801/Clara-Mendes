@@ -15,11 +15,31 @@ export const CART_QUERY_FRAGMENT = `#graphql
       totalAmount {
         ...Money
       }
+      # Before line-level discounts; totalAmount is after them.
+      subtotalAmount {
+        ...Money
+      }
       amountPerQuantity {
         ...Money
       }
       compareAtAmountPerQuantity {
         ...Money
+      }
+    }
+    # Automatic product discounts (Black Friday week) land on the lines,
+    # with the title the buyer sees (app/lib/cartDiscounts.ts).
+    discountAllocations {
+      discountedAmount {
+        ...Money
+      }
+      ... on CartAutomaticDiscountAllocation {
+        title
+      }
+      ... on CartCustomDiscountAllocation {
+        title
+      }
+      ... on CartCodeDiscountAllocation {
+        code
       }
     }
     merchandise {
@@ -80,11 +100,31 @@ export const CART_QUERY_FRAGMENT = `#graphql
       totalAmount {
         ...Money
       }
+      # Before line-level discounts; totalAmount is after them.
+      subtotalAmount {
+        ...Money
+      }
       amountPerQuantity {
         ...Money
       }
       compareAtAmountPerQuantity {
         ...Money
+      }
+    }
+    # Automatic product discounts (Black Friday week) land on the lines,
+    # with the title the buyer sees (app/lib/cartDiscounts.ts).
+    discountAllocations {
+      discountedAmount {
+        ...Money
+      }
+      ... on CartAutomaticDiscountAllocation {
+        title
+      }
+      ... on CartCustomDiscountAllocation {
+        title
+      }
+      ... on CartCodeDiscountAllocation {
+        code
       }
     }
     merchandise {
