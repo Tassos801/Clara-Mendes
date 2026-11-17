@@ -20,7 +20,7 @@ export const BLACK_FRIDAY_END = new Date('2026-12-01T00:00:00+02:00');
 
 export const BLACK_FRIDAY_PATH = '/black-friday';
 
-/** The sitewide announcement line (owner-approved wording). */
+/** The sitewide announcement line. */
 export const BLACK_FRIDAY_ANNOUNCEMENT =
   'Black Friday week: 20% off blankets, cushions, mugs and prints, 10% off clothing. Taken off in your cart. Ends Monday 30 November.';
 
