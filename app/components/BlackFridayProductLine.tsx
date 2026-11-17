@@ -12,16 +12,19 @@ import {
  * The window comes from the root loader's request-time check.
  */
 export function BlackFridayProductLine({
+  handle,
   productType,
   variantTitle,
 }: {
+  /** The product's handle: a few products are left out by handle. */
+  handle?: string | null;
   productType?: string | null;
   /** The selected variant's title; null while none is selected. */
   variantTitle?: string | null;
 }) {
   const root = useRouteLoaderData<typeof rootLoader>('root');
   if (!root?.blackFridayWeek) return null;
-  const percent = blackFridayDiscountPercent(productType, variantTitle);
+  const percent = blackFridayDiscountPercent(productType, variantTitle, handle);
   if (!percent) return null;
   return (
     <p className="product-black-friday-line">

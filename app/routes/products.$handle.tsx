@@ -1326,6 +1326,7 @@ function ProductPage() {
             ) : null}
             {selectedVariant?.availableForSale ? (
               <BlackFridayProductLine
+                handle={product.handle}
                 productType={product.productType}
                 variantTitle={selectedVariant.title}
               />

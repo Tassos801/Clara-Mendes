@@ -2595,3 +2595,11 @@ A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
   (`BlackFridayProductLine`, also on the art phone case page).
 - Cart: line `discountAllocations` with titles and the pre-discount line
   price were not read before; now shown (see Cart And Checkout).
+
+## 2026-11-17 — Black Friday week: clothing scope
+
+The 10% tier no longer covers hats (caps and beanies) or the premium
+hoodies. `app/lib/blackFriday.ts` drops the Hats type and leaves the
+premium hoodies out by handle (`isBlackFridayExcludedHandle`); the
+product-page line, the `/black-friday` grids and the page copy follow. The
+automatic discount in Shopify admin was changed to match on the same day.
