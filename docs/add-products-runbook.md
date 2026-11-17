@@ -257,7 +257,9 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    - `media <collection> --family <f> [--apply]` brings staged and released
      galleries up to date: the current preview first, the scene second when
      `<launch>/<collection>/<family>/scene/<handle>.jpg` exists (a Printful
-     photo template holding the print file), then every image the product
+     photo template holding the print file, or a Codex photo made to
+     [art-and-words-product-photos.md](art-and-words-product-photos.md),
+     words letter-perfect), then every image the product
      already had, in order. Images are matched by pixels; it only adds and
      reorders (the owner deletes outdated images in the admin).
    - Prodigi maps these per variant: each size prints its own file (the

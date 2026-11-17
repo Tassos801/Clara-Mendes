@@ -758,4 +758,8 @@ Shopify ids and verified mappings are in the catalog. Not done: the owner's
 confirmation of the two ppi exceptions (Great Wave 62, Troika 48) and of the
 placeholder price (the plain blanket's), release, and a physical sample (the
 first paid order is the check). Runbook:
-[add-products-runbook.md](../../add-products-runbook.md) step 6.
+[add-products-runbook.md](../../add-products-runbook.md) step 6. Their
+in-room scene photos are made by Codex on the owner's PC to
+[art-and-words-product-photos.md](../../art-and-words-product-photos.md):
+the words must read letter-perfect, or the face is repaired from the real
+file's pixels, and `media --family blanket` adds them after the preview.

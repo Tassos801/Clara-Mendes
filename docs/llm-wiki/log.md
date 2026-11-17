@@ -2649,3 +2649,14 @@ readback). The runbook's "Free EU shipping – artist products" profile was
 never created; that is now an open question rather than a release step.
 Details: [catalog-and-products.md](modules/catalog-and-products.md), runbook
 step 6, [open-questions.md](open-questions.md).
+
+## 2026-11-17 — Art & Words blankets: Codex product-photo brief
+
+[art-and-words-product-photos.md](../art-and-words-product-photos.md) briefs
+a Codex session on the owner's PC to make one in-room scene per quote
+blanket: the files and scene paths, the exact quote, credit and brand text
+with their upright positions, a shot list, a word check with a
+pixel-composite fallback, the output spec and the `media --family blanket`
+step. The runbook's scene note now accepts such a photo. No images were
+made in this session (no Codex, launch folder or token in the cloud
+container).
