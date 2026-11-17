@@ -3,6 +3,7 @@ import {Await, Link, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {useOptimisticCart} from '@shopify/hydrogen';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Aside, useAside} from './Aside';
+import {BlackFridayAnnouncement} from './BlackFridayAnnouncement';
 import {BrandLogo} from './BrandLogo';
 import {CartConnectionGuard} from './CartConnectionGuard';
 import {CartMain} from './CartMain';
@@ -26,9 +27,12 @@ const HAS_ARTISTS = publicArtists().length > 0;
 const HAS_PHONE_CASES = isReleasedProductHandle(TOUGH_CASE_HANDLE);
 
 export function ClaraShell({
+  blackFridayWeek = false,
   cart,
   children,
 }: {
+  /** From the root loader: the request falls inside Black Friday week. */
+  blackFridayWeek?: boolean;
   cart: Promise<CartApiQueryFragment | null>;
   children: React.ReactNode;
 }) {
@@ -45,6 +49,7 @@ export function ClaraShell({
         >
           Skip to content
         </a>
+        {blackFridayWeek ? <BlackFridayAnnouncement /> : null}
         <ClaraHeader cart={cart} />
         <main id="main" tabIndex={-1}>
           {children}

@@ -24,6 +24,7 @@ import type {Route} from './+types/products.$handle';
 import {storefrontImageLoader} from '~/lib/imageLoader';
 import {useAfterPageLoad} from '~/lib/useAfterPageLoad';
 import {AddToCartButton} from '~/components/AddToCartButton';
+import {BlackFridayProductLine} from '~/components/BlackFridayProductLine';
 import {ChristmasOrderBy} from '~/components/ChristmasOrderBy';
 import {christmasRegionForVisitor, requestToday} from '~/lib/christmasDelivery';
 import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
@@ -1322,6 +1323,12 @@ function ProductPage() {
               />
             ) : displayPrice ? (
               <ProductPrice price={displayPrice} />
+            ) : null}
+            {selectedVariant?.availableForSale ? (
+              <BlackFridayProductLine
+                productType={product.productType}
+                variantTitle={selectedVariant.title}
+              />
             ) : null}
             {artProduct?.size ? (
               <p className="product-fixed-size">

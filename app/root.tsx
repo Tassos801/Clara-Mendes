@@ -28,6 +28,7 @@ import {normalizeMetaPixelId} from '~/lib/metaPixel';
 import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
 import {NEWSLETTER_WELCOME_SESSION_KEY} from '~/lib/newsletter';
 import {requestToday} from '~/lib/christmasDelivery';
+import {blackFridayNow, isBlackFridayWeek} from '~/lib/blackFriday';
 import {heroBackdropFor, heroBackdropVars} from '~/lib/heroBackdrop';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
@@ -108,6 +109,11 @@ export async function loader({context, request}: Route.LoaderArgs) {
     // The hero backdrop for today's date (Christmas 1 Nov to 6 Jan), read
     // per request: on Oxygen a module's top level has no usable clock.
     heroBackdrop: heroBackdropFor(requestToday(request)),
+    // Black Friday week (20 Nov to 30 Nov 2026, Nicosia time), judged at
+    // this request's time: the sitewide line shows only inside the window.
+    // No document response is cached (no Cache-Control on pages), so it
+    // switches off with the first request after the end.
+    blackFridayWeek: isBlackFridayWeek(blackFridayNow(request)),
     cart: getCartOrNull(context.cart),
     shop: getShopAnalytics({
       storefront,
@@ -162,7 +168,7 @@ export default function App() {
       <style suppressHydrationWarning>
         {heroBackdropVars(data.heroBackdrop)}
       </style>
-      <ClaraShell cart={data.cart}>
+      <ClaraShell blackFridayWeek={data.blackFridayWeek} cart={data.cart}>
         <Outlet />
       </ClaraShell>
     </Analytics.Provider>
@@ -205,5 +211,9 @@ export function ErrorBoundary() {
   // page stands alone.
   const rootData = useRouteLoaderData<typeof loader>('root');
   if (!rootData) return <main>{page}</main>;
-  return <ClaraShell cart={rootData.cart}>{page}</ClaraShell>;
+  return (
+    <ClaraShell blackFridayWeek={rootData.blackFridayWeek} cart={rootData.cart}>
+      {page}
+    </ClaraShell>
+  );
 }
