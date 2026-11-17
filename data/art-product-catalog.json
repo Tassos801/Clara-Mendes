@@ -731,7 +731,7 @@
       "families": {
         "blanket": {
           "prices": {
-            "50x60": "64.99"
+            "50x60": "69.99"
           },
           "providerSku": "Printful 395 Throw Blanket, variant 10986",
           "providerSettings": "The 7500×9000 file fills the 50 × 60 in print area (wide works are already turned)",
@@ -740,13 +740,13 @@
               "at": "2026-11-17",
               "by": "Tassos",
               "minPpi": 62,
-              "note": "Recorded 2026-11-17 for the owner to confirm in the Art & Words PR, not yet confirmed: the file keeps the museum pixels of the-great-wave-off-kanagawa-blanket (62.6 ppi), which the owner accepted on 2026-10-20 for that product; exceptions do not carry over between collections."
+              "note": "Confirmed by the owner on 2026-11-17 for the Art & Words release: the file keeps the museum pixels of the-great-wave-off-kanagawa-blanket (62.6 ppi), which the owner accepted on 2026-10-20 for that product; exceptions do not carry over between collections."
             },
             "aic-8983": {
               "at": "2026-11-17",
               "by": "Tassos",
               "minPpi": 48,
-              "note": "Recorded 2026-11-17 for the owner to confirm in the Art & Words PR, not yet confirmed: the file keeps the museum pixels of painting-with-troika-blanket (48.4 ppi), which the owner accepted on 2026-10-20 for that product; exceptions do not carry over between collections."
+              "note": "Confirmed by the owner on 2026-11-17 for the Art & Words release: the file keeps the museum pixels of painting-with-troika-blanket (48.4 ppi), which the owner accepted on 2026-10-20 for that product; exceptions do not carry over between collections."
             }
           }
         }
@@ -762,9 +762,9 @@
       "artworkId": "met-39799",
       "title": "The Great Wave off Kanagawa Throw Blanket, Art & Words",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-AW-01-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"fcbf25b4c8a9f3120a381d16d2409937cd8560983f4714df89c87da2341e19a5","printfulSyncProductId":"495156729","printfulSyncVariantId":"5647863778","sourceSignature":"{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"preview\":2,\"edition\":\"{\\\"base\\\":\\\"0f45829825b39d006dbd5b76ce23c32540d521cfc229a77dc026fdb8c3166b7b\\\",\\\"brand\\\":\\\"Clara Mendes\\\",\\\"credit\\\":\\\"Katsushika Hokusai, 1834\\\",\\\"font\\\":[\\\"EB Garamond Regular (Version 1.003)\\\",\\\"934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958\\\"],\\\"quote\\\":\\\"At a hundred and ten, every dot and every stroke will seem alive.\\\",\\\"textBoxes\\\":[[\\\"brand\\\",6524,788,6602,1399],[\\\"credit\\\",4124,749,4215,1915],[\\\"quote\\\",3752,751,4082,2636]]}\"}","verified":true,"verifiedAt":"2026-11-17","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-AW-01-BLANKET50X60","priceEUR":"69.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"fcbf25b4c8a9f3120a381d16d2409937cd8560983f4714df89c87da2341e19a5","printfulSyncProductId":"495156729","printfulSyncVariantId":"5647863778","sourceSignature":"{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"b410eeec0473c4e63eef12434a5a7c4613401c6e18670718d7727f36a441495c\",\"trim\":[0,0,0,0],\"area\":{\"left\":0.011,\"top\":0.013,\"right\":0.989,\"bottom\":0.984},\"preview\":2,\"edition\":\"{\\\"base\\\":\\\"0f45829825b39d006dbd5b76ce23c32540d521cfc229a77dc026fdb8c3166b7b\\\",\\\"brand\\\":\\\"Clara Mendes\\\",\\\"credit\\\":\\\"Katsushika Hokusai, 1834\\\",\\\"font\\\":[\\\"EB Garamond Regular (Version 1.003)\\\",\\\"934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958\\\"],\\\"quote\\\":\\\"At a hundred and ten, every dot and every stroke will seem alive.\\\",\\\"textBoxes\\\":[[\\\"brand\\\",6524,788,6602,1399],[\\\"credit\\\",4124,749,4215,1915],[\\\"quote\\\",3752,751,4082,2636]]}\"}","verified":true,"verifiedAt":"2026-11-17","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -811,9 +811,9 @@
       "artworkId": "cma-1967.215",
       "title": "Composition with Red, Yellow, and Blue Throw Blanket, Art & Words",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-AW-02-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d283aa2d3435a9b72118e7b9fb7640112211e68db0614bb19b08ea5d17b0ad8b","printfulSyncProductId":"495156765","printfulSyncVariantId":"5647863832","sourceSignature":"{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844},\"preview\":2,\"edition\":\"{\\\"base\\\":\\\"96810dc02766071bc79df89999d58eca2e852c891360341d6f1eb9eae38b975a\\\",\\\"brand\\\":\\\"Clara Mendes\\\",\\\"credit\\\":\\\"Piet Mondrian, 1914\\\",\\\"font\\\":[\\\"EB Garamond Regular (Version 1.003)\\\",\\\"934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958\\\"],\\\"quote\\\":\\\"On a flat plane I construct lines and colour combinations, to show universal beauty as consciously as I can.\\\",\\\"textBoxes\\\":[[\\\"brand\\\",805,8104,1416,8182],[\\\"credit\\\",5885,7188,6790,7277],[\\\"quote\\\",5148,6523,6791,7152]]}\"}","verified":true,"verifiedAt":"2026-11-17","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-AW-02-BLANKET50X60","priceEUR":"69.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"d283aa2d3435a9b72118e7b9fb7640112211e68db0614bb19b08ea5d17b0ad8b","printfulSyncProductId":"495156765","printfulSyncVariantId":"5647863832","sourceSignature":"{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"9f9f23de06a21b48057420cf2cb14f913487d0a703968aea7b12ef8539899252\",\"trim\":[230,196,298,474],\"area\":{\"left\":0.0187,\"top\":0.0219,\"right\":0.9781,\"bottom\":0.9844},\"preview\":2,\"edition\":\"{\\\"base\\\":\\\"96810dc02766071bc79df89999d58eca2e852c891360341d6f1eb9eae38b975a\\\",\\\"brand\\\":\\\"Clara Mendes\\\",\\\"credit\\\":\\\"Piet Mondrian, 1914\\\",\\\"font\\\":[\\\"EB Garamond Regular (Version 1.003)\\\",\\\"934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958\\\"],\\\"quote\\\":\\\"On a flat plane I construct lines and colour combinations, to show universal beauty as consciously as I can.\\\",\\\"textBoxes\\\":[[\\\"brand\\\",805,8104,1416,8182],[\\\"credit\\\",5885,7188,6790,7277],[\\\"quote\\\",5148,6523,6791,7152]]}\"}","verified":true,"verifiedAt":"2026-11-17","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -860,9 +860,9 @@
       "artworkId": "aic-8983",
       "title": "Painting with Troika Throw Blanket, Art & Words",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-AW-03-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"51a2c57ff1ed4a98604ec8193cf7b0acea94c56f66559871f7790d0ece320695","printfulSyncProductId":"495156800","printfulSyncVariantId":"5647863883","sourceSignature":"{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null,\"preview\":2,\"edition\":\"{\\\"base\\\":\\\"b9fac32a4da16374f7e44be1ec1a8a5d5f0bca44b32bfb7842b3ff43591bd601\\\",\\\"brand\\\":\\\"Clara Mendes\\\",\\\"credit\\\":\\\"Vasily Kandinsky, 1912\\\",\\\"font\\\":[\\\"EB Garamond Regular (Version 1.003)\\\",\\\"934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958\\\"],\\\"quote\\\":\\\"Colour is a means of exerting a direct influence on the soul.\\\",\\\"textBoxes\\\":[[\\\"brand\\\",5124,553,5202,1164],[\\\"credit\\\",1598,770,1704,1824],[\\\"quote\\\",1211,769,1516,2599]]}\"}","verified":true,"verifiedAt":"2026-11-17","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-AW-03-BLANKET50X60","priceEUR":"69.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"51a2c57ff1ed4a98604ec8193cf7b0acea94c56f66559871f7790d0ece320695","printfulSyncProductId":"495156800","printfulSyncVariantId":"5647863883","sourceSignature":"{\"renderer\":1,\"family\":\"blanket\",\"supplied\":[\"blanket-50x60\"],\"source\":\"1d66c7a8e8c5401305c440225d7698c904d5514b7f6e920aec5192c45fcf3db8\",\"trim\":[48,50,46,50],\"area\":null,\"preview\":2,\"edition\":\"{\\\"base\\\":\\\"b9fac32a4da16374f7e44be1ec1a8a5d5f0bca44b32bfb7842b3ff43591bd601\\\",\\\"brand\\\":\\\"Clara Mendes\\\",\\\"credit\\\":\\\"Vasily Kandinsky, 1912\\\",\\\"font\\\":[\\\"EB Garamond Regular (Version 1.003)\\\",\\\"934aa932b4bc1a75d883f7c3d4d5bbc8278e5e7fcc96d5440bbffd61050cf958\\\"],\\\"quote\\\":\\\"Colour is a means of exerting a direct influence on the soul.\\\",\\\"textBoxes\\\":[[\\\"brand\\\",5124,553,5202,1164],[\\\"credit\\\",1598,770,1704,1824],[\\\"quote\\\",1211,769,1516,2599]]}\"}","verified":true,"verifiedAt":"2026-11-17","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,

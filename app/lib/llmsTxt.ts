@@ -23,6 +23,7 @@ import {releasedMuseumFamilies} from './museumProductFacts.ts';
 import {
   PRINT_CATALOG,
   collectionKind,
+  isEditionCollection,
   printHandle,
   releasedPrintCollections,
   type PrintCatalog,
@@ -235,9 +236,18 @@ function exampleProduct(family: string, sources: Sources) {
     }
     return null;
   }
-  const product = artProducts.products.find(
+  // The plain product of a work names the type best; an edition (Art & Words)
+  // is the example only when the type has nothing else released.
+  const edition = (slug: string) =>
+    catalog.collections.some(
+      (collection) =>
+        collection.slug === slug && isEditionCollection(collection),
+    );
+  const released = artProducts.products.filter(
     (entry) => entry.family === family && entry.released === true,
   );
+  const product =
+    released.find((entry) => !edition(entry.collection)) ?? released[0];
   return product ? {handle: product.handle, title: product.title} : null;
 }
 

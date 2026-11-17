@@ -51,11 +51,13 @@ test('every released museum product family is listed with an example product', (
     const facts = families.find((entry) => entry.family === family);
     assert.ok(facts, `${family} missing from releasedMuseumFamilies`);
     const bullet = familyBullet(text, facts.label);
-    const example = ART_PRODUCT_CATALOG.products.find(
+    const examples = ART_PRODUCT_CATALOG.products.filter(
       (product) => product.family === family && product.released === true,
     );
     assert.ok(
-      bullet.includes(`/products/${example.handle})`),
+      examples.some((example) =>
+        bullet.includes(`/products/${example.handle})`),
+      ),
       `${family} has no example link`,
     );
   }

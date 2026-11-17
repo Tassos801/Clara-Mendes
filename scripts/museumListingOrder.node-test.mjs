@@ -141,9 +141,12 @@ test('artist shops list museum works by type, then artwork sequence', () => {
       (entry) => entry.artistId === 'katsushika-hokusai' && entry.released,
     );
   assert.ok(hokusai.length >= 6);
-  const expected = MUSEUM_ORDER.filter((handle) =>
-    hokusai.some((entry) => entry.handle === handle),
-  );
+  // The Art & Words quote blanket is the same type from a later collection,
+  // so it follows the Floating World blankets.
+  const expected = [
+    ...MUSEUM_ORDER,
+    'the-great-wave-off-kanagawa-quote-blanket',
+  ].filter((handle) => hokusai.some((entry) => entry.handle === handle));
   // Whatever order the products arrive in, Featured shows the same list.
   for (const input of [hokusai, [...hokusai].reverse()]) {
     const view = shops.artistShopView(input, new URLSearchParams());

@@ -1176,8 +1176,13 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
     assert.notEqual(base.variants[0].sku, product.variants[0].sku);
     assert.match(product.variants[0].sku, /^CM-AW-0[123]-BLANKET50X60$/);
     assert.equal(product.title, `${base.title}, Art & Words`);
-    assert.equal(product.released, false); // the release commit flips this
-    // Staged as a hidden Draft and mapped in Printful (2026-11-17), not released.
+    // Staged and mapped in Printful, then released by the owner (2026-11-17).
+    assert.equal(product.released, true);
+    assert.deepEqual(product.variants[0].inventory, {
+      policy: 'DENY',
+      quantity: 0,
+      tracked: false,
+    });
     assert.match(product.shopify.productId, /^gid:\/\/shopify\/Product\/\d+$/);
     assert.notEqual(product.shopify.productId, base.shopify.productId);
     assert.equal(product.variants[0].mapping.verified, true);
@@ -1189,8 +1194,9 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
       product.variants[0].mapping.printfulSyncProductId,
       base.variants[0].mapping.printfulSyncProductId,
     );
-    // A placeholder at the plain blanket's price, for the owner to confirm.
-    assert.equal(product.variants[0].priceEUR, base.variants[0].priceEUR);
+    // The owner's release price, €5 above the plain blanket of the work.
+    assert.equal(product.variants[0].priceEUR, '69.99');
+    assert.equal(base.variants[0].priceEUR, '64.99');
     // The words are on the file, and the copy says so.
     assert.match(family.reproductionSentence(product.handle), /own words/);
     assert.doesNotMatch(
@@ -1204,8 +1210,8 @@ test('an edition is a second blanket of the same work, with its own handle, SKU 
     assert.equal(file.provenance.masterSha256, record.base.sha256);
     assert.equal(file.ppi, base.assets.files['blanket-50x60'].ppi);
     assert.ok(file.provenance.edition.outsideMaxDifference <= 1);
-    // Staging and mapping are done; no pipeline blocker remains. The owner
-    // still confirms the ppi exceptions and the price before release.
+    // No pipeline blocker remains; the owner confirmed the ppi exceptions and
+    // the price before release.
     assert.deepEqual(familyReleaseBlockers(product), []);
   }
   // The live blankets are untouched by their editions.
@@ -1520,7 +1526,7 @@ test('an edition file needs the owner’s approval of that very file', () => {
   assert.deepEqual(Object.keys(own).sort(), ['aic-8983', 'met-39799']);
   for (const exception of Object.values(own)) {
     assert.equal(exception.at, '2026-11-17');
-    assert.match(exception.note, /owner to confirm/);
+    assert.match(exception.note, /^Confirmed by the owner on 2026-11-17/);
   }
 });
 
