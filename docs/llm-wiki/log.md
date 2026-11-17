@@ -2599,3 +2599,16 @@ translation of the Kandinsky line is still protected in the EU. Agent B's
 task is a short delta check and Agent D first tests a no-code route in the
 existing `blanket` family. Four owner decisions are listed first. Documentation
 only; nothing staged, ordered or published.
+
+## 2026-11-17 — Art & Words quotes researched (Agent A)
+
+Added [art-and-quotes](../blanket-line/art-and-quotes.md): one row for each
+of the 14 artist directions. Each row gives the original-language text, the
+source and URL, a new Clara Mendes English translation (no modern published
+translation is used), the words left out, the confidence level and the status.
+10 rows are cleared, Klimt needs an owner decision, and Hiroshige, Renoir and
+Vermeer have no authenticated quote (each has a proposed studio line). The
+three proof quotes are cleared: Hokusai (1834 *Fugaku hyakkei* postscript),
+Mondrian (letter to Bremmer, 1914) and Kandinsky (1912, p. 49). The working
+Kandinsky line "touching the soul directly" was not faithful and is replaced.
+Documentation only; nothing in Shopify or Printful was changed.
