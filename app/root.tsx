@@ -109,7 +109,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
     // The hero backdrop for today's date (Christmas 1 Nov to 6 Jan), read
     // per request: on Oxygen a module's top level has no usable clock.
     heroBackdrop: heroBackdropFor(requestToday(request)),
-    // Black Friday week (20 Nov to 30 Nov 2026, Nicosia time), judged at
+    // Black Friday week (17 Nov to 30 Nov 2026, Nicosia time), judged at
     // this request's time: the sitewide line shows only inside the window.
     // No document response is cached (no Cache-Control on pages), so it
     // switches off with the first request after the end.

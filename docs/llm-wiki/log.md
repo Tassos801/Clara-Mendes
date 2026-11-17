@@ -2612,3 +2612,12 @@ from the Accept header, so a plain file link gives WebP to a fetcher that
 accepts it; Meta's catalogue takes JPEG or PNG only and had marked the
 Museum Masterpieces items "missing or invalid images". The new link also
 makes Meta fetch those images again. Prices, titles and ids are unchanged.
+
+## 2026-11-17 — Black Friday week starts on 17 November
+
+The owner moved the start to today: the window is now Tue 17 Nov 00:00 to
+the end of Mon 30 Nov 2026, Asia/Nicosia (`BLACK_FRIDAY_START` in
+`app/lib/blackFriday.ts`). The automatic discounts in Shopify admin now
+start today too. Page copy: dates line "Until Monday 30 November", meta
+description "until 30 November", and the before-message no longer names a
+date. End date, discount rules and the announcement line are unchanged.
