@@ -2585,3 +2585,17 @@ product identity and separate release evidence. No product staging, supplier
 orders, publication or runtime changes were made at this checkpoint.
 The documentation-only commit skips CI to avoid an automatic branch-preview
 deployment. Product and code implementation is future work.
+
+## 2026-11-17 — Art & Words blanket plan refined
+
+Added section 0 to the
+[blanket plan](../superpowers/plans/2026-11-16-blanket-quotes-europe.md)
+after a check against `main`: all 11 museum artists already have a live
+blanket of the candidate artwork on the same Printful product, so those
+designs need one text strip, not a new product route. Work is now phased
+(three proofs, eight museum designs, three studio lines). Quotes need the
+original-language text and a free or studio translation; the Sadler
+translation of the Kandinsky line is still protected in the EU. Agent B's
+task is a short delta check and Agent D first tests a no-code route in the
+existing `blanket` family. Four owner decisions are listed first. Documentation
+only; nothing staged, ordered or published.

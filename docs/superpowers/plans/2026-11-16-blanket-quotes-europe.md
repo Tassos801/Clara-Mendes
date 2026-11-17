@@ -10,6 +10,62 @@
 
 ---
 
+## 0. Refinements, 17 November 2026
+
+Checked against `main` and the live shop on 17 November. Where this section and a later one disagree, this section wins.
+
+### 0.1 What already exists (do not re-verify from zero)
+
+- **28 blankets are live**, all family `blanket`, Printful variant `10986`, 50 × 60 in, one price (`data/art-product-catalog.json`).
+- **All 11 museum artists already have a live blanket of the candidate artwork in section 3**, with a released 7500 × 9000 file, upright preview, ppi decision and current Printful mapping. Examples: `houses-at-murnau-blanket`, `the-great-wave-off-kanagawa-blanket`, `composition-with-red-yellow-and-blue-blanket`, `irises-blanket`, `the-milkmaid-blanket`.
+- EU checkout fee, delivery windows and the Christmas order-by date for blankets are in `app/lib/printfulShippingFees.ts`, `app/lib/printfulShipping.ts` and `app/lib/christmasDelivery.ts`. The weekly workflow `.github/workflows/shipping-fees.yml` re-quotes them.
+
+So for the 11 museum designs the new work is **one text strip on a file that already prints**. The three studio lines (Counter-Diagonal, Free Abyss, Circle Rhythm) have no blanket yet; they need new blanket artwork, not only a strip.
+
+### 0.2 Order of work (replaces "all 14 at once")
+
+| Phase | Designs | Gate |
+| --- | --- | --- |
+| 1 — proof | Hokusai *Great Wave*, Mondrian *Composition with Red, Yellow, and Blue*, Kandinsky *Houses at Murnau* | Owner approves the type system on these three |
+| 2 — museum | The other 8 museum artists | Quote cleared per row (0.3) |
+| 3 — studio | Counter-Diagonal, Free Abyss, Circle Rhythm | New blanket composition approved per line |
+
+- Phase 1 uses the three contrasting works Task 3 already names. The Great Wave is the best-known work, so it leads.
+- **Monet:** use *Wheatstacks (Snow Effect, Morning)*, not *Water Lilies (Agapanthus)*. The Water Lilies blanket was judged weak when it was released.
+- Scope stays 14 designs. A phase is an order of work, not a cut.
+
+### 0.3 Quote rule: the translation has its own copyright
+
+All 14 artists died before 1956, so their own writings are free to use in the EU. **A translation is a separate work.** It is protected for 70 years after the translator's death.
+
+- The reference quote uses M. T. H. Sadler's 1914 translation. Sadler (Michael Sadleir) died in 1957, so that wording stays protected in the EU until the end of 2027. **Do not print it.**
+- Use the artist's original-language sentence and a Clara Mendes translation of it, or a translation whose translator died before 1956. Record the original sentence, its source and page, and the translator.
+- For Kandinsky, translate from the 1912 German text of *Über das Geistige in der Kunst*. Working line for review: "Colour is a means of touching the soul directly."
+- Prefer the artist's own letters and published texts. A saying reported years later by someone else (a son, a dealer, a biographer) belongs partly to that writer and is often not authentic.
+- William Morris wrote in English: no translation needed.
+- Vermeer left no writings. That row gets a Clara Mendes line, credited to the studio, as Task 1 already allows.
+- Each row in `art-and-quotes.md` therefore needs two extra columns: **original-language text** and **translator (death year or "Clara Mendes")**.
+
+### 0.4 Smaller, sharper tasks
+
+- **Task 2 (Agent B) becomes a delta check, about half a day.** Supplier, variant, size, EU reach and fee are known (0.1). What is new: (a) the template safe area for a strip near the hem, (b) the smallest text Printful's fleece holds, (c) whether non-EU Europe is wanted at all. Do the two-supplier comparison only if (b) fails. Returns, textile label and product-safety checks apply to all 28 live blankets too: answer them once for the blanket family, in `docs/llm-wiki/open-questions.md`, not once per design.
+- **Text size is the one real print risk.** The fabric is brushed fleece; fine serifs fill in. Start at a capital height of 8 mm or more on the 127 cm side, medium weight if regular fails. Agent C states the size in millimetres, not only as a share of the width.
+- **Task 5 (Agent D): first test the no-code route.** Register each design as its own artwork record (artwork + strip = one composite master, own id and hash) in the existing `blanket` family, with a handle such as `houses-at-murnau-quote-blanket`. If handles, SKUs, signatures and artist pages work that way, no `quote-blanket` family is needed. Build the new family only if the audit shows a real collision. Either way the existing 28 blankets stay untouched.
+- **Critical path:** A (quotes) → C (three proofs) → owner review. B and D run beside it and must not block it.
+
+### 0.5 Decisions the owner must make first
+
+1. **Sample or no sample for Phase 1.** A Printful sample to Cyprus takes about two weeks. The EU Christmas order-by date for blankets is 30 November. So a sample-gated line launches in January. The fabric, supplier and size are already proven by the live blankets; the only new risk is small black text. Options: (a) launch the three proofs before Christmas on a recorded owner exception, with the first paid order as the quality check, or (b) order one sample now and launch in January.
+2. **Price.** Same as the current blankets, or higher for the quote edition.
+3. **Countries.** EU-27 as today, or also the UK, Norway, Switzerland. The UK needs a VAT registration first.
+4. **Studio lines.** Whether Phase 3 gets new blanket compositions now or waits for Phase 1 sales.
+
+### 0.6 Not in this repository
+
+Costs, margins, ad budgets and order details stay in the office notes. This repository is public.
+
+---
+
 ## 1. Start here
 
 - Prepared **16 November 2026**; intended continuation **17 November 2026**, Europe/Bucharest.
@@ -47,7 +103,7 @@ Working collection name: **Art & Words**. This is a planning name, not an approv
 
 Read [reference provenance](../../blanket-line/reference/README.md). This image is a visual direction, not a print master, supplier mockup or physical quality proof. Do not extract artwork, lettering or the generated signature from it.
 
-The starting quote is the excerpt “Colour is a power which directly influences the soul.” from Kandinsky's *Concerning the Spiritual in Art*, in M. T. H. Sadler's translation. Preserve the source context and record that the opening “Generally speaking,” is omitted. [Text source](https://www.gutenberg.org/cache/epub/5321/pg5321.html).
+The reference image shows the excerpt “Colour is a power which directly influences the soul.” from Kandinsky's *Concerning the Spiritual in Art*, in M. T. H. Sadler's translation. **That translation is still protected in the EU (section 0.3); production uses a Clara Mendes translation of the German original.** Record that the opening “Generally speaking,” is omitted. [Text source](https://www.gutenberg.org/cache/epub/5321/pg5321.html).
 
 ## 3. Full artist scope
 
@@ -62,7 +118,7 @@ The live [Artists page](https://shopclaramendes.com/artists) was inspected on 16
 | Vasily Kandinsky | Houses at Murnau, the preview reference | Museum reproduction |
 | Gustav Klimt | Mäda Primavesi | Museum reproduction |
 | Piet Mondrian | Composition with Red, Yellow, and Blue | Museum reproduction |
-| Claude Monet | Water Lilies (Agapanthus) | Museum reproduction |
+| Claude Monet | Wheatstacks (Snow Effect, Morning); Water Lilies (Agapanthus) only as fallback | Museum reproduction |
 | William Morris | Strawberry Thief; retain the correct design/printing dates | Museum reproduction |
 | Pierre-Auguste Renoir | Roses in a Vase | Museum reproduction |
 | Johannes Vermeer | The Milkmaid | Museum reproduction |
