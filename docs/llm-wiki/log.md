@@ -2614,3 +2614,16 @@ need their own source kind. Printful reads: print file 9450 × 7950 at 150 dpi
 (63 × 53 in), sublimation shift up to 2 in, 300 dpi advised for text. Proposed
 text limits: ≥ 64 mm from the finished edge (≥ 700 px from any edge of our 7500 × 9000
 file), capital height ≥ 8 mm (47 px), 10 mm recommended. Documentation only.
+
+## 2026-11-17 — Art & Words quotes researched (Agent A)
+
+Added [art-and-quotes](../blanket-line/art-and-quotes.md): one row for each
+of the 14 artist directions. Each row gives the original-language text, the
+source and URL, a new Clara Mendes English translation (no modern published
+translation is used), the words left out, the confidence level and the status.
+10 rows are cleared, Klimt needs an owner decision, and Hiroshige, Renoir and
+Vermeer have no authenticated quote (each has a proposed studio line). The
+three proof quotes are cleared: Hokusai (1834 *Fugaku hyakkei* postscript),
+Mondrian (letter to Bremmer, 1914) and Kandinsky (1912, p. 49). The working
+Kandinsky line "touching the soul directly" was not faithful and is replaced.
+Documentation only; nothing in Shopify or Printful was changed.
