@@ -2660,3 +2660,18 @@ pixel-composite fallback, the output spec and the `media --family blanket`
 step. The runbook's scene note now accepts such a photo. No images were
 made in this session (no Codex, launch folder or token in the cloud
 container).
+
+## 2026-11-17 — Art & Words blankets released
+
+The owner confirmed the two ppi exceptions (Great Wave 62, Troika 48), the
+print files and credits as approved, and a price of EUR 69.99 (EUR 5 above the
+plain blanket). The three quote blankets were released by hand in Admin, the
+steps of `release --apply` (no token or launch folder on the Mac): price, the
+two pending tags removed, Active, published to Clara Mendes and Clara Mendes
+Headless. Inventory stays tracked at the Printful location (9,999), matching
+the live plain blankets, so orders route to Printful; the catalog records the
+pipeline's `tracked: false`. Each gallery gained an in-room scene (Codex room,
+real print pixels on the blanket face). `data/art-product-catalog.json`
+records `released: true` and the price; the edition test pins it, and the
+`llms.txt` blanket example stays the plain Great Wave blanket. Details:
+[catalog-and-products.md](modules/catalog-and-products.md).
