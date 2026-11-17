@@ -230,7 +230,9 @@ async function crops() {
           .map((print) => print.artworkId)
           .filter((id) => MUSEUM_CROPS.crops[id])
       : Object.keys(MUSEUM_CROPS.crops);
-  const prints = PRINT_CATALOG.collections.flatMap((entry) => entry.prints);
+  const prints = PRINT_CATALOG.collections
+    .filter((entry) => !entry.edition)
+    .flatMap((entry) => entry.prints);
   const artworks = ids.map((id) => {
     const artwork = findArtwork(id, registry);
     if (!artwork) throw new Error(`unknown artwork ${id}`);
@@ -689,11 +691,17 @@ function registeredImpressionKeys() {
   return keys;
 }
 
-/** artwork id → the print-catalog entry that sells it. */
+/**
+ * artwork id → the print-catalog entry that sells it. Edition collections
+ * are skipped: their prints carry family products of a work another
+ * collection sells as a print.
+ */
 function catalogLinks() {
   const catalog = JSON.parse(readFileSync(CATALOG_PATH, 'utf8'));
   const links = new Map();
-  for (const collection of catalog.collections)
+  for (const collection of catalog.collections.filter(
+    (entry) => !entry.edition,
+  ))
     for (const print of collection.prints)
       if (print.artworkId)
         links.set(print.artworkId, {

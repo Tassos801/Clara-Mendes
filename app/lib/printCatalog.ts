@@ -87,6 +87,15 @@ export type PrintCatalogCollection = {
   /** Studio collections: the registry artist whose shop lists them. */
   artistId?: string;
   collectionCopy: string;
+  /**
+   * Museum collections only: a second edition of works sold elsewhere (for
+   * example "art-and-words", a short quotation set on the work). Its prints
+   * exist only to carry family products (data/art-product-catalog.json): they
+   * have no print variants, no room scenes and no web image, are never
+   * released as art prints, and may reuse an artwork another collection
+   * already sells.
+   */
+  edition?: string;
   kind?: PrintCollectionKind;
   note: string;
   prints: PrintCatalogPrint[];
@@ -125,6 +134,13 @@ export function collectionKind(
   collection: Pick<PrintCatalogCollection, 'kind'>,
 ): PrintCollectionKind {
   return collection.kind ?? 'studio';
+}
+
+/** An edition collection: its prints carry family products only. */
+export function isEditionCollection(
+  collection: Pick<PrintCatalogCollection, 'edition'>,
+) {
+  return Boolean(collection.edition);
 }
 
 export function printOrientation(
@@ -301,7 +317,18 @@ export function validatePrintCatalog(
       problems.push(
         `${where}: museum collections take each artist from the print's artwork, not artistId`,
       );
-    if (!collection.variants?.length)
+    const edition = isEditionCollection(collection);
+    if (
+      collection.edition !== undefined &&
+      !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(collection.edition)
+    )
+      problems.push(`${where}: edition must be kebab-case`);
+    if (edition && !museum)
+      problems.push(`${where}: editions are for museum collections`);
+    // An edition sells family products only: no art-print variants.
+    if (edition && collection.variants?.length)
+      problems.push(`${where}: an edition collection has no print variants`);
+    if (!edition && !collection.variants?.length)
       problems.push(`${where}: needs at least one variant`);
 
     const sizes = new Set<string>();
@@ -347,7 +374,13 @@ export function validatePrintCatalog(
       // Room placements frame the paper, so they follow its orientation.
       const paperRatio = printOrientation(print) === 'landscape' ? 1.25 : 0.8;
       const rooms = print.rooms ?? [];
-      if (rooms.length !== PRINT_ROOM_KEYS.length)
+      if (edition) {
+        // Never an art print: nothing to stage, hang in a room or release.
+        if (rooms.length)
+          problems.push(`${at}: an edition print has no room scenes`);
+        if (print.released !== false)
+          problems.push(`${at}: an edition print is never released as a print`);
+      } else if (rooms.length !== PRINT_ROOM_KEYS.length)
         problems.push(`${at}: needs exactly four room scenes`);
       const roomKeys = new Set<string>();
       const roomAlts = new Set<string>();

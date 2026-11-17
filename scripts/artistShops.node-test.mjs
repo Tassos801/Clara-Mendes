@@ -845,3 +845,57 @@ test("a curator's note names only product types the artist's shop lists", () => 
   }
   assert.ok(checked.includes('kandinsky') && checked.includes('mondrian'));
 });
+
+test('an edition blanket belongs to its work’s artist and adds no second work', () => {
+  const all = shops.artistProducts();
+  const expected = {
+    'composition-with-red-yellow-and-blue-quote-blanket': 'piet-mondrian',
+    'painting-with-troika-quote-blanket': 'vasily-kandinsky',
+    'the-great-wave-off-kanagawa-quote-blanket': 'katsushika-hokusai',
+  };
+  for (const [handle, artistId] of Object.entries(expected)) {
+    const product = all.find((entry) => entry.handle === handle);
+    assert.ok(product, handle);
+    assert.equal(product.artistId, artistId, handle);
+    assert.equal(product.family, 'Blankets');
+    assert.equal(product.collectionTag, 'Art & Words');
+    // Shown with its work's plain print, which exists on disk.
+    assert.ok(existsSync(path.join(REPO_ROOT, 'public', product.image)), product.image);
+    assert.ok(
+      existsSync(path.join(REPO_ROOT, 'public', product.sheet.src)),
+      product.sheet.src,
+    );
+    assert.doesNotMatch(product.image, /art-and-words/);
+    // The plain blanket of the same work is the same artist's too.
+    const plain = all.find(
+      (entry) =>
+        entry.handle !== handle &&
+        entry.family === 'Blankets' &&
+        entry.artworkId === product.artworkId,
+    );
+    assert.equal(plain.artistId, artistId);
+    // One work, however many editions: the artist page counts it once.
+    const mine = all.filter((entry) => entry.artistId === artistId);
+    assert.equal(
+      shops.artistArtworks(mine).filter((art) => art.id === product.artworkId)
+        .length,
+      1,
+    );
+  }
+  // An edition's prints are not art prints of anyone's shop.
+  assert.equal(
+    all.some((entry) => /-quote-art-print$/.test(entry.handle)),
+    false,
+  );
+  // Grouped by data: an edition pointing at another artist's work fails
+  // validation instead of landing in the wrong shop.
+  const catalog = structuredClone(prints.PRINT_CATALOG);
+  catalog.collections
+    .find((entry) => entry.slug === 'art-and-words')
+    .prints.find((print) => print.slug === 'painting-with-troika-quote').artworkId =
+    'cma-1967.215';
+  assert.match(
+    shops.validateArtistLinks({catalog}).join('\n'),
+    /art-and-words\/painting-with-troika-quote: artwork cma-1967.215 is already sold as art-and-words\/composition-with-red-yellow-and-blue-quote/,
+  );
+});

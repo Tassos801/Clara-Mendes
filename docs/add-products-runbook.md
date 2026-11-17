@@ -285,6 +285,38 @@ step and two owner reviews. Brief: [artist-shops/brief.md](artist-shops/brief.md
    - Supplied-file products need the "Free EU shipping – artist products"
      shipping profile; the app token cannot set it, so the owner moves them
      in Admin.
+6. **Editions** (a second product of a work already sold, with words set on
+   the work: Art & Words). Never edit the plain product; add a collection:
+   - `data/print-catalog.json`: `"kind": "museum"`, `"edition": "<slug>"`,
+     its own `skuCode`, `"variants": []`, and one print per work with the
+     work's `artworkId` and orientation, a new slug (`<work>-quote` gives
+     `<work>-quote-blanket`), `"rooms": []` and `"released": false`. The
+     print only carries the family product: every print verb refuses an
+     edition collection, and the title gains the collection's
+     (`<Work> Throw Blanket, Art & Words`).
+   - `data/art-product-catalog.json`: the family and its price (the plain
+     product's, until the owner sets another), `suppliedFiles`, and per work
+     an `editionFiles` record: `base` (the plain product's handle, file key
+     and that file's sha256), `quote`, `credit`, `brand`, `font` (name and
+     the font file's sha256) and `textBoxes` (`[left, top, right, bottom]`
+     print-file pixels of every block of lettering). They are part of the
+     asset signature, so changing any of them makes the files stale and the
+     Printful mapping unverified.
+   - Owner records of its own, never copied from the plain collection:
+     `suppliedApprovals[<artwork>]` with the `sha256` of the edition file he
+     approved (a crop approval or an approval of another file does not
+     count), and `ppiExceptions` where the base file is below 150 ppi.
+   - Files: `<launch>/<suppliedFiles>/products/<work>/<file>` and
+     `products/manifest.json` (rows as for supplied files, `rotated_90` as
+     the base file's; no `masters/assembly.json`).
+     `prepare <collection> --family <f>` checks each file against its base
+     file: both decoded, compared in 32 px cells; cells outside the text
+     boxes (grown by 16 px) may differ by at most 1.0 of 255 on average
+     (JPEG re-encoding measures 0.11–0.29), and every box must hold a cell
+     of at least 16 (`EDITION_CHECK` in `app/lib/artProductCatalog.ts`).
+     A failed check stops `prepare`; the result is recorded as the file's
+     `provenance.edition`. Then the usual `stage`, `printful`, `mapped`,
+     `release` steps with `--family <f>`.
 
 The artist shop (`/artists/<slug>`), the artists index, the Artists nav link,
 search matches and sitemap entries appear automatically once an approved

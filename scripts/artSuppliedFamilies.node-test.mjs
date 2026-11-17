@@ -209,8 +209,10 @@ test('both museum collections offer the six at the page prices; released but thr
 });
 
 test('every supplied file is recorded with its AI-fill log and native ppi', () => {
-  for (const product of family.ART_PRODUCT_CATALOG.products.filter((p) =>
-    SUPPLIED.includes(p.family),
+  // Edition files (Art & Words) are checked against their base file instead:
+  // artProductPipeline.node-test.mjs covers them.
+  for (const product of family.ART_PRODUCT_CATALOG.products.filter(
+    (p) => SUPPLIED.includes(p.family) && !family.editionFileOf(p),
   )) {
     const files = Object.entries(product.assets.files);
     assert.deepEqual(

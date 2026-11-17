@@ -25,6 +25,7 @@ import {
 import {compareListingOrder} from './museumListingOrder.ts';
 import {
   collectionKind,
+  isEditionCollection,
   PRINT_CATALOG,
   printHandle,
   printImagePath,
@@ -98,8 +99,9 @@ export function artistProducts({
   catalog = PRINT_CATALOG,
   registry = ART_REGISTRY,
 }: Sources = {}): ArtistProduct[] {
+  // An edition collection's prints only carry its family products.
   const prints = catalog.collections.flatMap((collection) =>
-    collection.prints.flatMap((print) => {
+    (isEditionCollection(collection) ? [] : collection.prints).flatMap((print) => {
       const artworkId = print.artworkId;
       const artistId = artworkId
         ? findArtwork(artworkId, registry)?.artistId
@@ -131,6 +133,20 @@ export function artistProducts({
     const artistId = findArtwork(product.artworkId, registry)?.artistId;
     if (!collection || !print || !artistId || !findArtist(artistId, registry))
       return [];
+    // An edition has no web artwork of its own: show the work's plain print.
+    const shown = isEditionCollection(collection)
+      ? catalog.collections
+          .filter(
+            (entry) =>
+              !isEditionCollection(entry) && collectionKind(entry) === 'museum',
+          )
+          .flatMap((entry) =>
+            entry.prints
+              .filter((candidate) => candidate.artworkId === product.artworkId)
+              .map((candidate) => ({collection: entry, print: candidate})),
+          )[0]
+      : {collection, print};
+    if (!shown) return [];
     return [
       {
         artistId,
@@ -138,10 +154,10 @@ export function artistProducts({
         collectionTag: collection.title,
         family: FAMILY_SPECS[product.family].artistFamily,
         handle: product.handle,
-        image: printImagePath(collection, print),
+        image: printImagePath(shown.collection, shown.print),
         orientation: product.orientation,
         released: product.released === true,
-        sheet: printSheetImage(collection, print),
+        sheet: printSheetImage(shown.collection, shown.print),
         title: product.title,
       },
     ];
@@ -917,7 +933,8 @@ export function validateArtistLinks({
         problems.push(`${at}: unknown artwork ${print.artworkId}`);
         continue;
       }
-      const key = `${artwork.id}:Prints`;
+      // An edition may carry a work sold plainly elsewhere, once per edition.
+      const key = `${artwork.id}:Prints:${collection.edition ?? ''}`;
       const previous = used.get(key);
       if (previous)
         problems.push(
@@ -942,7 +959,10 @@ export function validateArtistLinks({
   }
   for (const product of artProducts.products) {
     const at = `${product.collection}/${product.handle}`;
-    const key = `${product.artworkId}:${product.family}`;
+    const edition =
+      catalog.collections.find((entry) => entry.slug === product.collection)
+        ?.edition ?? '';
+    const key = `${product.artworkId}:${product.family}:${edition}`;
     const previous = used.get(key);
     if (previous)
       problems.push(

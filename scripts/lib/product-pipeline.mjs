@@ -63,6 +63,20 @@ export function findCollection(catalog, slug) {
   return collection;
 }
 
+/**
+ * The print verbs (prepare, rooms, stage, expand, handoff, mapped, media,
+ * release, verify) refuse an edition collection: its prints only carry
+ * family products, and staging them would create art-print Drafts that
+ * duplicate the work's plain print. Its family verbs (`--family <f>`) work.
+ */
+export function assertPrintCollection(collection, step) {
+  if (collection?.edition)
+    throw new Error(
+      `${collection.slug} is the "${collection.edition}" edition: its prints are never art prints. Use the family steps, e.g. npm run product -- ${step} ${collection.slug} --family blanket`,
+    );
+  return collection;
+}
+
 export function selectPrints(collection, only) {
   if (!only?.length) return collection.prints;
   const unknown = only.filter(
@@ -243,6 +257,7 @@ export function buildProductSetInput(
   print,
   {registry = ART_REGISTRY} = {},
 ) {
+  assertPrintCollection(collection, 'stage');
   const variants = printVariants(collection, print);
   const finishes = [...new Set(variants.map((v) => v.finish))];
   const museum = collectionKind(collection) === 'museum';

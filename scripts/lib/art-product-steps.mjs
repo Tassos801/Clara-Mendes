@@ -37,6 +37,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import {
   casePrintUrlPath,
+  editionRecordKey,
   FAMILY_SPECS,
   validateArtProductCatalog,
   variantFile,
@@ -47,6 +48,7 @@ import {
   artMatchError,
   caseMasks,
   compareDeployedImage,
+  compareEditionFile,
   describeFile,
   findCaseTemplate,
   renderFamilyFile,
@@ -253,13 +255,19 @@ export function createFamilySteps({
     const folder = absolute(artCollection.suppliedFiles);
     const manifestFile = path.join(folder, 'products', 'manifest.json');
     const assemblyFile = path.join(folder, 'masters', 'assembly.json');
-    for (const file of [manifestFile, assemblyFile])
+    // An edition's files are set on its base products' files: no AI-fill log.
+    for (const file of collection.edition
+      ? [manifestFile]
+      : [manifestFile, assemblyFile])
       assert.ok(existsSync(file), `${file} is missing`);
     const manifest = JSON.parse(readFileSync(manifestFile, 'utf8'));
-    const assembly = JSON.parse(readFileSync(assemblyFile, 'utf8'));
+    const assembly = collection.edition
+      ? {}
+      : JSON.parse(readFileSync(assemblyFile, 'utf8'));
     // A master logged without a canvas is the work itself: read its size.
     const masterSizes = new Map();
     for (const row of manifest) {
+      if (!row.source_master) continue;
       const key = row.source_master
         .replace(/^masters\//, '')
         .replace(/\.png$/, '');
@@ -318,6 +326,32 @@ export function createFamilySteps({
             minPpi: plan.minPpi,
             ppi: file.ppi,
           });
+        // An edition file: compared with its base file, pixel cell by cell.
+        if (file.edition) {
+          if (!existsSync(file.base.file)) {
+            problems.push(`${product.handle}: base file ${file.base.path} is missing`);
+            continue;
+          }
+          const baseBuffer = readFileSync(file.base.file);
+          if (hashBuffer(baseBuffer) !== file.base.sha256)
+            problems.push(
+              `${product.handle}: ${file.base.path} is not the base file the edition was set on (sha256)`,
+            );
+          const check = await compareEditionFile(
+            baseBuffer,
+            buffer,
+            file.edition.textBoxes,
+          );
+          file.provenance.edition = {
+            ...check,
+            baseSha256: file.base.sha256,
+            record: editionRecordKey(file.edition),
+          };
+          if (check.status !== 'ok')
+            problems.push(
+              `${product.handle}: ${file.path} differs from its base file outside its text boxes or not inside them: ${JSON.stringify(check)}`,
+            );
+        }
         rows.push({
           handle: product.handle,
           family: product.family,
@@ -325,9 +359,13 @@ export function createFamilySteps({
           dpi: Math.round(facts.dpi ?? 0),
           ppi: file.ppi,
           minPpi: plan.minPpi,
-          artMatch: file.provenance.aiFill.block_identical
-            ? 'museum pixels unchanged (log)'
-            : 'NOT CHECKED',
+          artMatch: file.edition
+            ? file.provenance.edition.status === 'ok'
+              ? `edition: only text boxes changed (outside max ${file.provenance.edition.outsideMaxDifference}/255, limit ${file.provenance.edition.outsideMax})`
+              : 'EDITION CHECK FAILED'
+            : file.provenance.aiFill.block_identical
+              ? 'museum pixels unchanged (log)'
+              : 'NOT CHECKED',
           file: file.key,
           sha256: facts.sha256.slice(0, 12),
         });
@@ -374,12 +412,16 @@ export function createFamilySteps({
         problems.push(
           `${product.handle}: preview is not ${plan.preview.width}×${plan.preview.height}`,
         );
-      // A variant whose file changed must be mapped again.
+      // A variant whose file changed must be mapped again; so must an
+      // edition's whose words, font or boxes changed.
+      const editionChanged =
+        plan.files.some((file) => file.edition) &&
+        product.assets?.sourceSignature !== plan.sourceSignature;
       for (const variant of product.variants) {
         const before = variantFile(product, variant);
         if (
           before &&
-          before.sha256 !== files[variant.file]?.sha256 &&
+          (before.sha256 !== files[variant.file]?.sha256 || editionChanged) &&
           variant.mapping.verified
         )
           variant.mapping = {

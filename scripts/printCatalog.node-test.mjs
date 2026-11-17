@@ -66,7 +66,10 @@ function fixture(released = []) {
 
 test('the shipped catalog file is valid and every image it names exists', () => {
   assert.deepEqual(prints.validatePrintCatalog(), []);
-  for (const collection of prints.PRINT_CATALOG.collections)
+  // Edition prints only carry family products: they have no web image.
+  for (const collection of prints.PRINT_CATALOG.collections.filter(
+    (entry) => !prints.isEditionCollection(entry),
+  ))
     for (const print of collection.prints)
       assert.ok(
         existsSync(`public${prints.printImagePath(collection, print)}`),

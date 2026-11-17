@@ -12,6 +12,7 @@ import {
   ART_PRODUCT_CATALOG,
   ART_PRODUCT_FAMILIES,
   casePrintUrlPath,
+  EDITION_CHECK,
   FAMILY_SPECS,
   familyCrop,
   familyFileSize,
@@ -21,6 +22,7 @@ import {
   familyOptionNames,
   familyPpiFloor,
   familyReleaseIssues,
+  familyReproduction,
   familySku,
   familySourceSignature,
   familyTitle,
@@ -145,7 +147,7 @@ export function expectedFamilyProduct(
     collection: collection.slug,
     print: print.slug,
     artworkId: print.artworkId,
-    title: familyTitle(print, family),
+    title: familyTitle(print, family, collection),
     orientation: print.orientation ?? 'portrait',
     released: false,
     variants,
@@ -474,6 +476,26 @@ export function suppliedAssetPlan(
   const orientation = familyLayout(product, artCollection);
   const folder = artCollection.suppliedFiles.replace(/\/+$/, '');
   const problems = [];
+  const edition = artCollection.editionFiles?.[product.artworkId] ?? null;
+  if (collection.edition && !edition)
+    throw new Error(
+      `${product.handle}: ${collection.slug} is an edition; add editionFiles ${product.artworkId} to data/art-product-catalog.json`,
+    );
+  // An edition file is its base product's file with words set on it: the
+  // base file is its master, and the museum pixels (and their ppi) are the
+  // base file's.
+  const baseProduct = edition
+    ? artCatalog.products.find((entry) => entry.handle === edition.base.handle)
+    : null;
+  const baseFile = baseProduct?.assets?.files?.[edition?.base.file];
+  if (edition && !baseFile)
+    problems.push(
+      `${product.handle}: base ${edition.base.handle} has no recorded ${edition.base.file} file (prepare its own collection first)`,
+    );
+  else if (edition && baseFile.sha256 !== edition.base.sha256)
+    problems.push(
+      `${product.handle}: base ${edition.base.handle} now records ${baseFile.sha256.slice(0, 12)} for ${edition.base.file}, the edition was set on ${edition.base.sha256.slice(0, 12)}`,
+    );
   const keys = [
     ...new Set(product.variants.map((variant) => variant.file)),
   ].filter(Boolean);
@@ -516,6 +538,44 @@ export function suppliedAssetPlan(
       problems.push(
         `${product.handle}: ${key} was drawn for "${row.sku}", the variants use Printful variants ${skus.join(', ')}`,
       );
+    if (edition) {
+      if (key !== edition.base.file)
+        problems.push(
+          `${product.handle}: ${key} is not the edition's ${edition.base.file} file`,
+        );
+      if (!baseFile) return null;
+      if ((row.rotated_90 === true) !== baseFile.provenance.rotated90)
+        problems.push(
+          `${product.handle}: manifest rotated_90 must be ${baseFile.provenance.rotated90}, as the base file it was set on`,
+        );
+      if (row.sha256 === edition.base.sha256)
+        problems.push(`${product.handle}: ${key} is the base file itself`);
+      const relativePath = `${folder}/${row.file}`;
+      return {
+        base: {
+          file: path.join(launchRoot, ...baseFile.path.split('/')),
+          path: baseFile.path,
+          sha256: edition.base.sha256,
+        },
+        dpi: want.dpi,
+        edition,
+        file: path.join(launchRoot, ...relativePath.split('/')),
+        height: size.height,
+        key,
+        path: relativePath,
+        ppi: baseFile.ppi,
+        provenance: {
+          aspectTrimPercent: baseFile.provenance.aspectTrimPercent,
+          hangerStripMm: row.hanger_strip_mm ?? 0,
+          manifestSku: row.sku,
+          master: baseFile.path,
+          masterSha256: edition.base.sha256,
+          rotated90: row.rotated_90 === true,
+        },
+        sha256: row.sha256,
+        width: size.width,
+      };
+    }
     const masterKey = row.source_master
       .replace(/^masters\//, '')
       .replace(/\.png$/, '');
@@ -580,7 +640,92 @@ export function suppliedAssetPlan(
     print: product.print,
     problems,
     ...familyPpiFloor(product, artCatalog),
-    sourceSignature: familySourceSignature(product, {crops, registry}),
+    sourceSignature: familySourceSignature(product, {
+      catalog: artCatalog,
+      crops,
+      registry,
+    }),
+  };
+}
+
+/**
+ * The edition check (EDITION_CHECK) on two decoded images of the same size
+ * and channel count (`base`, `edition`: raw pixel buffers). Pure, so it is
+ * tested on small synthetic images; prepare decodes the real files.
+ */
+export function editionDifference(
+  base,
+  edition,
+  {width, height, channels},
+  textBoxes,
+  {cellPx, insideMin, outsideMax, padPx} = EDITION_CHECK,
+) {
+  if (base.length !== edition.length || base.length !== width * height * channels)
+    throw new Error('editionDifference: the images differ in size');
+  const columns = Math.ceil(width / cellPx);
+  const rows = Math.ceil(height / cellPx);
+  const sums = new Float64Array(columns * rows);
+  const counts = new Uint32Array(columns * rows);
+  for (let y = 0; y < height; y += 1) {
+    const rowCell = Math.floor(y / cellPx) * columns;
+    for (let x = 0; x < width; x += 1) {
+      const cell = rowCell + Math.floor(x / cellPx);
+      const offset = (y * width + x) * channels;
+      let total = 0;
+      for (let channel = 0; channel < channels; channel += 1)
+        total += Math.abs(base[offset + channel] - edition[offset + channel]);
+      sums[cell] += total;
+      counts[cell] += channels;
+    }
+  }
+  const boxes = Object.entries(textBoxes);
+  const touches = (column, row, [left, top, right, bottom]) => {
+    const x = column * cellPx;
+    const y = row * cellPx;
+    return (
+      x + cellPx > left - padPx &&
+      x < right + padPx &&
+      y + cellPx > top - padPx &&
+      y < bottom + padPx
+    );
+  };
+  const boxPeaks = Object.fromEntries(boxes.map(([name]) => [name, 0]));
+  const outside = [];
+  let outsideMaxDifference = 0;
+  const round = (value) => Math.round(value * 1000) / 1000;
+  for (let row = 0; row < rows; row += 1)
+    for (let column = 0; column < columns; column += 1) {
+      const cell = row * columns + column;
+      const difference = sums[cell] / counts[cell];
+      const inside = boxes.filter(([, box]) => touches(column, row, box));
+      if (inside.length) {
+        for (const [name] of inside)
+          boxPeaks[name] = Math.max(boxPeaks[name], round(difference));
+        continue;
+      }
+      outsideMaxDifference = Math.max(outsideMaxDifference, difference);
+      if (difference > outsideMax)
+        outside.push({
+          difference: round(difference),
+          left: column * cellPx,
+          top: row * cellPx,
+        });
+    }
+  const ok =
+    boxes.length > 0 &&
+    outside.length === 0 &&
+    boxes.every(([name]) => boxPeaks[name] >= insideMin);
+  return {
+    boxPeaks,
+    cellPx,
+    insideMin,
+    outsideCells: outside
+      .sort((a, b) => b.difference - a.difference)
+      .slice(0, 5),
+    outsideMax,
+    outsideMaxDifference: round(outsideMaxDifference),
+    padPx,
+    status: ok ? 'ok' : 'failed',
   };
 }
 
@@ -606,12 +751,17 @@ export function familyDescription(
   const {source} = artwork;
   const spec = FAMILY_SPECS[product.family];
   const dates = lifeDatesLabel(artist);
+  // An edition's file carries words: say so where the credit says how the
+  // image was made.
+  const reproduction = familyReproduction(product, {
+    collections: [artCollection],
+  });
   return [
     `<p>${escapeHtml(print.description)}</p>`,
     `<p>${escapeHtml(artist.name)}${dates ? ` (${escapeHtml(dates)})` : ''}, <em>${escapeHtml(artwork.title)}</em>, ${escapeHtml(artwork.date)}. ${escapeHtml(artwork.medium)}.</p>`,
     `<p>${escapeHtml(artCollection.copy)}</p>`,
     `<ul>${spec.bullets.map((bullet) => `<li>${escapeHtml(bullet)}</li>`).join('')}</ul>`,
-    `<p>${escapeHtml(spec.reproduction)} Source: ${escapeHtml(sourceCredit(source))}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
+    `<p>${escapeHtml(reproduction)} Source: ${escapeHtml(sourceCredit(source))}, object ${escapeHtml(source.objectId)} (<a href="${escapeHtml(source.objectUrl)}">museum record</a>). ${escapeHtml(MUSEUMS[source.museum].rightsDesignation)}. Clara Mendes is not affiliated with or endorsed by the museum.</p>`,
     '<p>Printed to order. Screen and print colours can vary slightly.</p>',
   ].join('\n');
 }
@@ -836,15 +986,19 @@ export function recordFamilyIds(product, found) {
 }
 
 /** Where a family product stands and the one command that moves it on. */
-export function familyStatus(product, {fileSha256, crops, registry} = {}) {
+export function familyStatus(
+  product,
+  {fileSha256, catalog, crops, registry} = {},
+) {
   const assets = product.assets;
+  const sources = {
+    ...(catalog ? {catalog} : {}),
+    ...(crops ? {crops} : {}),
+    ...(registry ? {registry} : {}),
+  };
   const current =
     Boolean(assets) &&
-    assets.sourceSignature ===
-      familySourceSignature(product, {
-        ...(crops ? {crops} : {}),
-        ...(registry ? {registry} : {}),
-      }) &&
+    assets.sourceSignature === familySourceSignature(product, sources) &&
     (fileSha256 === undefined || fileSha256 === assets.print.sha256);
   const staged =
     Boolean(product.shopify?.productId) &&
@@ -852,7 +1006,7 @@ export function familyStatus(product, {fileSha256, crops, registry} = {}) {
       (variant) => product.shopify.variantIds?.[variant.key],
     );
   const mapped = product.variants.every((variant) =>
-    variantMappingCurrent(product, variant),
+    variantMappingCurrent(product, variant, sources),
   );
   const route = FAMILY_SPECS[product.family].route;
   let next = 'verify';
@@ -1102,6 +1256,10 @@ export function printfulMappingFromReadback(
       assetSha256: recorded?.sha256,
       printfulSyncProductId: String(syncProduct.id),
       printfulSyncVariantId: String(sync.id),
+      // An edition's mapping holds while its words, font and boxes do.
+      ...(recorded?.provenance?.edition
+        ? {sourceSignature: product.assets.sourceSignature}
+        : {}),
       verified: true,
       verifiedAt: today,
       ...(note ? {note} : {}),

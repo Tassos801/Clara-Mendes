@@ -2621,3 +2621,14 @@ the end of Mon 30 Nov 2026, Asia/Nicosia (`BLACK_FRIDAY_START` in
 start today too. Page copy: dates line "Until Monday 30 November", meta
 description "until 30 November", and the before-message no longer names a
 date. End date, discount rules and the announcement line are unchanged.
+
+## 2026-11-17 — Editions: Art & Words blankets
+
+Catalogue support for edition collections (print catalog `edition`,
+art-product `editionFiles`) and the first three Art & Words blankets as
+data: Great Wave, Mondrian's Composition with Red, Yellow, and Blue,
+Kandinsky's Painting with Troika. Edition files are checked against their
+base files (changed only inside the declared text boxes), need the owner's
+approval of the file itself, and their words, font and boxes are in the
+asset signature. Nothing was staged in Shopify or Printful. Details:
+[catalog-and-products.md](modules/catalog-and-products.md), runbook step 6.

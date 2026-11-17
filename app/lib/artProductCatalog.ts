@@ -203,6 +203,13 @@ const COLOURS = 'Printed to order; screen and print colours can vary slightly.';
 const SUPPLIED_REPRODUCTION =
   'Printed from a public-domain museum image. The work itself is unchanged; where the shape needs more room, a plain margin was added around it, or on some prints more of a calm sky or sea, filled in digitally.';
 
+/**
+ * The same, for an edition file with words set on the work (editionFiles):
+ * only the lettering differs from the plain product's file.
+ */
+const EDITION_REPRODUCTION =
+  'Printed from a public-domain museum image, with a short line of the artist’s own words and the Clara Mendes name set on the work in black type. Apart from the lettering the work is unchanged; where the shape needs more room, a plain margin was added around it, or on some prints more of a calm sky or sea, filled in digitally.';
+
 const HANGERS = [
   {code: 'BLK', color: 'black', label: 'Black'},
   {code: 'WHT', color: 'white', label: 'White'},
@@ -905,6 +912,8 @@ export type ArtProductMapping = {
   printfulSyncVariantId?: string;
   /** The print file the verified mapping uses. */
   assetSha256?: string;
+  /** Edition products: the asset signature the mapping was verified on. */
+  sourceSignature?: string;
   verifiedAt?: string;
   note?: string;
 };
@@ -948,8 +957,13 @@ export type SuppliedAsset = ArtAssetFile & {
   /** Native pixels of the museum image per printed inch. */
   ppi: number;
   provenance: {
-    /** The master's AI-fill log entry, verbatim (masters/assembly.json). */
-    aiFill: Record<string, unknown> & {block_identical: boolean};
+    /**
+     * The master's AI-fill log entry, verbatim (masters/assembly.json).
+     * Absent on an edition file, whose master is its base product's file.
+     */
+    aiFill?: Record<string, unknown> & {block_identical: boolean};
+    /** Edition files: the pixel check against the base file (prepare). */
+    edition?: EditionCheck;
     /** Manifest row fields, verbatim (products/manifest.json). */
     aspectTrimPercent: number;
     hangerStripMm: number;
@@ -1018,8 +1032,108 @@ export const MIN_EXCEPTION_PPI = 150;
  */
 export const MIN_SUPPLIED_EXCEPTION_PPI = 40;
 
-/** The owner's go-ahead for one work's supplied files as they are. */
-export type SuppliedApproval = {at: string; by: string; note: string};
+/**
+ * The owner's go-ahead for one work's supplied files as they are. In an
+ * edition collection it names the one file approved (`sha256`): an edition
+ * is a new layout, so neither the work's crop approval nor an approval of
+ * another file stands in for it.
+ */
+export type SuppliedApproval = {
+  at: string;
+  by: string;
+  note: string;
+  sha256?: string;
+};
+
+/** [left, top, right, bottom] in print-file pixels; right and bottom exclusive. */
+export type TextBox = [number, number, number, number];
+
+/**
+ * An edition file: the plain product's file (`base`) with words set on the
+ * work. Everything that decides its pixels besides the base file is here, so
+ * the asset signature (and with it the fulfilment mapping) changes with any
+ * of it.
+ */
+export type EditionFile = {
+  /** The plain product and the file of it the words were set on. */
+  base: {file: string; handle: string; sha256: string};
+  /** Any other line set on the work, e.g. the shop's name. */
+  brand?: string;
+  credit: string;
+  font: {name: string; sha256: string};
+  quote: string;
+  /**
+   * Every box holding lettering, in print-file pixels. The file may differ
+   * from the base file inside them (plus EDITION_CHECK.padPx) and nowhere
+   * else.
+   */
+  textBoxes: Record<string, TextBox>;
+};
+
+/**
+ * How an edition file is compared with its base file. Both are decoded to
+ * sRGB and cut into `cellPx` cells on the JPEG block grid; a cell's
+ * difference is the mean absolute difference over its pixels and channels
+ * (0–255). Cells touching a text box grown by `padPx` (two JPEG blocks of
+ * ringing) are "inside". Outside cells may differ by JPEG re-encoding only:
+ * at most `outsideMax` (the three Art & Words files measure 0.11–0.29 on
+ * 2026-11-17, so 1.0 leaves room for an encoder change, while any edit of
+ * about 5 × 5 px or more by 40 levels exceeds it). Every text box must hold
+ * a cell of at least `insideMin` (they measure 54–99), so a declared box
+ * with no lettering in it fails too.
+ */
+export const EDITION_CHECK = {
+  cellPx: 32,
+  insideMin: 16,
+  outsideMax: 1,
+  padPx: 16,
+} as const;
+
+/** What `prepare` found comparing an edition file with its base file. */
+export type EditionCheck = {
+  baseSha256: string;
+  /** The largest cell difference inside each text box. */
+  boxPeaks: Record<string, number>;
+  cellPx: number;
+  insideMin: number;
+  /** Outside cells over `outsideMax`, at most a few listed. */
+  outsideCells: Array<{difference: number; left: number; top: number}>;
+  /** The largest cell difference outside the text boxes. */
+  outsideMaxDifference: number;
+  outsideMax: number;
+  padPx: number;
+  /** editionRecordKey() of the record the file was checked against. */
+  record: string;
+  status: 'ok' | 'failed';
+};
+
+/** The fields of an edition record that decide its pixels, as one string. */
+export function editionRecordKey(record: EditionFile) {
+  return JSON.stringify({
+    base: record.base.sha256,
+    brand: record.brand ?? null,
+    credit: record.credit,
+    font: [record.font.name, record.font.sha256],
+    quote: record.quote,
+    textBoxes: Object.entries(record.textBoxes ?? {})
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([name, box]) => [name, ...box]),
+  });
+}
+
+/**
+ * The edition record of a family product: its collection's
+ * `editionFiles[artworkId]`, or null for a plain product.
+ */
+export function editionFileOf(
+  product: Pick<ArtFamilyProduct, 'artworkId' | 'collection'>,
+  catalog: Pick<ArtProductCatalog, 'collections'> = ART_PRODUCT_CATALOG,
+): EditionFile | null {
+  return (
+    catalog.collections.find((entry) => entry.slug === product.collection)
+      ?.editionFiles?.[product.artworkId] ?? null
+  );
+}
 
 export type ArtFamilyConfig = {
   /**
@@ -1067,6 +1181,11 @@ export type ArtProductCollection = {
    * families only.
    */
   suppliedApprovals?: Record<string, SuppliedApproval>;
+  /**
+   * Edition collections (print catalog `edition`): the words set on each
+   * work's file, by artwork id. Every product of the collection has one.
+   */
+  editionFiles?: Record<string, EditionFile>;
 };
 
 /**
@@ -1102,11 +1221,18 @@ export function familyHandle(
   return `${print.slug}-${FAMILY_SPECS[family].handleSuffix ?? family}`;
 }
 
+/**
+ * "<print title> <titleSuffix>"; an edition collection's products add its
+ * title ("… Throw Blanket, Art & Words"), so they never repeat the plain
+ * product's title.
+ */
 export function familyTitle(
   print: Pick<PrintCatalogPrint, 'title'>,
   family: ArtProductFamily,
+  collection?: Pick<PrintCatalogCollection, 'edition' | 'title'>,
 ) {
-  return `${print.title} ${FAMILY_SPECS[family].titleSuffix}`;
+  const edition = collection?.edition ? `, ${collection.title}` : '';
+  return `${print.title} ${FAMILY_SPECS[family].titleSuffix}${edition}`;
 }
 
 /**
@@ -1211,16 +1337,28 @@ export function familyCrop(
  * whose signature differs is stale.
  */
 export function familySourceSignature(
-  product: Pick<ArtFamilyProduct, 'artworkId' | 'family' | 'orientation'>,
+  product: Pick<ArtFamilyProduct, 'artworkId' | 'family' | 'orientation'> &
+    Partial<Pick<ArtFamilyProduct, 'collection'>>,
   {
+    catalog = ART_PRODUCT_CATALOG,
     crops = MUSEUM_CROPS,
     registry = ART_REGISTRY,
-  }: {crops?: MuseumCrops; registry?: ArtRegistry} = {},
+  }: {
+    catalog?: Pick<ArtProductCatalog, 'collections'>;
+    crops?: MuseumCrops;
+    registry?: ArtRegistry;
+  } = {},
 ) {
   const artwork = findArtwork(product.artworkId, registry);
   if (!artwork?.original) return '';
   const trim = artwork.trim;
   const spec = FAMILY_SPECS[product.family];
+  const edition = product.collection
+    ? editionFileOf(
+        {artworkId: product.artworkId, collection: product.collection},
+        catalog,
+      )
+    : null;
   if (spec.suppliedFiles)
     // The finished files were cut from this original, trim and printed
     // area; if any of them changes, the files are stale. The files' own
@@ -1237,6 +1375,8 @@ export function familySourceSignature(
       // Only families whose preview changed carry it, so the others'
       // recorded signatures stay as they are.
       ...(spec.previewRenderer ? {preview: spec.previewRenderer} : {}),
+      // An edition's words, font and their boxes decide its pixels too.
+      ...(edition ? {edition: editionRecordKey(edition)} : {}),
     });
   const crop = familyCrop(product.family, product.artworkId, {
     crops,
@@ -1322,31 +1462,49 @@ export function familyReleaseIssues(
     issues.push('a cleared rights review');
   if (artwork?.reviews.master.status !== 'cleared')
     issues.push('a cleared master review');
-  // Supplied files are cut to the approved printed area too, unless the
-  // owner approved a work's supplied files as they are.
-  const suppliedApproved = Boolean(
-    spec?.suppliedFiles &&
-    catalog.collections.find((entry) => entry.slug === product.collection)
-      ?.suppliedApprovals?.[product.artworkId],
-  );
-  if (
-    (spec?.shape || spec?.suppliedFiles) &&
-    !cropsApproved(product.artworkId, crops) &&
-    !suppliedApproved
-  )
-    issues.push('crop approval');
+  const approval = catalog.collections.find(
+    (entry) => entry.slug === product.collection,
+  )?.suppliedApprovals?.[product.artworkId];
+  const edition = editionFileOf(product, catalog);
+  if (edition) {
+    // A new layout of the work: only the owner's approval of this very
+    // file counts, never the work's crop approval or the plain file's.
+    if (
+      !approval?.sha256 ||
+      product.variants.some(
+        (variant) => variantFile(product, variant)?.sha256 !== approval.sha256,
+      )
+    )
+      issues.push('the owner’s approval of this edition file');
+  } else {
+    // Supplied files are cut to the approved printed area too, unless the
+    // owner approved a work's supplied files as they are.
+    const suppliedApproved = Boolean(spec?.suppliedFiles && approval);
+    if (
+      (spec?.shape || spec?.suppliedFiles) &&
+      !cropsApproved(product.artworkId, crops) &&
+      !suppliedApproved
+    )
+      issues.push('crop approval');
+  }
   if (
     spec?.suppliedFiles &&
     product.variants.some((variant) => {
       const file = variantFile(product, variant) as SuppliedAsset | undefined;
-      return !file?.provenance?.aiFill?.block_identical;
+      return edition
+        ? !editionFileChecked(file, edition)
+        : !file?.provenance?.aiFill?.block_identical;
     })
   )
-    issues.push('every file checked unchanged where the museum image sits');
+    issues.push(
+      edition
+        ? 'every file checked against its base file: changed only inside its text boxes'
+        : 'every file checked unchanged where the museum image sits',
+    );
   if (
     !product.assets ||
     product.assets.sourceSignature !==
-      familySourceSignature(product, {crops, registry})
+      familySourceSignature(product, {catalog, crops, registry})
   )
     issues.push('current assets');
   // An exception withdrawn after `prepare` must stop the release too.
@@ -1363,24 +1521,56 @@ export function familyReleaseIssues(
   )
     issues.push('Shopify ids');
   if (
-    product.variants.some((variant) => !variantMappingCurrent(product, variant))
+    product.variants.some(
+      (variant) =>
+        !variantMappingCurrent(product, variant, {catalog, crops, registry}),
+    )
   )
     issues.push('a verified fulfilment mapping of the current file');
   return issues;
 }
 
 /**
+ * Whether an edition file's recorded check passed against the record as it
+ * stands: the same base file, words, font and boxes.
+ */
+export function editionFileChecked(
+  file: Pick<SuppliedAsset, 'provenance'> | undefined,
+  edition: EditionFile,
+) {
+  const check = file?.provenance?.edition;
+  return Boolean(
+    check &&
+    check.status === 'ok' &&
+    check.baseSha256 === edition.base.sha256 &&
+    check.record === editionRecordKey(edition),
+  );
+}
+
+/**
  * Whether a variant's fulfilment mapping is verified on the file it prints
  * now: a Prodigi channel product, the deployed case file, or a Printful sync
- * variant.
+ * variant. An edition's mapping also records the asset signature it was
+ * verified on, so a change of its words, font or boxes needs a new mapping
+ * even before the file is replaced.
  */
 export function variantMappingCurrent(
   product: ArtFamilyProduct,
   variant: ArtProductVariant,
+  sources: {
+    catalog?: Pick<ArtProductCatalog, 'collections'>;
+    crops?: MuseumCrops;
+    registry?: ArtRegistry;
+  } = {},
 ) {
   const {mapping} = variant;
   const file = variantFile(product, variant);
   if (!mapping.verified || !file || mapping.assetSha256 !== file.sha256)
+    return false;
+  if (
+    editionFileOf(product, sources.catalog) &&
+    mapping.sourceSignature !== familySourceSignature(product, sources)
+  )
     return false;
   const route = FAMILY_SPECS[product.family]?.route;
   if (route === 'channel') return Boolean(mapping.channelProductId);
@@ -1481,8 +1671,19 @@ export function reproductionSentence(
   catalog: ArtProductCatalog = ART_PRODUCT_CATALOG,
 ) {
   const product = artProductByHandle(handle, catalog);
+  if (product) return familyReproduction(product, catalog);
   // Prints, like framed prints, keep the whole composition on a border.
-  return FAMILY_SPECS[product?.family ?? 'framed-print'].reproduction;
+  return FAMILY_SPECS['framed-print'].reproduction;
+}
+
+/** How a family product's image was made: an edition adds its lettering. */
+export function familyReproduction(
+  product: Pick<ArtFamilyProduct, 'artworkId' | 'collection' | 'family'>,
+  catalog: Pick<ArtProductCatalog, 'collections'> = ART_PRODUCT_CATALOG,
+) {
+  return editionFileOf(product, catalog)
+    ? EDITION_REPRODUCTION
+    : FAMILY_SPECS[product.family].reproduction;
 }
 
 export type ArtCaseLine = {
@@ -1526,6 +1727,7 @@ export function artCaseLineForSku(
 
 const PRICE = /^\d+\.\d{2}$/;
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const SHA256 = /^[0-9a-f]{64}$/;
 
 /**
  * Everything that would make the family catalog unsafe to ship. Run by the
@@ -1660,6 +1862,65 @@ export function validateArtProductCatalog(
         problems.push(
           `${at}: suppliedApprovals ${artworkId} records who approved, when and why`,
         );
+      if (source?.edition && !SHA256.test(approval?.sha256 ?? ''))
+        problems.push(
+          `${at}: suppliedApprovals ${artworkId} names the sha256 of the edition file approved`,
+        );
+    }
+    if (entry.editionFiles && !source?.edition)
+      problems.push(
+        `${at}: editionFiles are for edition collections (print catalog "edition")`,
+      );
+    for (const [artworkId, record] of Object.entries(
+      entry.editionFiles ?? {},
+    )) {
+      const where = `${at}: editionFiles ${artworkId}`;
+      if (!source?.prints.some((print) => print.artworkId === artworkId))
+        problems.push(`${where}: not an artwork of this collection`);
+      const base = catalog.products?.find(
+        (product) => product.handle === record?.base?.handle,
+      );
+      if (!base) problems.push(`${where}: base ${record?.base?.handle} is not a product`);
+      else {
+        if (base.artworkId !== artworkId)
+          problems.push(`${where}: base ${base.handle} is another artwork`);
+        if (
+          printCatalog.collections.find((c) => c.slug === base.collection)
+            ?.edition
+        )
+          problems.push(`${where}: base ${base.handle} is itself an edition`);
+        if (!FAMILY_SPECS[base.family]?.suppliedFiles?.[record.base.file])
+          problems.push(
+            `${where}: ${record.base.file} is not a ${base.family} file`,
+          );
+      }
+      if (!SHA256.test(record?.base?.sha256 ?? ''))
+        problems.push(`${where}: base sha256 must be 64 hex digits`);
+      if (!record?.quote?.trim()) problems.push(`${where}: missing quote`);
+      if (!record?.credit?.trim()) problems.push(`${where}: missing credit`);
+      if (!record?.font?.name?.trim() || !SHA256.test(record?.font?.sha256 ?? ''))
+        problems.push(`${where}: font needs a name and its file's sha256`);
+      const boxes = Object.entries(record?.textBoxes ?? {});
+      if (!boxes.length) problems.push(`${where}: needs its text boxes`);
+      const size = base && FAMILY_SPECS[base.family]?.suppliedFiles?.[record.base.file];
+      const limit = size
+        ? {
+            height: Math.max(size.portrait.height, size.landscape.height),
+            width: Math.max(size.portrait.width, size.landscape.width),
+          }
+        : null;
+      for (const [name, box] of boxes)
+        if (
+          !Array.isArray(box) ||
+          box.length !== 4 ||
+          !box.every((value) => Number.isInteger(value) && value >= 0) ||
+          box[0] >= box[2] ||
+          box[1] >= box[3] ||
+          (limit && (box[2] > limit.width || box[3] > limit.height))
+        )
+          problems.push(
+            `${where}: text box ${name} must be [left, top, right, bottom] inside the file`,
+          );
     }
   }
 
@@ -1686,13 +1947,31 @@ export function validateArtProductCatalog(
       problems.push(`${at}: invalid handle`);
     if (handles.has(product.handle)) problems.push(`${at}: duplicate handle`);
     handles.add(product.handle);
-    // One product per artwork per product type.
-    const identity = `${product.artworkId}:${product.family}`;
+    // One product per artwork per product type, and per edition: an edition
+    // collection may sell a second one of a work sold plainly elsewhere.
+    const edition =
+      printCatalog.collections.find((c) => c.slug === product.collection)
+        ?.edition ?? '';
+    const identity = `${product.artworkId}:${product.family}:${edition}`;
     if (identities.has(identity))
       problems.push(
-        `${at}: ${product.artworkId} already has a ${product.family} product`,
+        `${at}: ${product.artworkId} already has a ${product.family} product${edition ? ` in the ${edition} edition` : ''}`,
       );
     identities.add(identity);
+    const editionFile = editionFileOf(product, catalog);
+    if (edition && !editionFile)
+      problems.push(
+        `${at}: an edition product needs its editionFiles ${product.artworkId} record`,
+      );
+    if (
+      editionFile &&
+      !product.variants?.every(
+        (variant) => variant.file === editionFile.base.file,
+      )
+    )
+      problems.push(
+        `${at}: every variant must print the edition's ${editionFile.base.file} file`,
+      );
     if (typeof product.released !== 'boolean')
       problems.push(`${at}: released must be true or false`);
 
@@ -1726,9 +2005,9 @@ export function validateArtProductCatalog(
       problems.push(
         `${at}: handle must be ${familyHandle(print, product.family)}`,
       );
-    if (product.title !== familyTitle(print, product.family))
+    if (product.title !== familyTitle(print, product.family, collection))
       problems.push(
-        `${at}: title must be "${familyTitle(print, product.family)}"`,
+        `${at}: title must be "${familyTitle(print, product.family, collection)}"`,
       );
     const artwork = findArtwork(product.artworkId, registry);
     const master = artwork && masterSize(artwork);
@@ -1796,7 +2075,16 @@ export function validateArtProductCatalog(
         const file = variant.file && product.assets.files?.[variant.file];
         if (!file)
           problems.push(`${where}: no recorded ${variant.file ?? ''} file`);
-        else if (file.provenance?.aiFill?.block_identical !== true)
+        else if (editionFile) {
+          // A record changed since `prepare` is a release issue (stale
+          // assets), so `prepare` can still run to check the file again.
+          if (file.provenance?.edition?.status !== 'ok')
+            problems.push(
+              `${where}: ${variant.file} has no passed check against its base file`,
+            );
+          else if (file.sha256 === editionFile.base.sha256)
+            problems.push(`${where}: ${variant.file} is its base file`);
+        } else if (file.provenance?.aiFill?.block_identical !== true)
           problems.push(
             `${where}: ${variant.file} has no check that the museum image is unchanged`,
           );
