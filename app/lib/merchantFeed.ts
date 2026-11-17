@@ -367,7 +367,7 @@ export function merchantFeedRows(
           .trim()
           .slice(0, 4900),
         link: `https://shopclaramendes.com/products/${p.handle}?${params}`,
-        image_link: image,
+        image_link: feedImageUrl(image),
         price: `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`,
         availability: v.availableForSale ? 'in stock' : 'out of stock',
         condition: 'new',
@@ -482,4 +482,25 @@ export function metaCountryFeedTsv(rows: FeedRow[], country: 'US') {
       ].join('\t'),
     );
   return `${lines.join('\n')}\n`;
+}
+
+/**
+ * The image link a feed states. Shopify's CDN picks the format from the
+ * client's Accept header, so a fetcher that accepts WebP gets WebP from a
+ * plain file link; Meta's catalogue takes JPEG or PNG only and marks such
+ * an item "missing or invalid images". `format=pjpg` makes the CDN serve a
+ * JPEG to every client. Other hosts and links that already name a format
+ * are left alone.
+ */
+export function feedImageUrl(url: string): string {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return url;
+  }
+  if (parsed.hostname !== 'cdn.shopify.com') return url;
+  if (parsed.searchParams.has('format')) return url;
+  parsed.searchParams.set('format', 'pjpg');
+  return parsed.toString();
 }
