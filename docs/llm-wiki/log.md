@@ -2632,3 +2632,13 @@ base files (changed only inside the declared text boxes), need the owner's
 approval of the file itself, and their words, font and boxes are in the
 asset signature. Nothing was staged in Shopify or Printful. Details:
 [catalog-and-products.md](modules/catalog-and-products.md), runbook step 6.
+
+## 2026-11-17 — Art & Words blankets staged as hidden Drafts
+
+Staged the three `art-and-words` quote-edition blankets (Great Wave, Mondrian
+Composition with Red, Yellow, and Blue, Kandinsky Painting with Troika) with
+`stage --family blanket --apply`, synced them in Printful (`printful --apply`,
+catalogue variant 10986, print files matched by md5) and recorded the mapping
+with `mapped --printful`. Products stay Draft, unreleased, not published;
+`verify` shows all three handles 404 and out of the sitemap. Ids and mappings
+are in `data/art-product-catalog.json`. Release waits for the owner.
