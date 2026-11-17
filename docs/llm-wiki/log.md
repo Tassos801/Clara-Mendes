@@ -2570,3 +2570,32 @@ A six-area audit of `main` and its fixes, merged from `claude/fix-cart`,
 - Not done: newsletter double opt-in. Shopify's API docs don't say that
   writing `PENDING` consent sends the confirmation email, so it would risk
   leaving every new sign-up unconfirmed; see issue #202.
+
+## 2026-11-16 — European Art & Words blanket plan
+
+Recorded the owner's requested blanket line across the 11 current museum
+artists and three artist-inspired studio directions, with original artwork
+colours and discreet black quotations. Added the
+[agent handoff](../blanket-line/HANDOFF.md), status, full implementation plan
+and the unchanged Kandinsky AI concept reference on
+`codex/blanket-quotes-europe-2026-11-16`, based on main `9de5486`.
+The plan covers quotation provenance, exact supplier templates, country-level
+European delivery and economics, source resolution, distinct quote-edition
+product identity and separate release evidence. No product staging, supplier
+orders, publication or runtime changes were made at this checkpoint.
+The documentation-only commit skips CI to avoid an automatic branch-preview
+deployment. Product and code implementation is future work.
+
+## 2026-11-17 — Art & Words blanket plan refined
+
+Added section 0 to the
+[blanket plan](../superpowers/plans/2026-11-16-blanket-quotes-europe.md)
+after a check against `main`: all 11 museum artists already have a live
+blanket of the candidate artwork on the same Printful product, so those
+designs need one text strip, not a new product route. Work is now phased
+(three proofs, eight museum designs, three studio lines). Quotes need the
+original-language text and a free or studio translation; the Sadler
+translation of the Kandinsky line is still protected in the EU. Agent B's
+task is a short delta check and Agent D first tests a no-code route in the
+existing `blanket` family. Four owner decisions are listed first. Documentation
+only; nothing staged, ordered or published.

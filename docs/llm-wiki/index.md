@@ -7,6 +7,11 @@ Source: local Shopify Hydrogen storefront repository at
 
 ## Start Here
 
+- [European Art & Words blanket handoff](../blanket-line/HANDOFF.md) -
+  Planning branch `codex/blanket-quotes-europe-2026-11-16`; 14 artist
+  directions, discreet black quotations, EU-first country checks and
+  agent work packages for 17 November. Includes an AI concept reference;
+  production files, prices, supplier verification and release remain open.
 - [Artist-shop pilot handoff](../artist-shops/HANDOFF.md) - Active work on
   `codex/artist-shops-pilot`; cross-PC setup, agreed scope and current status.
 - [Line and Colour staging and mapping](../artist-shops/evidence/line-and-colour-staging-mapping-2026-10-18.json) -
