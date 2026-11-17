@@ -2599,3 +2599,18 @@ translation of the Kandinsky line is still protected in the EU. Agent B's
 task is a short delta check and Agent D first tests a no-code route in the
 existing `blanket` family. Four owner decisions are listed first. Documentation
 only; nothing staged, ordered or published.
+
+## 2026-11-17 — Art & Words blankets: catalogue audit and print template
+
+Added [integration audit](../blanket-line/integration.md) and
+[print template](../blanket-line/print-template.md). A quote edition fits the
+existing `blanket` family, but only after a small change: three uniqueness
+checks (`artProductCatalog.ts`, `artistShops.ts`) allow one product per artwork and
+family. Registering the composite as a new registry artwork would need a false
+museum id. Proposed: an `edition` field on a print-catalog collection, plus a
+per-collection supplied approval and two operator guards. A quote change
+already invalidates the Printful mapping through the file hash. Studio lines
+need their own source kind. Printful reads: print file 9450 × 7950 at 150 dpi
+(63 × 53 in), sublimation shift up to 2 in, 300 dpi advised for text. Proposed
+text limits: ≥ 64 mm from the finished edge (≥ 700 px from any edge of our 7500 × 9000
+file), capital height ≥ 8 mm (47 px), 10 mm recommended. Documentation only.
