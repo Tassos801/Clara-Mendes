@@ -5610,6 +5610,13 @@ html.lenis body {
   border-top: 0;
 }
 
+/* The swipe surface is opaque so it hides the Remove action behind it. In
+   the drawer its paper matches the panel; on the page it takes the page
+   colour, or each line reads as a white slab with its text on the edge. */
+.cart-main--page .cart-line-swipe-surface {
+  background: var(--color-page);
+}
+
 .cart-line-inner {
   align-items: start;
   gap: 16px;
