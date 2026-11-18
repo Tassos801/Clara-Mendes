@@ -2586,6 +2586,33 @@ button {
   margin-left: auto;
 }
 
+/* No results: tappable ways on, never a dead end. */
+.search-empty-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-empty-links a {
+  align-items: center;
+  border: 1px solid rgba(38, 35, 31, 0.2);
+  border-radius: 999px;
+  color: inherit;
+  display: inline-flex;
+  font-size: 0.92rem;
+  min-height: 44px;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
+.search-empty-links a:hover,
+.search-empty-links a:focus-visible {
+  border-color: var(--color-ink);
+}
+
 .search-product-grid {
   display: grid;
   gap: clamp(26px, 3vw, 44px) clamp(18px, 2.2vw, 34px);

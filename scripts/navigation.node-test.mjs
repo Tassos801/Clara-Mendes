@@ -30,7 +30,7 @@ test('the mobile menu still lists every page, Shop lines included', () => {
   for (const {to} of [...PRIMARY_LINKS, ...SHOP_LINKS]) {
     assert.ok(targets.includes(to), `${to} missing from the mobile menu`);
   }
-  for (const to of ['/blogs/karina-of-time', '/contact', '/search']) {
+  for (const to of ['/gifts', '/blogs/karina-of-time', '/contact', '/search']) {
     assert.ok(targets.includes(to), `${to} missing from the mobile menu`);
   }
   assert.equal(new Set(targets).size, targets.length, 'a link is listed twice');
