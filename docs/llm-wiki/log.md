@@ -2705,3 +2705,18 @@ Left open: two of the three page titles are cut at 62 characters on a
 dangling word ("... Art & Words by...", "... Throw Blanket, Art &..."), from
 `truncate` in `app/lib/seo.ts`; nine older museum product titles already end in
 "by...".
+
+## 2026-11-18 — Page titles no longer end on a hanging word
+
+A title longer than 62 characters was cut at a word, whatever the word: two
+of the three Art & Words pages read "... Art & Words by..." and "... Throw
+Blanket, Art &...", and nine older museum products ended in "by..." or
+"with..." (the item left open above). `truncate()` in `app/lib/seo.ts` now
+steps back past a closing connector ("by", "&", "and", "of", "with", ...),
+so those read "... Art & Words...", "... Throw Blanket, Art..." and
+"... Throw Blanket...". It serves the page title, the share title and the
+meta description alike. Of the 282 live products, eleven page titles and
+seven share titles change, all museum products; no two products share a
+title. The artist's name is still in the share title where its 70
+characters allow, in the meta description and in the page byline. Tests in
+`scripts/museumMeta.node-test.mjs`.
