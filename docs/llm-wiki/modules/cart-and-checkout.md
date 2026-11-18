@@ -103,9 +103,10 @@ Since the 2026-10-06 mobile pass:
 
 Since the 2026-11-18 customer-paths pass:
 
-- The summary names the delivery country ("Shipping to Cyprus is added at
-  checkout.") and, for Christmas, the product pages' order-by sentence with
-  the earliest date across the cart's lines; no date when any line has none
+- The summary names the delivery country ("Shipping to Cyprus is calculated
+  at checkout."; never "added": book nook kits include delivery) and,
+  for Christmas, the product pages' order-by sentence with the earliest
+  date across the cart's lines; no date when any line has none
   (`app/lib/cartDelivery.ts`). It names no fee.
 - "Complete the set" suggests clothing only when the cart already holds
   clothing (`app/lib/cartPresentation.ts`).

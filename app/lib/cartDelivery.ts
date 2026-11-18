@@ -21,11 +21,13 @@ import {marketCountryName} from './markets.ts';
  * The shipping line under the subtotal. It names the cart's delivery
  * country (the one checkout opens with), so a buyer can see the country
  * carried over; without a known country it keeps the plain sentence.
+ * "Calculated", not "added": some carts ship free (book nook kits
+ * include delivery), so the line must not promise a charge.
  */
 export function cartShippingNote(countryCode?: string | null) {
   const code = countryCode?.trim().toUpperCase() ?? '';
   return code && marketCountryName(code)
-    ? `Shipping to ${countryPhrase(code)} is added at checkout.`
+    ? `Shipping to ${countryPhrase(code)} is calculated at checkout.`
     : 'Shipping is calculated at checkout.';
 }
 

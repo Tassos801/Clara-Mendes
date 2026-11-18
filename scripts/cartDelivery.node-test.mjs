@@ -16,10 +16,10 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');
 
 test('the shipping line names the cart country, as the product page does', () => {
-  assert.equal(cartShippingNote('CY'), 'Shipping to Cyprus is added at checkout.');
+  assert.equal(cartShippingNote('CY'), 'Shipping to Cyprus is calculated at checkout.');
   assert.equal(
     cartShippingNote('us'),
-    'Shipping to the United States is added at checkout.',
+    'Shipping to the United States is calculated at checkout.',
   );
   // No country, or one the shop does not list: the plain sentence.
   assert.equal(cartShippingNote(null), 'Shipping is calculated at checkout.');
