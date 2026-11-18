@@ -2764,6 +2764,10 @@ button {
 }
 
 .cart-summary-page {
+  /* One column no wider than the card: an auto column grows to the code
+     inputs' natural width and pushes the total and checkout button past
+     the card's right padding. */
+  grid-template-columns: minmax(0, 1fr);
   position: sticky;
   top: calc(var(--header-height) + 24px);
 }
