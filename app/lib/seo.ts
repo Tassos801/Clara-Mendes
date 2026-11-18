@@ -642,6 +642,10 @@ function gidNumber(value?: string | null) {
   return value.split('/').pop();
 }
 
+// Words a cut must not end on: "... Throw Blanket by...", "... Art &...".
+const DANGLING_END =
+  /\s+(?:&|a|an|and|as|at|by|for|from|in|of|on|or|the|to|with)$/i;
+
 function truncate(value: string, maxLength: number) {
   const normalized = value.replace(/\s+/g, ' ').trim();
   if (normalized.length <= maxLength) return normalized;
@@ -649,6 +653,14 @@ function truncate(value: string, maxLength: number) {
   // Cut at the last word boundary that fits, never mid-word.
   const room = normalized.slice(0, maxLength - 2);
   const cut = room.lastIndexOf(' ');
-  const head = cut > maxLength / 2 ? room.slice(0, cut) : room.slice(0, -1);
-  return `${head.replace(/[\s,;:.–—-]+$/, '')}...`;
+  let head = cut > maxLength / 2 ? room.slice(0, cut) : room.slice(0, -1);
+  // Then back past punctuation and any word the cut left hanging.
+  for (;;) {
+    const shorter = head
+      .replace(/[\s,;:.–—-]+$/, '')
+      .replace(DANGLING_END, '');
+    if (shorter === head) break;
+    head = shorter;
+  }
+  return `${head}...`;
 }

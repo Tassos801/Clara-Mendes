@@ -185,3 +185,65 @@ test('a title too long for the brand suffix keeps its words', () => {
     'The Great Wave off Kanagawa Throw Blanket by Hokusai',
   );
 });
+
+test('a cut title never ends on a hanging word', () => {
+  const tags = (title) =>
+    buildSeoMeta({description: 'd', title, url: 'https://x'});
+  const title = (meta) => meta.find((tag) => 'title' in tag).title;
+  const ogTitle = (meta) =>
+    meta.find((tag) => tag.property === 'og:title').content;
+  // The byline does not fit: "by" goes with the name it led to.
+  const wave = tags(
+    'The Great Wave off Kanagawa Throw Blanket, Art & Words by Hokusai',
+  );
+  assert.equal(
+    title(wave),
+    'The Great Wave off Kanagawa Throw Blanket, Art & Words...',
+  );
+  assert.equal(
+    ogTitle(wave),
+    'The Great Wave off Kanagawa Throw Blanket, Art & Words by Hokusai',
+  );
+  // The cut falls after "Art &": the ampersand goes, and the title still
+  // differs from the plain blanket's below.
+  const mondrian = tags(
+    'Composition with Red, Yellow, and Blue Throw Blanket, Art & Words by Mondrian',
+  );
+  assert.equal(
+    title(mondrian),
+    'Composition with Red, Yellow, and Blue Throw Blanket, Art...',
+  );
+  assert.equal(
+    ogTitle(mondrian),
+    'Composition with Red, Yellow, and Blue Throw Blanket, Art & Words...',
+  );
+  assert.equal(
+    title(
+      tags('Composition with Red, Yellow, and Blue Throw Blanket by Mondrian'),
+    ),
+    'Composition with Red, Yellow, and Blue Throw Blanket...',
+  );
+  // Several hanging words in a row all go; a whole pair stays.
+  assert.equal(
+    title(tags(`${'word '.repeat(10)}one and of the ${'long '.repeat(6)}`)),
+    `${'word '.repeat(10)}one...`,
+  );
+  assert.equal(
+    title(tags(`${'word '.repeat(9)}Salt & Pepper ${'long '.repeat(6)}`)),
+    `${'word '.repeat(9)}Salt & Pepper...`,
+  );
+  // Every released museum product: no title ends on one, and no two
+  // products share a title.
+  const seen = new Map();
+  for (const product of ART_PRODUCT_CATALOG.products) {
+    if (product.released !== true) continue;
+    const cut = title(tags(titleWithArtist(product.title, product.handle)));
+    assert.ok(cut.length <= 62, cut);
+    assert.doesNotMatch(
+      cut,
+      /(?:^|\s)(?:&|a|an|and|as|at|by|for|from|in|of|on|or|the|to|with)\.\.\.$/i,
+    );
+    assert.equal(seen.get(cut), undefined, `${product.handle}: ${cut}`);
+    seen.set(cut, product.handle);
+  }
+});
