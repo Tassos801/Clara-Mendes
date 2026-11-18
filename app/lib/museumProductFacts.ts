@@ -228,7 +228,24 @@ export type MuseumFamilyFacts = {
   reach: ShippingReach;
   /** Print-catalog collections that sell it. */
   collections: string[];
+  /**
+   * The lowest owner-approved price (EUR, "64.99") among its released
+   * variants; absent when every released price is still pending.
+   */
+  fromPriceEUR?: string;
 };
+
+/** The lowest of some catalog prices ("26.99"), or undefined when none. */
+export function lowestPriceEUR(prices: Array<string | undefined>) {
+  const amounts = prices
+    .filter((price): price is string => Boolean(price))
+    .map((price) => ({price, amount: Number(price)}))
+    .filter(({amount}) => Number.isFinite(amount) && amount > 0);
+  if (!amounts.length) return undefined;
+  return amounts.reduce((low, entry) =>
+    entry.amount < low.amount ? entry : low,
+  ).price;
+}
 
 const FAMILY_LABEL: Record<ArtProductFamily, string> = {
   'framed-print': 'framed prints',
@@ -285,6 +302,20 @@ export function releasedMuseumFamilies({
           dispatch: DISPATCH_WINDOW_BUSINESS_DAYS,
           reach: 'worldwide',
           collections: printCollections.map((collection) => collection.title),
+          fromPriceEUR: lowestPriceEUR(
+            printCollections.flatMap((collection) => {
+              const releasedSizes = new Set(
+                collection.prints.flatMap((print) =>
+                  print.released ? (print.releasedSizes ?? []) : [],
+                ),
+              );
+              return collection.variants
+                .filter((variant) =>
+                  releasedSizes.has(variant.size as PrintSizeKey),
+                )
+                .map((variant) => variant.priceEUR);
+            }),
+          ),
         },
       ]
     : [];
@@ -322,6 +353,11 @@ export function releasedMuseumFamilies({
         dispatch: windows?.dispatch ?? DISPATCH_WINDOW_BUSINESS_DAYS,
         reach: spec.shippingReach,
         collections,
+        fromPriceEUR: lowestPriceEUR(
+          released.flatMap((product) =>
+            product.variants.map((variant) => variant.priceEUR),
+          ),
+        ),
       },
     ];
   });
