@@ -1,5 +1,6 @@
 import {
   type KeyboardEvent as ReactKeyboardEvent,
+  type MouseEvent as ReactMouseEvent,
   type PointerEvent as ReactPointerEvent,
   useCallback,
   useEffect,
@@ -990,6 +991,20 @@ function ProductPage() {
   const apparelCopy = isApparel
     ? parseApparelDescription(product.descriptionHtml)
     : null;
+  // The merchant's fit note ("runs small: order one size up") belongs by the
+  // size buttons, where the size is chosen, not only in the closed guide.
+  const apparelFitNote =
+    apparelCopy?.fitNotes.find((note) =>
+      /\bruns (small|large)\b|\bsize (up|down)\b|\btrue to size\b/i.test(note),
+    ) ?? null;
+  // Opens the closed Size guide row before scrolling to it.
+  const openSizeGuide = (event: ReactMouseEvent<HTMLAnchorElement>) => {
+    const guide = document.getElementById('size-guide');
+    if (!(guide instanceof HTMLDetailsElement)) return;
+    event.preventDefault();
+    guide.open = true;
+    guide.scrollIntoView({behavior: 'smooth', block: 'start'});
+  };
   // Fabric colours pick by swatch: Shopify's own, else the colour's name.
   const colourValues =
     product.options.find((option) => isColourOptionName(option.name))
@@ -1444,6 +1459,15 @@ function ProductPage() {
             />
           )}
 
+          {apparelCopy?.sizeGuide ? (
+            <p className="product-fit-hint">
+              {apparelFitNote ? <span>{apparelFitNote} </span> : null}
+              <a href="#size-guide" onClick={openSizeGuide}>
+                Size guide
+              </a>
+            </p>
+          ) : null}
+
           {classicFrameCrossSell ? (
             <aside
               className="product-format-choice"
@@ -1718,7 +1742,7 @@ function ProductPage() {
                   </ProductDetail>
                 ) : null}
                 {apparelCopy.sizeGuide ? (
-                  <ProductDetail label="Size guide">
+                  <ProductDetail id="size-guide" label="Size guide">
                     <table className="apparel-table">
                       <caption className="sr-only">Body size guide</caption>
                       {apparelCopy.sizeGuide.headers.length ? (
