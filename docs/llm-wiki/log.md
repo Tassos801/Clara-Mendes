@@ -2720,3 +2720,39 @@ seven share titles change, all museum products; no two products share a
 title. The artist's name is still in the share title where its 70
 characters allow, in the meta description and in the page byline. Tests in
 `scripts/museumMeta.node-test.mjs`.
+
+## 2026-11-18 — Customer paths pass
+
+One pass over the four buyer paths, built in four lanes and merged on
+`claude/cx-paths`.
+
+- Discovery: `/black-friday` shows products sooner on phones and gives the
+  order-by dates for the buyer's region (EU, US or none)
+  (`app/routes/black-friday.tsx`). Product cards say "20% off in your cart",
+  "10% off …" or "Unframed: 20% off …" during the week, from the same rules
+  as the product page (`app/lib/blackFridayCard.ts`, `ClaraProductCard`).
+  An empty search offers seven links (`SearchResults.tsx`); Gifts leads the
+  Shop menu (`app/lib/navLinks.ts`); the "Enter the shop" words under the
+  orb are a link (`app/routes/_index.tsx`); BF and gift chips are 44 px.
+- Product page: the delivery chip says "Dispatched in X–Y business days",
+  as the Shipping row does; a plain blanket and its Art & Words edition are
+  each other's first "Pair with" (`app/lib/artistShops.ts`); a variant the
+  sale leaves out says "Not in the Black Friday offer"
+  (`app/lib/blackFridayProductNote.ts`, also in `SkyStudio`); a garment's
+  fit note and a Size guide link sit under the size buttons; the empty
+  reviews block is one quiet line; "Adding…" everywhere.
+- Cart: the summary card holds its content at every width; code rows sit
+  together; the summary names the delivery country and the Christmas
+  order-by date (`app/lib/cartDelivery.ts`); clothing is suggested only
+  for carts with clothing; the empty cart links to `/black-friday` during
+  the week. See [cart and checkout](modules/cart-and-checkout.md).
+- Trust: `/contact` opens on its heading and answers "Where is my order?"
+  at `#order-help`; the footer Help column links it and Contact; shipping,
+  privacy and terms open with "On this page" links
+  (`app/lib/policySections.ts`) and end with the support email; the 404
+  page adds Search and Contact, and other errors show raw detail on the dev
+  server only (`app/root.tsx`).
+
+No prices, discounts, fees, policy text or product data changed. Tests:
+`blackFridayCard`, `productPageCx`, `cartDelivery`, `policySections`,
+`errorPage` node tests, plus updated footer, navigation and landing tests.
