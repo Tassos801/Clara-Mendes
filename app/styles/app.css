@@ -1528,6 +1528,24 @@ button {
   margin: 10px 0 0;
 }
 
+/* A garment's fit note and Size guide link, under the size buttons. */
+.product-fit-hint {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+
+/* A 44 px tap target that leaves the line spacing alone. */
+.product-fit-hint a {
+  color: var(--color-ink);
+  display: inline-block;
+  margin: -12px 0;
+  padding: 12px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .variant-options {
   display: flex;
   flex-wrap: wrap;
