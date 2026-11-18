@@ -8,6 +8,7 @@ import {
 } from 'react';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
+import {BlackFridayProductLine} from '~/components/BlackFridayProductLine';
 import {ProductPrice} from '~/components/ProductPrice';
 import {
   SkyConfigurator,
@@ -237,6 +238,13 @@ export function SkyStudio({
                 compareAtPrice={selectedVariant.compareAtPrice}
               />
             ) : null}
+            {selectedVariant?.availableForSale ? (
+              <BlackFridayProductLine
+                handle={product.handle}
+                productType={product.productType}
+                variantTitle={selectedVariant.title}
+              />
+            ) : null}
             <div
               className="product-availability-row"
               aria-label="Purchase status"
@@ -391,7 +399,7 @@ export function SkyStudio({
                 disabled={purchaseBlocked}
                 lines={lines}
                 onSuccess={openCart}
-                pendingChildren="Adding..."
+                pendingChildren="Adding…"
               >
                 {buttonLabel}
               </AddToCartButton>

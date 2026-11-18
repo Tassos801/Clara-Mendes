@@ -177,31 +177,40 @@ export default function App() {
 
 export function ErrorBoundary() {
   const error = useRouteError();
-  let title = 'Something shifted out of place';
-  let detail = 'Please go back to the shop and try again.';
-  let status = 500;
-
-  if (isRouteErrorResponse(error)) {
-    status = error.status;
-    title = status === 404 ? 'Page not found' : title;
-    detail =
-      status === 404
-        ? 'The link may be out of date, or the item is no longer available. Everything on sale now is in the shop.'
-        : typeof error.data === 'string' && error.data
-          ? error.data
-          : `Error ${status}`;
-  } else if (error instanceof Error) {
-    detail = error.message;
-  }
+  const notFound = isRouteErrorResponse(error) && error.status === 404;
+  // Buyers never see raw error text (a loader message or a stack line);
+  // the dev server still shows it to whoever is building the page.
+  const devDetail = import.meta.env.DEV
+    ? isRouteErrorResponse(error)
+      ? `${error.status} ${typeof error.data === 'string' ? error.data : ''}`
+      : error instanceof Error
+        ? error.message
+        : null
+    : null;
 
   const page = (
     <div className="error-page">
       <p className="eyebrow">Clara Mendes</p>
-      <h1>{title}</h1>
-      <p>{detail}</p>
-      <a className="text-link" href="/collections/all">
-        Back to the shop
-      </a>
+      <h1>{notFound ? 'Page not found' : 'Something shifted out of place'}</h1>
+      <p>
+        {notFound
+          ? 'The link may be out of date, or the item is no longer available. Everything on sale now is in the shop.'
+          : 'This page did not load. Please try again in a moment, or carry on from the shop.'}
+      </p>
+      {devDetail ? <p className="small-muted">{devDetail}</p> : null}
+      <div className="error-page__links">
+        <a className="text-link" href="/collections/all">
+          Back to the shop
+        </a>
+        {notFound ? (
+          <a className="text-link" href="/search">
+            Search
+          </a>
+        ) : null}
+        <a className="text-link" href="/contact">
+          Contact us
+        </a>
+      </div>
     </div>
   );
 

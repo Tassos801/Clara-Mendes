@@ -1528,6 +1528,24 @@ button {
   margin: 10px 0 0;
 }
 
+/* A garment's fit note and Size guide link, under the size buttons. */
+.product-fit-hint {
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 10px 0 0;
+}
+
+/* A 44 px tap target that leaves the line spacing alone. */
+.product-fit-hint a {
+  color: var(--color-ink);
+  display: inline-block;
+  margin: -12px 0;
+  padding: 12px 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .variant-options {
   display: flex;
   flex-wrap: wrap;
@@ -2568,6 +2586,33 @@ button {
   margin-left: auto;
 }
 
+/* No results: tappable ways on, never a dead end. */
+.search-empty-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.search-empty-links a {
+  align-items: center;
+  border: 1px solid rgba(38, 35, 31, 0.2);
+  border-radius: 999px;
+  color: inherit;
+  display: inline-flex;
+  font-size: 0.92rem;
+  min-height: 44px;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
+.search-empty-links a:hover,
+.search-empty-links a:focus-visible {
+  border-color: var(--color-ink);
+}
+
 .search-product-grid {
   display: grid;
   gap: clamp(26px, 3vw, 44px) clamp(18px, 2.2vw, 34px);
@@ -2764,6 +2809,10 @@ button {
 }
 
 .cart-summary-page {
+  /* One column no wider than the card: an auto column grows to the code
+     inputs' natural width and pushes the total and checkout button past
+     the card's right padding. */
+  grid-template-columns: minmax(0, 1fr);
   position: sticky;
   top: calc(var(--header-height) + 24px);
 }
@@ -2843,6 +2892,12 @@ button {
   min-height: 420px;
   padding-bottom: clamp(60px, 8vw, 120px);
   padding-top: calc(var(--header-height) + clamp(70px, 9vw, 130px));
+}
+
+.error-page__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
 }
 
 .empty-state.compact {
@@ -3384,6 +3439,36 @@ button {
 
 .policy-body-content h2 {
   font-size: 1.9rem;
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+/* "On this page": jump links for a long policy (app/lib/policySections.ts). */
+.policy-toc {
+  max-width: 68ch;
+  padding-bottom: clamp(24px, 3vw, 36px);
+}
+
+.policy-toc .eyebrow {
+  margin: 0 0 8px;
+}
+
+.policy-toc ul {
+  display: grid;
+  gap: 0 24px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.policy-toc a {
+  align-items: center;
+  color: var(--color-clay-ink);
+  display: flex;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  min-height: 44px;
+  padding: 6px 0;
 }
 
 .policy-body-content h3 {
@@ -3419,6 +3504,24 @@ button {
   border-top: 1px solid rgba(38, 35, 31, 0.12);
   margin-top: clamp(48px, 6vw, 80px);
   padding-top: clamp(28px, 4vw, 44px);
+}
+
+.policy-help {
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin: 0 0 20px;
+  max-width: 60ch;
+}
+
+.policy-help a {
+  border-bottom: 1px solid currentColor;
+  color: var(--color-clay-ink);
+}
+
+.policy-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
 }
 
 @media (max-width: 720px) {
@@ -3978,6 +4081,12 @@ button {
     clamp(64px, 8vw, 120px);
 }
 
+/* The page already clears the header; a second offset left the first
+   phone screen blank above the heading. */
+.contact-page .page-hero {
+  padding-top: 0;
+}
+
 .contact-body {
   display: grid;
   gap: clamp(48px, 6vw, 80px);
@@ -3994,6 +4103,13 @@ button {
 .contact-channel {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
   padding: clamp(28px, 4vw, 42px) 0;
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
 }
 
 .contact-channel h2 {
@@ -5606,6 +5722,13 @@ html.lenis body {
   border-top: 0;
 }
 
+/* The swipe surface is opaque so it hides the Remove action behind it. In
+   the drawer its paper matches the panel; on the page it takes the page
+   colour, or each line reads as a white slab with its text on the edge. */
+.cart-main--page .cart-line-swipe-surface {
+  background: var(--color-page);
+}
+
 .cart-line-inner {
   align-items: start;
   gap: 16px;
@@ -5787,7 +5910,19 @@ html.lenis body {
 .cart-codes-body {
   display: grid;
   gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
   padding: 2px 0 16px;
+}
+
+/* reset.css pads every section and gives inputs a margin: here that put
+   a blank band between the discount and gift-card rows and set each input
+   lower than its Apply button. */
+.cart-code-section {
+  padding: 0;
+}
+
+.cart-code-row input {
+  margin: 0;
 }
 
 .cart-code-section dl,

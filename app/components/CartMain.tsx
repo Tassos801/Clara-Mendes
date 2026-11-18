@@ -9,6 +9,7 @@ import {
   SKY_PRODUCT_HANDLE,
 } from '~/lib/catalogFilters';
 import {YOUR_SKY_PAGE} from '~/lib/featurePages';
+import {BLACK_FRIDAY_PATH, isBlackFridayWeek} from '~/lib/blackFriday';
 import {CartCheckoutBar, CartSummary} from './CartSummary';
 
 export type CartLayout = 'page' | 'aside';
@@ -136,6 +137,18 @@ function CartEmpty({
         >
           Browse the shop
         </Link>
+        {/* Most visitors this week come from a Black Friday ad; the sale
+            edit is one tap away from an empty cart while it runs. */}
+        {isBlackFridayWeek(new Date()) ? (
+          <Link
+            className="text-link"
+            onClick={onNavigate}
+            prefetch="intent"
+            to={BLACK_FRIDAY_PATH}
+          >
+            Black Friday week
+          </Link>
+        ) : null}
         {hasYourSky ? (
           <Link
             className="text-link"

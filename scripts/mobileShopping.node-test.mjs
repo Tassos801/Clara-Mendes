@@ -12,6 +12,7 @@ import {
   cartItemCountLabel,
   cartLineThumbnail,
   cartQuantitySteps,
+  fittingCartRecommendations,
   isCartLineUnavailable,
   sizedImageUrl,
   visibleCartOptions,
@@ -325,7 +326,9 @@ test('the drawer pins checkout and blocks repeat or premature taps', () => {
   assert.match(summary, /cart\?\.isOptimistic/);
   // Coming back from checkout restores a usable button.
   assert.match(summary, /addEventListener\('pageshow', reset\)/);
-  assert.match(summary, /Shipping is calculated at checkout\./);
+  // The shipping line names the cart's country (app/lib/cartDelivery.ts).
+  assert.match(summary, /countryCode = cart\?\.buyerIdentity\?\.countryCode/);
+  assert.match(summary, /cartShippingNote\(countryCode\)/);
 });
 
 test('hidden purchase bars cannot be reached by keyboard or tap', () => {
@@ -414,4 +417,37 @@ test('offline cart submissions are held instead of losing the page', () => {
     read('app/components/ClaraShell.tsx'),
     /<CartConnectionGuard \/>/,
   );
+});
+
+test('cart suggestions offer clothing only beside clothing', () => {
+  const hoodie = {id: 'hoodie', productType: 'Hoodies'};
+  const tote = {id: 'tote', productType: 'Bags'};
+  const print = {id: 'print', productType: 'Art Prints'};
+  const suggestions = [hoodie, tote, print];
+  // A blanket and a print: no hoodie under "Complete the room".
+  assert.deepEqual(
+    fittingCartRecommendations(suggestions, [
+      {productType: 'Blankets'},
+      {productType: 'Art Prints'},
+    ]).map((product) => product.id),
+    ['tote', 'print'],
+  );
+  // A tee in the cart: everything stays.
+  assert.deepEqual(
+    fittingCartRecommendations(suggestions, [
+      {productType: 'T-Shirts'},
+      null,
+    ]).map((product) => product.id),
+    ['hoodie', 'tote', 'print'],
+  );
+  assert.match(
+    read('app/components/CartRecommendations.tsx'),
+    /fittingCartRecommendations\(/,
+  );
+});
+
+test('the empty cart links to the Black Friday edit only while the week runs', () => {
+  const main = read('app/components/CartMain.tsx');
+  assert.match(main, /isBlackFridayWeek\(new Date\(\)\) \?/);
+  assert.match(main, /to=\{BLACK_FRIDAY_PATH\}/);
 });

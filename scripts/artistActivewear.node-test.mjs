@@ -170,9 +170,10 @@ test('the artist activewear gets Printful\'s all-over windows; a future piece do
   // Same type, unknown product: no promise. Known handle, wrong type: no.
   assert.equal(fulfilmentWindows('Sports Bra', 'free-abyss-sports-bra-2'), null);
   assert.equal(isArtistActivewear('Hoodies', 'circle-rhythm-sports-bra'), false);
-  // The badge then reads "Processes in 2–7 business days".
+  // The badge then reads "Dispatched in 3–8 business days", as the
+  // Shipping row does.
   const pdp = readFileSync(new URL('../app/routes/products.$handle.tsx', import.meta.url), 'utf8');
-  assert.match(pdp, /`Processes in \$\{windows\.production\} business days`/);
+  assert.match(pdp, /`Dispatched in \$\{windows\.dispatch\} business days`/);
 });
 
 test('activewear feeds as women\'s Activewear with its colour and line', () => {

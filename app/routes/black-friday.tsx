@@ -1,3 +1,4 @@
+import {Fragment} from 'react';
 import {Link, useLoaderData} from 'react-router';
 import {Analytics} from '@shopify/hydrogen';
 import type {Route} from './+types/black-friday';
@@ -20,6 +21,8 @@ import {filterDemoProducts} from '~/lib/catalogFilters';
 import {
   christmasLineLabel,
   christmasNotices,
+  christmasRegionFor,
+  christmasRegionName,
   formatOrderByDate,
   requestToday,
 } from '~/lib/christmasDelivery';
@@ -51,7 +54,14 @@ export async function loader({context, request}: Route.LoaderArgs) {
   const status = blackFridayStatus(blackFridayNow(request));
   const seoUrl = getCanonicalUrl(request, BLACK_FRIDAY_PATH);
   if (status !== 'open') {
-    return {status, seoUrl, groups: [], listed: [], christmas: []};
+    return {
+      status,
+      seoUrl,
+      groups: [],
+      listed: [],
+      christmas: [],
+      christmasRegion: null,
+    };
   }
 
   const data = await context.storefront.query<GroupsResult>(
@@ -81,13 +91,15 @@ export async function loader({context, request}: Route.LoaderArgs) {
     };
   }).filter((group) => group.products.length > 0);
 
-  // The EU order-by dates for the lines on sale (no book nooks: not in the
-  // offer), while each date is still ahead.
-  const christmas = christmasNotices('eu', requestToday(request))
+  // The buyer's region's order-by dates (EU or US, as on /gifts and the
+  // product pages; none elsewhere) for the lines on sale (no book nooks: not
+  // in the offer), while each date is still ahead.
+  const region = christmasRegionFor(context.storefront.i18n.country);
+  const christmas = christmasNotices(region, requestToday(request))
     .filter((notice) => notice.line !== 'book-nooks')
     .map((notice) => ({
       line: notice.line,
-      label: christmasLineLabel(notice.line, 'eu'),
+      label: christmasLineLabel(notice.line, notice.region),
       date: formatOrderByDate(notice.date),
     }));
 
@@ -97,11 +109,13 @@ export async function loader({context, request}: Route.LoaderArgs) {
     groups,
     listed: groups.flatMap((group) => group.products),
     christmas,
+    christmasRegion: region ? christmasRegionName(region) : null,
   };
 }
 
 export default function BlackFriday() {
-  const {christmas, groups, listed, status} = useLoaderData<typeof loader>();
+  const {christmas, christmasRegion, groups, listed, status} =
+    useLoaderData<typeof loader>();
   let eager = true;
 
   if (status !== 'open') {
@@ -125,6 +139,25 @@ export default function BlackFriday() {
       </div>
     );
   }
+
+  const christmasBox =
+    christmas.length && christmasRegion ? (
+      <section className="black-friday-christmas" aria-labelledby="bf-xmas">
+        <h2 id="bf-xmas">Order by, for Christmas in {christmasRegion}</h2>
+        <dl>
+          {christmas.map((notice) => (
+            <div key={notice.line}>
+              <dt>{notice.label}</dt>
+              <dd>Order by {notice.date}</dd>
+            </div>
+          ))}
+        </dl>
+        <p>
+          Estimates for delivery by 24 December, not guarantees. Each product
+          page shows its own delivery time.
+        </p>
+      </section>
+    ) : null;
 
   return (
     <div className="black-friday-page">
@@ -161,56 +194,42 @@ export default function BlackFriday() {
         ) : null}
       </header>
 
-      {christmas.length ? (
-        <section className="black-friday-christmas" aria-labelledby="bf-xmas">
-          <h2 id="bf-xmas">Order by, for Christmas in the EU</h2>
-          <dl>
-            {christmas.map((notice) => (
-              <div key={notice.line}>
-                <dt>{notice.label}</dt>
-                <dd>Order by {notice.date}</dd>
-              </div>
-            ))}
-          </dl>
-          <p>
-            Estimates for delivery by 24 December, not guarantees. Each product
-            page shows its own delivery time.
-          </p>
-        </section>
-      ) : null}
-
-      {groups.map((group) => (
-        <section
-          className="black-friday-group"
-          id={`bf-${group.key}`}
-          key={group.key}
-          aria-labelledby={`bf-${group.key}-heading`}
-        >
-          <div className="black-friday-group-head">
-            <h2 id={`bf-${group.key}-heading`}>
-              {group.heading} <span>{group.percent}% off</span>
-            </h2>
-            <Link className="text-link" to={group.allUrl} prefetch="intent">
-              See all
-            </Link>
-          </div>
-          {group.note ? (
-            <p className="black-friday-group-note">{group.note}</p>
-          ) : null}
-          <div className="product-grid compact-grid">
-            {group.products.map((product) => {
-              const loading = eager ? 'eager' : 'lazy';
-              eager = false;
-              return (
-                <ClaraProductCard
-                  key={product.handle}
-                  product={product}
-                  loading={loading}
-                />
-              );
-            })}
-          </div>
-        </section>
+      {groups.map((group, index) => (
+        <Fragment key={group.key}>
+          <section
+            className="black-friday-group"
+            id={`bf-${group.key}`}
+            aria-labelledby={`bf-${group.key}-heading`}
+          >
+            <div className="black-friday-group-head">
+              <h2 id={`bf-${group.key}-heading`}>
+                {group.heading} <span>{group.percent}% off</span>
+              </h2>
+              <Link className="text-link" to={group.allUrl} prefetch="intent">
+                See all
+              </Link>
+            </div>
+            {group.note ? (
+              <p className="black-friday-group-note">{group.note}</p>
+            ) : null}
+            <div className="product-grid compact-grid">
+              {group.products.map((product) => {
+                const loading = eager ? 'eager' : 'lazy';
+                eager = false;
+                return (
+                  <ClaraProductCard
+                    key={product.handle}
+                    product={product}
+                    loading={loading}
+                  />
+                );
+              })}
+            </div>
+          </section>
+          {/* Pieces first: the order-by dates follow the first group, so a
+              visitor from an ad sees products on the first screen. */}
+          {index === 0 ? christmasBox : null}
+        </Fragment>
       ))}
 
       {groups.length === 0 ? (
@@ -221,6 +240,7 @@ export default function BlackFriday() {
           </Link>
         </p>
       ) : null}
+      {groups.length === 0 ? christmasBox : null}
 
       <style suppressHydrationWarning>{css}</style>
     </div>
@@ -284,10 +304,13 @@ const css = `
   margin-top: 20px;
 }
 .black-friday-jump a {
+  align-items: center;
   border: 1px solid rgba(38, 35, 31, 0.2);
   border-radius: 999px;
+  display: inline-flex;
   font-size: 0.86rem;
-  padding: 7px 14px;
+  min-height: 44px;
+  padding: 0 14px;
 }
 .black-friday-jump a:hover {
   border-color: var(--color-ink);
@@ -348,6 +371,11 @@ const css = `
   font-weight: 400;
   letter-spacing: -0.03em;
   margin: 0;
+}
+.black-friday-group-head .text-link {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
 }
 .black-friday-group-head h2 span {
   color: var(--color-muted);

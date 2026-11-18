@@ -393,7 +393,16 @@ export default function Homepage() {
                 void navigate('/collections/all');
               }}
             />
-            <span className="hm-label-enter">Enter the shop</span>
+            {/* The label is tappable too: on a phone it reads as the
+                action. Out of the tab order (the orb is the control). */}
+            <Link
+              to="/collections/all"
+              className="hm-label-enter"
+              tabIndex={-1}
+              aria-hidden="true"
+            >
+              Enter the shop
+            </Link>
           </div>
         </div>
 
@@ -737,6 +746,13 @@ html:has(.home-root) main {
   color: var(--hm-text-muted);
   opacity: 0;
   animation: hmFadeInSlow 3s var(--hm-ease-fluid) forwards 2.2s;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  /* A 44 px target that keeps the text where it was. */
+  margin: -16px 0;
+  padding: 0 14px;
+  text-decoration: none;
 }
 
 .hm-cursor-dot,
