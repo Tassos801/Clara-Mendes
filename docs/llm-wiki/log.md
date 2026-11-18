@@ -2402,7 +2402,7 @@ pull requests". The `Validate` job now also runs on pull requests opened by
 `github-actions[bot]` (after **Approve workflows to run**), and the
 Storefront workflow can be run by hand to validate a branch. Tested against a
 mocked Storefront API and GitHub CLI only; the first real run is the
-schedule's. See [fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+schedule's. See [fulfillment](modules/fulfillment.md#the-monthly-rebuild).
 
 ## 2026-11-12 — Shipping fee rebuild: 90-minute timeout
 
@@ -2411,7 +2411,7 @@ swap per listed Printful piece per probe country, about 1,300 for 147
 pieces). The weekly workflow's `quote` job had a 20-minute timeout, which
 would have stopped every run after its carts were made and before the table
 was written; it is now 90 minutes. See
-[fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+[fulfillment](modules/fulfillment.md#the-monthly-rebuild).
 
 ## 2026-11-12 — Fee-table rebuild survives network failures
 
@@ -2420,7 +2420,7 @@ four times, 15 to 60 s apart (`scripts/lib/storefront-request.mjs`): reads
 and line swaps after any network failure or a 5xx, a cart create only when
 it never reached Shopify, so a retry never makes a second cart. A run that
 morning had died on one DNS failure after 5 carts and kept no quotes. See
-[fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+[fulfillment](modules/fulfillment.md#the-monthly-rebuild).
 
 ## 2026-11-12 — Christmas hero and new rail circles
 
@@ -2774,3 +2774,14 @@ No prices, discounts, fees, policy text or product data changed. Tests:
   sitemap, and an edition product's breadcrumb links to it. Museum
   collection slugs stay 404 by design (sold through `/artists/<artist>`).
   Test: `scripts/editionPages.node-test.mjs`.
+
+## 2026-11-18 — Shipping fee rebuild is monthly
+
+`.github/workflows/shipping-fees.yml` now runs on the 1st of each month at
+04:23 UTC (was every Monday). Shopify analytics counted the first scheduled
+run (2026-11-16) as 1,329 sessions with no referrer that added to cart. That
+matches the run's roughly 1,300 cart line swaps, not the 9 carts the
+workflow's notes expected, and a weekly run made the store's session count
+useless. The feeds' 2% allowance (`FEED_EXCHANGE_ALLOWANCE_PERCENT`) is
+unchanged, so after a larger move of the exchange rate the workflow should
+be run by hand. See [fulfillment](modules/fulfillment.md#the-monthly-rebuild).

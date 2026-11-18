@@ -41,8 +41,8 @@ Before/after map and prepared Shopify changes:
   shows it ("about" for EUR, which follows Printful's USD rates). The table
   is rebuilt by `npm run shipping-fees` (9 quote carts, one per probe
   country; `-- --check` compares only). A scheduled workflow rebuilds it
-  weekly and proposes a changed table as a pull request (see
-  [fulfillment](fulfillment.md#the-weekly-rebuild)); run it by hand after
+  monthly and proposes a changed table as a pull request (see
+  [fulfillment](fulfillment.md#the-monthly-rebuild)); run it by hand after
   any change to Printful's shipping profiles or a new garment type. Page
   views never create carts (Shopify counts each cart as a visit with an add to cart).
   The Merchant Center feeds read the same table (EU and US fees; see
