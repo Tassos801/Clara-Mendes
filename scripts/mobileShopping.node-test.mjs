@@ -325,7 +325,9 @@ test('the drawer pins checkout and blocks repeat or premature taps', () => {
   assert.match(summary, /cart\?\.isOptimistic/);
   // Coming back from checkout restores a usable button.
   assert.match(summary, /addEventListener\('pageshow', reset\)/);
-  assert.match(summary, /Shipping is calculated at checkout\./);
+  // The shipping line names the cart's country (app/lib/cartDelivery.ts).
+  assert.match(summary, /countryCode = cart\?\.buyerIdentity\?\.countryCode/);
+  assert.match(summary, /cartShippingNote\(countryCode\)/);
 });
 
 test('hidden purchase bars cannot be reached by keyboard or tap', () => {
