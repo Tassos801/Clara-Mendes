@@ -1,4 +1,4 @@
-import {normalizeMetaPixelId} from './metaPixel.ts';
+import {normalizeMetaPixelIds} from './metaPixel.ts';
 
 type Fbq = ((...args: unknown[]) => void) & {
   callMethod?: (...args: unknown[]) => void;
@@ -16,7 +16,7 @@ export type MetaPixelRuntime = {
     createElement: (tagName: 'script') => RuntimeScript;
     head: {appendChild: (node: RuntimeScript) => unknown};
   };
-  window: {_fbq?: Fbq; fbq?: Fbq; __claraMetaPixelId?: string};
+  window: {_fbq?: Fbq; fbq?: Fbq; __claraMetaPixelIds?: string[]};
 };
 
 export const META_PIXEL_SCRIPT =
@@ -33,18 +33,19 @@ export function getBrowserMetaPixelRuntime(): MetaPixelRuntime | null {
 }
 
 /**
- * Meta's base code: a queueing `fbq` stub, the fbevents.js script, then
- * `init`. Runs once per page load; returns false without a valid id.
+ * Meta's base code: a queueing `fbq` stub, the fbevents.js script, then one
+ * `init` per dataset. Every later `track` goes to all of them. Runs once per
+ * page load; returns false without a valid id.
  */
-export function initializeMetaPixel(
-  pixelId: string,
+export function initializeMetaPixels(
+  pixelIds: readonly string[],
   runtime = getBrowserMetaPixelRuntime(),
 ) {
-  const id = normalizeMetaPixelId(pixelId);
-  if (!id || !runtime) return false;
+  const ids = normalizeMetaPixelIds(pixelIds.join(','));
+  if (!ids.length || !runtime) return false;
   const win = runtime.window;
-  if (win.__claraMetaPixelId) return true;
-  win.__claraMetaPixelId = id;
+  if (win.__claraMetaPixelIds) return true;
+  win.__claraMetaPixelIds = ids;
 
   if (!win.fbq) {
     const fbq = function (...args: unknown[]) {
@@ -68,7 +69,7 @@ export function initializeMetaPixel(
   // pushState/replaceState; MetaPixelAnalytics already tracks PageView on
   // Hydrogen's PAGE_VIEWED, so it stays the single owner of page views.
   win.fbq.disablePushState = true;
-  win.fbq('init', id);
+  for (const id of ids) win.fbq('init', id);
   return true;
 }
 
@@ -77,7 +78,7 @@ export function trackMetaEvent(
   parameters?: Record<string, unknown>,
   runtime = getBrowserMetaPixelRuntime(),
 ) {
-  const fbq = runtime?.window.__claraMetaPixelId ? runtime.window.fbq : null;
+  const fbq = runtime?.window.__claraMetaPixelIds ? runtime.window.fbq : null;
   if (!fbq) return false;
   if (parameters) fbq('track', event, parameters);
   else fbq('track', event);
@@ -89,7 +90,7 @@ export function setMetaConsent(
   granted: boolean,
   runtime = getBrowserMetaPixelRuntime(),
 ) {
-  const fbq = runtime?.window.__claraMetaPixelId ? runtime.window.fbq : null;
+  const fbq = runtime?.window.__claraMetaPixelIds ? runtime.window.fbq : null;
   fbq?.('consent', granted ? 'grant' : 'revoke');
   return Boolean(fbq);
 }

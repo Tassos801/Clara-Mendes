@@ -2785,3 +2785,17 @@ workflow's notes expected, and a weekly run made the store's session count
 useless. The feeds' 2% allowance (`FEED_EXCHANGE_ALLOWANCE_PERCENT`) is
 unchanged, so after a larger move of the exchange rate the workflow should
 be run by hand. See [fulfillment](modules/fulfillment.md#the-monthly-rebuild).
+
+## 2026-11-18 — Meta pixel: more than one dataset
+
+`PUBLIC_META_PIXEL_ID` takes one id or several separated by commas
+(`normalizeMetaPixelIds`, `initializeMetaPixels`): one `init` per dataset,
+and PageView, ViewContent and AddToCart go to all of them. Reason: Purchase
+and InitiateCheckout arrive only on Shopify's dataset 970146215610819 (the
+one the ad account can use), while the storefront reported to
+2509864056173154 alone, so no dataset held the whole journey. Consent,
+events and CSP are unchanged. The second id reaches production only when
+the Oxygen variable lists both, and that must wait until this code is live:
+the old code reads a list as "no pixel". See
+[analytics and attribution](modules/analytics-and-attribution.md). Test:
+`scripts/metaPixel.node-test.mjs`.
