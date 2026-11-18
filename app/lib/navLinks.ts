@@ -19,9 +19,11 @@ const ARTISTS_LINK: NavLinkItem[] =
  * The lines under "Shop", in order. The desktop header shows them in the
  * Shop menu; the mobile menu lists them in full. Lines appear only once
  * released (book nooks, personalised products); Your Sky is a feature
- * page, not a product URL.
+ * page, not a product URL. Gifts leads: the gift guide by price, with the
+ * Christmas order-by dates.
  */
 export const SHOP_LINKS: readonly NavLinkItem[] = [
+  {to: '/gifts', label: 'Gifts'},
   {to: '/clothing', label: 'Clothing'},
   ...(releasedBookNooks().length > 0
     ? [{to: BOOK_NOOKS_PATH, label: 'Book Nooks'}]
