@@ -5791,7 +5791,19 @@ html.lenis body {
 .cart-codes-body {
   display: grid;
   gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
   padding: 2px 0 16px;
+}
+
+/* reset.css pads every section and gives inputs a margin: here that put
+   a blank band between the discount and gift-card rows and set each input
+   lower than its Apply button. */
+.cart-code-section {
+  padding: 0;
+}
+
+.cart-code-row input {
+  margin: 0;
 }
 
 .cart-code-section dl,
