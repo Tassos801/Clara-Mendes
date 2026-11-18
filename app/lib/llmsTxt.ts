@@ -11,7 +11,19 @@ import {
   artistPath,
   publicArtists,
 } from './artistShops.ts';
+import {
+  BLACK_FRIDAY_COPY,
+  BLACK_FRIDAY_PATH,
+  isBlackFridayWeek,
+} from './blackFriday.ts';
 import {CAPSULES, shopCapsulePath} from './capsules.ts';
+import {
+  christmasLineLabel,
+  christmasNotices,
+  christmasRegionName,
+  formatOrderByDate,
+  storeToday,
+} from './christmasDelivery.ts';
 import {ORIGINAL_ART_COLLECTIONS} from './catalogFilters.ts';
 import {
   clothingCapsules,
@@ -247,10 +259,54 @@ function exampleProduct(family: string, sources: Sources) {
   return product ? {handle: product.handle, title: product.title} : null;
 }
 
+/**
+ * "## This season": what an assistant answering a gift question today needs
+ * and the rest of the file can't say: the Black Friday offer while it runs,
+ * and the Christmas order-by dates while each is still ahead. Both come from
+ * the modules the /black-friday and /gifts pages use, so the wording and
+ * dates match the site and disappear on their own. Empty outside the season.
+ */
+export function seasonalLines(now: Date): string[] {
+  const today = storeToday(now);
+  const sale = isBlackFridayWeek(now)
+    ? [
+        `- [Black Friday week](${url(BLACK_FRIDAY_PATH)}), ${lowerFirst(BLACK_FRIDAY_COPY.dates)}:`,
+        `  20% off ${lowerFirst(BLACK_FRIDAY_COPY.twenty)}`,
+        `  10% off ${lowerFirst(BLACK_FRIDAY_COPY.ten)}`,
+        `  ${BLACK_FRIDAY_COPY.excluded} ${BLACK_FRIDAY_COPY.cart}`,
+      ]
+    : [];
+  const regions = (['eu', 'us'] as const).flatMap((region) => {
+    const notices = christmasNotices(region, today);
+    if (!notices.length) return [];
+    return [
+      `- For delivery in ${christmasRegionName(region)} before Christmas, order ${notices
+        .map(
+          (notice) =>
+            `${lowerFirst(christmasLineLabel(notice.line, region))} by ${formatOrderByDate(notice.date)}`,
+        )
+        .join('; ')}.`,
+    ];
+  });
+  const christmas = regions.length
+    ? [
+        ...regions,
+        `  Estimates built from our partners' production and delivery times, not guarantees; [Art gifts](${url('/gifts')}) shows the same dates.`,
+      ]
+    : [];
+  if (!sale.length && !christmas.length) return [];
+  return ['## This season', '', ...sale, ...christmas, ''];
+}
+
 export function buildLlmsTxt({
   clothing = null,
+  now,
   ...sources
-}: Sources & {clothing?: ClothingSummary | null} = {}): string {
+}: Sources & {
+  clothing?: ClothingSummary | null;
+  /** The request time; without it the seasonal section is left out. */
+  now?: Date;
+} = {}): string {
   const catalog = sources.catalog ?? PRINT_CATALOG;
   const studio = releasedPrintCollections(catalog).filter(
     (collection) => collection.kind === 'studio',
@@ -311,6 +367,7 @@ export function buildLlmsTxt({
     '- Prices in EUR (buyers in the United States see USD); secure Shopify',
     '  checkout.',
     '',
+    ...(now ? seasonalLines(now) : []),
     '## Our own capsules',
     '',
     '- [Quiet Form](https://shopclaramendes.com/collections/quiet-form): warm',
@@ -347,7 +404,7 @@ export function buildLlmsTxt({
   for (const family of families) {
     const example = exampleProduct(family.family, sources);
     push(
-      `- ${capitalise(family.label)} (${joinAnd(family.collections)}): ${family.sizes}; ${lowerFirst(family.spec)}.`,
+      `- ${capitalise(family.label)} (${joinAnd(family.collections)}): ${family.sizes}; ${lowerFirst(family.spec)}.${family.fromPriceEUR ? ` From €${family.fromPriceEUR}.` : ''}`,
       `  Made to order and dispatched within ${family.dispatch} business days; ${reachPhrase(family.reach)}.`,
       ...(example
         ? [

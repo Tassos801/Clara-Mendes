@@ -11,8 +11,21 @@ import {
 } from '../app/lib/artProductCatalog.ts';
 import {publicArtists} from '../app/lib/artistShops.ts';
 import {CLOTHING_ARTISTS} from '../app/lib/clothingArtists.ts';
-import {buildLlmsTxt, clothingSummary, numberWord} from '../app/lib/llmsTxt.ts';
-import {releasedMuseumFamilies} from '../app/lib/museumProductFacts.ts';
+import {BLACK_FRIDAY_COPY, BLACK_FRIDAY_PATH} from '../app/lib/blackFriday.ts';
+import {
+  christmasNotices,
+  formatOrderByDate,
+} from '../app/lib/christmasDelivery.ts';
+import {
+  buildLlmsTxt,
+  clothingSummary,
+  numberWord,
+  seasonalLines,
+} from '../app/lib/llmsTxt.ts';
+import {
+  lowestPriceEUR,
+  releasedMuseumFamilies,
+} from '../app/lib/museumProductFacts.ts';
 import {PRINT_CATALOG} from '../app/lib/printCatalog.ts';
 import {
   APPAREL_DISPATCH_WINDOW_BUSINESS_DAYS,
@@ -76,6 +89,89 @@ test('the throw blanket, the first real sale, is named with its size', () => {
   const bullet = familyBullet(text, 'throw blankets');
   assert.match(bullet, /50 × 60 in/);
   assert.match(bullet, /\/products\/the-great-wave-off-kanagawa-blanket\)/);
+});
+
+test('each museum product type shows its lowest released price from the catalog', () => {
+  for (const family of releasedMuseumFamilies()) {
+    const bullet = familyBullet(text, family.label);
+    const prices =
+      family.family === 'print'
+        ? PRINT_CATALOG.collections
+            .filter((collection) => collection.kind === 'museum')
+            .flatMap((collection) => {
+              const sizes = new Set(
+                collection.prints.flatMap((print) =>
+                  print.released ? (print.releasedSizes ?? []) : [],
+                ),
+              );
+              return collection.variants
+                .filter((variant) => sizes.has(variant.size))
+                .map((variant) => variant.priceEUR);
+            })
+        : ART_PRODUCT_CATALOG.products
+            .filter(
+              (product) =>
+                product.family === family.family && product.released === true,
+            )
+            .flatMap((product) =>
+              product.variants.map((variant) => variant.priceEUR),
+            );
+    const amounts = prices.filter(Boolean).map(Number);
+    if (!amounts.length) {
+      assert.doesNotMatch(bullet, /From €/, `${family.label} has no price`);
+      continue;
+    }
+    const lowest = Math.min(...amounts);
+    assert.equal(Number(family.fromPriceEUR), lowest, family.label);
+    assert.ok(
+      bullet.includes(` From €${family.fromPriceEUR}.`),
+      `${family.label} bullet lacks "From €${family.fromPriceEUR}."`,
+    );
+  }
+  // The first sale's product type, at its approved price.
+  assert.match(familyBullet(text, 'throw blankets'), / From €64\.99\./);
+});
+
+test('the seasonal section follows the sale window and the order-by dates', () => {
+  // No request time: no seasonal section (the other tests read this text).
+  assert.doesNotMatch(text, /## This season/);
+
+  const during = buildLlmsTxt({now: new Date('2026-11-18T12:00:00+02:00')});
+  const section = during.slice(
+    during.indexOf('## This season'),
+    during.indexOf('## Our own capsules'),
+  );
+  assert.ok(section.startsWith('## This season'), 'section before capsules');
+  assert.ok(
+    section.includes(`(https://shopclaramendes.com${BLACK_FRIDAY_PATH})`),
+  );
+  assert.ok(section.includes(BLACK_FRIDAY_COPY.excluded));
+  // The same dates the gift page shows, for both regions.
+  for (const region of ['eu', 'us']) {
+    for (const notice of christmasNotices(region, '2026-11-18'))
+      assert.ok(
+        section.includes(` by ${formatOrderByDate(notice.date)}`),
+        `${region} ${notice.line} date missing`,
+      );
+  }
+  assert.match(section, /blankets and mugs by Monday 30 November/);
+
+  // The sale has ended at midnight; a later order-by date can remain.
+  const afterSale = seasonalLines(new Date('2026-12-01T00:30:00+02:00')).join(
+    '\n',
+  );
+  assert.doesNotMatch(afterSale, /Black Friday/);
+  assert.match(afterSale, /phone cases by Wednesday 2 December/);
+
+  // Every date passed, and outside the season: nothing at all.
+  assert.deepEqual(seasonalLines(new Date('2026-12-10T12:00:00+02:00')), []);
+  assert.deepEqual(seasonalLines(new Date('2027-01-05T12:00:00+02:00')), []);
+});
+
+test('lowestPriceEUR keeps the catalog spelling and skips pending prices', () => {
+  assert.equal(lowestPriceEUR(['35.99', undefined, '26.99', '44.99']), '26.99');
+  assert.equal(lowestPriceEUR([undefined, '']), undefined);
+  assert.equal(lowestPriceEUR(['64.99']), '64.99');
 });
 
 test('an edition is the type example only when no plain product is released', () => {

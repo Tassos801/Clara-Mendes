@@ -2799,3 +2799,19 @@ the Oxygen variable lists both, and that must wait until this code is live:
 the old code reads a list as "no pixel". See
 [analytics and attribution](modules/analytics-and-attribution.md). Test:
 `scripts/metaPixel.node-test.mjs`.
+
+## 2026-11-18 — llms.txt: prices and the gift season
+
+`/llms.txt` now gives each museum product type its lowest released price
+("From €64.99." for throw blankets), read from `data/print-catalog.json` and
+`data/art-product-catalog.json` (`lowestPriceEUR`, `fromPriceEUR` on
+`releasedMuseumFamilies`); checked against the live product pages. A
+"This season" section after the key facts carries the Black Friday offer
+from `BLACK_FRIDAY_COPY` while `isBlackFridayWeek` holds, and the EU and US
+Christmas order-by dates from `christmasNotices` while each is still ahead,
+so it matches `/black-friday` and `/gifts` and empties itself after
+Christmas. The route passes the request time (`blackFridayNow`, so
+`?today=` previews work); `buildLlmsTxt()` without it leaves the section
+out. Reason: ChatGPT already sends buyers, and an assistant answering a
+gift question needs price, offer and "will it arrive by Christmas". See [routes and pages](modules/routes-and-pages.md). Test:
+`scripts/llmsTxt.node-test.mjs`.
