@@ -70,7 +70,12 @@ test('the hero holds the headline and the "Enter the shop" orb', () => {
   // The orb came back the same day, on phones too: it is the hero's only
   // way into the shop, so phones place it in flow below the words.
   assert.match(homepageSource, /aria-label="Enter the shop"/);
-  assert.match(homepageSource, /<span className="hm-label-enter">Enter the shop<\/span>/);
+  // The label under the orb opens the shop too (2026-11-18): tapping the
+  // words is what a phone visitor tries first.
+  assert.match(
+    homepageSource,
+    /<Link\s+to="\/collections\/all"\s+className="hm-label-enter"[^>]*>\s*Enter the shop\s*<\/Link>/,
+  );
   assert.match(homepageSource, /void navigate\('\/collections\/all'\)/);
   const css = getPhoneCss();
   assert.match(
