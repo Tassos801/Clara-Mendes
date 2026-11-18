@@ -399,7 +399,7 @@ export function SkyStudio({
                 disabled={purchaseBlocked}
                 lines={lines}
                 onSuccess={openCart}
-                pendingChildren="Adding..."
+                pendingChildren="Adding…"
               >
                 {buttonLabel}
               </AddToCartButton>

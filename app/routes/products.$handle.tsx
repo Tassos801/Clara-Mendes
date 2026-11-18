@@ -1652,7 +1652,7 @@ function ProductPage() {
                       : []
                   }
                   onSuccess={openCart}
-                  pendingChildren="Adding..."
+                  pendingChildren="Adding…"
                 >
                   {purchaseButtonLabel}
                 </AddToCartButton>
