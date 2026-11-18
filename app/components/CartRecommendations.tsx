@@ -14,6 +14,7 @@ import {
 import {CLASSIC_FRAME_HANDLE} from '~/lib/classicFrame';
 import {curatedDisplayTitle, withCuratedImages} from '~/lib/curatedProducts';
 import {isClothingProduct} from '~/lib/clothing';
+import {fittingCartRecommendations} from '~/lib/cartPresentation';
 
 const VISIBLE_RECOMMENDATIONS = 3;
 
@@ -58,7 +59,10 @@ export function CartRecommendations({
   }, [fetcher, serializedIds]);
 
   const inCart = new Set(cartProductIds);
-  const products = (fetcher.data?.products ?? [])
+  const products = fittingCartRecommendations(
+    fetcher.data?.products ?? [],
+    (cart?.lines?.nodes ?? []).map((line) => line.merchandise?.product),
+  )
     .filter((product) => !inCart.has(product.id))
     .slice(0, VISIBLE_RECOMMENDATIONS);
 
