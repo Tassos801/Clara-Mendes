@@ -111,4 +111,3 @@ assert.ok(
   `metaDescription is ${live.metaDescription.length} chars`,
 );
 
-console.log('editionPages tests passed');

@@ -127,6 +127,7 @@ assert.deepEqual(
     '/collections/warm-minimalist-wall-art',
     '/collections/terracotta-gallery-wall',
     '/collections/ink-and-cream-gallery-wall',
+    '/collections/art-and-words',
     '/your-sky',
     '/our-story',
     '/contact',

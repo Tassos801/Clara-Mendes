@@ -2756,3 +2756,21 @@ One pass over the four buyer paths, built in four lanes and merged on
 No prices, discounts, fees, policy text or product data changed. Tests:
 `blackFridayCard`, `productPageCx`, `cartDelivery`, `policySections`,
 `errorPage` node tests, plus updated footer, navigation and landing tests.
+
+## 2026-11-18 — Cookie banner on phones; Art & Words page
+
+- Cookie banner: up to 640 px wide, Shopify's privacy banner
+  (`#shopify-pc__banner`) is a compact bottom sheet in the shop's colours
+  and type (182 px at 390 × 844, was 411 px), with Accept and Decline the
+  same size and style (44 px tall). While the cart drawer is open the
+  banner sits under it, so "Continue to checkout" is never covered (also
+  on desktop, where it was covered too). CSS only, end of
+  `app/styles/app.css`; wording, consent logic and timing unchanged. See
+  [analytics and attribution](modules/analytics-and-attribution.md#consent).
+- `/collections/art-and-words` (was 404) renders a short landing page for
+  the Art & Words edition: the catalog's released products of the
+  `art-and-words` collection as the usual product cards, selected by the
+  collection's title tag (`app/lib/editionPages.ts`). It is in the custom
+  sitemap, and an edition product's breadcrumb links to it. Museum
+  collection slugs stay 404 by design (sold through `/artists/<artist>`).
+  Test: `scripts/editionPages.node-test.mjs`.
