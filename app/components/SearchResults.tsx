@@ -207,13 +207,30 @@ function SearchResultsEmpty({term}: {term?: string}) {
           ? `Nothing in the shop for “${term}” yet.`
           : 'What are you looking for?'}
       </h2>
-      <p>
-        Try an artwork or capsule — Quiet Form, The Great Wave — or a product,
-        like phone case, leggings, plant pot or book nook.
-      </p>
+      <p>Try an artwork, an artist or a kind of piece:</p>
+      <ul className="search-empty-links">
+        {SEARCH_SUGGESTIONS.map((suggestion) => (
+          <li key={suggestion.to}>
+            <Link prefetch="intent" to={suggestion.to}>
+              {suggestion.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
       <Link className="primary-button" to="/collections/all">
         Browse the shop
       </Link>
     </section>
   );
 }
+
+/** Each opens a page with pieces on it, so an empty search never dead-ends. */
+const SEARCH_SUGGESTIONS = [
+  {label: 'The Great Wave', to: '/search?q=Great+Wave'},
+  {label: 'Artists', to: '/artists'},
+  {label: 'Blankets', to: '/collections/all?type=Blankets'},
+  {label: 'Phone cases', to: '/collections/all?type=Phone+Cases'},
+  {label: 'Plant pots', to: '/collections/all?type=Plant+Pots'},
+  {label: 'Book nooks', to: '/search?q=book+nook'},
+  {label: 'Gifts', to: '/gifts'},
+] as const;
