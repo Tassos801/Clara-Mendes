@@ -3,7 +3,7 @@ import {
   useAnalytics,
   type VisitorConsentCollected,
 } from '@shopify/hydrogen';
-import {useEffect, useLayoutEffect, useRef} from 'react';
+import {useEffect, useLayoutEffect, useMemo, useRef} from 'react';
 import {
   cartCurrency,
   normalizeAnalyticsProducts,
@@ -15,7 +15,7 @@ import {
 } from '~/lib/googleCommerce';
 import {metaCommerceParameters, metaPixelAllowed} from '~/lib/metaPixel';
 import {
-  initializeMetaPixel,
+  initializeMetaPixels,
   setMetaConsent,
   trackMetaEvent,
 } from '~/lib/metaPixel.client';
@@ -33,11 +33,15 @@ const lastViews = new Map<string, string>();
 /**
  * Meta pixel for catalog ads (app/lib/metaPixel.ts). Nothing loads until the
  * visitor allows marketing cookies; accepting later loads the pixel and
- * records the current page.
+ * records the current page. Every listed dataset gets the same events.
  */
-export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
+export function MetaPixelAnalytics({pixelIds}: {pixelIds: string[]}): null {
   const {canTrack, customerPrivacy, register, subscribe} = useAnalytics();
   const {ready} = register('MetaPixelAnalytics');
+  // Loader data is a new array after every revalidation; the effects below
+  // follow the ids themselves, so they run once per page load.
+  const idList = pixelIds.join(',');
+  const ids = useMemo(() => (idList ? idList.split(',') : []), [idList]);
   const privacyReaderRef = useRef<ReturnType<
     typeof createGoogleCommercePrivacyReader
   > | null>(null);
@@ -48,7 +52,7 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
   privacyReader.update(customerPrivacy, canTrack);
 
   useEffect(() => {
-    if (!pixelId) return;
+    if (!ids.length) return;
     const onConsent = (event: Event) => {
       const detail = (event as CustomEvent<VisitorConsentCollected>).detail;
       if (!detail) return;
@@ -59,7 +63,7 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
       const loadedBefore = setMetaConsent(true);
       if (
         !loadedBefore &&
-        initializeMetaPixel(pixelId) &&
+        initializeMetaPixels(ids) &&
         !isRepeatedView(lastViews, 'PageView', window.location.href)
       ) {
         trackMetaEvent('PageView');
@@ -69,13 +73,13 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
     return () => {
       document.removeEventListener('visitorConsentCollected', onConsent);
     };
-  }, [pixelId]);
+  }, [ids]);
 
   useIsomorphicLayoutEffect(() => {
     const subscribedWindow =
       typeof window === 'undefined' ? null : (window as SubscriptionWindow);
     if (
-      !pixelId ||
+      !ids.length ||
       !subscribedWindow ||
       subscribedWindow.__claraMetaPixelSubscribed
     ) {
@@ -86,7 +90,7 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
 
     // Loads the pixel on the first event the visitor's consent allows.
     const allowed = () =>
-      metaPixelAllowed(privacyReader.current()) && initializeMetaPixel(pixelId);
+      metaPixelAllowed(privacyReader.current()) && initializeMetaPixels(ids);
 
     subscribe(AnalyticsEvent.PAGE_VIEWED, (payload) => {
       if (!allowed() || isRepeatedView(lastViews, 'PageView', payload.url))
@@ -125,7 +129,7 @@ export function MetaPixelAnalytics({pixelId}: {pixelId: string | null}): null {
     });
 
     ready();
-  }, [pixelId, privacyReader, ready, subscribe]);
+  }, [ids, privacyReader, ready, subscribe]);
 
   return null;
 }

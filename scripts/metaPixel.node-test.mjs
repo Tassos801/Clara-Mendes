@@ -14,9 +14,10 @@ import {
   metaCommerceParameters,
   metaPixelAllowed,
   normalizeMetaPixelId,
+  normalizeMetaPixelIds,
 } from '../app/lib/metaPixel.ts';
 import {
-  initializeMetaPixel,
+  initializeMetaPixels,
   META_PIXEL_SCRIPT,
   setMetaConsent,
   trackMetaEvent,
@@ -40,12 +41,31 @@ function fakeRuntime() {
 }
 
 const PIXEL = '123456789012345';
+const SECOND_PIXEL = '987654321098765';
 
 test('pixel ids are long digit strings; anything else disables the pixel', () => {
   assert.equal(normalizeMetaPixelId(` ${PIXEL} `), PIXEL);
   assert.equal(normalizeMetaPixelId('GTM-ABC123'), null);
   assert.equal(normalizeMetaPixelId('12345'), null);
   assert.equal(normalizeMetaPixelId(undefined), null);
+});
+
+test('PUBLIC_META_PIXEL_ID is one id or a list; bad entries and repeats drop out', () => {
+  assert.deepEqual(normalizeMetaPixelIds(` ${PIXEL} `), [PIXEL]);
+  assert.deepEqual(normalizeMetaPixelIds(`${PIXEL},${SECOND_PIXEL}`), [
+    PIXEL,
+    SECOND_PIXEL,
+  ]);
+  assert.deepEqual(
+    normalizeMetaPixelIds(` ${PIXEL} , ${SECOND_PIXEL}\n${PIXEL} ,`),
+    [PIXEL, SECOND_PIXEL],
+  );
+  assert.deepEqual(normalizeMetaPixelIds(`GTM-ABC123,${SECOND_PIXEL}`), [
+    SECOND_PIXEL,
+  ]);
+  assert.deepEqual(normalizeMetaPixelIds('GTM-ABC123'), []);
+  assert.deepEqual(normalizeMetaPixelIds(''), []);
+  assert.deepEqual(normalizeMetaPixelIds(undefined), []);
 });
 
 test('the pixel needs marketing consent, not just analytics', () => {
@@ -91,14 +111,15 @@ test('nothing is tracked before the pixel loads', () => {
   assert.equal(trackMetaEvent('PageView', undefined, runtime), false);
   assert.equal(setMetaConsent(false, runtime), false);
   assert.equal(scripts.length, 0);
-  assert.equal(initializeMetaPixel('not-a-pixel', runtime), false);
+  assert.equal(initializeMetaPixels(['not-a-pixel'], runtime), false);
+  assert.equal(initializeMetaPixels([], runtime), false);
   assert.equal(scripts.length, 0);
 });
 
 test('loading adds fbevents.js once and queues init, events and consent', () => {
   const {runtime, scripts} = fakeRuntime();
-  assert.equal(initializeMetaPixel(PIXEL, runtime), true);
-  assert.equal(initializeMetaPixel(PIXEL, runtime), true);
+  assert.equal(initializeMetaPixels([PIXEL], runtime), true);
+  assert.equal(initializeMetaPixels([PIXEL], runtime), true);
   assert.deepEqual(
     scripts.map((s) => [s.src, s.async]),
     [[META_PIXEL_SCRIPT, true]],
@@ -121,6 +142,21 @@ test('loading adds fbevents.js once and queues init, events and consent', () => 
   ]);
 });
 
+test('two datasets: one script, one init each, and every event goes to both', () => {
+  const {runtime, scripts} = fakeRuntime();
+  assert.equal(initializeMetaPixels([PIXEL, SECOND_PIXEL], runtime), true);
+  assert.equal(initializeMetaPixels([PIXEL, SECOND_PIXEL], runtime), true);
+  assert.equal(scripts.length, 1);
+  assert.equal(trackMetaEvent('PageView', undefined, runtime), true);
+  // `track` (not `trackSingle`) is what Meta sends to every initialised id.
+  assert.deepEqual(runtime.window.fbq.queue, [
+    ['init', PIXEL],
+    ['init', SECOND_PIXEL],
+    ['track', 'PageView'],
+  ]);
+  assert.doesNotMatch(read('app/lib/metaPixel.client.ts'), /trackSingle/);
+});
+
 test('the CSP allows the pixel hosts', () => {
   assert.ok(CSP_SCRIPT_SRC.includes('https://connect.facebook.net'));
   assert.ok(CSP_IMG_SRC.includes('https://www.facebook.com'));
@@ -130,15 +166,15 @@ test('the CSP allows the pixel hosts', () => {
 
 test('root reads PUBLIC_META_PIXEL_ID and the component checks consent first', () => {
   const rootFile = read('app/root.tsx');
-  assert.match(rootFile, /normalizeMetaPixelId\(env\.PUBLIC_META_PIXEL_ID\)/);
+  assert.match(rootFile, /normalizeMetaPixelIds\(env\.PUBLIC_META_PIXEL_ID\)/);
   assert.match(
     rootFile,
-    /<MetaPixelAnalytics pixelId=\{data\.metaPixelId\} \/>/,
+    /<MetaPixelAnalytics pixelIds=\{data\.metaPixelIds\} \/>/,
   );
   const component = read('app/components/MetaPixelAnalytics.tsx');
   assert.match(
     component,
-    /metaPixelAllowed\(privacyReader\.current\(\)\) && initializeMetaPixel/,
+    /metaPixelAllowed\(privacyReader\.current\(\)\) && initializeMetaPixels/,
   );
   assert.match(component, /visitorConsentCollected/);
 });

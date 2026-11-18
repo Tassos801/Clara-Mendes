@@ -54,7 +54,12 @@ the id of the Merchant Center and Meta catalogs).
 - Meta pixel: `app/components/MetaPixelAnalytics.tsx`,
   `app/lib/metaPixel{,.client}.ts`. Off unless `PUBLIC_META_PIXEL_ID` is set
   (dataset "Clara Mendes pixel", 2509864056173154, linked to the Meta catalog
-  "Clara Mendes"). Nothing loads before marketing consent; accepting later
+  "Clara Mendes"). The variable takes one id or several separated by commas;
+  each gets one `init` and every event goes to all of them. The second
+  dataset is "Clara Mendes", 970146215610819: Shopify's own pixel reports
+  checkout and Purchase to it, it belongs to the business portfolio that
+  owns the ad account, and with the storefront's events it holds the whole
+  journey. Nothing loads before marketing consent; accepting later
   loads it and sends a PageView; withdrawing sends `consent revoke`. Hydrogen
   also re-sends the current page's views after Accept, so the consent
   listener and the PAGE_VIEWED subscriber share one repeat-view map. Events:

@@ -24,7 +24,7 @@ import {MetaPixelAnalytics} from '~/components/MetaPixelAnalytics';
 import {MarketingAttributionCapture} from '~/components/MarketingAttribution';
 import {getCartOrNull} from '~/lib/cart';
 import {normalizeGtmContainerId} from '~/lib/googleCommerce';
-import {normalizeMetaPixelId} from '~/lib/metaPixel';
+import {normalizeMetaPixelIds} from '~/lib/metaPixel';
 import {MARKET_SESSION_KEY, visitorMarketCountry} from '~/lib/markets';
 import {NEWSLETTER_WELCOME_SESSION_KEY} from '~/lib/newsletter';
 import {requestToday} from '~/lib/christmasDelivery';
@@ -138,7 +138,7 @@ export async function loader({context, request}: Route.LoaderArgs) {
       language: storefront.i18n.language,
     },
     gtmContainerId: normalizeGtmContainerId(env.PUBLIC_GTM_CONTAINER_ID),
-    metaPixelId: normalizeMetaPixelId(env.PUBLIC_META_PIXEL_ID),
+    metaPixelIds: normalizeMetaPixelIds(env.PUBLIC_META_PIXEL_ID),
     newsletter: {
       // Whether an offer exists, never the code itself: this loader's data
       // is serialised into every page for every visitor.
@@ -164,7 +164,7 @@ export default function App() {
       <CustomerPrivacyApiFallback />
       <MarketingAttributionCapture />
       <GoogleCommerceAnalytics containerId={data.gtmContainerId} />
-      <MetaPixelAnalytics pixelId={data.metaPixelId} />
+      <MetaPixelAnalytics pixelIds={data.metaPixelIds} />
       <style suppressHydrationWarning>
         {heroBackdropVars(data.heroBackdrop)}
       </style>
