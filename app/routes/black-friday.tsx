@@ -304,10 +304,13 @@ const css = `
   margin-top: 20px;
 }
 .black-friday-jump a {
+  align-items: center;
   border: 1px solid rgba(38, 35, 31, 0.2);
   border-radius: 999px;
+  display: inline-flex;
   font-size: 0.86rem;
-  padding: 7px 14px;
+  min-height: 44px;
+  padding: 0 14px;
 }
 .black-friday-jump a:hover {
   border-color: var(--color-ink);
@@ -368,6 +371,11 @@ const css = `
   font-weight: 400;
   letter-spacing: -0.03em;
   margin: 0;
+}
+.black-friday-group-head .text-link {
+  align-items: center;
+  display: inline-flex;
+  min-height: 44px;
 }
 .black-friday-group-head h2 span {
   color: var(--color-muted);

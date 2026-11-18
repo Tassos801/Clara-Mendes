@@ -350,10 +350,13 @@ const giftsCss = `
   margin-top: 20px;
 }
 .gifts-jump a {
+  align-items: center;
   border: 1px solid rgba(38, 35, 31, 0.2);
   border-radius: 999px;
+  display: inline-flex;
   font-size: 0.86rem;
-  padding: 7px 14px;
+  min-height: 44px;
+  padding: 0 14px;
 }
 .gifts-jump a:hover {
   border-color: var(--color-ink);
