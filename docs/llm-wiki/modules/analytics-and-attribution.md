@@ -36,6 +36,12 @@ Shopify's standalone consent-tracking-api after 2 s when the full API is
 missing; Hydrogen's own setter picks it up and analytics start with the stored
 consent.
 
+The banner's look is restyled in `app/styles/app.css` (end of file, id
+selectors on `#shopify-pc__banner`): up to 640 px wide it is a compact
+bottom sheet (about 180 px at 390 × 844) with Accept and Decline the same
+size and style; at every width it sits under the cart drawer while the drawer
+is open. Its wording is set in Shopify admin; consent logic is unchanged.
+
 ## Ad Platform Events
 
 Both integrations subscribe to Hydrogen analytics events and turn payloads

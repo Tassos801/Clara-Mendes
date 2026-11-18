@@ -31,6 +31,12 @@ import {
   type CapsulePage,
 } from '~/lib/capsulePages';
 import {
+  editionPagePath,
+  editionTagQuery,
+  getEditionPage,
+  type EditionPage,
+} from '~/lib/editionPages';
+import {
   buildGalleryTagQuery,
   galleryPagePath,
   getGalleryPage,
@@ -112,6 +118,13 @@ type GalleryLoaderData = {
   wallSet: WallSetData;
 };
 
+type EditionLoaderData = {
+  kind: 'edition';
+  page: EditionPage;
+  products: ClaraCardProduct[];
+  seoUrl: string;
+};
+
 type ShopifyCollectionLoaderData = CollectionViewData & {
   kind?: undefined;
 };
@@ -120,7 +133,9 @@ export const meta: Route.MetaFunction = ({data, matches}) => {
   if (
     data &&
     'kind' in data &&
-    (data.kind === 'capsule' || data.kind === 'gallery')
+    (data.kind === 'capsule' ||
+      data.kind === 'gallery' ||
+      data.kind === 'edition')
   ) {
     return buildSeoMeta({
       description: data.page.metaDescription,
@@ -262,6 +277,28 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
       }),
       wallSet,
     } satisfies GalleryLoaderData;
+  }
+
+  // Edition lines (Art & Words) list their released catalog products by the
+  // collection's title tag; no Shopify collection is needed.
+  const editionPage = getEditionPage(handle);
+  if (editionPage) {
+    const data = await context.storefront.query(CAPSULE_PAGE_QUERY, {
+      variables: {first: 50, query: editionTagQuery(editionPage)},
+    });
+    const released = editionPage.handles;
+    const products = await withDeliveryReach(
+      context.storefront,
+      filterDemoProducts((data.products?.nodes ?? []) as ClaraCardProduct[])
+        .filter((product) => released.includes(product.handle))
+        .sort((a, b) => released.indexOf(a.handle) - released.indexOf(b.handle)),
+    );
+    return {
+      kind: 'edition',
+      page: editionPage,
+      products,
+      seoUrl: getCanonicalUrl(request, editionPagePath(editionPage.slug)),
+    } satisfies EditionLoaderData;
   }
 
   const paginationVariables = getPaginationVariables(request, {
@@ -420,6 +457,9 @@ export default function Collection() {
   }
   if ('kind' in data && data.kind === 'gallery') {
     return <GalleryLandingView data={data} />;
+  }
+  if ('kind' in data && data.kind === 'edition') {
+    return <EditionLandingView data={data} />;
   }
   return <CollectionView data={data as ShopifyCollectionLoaderData} />;
 }
@@ -737,6 +777,76 @@ function GalleryLandingView({data}: {data: GalleryLoaderData}) {
       ) : null}
 
       <style suppressHydrationWarning>{capsulePageCss + galleryPageCss}</style>
+    </div>
+  );
+}
+
+function EditionLandingView({data}: {data: EditionLoaderData}) {
+  const {page, products, seoUrl} = data;
+  const shopUrl = new URL('/collections/all', seoUrl).toString();
+
+  return (
+    <div className="collection-page capsule-page" data-chapter="linen">
+      <Analytics.CollectionView
+        data={{collection: {handle: page.slug, id: `edition:${page.slug}`}}}
+        customData={{products: buildCollectionAnalyticsProducts(products)}}
+      />
+      <StructuredData
+        data={[
+          collectionSchema({
+            description: page.metaDescription,
+            products,
+            title: page.title,
+            url: seoUrl,
+          }),
+          breadcrumbSchema({
+            items: [
+              {name: 'Shop', url: shopUrl},
+              {name: page.title, url: seoUrl},
+            ],
+          }),
+        ]}
+      />
+
+      <nav className="breadcrumb" aria-label="Breadcrumb">
+        <Link to="/collections/all">Shop</Link>
+        <span aria-hidden="true">›</span>
+        <span>{page.title}</span>
+      </nav>
+
+      <header className="capsule-hero">
+        <p className="eyebrow">{page.eyebrow}</p>
+        <h1>{page.title}</h1>
+        <p className="capsule-subtitle">{page.subtitle}</p>
+      </header>
+
+      <div className="capsule-editorial">
+        {page.editorial.map((paragraph) => (
+          <p key={paragraph.slice(0, 24)}>{paragraph}</p>
+        ))}
+      </div>
+
+      <section className="capsule-products" aria-label={page.title}>
+        <div className="product-grid compact-grid">
+          {products.map((product, index) => (
+            <ClaraProductCard
+              key={product.id}
+              product={product}
+              loading={index === 0 ? 'eager' : 'lazy'}
+            />
+          ))}
+        </div>
+        {products.length === 0 ? (
+          <p className="capsule-empty">
+            These pieces are briefly unavailable.{' '}
+            <Link className="text-link" to="/collections/all">
+              Browse the shop
+            </Link>
+          </p>
+        ) : null}
+      </section>
+
+      <style suppressHydrationWarning>{capsulePageCss}</style>
     </div>
   );
 }

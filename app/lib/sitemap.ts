@@ -18,6 +18,7 @@ import {
 import {artistPath, publicArtists} from './artistShops.ts';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from './bookNooks.ts';
 import {shopCapsulePath} from './capsules.ts';
+import {editionPagePath, listEditionPages} from './editionPages.ts';
 import {listGalleryPages} from './galleryPages.ts';
 import {GIFTS_PATH} from './giftPage.ts';
 import {releasedPrintCollections} from './printCatalog.ts';
@@ -51,6 +52,8 @@ export const CUSTOM_SITEMAP_PATHS: readonly string[] = [
   ),
   // Curated gallery edits — storefront-rendered like the capsule pages.
   ...listGalleryPages().map((page) => `/collections/${page.slug}`),
+  // Edition lines (Art & Words) while they have a released product.
+  ...listEditionPages().map((page) => editionPagePath(page.slug)),
   // Feature pages (e.g. /your-sky) replace their product URL.
   ...Object.values(FEATURE_PAGE_PATHS),
   '/our-story',

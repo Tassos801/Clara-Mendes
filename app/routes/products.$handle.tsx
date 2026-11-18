@@ -51,6 +51,7 @@ import {
   shopCapsulePath,
 } from '~/lib/capsules';
 import {getCapsulePage} from '~/lib/capsulePages';
+import {editionPageForProduct, editionPagePath} from '~/lib/editionPages';
 import {
   collectPages,
   museumPairings,
@@ -605,6 +606,8 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
   );
 
   const capsulePage = capsule ? getCapsulePage(capsule.slug) : null;
+  // An edition product (Art & Words) leads back to its line's page.
+  const editionPage = editionPageForProduct(handle);
 
   // Released-only: the pairing lists catalog-released handles, Storefront
   // returns only Active + published products, and the listing filter
@@ -778,7 +781,13 @@ export async function loader({context, params, request}: Route.LoaderArgs) {
           path: shopCapsulePath(shopCapsule.slug),
           title: shopCapsule.title,
         }
-      : null,
+      : editionPage
+        ? {
+            blurb: null,
+            path: editionPagePath(editionPage.slug),
+            title: editionPage.title,
+          }
+        : null,
     deliveryCountry: {
       choices: outOfReach
         ? await deliveryCountryChoices(context.storefront)
