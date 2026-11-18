@@ -113,7 +113,10 @@ export function ReviewsSection({
 
       <div className="rv-heading-row">
         <div>
-          <p className="rv-eyebrow">From real homes</p>
+          {/* The eyebrow speaks of reviews in homes: only once there are some. */}
+          {summary.total > 0 ? (
+            <p className="rv-eyebrow">From real homes</p>
+          ) : null}
           <h2 id="rv-heading" className="rv-title">
             Reviews
           </h2>
@@ -132,17 +135,21 @@ export function ReviewsSection({
 
       {summary.total === 0 ? (
         <div className="rv-empty">
+          {/* A quiet line, not a second dark button beside Add to cart: a
+              first-time visitor has nothing to review yet. */}
           <p className="rv-empty-text">
-            No reviews yet for {productTitle}. Be the first to share how it
-            lives in your home.
+            No reviews yet. Bought one? Tell others how it lives in your home.
           </p>
           <button
             type="button"
-            className="rv-btn rv-btn--primary"
+            className="rv-btn rv-btn--outline"
             onClick={() => setFormOpen((open) => !open)}
             aria-expanded={formOpen}
+            aria-label={
+              formOpen ? undefined : `Write a review of ${productTitle}`
+            }
           >
-            {formOpen ? 'Close' : 'Write the first review'}
+            {formOpen ? 'Close' : 'Write a review'}
           </button>
           {formOpen ? (
             <div className="rv-form-panel rv-form-panel--empty">
