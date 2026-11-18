@@ -4000,6 +4000,13 @@ button {
 .contact-channel {
   border-bottom: 1px solid rgba(38, 35, 31, 0.12);
   padding: clamp(28px, 4vw, 42px) 0;
+  scroll-margin-top: calc(var(--header-height) + 24px);
+}
+
+.contact-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
 }
 
 .contact-channel h2 {
