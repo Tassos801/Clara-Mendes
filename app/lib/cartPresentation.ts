@@ -7,6 +7,7 @@ import {
   curatedImageSrcForWidth,
   hasCuratedImageCopies,
 } from './curatedProducts.ts';
+import {isClothingProduct, type ClothingProductLike} from './clothing.ts';
 
 type CartImage = {
   altText?: string | null;
@@ -103,3 +104,21 @@ export const CART_LINE_MAX_QUANTITY = 99;
  * browser never leaves (a blocked navigation, a stalled network).
  */
 export const CHECKOUT_PENDING_TIMEOUT_MS = 8000;
+
+/**
+ * Cart suggestions that fit what is in the cart: clothing only beside
+ * clothing. Shopify's related products for a blanket or a print can be a
+ * cap or a pair of leggings, which "Complete the room" does not describe
+ * and the buyer did not come for; with nothing that fits, the row hides.
+ */
+export function fittingCartRecommendations<T extends ClothingProductLike>(
+  products: readonly T[],
+  cartProducts: ReadonlyArray<ClothingProductLike | null | undefined>,
+): T[] {
+  const cartHasClothing = cartProducts.some(
+    (product) => product && isClothingProduct(product),
+  );
+  return products.filter(
+    (product) => cartHasClothing || !isClothingProduct(product),
+  );
+}

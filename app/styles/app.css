@@ -2764,6 +2764,10 @@ button {
 }
 
 .cart-summary-page {
+  /* One column no wider than the card: an auto column grows to the code
+     inputs' natural width and pushes the total and checkout button past
+     the card's right padding. */
+  grid-template-columns: minmax(0, 1fr);
   position: sticky;
   top: calc(var(--header-height) + 24px);
 }
@@ -5673,6 +5677,13 @@ html.lenis body {
   border-top: 0;
 }
 
+/* The swipe surface is opaque so it hides the Remove action behind it. In
+   the drawer its paper matches the panel; on the page it takes the page
+   colour, or each line reads as a white slab with its text on the edge. */
+.cart-main--page .cart-line-swipe-surface {
+  background: var(--color-page);
+}
+
 .cart-line-inner {
   align-items: start;
   gap: 16px;
@@ -5854,7 +5865,19 @@ html.lenis body {
 .cart-codes-body {
   display: grid;
   gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
   padding: 2px 0 16px;
+}
+
+/* reset.css pads every section and gives inputs a margin: here that put
+   a blank band between the discount and gift-card rows and set each input
+   lower than its Apply button. */
+.cart-code-section {
+  padding: 0;
+}
+
+.cart-code-row input {
+  margin: 0;
 }
 
 .cart-code-section dl,

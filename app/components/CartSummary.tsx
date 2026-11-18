@@ -5,8 +5,18 @@ import {useEffect, useId, useRef, useState} from 'react';
 import {useFetcher} from 'react-router';
 import {useMarketingCheckoutUrl} from '~/hooks/useMarketingCheckoutUrl';
 import {useMarketingConsent} from '~/hooks/useMarketingConsent';
-import {CHECKOUT_PENDING_TIMEOUT_MS} from '~/lib/cartPresentation';
+import {
+  CHECKOUT_PENDING_TIMEOUT_MS,
+  isCartLineUnavailable,
+} from '~/lib/cartPresentation';
 import {cartLineSavings} from '~/lib/cartDiscounts';
+import {cartChristmasOrderBy, cartShippingNote} from '~/lib/cartDelivery';
+import {artProductPage} from '~/lib/artProductCatalog';
+import {
+  christmasLineFor,
+  storeToday,
+  type ChristmasLine,
+} from '~/lib/christmasDelivery';
 import {formatMoney} from '~/lib/money';
 import {
   getCartFormErrorMessages,
@@ -69,6 +79,13 @@ function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
   const showTotal =
     Boolean(subtotal?.amount && total?.amount) &&
     Number(total?.amount) < Number(subtotal?.amount);
+  // Checkout opens with the cart's country, so the delivery lines use it.
+  const countryCode = cart?.buyerIdentity?.countryCode;
+  const christmasOrderBy = cartChristmasOrderBy({
+    countryCode,
+    lines: christmasLinesOf(cart?.lines?.nodes ?? []),
+    today: storeToday(),
+  });
 
   return (
     <div className="cart-totals" aria-busy={updating || undefined}>
@@ -100,12 +117,33 @@ function CartTotals({cart}: {cart: CartSummaryProps['cart']}) {
         </p>
       ) : null}
       <p className="cart-totals-note">
-        {updating
-          ? 'Updating your cart…'
-          : 'Shipping is calculated at checkout.'}
+        {updating ? 'Updating your cart…' : cartShippingNote(countryCode)}
       </p>
+      {christmasOrderBy && !updating ? (
+        <p className="cart-totals-note">{christmasOrderBy}</p>
+      ) : null}
     </div>
   );
+}
+
+/**
+ * Each line's fulfilment line for the Christmas dates, as the product page
+ * reads it. Lines Shopify can no longer sell are left out: they must be
+ * removed before checkout anyway.
+ */
+function christmasLinesOf(
+  lines: NonNullable<CartSummaryProps['cart']>['lines']['nodes'],
+): Array<ChristmasLine | null> {
+  return lines
+    .filter((line) => !isCartLineUnavailable(line))
+    .map((line) => {
+      const product = line.merchandise?.product;
+      return christmasLineFor({
+        productType: product?.productType,
+        handle: product?.handle,
+        printfulTechnique: artProductPage(product?.handle)?.printfulTechnique,
+      });
+    });
 }
 
 /** The sum of the cart-level discount allocations, or null when none. */
