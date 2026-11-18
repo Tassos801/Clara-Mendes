@@ -8,6 +8,7 @@ import {
 } from 'react';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
+import {BlackFridayProductLine} from '~/components/BlackFridayProductLine';
 import {ProductPrice} from '~/components/ProductPrice';
 import {
   SkyConfigurator,
@@ -235,6 +236,13 @@ export function SkyStudio({
               <ProductPrice
                 price={selectedVariant.price}
                 compareAtPrice={selectedVariant.compareAtPrice}
+              />
+            ) : null}
+            {selectedVariant?.availableForSale ? (
+              <BlackFridayProductLine
+                handle={product.handle}
+                productType={product.productType}
+                variantTitle={selectedVariant.title}
               />
             ) : null}
             <div
