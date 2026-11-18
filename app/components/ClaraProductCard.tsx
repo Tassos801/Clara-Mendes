@@ -1,8 +1,10 @@
 import {useEffect, useState} from 'react';
-import {Link} from 'react-router';
+import {Link, useRouteLoaderData} from 'react-router';
 import {Image} from '@shopify/hydrogen';
+import type {loader as rootLoader} from '~/root';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
+import {blackFridayCardLine} from '~/lib/blackFridayCard';
 import {getProductStory} from '~/lib/productCopy';
 import {
   cardQuickAddMode,
@@ -144,6 +146,11 @@ export function ClaraProductCard({
   const priceLabel = formatCardPriceLabel(cardPricing);
   const chip = product.productType || 'Curated object';
   const story = showStory ? getProductStory(product) : null;
+  // Black Friday week only (root loader's request-time check).
+  const root = useRouteLoaderData<typeof rootLoader>('root');
+  const saleLine = root?.blackFridayWeek
+    ? blackFridayCardLine(product.productType, product.handle)
+    : null;
 
   return (
     <article
@@ -212,6 +219,8 @@ export function ClaraProductCard({
             <p className="cm-card-reach">
               Doesn&rsquo;t ship to {product.notShippedTo}
             </p>
+          ) : saleLine ? (
+            <p className="cm-card-sale">{saleLine}</p>
           ) : null}
           {story ? <p className="cm-card-story">{story}</p> : null}
         </div>
@@ -459,13 +468,19 @@ const cardCss = `
   margin: 8px 0 0;
 }
 
-.cm-card-reach {
+.cm-card-reach,
+.cm-card-sale {
   color: var(--color-muted, #524d45);
   font-family: var(--sans);
   font-size: 0.74rem;
   letter-spacing: 0.04em;
   line-height: 1.4;
   margin: 6px 0 0;
+}
+
+.cm-card-sale {
+  color: var(--color-ink);
+  font-weight: 600;
 }
 
 .cm-card-title {
