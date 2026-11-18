@@ -272,9 +272,6 @@ function ClaraFooter() {
             <li>
               <Link to="/blogs/karina-of-time">Karina of Time</Link>
             </li>
-            <li>
-              <Link to="/contact">Contact</Link>
-            </li>
           </ul>
         </nav>
         <nav className="footer-column" aria-label="Help">
@@ -285,6 +282,12 @@ function ClaraFooter() {
             </li>
             <li>
               <Link to="/policies/refund-policy">Returns</Link>
+            </li>
+            <li>
+              <Link to="/contact#order-help">Where&apos;s my order?</Link>
+            </li>
+            <li>
+              <Link to="/contact">Contact</Link>
             </li>
             <li>
               <Link to="/policies/privacy-policy">Privacy</Link>

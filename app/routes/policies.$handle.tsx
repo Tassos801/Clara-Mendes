@@ -6,7 +6,9 @@ import {
   POLICY_META_DESCRIPTIONS,
   policyCanonicalPath,
 } from '~/lib/policyMetadata';
+import {withPolicySections} from '~/lib/policySections';
 import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
+import {SUPPORT_EMAIL} from '~/lib/storefrontBasics';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -54,15 +56,18 @@ export async function loader({params, context, request}: Route.LoaderArgs) {
     throw new Response('Could not find the policy', {status: 404});
   }
 
+  const {body, sections} = withPolicySections(policy.body);
+
   return {
-    policy,
+    policy: {...policy, body},
+    sections,
     description: POLICY_META_DESCRIPTIONS[policyName],
     canonicalUrl: getCanonicalUrl(request, canonicalPath),
   };
 }
 
 export default function Policy() {
-  const {policy} = useLoaderData<typeof loader>();
+  const {policy, sections} = useLoaderData<typeof loader>();
 
   return (
     <div className="policies-page policy-detail">
@@ -77,6 +82,21 @@ export default function Policy() {
         <h1>{policy.title}</h1>
       </header>
 
+      {sections.length > 0 ? (
+        <nav className="policy-toc" aria-labelledby="policy-toc-heading">
+          <p className="eyebrow" id="policy-toc-heading">
+            On this page
+          </p>
+          <ul>
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a href={`#${section.id}`}>{section.title}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      ) : null}
+
       {/* Admin-authored HTML: hand-pasted <img> tags must use Shopify-hosted
           URLs — other hosts are blocked by the img-src allowlist in app/lib/csp.ts. */}
       <article
@@ -85,9 +105,19 @@ export default function Policy() {
       />
 
       <div className="policy-footer-nav">
-        <Link to="/policies" className="text-link">
-          ← All policies
-        </Link>
+        <p className="policy-help">
+          Still have a question? Email{' '}
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we&apos;ll
+          reply within one business day.
+        </p>
+        <div className="policy-footer-links">
+          <Link to="/collections/all" className="text-link">
+            Back to the shop
+          </Link>
+          <Link to="/policies" className="text-link">
+            ← All policies
+          </Link>
+        </div>
       </div>
     </div>
   );

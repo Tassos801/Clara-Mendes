@@ -49,6 +49,14 @@ test('the help links point at the four policies', () => {
   }
 });
 
+test('help carries order help and contact, once each', () => {
+  const help = FOOTER.slice(FOOTER.indexOf('aria-label="Help"'));
+  assert.match(help, /<Link to="\/contact#order-help">/);
+  assert.match(help, /<Link to="\/contact">Contact<\/Link>/);
+  assert.equal(FOOTER.match(/<Link to="\/contact">/g)?.length, 1);
+  assert.match(read('app/routes/contact.tsx'), /id="order-help"/);
+});
+
 test('the bottom row carries the year and the social links', () => {
   assert.match(FOOTER, /className="footer-bottom"/);
   assert.match(FOOTER, /new Date\(\)\.getFullYear\(\)/);

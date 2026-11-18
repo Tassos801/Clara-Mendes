@@ -43,19 +43,26 @@ export default function Contact() {
             </a>
           </div>
 
-          <div className="contact-channel">
-            <h2>Order support</h2>
+          <div className="contact-channel" id="order-help">
+            <h2>Where is my order?</h2>
             <p>
-              For questions about an existing order — tracking, delivery timing,
-              or changes — include your order number and we&apos;ll get back to you
-              within one business day.
+              You get a confirmation email when you order and a second email
+              with the dispatch details when it ships, with a tracking link
+              where the delivery is tracked. Can&apos;t find them, or need a
+              change? Email us with your order number and we&apos;ll get back to
+              you within one business day.
             </p>
-            <a
-              href={`mailto:${SUPPORT_EMAIL}?subject=Order%20Support`}
-              className="contact-link"
-            >
-              Email about an order
-            </a>
+            <div className="contact-links">
+              <a
+                href={`mailto:${SUPPORT_EMAIL}?subject=Order%20Support`}
+                className="contact-link"
+              >
+                Email about an order
+              </a>
+              <Link to="/policies/shipping-policy" className="contact-link">
+                Delivery times
+              </Link>
+            </div>
           </div>
 
           <div className="contact-channel">
