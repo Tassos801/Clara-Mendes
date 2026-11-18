@@ -3457,6 +3457,24 @@ button {
   padding-top: clamp(28px, 4vw, 44px);
 }
 
+.policy-help {
+  color: var(--color-muted);
+  line-height: 1.7;
+  margin: 0 0 20px;
+  max-width: 60ch;
+}
+
+.policy-help a {
+  border-bottom: 1px solid currentColor;
+  color: var(--color-clay-ink);
+}
+
+.policy-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+}
+
 @media (max-width: 720px) {
   .policy-link {
     grid-template-columns: 40px minmax(0, 1fr) auto;

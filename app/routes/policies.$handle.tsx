@@ -8,6 +8,7 @@ import {
 } from '~/lib/policyMetadata';
 import {withPolicySections} from '~/lib/policySections';
 import {buildSeoMeta, getCanonicalUrl} from '~/lib/seo';
+import {SUPPORT_EMAIL} from '~/lib/storefrontBasics';
 
 type SelectedPolicies = keyof Pick<
   Shop,
@@ -104,9 +105,19 @@ export default function Policy() {
       />
 
       <div className="policy-footer-nav">
-        <Link to="/policies" className="text-link">
-          ← All policies
-        </Link>
+        <p className="policy-help">
+          Still have a question? Email{' '}
+          <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a> and we&apos;ll
+          reply within one business day.
+        </p>
+        <div className="policy-footer-links">
+          <Link to="/collections/all" className="text-link">
+            Back to the shop
+          </Link>
+          <Link to="/policies" className="text-link">
+            ← All policies
+          </Link>
+        </div>
       </div>
     </div>
   );
