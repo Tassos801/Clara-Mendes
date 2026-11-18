@@ -494,11 +494,14 @@ export function museumPairings(
   );
   const typeRank = (product: ArtistProduct) =>
     ARTIST_PRODUCT_FAMILIES.indexOf(product.family);
-  const sameArtwork = released
-    .filter((product) => product.artworkId === self.artworkId)
-    .sort((a, b) => typeRank(a) - typeRank(b));
   const sameType = (product: ArtistProduct) =>
     product.family === self.family ? 0 : 1;
+  // The same artwork in the same family is another edition of this very
+  // product (a plain blanket and its Art & Words one): it leads, so each
+  // page shows the other.
+  const sameArtwork = released
+    .filter((product) => product.artworkId === self.artworkId)
+    .sort((a, b) => sameType(a) - sameType(b) || typeRank(a) - typeRank(b));
   const sameArtist = released
     .filter(
       (product) =>
