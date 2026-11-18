@@ -445,3 +445,9 @@ test('cart suggestions offer clothing only beside clothing', () => {
     /fittingCartRecommendations\(/,
   );
 });
+
+test('the empty cart links to the Black Friday edit only while the week runs', () => {
+  const main = read('app/components/CartMain.tsx');
+  assert.match(main, /isBlackFridayWeek\(new Date\(\)\) \?/);
+  assert.match(main, /to=\{BLACK_FRIDAY_PATH\}/);
+});
