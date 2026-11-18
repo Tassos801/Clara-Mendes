@@ -1379,7 +1379,9 @@ function ProductPage() {
                     ? `Processing ${curatedProduct.processing}`
                     : 'Processing estimate at checkout'
                   : windows
-                    ? `Processes in ${windows.production} business days`
+                    ? // The dispatch window, as the Shipping row and Your Sky
+                      // state it: production alone read as a shorter wait.
+                      `Dispatched in ${windows.dispatch} business days`
                     : 'Shipping calculated at checkout'}
               </span>
               {curatedProduct ? (
