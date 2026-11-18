@@ -2845,6 +2845,12 @@ button {
   padding-top: calc(var(--header-height) + clamp(70px, 9vw, 130px));
 }
 
+.error-page__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 32px;
+}
+
 .empty-state.compact {
   align-content: center;
   min-height: auto;
