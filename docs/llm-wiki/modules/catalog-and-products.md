@@ -759,15 +759,25 @@ confirmed the two ppi exceptions (Great Wave 62, Troika 48) and set the price
 at EUR 69.99 (EUR 5 above the plain blanket), and the three were released by
 hand in Admin (the pipeline's `release` needs the office PC's token and
 launch folder): pending tags removed, Active, published to Clara Mendes and
-Clara Mendes Headless. Their inventory stays **tracked** in Shopify, at the
-Printful location (9,999), like the live plain blankets, so orders route to
-Printful; the catalog records `tracked: false`, the pipeline's released state,
-as it does for those blankets. No physical sample: the first paid order is
-the check. Runbook: [add-products-runbook.md](../../add-products-runbook.md)
+Clara Mendes Headless. Their inventory was left **tracked** in Shopify
+(9,999, DENY). That is not the pipeline's released state: `release` untracks,
+and a read of Shopify on 2026-11-18 found the other 27 live blankets and every
+live museum mug and cushion untracked; only the plain Great Wave blanket is
+tracked as well (9,998). The catalog records `tracked: false`, which
+`validateArtProductCatalog` requires of a released product. The next
+`release art-and-words --family blanket --apply` without `--only` untracks
+these three too (it selects released products and checks every variant is
+untracked). Whether tracking changes how an order reaches Printful is not
+known: [open-questions.md](../open-questions.md). No physical sample: the
+first paid order is the check. Runbook: [add-products-runbook.md](../../add-products-runbook.md)
 step 6. Each has a second gallery image, an in-room scene: Codex made the
 room and drape to
 [art-and-words-product-photos.md](../../art-and-words-product-photos.md), and
 the blanket face was replaced with the real preview's pixels (generated
 lettering was heavier and larger than the file). Alt text
 "<work> by <artist> as a throw blanket, in a room". The `llms.txt` type
-example prefers a plain product over an edition (`exampleProduct`).
+example prefers a plain product over an edition (`exampleProduct`): the
+pipeline sorts catalog products by collection slug, so `art-and-words` comes
+first in `products` and any other "first released product of a type" reader
+gets an edition. Checked live on 2026-11-18 (log): `verify` 15/15, checkout
+delivery rate and Black Friday discount as the plain blanket.

@@ -2675,3 +2675,33 @@ real print pixels on the blanket face). `data/art-product-catalog.json`
 records `released: true` and the price; the edition test pins it, and the
 `llms.txt` blanket example stays the plain Great Wave blanket. Details:
 [catalog-and-products.md](modules/catalog-and-products.md).
+
+## 2026-11-18 — Art & Words release reviewed (PR #215)
+
+Review of the release on the office PC, against the live shop. Passing:
+`verify art-and-words --families` 15/15 (available, EUR 69.99, add to cart,
+PDP 200, sitemap); the three are in both Printful feeds at 69.99 with the
+blanket shipping columns; checkout quotes the same delivery rate as the plain
+Great Wave blanket in Germany and the United States; US price USD 79 (plain
+USD 73); the Black Friday 20% automatic discount covers them (cart 69.99 to
+56.00), as their pages and `/black-friday` say; Hokusai's artist shop lists
+the quote blanket after his plain blankets.
+
+Corrected: the release entry above says the tracked inventory matches "the
+live plain blankets, so orders route to Printful". Read from Shopify: only
+the plain Great Wave blanket is tracked; the other 27 live blankets and all
+live museum mugs and cushions are untracked, and the routing reason was
+never measured. [catalog-and-products.md](modules/catalog-and-products.md)
+now states what was read, and the question is in
+[open-questions.md](open-questions.md).
+
+Code: `exampleProduct` in `app/lib/llmsTxt.ts` uses `editionFileOf` instead
+of a second edition lookup; the `llms.txt` test again names the exact example
+(first released plain product, an edition only when there is none) and
+covers the edition-only case; the edition test compares the edition price
+with its plain blanket instead of pinning the plain price.
+
+Left open: two of the three page titles are cut at 62 characters on a
+dangling word ("... Art & Words by...", "... Throw Blanket, Art &..."), from
+`truncate` in `app/lib/seo.ts`; nine older museum product titles already end in
+"by...".

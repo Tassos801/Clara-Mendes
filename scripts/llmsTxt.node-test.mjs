@@ -7,6 +7,7 @@ import {fileURLToPath} from 'node:url';
 import {
   ART_PRODUCT_CATALOG,
   FAMILY_SPECS,
+  editionFileOf,
 } from '../app/lib/artProductCatalog.ts';
 import {publicArtists} from '../app/lib/artistShops.ts';
 import {CLOTHING_ARTISTS} from '../app/lib/clothingArtists.ts';
@@ -51,13 +52,14 @@ test('every released museum product family is listed with an example product', (
     const facts = families.find((entry) => entry.family === family);
     assert.ok(facts, `${family} missing from releasedMuseumFamilies`);
     const bullet = familyBullet(text, facts.label);
+    // The first released plain product; an edition only when there is none.
     const examples = ART_PRODUCT_CATALOG.products.filter(
       (product) => product.family === family && product.released === true,
     );
+    const example =
+      examples.find((product) => !editionFileOf(product)) ?? examples[0];
     assert.ok(
-      examples.some((example) =>
-        bullet.includes(`/products/${example.handle})`),
-      ),
+      bullet.includes(`/products/${example.handle})`),
       `${family} has no example link`,
     );
   }
@@ -74,6 +76,27 @@ test('the throw blanket, the first real sale, is named with its size', () => {
   const bullet = familyBullet(text, 'throw blankets');
   assert.match(bullet, /50 × 60 in/);
   assert.match(bullet, /\/products\/the-great-wave-off-kanagawa-blanket\)/);
+});
+
+test('an edition is the type example only when no plain product is released', () => {
+  // Catalog order puts the Art & Words blankets before the plain ones.
+  const blankets = ART_PRODUCT_CATALOG.products.filter(
+    (product) => product.family === 'blanket' && product.released === true,
+  );
+  assert.ok(editionFileOf(blankets[0]), 'an edition leads the catalog');
+  assert.ok(blankets.some((product) => !editionFileOf(product)));
+  // Withdraw every plain blanket: the edition is the example that is left.
+  const artProducts = {
+    ...ART_PRODUCT_CATALOG,
+    products: ART_PRODUCT_CATALOG.products.map((product) =>
+      product.family === 'blanket' && !editionFileOf(product)
+        ? {...product, released: false}
+        : product,
+    ),
+  };
+  const bullet = familyBullet(buildLlmsTxt({artProducts}), 'throw blankets');
+  assert.ok(bullet.includes(`/products/${blankets[0].handle})`));
+  assert.doesNotMatch(bullet, /the-great-wave-off-kanagawa-blanket\)/);
 });
 
 test('every artist with released products is listed with an artist-shop link', () => {

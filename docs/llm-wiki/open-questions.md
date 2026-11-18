@@ -39,6 +39,15 @@ Sources: [Launch readiness](../launch-readiness.md), [README](../../README.md),
   blankets would split the blanket fee group (the `shipping-fees` rebuild
   stops) and contradict the fee their pages show; either drop the
   requirement or move whole families and rebuild the fee table together.
+- Does inventory tracking change how an order reaches Printful? On
+  2026-11-18 the three Art & Words blankets (9,999) and the plain Great Wave
+  blanket (9,998) are tracked with DENY; the other 27 live blankets and all
+  live museum mugs and cushions are untracked, the state `release` writes.
+  The 2026-11-17 release (PR #215) took tracking as the reason order #1002 went
+  to Printful; no order of an untracked Printful product exists to compare.
+  Until it is known: should `release` leave already-released products alone?
+  Today it untracks every selected product, so the next Art & Words release
+  untracks the first three.
 
 Sources: [Shopify Admin cleanup](../shopify-admin-cleanup.md),
 [Original Art Launch](../original-art-launch.md).
