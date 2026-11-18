@@ -129,13 +129,15 @@ A rate or a zone changed in a Shopify shipping profile must change in
 old rate. After a change to a US rate there, or to a Printful shipping
 profile, run `npm run shipping-fees` and commit the table it writes: the
 Printful feeds and the USD fixed feed read it, and nothing re-quotes it at
-fetch time. The weekly rebuild keeps the table inside the feeds' 2%
-allowance; a table left for months can fall behind the exchange rate.
+fetch time. The monthly rebuild keeps the table near checkout; the feeds' 2%
+allowance covers a small move of the exchange rate in between. After a
+larger one, run the workflow by hand, or the feeds can state less than
+checkout charges.
 
-## The Weekly Rebuild
+## The Monthly Rebuild
 
 `.github/workflows/shipping-fees.yml` runs `npm run shipping-fees` against
-`main` every Monday at 04:23 UTC, and on demand (Actions → Shipping fee
+`main` on the 1st of each month at 04:23 UTC, and on demand (Actions → Shipping fee
 table → Run workflow).
 
 - Job `quote` (`contents: read` only): `npm ci`, then the script with the
@@ -159,8 +161,12 @@ table → Run workflow).
   (about 1,300 for 147 pieces), roughly 30 minutes; the `quote` job's
   timeout is 90 minutes. A timeout mid-run spends carts and writes nothing.
 - Cost: a run makes 9 Storefront carts (one per probe country, 20 s apart),
-  and Shopify analytics counts each as a visit that added to cart. Hence
-  weekly, the job is never re-run by itself, and a re-run is 9 more carts.
+  swapping about 1,300 lines in them, and Shopify analytics counts that as
+  visits that added to cart (1,329 sessions with no referrer for the first
+  scheduled run, 2026-11-16). Hence
+  monthly (weekly until 2026-11-18), the job is never re-run by itself, and
+  a re-run costs as much again. In Shopify admin the saved report "Real
+  sessions (no script carts)" leaves these sessions out.
 - Network failures: the script resends a request a network failure stopped,
   up to four times, 15 to 60 s apart (`scripts/lib/storefront-request.mjs`,
   test `scripts/storefrontRequest.node-test.mjs`). Reads and line swaps are

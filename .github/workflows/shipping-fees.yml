@@ -1,21 +1,23 @@
-# Weekly rebuild of the shipping fee table (app/lib/printfulShippingFees.ts).
+# Monthly rebuild of the shipping fee table (app/lib/printfulShippingFees.ts).
 #
 # Product pages and the Merchant Center feeds read that table and never ask
 # checkout, so it is only as true as its last rebuild. This quotes checkout
-# again once a week and, when an amount moved, proposes the new table in one
+# again once a month and, when an amount moved, proposes the new table in one
 # pull request. Only the owner merges it.
 #
 # Cost: every run of the first job creates 9 Storefront carts (one per probe
-# country), and Shopify analytics counts each cart as a visit that added to
-# cart. So: once a week, and the job is never re-run by itself: a full re-run
-# is 9 more carts. Within a run the script resends a request a network
-# failure stopped, but never a cart create that may have reached Shopify.
+# country) and swaps about 1,300 lines in them. Shopify analytics counts that
+# as visits that added to cart: the first scheduled run, on 2026-11-16, showed
+# as 1,329 sessions with no referrer. So: once a month, and the job is never
+# re-run by itself: a full re-run costs as much again. Within a run the script
+# resends a request a network failure stopped, but never a cart create that
+# may have reached Shopify.
 name: Shipping fee table
 
 on:
   schedule:
-    # Mondays 04:23 UTC. Not more often: see the cost above.
-    - cron: "23 4 * * 1"
+    # The 1st of each month, 04:23 UTC. Not more often: see the cost above.
+    - cron: "23 4 1 * *"
   workflow_dispatch:
 
 # Jobs declare their own least-privilege permissions.
@@ -187,7 +189,7 @@ jobs:
           title="Shipping fee table: checkout quotes of $QUOTED_ON"
           body="$RUNNER_TEMP/pull-request.md"
           {
-            echo "The weekly rebuild ([run]($RUN_URL)) quoted checkout on $QUOTED_ON. It no longer charges what \`$TABLE\` on \`main\` says:"
+            echo "The monthly rebuild ([run]($RUN_URL)) quoted checkout on $QUOTED_ON. It no longer charges what \`$TABLE\` on \`main\` says:"
             echo
             echo '```diff'
             git diff --no-color --unified=7 HEAD~1 HEAD -- "$TABLE" | sed '1,4d'
@@ -211,7 +213,7 @@ jobs:
             exit 1
           fi
 
-      # Last week's proposal, never merged, and checkout is back at main's fees.
+      # The last run's proposal, never merged, and checkout is back at main's fees.
       - name: Close a proposal that is out of date
         if: env.CHANGED != 'true'
         run: |

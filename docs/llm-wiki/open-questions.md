@@ -9,14 +9,14 @@
   collection, product, cart, checkout, policy, search, sitemap, and robots
   routes?
 
-- The weekly shipping fee rebuild (`.github/workflows/shipping-fees.yml`)
-  has not run against the store yet. Its first run will show whether the
-  repository secrets are set, whether Actions may open pull requests, and
-  whether GitHub offers **Approve workflows to run** on that pull request
-  as its documentation says (the `Validate` job then admits it).
+- The monthly shipping fee rebuild (`.github/workflows/shipping-fees.yml`)
+  first ran on 2026-11-16: the repository secrets are set and Actions
+  opened pull request #204. Still open: does GitHub offer **Approve
+  workflows to run** on that pull request as its documentation says (the
+  `Validate` job then admits it)?
 
 Sources: [Launch readiness](../launch-readiness.md), [README](../../README.md),
-[Fulfillment](modules/fulfillment.md#the-weekly-rebuild).
+[Fulfillment](modules/fulfillment.md#the-monthly-rebuild).
 
 ## Shopify Admin And Catalog
 

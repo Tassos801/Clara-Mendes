@@ -187,7 +187,7 @@ export function usShippingCell(
 // exchange rate between rebuilds of the fee table (printfulShippingFees.ts)
 // cannot match checkout to the cent, so the feed states it this much higher,
 // rounded up. It covers a 2% move since the last rebuild (the table is
-// rebuilt weekly); a fee that does not move (`about` unset) is stated as is.
+// rebuilt monthly); a fee that does not move (`about` unset) is stated as is.
 export const FEED_EXCHANGE_ALLOWANCE_PERCENT = 2;
 
 /**
