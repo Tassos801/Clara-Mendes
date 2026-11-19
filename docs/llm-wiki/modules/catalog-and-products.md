@@ -781,3 +781,22 @@ pipeline sorts catalog products by collection slug, so `art-and-words` comes
 first in `products` and any other "first released product of a type" reader
 gets an edition. Checked live on 2026-11-18 (log): `verify` 15/15, checkout
 delivery rate and Black Friday discount as the plain blanket.
+
+## 2026-11-19 - Variants in structured data
+
+A product with more than one offered variant is a `ProductGroup` whose
+`hasVariant` lists one `Product` per variant (`productSchema`,
+`productVariantSchema` in `app/lib/seo.ts`). Google's merchant listings read
+each of those by itself, so each carries its own `name`, `image`,
+`description`, `sku`, `brand` and `offers`:
+
+- `image`: the variant's own Shopify image when it has one (a garment
+  colour), the product image otherwise. With no image at all the property is
+  left out.
+- `description`: the product description cut to 200 characters
+  (`VARIANT_DESCRIPTION_MAX`); the group keeps its 500.
+
+Check a page with Search Console → URL inspection → Test live URL →
+"Merchant listings". Test: `scripts/productSchema.node-test.mjs`.
+
+Sources: `app/lib/seo.ts`, `app/lib/productVariantFragment.ts`.
