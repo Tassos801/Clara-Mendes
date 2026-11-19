@@ -2815,3 +2815,26 @@ Christmas. The route passes the request time (`blackFridayNow`, so
 out. Reason: ChatGPT already sends buyers, and an assistant answering a
 gift question needs price, offer and "will it arrive by Christmas". See [routes and pages](modules/routes-and-pages.md). Test:
 `scripts/llmsTxt.node-test.mjs`.
+
+## 2026-11-19 — Structured data: each variant has its image and description
+
+Search Console's live test of a product page (`painting-with-green-center-acrylic-print`)
+reported "Merchant listings: 3 invalid items": every `Product` under
+`hasVariant` lacked `image` (critical) and `description` (warning). Google
+reads each variant by itself and does not inherit them from the
+`ProductGroup`. `productVariantSchema` (`app/lib/seo.ts`) now gives each
+variant its own image when Shopify has one (a garment colour), the product
+image otherwise, and the product description cut to 200 characters (up to 50
+variants repeat it). The group itself, offers, prices and shipping blocks are
+unchanged. See
+[catalog and products](modules/catalog-and-products.md#2026-11-19---variants-in-structured-data).
+Test: `scripts/productSchema.node-test.mjs`.
+
+Search Console on the same day (domain property, 255 indexed, 811 not):
+568 "alternate page with proper canonical" (option links, as intended), 78
+"duplicate without user-selected canonical" (option links crawled 17-18 Nov;
+the live pages do declare the canonical, and the live test reads it), 28
+blocked by robots.txt (facet links, as intended), 6 soft 404 (empty
+capsule + type filters crawled before the robots facet rules), 7 old 404s,
+63 discovered and 42 crawled but not indexed. Indexing was requested by hand
+for the seven museum artist pages.

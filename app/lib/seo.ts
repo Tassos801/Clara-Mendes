@@ -63,6 +63,8 @@ type ProductSchemaInput = {
     availableForSale: boolean;
     barcode?: string | null;
     id: string;
+    /** The variant's own picture (a garment colour); the product's otherwise. */
+    image?: {url?: string | null} | null;
     price: MoneyAmount;
     selectedOptions: Array<{
       name: string;
@@ -305,6 +307,8 @@ export function productSchema({
     hasVariant: isGroup
       ? listedVariants.map((variant) =>
           productVariantSchema({
+            description,
+            image,
             market,
             parentTitle: title,
             productType,
@@ -542,7 +546,12 @@ function offerFromPrice({
   };
 }
 
+/** A variant's description in the group: short, since up to 50 repeat it. */
+const VARIANT_DESCRIPTION_MAX = 200;
+
 function productVariantSchema({
+  description,
+  image,
   market = null,
   parentTitle,
   productType,
@@ -553,6 +562,8 @@ function productVariantSchema({
   variant,
   vendor,
 }: {
+  description: string;
+  image?: string | null;
   market?: SchemaMarket;
   parentTitle: string;
   productType?: string | null;
@@ -575,10 +586,17 @@ function productVariantSchema({
   const size = variant.selectedOptions.find(
     (option) => option.name.trim().toLowerCase() === 'size',
   )?.value;
+  // Google's merchant listings read each variant by itself: one with no
+  // image is invalid, and one with no description is flagged. Neither is
+  // inherited from the ProductGroup.
+  const variantImage = variant.image?.url || image;
+  const variantDescription = truncate(description, VARIANT_DESCRIPTION_MAX);
 
   return {
     '@type': 'Product',
     name: optionLabel ? `${parentTitle} - ${optionLabel}` : variant.title,
+    description: variantDescription || undefined,
+    image: variantImage ? [variantImage] : undefined,
     productID: gidNumber(variant.id),
     sku: variant.sku || undefined,
     gtin: variant.barcode || undefined,

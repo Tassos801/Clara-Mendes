@@ -51,6 +51,47 @@ test('a multi-size print is a ProductGroup with per-variant offer URLs', () => {
   assert.equal(schema.offers.highPrice, '49.99');
 });
 
+test('each variant of a group carries an image and a description', () => {
+  const longDescription = `${'An orbital ring over a pale planet. '.repeat(12)}End.`;
+  const schema = productSchema({
+    ...base,
+    description: longDescription,
+    image: 'https://cdn.example/orbital-silence.jpg',
+    variants: [
+      variant(1, '8 × 10 in', '29.99'),
+      {
+        ...variant(2, '16 × 20 in', '39.99'),
+        image: {url: 'https://cdn.example/orbital-silence-16x20.jpg'},
+      },
+      {...variant(3, '20 × 24 in', '49.99'), image: null},
+    ],
+  });
+  // Google reads each variant by itself: none inherits from the group.
+  assert.deepEqual(
+    schema.hasVariant.map((entry) => entry.image),
+    [
+      ['https://cdn.example/orbital-silence.jpg'],
+      ['https://cdn.example/orbital-silence-16x20.jpg'],
+      ['https://cdn.example/orbital-silence.jpg'],
+    ],
+  );
+  for (const entry of schema.hasVariant) {
+    assert.ok(entry.description.startsWith('An orbital ring over a pale'));
+    assert.ok(entry.description.length <= 200);
+  }
+  assert.ok(schema.description.length > 200);
+
+  // No picture anywhere: the property is left out, never an empty list.
+  const bare = productSchema({
+    ...base,
+    variants: [
+      variant(1, '8 × 10 in', '29.99'),
+      variant(2, '16 × 20 in', '39.99'),
+    ],
+  });
+  for (const entry of bare.hasVariant) assert.equal(entry.image, undefined);
+});
+
 test('staged sizes stay out; one offered size is a plain Product', () => {
   const schema = productSchema({
     ...base,
