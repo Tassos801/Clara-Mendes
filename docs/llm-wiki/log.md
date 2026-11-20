@@ -2838,3 +2838,16 @@ blocked by robots.txt (facet links, as intended), 6 soft 404 (empty
 capsule + type filters crawled before the robots facet rules), 7 old 404s,
 63 discovered and 42 crawled but not indexed. Indexing was requested by hand
 for the seven museum artist pages.
+
+## 2026-11-20 — Homepage rail: Blankets, Cushions and Mugs circles
+
+The owner asked for separate homepage circles for blankets, cushions and
+mugs. They sit after Gifts (Prints, Gifts, Blankets, Cushions, Mugs,
+Artists, ...) and open the shop filtered by product type
+(`/collections/all?type=Blankets`, `Cushions`, `Mugs`). Pictures: Van Gogh's
+wheat field blanket, Morris's Strawberry Thief cushion, Van Gogh's Night Cafe
+mug, cropped square from the 12 Nov product scenes (Christmas) and the plain
+product photos (rest of the year). Eleven circles no longer fit the old
+desktop sizes, so rings shrink to 80px at 1200px and the swipe row starts
+below 1200px instead of 981px, with a thin scrollbar for a mouse. See
+[brand voice](brand-voice.md#line-rail). Test: `scripts/lineRail.node-test.mjs`.

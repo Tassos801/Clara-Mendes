@@ -17,6 +17,9 @@ export type LineRailEntry = {
   key:
     | 'prints'
     | 'gifts'
+    | 'blankets'
+    | 'cushions'
+    | 'mugs'
     | 'artists'
     | 'clothing'
     | 'book-nooks'
@@ -75,6 +78,22 @@ const PICTURES: Record<
       },
     },
     christmas: square('/images/line-rail/gifts-christmas.jpg'),
+  },
+  // Blankets, cushions and mugs: Van Gogh's wheat field, Morris's Strawberry
+  // Thief and Van Gogh's Night Cafe. The rest of the year, the plain product
+  // photos; at Christmas, the same products in the cosy scenes made for the
+  // museum products (12 Nov 2026), cropped square.
+  blankets: {
+    year: square('/images/line-rail/blankets.jpg'),
+    christmas: square('/images/line-rail/blankets-christmas.jpg'),
+  },
+  cushions: {
+    year: square('/images/line-rail/cushions.jpg'),
+    christmas: square('/images/line-rail/cushions-christmas.jpg'),
+  },
+  mugs: {
+    year: square('/images/line-rail/mugs.jpg'),
+    christmas: square('/images/line-rail/mugs-christmas.jpg'),
   },
   artists: {
     year: {
@@ -156,6 +175,31 @@ export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {
           key: 'gifts',
           label: 'Gifts',
           href: GIFTS_PATH,
+        },
+      ],
+      // Each opens the shop filtered to its product type, like Prints.
+      [
+        true,
+        {
+          key: 'blankets',
+          label: 'Blankets',
+          href: '/collections/all?type=Blankets',
+        },
+      ],
+      [
+        true,
+        {
+          key: 'cushions',
+          label: 'Cushions',
+          href: '/collections/all?type=Cushions',
+        },
+      ],
+      [
+        true,
+        {
+          key: 'mugs',
+          label: 'Mugs',
+          href: '/collections/all?type=Mugs',
         },
       ],
       [

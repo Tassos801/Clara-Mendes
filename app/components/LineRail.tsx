@@ -3,8 +3,9 @@ import type {LineRailEntry} from '~/lib/lineRail';
 
 /**
  * The product lines as a row of circles under the homepage hero: one
- * centred row on desktop, a swipe row on phones whose fourth circle is cut
- * at the edge so the row reads as scrollable. Each link is named by its
+ * centred row on desktop, a swipe row on phones and tablets whose last
+ * visible circle is cut at the edge so the row reads as scrollable. Each
+ * link is named by its
  * label, so the photo inside the ring is decorative.
  */
 export function LineRail({entries}: {entries: readonly LineRailEntry[]}) {
@@ -44,13 +45,15 @@ export function LineRail({entries}: {entries: readonly LineRailEntry[]}) {
 const lineRailCss = `
 .line-rail {
   background: var(--color-oat, #f4f0e8);
-  padding: clamp(28px, 4vw, 44px) clamp(16px, 4vw, 48px);
+  padding: clamp(28px, 4vw, 44px) clamp(16px, 2.5vw, 48px);
 }
 
+/* Sized so eleven circles fit one row from 1200px: 80px rings there, 120px
+   from about 1820px. */
 .line-rail__list {
-  --ring: clamp(96px, 9vw, 120px);
+  --ring: clamp(80px, 6.6vw, 120px);
   display: flex;
-  gap: clamp(20px, 3vw, 44px);
+  gap: clamp(18px, 1.7vw, 36px);
   justify-content: center;
   list-style: none;
   margin: 0;
@@ -113,8 +116,8 @@ const lineRailCss = `
   white-space: nowrap;
 }
 
-/* Below 981px seven desktop circles no longer fit, so the row swipes. */
-@media (max-width: 980px) {
+/* Below 1200px eleven desktop circles no longer fit, so the row swipes. */
+@media (max-width: 1199px) {
   .line-rail {
     padding: 20px 0;
   }
@@ -150,6 +153,24 @@ const lineRailCss = `
   .line-rail__item:last-child {
     margin-right: auto;
     padding-right: 20px;
+  }
+}
+
+/* A mouse cannot swipe: a narrow desktop window gets a thin scrollbar. */
+@media (max-width: 1199px) and (hover: hover) and (pointer: fine) {
+  .line-rail__list {
+    scrollbar-color: var(--color-clay) transparent;
+    scrollbar-width: thin;
+  }
+
+  .line-rail__list::-webkit-scrollbar {
+    display: block;
+    height: 6px;
+  }
+
+  .line-rail__list::-webkit-scrollbar-thumb {
+    background: var(--color-clay);
+    border-radius: 3px;
   }
 }
 

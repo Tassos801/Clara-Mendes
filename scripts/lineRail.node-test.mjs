@@ -14,6 +14,9 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const LABELS = [
   'Prints',
   'Gifts',
+  'Blankets',
+  'Cushions',
+  'Mugs',
   'Artists',
   'Clothing',
   'Book Nooks',
@@ -59,6 +62,21 @@ test('labels are sentence case and keep the rail order', () => {
   );
 });
 
+test('blankets, cushions and mugs open the shop filtered to their type', () => {
+  const hrefs = Object.fromEntries(
+    LINE_RAIL_ENTRIES.map((entry) => [entry.key, entry.href]),
+  );
+  assert.equal(hrefs.blankets, '/collections/all?type=Blankets');
+  assert.equal(hrefs.cushions, '/collections/all?type=Cushions');
+  assert.equal(hrefs.mugs, '/collections/all?type=Mugs');
+  assert.deepEqual(keys(LINE_RAIL_ENTRIES).slice(1, 5), [
+    'gifts',
+    'blankets',
+    'cushions',
+    'mugs',
+  ]);
+});
+
 test('an unreleased line never appears', () => {
   assert.ok(!keys(lineRailEntries({artists: 0})).includes('artists'));
   assert.ok(!keys(lineRailEntries({bookNooks: 0})).includes('book-nooks'));
@@ -80,6 +98,9 @@ test('every line released gives the full rail in order', () => {
   assert.deepEqual(keys(entries), [
     'prints',
     'gifts',
+    'blankets',
+    'cushions',
+    'mugs',
     'artists',
     'clothing',
     'book-nooks',
@@ -124,7 +145,7 @@ test('the Christmas pictures show 1 November to 6 January, then revert', async (
   for (const today of ['2026-10-31', '2027-01-07', '2027-01-15']) {
     const year = srcs(today);
     assert.ok(year.every((src) => !src.includes('christmas')), today);
-    assert.equal(year.length, 8);
+    assert.equal(year.length, 11);
     assert.equal(heroBackdropFor(today).large, '/images/backdrops/hero-interior.jpg');
   }
   // Every local picture exists in public/.
