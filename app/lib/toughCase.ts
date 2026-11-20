@@ -119,6 +119,20 @@ export function requestedPhoneModel(
   return value && new Set(offered).has(value) ? value : null;
 }
 
+/**
+ * Whether the page's structured data may say "in stock". With a model chosen
+ * it follows that variant. With none chosen there is no variant to judge (the
+ * model is never defaulted), so it follows whether any case can be bought:
+ * the plain product URL is the one search engines read, and it must not
+ * report a product that can be bought as out of stock.
+ */
+export function toughCaseOfferAvailable(
+  variant: {availableForSale: boolean} | null | undefined,
+  anyAvailable: boolean,
+): boolean {
+  return variant ? variant.availableForSale : anyAvailable;
+}
+
 const VARIANTS_BY_SKU = new Map<string, ToughCaseVariant>(
   TOUGH_CASE_DESIGNS.flatMap((design) =>
     TOUGH_CASE_PHONES.map(

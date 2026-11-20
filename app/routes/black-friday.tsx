@@ -12,6 +12,7 @@ import {
   BLACK_FRIDAY_GROUPS,
   isBlackFridayExcludedHandle,
   BLACK_FRIDAY_PATH,
+  blackFridayGroupLinks,
   blackFridayNow,
   blackFridayStatus,
   interleave,
@@ -69,25 +70,25 @@ export async function loader({context, request}: Route.LoaderArgs) {
     {cache: context.storefront.CacheShort()},
   );
   const groups = BLACK_FRIDAY_GROUPS.map((group, index) => {
-    const products = interleave(
-      group.productTypes.map((_, typeIndex) =>
-        filterDemoProducts(data[`g${index}_${typeIndex}`]?.nodes ?? []).filter(
-          (product) =>
-            !nothingBuyable(product) &&
-            !isBlackFridayExcludedHandle(product.handle),
-        ),
+    const byType = group.productTypes.map((_, typeIndex) =>
+      filterDemoProducts(data[`g${index}_${typeIndex}`]?.nodes ?? []).filter(
+        (product) =>
+          !nothingBuyable(product) &&
+          !isBlackFridayExcludedHandle(product.handle),
       ),
-      GROUP_LIMIT,
     );
-    const params = new URLSearchParams();
-    for (const type of group.productTypes) params.append('type', type);
     return {
       key: group.key,
       heading: group.heading,
       percent: group.percent,
       note: group.note ?? null,
-      products,
-      allUrl: `${SHOP_PATH}?${params.toString()}`,
+      products: interleave(byType, GROUP_LIMIT),
+      // One product type per link: the shop clears a request for several.
+      allLinks: blackFridayGroupLinks(
+        group,
+        SHOP_PATH,
+        group.productTypes.filter((_, typeIndex) => byType[typeIndex].length),
+      ),
     };
   }).filter((group) => group.products.length > 0);
 
@@ -205,9 +206,18 @@ export default function BlackFriday() {
               <h2 id={`bf-${group.key}-heading`}>
                 {group.heading} <span>{group.percent}% off</span>
               </h2>
-              <Link className="text-link" to={group.allUrl} prefetch="intent">
-                See all
-              </Link>
+              <p className="black-friday-group-links">
+                {group.allLinks.map((link) => (
+                  <Link
+                    className="text-link"
+                    key={link.url}
+                    to={link.url}
+                    prefetch="intent"
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+              </p>
             </div>
             {group.note ? (
               <p className="black-friday-group-note">{group.note}</p>
@@ -384,6 +394,12 @@ const css = `
   letter-spacing: 0.04em;
   margin-left: 6px;
   white-space: nowrap;
+}
+.black-friday-group-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 18px;
+  margin: 0;
 }
 .black-friday-group-note {
   color: var(--color-muted);

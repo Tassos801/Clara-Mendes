@@ -1,10 +1,10 @@
 import {useEffect, useState} from 'react';
-import {Link, useRouteLoaderData} from 'react-router';
+import {Link} from 'react-router';
 import {Image} from '@shopify/hydrogen';
-import type {loader as rootLoader} from '~/root';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
 import {blackFridayCardLine} from '~/lib/blackFridayCard';
+import {useBlackFridayWeek} from '~/lib/useBlackFridayWeek';
 import {getProductStory} from '~/lib/productCopy';
 import {
   cardQuickAddMode,
@@ -146,9 +146,8 @@ export function ClaraProductCard({
   const priceLabel = formatCardPriceLabel(cardPricing);
   const chip = product.productType || 'Curated object';
   const story = showStory ? getProductStory(product) : null;
-  // Black Friday week only (root loader's request-time check).
-  const root = useRouteLoaderData<typeof rootLoader>('root');
-  const saleLine = root?.blackFridayWeek
+  // Black Friday week only; it also stops in a tab left open past the end.
+  const saleLine = useBlackFridayWeek()
     ? blackFridayCardLine(product.productType, product.handle)
     : null;
 

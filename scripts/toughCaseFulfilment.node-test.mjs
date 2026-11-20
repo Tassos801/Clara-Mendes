@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {existsSync} from 'node:fs';
+import {existsSync, readFileSync} from 'node:fs';
 import path from 'node:path';
 import test from 'node:test';
 import {fileURLToPath} from 'node:url';
@@ -13,6 +13,7 @@ import {
   TOUGH_CASE_PHONES,
   TOUGH_CASE_TEASER_ARTWORKS,
   toughCaseArtworkSlug,
+  toughCaseOfferAvailable,
   toughCaseVariantForSku,
 } from '../app/lib/toughCase.ts';
 import {toughCaseArtworkSlug as generatorSlug} from './generate-tough-case-assets.mjs';
@@ -177,4 +178,26 @@ test('every homepage teaser artwork is a released case artwork', () => {
   for (const artwork of TOUGH_CASE_TEASER_ARTWORKS) {
     assert.ok(titles.has(artwork), `${artwork} is not a case artwork`);
   }
+});
+
+test('the structured data reports a buyable case as in stock before a model is chosen', () => {
+  // The plain product URL (no model): follows whether any case can be bought.
+  assert.equal(toughCaseOfferAvailable(null, true), true);
+  assert.equal(toughCaseOfferAvailable(null, false), false);
+  // A chosen model: follows that variant alone.
+  assert.equal(toughCaseOfferAvailable({availableForSale: true}, false), true);
+  assert.equal(toughCaseOfferAvailable({availableForSale: false}, true), false);
+
+  const route = readFileSync(
+    path.join(REPO_ROOT, 'app/routes/products.art-tough-phone-case.tsx'),
+    'utf8',
+  );
+  assert.ok(
+    route.includes(
+      'availableForSale: toughCaseOfferAvailable(variant, anyAvailable)',
+    ),
+  );
+  assert.ok(
+    route.includes('anyAvailable: Boolean(candidate?.availableForSale)'),
+  );
 });
