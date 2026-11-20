@@ -52,12 +52,17 @@ page, and the rail leads there. Design:
 ## Line rail
 
 `app/lib/lineRail.ts` lists the product lines as circles under the hero
-(Prints, Gifts, Artists, Clothing, Book Nooks, Cases, Your Sky, Pots), each
-with a link and a decorative picture (since 12 Nov 2026 one set of square
-still lifes on a warm cream backdrop with small Christmas touches, made with
-the Codex image tool from our own product photos, 360 px JPEGs in
-`public/images/line-rail/`); `app/components/LineRail.tsx` renders them, one
-centred row on desktop and a snap-scrolling row on phones. A line shows only
+(Prints, Gifts, Blankets, Cushions, Mugs, Artists, Clothing, Book Nooks,
+Cases, Your Sky, Pots), each with a link and a decorative picture (since 12
+Nov 2026 one set of square still lifes on a warm cream backdrop with small
+Christmas touches, made with the Codex image tool from our own product
+photos, 360 px JPEGs in `public/images/line-rail/`). Blankets, Cushions and
+Mugs (added 20 Nov 2026) open `/collections/all?type=<type>`, like Prints;
+their Christmas pictures are square crops of the museum products' cosy
+scenes, their year pictures crops of the plain product photos.
+`app/components/LineRail.tsx` renders them, one centred row from 1200px
+(80px rings there, 120px on wide screens) and a snap-scrolling row below,
+with a thin scrollbar for a mouse. A line shows only
 when released, with the navigation's gates (`publicArtists`,
 `releasedBookNooks`, `PRODUCT_RELEASE_FLAGS`, `PERSONALISED_RELEASE_FLAGS`).
 Tests: `scripts/lineRail.node-test.mjs`.
