@@ -1,15 +1,12 @@
-import {useEffect, useRef, useState} from 'react';
-import {Link, useLocation} from 'react-router';
-import {
-  BLACK_FRIDAY_ANNOUNCEMENT,
-  BLACK_FRIDAY_END,
-  BLACK_FRIDAY_PATH,
-} from '~/lib/blackFriday';
+import {useEffect, useRef} from 'react';
+import {Link} from 'react-router';
+import {BLACK_FRIDAY_ANNOUNCEMENT, BLACK_FRIDAY_PATH} from '~/lib/blackFriday';
+import {useBlackFridayWeek} from '~/lib/useBlackFridayWeek';
 
 /**
  * The sitewide Black Friday week line, above the floating header. The root
  * loader decides from the request time whether it renders at all; a tab
- * left open past the end also drops it on the next navigation.
+ * left open past the end also drops it, at the end (useBlackFridayWeek).
  *
  * It is fixed above the header pill. `--announcement-height` (SSR estimate
  * per width below, then the measured height) moves the pill down and is
@@ -18,12 +15,7 @@ import {
  */
 export function BlackFridayAnnouncement() {
   const ref = useRef<HTMLParagraphElement>(null);
-  const [ended, setEnded] = useState(false);
-  const {pathname} = useLocation();
-
-  useEffect(() => {
-    if (Date.now() >= BLACK_FRIDAY_END.getTime()) setEnded(true);
-  }, [pathname]);
+  const ended = !useBlackFridayWeek();
 
   useEffect(() => {
     const element = ref.current;
