@@ -121,7 +121,11 @@ node scripts/sky-register-webhook.mjs --list
 node scripts/sky-register-webhook.mjs
 ```
 
-Shopify retries non-2xx responses 8× over 4 h.
+Shopify retries non-2xx responses 8× over 4 h. Every attempt that leaves a
+paid order unsent logs `orders/paid NEEDS ATTENTION order <id> (<name>): …`;
+if no later `orders/paid: <name> → Prodigi …` line follows, replay the order
+(below). A Shopify test order (Bogus gateway, payment test mode) is never
+sent to the live Prodigi API, only to the sandbox.
 
 ## 4. End-to-end test (sandbox, no physical item)
 
@@ -148,7 +152,9 @@ MustNotBeEmptyOrWhitespace), so any recipient without an apartment line
 failed. Fixed by omitting blank optional address lines entirely.
 
 If the Prodigi order is missing: `node scripts/sky-replay-order.mjs --order
-"#1234" --dry-run` shows exactly what the webhook computed.
+"#1234" --dry-run` shows exactly what the webhook computed. Without
+`--dry-run` it sends the order; it refuses a Shopify test order unless
+`PRODIGI_API_BASE` is the sandbox.
 
 ## 5. Go-live
 

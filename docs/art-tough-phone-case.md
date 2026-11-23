@@ -119,6 +119,9 @@ webhook (`app/lib/sky/fulfilment.ts`, the Your Sky path) sends every case line
 to the Prodigi API: variant SKU `<artwork prefix>-TC-<phone code>` →
 `app/lib/toughCase.ts` → Prodigi SKU, attributes and the artwork's print file,
 `sizing: fillPrintArea`. Prints in the same order stay with the Prodigi app.
+A Shopify test order is not sent to the live Prodigi API, and an order that
+could not be sent logs `orders/paid NEEDS ATTENTION` (see the 2026-11-23
+section of `docs/llm-wiki/modules/fulfillment.md`).
 
 - Print files: one 4:5 JPEG per artwork, 2000 × 2500, served from
   `public/print-files/tough-case/`. Prodigi centre-crops it to each device; the

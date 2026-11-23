@@ -2882,3 +2882,30 @@ Tests: `scripts/blackFriday.node-test.mjs`,
 ends at midnight Nicosia time for every buyer, and the `orders/paid`
 webhook findings from the same review (test orders, silent loss after
 Shopify's retries) are open.
+
+## 2026-11-23 — Paid-order webhook: test orders stay out of the lab, unsent orders leave a line
+
+Findings 6 and 7 of the 20 November bug hunt (code review only; no test
+order was placed and no order has been lost).
+
+- A Shopify test order (`test: true`) with a personalised or phone case
+  line was sent to whatever Prodigi API the environment pointed at, so a
+  test checkout in production would have been printed and charged. It is
+  now acknowledged and not sent unless the API is the sandbox
+  (`isTestOrderForLiveLab` in `app/lib/sky/fulfilment.ts`,
+  `isProdigiSandbox` in `app/lib/prodigi.server.ts`).
+  `scripts/sky-replay-order.mjs` applies the same rule.
+- Retryable failures and missing configuration answered 5xx without the
+  `orders/paid NEEDS ATTENTION` line, so an order that outlived Shopify's
+  retries left nothing to search for. Every attempt that leaves a paid
+  order unsent now writes the line (order id and name only).
+- An order with no line for this integration is acknowledged before any
+  configuration is read, so a missing secret no longer fails deliveries for
+  ordinary print orders.
+- The decision moved from the route to `handlePaidOrder`
+  (`app/lib/sky/paidOrder.server.ts`) so tests can run it. The route
+  comment said Shopify retries 19 times over 48 hours; the documented
+  policy is 8 times over the next 4 hours.
+
+Wiki: `docs/llm-wiki/modules/fulfillment.md` (2026-11-23 section). Test:
+`scripts/paidOrderWebhook.node-test.mjs`.

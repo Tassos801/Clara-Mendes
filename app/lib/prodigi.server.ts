@@ -91,6 +91,16 @@ export function summarizeProdigiError(status: number, body: unknown) {
   return parts.join(', ');
 }
 
+/** The API an environment points at: the sandbox unless it names another. */
+export function prodigiApiBase(env: {PRODIGI_API_BASE?: string}) {
+  return (env.PRODIGI_API_BASE || PRODIGI_SANDBOX_BASE).replace(/\/$/, '');
+}
+
+/** True when orders from this environment cannot be printed or charged. */
+export function isProdigiSandbox(env: {PRODIGI_API_BASE?: string}) {
+  return prodigiApiBase(env) === PRODIGI_SANDBOX_BASE;
+}
+
 /** Status given to a request that timed out before Prodigi answered (retryable). */
 export const PRODIGI_TIMEOUT_STATUS = 504;
 
@@ -106,7 +116,7 @@ export function createProdigiClient(
   {timeoutMs}: {timeoutMs?: number} = {},
 ) {
   const apiKey = env.PRODIGI_API_KEY;
-  const base = (env.PRODIGI_API_BASE || PRODIGI_SANDBOX_BASE).replace(/\/$/, '');
+  const base = prodigiApiBase(env);
   if (!apiKey) throw new ProdigiNotConfiguredError('PRODIGI_API_KEY is not set.');
 
   async function request<T>(method: string, path: string, body?: unknown): Promise<T> {
@@ -137,7 +147,7 @@ export function createProdigiClient(
 
   return {
     base,
-    isSandbox: base === PRODIGI_SANDBOX_BASE,
+    isSandbox: isProdigiSandbox(env),
     createOrder: (payload: ProdigiOrderPayload) =>
       request<ProdigiOrderResponse>('POST', '/orders', payload),
     getOrder: (id: string) => request<{order: unknown}>('GET', `/orders/${encodeURIComponent(id)}`),
