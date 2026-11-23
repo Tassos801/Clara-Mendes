@@ -1,16 +1,16 @@
-import {useRouteLoaderData} from 'react-router';
-import type {loader as rootLoader} from '~/root';
 import {
   blackFridayDiscountPercent,
   blackFridayProductLine,
 } from '~/lib/blackFriday';
 import {blackFridayExclusionNote} from '~/lib/blackFridayProductNote';
+import {useBlackFridayWeek} from '~/lib/useBlackFridayWeek';
 
 /**
  * One line near a product page's price during Black Friday week, for a
  * selected variant the automatic discounts cover. The price shown stays the
  * product's own: the discount is taken off in the cart (app/lib/blackFriday.ts).
- * The window comes from the root loader's request-time check. A variant
+ * The window comes from the root loader's request-time check, and the line
+ * also stops in a tab left open past the end (useBlackFridayWeek). A variant
  * the sitewide line seems to cover but the discounts leave out (a framed
  * print, a premium hoodie) says so, so the cart holds no surprise.
  */
@@ -25,8 +25,7 @@ export function BlackFridayProductLine({
   /** The selected variant's title; null while none is selected. */
   variantTitle?: string | null;
 }) {
-  const root = useRouteLoaderData<typeof rootLoader>('root');
-  if (!root?.blackFridayWeek) return null;
+  if (!useBlackFridayWeek()) return null;
   const percent = blackFridayDiscountPercent(productType, variantTitle, handle);
   const line = percent
     ? blackFridayProductLine(percent)

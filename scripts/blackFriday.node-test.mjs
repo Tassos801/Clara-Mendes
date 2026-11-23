@@ -5,11 +5,13 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {
   BLACK_FRIDAY_ANNOUNCEMENT,
+  BLACK_FRIDAY_COPY,
   BLACK_FRIDAY_END,
   BLACK_FRIDAY_GROUPS,
   BLACK_FRIDAY_PATH,
   BLACK_FRIDAY_START,
   blackFridayDiscountPercent,
+  blackFridayGroupLinks,
   blackFridayNow,
   blackFridayProductLine,
   blackFridayStatus,
@@ -17,6 +19,7 @@ import {
   isBlackFridayWeek,
   productTypeQuery,
 } from '../app/lib/blackFriday.ts';
+import {normalizeSingleProductTypeSearch} from '../app/lib/catalogFacets.ts';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');
@@ -265,9 +268,92 @@ test('the root loader decides at request time and nothing permanent links the pa
   assert.match(route, /noIndex: data\?\.status !== 'open'/);
 });
 
+test('the sale lines stop at the end even in a tab left open', () => {
+  // The root loader's answer is kept across client-side navigations, so
+  // everything that speaks of the sale also reads the browser's clock.
+  const hook = read('app/lib/useBlackFridayWeek.ts');
+  assert.ok(
+    hook.includes('useSyncExternalStore(atTheEnd, hasEnded, notEnded)'),
+  );
+  assert.ok(hook.includes("blackFridayStatus(new Date()) === 'ended'"));
+  assert.ok(hook.includes('Boolean(root?.blackFridayWeek) && !ended'));
+  for (const file of [
+    'app/components/ClaraProductCard.tsx',
+    'app/components/BlackFridayProductLine.tsx',
+    'app/components/BlackFridayAnnouncement.tsx',
+  ]) {
+    const source = read(file);
+    assert.ok(source.includes('useBlackFridayWeek()'), file);
+    assert.ok(!source.includes('root?.blackFridayWeek'), file);
+  }
+  // The moment after the last one of the sale counts as ended.
+  assert.equal(blackFridayStatus(BLACK_FRIDAY_END), 'ended');
+  assert.equal(
+    blackFridayStatus(new Date(BLACK_FRIDAY_END.getTime() - 1)),
+    'open',
+  );
+});
+
 test('the product page line never changes the shown price', () => {
   const line = read('app/components/BlackFridayProductLine.tsx');
   assert.doesNotMatch(line, /ProductPrice|compareAt|<s>/);
+});
+
+test('every "See all" link names one product type at most, so the shop keeps the filter', () => {
+  const shop = '/collections/all';
+  const shopTypes = BLACK_FRIDAY_GROUPS.flatMap((group) => group.productTypes);
+  for (const group of BLACK_FRIDAY_GROUPS) {
+    const links = blackFridayGroupLinks(group, shop);
+    assert.ok(links.length > 0, group.key);
+    for (const link of links) {
+      const [pathname, query = ''] = link.url.split('?');
+      if (pathname !== shop) {
+        assert.equal(link.url, group.allPath, group.key);
+        continue;
+      }
+      // The shop sends a request it does not show (several types) to the
+      // whole catalogue; null means it keeps this one as it is.
+      const params = new URLSearchParams(query);
+      assert.equal(params.getAll('type').length, 1, link.url);
+      assert.equal(
+        normalizeSingleProductTypeSearch(params, shopTypes),
+        null,
+        link.url,
+      );
+    }
+  }
+
+  const group = (key) => BLACK_FRIDAY_GROUPS.find((item) => item.key === key);
+  assert.deepEqual(blackFridayGroupLinks(group('mugs'), shop), [
+    {label: 'See all', url: '/collections/all?type=Mugs'},
+  ]);
+  assert.deepEqual(blackFridayGroupLinks(group('prints'), shop), [
+    {label: 'All art prints', url: '/collections/all?type=Art+Prints'},
+    {label: 'All hanger prints', url: '/collections/all?type=Hanger+Prints'},
+  ]);
+  assert.deepEqual(blackFridayGroupLinks(group('wall-art'), shop), [
+    {label: 'All canvas art', url: '/collections/all?type=Canvas+Art'},
+    {label: 'All framed art', url: '/collections/all?type=Framed+Art'},
+  ]);
+  // Clothing has a page of its own.
+  assert.deepEqual(blackFridayGroupLinks(group('clothing'), shop), [
+    {label: 'See all', url: '/clothing'},
+  ]);
+  // A type with nothing to show gets no link.
+  assert.deepEqual(
+    blackFridayGroupLinks(group('prints'), shop, ['Hanger Prints']),
+    [{label: 'All hanger prints', url: '/collections/all?type=Hanger+Prints'}],
+  );
+  assert.match(
+    read('app/routes/black-friday.tsx'),
+    /allLinks: blackFridayGroupLinks\(/,
+  );
+});
+
+test('the page copy does not exclude what the 10% tier includes', () => {
+  assert.equal(blackFridayDiscountPercent('Framed Art', 'Any'), 10);
+  assert.match(BLACK_FRIDAY_COPY.ten, /framed art/);
+  assert.doesNotMatch(BLACK_FRIDAY_COPY.excluded, /framed/i);
 });
 
 test('a group of several types takes from each in turn', () => {

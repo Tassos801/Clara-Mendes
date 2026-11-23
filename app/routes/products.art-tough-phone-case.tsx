@@ -40,6 +40,7 @@ import {
   TOUGH_CASE_ARTWORK_OPTION,
   TOUGH_CASE_HANDLE,
   TOUGH_CASE_PHONE_OPTION,
+  toughCaseOfferAvailable,
   toughCasePhoneGroups,
 } from '~/lib/toughCase';
 
@@ -137,6 +138,9 @@ export async function loader({context, request}: Route.LoaderArgs) {
   }));
 
   return {
+    // For the structured data while no model is chosen: Shopify's fallback
+    // variant is the first one that can be bought, if there is one.
+    anyAvailable: Boolean(candidate?.availableForSale),
     artwork: artwork?.name ?? null,
     artworkImage:
       artwork?.firstSelectableVariant?.image ?? product.featuredImage ?? null,
@@ -166,6 +170,7 @@ function caseUrl(artwork: string | null, phone: string | null) {
 
 export default function ToughCasePage() {
   const {
+    anyAvailable,
     artwork,
     artworkImage,
     artworks,
@@ -255,7 +260,7 @@ export default function ToughCasePage() {
       <StructuredData
         data={[
           productSchema({
-            availableForSale: canBuy,
+            availableForSale: toughCaseOfferAvailable(variant, anyAvailable),
             // Cases ship to the US from a US lab: a US buyer's Offer names the
             // US (decision D6, docs/us-market/status.md).
             market: usDelivery ? 'US' : null,

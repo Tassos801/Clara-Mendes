@@ -150,7 +150,11 @@ export type BlackFridayGroup = {
   productTypes: readonly string[];
   /** A short qualifier under the heading, when only some variants count. */
   note?: string;
+  /** A page of its own that lists the whole group, when there is one. */
+  allPath?: string;
 };
+
+export type BlackFridayGroupLink = {label: string; url: string};
 
 /**
  * The /black-friday page's product grids, in order: blankets lead. Your Sky
@@ -204,6 +208,7 @@ export const BLACK_FRIDAY_GROUPS: readonly BlackFridayGroup[] = [
       'Biker Shorts',
       'Studio Top',
     ],
+    allPath: '/clothing',
   },
   {
     key: 'wall-art',
@@ -212,6 +217,29 @@ export const BLACK_FRIDAY_GROUPS: readonly BlackFridayGroup[] = [
     productTypes: ['Canvas Art', 'Framed Art'],
   },
 ];
+
+/**
+ * Where a group's "See all" goes. The shop lists one product type at a time
+ * and clears a request for several (`normalizeSingleProductTypeSearch` in
+ * catalogFacets.ts), so a link never carries more than one `type`: a group
+ * with a page of its own links there, a group of one type links to that
+ * type's listing, and a group of several types gets one link per type.
+ * `listedTypes` are the types with something to show; the others get no link.
+ */
+export function blackFridayGroupLinks(
+  group: BlackFridayGroup,
+  shopPath: string,
+  listedTypes: readonly string[] = group.productTypes,
+): BlackFridayGroupLink[] {
+  if (group.allPath) return [{label: 'See all', url: group.allPath}];
+  const single = group.productTypes.length === 1;
+  return group.productTypes
+    .filter((type) => listedTypes.includes(type))
+    .map((type) => ({
+      label: single ? 'See all' : `All ${type.toLowerCase()}`,
+      url: `${shopPath}?${new URLSearchParams({type}).toString()}`,
+    }));
+}
 
 /** Storefront `products(query:)` search for one product type. */
 export function productTypeQuery(productType: string) {
@@ -246,7 +274,7 @@ export const BLACK_FRIDAY_COPY = {
     'Blankets, cushions, mugs, phone cases, plant pots, hanger prints, unframed art prints and Your Sky star maps (except framed 20 × 24 in).',
   ten: 'Clothing and activewear (except premium hoodies), tote bags, canvas and framed art.',
   excluded:
-    'Not included: premium hoodies, caps and beanies, cards, postcards, book nooks, acrylic and metal prints, and framed art prints.',
+    'Not included: premium hoodies, caps and beanies, cards, postcards, book nooks, and acrylic and metal prints.',
   cart: 'The discount is taken off in your cart.',
   before:
     'Black Friday week has not started yet. Until then, everything is at its usual price.',

@@ -2851,3 +2851,34 @@ product photos (rest of the year). Eleven circles no longer fit the old
 desktop sizes, so rings shrink to 80px at 1200px and the swipe row starts
 below 1200px instead of 981px, with a thin scrollbar for a mouse. See
 [brand voice](brand-voice.md#line-rail). Test: `scripts/lineRail.node-test.mjs`.
+
+## 2026-11-20 — Bug hunt fixes: Black Friday links and copy, phone case stock, sale end
+
+Four defects from a crawl and code review of the live shop on 20 Nov:
+
+- `/black-friday` "See all" for Prints, Clothing and activewear, and Canvas
+  and framed art opened the whole shop. Those links carried several `type=`
+  values, and the shop lists one product type at a time
+  (`normalizeSingleProductTypeSearch` clears a request for several). A link
+  now names one type at most (`blackFridayGroupLinks` in
+  `app/lib/blackFriday.ts`): one link per type ("All art prints", "All
+  hanger prints"), and the clothing group links to `/clothing`.
+- The page said "10% off ... canvas and framed art" and also "Not included
+  ... framed art prints". The second phrase is gone: no art print is sold
+  with a frame option today, and "Framed Art" products are in the 10% tier.
+- The Art Tough Phone Case page's JSON-LD said `OutOfStock` on its plain URL
+  (no phone model chosen, so no variant). It now follows whether any case
+  can be bought until a model is chosen, then that variant
+  (`toughCaseOfferAvailable` in `app/lib/toughCase.ts`).
+- A tab opened before the end of the sale kept "20% off in your cart" on
+  cards and product pages after it, because React Router keeps the root
+  loader's `blackFridayWeek` across client-side navigations. The sitewide
+  line, the cards and the product line now read `useBlackFridayWeek`
+  (`app/lib/useBlackFridayWeek.ts`): the root loader's answer, switched off
+  by the browser's clock at the end. The clock never switches the week on.
+
+Tests: `scripts/blackFriday.node-test.mjs`,
+`scripts/toughCaseFulfilment.node-test.mjs`. Not changed: the sale still
+ends at midnight Nicosia time for every buyer, and the `orders/paid`
+webhook findings from the same review (test orders, silent loss after
+Shopify's retries) are open.
