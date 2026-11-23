@@ -37,6 +37,8 @@ import {
 export type ShopifyOrderWebhook = {
   id: number;
   name: string;
+  /** True for an order paid with a test payment (Bogus gateway, test mode). */
+  test?: boolean | null;
   email?: string | null;
   phone?: string | null;
   shipping_address?: {
@@ -72,14 +74,22 @@ export function natalPrintUrl(origin: string, token: string, size: string) {
   return `${origin}/api/natal-print/${token}.pdf?size=${size}`;
 }
 
-export async function buildProdigiOrderFromShopify(
+/**
+ * A Shopify test order took no money, so it may reach Prodigi's sandbox but
+ * never the live lab, which would print it and charge for it.
+ */
+export function isTestOrderForLiveLab(
+  order: Pick<ShopifyOrderWebhook, 'test'>,
+  lab: {isSandbox: boolean},
+): boolean {
+  return order.test === true && !lab.isSandbox;
+}
+
+/** The lines of an order that only this integration sends to the lab. */
+function prodigiApiLines(
   order: ShopifyOrderWebhook,
-  {
-    artProducts,
-    origin,
-    secret,
-  }: {artProducts?: ArtProductCatalog; origin: string; secret: string},
-): Promise<FulfilmentBuild> {
+  artProducts?: ArtProductCatalog,
+) {
   const personalisedLines = order.line_items.filter((l) =>
     l.properties?.some((p) => p.name === '_v'),
   );
@@ -92,11 +102,6 @@ export async function buildProdigiOrderFromShopify(
       !personalisedLines.includes(l) &&
       (skyVariantForSku(l.sku) || natalVariantForSku(l.sku)),
   );
-  if (unsigned)
-    return {
-      kind: 'problem',
-      reason: `Line ${unsigned.id}: personalised SKU ${unsigned.sku} was bought without its personalisation.`,
-    };
   const caseLines = order.line_items.filter(
     (l) => !personalisedLines.includes(l) && toughCaseVariantForSku(l.sku),
   );
@@ -107,6 +112,42 @@ export async function buildProdigiOrderFromShopify(
     const item = artCaseLineForSku(l.sku, artProducts);
     return item ? [{item, line: l}] : [];
   });
+  return {personalisedLines, unsigned, caseLines, museumCaseLines};
+}
+
+/**
+ * Whether the order has a line that reaches the lab through this integration
+ * only. Needs no secret, so the webhook can tell "nothing to do" from "not
+ * sent" before it reads any configuration.
+ */
+export function orderHasProdigiApiLines(
+  order: ShopifyOrderWebhook,
+  artProducts?: ArtProductCatalog,
+): boolean {
+  const lines = prodigiApiLines(order, artProducts);
+  return (
+    Boolean(lines.unsigned) ||
+    lines.personalisedLines.length > 0 ||
+    lines.caseLines.length > 0 ||
+    lines.museumCaseLines.length > 0
+  );
+}
+
+export async function buildProdigiOrderFromShopify(
+  order: ShopifyOrderWebhook,
+  {
+    artProducts,
+    origin,
+    secret,
+  }: {artProducts?: ArtProductCatalog; origin: string; secret: string},
+): Promise<FulfilmentBuild> {
+  const {personalisedLines, unsigned, caseLines, museumCaseLines} =
+    prodigiApiLines(order, artProducts);
+  if (unsigned)
+    return {
+      kind: 'problem',
+      reason: `Line ${unsigned.id}: personalised SKU ${unsigned.sku} was bought without its personalisation.`,
+    };
   if (
     personalisedLines.length === 0 &&
     caseLines.length === 0 &&

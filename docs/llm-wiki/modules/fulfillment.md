@@ -200,9 +200,9 @@ table → Run workflow).
 - The webhook answers Prodigi's own 400/409/422 rejections (validation,
   idempotency conflict) with 200 and a "needs attention" log line (replay
   with `scripts/sky-replay-order.mjs`). Everything else, including 401/403,
-  rate limits, network and 5xx failures, answers 502: Shopify retries a failing
-  subscription 19 times over 48 hours and then removes it, which would strand
-  every later personalised order.
+  rate limits, network and 5xx failures, answers 502 so Shopify retries.
+  (Corrected 2026-11-23: Shopify retries 8 times over the next 4 hours, not 19
+  times over 48 hours; see the 2026-11-23 section.)
 - Recipient fields (`email`, `phoneNumber`, `line2`) are omitted when blank
   and `stateOrCounty` is `null` when blank; Prodigi rejects empty strings.
 - `parseCoordinate` (`app/lib/sky/params.ts`) rejects blank or malformed
@@ -425,3 +425,45 @@ geolocation. A valid pin applies when either country is outside the euro
 area or the visitor country is unknown. The EUR feed keeps `?country=CY`.
 The USD feed keeps `?country=US`. The resolver is in
 [`app/lib/markets.ts`](../../../app/lib/markets.ts).
+
+## 2026-11-23 - Paid-order webhook: test orders and unsent orders
+
+The route [`app/routes/webhooks.orders-paid.tsx`](../../../app/routes/webhooks.orders-paid.tsx)
+only checks that a delivery is Shopify's (method, HMAC, topic, JSON).
+`handlePaidOrder` in
+[`app/lib/sky/paidOrder.server.ts`](../../../app/lib/sky/paidOrder.server.ts)
+decides, logs and answers, in this order:
+
+1. No personalised or phone case line (`orderHasProdigiApiLines`): 200, no
+   log line, no configuration read.
+2. Shopify test order (`test: true` in the payload) while the environment
+   points at the live Prodigi API (`isTestOrderForLiveLab`): 200, one
+   "is a Shopify test order" line, nothing sent. A test order still goes to
+   the Prodigi sandbox, which prints nothing; an environment that names no
+   `PRODIGI_API_BASE` is the sandbox.
+3. `SKY_SIGNING_SECRET` or `PRODIGI_API_KEY` missing: 500 and the line.
+4. The order cannot be built, or Prodigi rejects it (400, 409, 422): 200 and
+   the line. A retry would fail the same way.
+5. Any other failure (401/403, rate limit, network, timeout, 5xx, an
+   unforeseen error): 502 and the line. Shopify retries.
+
+"The line" is `orders/paid NEEDS ATTENTION order <id> (<name>): …`, with the
+order id and name only. Shopify sends no attempt number
+(`X-Shopify-Triggered-At` is the only hint, logged as "attempt N min after
+the event"), so the line is written on every attempt that leaves a paid
+order unsent, not only on the last one. Read it like this: a later
+`orders/paid: <name> → Prodigi …` line for the same order means a retry
+delivered it; no such line means the order needs
+`scripts/sky-replay-order.mjs`. The replay script applies the same
+test-order rule.
+
+Shopify's documented policy (read 2026-11-23): a delivery fails after 5
+seconds, is retried 8 times over the next 4 hours, and a subscription made
+through the Admin API is deleted after 8 consecutive failures. The docs do not
+say whether a subscription made in admin → Settings → Notifications (how the
+live one was made, see [`docs/your-sky-release.md`](../../your-sky-release.md))
+is deleted the same way.
+
+Test: `scripts/paidOrderWebhook.node-test.mjs`. Not covered by a real
+delivery: nobody placed a test order or forced an outage against the live
+endpoint.

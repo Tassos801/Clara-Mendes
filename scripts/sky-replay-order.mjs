@@ -16,7 +16,10 @@ import {
   loadLocalEnv,
   normalizeShopDomain,
 } from './lib/env.mjs';
-import {buildProdigiOrderFromShopify} from '../app/lib/sky/fulfilment.ts';
+import {
+  buildProdigiOrderFromShopify,
+  isTestOrderForLiveLab,
+} from '../app/lib/sky/fulfilment.ts';
 import {createProdigiClient} from '../app/lib/prodigi.server.ts';
 
 const ADMIN_API_VERSION = '2025-01';
@@ -52,7 +55,7 @@ const res = await fetch(
       query: `query($q: String!) {
         orders(first: 1, query: $q) {
           nodes {
-            legacyResourceId name email phone
+            legacyResourceId name test email phone
             shippingAddress { name address1 address2 city province zip countryCodeV2 phone }
             lineItems(first: 50) { nodes { id sku quantity customAttributes { key value } } }
           }
@@ -74,6 +77,7 @@ if (!node) {
 const order = {
   id: Number(node.legacyResourceId),
   name: node.name,
+  test: node.test,
   email: node.email,
   phone: node.phone,
   shipping_address: node.shippingAddress && {
@@ -106,6 +110,14 @@ if (build.kind !== 'order') process.exit(1);
 if (args['dry-run']) process.exit(0);
 
 const prodigi = createProdigiClient(env);
+// The same rule as the webhook: a Shopify test order took no money, so it
+// may reach the sandbox but never the live lab.
+if (isTestOrderForLiveLab(order, prodigi)) {
+  console.error(
+    `${order.name} is a Shopify test order: not sent to ${prodigi.base}. Point PRODIGI_API_BASE at the sandbox to replay it.`,
+  );
+  process.exit(1);
+}
 const response = await prodigi.createOrder(build.payload);
 console.log(
   `${prodigi.base}: ${response.outcome} ${response.order?.id ?? ''}`,
