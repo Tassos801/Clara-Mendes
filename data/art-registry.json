@@ -2252,10 +2252,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:35.805Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:36.744Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         }
       }
     },
@@ -2297,10 +2303,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:37.657Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:38.611Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         }
       }
     },
@@ -2342,10 +2354,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:39.518Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:40.439Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         }
       }
     },
@@ -2387,10 +2405,16 @@
       },
       "reviews": {
         "rights": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:41.357Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         },
         "master": {
-          "status": "pending"
+          "status": "cleared",
+          "by": "Tassos",
+          "at": "2026-11-23T12:25:42.253Z",
+          "note": "Owner approved in chat on 2026-11-23 (\"Approve, release\") after reviewing the board of designs and room photos."
         }
       }
     }
