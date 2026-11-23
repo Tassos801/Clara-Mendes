@@ -2940,3 +2940,31 @@ Tests: `scripts/phoneModelOrder.node-test.mjs`,
 `scripts/blackFriday.node-test.mjs`. Wiki:
 `docs/llm-wiki/modules/hydrogen-runtime.md` ("HEAD for public files"),
 `docs/llm-wiki/modules/routes-and-pages.md` (`/black-friday` row).
+
+## 2026-11-23 — Feed titles lead with the product on blankets, cushions and mugs
+
+The first week of Google Shopping ads showed the museum home lines mostly
+for searches for the painting or the artist ("vermeer milkmaid"), not for
+the product. A search engine weighs a title's first words most, and the
+titles began with the work.
+
+- `homeFeedTitle` (`app/lib/merchantFeed.ts`) writes the Printful home
+  titles product first: "Throw Blanket, The Milkmaid by Johannes Vermeer —
+  50 × 60 in (127 × 152 cm)", "Cushion Cover, …", "Cushion with Insert, …",
+  "Ceramic Mug, … — 11 oz (325 ml)". The artist's whole name comes from
+  `productArtistFullName` (`app/lib/artistShops.ts`).
+- Checked against the live catalogue: in each Printful feed (EUR and USD)
+  171 of 611 rows change, in the `title` column only; the two fixed-rate
+  feeds are identical. Item ids, links, prices and the `size` attribute do
+  not change, so Merchant Center keeps every offer.
+- The Shopify titles, page titles and Meta's product-level titles are
+  untouched.
+- In the Google Ads account the same day (not in this repository):
+  negative keywords for bare artist and painting names and for words such
+  as "painting" were added to the Shopping campaign.
+- For the next sale, see the new entry under "Measurement And Growth" in
+  `docs/llm-wiki/open-questions.md`: a cart-only discount does not show in
+  Shopping ads in every country.
+
+Wiki: `docs/llm-wiki/modules/fulfillment.md` (feed bullets). Test:
+`scripts/merchantFeed.node-test.mjs`.

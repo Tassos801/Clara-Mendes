@@ -73,6 +73,16 @@ Sources: [Art for Everyday Living](../art-product-extensions.md).
 
 ## Measurement And Growth
 
+- **Next sale: where does the reduced price live?** The 2026 Black Friday
+  discounts act in the cart only, so product prices and the feeds never
+  changed and nothing needed undoing. The cost showed in the Shopping ads:
+  an ad shows the feed price, and the sale appeared only as a Merchant
+  Center promotion, which Google offers in some countries (not Ireland,
+  Belgium or Austria in November 2026). A sale that should show in every
+  country's ads needs the reduced price on the product itself (compare-at
+  price in Shopify, `sale_price` in the feeds, the same price on the page).
+  Owner decision before the next sale; not built.
+
 - Has Shopify analytics been verified for page, search, product, cart,
   add-to-cart, and checkout journey data?
 - Have ad-platform events been checked against live campaigns?

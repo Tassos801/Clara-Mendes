@@ -108,12 +108,21 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
     per window; a failed build answers 503 so Merchant Center keeps the
     last good fetch. Test: `scripts/merchantFeed.node-test.mjs` runs every
     feed route's loader with a `storefront.mutate` that throws.
-  - Museum titles name the artist ("Irises Throw Blanket by Van Gogh —
-    50 × 60 in"), because Shopping matches searches mostly on the title.
-    The artist comes from the art registry by product handle
-    (`artistProducts()`, `artistShortName()` in `app/lib/artistShops.ts`),
-    so a new museum product needs no feed edit; the old artist-tag list is
-    the fallback.
+  - Museum titles name the artist ("Irises Art Print by Van Gogh — A3"),
+    because Shopping matches searches mostly on the title. The artist comes
+    from the art registry by product handle (`artistProducts()`,
+    `artistShortName()` in `app/lib/artistShops.ts`), so a new museum
+    product needs no feed edit; the old artist-tag list is the fallback.
+  - The Printful home lines (blankets, cushions, mugs) lead with the
+    product since 2026-11-23: "Throw Blanket, Irises by Vincent van Gogh —
+    50 × 60 in (127 × 152 cm)", "Cushion Cover, …", "Cushion with Insert,
+    …", "Ceramic Mug, … — 11 oz (325 ml)" (`homeFeedTitle` in
+    `app/lib/merchantFeed.ts`). With the work first, Google showed them
+    mostly for searches for the painting. They carry the artist's whole
+    name (`productArtistFullName`), because people type "william morris
+    cushion", and the metric size. An edition name (", Art & Words")
+    follows the artist. Only the feed title changes: the Shopify title, the
+    page title and the `size` attribute stay as they were.
 
 ## Changing A Window
 
