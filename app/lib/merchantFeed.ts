@@ -1,4 +1,4 @@
-import {titleWithArtist} from './artistShops.ts';
+import {productArtistFullName, titleWithArtist} from './artistShops.ts';
 import {isListedProduct} from './catalogFilters.ts';
 import {
   clothingCapsules,
@@ -215,6 +215,57 @@ function studioItem(p: FeedProduct, o: Record<string, string>): Item | null {
   }
 }
 
+// The Printful home lines (blankets, cushions, mugs) lead with the product,
+// not the work. A search engine weighs a title's first words most, and with
+// the work first ("The Milkmaid Throw Blanket by Vermeer") Google showed
+// these for searches for the painting: in the first week of Shopping ads
+// (November 2026) most clicks came from terms with no product word. The artist's
+// whole name is there because people type it ("william morris cushion"),
+// and the metric size because the EUR feeds' buyers use it.
+const HOME_TITLES: Record<
+  string,
+  {suffix: string; lead: (o: Record<string, string>) => string}
+> = {
+  Blankets: {suffix: 'Throw Blanket', lead: () => 'Throw Blanket'},
+  Cushions: {
+    suffix: 'Cushion',
+    lead: (o) =>
+      o.Filling === 'With insert' ? 'Cushion with Insert' : 'Cushion Cover',
+  },
+  Mugs: {suffix: 'Mug', lead: () => 'Ceramic Mug'},
+};
+const METRIC_SIZES: Record<string, string> = {
+  '50 × 60 in': '127 × 152 cm',
+  '18 × 18 in': '46 × 46 cm',
+  '22 × 22 in': '56 × 56 cm',
+  '11 oz': '325 ml',
+};
+
+/**
+ * "Throw Blanket, The Milkmaid by Johannes Vermeer — 50 × 60 in (127 × 152
+ * cm)" from the Shopify title "The Milkmaid Throw Blanket". An edition name
+ * after the product words (", Art & Words") follows the artist. Null when
+ * the title does not end the way its family's titles do, so an unusual
+ * title keeps the plain form.
+ */
+export function homeFeedTitle(
+  p: Pick<FeedProduct, 'handle' | 'productType' | 'tags' | 'title'>,
+  o: Record<string, string>,
+): string | null {
+  const spec = HOME_TITLES[p.productType];
+  if (!spec) return null;
+  const at = p.title.lastIndexOf(` ${spec.suffix}`);
+  if (at <= 0) return null;
+  const work = p.title.slice(0, at);
+  const edition = p.title.slice(at + 1 + spec.suffix.length);
+  if (edition && !edition.startsWith(',')) return null;
+  const artist = productArtistFullName(p.handle, p.tags);
+  const by = artist && !work.includes(artist) ? ` by ${artist}` : '';
+  const metric = METRIC_SIZES[o.Size ?? ''];
+  const size = o.Size ? ` — ${o.Size}${metric ? ` (${metric})` : ''}` : '';
+  return `${spec.lead(o)}, ${work}${by}${edition}${size}`;
+}
+
 function museumItem(p: FeedProduct, o: Record<string, string>): Item | null {
   const spec = MUSEUM[p.productType];
   if (!spec) return null;
@@ -239,7 +290,9 @@ function museumItem(p: FeedProduct, o: Record<string, string>): Item | null {
             : 'cushion-cover';
   return {
     line,
-    title: o.Size ? `${name} — ${o.Size}${extra}` : name,
+    title:
+      (table === 'printful' ? homeFeedTitle(p, o) : null) ??
+      (o.Size ? `${name} — ${o.Size}${extra}` : name),
     size: o.Size ?? '',
     material: hanger ? `${PAPER} with ${hanger} wooden hanger` : material,
     color: o.Hanger ?? '',

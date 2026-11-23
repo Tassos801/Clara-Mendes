@@ -317,6 +317,30 @@ export function productArtistName(
   );
 }
 
+let artistFullNamesByHandle: Map<string, string> | undefined;
+
+/**
+ * The artist's whole name ("William Morris", "Vincent van Gogh"), for text
+ * a search engine matches against what people type: "william morris
+ * cushion" does not match a title that says only "Morris". Undefined for a
+ * studio product.
+ */
+export function productArtistFullName(
+  handle: string | null | undefined,
+  tags: readonly string[] = [],
+) {
+  artistFullNamesByHandle ??= new Map(
+    artistProducts().flatMap((entry) => {
+      const artist = findArtist(entry.artistId);
+      return artist ? [[entry.handle, artist.name] as const] : [];
+    }),
+  );
+  return (
+    (handle ? artistFullNamesByHandle.get(handle.toLowerCase()) : undefined) ??
+    TAGGED_ARTISTS.find((name) => tags.includes(name))
+  );
+}
+
 /**
  * A museum product title with its artist, for search: "Irises Throw Blanket"
  * becomes "Irises Throw Blanket by Van Gogh". The Shopify title, order emails

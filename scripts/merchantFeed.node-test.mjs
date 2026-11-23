@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {
+  homeFeedTitle,
   FEED_COLUMNS,
   FEED_CURRENCY,
   META_COUNTRY_COLUMNS,
@@ -367,7 +368,7 @@ test('titles, links and attributes match the manual uploads', () => {
   );
 });
 
-test('museum titles name the artist from the art registry, not only from tags', () => {
+test('home titles lead with the product and name the artist from the art registry', () => {
   // Museum Masterpieces products carry no artist tag.
   const tags = ['Museum Reproduction', 'Museum Masterpieces'];
   const items = byId(
@@ -396,17 +397,73 @@ test('museum titles name the artist from the art registry, not only from tags', 
       EU,
     ),
   );
+  // Product first (a search engine weighs the first words most), the
+  // artist's whole name (people type "william morris cushion"), metric size.
   assert.equal(
     items['CM-MM-01-BLANKET50X60'].title,
-    'Irises Throw Blanket by Van Gogh — 50 × 60 in',
+    'Throw Blanket, Irises by Vincent van Gogh — 50 × 60 in (127 × 152 cm)',
   );
   assert.equal(
     items['CM-MM-05-MUG11-PF'].title,
-    'The Milkmaid Mug by Vermeer — 11 oz',
+    'Ceramic Mug, The Milkmaid by Johannes Vermeer — 11 oz (325 ml)',
   );
   assert.equal(
     items['CM-MM-06-CUSH22-I'].title,
-    'Strawberry Thief Cushion by Morris — 22 × 22 in, with insert',
+    'Cushion with Insert, Strawberry Thief by William Morris — 22 × 22 in (56 × 56 cm)',
+  );
+  // The size attribute stays the option value the page and checkout show.
+  assert.equal(items['CM-MM-01-BLANKET50X60'].size, '50 × 60 in');
+  for (const item of Object.values(items))
+    assert.ok(item.title.length <= 150, item.title);
+});
+
+test('a home title keeps its edition and falls back when the title is unusual', () => {
+  const tags = ['Museum Reproduction', 'Museum Masterpieces'];
+  const home = (handle, title, productType, options) =>
+    homeFeedTitle({handle, title, productType, tags}, options);
+
+  assert.equal(
+    home('irises-cushion', 'Irises Cushion', 'Cushions', {
+      Size: '18 × 18 in',
+      Filling: 'Cover only',
+    }),
+    'Cushion Cover, Irises by Vincent van Gogh — 18 × 18 in (46 × 46 cm)',
+  );
+  // An edition name after the product words follows the artist.
+  assert.equal(
+    home(
+      'irises-blanket',
+      'Irises Throw Blanket, Art & Words',
+      'Blankets',
+      {Size: '50 × 60 in'},
+    ),
+    'Throw Blanket, Irises by Vincent van Gogh, Art & Words — 50 × 60 in (127 × 152 cm)',
+  );
+  // A size with no metric form listed is shown as it is.
+  assert.equal(
+    home('the-milkmaid-mug', 'The Milkmaid Mug', 'Mugs', {Size: '15 oz'}),
+    'Ceramic Mug, The Milkmaid by Johannes Vermeer — 15 oz',
+  );
+  // No artist known: the product still leads.
+  assert.equal(
+    home('some-studio-blanket', 'Quiet Form Throw Blanket', 'Blankets', {
+      Size: '50 × 60 in',
+    }),
+    'Throw Blanket, Quiet Form — 50 × 60 in (127 × 152 cm)',
+  );
+  // Titles that do not end the way the family's titles do, and other
+  // product types, keep the plain form (null here).
+  assert.equal(
+    home('irises-blanket', 'Irises Blanket Deluxe', 'Blankets', {}),
+    null,
+  );
+  assert.equal(
+    home('irises-blanket', 'Irises Throw Blanket Deluxe', 'Blankets', {}),
+    null,
+  );
+  assert.equal(
+    home('irises-art-print', 'Irises Art Print', 'Art Prints', {Size: 'A3'}),
+    null,
   );
 });
 
@@ -453,7 +510,7 @@ test('Printful lines ship in the EU only, at the fee table rate and Printful win
   );
   assert.equal(
     items['CM-FW-01-CUSH18-I'].title,
-    'The Great Wave off Kanagawa Cushion by Hokusai — 18 × 18 in, with insert',
+    'Cushion with Insert, The Great Wave off Kanagawa by Katsushika Hokusai — 18 × 18 in (46 × 46 cm)',
   );
   assert.equal(
     rate(items['CM-FW-01-CUSH18-I'], 'DE'),
