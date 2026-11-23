@@ -91,9 +91,13 @@ export function normalizeCmaArtwork(raw) {
     (record?.creators ?? []).filter(
       (creator) => text(creator?.role).toLowerCase() === role,
     );
-  // Textiles and wallpapers name their maker as the designer (William
-  // Morris, "designed by"); a work with no artist falls back to them.
-  const artists = byRole('artist').length ? byRole('artist') : byRole('designer');
+  // Textiles and wallpapers name their maker as the designer; a work with
+  // no artist falls back to them. Cleveland writes that role two ways:
+  // "designer" (Kennet, 1937.698) and, on older records, "designed by"
+  // (Tulip, 1937.579). Nothing looser counts: "designed in imitation of"
+  // (Snakeshead, 1937.695) is another hand and stays without an artist.
+  const designers = [...byRole('designer'), ...byRole('designed by')];
+  const artists = byRole('artist').length ? byRole('artist') : designers;
   const [first] = artists;
   const full = record?.images?.full;
   const title = text(record?.title);

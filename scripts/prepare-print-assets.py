@@ -19,6 +19,12 @@ from pathlib import Path
 
 from PIL import Image, ImageCms, ImageFilter, ImageOps
 
+# Pillow refuses an image above twice this many pixels as a possible
+# "decompression bomb". Museum originals are far above its default (89 MP)
+# and are files this pipeline fetched and checked by sha256: Cleveland's
+# Peacock and Dragon is 14702 x 18164 px (267 MP).
+Image.MAX_IMAGE_PIXELS = 400_000_000
+
 WEB_SIZE = (1120, 1400)
 SOURCE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".tif", ".tiff", ".webp")
 PAPER_WHITE = (255, 255, 255)

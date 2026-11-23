@@ -2725,9 +2725,9 @@
       "slug": "museum-masterpieces",
       "title": "Museum Masterpieces",
       "kind": "museum",
-      "note": "Paintings by Van Gogh, Monet, Klimt, Vermeer, Renoir and Degas, and one William Morris textile, from museum open-access collections",
+      "note": "Paintings by Van Gogh, Monet, Klimt, Vermeer, Renoir and Degas, and William Morris textiles, from museum open-access collections",
       "skuCode": "MM",
-      "collectionCopy": "Part of Museum Masterpieces, a Clara Mendes selection of paintings from Vermeer to Klimt, and one William Morris pattern, from museum open-access collections, each reproduced whole.",
+      "collectionCopy": "Part of Museum Masterpieces, a Clara Mendes selection of paintings from Vermeer to Klimt, and William Morris patterns, from museum open-access collections, each reproduced whole.",
       "seoSuffix": "A museum masterpiece reproduced whole from a public-domain museum original.",
       "publications": [
         "Clara Mendes",
@@ -3372,6 +3372,254 @@
             "nativeHeight": 3810,
             "nativeWidth": 3520,
             "sourceSha256": "10059dd5a1da4ea6bf30e778c0d1a334e1ea104018415a93e4c79525a73bdeaf"
+          }
+        },
+        {
+          "slug": "honeysuckle",
+          "title": "Honeysuckle",
+          "sequence": 11,
+          "artworkId": "cma-1937.697",
+          "orientation": "landscape",
+          "description": "Sprays of honeysuckle with large rose-pink blooms and hanging bell flowers among grey-green leaves on a blue-grey ground, mirrored about the centre: William Morris’s 1876 pattern, in a length of printed linen.",
+          "alt": "William Morris’s Honeysuckle: mirrored sprays of honeysuckle with large rose-pink blooms, hanging bell flowers and grey-green leaves on a blue-grey ground.",
+          "palette": "Rose pink, grey-green, blue-grey, cream",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Honeysuckle print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "honeysuckle-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Honeysuckle print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "honeysuckle-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Honeysuckle print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "honeysuckle-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Honeysuckle print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "honeysuckle-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 11308,
+            "nativeWidth": 12010,
+            "sourceSha256": "1cc049f4dd62bd09737461a3ec4a21f2bef04983ee42cb8ddc8cb43e54d7a783"
+          }
+        },
+        {
+          "slug": "kennet",
+          "title": "Kennet",
+          "sequence": 12,
+          "artworkId": "cma-1937.698",
+          "orientation": "landscape",
+          "description": "Rows of golden blooms on winding stems with blue and green leaves, over a dense ground of small cream flowers on deep indigo: William Morris’s 1883 pattern, named after a tributary of the Thames, in a length of cotton printed at Merton Abbey.",
+          "alt": "William Morris’s Kennet: rows of large golden blooms on winding stems with blue and green leaves over small cream flowers on a deep indigo ground.",
+          "palette": "Indigo, gold, cream, green",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Kennet print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "kennet-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Kennet print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "kennet-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Kennet print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "kennet-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Kennet print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "kennet-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 11936,
+            "nativeWidth": 12971,
+            "sourceSha256": "620f16bb0c9bda4a14f59cb16ebe67668108502c44473e4c8bd8f9749902acf8"
+          }
+        },
+        {
+          "slug": "tulip",
+          "title": "Tulip",
+          "sequence": 13,
+          "artworkId": "cma-1937.579",
+          "orientation": "landscape",
+          "description": "Pale green tulips and long curling leaves drawn in fine line on a white ground: William Morris’s 1875 pattern, in a length of roller-printed cotton.",
+          "alt": "William Morris’s Tulip: pale green tulips and long curling leaves in fine green line on a white ground.",
+          "palette": "Sage green, white",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Tulip print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "tulip-living-room.png",
+              "placement": {
+                "left": 380,
+                "top": 410,
+                "width": 320,
+                "height": 256
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Tulip print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "tulip-bedroom.png",
+              "placement": {
+                "left": 400,
+                "top": 407,
+                "width": 280,
+                "height": 224
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Tulip print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "tulip-study.png",
+              "placement": {
+                "left": 415,
+                "top": 526,
+                "width": 250,
+                "height": 200
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Tulip print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "tulip-wide-interior.png",
+              "placement": {
+                "left": 480,
+                "top": 600,
+                "width": 200,
+                "height": 160
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 10345,
+            "nativeWidth": 12997,
+            "sourceSha256": "254729430411c5e93f68086694542a78690203338aa8e0709644c1bd240ea670"
+          }
+        },
+        {
+          "slug": "peacock-and-dragon",
+          "title": "Peacock and Dragon",
+          "sequence": 14,
+          "artworkId": "cma-1953.330",
+          "orientation": "portrait",
+          "description": "Pairs of peacocks and dragons facing each other among stylised leaves and flowers, in olive green, rose and blue: William Morris’s 1878 pattern, in a length of woven wool made at Merton Abbey.",
+          "alt": "William Morris’s Peacock and Dragon: facing pairs of peacocks and dragons among stylised leaves and flowers in olive green, rose and blue woven wool.",
+          "palette": "Olive green, rose, cream, blue",
+          "rooms": [
+            {
+              "key": "living-room",
+              "alt": "Peacock and Dragon print above a low walnut sideboard in a bright, white-walled living room.",
+              "backgroundFile": "peacock-and-dragon-living-room.png",
+              "placement": {
+                "left": 420,
+                "top": 354,
+                "width": 240,
+                "height": 300
+              }
+            },
+            {
+              "key": "bedroom",
+              "alt": "Peacock and Dragon print above a linen-covered bed in a calm, pale bedroom.",
+              "backgroundFile": "peacock-and-dragon-bedroom.png",
+              "placement": {
+                "left": 430,
+                "top": 259,
+                "width": 220,
+                "height": 275
+              }
+            },
+            {
+              "key": "study",
+              "alt": "Peacock and Dragon print above an oak desk with a black steel lamp in a pared-back study.",
+              "backgroundFile": "peacock-and-dragon-study.png",
+              "placement": {
+                "left": 440,
+                "top": 488,
+                "width": 200,
+                "height": 250
+              }
+            },
+            {
+              "key": "wide-interior",
+              "alt": "Peacock and Dragon print shown at scale in a wide, airy interior with concrete floors.",
+              "backgroundFile": "peacock-and-dragon-wide-interior.png",
+              "placement": {
+                "left": 460,
+                "top": 570,
+                "width": 160,
+                "height": 200
+              }
+            }
+          ],
+          "released": false,
+          "source": {
+            "nativeHeight": 18164,
+            "nativeWidth": 14702,
+            "sourceSha256": "ce1a72266d53fdacdab62bb9e3c8951bf2015d40005e106d1159a80febdc510f"
           }
         }
       ]

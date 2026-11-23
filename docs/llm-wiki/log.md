@@ -2968,3 +2968,46 @@ titles began with the work.
 
 Wiki: `docs/llm-wiki/modules/fulfillment.md` (feed bullets). Test:
 `scripts/merchantFeed.node-test.mjs`.
+
+## 2026-11-23 — Four more William Morris patterns staged (blanket, cushion, mug), unreleased
+
+The first week of Google Shopping search terms showed one clear group of
+searches for a product, not for a painting: William Morris cushions,
+throws and mugs. The shop had one Morris pattern (Strawberry Thief).
+
+- Four works from the Cleveland Museum of Art (CC0), added to Museum
+  Masterpieces as prints 11 to 14: Honeysuckle (1937.697), Kennet
+  (1937.698), Tulip (1937.579) and Peacock and Dragon (1953.330). Each has a
+  throw blanket, a cushion (four variants) and a mug: 12 products,
+  `CM-MM-11` to `CM-MM-14`, at the collection's existing prices.
+- State: Shopify **Drafts** (tracked at 0, DENY, pending tags), files in the
+  Printful library and every variant synced and recorded (`mapped`).
+  `status` says "owner reviews → release". Nothing is released.
+- Still the owner's: the rights and master reviews of the four works, the
+  approval of the four printed areas in `data/museum-crops.json`
+  (`approval.approved` is false), `suppliedApprovals` for the files,
+  switching "Fulfil with Prodigi" off on the 12 products, the shipping
+  profile, and the release itself.
+- Print files: the same script as the first ten works
+  (`<launch>/museum/seven-products-mm/scripts/build_supplied.py`, no AI):
+  the printed area of the cloth, without borders, selvedges or the "Morris
+  & Company" mark on Kennet, pasted unchanged on the off-white mount. The
+  woven Peacock and Dragon blanket file needed JPEG quality below 80 to fit
+  Printful's 20 MB upload (`--min-quality=70`, a new option, default 80).
+  All files meet their ppi floors; no exception was needed.
+- Two pipeline fixes found on the way:
+  - `scripts/lib/museum-cma.mjs` read the creator role "designer" but not
+    Cleveland's older wording "designed by", so Tulip and Peacock and Dragon
+    failed the attribution screen with no artist. Both wordings now count;
+    "designed in imitation of" (Snakeshead) still does not.
+  - `scripts/prepare-print-assets.py` stopped on Peacock and Dragon's
+    original (14702 × 18164 px) at Pillow's decompression-bomb limit. The
+    limit is now 400 MP for these checksum-verified museum files.
+- Not taken: Marigold (1937.699). The cloth is a tall strip (about 1:1.8)
+  that would need a section crop for every product, and the artist page
+  says the products keep the whole printed pattern.
+- The collection copy now says "William Morris patterns" (was "one William
+  Morris pattern") in both catalogues.
+
+Test: `scripts/museumSources.node-test.mjs` (the two role wordings). The
+catalogue, crop, artist and image tests cover the new entries as data.

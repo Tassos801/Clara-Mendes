@@ -531,6 +531,86 @@
         "at": "2026-11-12",
         "note": "Owner approved the printed area (pattern only, without the plain borders and the selvedge mark) after reviewing the top-ten board."
       }
+    },
+    "cma-1937.697": {
+      "area": {
+        "left": 0.04,
+        "top": 0.03,
+        "right": 0.978,
+        "bottom": 0.962
+      },
+      "canvas": {
+        "cx": 0.5,
+        "cy": 0.5
+      },
+      "chosen": {
+        "by": "Claude Code (AI-chosen framing)",
+        "at": "2026-11-23",
+        "note": "The printed area leaves out the grey photographic backdrop, the plain cream selvedge on the left and the frayed top and bottom edges of the linen, so blankets, cushions and mugs show the pattern only. The canvas framing is listed only because every entry needs one shape; no canvas product is planned."
+      },
+      "approval": {
+        "approved": false
+      }
+    },
+    "cma-1937.698": {
+      "area": {
+        "left": 0.033,
+        "top": 0.01,
+        "right": 0.945,
+        "bottom": 0.985
+      },
+      "canvas": {
+        "cx": 0.5,
+        "cy": 0.5
+      },
+      "chosen": {
+        "by": "Claude Code (AI-chosen framing)",
+        "at": "2026-11-23",
+        "note": "The printed area leaves out the plain indigo borders of the cloth, with the \"Regd Morris & Company\" mark printed along the left selvedge, and the backdrop, so blankets, cushions and mugs show the pattern only. The canvas framing is listed only because every entry needs one shape; no canvas product is planned."
+      },
+      "approval": {
+        "approved": false
+      }
+    },
+    "cma-1937.579": {
+      "area": {
+        "left": 0.043,
+        "top": 0.03,
+        "right": 0.97,
+        "bottom": 0.96
+      },
+      "canvas": {
+        "cx": 0.5,
+        "cy": 0.5
+      },
+      "chosen": {
+        "by": "Claude Code (AI-chosen framing)",
+        "at": "2026-11-23",
+        "note": "The printed area leaves out the grey photographic backdrop, the plain white selvedge on the left and the unprinted strip on the right, so blankets, cushions and mugs show the pattern only. The canvas framing is listed only because every entry needs one shape; no canvas product is planned."
+      },
+      "approval": {
+        "approved": false
+      }
+    },
+    "cma-1953.330": {
+      "area": {
+        "left": 0.035,
+        "top": 0.03,
+        "right": 0.97,
+        "bottom": 0.957
+      },
+      "canvas": {
+        "cx": 0.5,
+        "cy": 0.5
+      },
+      "chosen": {
+        "by": "Claude Code (AI-chosen framing)",
+        "at": "2026-11-23",
+        "note": "The printed area leaves out the grey photographic backdrop and the frayed, uneven edges of the woven wool, so blankets, cushions and mugs show the pattern only. The canvas framing is listed only because every entry needs one shape; no canvas product is planned."
+      },
+      "approval": {
+        "approved": false
+      }
     }
   }
 }
