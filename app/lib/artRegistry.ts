@@ -205,7 +205,8 @@ const MONTHS =
  * so captions and artist pages tidy it here: one circa form ("c."), the
  * British day-month order, and no calendar-cycle prefix.
  * "ca. 1830–32" → "c. 1830–32", "c 1936" → "c. 1936",
- * "snake year 1857" → "1857", "January 18, 1911" → "18 January 1911".
+ * "snake year 1857" → "1857", "January 18, 1911" → "18 January 1911",
+ * "Early 20th century" → "early 20th century".
  */
 export function displayArtworkDate(date: string): string;
 export function displayArtworkDate(date: string | null | undefined): string | null;
@@ -215,6 +216,12 @@ export function displayArtworkDate(date: string | null | undefined) {
     .trim()
     .replace(/^(?:ca\.?|c\.?|circa)\s*(?=\d)/i, 'c. ')
     .replace(/^[a-z]+ year (?=\d{4}\b)/i, '')
+    // A cloth dated by century ("Early 20th century") reads on after the
+    // artist's name in a caption, so its first word is lower case.
+    .replace(
+      /^(early|mid|late)(?= \d{1,2}(?:st|nd|rd|th) century$)/i,
+      (word) => word.toLowerCase(),
+    )
     .replace(new RegExp(`^(${MONTHS}) (\\d{1,2}), (\\d{4})$`), '$2 $1 $3');
 }
 

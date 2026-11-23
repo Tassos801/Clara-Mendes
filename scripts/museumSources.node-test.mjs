@@ -583,3 +583,36 @@ test('a Cleveland textile with no artist falls back to its designer', () => {
   assert.equal(candidate.artistDisplayName, 'William Morris');
   assert.deepEqual(attributionIssues(candidate), []);
 });
+
+test('Cleveland\'s "designed by" is the designer; "designed in imitation of" is not', () => {
+  const withRole = (role) =>
+    cma.normalizeCmaArtwork({
+      data: {
+        accession_number: '1937.579',
+        title: 'Tulip',
+        creators: [{description: 'William Morris (British, 1834–1896)', role}],
+      },
+    });
+  // The committed record of Tulip names its designer with the older wording.
+  const tulip = cma.normalizeCmaArtwork(evidence('cma-1937.579'));
+  assert.equal(tulip.artistDisplayName, 'William Morris');
+  assert.deepEqual(attributionIssues(tulip), []);
+  assert.equal(withRole('designed by').artistDisplayName, 'William Morris');
+  assert.equal(withRole('Designed by').artistDisplayName, 'William Morris');
+  // Another hand working after his design is not his work.
+  const imitation = withRole('designed in imitation of');
+  assert.equal(imitation.artistDisplayName, '');
+  assert.deepEqual(imitation.artists, []);
+  assert.notDeepEqual(attributionIssues(imitation), []);
+  // A named artist still comes before any designer.
+  const both = cma.normalizeCmaArtwork({
+    data: {
+      accession_number: 'x',
+      creators: [
+        {description: 'A Designer', role: 'designed by'},
+        {description: 'An Artist', role: 'artist'},
+      ],
+    },
+  });
+  assert.equal(both.artistDisplayName, 'An Artist');
+});

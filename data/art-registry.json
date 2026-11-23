@@ -2213,6 +2213,186 @@
         "by": "Claude Code (proposed 2026-11-12; owner confirms at master review)",
         "note": "Grey photographic backdrop and the frayed edge of the cloth; the unprinted blue borders stay in the master and are left out by the printed area in data/museum-crops.json."
       }
+    },
+    {
+      "id": "cma-1937.697",
+      "artistId": "william-morris",
+      "title": "Honeysuckle",
+      "shortTitle": "Honeysuckle",
+      "date": "Early 20th century",
+      "medium": "Plain weave linen, printed",
+      "dimensions": "Overall: 87 x 90.5 cm (34 1/4 x 35 5/8 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1937.697",
+        "accessionNumber": "1937.697",
+        "objectUrl": "https://clevelandart.org/art/1937.697",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1937.697",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1937.697/1937.697_full.tif",
+        "artistDisplayName": "William Morris",
+        "artistPrefix": "",
+        "creditLine": "Gift of Mrs. Henry Chisholm",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1937.697.json",
+        "fetchedAt": "2026-11-23T11:09:05.189Z",
+        "metadataSha256": "347165a528efc219c0dfaffe785f7e0331d70a583e21898f254341cb7087b311"
+      },
+      "original": {
+        "fileName": "cma-1937.697.tif",
+        "sha256": "1cc049f4dd62bd09737461a3ec4a21f2bef04983ee42cb8ddc8cb43e54d7a783",
+        "bytes": 407455166,
+        "contentType": "image/tiff",
+        "width": 12010,
+        "height": 11308
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "cma-1937.698",
+      "artistId": "william-morris",
+      "title": "Kennet",
+      "shortTitle": "Kennet",
+      "date": "c 1920",
+      "medium": "Plain weave cotton, printed",
+      "dimensions": "Overall: 90.2 x 97.8 cm (35 1/2 x 38 1/2 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1937.698",
+        "accessionNumber": "1937.698",
+        "objectUrl": "https://clevelandart.org/art/1937.698",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1937.698",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1937.698/1937.698_full.tif",
+        "artistDisplayName": "William Morris",
+        "artistPrefix": "",
+        "creditLine": "Gift of Mrs. Henry Chisholm",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1937.698.json",
+        "fetchedAt": "2026-11-23T11:09:44.557Z",
+        "metadataSha256": "f0bb608aa0867b66caf97a3368b8bc223f9b1b2c3216050e0f198fff8f767bd2"
+      },
+      "original": {
+        "fileName": "cma-1937.698.tif",
+        "sha256": "620f16bb0c9bda4a14f59cb16ebe67668108502c44473e4c8bd8f9749902acf8",
+        "bytes": 464496774,
+        "contentType": "image/tiff",
+        "width": 12971,
+        "height": 11936
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "cma-1937.579",
+      "artistId": "william-morris",
+      "title": "Tulip",
+      "shortTitle": "Tulip",
+      "date": "1875",
+      "medium": "Roller printed cotton",
+      "dimensions": "Overall: 76.1 x 95.3 cm (29 15/16 x 37 1/2 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1937.579",
+        "accessionNumber": "1937.579",
+        "objectUrl": "https://clevelandart.org/art/1937.579",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1937.579",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1937.579/1937.579_full.tif",
+        "artistDisplayName": "William Morris",
+        "artistPrefix": "",
+        "creditLine": "Gift of Mrs. Philip White",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1937.579.json",
+        "fetchedAt": "2026-11-23T11:15:52.833Z",
+        "metadataSha256": "44dcf58ab826b53c501afedf273a619f515b0a7990d2d4a4ecdc53a2011bd7bb"
+      },
+      "original": {
+        "fileName": "cma-1937.579.tif",
+        "sha256": "254729430411c5e93f68086694542a78690203338aa8e0709644c1bd240ea670",
+        "bytes": 403383950,
+        "contentType": "image/tiff",
+        "width": 12997,
+        "height": 10345
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
+    },
+    {
+      "id": "cma-1953.330",
+      "artistId": "william-morris",
+      "title": "Peacock and Dragon",
+      "shortTitle": "Peacock and Dragon",
+      "date": "1878",
+      "medium": "Weft-faced compound twill; wool",
+      "dimensions": "Overall: 206.6 x 174.7 cm (81 5/16 x 68 3/4 in.)",
+      "source": {
+        "museum": "cma",
+        "institution": "The Cleveland Museum of Art",
+        "objectId": "1953.330",
+        "accessionNumber": "1953.330",
+        "objectUrl": "https://clevelandart.org/art/1953.330",
+        "apiUrl": "https://openaccess-api.clevelandart.org/api/artworks/1953.330",
+        "imageUrl": "https://openaccess-cdn.clevelandart.org/1953.330/1953.330_full.tif",
+        "artistDisplayName": "William Morris",
+        "artistPrefix": "",
+        "creditLine": "Gift of Mrs. Philip White",
+        "rights": {
+          "publicDomain": true,
+          "designation": "Public domain: The Cleveland Museum of Art Open Access (CC0)",
+          "evidenceUrl": "https://www.clevelandart.org/open-access"
+        },
+        "evidenceFile": "data/museum-evidence/cma-1953.330.json",
+        "fetchedAt": "2026-11-23T11:16:49.105Z",
+        "metadataSha256": "e7cdb631edbd03a2c4f432a194734968cc7a39a320c0c98d98f61b742662cc70"
+      },
+      "original": {
+        "fileName": "cma-1953.330.tif",
+        "sha256": "ce1a72266d53fdacdab62bb9e3c8951bf2015d40005e106d1159a80febdc510f",
+        "bytes": 801166758,
+        "contentType": "image/tiff",
+        "width": 14702,
+        "height": 18164
+      },
+      "reviews": {
+        "rights": {
+          "status": "pending"
+        },
+        "master": {
+          "status": "pending"
+        }
+      }
     }
   ]
 }
