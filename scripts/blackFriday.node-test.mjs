@@ -20,6 +20,10 @@ import {
   productTypeQuery,
 } from '../app/lib/blackFriday.ts';
 import {normalizeSingleProductTypeSearch} from '../app/lib/catalogFacets.ts';
+import {
+  CUSTOM_SITEMAP_PATHS,
+  seasonalSitemapPaths,
+} from '../app/lib/sitemap.ts';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');
@@ -262,7 +266,16 @@ test('the root loader decides at request time and nothing permanent links the pa
       file,
     );
   }
-  assert.doesNotMatch(read('app/lib/sitemap.ts'), /black-friday|blackFriday/i);
+  // The sitemap names the page only through a dated rule (tested in
+  // sitemap.node-test.mjs): never in the permanent list, never as a literal
+  // path, and never at or after the end, so nothing needs removing later.
+  assert.doesNotMatch(read('app/lib/sitemap.ts'), /['"`]\/black-friday/);
+  assert.ok(!CUSTOM_SITEMAP_PATHS.includes(BLACK_FRIDAY_PATH));
+  assert.deepEqual(seasonalSitemapPaths(BLACK_FRIDAY_END), []);
+  assert.deepEqual(
+    seasonalSitemapPaths(new Date(BLACK_FRIDAY_END.getTime() - 1)),
+    [],
+  );
   assert.doesNotMatch(read('app/lib/navLinks.ts'), /black-friday|blackFriday/i);
   const route = read('app/routes/black-friday.tsx');
   assert.match(route, /noIndex: data\?\.status !== 'open'/);

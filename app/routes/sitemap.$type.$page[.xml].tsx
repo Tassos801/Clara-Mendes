@@ -2,6 +2,7 @@ import type {Route} from './+types/sitemap.$type.$page[.xml]';
 import {getSitemap} from '@shopify/hydrogen';
 import {
   buildCustomRoutesSitemapXml,
+  CUSTOM_SITEMAP_MAX_AGE_SECONDS,
   filterSitemapProductEntries,
   filterSitemapCollectionEntries,
   isValidSitemapRequest,
@@ -22,7 +23,7 @@ export async function loader({
     return new Response(buildCustomRoutesSitemapXml(), {
       headers: {
         'Content-Type': 'application/xml',
-        'Cache-Control': `max-age=${60 * 60 * 24}`,
+        'Cache-Control': `max-age=${CUSTOM_SITEMAP_MAX_AGE_SECONDS}`,
       },
     });
   }

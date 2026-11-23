@@ -16,6 +16,7 @@ import {
   type CatalogCollectionLike,
 } from './catalogFilters.ts';
 import {artistPath, publicArtists} from './artistShops.ts';
+import {BLACK_FRIDAY_PATH, isBlackFridayWeek} from './blackFriday.ts';
 import {BOOK_NOOKS_PATH, releasedBookNooks} from './bookNooks.ts';
 import {shopCapsulePath} from './capsules.ts';
 import {editionPagePath, listEditionPages} from './editionPages.ts';
@@ -204,8 +205,25 @@ export function sitemapProductEligibilityQuery(handles: string[]) {
   };
 }
 
-export function buildCustomRoutesSitemapXml() {
-  const urls = CUSTOM_SITEMAP_PATHS.map(
+/** How long a crawler may keep the custom sitemap. */
+export const CUSTOM_SITEMAP_MAX_AGE_SECONDS = 60 * 60 * 24;
+
+/**
+ * Pages listed for a period only. /black-friday is indexable while the sale
+ * is open and noindex before and after it, so it is listed only while the
+ * sale is open now and will still be open when a copy fetched now goes stale.
+ */
+export function seasonalSitemapPaths(now: Date): string[] {
+  const staleAt = new Date(
+    now.getTime() + CUSTOM_SITEMAP_MAX_AGE_SECONDS * 1000,
+  );
+  return isBlackFridayWeek(now) && isBlackFridayWeek(staleAt)
+    ? [BLACK_FRIDAY_PATH]
+    : [];
+}
+
+export function buildCustomRoutesSitemapXml(now: Date = new Date()) {
+  const urls = [...CUSTOM_SITEMAP_PATHS, ...seasonalSitemapPaths(now)].map(
     (path) =>
       `  <url><loc>${STOREFRONT_ORIGIN}${path === '/' ? '' : path}</loc><changefreq>weekly</changefreq></url>`,
   ).join('\n');

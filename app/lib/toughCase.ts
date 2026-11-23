@@ -86,10 +86,37 @@ export type ToughCasePhoneGroup = {
   phones: ToughCasePhone[];
 };
 
+/** Where a model sits inside its generation: "iPhone 16e" after "iPhone 16". */
+const PHONE_TIER_RANK: Record<string, number> = {
+  '': 0,
+  e: 1,
+  fe: 1,
+  mini: 2,
+  plus: 3,
+  pro: 4,
+  'pro max': 5,
+  'pro xl': 5,
+  ultra: 6,
+};
+
+/** [generation, tier] of a label such as "Samsung Galaxy S23 FE" → [23, 1]. */
+function phoneOrder(label: string): [number, number] {
+  const match = /(\d+)\s*(.*)$/.exec(label);
+  if (!match) return [Number.MAX_SAFE_INTEGER, 0];
+  return [
+    Number(match[1]),
+    PHONE_TIER_RANK[match[2].trim().toLowerCase()] ?? 99,
+  ];
+}
+
 /**
- * The "Select your phone" list, grouped by brand in manifest order. Pass the
- * option values a product actually offers (a museum case's `Device` values)
- * to leave out any model it lacks; empty groups are dropped.
+ * The "Select your phone" list, grouped by brand. Inside a brand the models
+ * run oldest generation first, then base, e/FE, Mini, Plus, Pro, Pro
+ * Max/XL, Ultra, so a buyer finds a phone where they expect it. The
+ * manifest keeps the order the lab's catalogue grew in (the pipeline checks
+ * variants against it), so the order is made here, for display only. Pass
+ * the option values a product actually offers (a museum case's `Device`
+ * values) to leave out any model it lacks; empty groups are dropped.
  */
 export function toughCasePhoneGroups(
   offered?: Iterable<string> | null,
@@ -99,10 +126,15 @@ export function toughCasePhoneGroups(
   return PHONE_BRANDS.map((brand) => ({
     brand,
     label: BRAND_LABELS[brand],
-    phones: phones.filter(
-      (phone) =>
-        phone.brand === brand && (!allowed || allowed.has(phone.label)),
-    ),
+    phones: phones
+      .filter(
+        (phone) =>
+          phone.brand === brand && (!allowed || allowed.has(phone.label)),
+      )
+      .map((phone) => ({phone, order: phoneOrder(phone.label)}))
+      // Array.prototype.sort is stable: unknown tiers keep manifest order.
+      .sort((a, b) => a.order[0] - b.order[0] || a.order[1] - b.order[1])
+      .map(({phone}) => phone),
   })).filter((group) => group.phones.length > 0);
 }
 

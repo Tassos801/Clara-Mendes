@@ -8,6 +8,15 @@ import {
   injectCustomSitemapEntry,
   removeExcludedSitemapEntries,
 } from '../app/lib/sitemap.ts';
+import {
+  CUSTOM_SITEMAP_MAX_AGE_SECONDS,
+  seasonalSitemapPaths,
+} from '../app/lib/sitemap.ts';
+import {
+  BLACK_FRIDAY_END,
+  BLACK_FRIDAY_PATH,
+  BLACK_FRIDAY_START,
+} from '../app/lib/blackFriday.ts';
 
 const entry = (loc) =>
   `<url>\n  <loc>${loc}</loc>\n  <lastmod>2026-07-01</lastmod>\n</url>`;
@@ -268,5 +277,39 @@ assert.equal(
       'utf8',
     ),
     /types: \[\.\.\.SITEMAP_INDEX_TYPES\]/,
+  );
+}
+
+// /black-friday is indexable only while the sale is open (the route sets
+// noindex before and after), so the sitemap lists it only then, and stops
+// one cache lifetime before the end: a copy fetched now is never stale
+// enough to list a noindex page.
+{
+  const at = (ms) => new Date(ms);
+  const start = BLACK_FRIDAY_START.getTime();
+  const end = BLACK_FRIDAY_END.getTime();
+  const cache = CUSTOM_SITEMAP_MAX_AGE_SECONDS * 1000;
+  const loc = `<loc>https://shopclaramendes.com${BLACK_FRIDAY_PATH}</loc>`;
+
+  assert.deepEqual(seasonalSitemapPaths(at(start - 1)), []);
+  assert.deepEqual(seasonalSitemapPaths(at(start)), [BLACK_FRIDAY_PATH]);
+  assert.deepEqual(seasonalSitemapPaths(at(end - cache - 1)), [
+    BLACK_FRIDAY_PATH,
+  ]);
+  assert.deepEqual(seasonalSitemapPaths(at(end - cache)), []);
+  assert.deepEqual(seasonalSitemapPaths(at(end)), []);
+
+  assert.ok(buildCustomRoutesSitemapXml(at(start)).includes(loc));
+  assert.ok(!buildCustomRoutesSitemapXml(at(start - 1)).includes(loc));
+  assert.ok(!buildCustomRoutesSitemapXml(at(end)).includes(loc));
+  // The permanent list never names it: it would outlive the sale.
+  assert.ok(!CUSTOM_SITEMAP_PATHS.includes(BLACK_FRIDAY_PATH));
+  // The route serves the same lifetime the rule above counts with.
+  assert.match(
+    readFileSync(
+      new URL('../app/routes/sitemap.$type.$page[.xml].tsx', import.meta.url),
+      'utf8',
+    ),
+    /max-age=\$\{CUSTOM_SITEMAP_MAX_AGE_SECONDS\}/,
   );
 }
