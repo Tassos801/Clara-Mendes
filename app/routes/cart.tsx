@@ -17,7 +17,7 @@ import {toLocalPath} from '~/lib/redirect';
 import {signSkyCartLines} from '~/lib/sky/cartLines.server';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: 'Clara Mendes | Cart'}];
+  return [{title: 'Cart | Clara Mendes'}];
 };
 
 export async function loader({context}: Route.LoaderArgs) {

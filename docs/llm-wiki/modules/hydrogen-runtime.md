@@ -17,7 +17,9 @@ Sources: `server.ts`, `app/entry.server.tsx`, `app/lib/context.ts`,
 2. Creates a React Router request handler with `createRequestHandler`.
 3. Runs the request through React Router.
 4. Commits session cookies when pending session state exists.
-5. Uses Shopify `storefrontRedirect` after app-level 404 responses.
+5. After an app-level 404: answers a HEAD request for a file in `public/`
+   from the file itself (see "HEAD for public files"), otherwise uses Shopify
+   `storefrontRedirect`.
 6. Returns a generic 500 response on unexpected errors.
 
 ## Security Headers
@@ -119,6 +121,22 @@ The WebP sources stay: scripts, Merchant Center feeds, social posts and
 that every copy is plain and that pages use the copies. Shopify CDN images
 (`cdn.shopify.com/s/files`) do resize and serve WebP, so product photos
 stay there.
+
+## HEAD for public files
+
+Oxygen serves `public/` files itself, before the app, for GET only. A HEAD
+request for one reaches the app, which has no such route, so
+`curl -I /favicon.ico` answered 404 for a file that exists (found
+2026-11-20; link checkers and some crawlers ask with HEAD first).
+`headForPublicFile` in
+[`app/lib/publicFileHead.server.ts`](../../../app/lib/publicFileHead.server.ts)
+answers such a request with the status and headers of a GET of the same
+file from the site's own origin, and no body. The PDF routes load their
+fonts and plates with the same kind of fetch, which is how it is known to
+reach the files on Oxygen. It applies only to HEAD, only after the app
+answered 404, and only under the top-level entries of `public/`
+(`PUBLIC_FILE_ROOTS`; `scripts/publicFileHead.node-test.mjs` fails when the
+folder and the list differ, so a new top-level folder must be added there).
 
 ## Maintenance Notes
 

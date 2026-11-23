@@ -2909,3 +2909,34 @@ order was placed and no order has been lost).
 
 Wiki: `docs/llm-wiki/modules/fulfillment.md` (2026-11-23 section). Test:
 `scripts/paidOrderWebhook.node-test.mjs`.
+
+## 2026-11-23 — Bug hunt, minor items: phone list order, cart title, sale page in the sitemap, HEAD for public files
+
+The four low findings of the 20 November bug hunt.
+
+- The "Select your phone" list followed manifest order, which is the order
+  the lab's catalogue grew in: iPhone 14 Pro Max before iPhone 14, iPhone
+  16e after the iPhone 17 models, Galaxy S23 FE after the S24 models.
+  `toughCasePhoneGroups` (`app/lib/toughCase.ts`) now orders each brand by
+  generation, then base, e/FE, Mini, Plus, Pro, Pro Max/XL, Ultra. Display
+  only: the manifest and the Shopify variants keep their order (the
+  pipeline checks variants against the manifest).
+- The cart page title was "Clara Mendes | Cart"; every other page ends
+  with the shop name. Now "Cart | Clara Mendes".
+- `/black-friday` was in no sitemap. It is indexable only while the sale
+  is open, so the custom sitemap now lists it by a dated rule
+  (`seasonalSitemapPaths` in `app/lib/sitemap.ts`): while the sale is open
+  and until one cache lifetime (24 h) before the end. The older guard
+  "nothing permanent links the page" stays true and its test now says so in
+  those terms: never in the permanent list, never at or after the end.
+- A HEAD request for a file in `public/` answered 404 although GET answered
+  200: Oxygen serves those files before the app for GET only.
+  `server.ts` now answers such a HEAD from a GET of the same file
+  (`app/lib/publicFileHead.server.ts`). This one can only be confirmed on
+  the live site, after deploy: local dev serves `public/` differently.
+
+Tests: `scripts/phoneModelOrder.node-test.mjs`,
+`scripts/publicFileHead.node-test.mjs`, `scripts/sitemap.node-test.mjs`,
+`scripts/blackFriday.node-test.mjs`. Wiki:
+`docs/llm-wiki/modules/hydrogen-runtime.md` ("HEAD for public files"),
+`docs/llm-wiki/modules/routes-and-pages.md` (`/black-friday` row).

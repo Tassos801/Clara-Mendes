@@ -1,6 +1,7 @@
 import * as serverBuild from 'virtual:react-router/server-build';
 import {createRequestHandler, storefrontRedirect} from '@shopify/hydrogen';
 import {createHydrogenRouterContext} from '~/lib/context';
+import {headForPublicFile} from '~/lib/publicFileHead.server';
 
 /**
  * Export a fetch handler in module format.
@@ -40,6 +41,11 @@ export default {
       }
 
       if (response.status === 404) {
+        // Oxygen answers GET for a file in public/ before the app, but not
+        // HEAD; answer that from the file itself rather than "not found".
+        const publicFile = await headForPublicFile(request);
+        if (publicFile) return publicFile;
+
         /**
          * Check for redirects only when there's a 404 from the app.
          * If the redirect doesn't exist, then `storefrontRedirect`
