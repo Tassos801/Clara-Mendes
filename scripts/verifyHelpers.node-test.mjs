@@ -5,6 +5,7 @@ import test from 'node:test';
 import sharp from 'sharp';
 import {
   compareDeployedImage,
+  MAX_GALLERY_REENCODE_DIFFERENCE,
   MAX_REENCODE_DIFFERENCE,
 } from './lib/art-product-assets.mjs';
 import {
@@ -112,6 +113,19 @@ test('a re-encoded case file passes; a different artwork or size fails', async (
     .toBuffer();
   const stale = await compareDeployedImage(shifted, wave);
   assert.equal(stale.ok, false, stale.detail);
+
+  // Gallery images get a little more room than print files (Shopify's CDN
+  // moves fine texture further), and no more: another artwork and a shifted
+  // crop still fail at the gallery limit.
+  assert.ok(MAX_GALLERY_REENCODE_DIFFERENCE > MAX_REENCODE_DIFFERENCE);
+  assert.ok(MAX_GALLERY_REENCODE_DIFFERENCE <= 4);
+  assert.ok(
+    other.meanDifference > 5 * MAX_GALLERY_REENCODE_DIFFERENCE,
+    other.detail,
+  );
+  const gallery = {maxMeanDifference: MAX_GALLERY_REENCODE_DIFFERENCE};
+  assert.equal((await compareDeployedImage(shifted, wave, gallery)).ok, false);
+  assert.equal((await compareDeployedImage(reencoded, wave, gallery)).ok, true);
 
   // A different pixel size never passes.
   const small = await sharp(wave).resize(1000, 1250).jpeg().toBuffer();

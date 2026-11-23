@@ -51,6 +51,7 @@ import {
   compareEditionFile,
   describeFile,
   findCaseTemplate,
+  MAX_GALLERY_REENCODE_DIFFERENCE,
   renderFamilyFile,
   renderFamilyPreview,
   renderSuppliedPreview,
@@ -1582,6 +1583,7 @@ export function createFamilySteps({
       const result = await compareDeployedImage(
         Buffer.from(await response.arrayBuffer()),
         readFileSync(file),
+        {maxMeanDifference: MAX_GALLERY_REENCODE_DIFFERENCE},
       );
       return result.ok;
     };

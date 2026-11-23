@@ -225,6 +225,17 @@ export async function artMatchError(plan, file) {
 export const MAX_REENCODE_DIFFERENCE = 3;
 
 /**
+ * The same limit for a product image as Shopify's CDN serves it back
+ * (`media`: is this gallery image our current preview or scene?). Its
+ * re-encode moves a picture with fine texture further than Oxygen moves a
+ * print file: the 1600 × 2000 preview of the woven Peacock and Dragon
+ * blanket measured 3.19 (2026-11-23), so with the print-file limit `media`
+ * took its own upload for another picture and added it again on every run.
+ * A different picture is still tens of levels away.
+ */
+export const MAX_GALLERY_REENCODE_DIFFERENCE = 4;
+
+/**
  * Whether `deployed` shows the same pixels as `reference` within re-encode
  * tolerance: the same pixel size and a mean absolute difference per channel
  * no larger than `maxMeanDifference`. Byte hashes cannot be used because the
