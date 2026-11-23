@@ -3011,3 +3011,30 @@ throws and mugs. The shop had one Morris pattern (Strawberry Thief).
 
 Test: `scripts/museumSources.node-test.mjs` (the two role wordings). The
 catalogue, crop, artist and image tests cover the new entries as data.
+
+## 2026-11-23 — `media` recognises a gallery image with fine texture
+
+`npm run product -- media` decides whether a gallery image is the current
+preview or scene by comparing pixels with the local file
+(`compareDeployedImage`). It used the print-file limit (mean difference 3
+of 255, calibrated on Oxygen's re-encode of the phone-case files). Shopify's
+CDN moved the 1600 × 2000 preview of the woven Peacock and Dragon blanket by
+3.19, so `media` took its own upload for another picture: the run failed
+its check and would have added the preview again on every run.
+
+- Gallery images now have their own limit, `MAX_GALLERY_REENCODE_DIFFERENCE`
+  = 4 (`scripts/lib/art-product-assets.mjs`), used only by `media`. Print
+  files and deployed case files keep 3. Another artwork or a 2% shifted crop
+  still fails at the gallery limit (test in
+  `scripts/verifyHelpers.node-test.mjs`).
+- Left from the failed run: `peacock-and-dragon-blanket` (Draft) holds its
+  flat preview twice (first and third image, the room photo between them).
+  `media` never deletes; the owner removes the third image in Admin.
+- The twelve William Morris Drafts each have a room photo as their second
+  image (made by Codex to a brief: the room and the blank product are
+  generated, the printed pattern is the museum pixels put on by code;
+  sidecars in `<launch>/museum-masterpieces/<family>/scene/`).
+- Open: the 30 released Museum Masterpieces products still say "one William
+  Morris pattern" in their Shopify descriptions (written when they were
+  staged). That is true until the four new patterns are released; no
+  pipeline step rewrites the copy of a released family product.
