@@ -12042,9 +12042,9 @@
       "artworkId": "cma-1937.697",
       "title": "Honeysuckle Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-11-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"67b1d3a06364639cae18c55b1c43ab9560246262be505806d0170da5b5f88b9a","printfulSyncProductId":"497864985","printfulSyncVariantId":"5660931649","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-11-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"67b1d3a06364639cae18c55b1c43ab9560246262be505806d0170da5b5f88b9a","printfulSyncProductId":"497864985","printfulSyncVariantId":"5660931649","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12091,9 +12091,9 @@
       "artworkId": "cma-1937.698",
       "title": "Kennet Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-12-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"4cb99d43f386932459a3f843c6b1bef2b50696423974667fc3963bc6bed6b3a6","printfulSyncProductId":"497865003","printfulSyncVariantId":"5660931667","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-12-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"4cb99d43f386932459a3f843c6b1bef2b50696423974667fc3963bc6bed6b3a6","printfulSyncProductId":"497865003","printfulSyncVariantId":"5660931667","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12140,9 +12140,9 @@
       "artworkId": "cma-1937.579",
       "title": "Tulip Mug",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-13-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3879d09bc9b7a2c08308008f83cb3663c2e1f126dc2045fa3f8c5cc04fa532b0","printfulSyncProductId":"497865029","printfulSyncVariantId":"5660931694","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-13-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3879d09bc9b7a2c08308008f83cb3663c2e1f126dc2045fa3f8c5cc04fa532b0","printfulSyncProductId":"497865029","printfulSyncVariantId":"5660931694","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12189,9 +12189,9 @@
       "artworkId": "cma-1953.330",
       "title": "Peacock and Dragon Mug",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"11oz","option":"11 oz","sku":"CM-MM-14-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"d75980d66dd8bb3276d067886808ff0c2457b28580e01391d09356cf39c5cf0d","printfulSyncProductId":"497865034","printfulSyncVariantId":"5660931699","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"11oz","option":"11 oz","sku":"CM-MM-14-MUG11-PF","priceEUR":"24.99","providerSku":"1320","file":"mug-11oz","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"d75980d66dd8bb3276d067886808ff0c2457b28580e01391d09356cf39c5cf0d","printfulSyncProductId":"497865034","printfulSyncVariantId":"5660931699","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12788,12 +12788,12 @@
       "artworkId": "cma-1937.697",
       "title": "Honeysuckle Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-11-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931724","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-11-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931725","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-11-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931726","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-11-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931727","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-11-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931724","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-11-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931725","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-11-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931726","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-11-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"dab561e92edf037457a8393435045dd99d46662e782a8e8701d421f2dd792195","printfulSyncProductId":"497865059","printfulSyncVariantId":"5660931727","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12843,12 +12843,12 @@
       "artworkId": "cma-1937.698",
       "title": "Kennet Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-12-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931737","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-12-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931738","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-12-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931739","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-12-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931740","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-12-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931737","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-12-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931738","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-12-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931739","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-12-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"2e26a75961fff5e55f434688bfa7dfddc4d77124160a22f5a6fa771ab2a75487","printfulSyncProductId":"497865069","printfulSyncVariantId":"5660931740","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12898,12 +12898,12 @@
       "artworkId": "cma-1937.579",
       "title": "Tulip Cushion",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-13-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931752","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-13-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931753","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-13-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931754","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-13-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931755","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-13-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931752","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-13-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931753","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-13-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931754","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-13-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"3d8a3a957f7e083b6557e1e3b1c26762de44b8b0a27484ff8fa05a3927b131e6","printfulSyncProductId":"497865076","printfulSyncVariantId":"5660931755","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -12953,12 +12953,12 @@
       "artworkId": "cma-1953.330",
       "title": "Peacock and Dragon Cushion",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-14-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931797","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-14-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931798","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-14-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931799","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
-        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-14-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931800","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"18-cover","option":"18 × 18 in / Cover only","sku":"CM-MM-14-CUSH18-C","priceEUR":"44.99","providerSku":"9516","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931797","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"18-insert","option":"18 × 18 in / With insert","sku":"CM-MM-14-CUSH18-I","priceEUR":"64.99","providerSku":"9515","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931798","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-cover","option":"22 × 22 in / Cover only","sku":"CM-MM-14-CUSH22-C","priceEUR":"49.99","providerSku":"11078","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931799","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}},
+        {"key":"22-insert","option":"22 × 22 in / With insert","sku":"CM-MM-14-CUSH22-I","priceEUR":"69.99","providerSku":"11077","file":"cushion-22","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"29de9c1a3c28ba902dcc976d3928fd613ffa6a8235c249c507b3658cf1e4031d","printfulSyncProductId":"497865093","printfulSyncVariantId":"5660931800","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -13498,9 +13498,9 @@
       "artworkId": "cma-1937.697",
       "title": "Honeysuckle Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-11-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"54a565c628339c3b2b532d10b886934cca4cbd0afa6481f831f1966a27b034c4","printfulSyncProductId":"497865094","printfulSyncVariantId":"5660931811","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-11-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"54a565c628339c3b2b532d10b886934cca4cbd0afa6481f831f1966a27b034c4","printfulSyncProductId":"497865094","printfulSyncVariantId":"5660931811","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -13547,9 +13547,9 @@
       "artworkId": "cma-1937.698",
       "title": "Kennet Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-12-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"5a8eee7f804900e6a17a4b92911cc3dc03138a1607198b3b97006f77f7f3b4ee","printfulSyncProductId":"497865116","printfulSyncVariantId":"5660931852","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-12-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"5a8eee7f804900e6a17a4b92911cc3dc03138a1607198b3b97006f77f7f3b4ee","printfulSyncProductId":"497865116","printfulSyncVariantId":"5660931852","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -13596,9 +13596,9 @@
       "artworkId": "cma-1937.579",
       "title": "Tulip Throw Blanket",
       "orientation": "landscape",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-13-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"772d8b1c63d8969a3cabcf7a021e95e9c4a9e29fb773c138cc33577ebf6e59bb","printfulSyncProductId":"497865120","printfulSyncVariantId":"5660931856","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-13-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"772d8b1c63d8969a3cabcf7a021e95e9c4a9e29fb773c138cc33577ebf6e59bb","printfulSyncProductId":"497865120","printfulSyncVariantId":"5660931856","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
@@ -13645,9 +13645,9 @@
       "artworkId": "cma-1953.330",
       "title": "Peacock and Dragon Throw Blanket",
       "orientation": "portrait",
-      "released": false,
+      "released": true,
       "variants": [
-        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-14-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":true},"mapping":{"assetSha256":"1156bbb2d9ca284c55ea8d76936f99ea9eb7a3860ff7c14a794e928b48d94510","printfulSyncProductId":"497865126","printfulSyncVariantId":"5660931907","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
+        {"key":"50x60","option":"50 × 60 in","sku":"CM-MM-14-BLANKET50X60","priceEUR":"64.99","providerSku":"10986","file":"blanket-50x60","inventory":{"policy":"DENY","quantity":0,"tracked":false},"mapping":{"assetSha256":"1156bbb2d9ca284c55ea8d76936f99ea9eb7a3860ff7c14a794e928b48d94510","printfulSyncProductId":"497865126","printfulSyncVariantId":"5660931907","verified":true,"verifiedAt":"2026-11-23","note":"Printful file matched by md5"}}
       ],
       "assets": {
         "box": null,
