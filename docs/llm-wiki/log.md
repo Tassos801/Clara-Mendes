@@ -3038,3 +3038,39 @@ its check and would have added the preview again on every run.
   Morris pattern" in their Shopify descriptions (written when they were
   staged). That is true until the four new patterns are released; no
   pipeline step rewrites the copy of a released family product.
+
+## 2026-11-23 — Four William Morris patterns released (blanket, cushion, mug)
+
+The owner reviewed the board of designs and room photos and said "Approve,
+release" in chat. Recorded and done on that word:
+
+- `npm run museum -- review … --rights cleared` and `--master cleared` for
+  `cma-1937.697` (Honeysuckle), `cma-1937.698` (Kennet), `cma-1937.579`
+  (Tulip) and `cma-1953.330` (Peacock and Dragon), by "Tassos".
+- The four printed areas approved in `data/museum-crops.json`.
+- Shipping: nothing to move. Printful had put all 24 variants into its own
+  profiles when they were synced (mug `#PF-FRG24`, cushion cover
+  `#PF-FRG42`, cushion with insert `#PF-FRG23`, blanket `#PF-FRG43`), the
+  profiles the released pieces use. Checked per variant in Admin → Settings
+  → Shipping → a profile → Manage products (the app token cannot read
+  delivery profiles).
+- Prodigi: "Fulfil this item with Prodigi" switched off on the 12 listings
+  in the Prodigi dashboard (sales channel, connected listings); a fresh
+  load shows 12 of 12 "Not fulfilled by Prodigi".
+- `npm run product -- release museum-masterpieces --family
+  blanket,cushion,printful-mug --only … --apply` set the 12 products Active.
+  The token cannot publish, so they were put on the Clara Mendes and Clara
+  Mendes Headless channels in Admin (bulk action on exactly those 12), and
+  the second run confirmed them through the Storefront API and wrote
+  `released` to `data/art-product-catalog.json`.
+
+Seen on the way, for the owner: the Prodigi dashboard marks the Shopify
+channel "Requires reconnection. Update now". Not touched: reconnecting
+grants the app new access, which is the owner's decision. Until it is done,
+it is not known whether orders for Prodigi-made products still reach
+Prodigi through the channel.
+
+Still open after this entry: add the 24 new item ids to the Google Ads
+product groups once Merchant Center lists them; the duplicate preview on
+`peacock-and-dragon-blanket`; the "one William Morris pattern" sentence in
+the 30 older Museum Masterpieces descriptions.
