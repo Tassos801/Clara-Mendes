@@ -872,7 +872,7 @@ const capsulePageCss = `
 
 .capsule-subtitle {
   color: var(--color-muted);
-  font-size: 1.02rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   margin: 0;
 }
@@ -886,7 +886,7 @@ const capsulePageCss = `
 
 .capsule-editorial p {
   color: var(--color-ink);
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.75;
   margin: 0;
 }
@@ -930,7 +930,7 @@ const capsulePageCss = `
 
 .capsule-other-card p:not(.eyebrow) {
   color: var(--color-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   line-height: 1.55;
   margin: 0;
 }
@@ -956,13 +956,13 @@ const galleryPageCss = `
 
 .gallery-hero-copy .capsule-subtitle {
   color: var(--color-muted);
-  font-size: 1.02rem;
+  font-size: var(--text-base);
   margin: 14px 0 0;
 }
 
 .gallery-lead {
   border-top: 1px solid rgba(38, 35, 31, 0.14);
-  font-size: 0.98rem;
+  font-size: var(--text-base);
   line-height: 1.7;
   margin: 22px 0 0;
   padding-top: 22px;
@@ -1023,13 +1023,13 @@ const galleryPageCss = `
 
 .gallery-facts dt {
   color: var(--color-muted);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .gallery-facts dd {
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   margin: 0;
 }
 

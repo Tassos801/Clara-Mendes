@@ -199,7 +199,7 @@ const recsCss = `
 
 .cart-recs-heading {
   font-family: var(--sans);
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.22em;
   margin: 0;
@@ -257,7 +257,7 @@ const recsCss = `
   color: var(--color-ink);
   display: -webkit-box;
   font-family: var(--serif);
-  font-size: 1.02rem;
+  font-size: var(--text-base);
   letter-spacing: -0.01em;
   line-height: 1.2;
   overflow: hidden;
@@ -274,7 +274,7 @@ const recsCss = `
 .cart-recs-price {
   color: rgba(38, 35, 31, 0.66);
   font-family: var(--sans);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -288,7 +288,7 @@ const recsCss = `
   cursor: pointer;
   flex-shrink: 0;
   font-family: var(--sans);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.14em;
   min-height: 32px;
@@ -322,7 +322,7 @@ const recsCss = `
 
 .cart-recs-row .cart-form-error {
   flex-basis: 100%;
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   margin: 0;
 }
 `;

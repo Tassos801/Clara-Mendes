@@ -3,7 +3,8 @@ import {Link} from 'react-router';
 import {Image} from '@shopify/hydrogen';
 import {useAside} from './Aside';
 import {AddToCartButton} from './AddToCartButton';
-import {blackFridayCardLine} from '~/lib/blackFridayCard';
+import {blackFridayCardTag} from '~/lib/blackFridayCard';
+import {cardTitleParts} from '~/lib/cardTitle';
 import {useBlackFridayWeek} from '~/lib/useBlackFridayWeek';
 import {getProductStory} from '~/lib/productCopy';
 import {
@@ -106,7 +107,7 @@ export function ClaraProductCard({
   // Curated kits show their branded image set instead of supplier photos.
   const product = withCuratedImages(storefrontProduct);
   const title = curatedDisplayTitle(product);
-  const titleWords = title.split(' ');
+  const titleParts = cardTitleParts(title);
   const images = product.images?.nodes ?? [];
   const candidateVariant =
     product.cardVariant?.nodes?.[0] ?? product.variants?.nodes?.[0];
@@ -147,8 +148,8 @@ export function ClaraProductCard({
   const chip = product.productType || 'Curated object';
   const story = showStory ? getProductStory(product) : null;
   // Black Friday week only; it also stops in a tab left open past the end.
-  const saleLine = useBlackFridayWeek()
-    ? blackFridayCardLine(product.productType, product.handle)
+  const saleTag = useBlackFridayWeek()
+    ? blackFridayCardTag(product.productType, product.handle)
     : null;
 
   return (
@@ -191,7 +192,6 @@ export function ClaraProductCard({
               <div className="cm-card-img cm-card-img--empty" aria-hidden />
             )}
             <div className="cm-card-veil" aria-hidden />
-            <span className="cm-card-chip">{chip}</span>
           </div>
         </Link>
         {firstVariant ? (
@@ -204,22 +204,31 @@ export function ClaraProductCard({
         className="cm-card-copy-link"
       >
         <div className="product-card-copy cm-card-copy">
-          {byline ? <p className="cm-card-byline">By {byline}</p> : null}
-          <div className="cm-card-heading">
-            <h3 className="cm-card-title">
-              <i>{titleWords[0]}</i>
-              {titleWords.length > 1 ? ' ' + titleWords.slice(1).join(' ') : ''}
-            </h3>
-            {priceLabel ? (
-              <strong className="cm-card-price">{priceLabel}</strong>
-            ) : null}
-          </div>
+          {/* One label over the name, as on the clothing cards: the artist
+              in an artist's shop (its rows are already split by type),
+              the product type everywhere else. */}
+          <p className="cm-card-eyebrow">{byline ? `By ${byline}` : chip}</p>
+          <h3 className="cm-card-title">
+            {titleParts.lead ? <i>{titleParts.lead}</i> : null}
+            {titleParts.rest}
+          </h3>
+          {priceLabel || (saleTag && !product.notShippedTo) ? (
+            <p className="cm-card-meta">
+              {priceLabel ? (
+                <strong className="cm-card-price">{priceLabel}</strong>
+              ) : null}
+              {saleTag && !product.notShippedTo ? (
+                <span className="cm-card-tag" title={saleTag.label}>
+                  <span aria-hidden="true">{saleTag.tag}</span>
+                  <span className="sr-only">{saleTag.label}</span>
+                </span>
+              ) : null}
+            </p>
+          ) : null}
           {product.notShippedTo ? (
             <p className="cm-card-reach">
               Doesn&rsquo;t ship to {product.notShippedTo}
             </p>
-          ) : saleLine ? (
-            <p className="cm-card-sale">{saleLine}</p>
           ) : null}
           {story ? <p className="cm-card-story">{story}</p> : null}
         </div>
@@ -241,32 +250,10 @@ function QuickAddButton({
   const mode = cardQuickAddMode(product, variant);
   const title = curatedDisplayTitle(product);
 
-  if (mode === 'choose') {
-    return (
-      <Link
-        aria-label={`Choose options for ${title}`}
-        className="cm-quick-add cm-quick-add--choose"
-        prefetch="intent"
-        to={`/products/${product.handle}`}
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M3 8h9.5M8.5 4l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="1.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </Link>
-    );
-  }
+  // A product with options to choose gets no button: the arrow it used to
+  // show only repeated the card's own link, and two different icons on the
+  // same grid read as two different actions.
+  if (mode === 'choose') return null;
 
   if (mode === 'unavailable') {
     // Unbuyable here but on sale in the default market: not sold out.
@@ -352,11 +339,12 @@ const cardCss = `
   color: inherit;
 }
 
+/* One tile colour for every card, shared with the clothing cards. */
 .cm-card-media {
   position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
-  background: #efeae0;
+  background: var(--color-tile);
   isolation: isolate;
 }
 
@@ -404,121 +392,108 @@ const cardCss = `
 .cm-card--hoverable:hover .cm-card-veil,
 .cm-card--hoverable:focus-within .cm-card-veil { opacity: 1; }
 
-.cm-card-chip {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 4;
-  font-family: var(--sans);
-  font-size: 0.62rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #fff;
-  padding: 6px 10px;
-  border: 1px solid rgba(255,255,255,0.42);
-  border-radius: 999px;
-  backdrop-filter: blur(12px) saturate(1.25);
-  -webkit-backdrop-filter: blur(12px) saturate(1.25);
-  background:
-    linear-gradient(135deg, rgba(255,255,255,0.16), transparent 58%),
-    rgba(30,28,24,0.28);
-  box-shadow:
-    0 8px 20px rgba(10,9,7,0.14),
-    inset 0 1px 0 rgba(255,255,255,0.28);
-  opacity: 0;
-  transform: translateY(-4px);
-  transition: opacity 500ms var(--cm-ease), transform 500ms var(--cm-ease);
+/* Card copy: label, name, price. The clothing cards (clothing.css) use the
+   same order and sizes. */
+.cm-card .cm-card-copy {
+  display: block;
+  padding-top: 10px;
 }
 
-.cm-card:hover .cm-card-chip,
-.cm-card:focus-within .cm-card-chip {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.cm-card-copy {
-  padding-top: 14px;
-}
-
-.cm-card-byline {
-  color: var(--color-muted, #6f685e);
-  font-family: var(--sans);
-  font-size: 0.64rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  line-height: 1.4;
-  margin: 0 0 6px;
-  text-transform: uppercase;
-}
-
-.cm-card-heading {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.cm-card-story {
-  color: var(--color-muted, #6f685e);
-  font-family: var(--sans);
-  font-size: 0.78rem;
-  line-height: 1.5;
-  margin: 8px 0 0;
-}
-
-.cm-card-reach,
-.cm-card-sale {
+.cm-card .cm-card-eyebrow {
   color: var(--color-muted, #524d45);
   font-family: var(--sans);
-  font-size: 0.74rem;
-  letter-spacing: 0.04em;
+  font-size: var(--text-xs);
+  font-weight: 500;
+  letter-spacing: 0.12em;
   line-height: 1.4;
-  margin: 6px 0 0;
-}
-
-.cm-card-sale {
-  color: var(--color-ink);
-  font-weight: 600;
-}
-
-.cm-card-title {
-  font-family: var(--serif);
-  font-size: 1.35rem;
-  font-weight: 400;
-  letter-spacing: -0.015em;
-  line-height: 1.15;
   margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.cm-card .cm-card-title {
+  font-family: var(--serif);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin: 2px 0 0;
   color: var(--color-ink);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  flex: 1;
-  min-width: 0;
 }
 
-.cm-card-title i { font-style: italic; }
+.cm-card .cm-card-title i { font-style: italic; }
 
-.cm-card-price {
+.cm-card .cm-card-meta {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  margin: 4px 0 0;
+}
+
+.cm-card .cm-card-price {
   font-family: var(--sans);
-  font-weight: 600;
-  font-size: 0.88rem;
-  letter-spacing: 0.04em;
+  font-weight: 500;
+  font-size: var(--text-base);
   font-variant-numeric: tabular-nums;
   color: var(--color-ink);
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
-/* Quick-add button (positioned over bottom-right of image) */
+/* The sale as a tag beside the price; the full line is its tooltip and
+   screen-reader text. */
+.cm-card .cm-card-tag {
+  background: var(--color-ink);
+  border-radius: 999px;
+  color: var(--color-paper);
+  font-family: var(--sans);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  padding: 4px 7px;
+  white-space: nowrap;
+}
+
+.cm-card .cm-card-tag span {
+  color: inherit;
+  font-size: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+}
+
+.cm-card .cm-card-reach {
+  color: var(--color-muted, #524d45);
+  font-family: var(--sans);
+  font-size: var(--text-xs);
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  margin: 6px 0 0;
+}
+
+.cm-card .cm-card-story {
+  color: var(--color-muted, #6f685e);
+  font-family: var(--sans);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+
+/* Quick add (single-option products only), bottom-right of the image. */
 .cm-quick-add {
   position: absolute;
-  bottom: 12px;
-  right: 12px;
+  bottom: 10px;
+  right: 10px;
   z-index: 5;
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   backdrop-filter: blur(14px) saturate(1.28);
   -webkit-backdrop-filter: blur(14px) saturate(1.28);
@@ -527,7 +502,7 @@ const cardCss = `
     linear-gradient(135deg, rgba(255,255,255,0.14), transparent 52%),
     rgba(30,28,24,0.58);
   color: #fff;
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
   font-weight: 300;
   line-height: 1;
   cursor: pointer;
@@ -538,9 +513,16 @@ const cardCss = `
   transform: translateY(6px);
   transition: opacity 400ms var(--cm-ease), transform 400ms var(--cm-ease), background 220ms var(--cm-ease), box-shadow 220ms var(--cm-ease);
   box-shadow:
-    0 10px 24px rgba(0,0,0,0.22),
+    0 8px 18px rgba(0,0,0,0.18),
     inset 0 1px 0 rgba(255,255,255,0.24);
   will-change: opacity, transform;
+}
+
+/* A 44 px touch target around the smaller visible circle. */
+.cm-quick-add::before {
+  content: "";
+  inset: -4px;
+  position: absolute;
 }
 
 .cm-card-media-wrap:hover .cm-quick-add,
@@ -574,62 +556,37 @@ const cardCss = `
   background: rgba(38,35,31,0.35) !important;
   cursor: not-allowed;
 }
-.cm-quick-add--choose {
-  text-decoration: none;
-}
-.cm-quick-add--choose:hover {
-  text-decoration: none;
-}
 
 @keyframes cmQuickAddSpin {
   to { transform: rotate(360deg); }
 }
 
-/* ── Mobile compact layout ──
-   Two columns leave a card about 160 px wide, so the title takes the full
-   width (two lines) with the price beneath it instead of being truncated
-   beside it, and the quick-add control keeps a 44 px touch target. */
+@media (max-width: 1023px) {
+  .cm-card .cm-card-title {
+    font-size: var(--text-lg);
+  }
+}
+
+/* Phones: two columns leave a card about 160 px wide; the quick add stays
+   visible (no hover) and smaller, so it covers less of the picture. */
 @media (max-width: 720px) {
-  .cm-card-chip {
-    opacity: 1;
-    transform: translateY(0);
-    font-size: 0.64rem;
-    letter-spacing: 0.14em;
-    padding: 4px 8px;
-    top: 8px;
-    left: 8px;
+  .cm-card .cm-card-copy {
+    padding-top: 8px;
   }
 
-  .cm-card-title {
-    font-size: 1.02rem;
-    line-height: 1.2;
+  .cm-card .cm-card-title {
+    font-size: var(--text-base);
   }
 
-  .cm-card-price {
-    font-size: 0.84rem;
-  }
-
-  .cm-card-copy {
-    padding-top: 10px;
+  .cm-card .cm-card-price {
+    font-size: var(--text-sm);
   }
 
   .cm-card-copy-link {
     min-height: 44px;
   }
 
-  .cm-card-heading {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 3px;
-  }
-
-  .cm-card-title {
-    flex: none;
-    width: 100%;
-  }
-
-  .cm-card-story {
-    font-size: 0.8rem;
+  .cm-card .cm-card-story {
     line-height: 1.45;
     margin-top: 6px;
   }
@@ -637,18 +594,21 @@ const cardCss = `
   .cm-quick-add {
     opacity: 1;
     transform: translateY(0);
-    width: 44px;
-    height: 44px;
-    font-size: 1.25rem;
-    bottom: 6px;
-    right: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: var(--text-lg);
+    bottom: 8px;
+    right: 8px;
+  }
+
+  .cm-quick-add::before {
+    inset: -6px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .cm-card-img,
   .cm-card-veil,
-  .cm-card-chip,
   .cm-quick-add {
     transition: none;
   }

@@ -3074,3 +3074,36 @@ Still open after this entry: add the 24 new item ids to the Google Ads
 product groups once Merchant Center lists them; the duplicate preview on
 `peacock-and-dragon-blanket`; the "one William Morris pattern" sentence in
 the 30 older Museum Masterpieces descriptions.
+
+## 2026-11-24 — Cosmetic pass: fonts, type scale, one card layout
+
+From a desktop and phone review of the live store. Changes:
+- Fonts: Inter is now loaded (it was listed first but never loaded, so
+  each device showed its own system font); headings fall back from
+  Georgia to Gelasio, which matches Georgia's metrics, on devices without
+  Georgia. Packages `@fontsource-variable/inter` and
+  `@fontsource-variable/gelasio`.
+- Type scale: 403 fixed font sizes below heading size were mapped onto
+  five tokens (`--text-xs` … `--text-xl`, 12–20 px); the smallest labels
+  (9.3–11.5 px) are now 12 px.
+- Product cards: the type chip moved from the image to a label above the
+  name, like the clothing cards; price under the name; the arrow button on
+  multi-option products was removed (the "+" quick add stays); the sale
+  line under the price became a tag ("−20%") beside it; the first word is
+  italic only for artwork or design names. The generic
+  `.product-card-copy` rules in `app.css` had been overriding the card's own
+  title size; the card rules are now scoped under `.cm-card`.
+- Shop page and clothing page share one content width and tile colour;
+  the shop toolbar no longer stays pinned on desktop (the "Filter & sort"
+  shortcut now shows at every width). The phone banner has a darker shade
+  behind its text.
+- Product page: Shop Pay button is a 48 px pill the width of Add to cart
+  (`reset.css` capped forms at 400 px, which left Add to cart narrower on
+  wide screens); artwork has square corners; the empty reviews block is one
+  line.
+- Sale bar: phones show a one-line short version.
+- Our Story header uses the same search and bag icons as the other
+  headers, and on phones the same one-row layout as the homepage.
+
+Not done: tile backgrounds baked into product photos (white, cream, warm
+grey) still differ; matching them needs the mockups re-rendered.

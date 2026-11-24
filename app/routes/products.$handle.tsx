@@ -2732,7 +2732,7 @@ function PrintScaleDiagram({
         </g>
         <g
           fill="currentColor"
-          fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+          fontFamily="'Inter Variable', Inter, ui-sans-serif, system-ui, sans-serif"
           fontSize="11"
         >
           <text x="280" y={guideY - 8} textAnchor="middle">

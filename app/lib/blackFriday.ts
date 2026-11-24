@@ -24,6 +24,10 @@ export const BLACK_FRIDAY_PATH = '/black-friday';
 export const BLACK_FRIDAY_ANNOUNCEMENT =
   'Black Friday week: 20% off blankets, cushions, mugs and prints, 10% off clothing. Taken off in your cart. Ends Monday 30 November.';
 
+/** The same line for phones, short enough for one line at 360 px. */
+export const BLACK_FRIDAY_ANNOUNCEMENT_SHORT =
+  'Black Friday: up to 20% off, ends 30 Nov';
+
 export type BlackFridayPercent = 20 | 10;
 export type BlackFridayStatus = 'before' | 'open' | 'ended';
 

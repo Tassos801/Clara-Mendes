@@ -260,7 +260,7 @@ const wallSetCss = `
 .wall-set-print-name {
   display: block;
   margin-top: 8px;
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   letter-spacing: 0.02em;
 }
 
@@ -309,7 +309,7 @@ const wallSetCss = `
 }
 
 .wall-set-size-cm {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   opacity: 0.7;
 }
 
@@ -322,7 +322,7 @@ const wallSetCss = `
 
 .wall-set-total {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: var(--text-base);
 }
 
 .wall-set-add {
@@ -330,12 +330,12 @@ const wallSetCss = `
 }
 
 .wall-set-guide {
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
 }
 
 .wall-set-partial {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
 }
 
 .wall-set-partial .text-link {

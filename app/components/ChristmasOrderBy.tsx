@@ -74,7 +74,7 @@ function OrderByLine({line, region, today}: OrderByProps) {
 
 const css = `
 .product-christmas-line {
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   line-height: 1.5;
   margin: 10px 0 0;
 }

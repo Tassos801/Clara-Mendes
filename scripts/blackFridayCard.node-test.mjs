@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import {blackFridayDiscountPercent} from '../app/lib/blackFriday.ts';
-import {blackFridayCardLine} from '../app/lib/blackFridayCard.ts';
+import {
+  blackFridayCardLine,
+  blackFridayCardTag,
+} from '../app/lib/blackFridayCard.ts';
 
 test('cards name the percent for types the offer covers in full', () => {
   assert.equal(blackFridayCardLine('Blankets', 'great-wave-blanket'), '20% off in your cart');
@@ -28,4 +31,21 @@ test('every card line agrees with the product page percent', () => {
     const percent = blackFridayDiscountPercent(type, 'Any / Variant', 'x');
     assert.equal(blackFridayCardLine(type, 'x'), `${percent}% off in your cart`, type);
   }
+});
+
+test('cards show the offer as a short tag with the full line as its label', () => {
+  assert.deepEqual(blackFridayCardTag('Blankets', 'great-wave-blanket'), {
+    tag: '−20%',
+    label: '20% off in your cart',
+  });
+  assert.deepEqual(blackFridayCardTag('Art Prints', 'x-art-print'), {
+    tag: '−20%',
+    label: 'Unframed: 20% off in your cart',
+  });
+  assert.deepEqual(blackFridayCardTag('Hoodies', 'counter-diagonal-heavyweight-hoodie'), {
+    tag: '−10%',
+    label: '10% off in your cart',
+  });
+  assert.equal(blackFridayCardTag('Book Nooks', 'x'), null);
+  assert.equal(blackFridayCardTag('Hoodies', 'counter-diagonal-premium-hoodie'), null);
 });

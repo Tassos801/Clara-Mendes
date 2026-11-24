@@ -108,7 +108,10 @@ export function ReviewsSection({
   };
 
   return (
-    <section className="rv-root" aria-labelledby="rv-heading">
+    <section
+      className={`rv-root${summary.total === 0 ? ' rv-root--empty' : ''}`}
+      aria-labelledby="rv-heading"
+    >
       <style suppressHydrationWarning>{reviewsCss}</style>
 
       <div className="rv-heading-row">
@@ -135,22 +138,22 @@ export function ReviewsSection({
 
       {summary.total === 0 ? (
         <div className="rv-empty">
-          {/* A quiet line, not a second dark button beside Add to cart: a
-              first-time visitor has nothing to review yet. */}
+          {/* One small line until the first review exists: a large empty
+              block on every product page reads as "nobody buys here". */}
           <p className="rv-empty-text">
-            No reviews yet. Bought one? Tell others how it lives in your home.
+            No reviews yet.{' '}
+            <button
+              type="button"
+              className="rv-empty-link"
+              onClick={() => setFormOpen((open) => !open)}
+              aria-expanded={formOpen}
+              aria-label={
+                formOpen ? undefined : `Write the first review of ${productTitle}`
+              }
+            >
+              {formOpen ? 'Close' : 'Write the first review'}
+            </button>
           </p>
-          <button
-            type="button"
-            className="rv-btn rv-btn--outline"
-            onClick={() => setFormOpen((open) => !open)}
-            aria-expanded={formOpen}
-            aria-label={
-              formOpen ? undefined : `Write a review of ${productTitle}`
-            }
-          >
-            {formOpen ? 'Close' : 'Write a review'}
-          </button>
           {formOpen ? (
             <div className="rv-form-panel rv-form-panel--empty">
               <ReviewForm
@@ -458,7 +461,7 @@ const reviewsCss = `
 
 .rv-eyebrow {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -478,7 +481,7 @@ const reviewsCss = `
 /* ── Buttons ── */
 .rv-btn {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -557,11 +560,45 @@ const reviewsCss = `
 }
 
 .rv-empty-text {
-  font-family: var(--serif);
-  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  font-family: var(--sans);
+  font-size: var(--text-sm);
   line-height: 1.5;
-  color: var(--rv-ink);
+  color: var(--rv-muted);
   margin: 0;
+}
+
+.rv-empty-link {
+  background: none;
+  border: 0;
+  color: var(--rv-ink);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.rv-empty-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Until the first review: a small heading and one line, not a section. */
+.rv-root--empty {
+  padding: 28px 0 8px;
+}
+
+.rv-root--empty .rv-heading-row {
+  margin-bottom: 6px;
+}
+
+.rv-root--empty .rv-title {
+  font-size: var(--text-xl);
+  letter-spacing: 0;
+}
+
+.rv-root--empty .rv-empty {
+  gap: 12px;
 }
 
 /* ── Summary ── */
@@ -591,7 +628,7 @@ const reviewsCss = `
 
 .rv-summary-count {
   font-family: var(--sans);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   color: var(--rv-muted);
 }
@@ -614,7 +651,7 @@ const reviewsCss = `
 
 .rv-histogram-star {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   color: var(--rv-muted);
   letter-spacing: 0.04em;
 }
@@ -636,7 +673,7 @@ const reviewsCss = `
 
 .rv-histogram-count {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   color: var(--rv-muted);
   text-align: right;
 }
@@ -649,7 +686,7 @@ const reviewsCss = `
 
 .rv-substrip-label {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -721,7 +758,7 @@ const reviewsCss = `
 
 .rv-chip {
   font-family: var(--sans);
-  font-size: 0.74rem;
+  font-size: var(--text-xs);
   color: var(--rv-muted);
   backdrop-filter: blur(10px) saturate(1.14);
   -webkit-backdrop-filter: blur(10px) saturate(1.14);
@@ -755,7 +792,7 @@ const reviewsCss = `
 
 .rv-sort-label {
   font-family: var(--sans);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -764,7 +801,7 @@ const reviewsCss = `
 
 .rv-sort-select {
   font-family: var(--sans);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   color: var(--rv-ink);
   background-color: rgba(251,250,246,0.62);
   border: 1px solid rgba(255,255,255,0.72);
@@ -807,7 +844,7 @@ const reviewsCss = `
   background: rgba(38, 35, 31, 0.08);
   color: var(--rv-ink);
   font-family: var(--serif);
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
 }
 
 .rv-card-meta {
@@ -818,7 +855,7 @@ const reviewsCss = `
 
 .rv-card-author {
   font-family: var(--sans);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   letter-spacing: 0.01em;
 }
@@ -831,13 +868,13 @@ const reviewsCss = `
 
 .rv-card-date {
   font-family: var(--sans);
-  font-size: 0.74rem;
+  font-size: var(--text-xs);
   color: var(--rv-muted);
 }
 
 .rv-card-body {
   font-family: var(--serif);
-  font-size: 1.02rem;
+  font-size: var(--text-base);
   line-height: 1.65;
   color: var(--rv-ink);
   margin: 0 0 16px;
@@ -860,7 +897,7 @@ const reviewsCss = `
 
 .rv-helpful {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.1em;
   color: var(--rv-muted);
@@ -889,7 +926,7 @@ const reviewsCss = `
 }
 
 .rv-nomatch {
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   color: var(--rv-muted);
   padding: 28px 0;
   border-top: 1px solid var(--rv-line);
@@ -898,7 +935,7 @@ const reviewsCss = `
 .rv-loadmore {
   display: block;
   margin: clamp(20px, 3vw, 32px) auto 0;
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -966,7 +1003,7 @@ const reviewsCss = `
 
 .rv-field-label {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -983,7 +1020,7 @@ const reviewsCss = `
 .rv-input,
 .rv-textarea {
   font-family: var(--sans);
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   color: var(--rv-ink);
   background: rgba(255,255,255,0.5);
   border: 1px solid rgba(38,35,31,0.14);
@@ -1042,7 +1079,7 @@ const reviewsCss = `
 .rv-rate-caption {
   margin-left: 12px;
   font-family: var(--sans);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   color: var(--rv-muted);
 }
 
@@ -1081,7 +1118,7 @@ const reviewsCss = `
   border: none;
   background: rgba(38, 35, 31, 0.78);
   color: #fbfaf6;
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   line-height: 1;
   cursor: pointer;
   display: grid;
@@ -1104,7 +1141,7 @@ const reviewsCss = `
 
 .rv-file-cue {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1123,7 +1160,7 @@ const reviewsCss = `
 .rv-field-error,
 .rv-form-error {
   font-family: var(--sans);
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   color: #9a3412;
   margin: 0;
 }
@@ -1144,7 +1181,7 @@ const reviewsCss = `
 
 .rv-form-success-text {
   font-family: var(--serif);
-  font-size: 1.15rem;
+  font-size: var(--text-lg);
   line-height: 1.5;
   color: var(--rv-ink);
   margin: 0;
@@ -1267,13 +1304,13 @@ const reviewsCss = `
 
 .rv-lightbox-author {
   font-family: var(--sans);
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 
 .rv-lightbox-body {
   font-family: var(--serif);
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   color: var(--rv-ink);
   margin: 0;
@@ -1282,7 +1319,7 @@ const reviewsCss = `
 
 .rv-lightbox-count {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.12em;
   color: var(--rv-muted);
   margin: 12px 0 0;

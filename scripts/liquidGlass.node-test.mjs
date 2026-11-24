@@ -54,7 +54,8 @@ test('extends the material to route-specific hero and merchandising controls', (
   expectGlassRule(storySource, '.os-header-top');
   expectGlassRule(collectionSource, '.cv-toolbar');
   expectGlassRule(collectionSource, '.cv-facets');
-  expectGlassRule(cardSource, '.cm-card-chip');
+  // The type chip left the image for a label under it (cosmetic pass,
+  // 2026-11-24); the quick-add button keeps the glass.
   expectGlassRule(cardSource, '.cm-quick-add');
 });
 

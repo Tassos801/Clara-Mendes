@@ -40,7 +40,7 @@
 .pastel-forms__note,
 .pastel-forms__caption {
   color: var(--color-muted);
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.6;
 }
 .pastel-forms__image figcaption {
@@ -48,7 +48,7 @@
 }
 .pastel-forms__availability {
   color: #557260;
-  font-size: 13px;
+  font-size: var(--text-sm);
   font-weight: 600;
 }
 .pastel-forms__details h2 {
@@ -98,7 +98,7 @@
   gap: 16px;
   padding: 14px 0;
   border-bottom: 1px solid #e5e8e6;
-  font-size: 13px;
+  font-size: var(--text-sm);
   line-height: 1.6;
 }
 .pastel-forms__specs dt {
@@ -116,7 +116,7 @@
 }
 .pastel-forms__delivery {
   color: var(--color-muted);
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.6;
   max-width: 42ch;
   margin-top: 18px;

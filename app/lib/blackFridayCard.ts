@@ -26,3 +26,18 @@ export function blackFridayCardLine(
     return 'Unframed: 20% off in your cart';
   return null;
 }
+
+/**
+ * The same offer as a small tag beside a card's price ("−20%"), so the
+ * explanation does not wrap under the price on a phone card. `label` is the
+ * full line, for the tooltip and screen readers.
+ */
+export function blackFridayCardTag(
+  productType: string | null | undefined,
+  handle: string | null | undefined,
+): {tag: string; label: string} | null {
+  const label = blackFridayCardLine(productType, handle);
+  if (!label) return null;
+  const percent = /(\d+)% off/.exec(label)?.[1];
+  return percent ? {tag: `−${percent}%`, label} : null;
+}
