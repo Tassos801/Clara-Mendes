@@ -193,6 +193,21 @@ export default function OurStory() {
 
         <div className="os-ui-layer">
           <header className="os-header-top">
+            {/* Phones: one row like the homepage header (menu, name,
+                search, cart); the site menu lists every page. */}
+            <button
+              className="os-icon-button os-menu-button"
+              type="button"
+              onClick={() => open('mobile')}
+              aria-label="Open menu"
+              aria-haspopup="dialog"
+            >
+              <svg width="20" height="12" viewBox="0 0 20 12" fill="none" aria-hidden="true">
+                <line x1="0" y1="1" x2="20" y2="1" stroke="currentColor" strokeWidth="1.3" />
+                <line x1="0" y1="6" x2="20" y2="6" stroke="currentColor" strokeWidth="1.3" />
+                <line x1="0" y1="11" x2="20" y2="11" stroke="currentColor" strokeWidth="1.3" />
+              </svg>
+            </button>
             <Link
               to="/"
               className="os-nav-text os-brand"
@@ -213,15 +228,30 @@ export default function OurStory() {
                   {label}
                 </NavLink>
               ))}
-              <Link to="/search" className="os-nav-text" prefetch="intent">
-                Search
+              {/* Search and cart as icons, as in the homepage header and
+                  the site header, so the three headers read as one. */}
+              <Link
+                to="/search"
+                className="os-icon-button"
+                prefetch="intent"
+                aria-label="Search"
+              >
+                <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <circle cx="9" cy="9" r="6.5" stroke="currentColor" strokeWidth="1.3" />
+                  <line x1="13.5" y1="13.5" x2="18" y2="18" stroke="currentColor" strokeWidth="1.3" />
+                </svg>
               </Link>
               <button
-                className="os-nav-text os-cart-link"
+                className="os-icon-button os-cart-link"
                 type="button"
                 onClick={() => open('cart')}
+                aria-label="Cart"
+                aria-haspopup="dialog"
               >
-                Cart
+                <svg width="19" height="19" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M4 6.5h12l-1 11H5l-1-11Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+                  <path d="M7 8V5.5a3 3 0 0 1 6 0V8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+                </svg>
               </button>
             </nav>
           </header>
@@ -400,8 +430,8 @@ html:has(.our-story-root) main {
   --os-text-main: #ffffff;
   --os-text-muted: rgba(255, 255, 255, 0.7);
   --os-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
-  --os-font-serif: Georgia, 'Times New Roman', serif;
-  --os-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --os-font-serif: var(--serif);
+  --os-font-sans: var(--sans);
 
   background: var(--color-page);
   color: var(--os-ink);
@@ -473,7 +503,7 @@ html:has(.our-story-root) main {
 
 .os-nav-text {
   font-family: var(--os-font-sans);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 500;
@@ -487,6 +517,32 @@ html:has(.our-story-root) main {
 .os-cart-link {
   background: transparent;
   border: 0;
+  padding: 0;
+}
+
+.os-icon-button {
+  align-items: center;
+  border-radius: 999px;
+  color: var(--os-text-main);
+  cursor: pointer;
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  margin: -12px 0;
+  transition: background 0.3s ease;
+  width: 44px;
+}
+
+.os-icon-button:hover,
+.os-icon-button:focus-visible {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.os-menu-button {
+  background: transparent;
+  border: 0;
+  display: none;
+  margin: 0;
   padding: 0;
 }
 
@@ -545,7 +601,7 @@ html:has(.our-story-root) main {
 
 .os-story-body {
   font-family: var(--os-font-sans);
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
   line-height: 1.8;
   font-weight: 300;
   color: var(--os-text-muted);
@@ -557,7 +613,7 @@ html:has(.our-story-root) main {
   align-items: center;
   color: var(--os-text-main);
   display: inline-flex;
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   gap: 10px;
   letter-spacing: 0.2em;
@@ -612,7 +668,7 @@ html:has(.our-story-root) main {
 
 .os-eyebrow {
   color: var(--os-muted);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.26em;
   margin: 0 0 18px;
@@ -632,7 +688,7 @@ html:has(.our-story-root) main {
 
 .os-section-lede {
   color: var(--os-muted);
-  font-size: 1.06rem;
+  font-size: var(--text-base);
   line-height: 1.75;
   margin: 0 0 40px;
   max-width: 62ch;
@@ -660,7 +716,7 @@ html:has(.our-story-root) main {
 
 .os-letter-copy p:not(.os-eyebrow) {
   color: var(--os-muted);
-  font-size: 1.06rem;
+  font-size: var(--text-base);
   line-height: 1.75;
   margin: 0 0 1.15em;
   max-width: 60ch;
@@ -669,7 +725,7 @@ html:has(.our-story-root) main {
 .os-letter-copy p.os-letter-sign {
   color: inherit;
   font-family: var(--os-font-serif);
-  font-size: 1.3rem;
+  font-size: var(--text-xl);
   font-style: italic;
   margin-top: 1.6em;
 }
@@ -708,13 +764,13 @@ html:has(.our-story-root) main {
 
 .os-capsule-note {
   color: var(--os-muted);
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   line-height: 1.55;
 }
 
 .os-capsule-cta {
   color: var(--os-muted);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   grid-column: 2;
   letter-spacing: 0.16em;
@@ -739,7 +795,7 @@ html:has(.our-story-root) main {
 }
 
 .os-facts dt {
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 700;
   letter-spacing: 0.2em;
   margin-bottom: 10px;
@@ -748,7 +804,7 @@ html:has(.our-story-root) main {
 
 .os-facts dd {
   color: var(--os-muted);
-  font-size: 0.98rem;
+  font-size: var(--text-base);
   line-height: 1.7;
   margin: 0;
   max-width: 44ch;
@@ -787,7 +843,7 @@ html:has(.our-story-root) main {
     inset 0 1px 0 rgba(255,255,255,0.78);
   color: var(--os-ink);
   display: inline-flex;
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   justify-content: center;
   letter-spacing: 0.16em;
@@ -827,21 +883,29 @@ html:has(.our-story-root) main {
   }
 
   .os-header-top {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 14px;
+    gap: 4px;
+    padding: 10px 8px;
+  }
+
+  .os-menu-button {
+    display: inline-flex;
+  }
+
+  .os-brand {
+    margin-right: auto;
   }
 
   .os-nav-group {
-    flex-wrap: wrap;
-    gap: 0.8rem 1.1rem;
-    justify-content: flex-start;
-    width: 100%;
+    flex-wrap: nowrap;
+    gap: 0;
+  }
+
+  .os-nav-group > .os-nav-text {
+    display: none;
   }
 
   .os-nav-text {
-    font-size: 0.62rem;
+    font-size: var(--text-xs);
     letter-spacing: 0.16em;
   }
 

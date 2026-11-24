@@ -1,6 +1,10 @@
 import {useEffect, useRef} from 'react';
 import {Link} from 'react-router';
-import {BLACK_FRIDAY_ANNOUNCEMENT, BLACK_FRIDAY_PATH} from '~/lib/blackFriday';
+import {
+  BLACK_FRIDAY_ANNOUNCEMENT,
+  BLACK_FRIDAY_ANNOUNCEMENT_SHORT,
+  BLACK_FRIDAY_PATH,
+} from '~/lib/blackFriday';
 import {useBlackFridayWeek} from '~/lib/useBlackFridayWeek';
 
 /**
@@ -40,8 +44,18 @@ export function BlackFridayAnnouncement() {
   return (
     <>
       <p className="announcement-bar" ref={ref}>
-        <Link to={BLACK_FRIDAY_PATH} prefetch="intent">
-          {BLACK_FRIDAY_ANNOUNCEMENT}
+        <Link
+          to={BLACK_FRIDAY_PATH}
+          prefetch="intent"
+          aria-label={BLACK_FRIDAY_ANNOUNCEMENT}
+        >
+          {/* Phones get one short line (the full one took three). */}
+          <span className="announcement-bar__long" aria-hidden="true">
+            {BLACK_FRIDAY_ANNOUNCEMENT}
+          </span>
+          <span className="announcement-bar__short" aria-hidden="true">
+            {BLACK_FRIDAY_ANNOUNCEMENT_SHORT}
+          </span>
         </Link>
       </p>
       <style suppressHydrationWarning>{css}</style>
@@ -54,14 +68,15 @@ const css = `
   --announcement-height: 34px;
   --header-height: calc(76px + var(--announcement-height));
 }
-/* Server-side estimates (measured 2026-11-17): one line from about 800 px,
-   two below, three on phones. The client then sets the measured height. */
+/* Server-side estimates: one line from about 800 px, two below, and the
+   short phone line from 720 px down. The client then sets the measured
+   height. */
 @media (max-width: 799px) {
   :root:has(.announcement-bar) { --announcement-height: 52px; }
 }
 @media (max-width: 720px) {
   :root:has(.announcement-bar) {
-    --announcement-height: 62px;
+    --announcement-height: 30px;
     --header-height: calc(68px + var(--announcement-height));
   }
 }
@@ -73,7 +88,7 @@ const css = `
 .announcement-bar {
   background: var(--color-ink, #26231f);
   color: #fbfaf6;
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   left: 0;
   letter-spacing: 0.01em;
   line-height: 1.4;
@@ -92,6 +107,9 @@ const css = `
   text-decoration-thickness: 1px;
   text-underline-offset: 3px;
 }
+.announcement-bar__short {
+  display: none;
+}
 .announcement-bar a:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
@@ -105,8 +123,20 @@ html:has(.announcement-bar):has(.home-root) main {
   padding-top: var(--announcement-height);
 }
 @media (max-width: 720px) {
+  .announcement-bar__long {
+    display: none;
+  }
+  .announcement-bar__short {
+    display: inline;
+  }
+  .announcement-bar__short::after {
+    content: ' →';
+  }
+  .announcement-bar a {
+    text-decoration: none;
+  }
   .announcement-bar {
-    font-size: 0.76rem;
+    font-size: var(--text-xs);
     line-height: 1.35;
     padding: 6px 16px;
   }

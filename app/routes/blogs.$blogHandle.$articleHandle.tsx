@@ -158,7 +158,7 @@ const articleCss = `
   --kot-ink: #26231f;
   --kot-muted: var(--color-muted);
   --kot-hairline: rgba(38, 35, 31, 0.16);
-  --kot-serif: Georgia, 'Times New Roman', serif;
+  --kot-serif: var(--serif);
   --kot-mono: 'Courier Prime', 'Courier New', ui-monospace, monospace;
   color: var(--kot-ink);
 }
@@ -175,7 +175,7 @@ const articleCss = `
 
 .kot-article-eyebrow {
   font-family: var(--kot-mono);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.3em;
   margin: 0 0 20px;
   text-transform: uppercase;
@@ -202,7 +202,7 @@ const articleCss = `
 .kot-article-byline {
   color: var(--kot-muted);
   font-family: var(--kot-mono);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.16em;
   margin: 0;
   text-transform: uppercase;
@@ -229,7 +229,7 @@ const articleCss = `
 }
 
 .kot-article-body {
-  font-size: 1.05rem;
+  font-size: var(--text-base);
   line-height: 1.85;
   margin: clamp(32px, 6vh, 56px) auto 0;
   max-width: 65ch;
@@ -244,7 +244,7 @@ const articleCss = `
 }
 
 .kot-article-body h2 { font-size: 1.7rem; }
-.kot-article-body h3 { font-size: 1.35rem; }
+.kot-article-body h3 { font-size: var(--text-xl); }
 
 .kot-article-body p { margin: 0 0 1.4em; }
 
@@ -278,7 +278,7 @@ const articleCss = `
 .kot-article-foot a {
   color: var(--kot-muted);
   font-family: var(--kot-mono);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.2em;
   text-decoration: none;
   text-transform: uppercase;

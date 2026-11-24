@@ -88,7 +88,7 @@ test('the footer columns are a three-up grid that tightens on phones', () => {
     phone,
     /\.footer-columns \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\);/,
   );
-  assert.match(phone, /\.footer-column a \{[^}]*font-size: 0\.86rem;/);
+  assert.match(phone, /\.footer-column a \{[^}]*font-size: var\(--text-sm\);/);
   // The old wrapping flex row left "Facebook" alone on its own line.
   assert.doesNotMatch(CSS, /\.site-footer nav \{[^}]*flex-wrap/);
   assert.doesNotMatch(CSS, /\.site-footer nav\b/);

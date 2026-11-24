@@ -537,7 +537,7 @@ html:has(.kot-root) main {
   --kot-paper: #fbfaf6;
   --kot-deep: #26231f;
   --kot-hairline: rgba(242, 236, 225, 0.22);
-  --kot-serif: Georgia, 'Times New Roman', serif;
+  --kot-serif: var(--serif);
   --kot-mono: 'Courier Prime', 'Courier New', ui-monospace, monospace;
   color: var(--kot-ink);
   isolation: isolate;
@@ -681,7 +681,7 @@ html:has(.kot-root) main {
   color: var(--kot-muted);
   display: inline-block;
   font-family: var(--kot-mono);
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.3em;
   margin-top: 26px;
   text-decoration: none;
@@ -705,7 +705,7 @@ html:has(.kot-root) main {
 
 .kot-eyebrow {
   font-family: var(--kot-mono);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.34em;
   margin: 0 0 22px;
   text-transform: uppercase;
@@ -804,7 +804,7 @@ html:has(.kot-root) main {
 .kot-cover-label {
   display: block;
   font-family: var(--kot-mono);
-  font-size: 0.62rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.14em;
   margin-top: 12px;
   overflow: hidden;
@@ -860,7 +860,7 @@ html:has(.kot-root) main {
 
 .kot-ring-caption {
   font-family: var(--kot-mono);
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.22em;
   margin: 6px auto 0;
   text-align: center;
@@ -910,7 +910,7 @@ a.kot-ledger-row:focus-visible {
 .kot-ledger-issue,
 .kot-ledger-date {
   font-family: var(--kot-mono);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--kot-muted);
@@ -936,7 +936,7 @@ a.kot-ledger-row:hover .kot-ledger-title {
 
 .kot-ledger-excerpt {
   color: var(--kot-muted);
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   max-width: 58ch;
 }
@@ -952,7 +952,7 @@ a.kot-ledger-row:hover .kot-ledger-title {
 
 .kot-request-eyebrow {
   font-family: var(--kot-mono);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.3em;
   margin: 0 0 18px;
   text-transform: uppercase;
@@ -977,7 +977,7 @@ a.kot-ledger-row:hover .kot-ledger-title {
   box-shadow: 0 14px 34px rgba(8, 6, 4, 0.35);
   color: var(--kot-deep);
   display: inline-flex;
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   justify-content: center;
   letter-spacing: 0.16em;
@@ -995,7 +995,7 @@ a.kot-ledger-row:hover .kot-ledger-title {
 
 .kot-request-note {
   color: var(--kot-muted);
-  font-size: 0.82rem;
+  font-size: var(--text-sm);
   margin: 16px 0 0;
 }
 

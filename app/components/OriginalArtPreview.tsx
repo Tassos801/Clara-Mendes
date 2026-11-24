@@ -227,7 +227,7 @@ const previewCss = `
   bottom: 12px;
   color: #38332e;
   font-family: var(--sans);
-  font-size: 0.62rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   left: 12px;
   letter-spacing: 0.16em;
@@ -243,7 +243,7 @@ const previewCss = `
 .original-art-card__capsule {
   color: var(--color-muted);
   font-family: var(--sans);
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.2em;
   margin: 0 0 8px;
@@ -269,7 +269,7 @@ const previewCss = `
   display: flex;
   flex-wrap: wrap;
   font-family: var(--sans);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   gap: 8px 16px;
   justify-content: space-between;
   letter-spacing: 0.06em;

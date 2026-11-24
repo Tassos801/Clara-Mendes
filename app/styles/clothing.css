@@ -3,9 +3,10 @@
    tokens in app.css (--color-*, --serif, --sans). */
 
 .clothing-page {
-  --clothing-gutter: clamp(16px, 4vw, 48px);
-  --clothing-max: 1240px;
-  --clothing-frame: #eeede7;
+  /* Same column and tile colour as the shop grid (app.css tokens). */
+  --clothing-gutter: var(--page-gutter);
+  --clothing-max: calc(var(--page-max) - 2 * var(--page-gutter));
+  --clothing-frame: var(--color-tile);
   --clothing-line: #dcd9d0;
   --clothing-secondary: var(--color-muted);
   background: var(--color-page);
@@ -38,7 +39,7 @@
 }
 .clothing-eyebrow {
   color: var(--clothing-secondary);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.16em;
   line-height: 1.6;
@@ -48,7 +49,7 @@
 .clothing-text-link {
   align-items: center;
   display: inline-flex;
-  font-size: 14px;
+  font-size: var(--text-sm);
   min-height: 44px;
   text-decoration: underline;
   text-decoration-thickness: 1px;
@@ -70,7 +71,7 @@
 .clothing-breadcrumb {
   color: var(--clothing-secondary);
   display: flex;
-  font-size: 13px;
+  font-size: var(--text-sm);
   gap: 10px;
   margin-bottom: 12px;
 }
@@ -91,7 +92,7 @@
 }
 .clothing-hero-text {
   color: var(--clothing-secondary);
-  font-size: 16px;
+  font-size: var(--text-base);
   line-height: 1.55;
   margin-top: 14px;
   max-width: 44ch;
@@ -134,7 +135,7 @@
 }
 .clothing-hero-media figcaption {
   color: var(--clothing-secondary);
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.5;
   margin-top: 8px;
 }
@@ -159,7 +160,7 @@
 }
 .clothing-shop-count {
   color: var(--clothing-secondary);
-  font-size: 14px;
+  font-size: var(--text-sm);
   margin-right: auto;
 }
 
@@ -184,7 +185,7 @@
   color: var(--color-ink);
   display: inline-flex;
   flex: none;
-  font-size: 14px;
+  font-size: var(--text-sm);
   gap: 6px;
   min-height: 38px;
   padding: 0 14px;
@@ -192,7 +193,7 @@
 }
 .clothing-chips a span {
   color: var(--clothing-secondary);
-  font-size: 12px;
+  font-size: var(--text-xs);
 }
 .clothing-chips a:hover {
   border-color: var(--color-ink);
@@ -238,7 +239,7 @@
 .clothing-sort {
   align-items: center;
   display: flex;
-  font-size: 14px;
+  font-size: var(--text-sm);
   gap: 8px;
 }
 .clothing-sort label {
@@ -255,7 +256,7 @@
 
 .clothing-grid {
   display: grid;
-  gap: 32px 20px;
+  gap: clamp(28px, 3vw, 52px) clamp(18px, 2.4vw, 36px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .clothing-card {
@@ -281,14 +282,14 @@
 /* The line the piece belongs to, over its name. */
 .clothing-card-line {
   color: var(--clothing-secondary);
-  font-size: 11px;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.12em;
   line-height: 1.4;
   text-transform: uppercase;
 }
 .clothing-card h3 {
-  font-size: 19px;
+  font-size: var(--text-xl);
   letter-spacing: -0.01em;
   line-height: 1.25;
 }
@@ -307,11 +308,13 @@
   gap: 0 10px;
 }
 .clothing-card-price {
-  font-size: 15px;
+  font-size: var(--text-base);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
 }
 .clothing-card-sizes {
   color: var(--clothing-secondary);
-  font-size: 13px;
+  font-size: var(--text-sm);
 }
 .clothing-colors {
   align-items: center;
@@ -348,7 +351,7 @@
     0 0 0 3px var(--color-ink);
 }
 .clothing-swatch--text {
-  font-size: 13px;
+  font-size: var(--text-sm);
   padding: 0 8px;
 }
 .clothing-swatch--text[aria-pressed='true'] {
@@ -359,7 +362,7 @@
   align-items: center;
   color: var(--clothing-secondary);
   display: inline-flex;
-  font-size: 13px;
+  font-size: var(--text-sm);
   justify-content: center;
   min-height: 36px;
   min-width: 30px;
@@ -372,7 +375,7 @@
 }
 .clothing-color-name {
   color: var(--clothing-secondary);
-  font-size: 13px;
+  font-size: var(--text-sm);
   padding-left: 4px;
 }
 /* A single colour is a label, not a choice. */
@@ -392,7 +395,7 @@
 }
 .clothing-note {
   color: var(--clothing-secondary);
-  font-size: 12px;
+  font-size: var(--text-xs);
   line-height: 1.6;
   margin-top: 20px;
 }
@@ -402,7 +405,7 @@
   background: var(--clothing-frame);
   color: var(--clothing-secondary);
   display: flex;
-  font-size: 12px;
+  font-size: var(--text-xs);
   justify-content: center;
   padding: 8px;
   text-align: center;
@@ -412,7 +415,7 @@
   border: 1px solid var(--color-ink);
   border-radius: 999px;
   display: flex;
-  font-size: 14px;
+  font-size: var(--text-sm);
   margin: 28px auto 0;
   min-height: 46px;
   padding: 0 24px;
@@ -468,13 +471,13 @@
 }
 .clothing-line-tile-credit {
   color: var(--clothing-secondary);
-  font-size: 13px;
+  font-size: var(--text-sm);
   margin-top: 4px;
 }
 .clothing-line-tile-links {
   display: flex;
   flex-wrap: wrap;
-  font-size: 14px;
+  font-size: var(--text-sm);
   gap: 0 18px;
   margin-top: 4px;
 }
@@ -504,12 +507,12 @@
 }
 .clothing-help dt {
   font-family: var(--serif);
-  font-size: 17px;
+  font-size: var(--text-lg);
   margin-bottom: 4px;
 }
 .clothing-help dd {
   color: var(--clothing-secondary);
-  font-size: 14px;
+  font-size: var(--text-sm);
   line-height: 1.55;
 }
 /* The policy link sits on its own line, so it never stretches a text line. */
@@ -532,7 +535,7 @@
 }
 .clothing-empty p {
   color: var(--clothing-secondary);
-  font-size: 15px;
+  font-size: var(--text-base);
   margin-top: 8px;
 }
 .clothing-error {
@@ -553,7 +556,7 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .clothing-card h3 {
-    font-size: 18px;
+    font-size: var(--text-lg);
   }
 }
 @media (max-width: 799px) {
@@ -580,7 +583,7 @@
     display: none;
   }
   .clothing-breadcrumb {
-    font-size: 12px;
+    font-size: var(--text-xs);
     margin-bottom: 6px;
   }
   .clothing-eyebrow {
@@ -591,7 +594,7 @@
     max-width: none;
   }
   .clothing-hero-text {
-    font-size: 14px;
+    font-size: var(--text-sm);
     line-height: 1.5;
     margin-top: 8px;
   }
@@ -625,7 +628,7 @@
     display: none;
   }
   .clothing-chips a {
-    font-size: 13px;
+    font-size: var(--text-sm);
     min-height: 36px;
     padding: 0 12px;
   }
@@ -644,16 +647,16 @@
     margin-top: 8px;
   }
   .clothing-card-line {
-    font-size: 10px;
+    font-size: var(--text-xs);
   }
   .clothing-card h3 {
-    font-size: 16px;
+    font-size: var(--text-base);
   }
   .clothing-card-price {
-    font-size: 14px;
+    font-size: var(--text-sm);
   }
   .clothing-card-sizes {
-    font-size: 12px;
+    font-size: var(--text-xs);
   }
   .clothing-colors {
     margin-left: -6px;
@@ -679,7 +682,7 @@
     min-height: 30px;
   }
   .clothing-colors--single .clothing-color-name {
-    font-size: 12px;
+    font-size: var(--text-xs);
   }
   .clothing-lines-list {
     display: flex;
@@ -700,16 +703,16 @@
     scroll-snap-align: start;
   }
   .clothing-line-tile h3 {
-    font-size: 19px;
+    font-size: var(--text-xl);
   }
   .clothing-help dl {
     gap: 14px 16px;
   }
   .clothing-help dt {
-    font-size: 15px;
+    font-size: var(--text-base);
   }
   .clothing-help dd {
-    font-size: 13px;
+    font-size: var(--text-sm);
   }
 }
 @media (max-width: 379px) {
@@ -717,7 +720,7 @@
     gap: 20px 10px;
   }
   .clothing-card h3 {
-    font-size: 15px;
+    font-size: var(--text-base);
   }
   .clothing-help dl {
     grid-template-columns: minmax(0, 1fr);
@@ -736,7 +739,7 @@
   border-bottom: 1px solid #dcd9d0;
   display: flex;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: var(--text-xs);
   gap: 8px 24px;
   justify-content: center;
   padding: 16px 5%;

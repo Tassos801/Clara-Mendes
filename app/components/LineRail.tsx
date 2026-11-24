@@ -109,7 +109,7 @@ const lineRailCss = `
 
 .line-rail__label {
   font-family: var(--sans);
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   font-weight: 500;
   letter-spacing: 0.01em;
   line-height: 1.2;

@@ -45,7 +45,7 @@ export function BlackFridayProductLine({
 
 const css = `
 .product-black-friday-line {
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   font-weight: 600;
   line-height: 1.5;
   margin: 6px 0 0;

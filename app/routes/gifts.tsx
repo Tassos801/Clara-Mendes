@@ -332,13 +332,13 @@ const giftsCss = `
 }
 .gifts-subtitle {
   color: var(--color-muted);
-  font-size: 1.02rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   margin: 14px 0 0;
 }
 .gifts-lead {
   border-top: 1px solid rgba(38, 35, 31, 0.14);
-  font-size: 0.98rem;
+  font-size: var(--text-base);
   line-height: 1.7;
   margin: 22px 0 0;
   padding-top: 22px;
@@ -354,7 +354,7 @@ const giftsCss = `
   border: 1px solid rgba(38, 35, 31, 0.2);
   border-radius: 999px;
   display: inline-flex;
-  font-size: 0.86rem;
+  font-size: var(--text-sm);
   min-height: 44px;
   padding: 0 14px;
 }
@@ -398,17 +398,17 @@ const giftsCss = `
 }
 .gifts-christmas dt {
   color: var(--color-muted);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .gifts-christmas dd {
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   margin: 0;
 }
 .gifts-christmas p {
   color: var(--color-muted);
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   line-height: 1.6;
   margin: 14px 0 0;
 }
@@ -441,11 +441,11 @@ const giftsCss = `
 }
 .gifts-sky-title {
   font-family: var(--serif);
-  font-size: 1.1rem;
+  font-size: var(--text-lg);
 }
 .gifts-sky-price {
   color: var(--color-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
 }
 .gifts-empty {
   color: var(--color-muted);

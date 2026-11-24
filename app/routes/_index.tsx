@@ -455,8 +455,8 @@ html:has(.home-root) main {
   --hm-text-main: #ffffff;
   --hm-text-muted: rgba(255, 255, 255, 0.7);
   --hm-ease-fluid: cubic-bezier(0.25, 1, 0.5, 1);
-  --hm-font-serif: Georgia, 'Times New Roman', serif;
-  --hm-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --hm-font-serif: var(--serif);
+  --hm-font-sans: var(--sans);
 
   position: relative;
   min-height: 94vh;
@@ -566,7 +566,7 @@ html:has(.home-root) main {
 
 .hm-nav-text {
   font-family: var(--hm-font-sans);
-  font-size: 0.75rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   font-weight: 500;
@@ -740,7 +740,7 @@ html:has(.home-root) main {
 
 .hm-label-enter {
   font-family: var(--hm-font-sans);
-  font-size: 0.7rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--hm-text-muted);
@@ -794,7 +794,7 @@ html:has(.home-root) main {
 /* One quiet line under the rail; each half opens its policy. */
 .home-trust-line {
   color: var(--color-muted);
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   line-height: 1.5;
   margin: 0;
   padding: clamp(16px, 2.5vw, 28px) 20px;
@@ -891,7 +891,7 @@ html:has(.home-root) main {
   }
 
   .hm-nav-text {
-    font-size: 0.62rem;
+    font-size: var(--text-xs);
     letter-spacing: 0.16em;
   }
 
@@ -974,7 +974,7 @@ html:has(.home-root) main {
   }
 
   .hm-label-enter {
-    font-size: 0.62rem;
+    font-size: var(--text-xs);
   }
 }
 

@@ -286,23 +286,23 @@ const css = `
 }
 .black-friday-offer dt {
   font-family: var(--serif);
-  font-size: 1.35rem;
+  font-size: var(--text-xl);
   line-height: 1.2;
 }
 .black-friday-offer dd {
-  font-size: 1rem;
+  font-size: var(--text-base);
   line-height: 1.6;
   margin: 0;
 }
 .black-friday-excluded {
   color: var(--color-muted);
-  font-size: 0.92rem;
+  font-size: var(--text-sm);
   line-height: 1.6;
   margin: 16px 0 0;
 }
 .black-friday-lead {
   border-top: 1px solid rgba(38, 35, 31, 0.14);
-  font-size: 0.98rem;
+  font-size: var(--text-base);
   line-height: 1.7;
   margin: 18px 0 0;
   padding-top: 18px;
@@ -318,7 +318,7 @@ const css = `
   border: 1px solid rgba(38, 35, 31, 0.2);
   border-radius: 999px;
   display: inline-flex;
-  font-size: 0.86rem;
+  font-size: var(--text-sm);
   min-height: 44px;
   padding: 0 14px;
 }
@@ -349,17 +349,17 @@ const css = `
 }
 .black-friday-christmas dt {
   color: var(--color-muted);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 .black-friday-christmas dd {
-  font-size: 0.95rem;
+  font-size: var(--text-base);
   margin: 0;
 }
 .black-friday-christmas p {
   color: var(--color-muted);
-  font-size: 0.88rem;
+  font-size: var(--text-sm);
   line-height: 1.6;
   margin: 14px 0 0;
 }
@@ -390,7 +390,7 @@ const css = `
 .black-friday-group-head h2 span {
   color: var(--color-muted);
   font-family: var(--sans);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   letter-spacing: 0.04em;
   margin-left: 6px;
   white-space: nowrap;
@@ -403,7 +403,7 @@ const css = `
 }
 .black-friday-group-note {
   color: var(--color-muted);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
   margin: -10px 0 16px;
 }
 @media (max-width: 880px) {

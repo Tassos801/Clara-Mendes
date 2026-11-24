@@ -1125,6 +1125,12 @@ const collectionCss = `
   /* Translucent over the solid paper body background */
   --cv-paper: color-mix(in srgb, var(--color-page) 92%, transparent);
   --cv-ease: cubic-bezier(0.25, 1, 0.5, 1);
+  /* The page gutter, widened on large screens so the grid, toolbar and
+     hero text share one --page-max column with the clothing page. */
+  --cv-gutter: max(
+    var(--page-gutter),
+    calc((100% - var(--page-max)) / 2 + var(--page-gutter))
+  );
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
@@ -1141,7 +1147,7 @@ const collectionCss = `
   background-position: center 40%;
   color: #fff;
   padding: calc(var(--header-height) + clamp(88px, 10vw, 150px))
-           clamp(18px, 4vw, 70px)
+           var(--cv-gutter)
            clamp(70px, 9vw, 130px);
   min-height: 62vh;
   isolation: isolate;
@@ -1178,8 +1184,9 @@ const collectionCss = `
 }
 
 .cv-eyebrow {
+  text-shadow: 0 1px 10px rgba(10,9,7,0.55);
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.3em;
   text-transform: uppercase;
@@ -1210,8 +1217,8 @@ const collectionCss = `
 .cv-hero-rule {
   position: absolute;
   bottom: 0;
-  left: clamp(18px, 4vw, 70px);
-  right: clamp(18px, 4vw, 70px);
+  left: var(--cv-gutter);
+  right: var(--cv-gutter);
   z-index: 2;
   height: 1px;
   background: rgba(255,255,255,0.18);
@@ -1238,7 +1245,7 @@ const collectionCss = `
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: 12px clamp(18px, 3vw, 46px);
-  padding: 14px clamp(18px, 4vw, 70px);
+  padding: 14px var(--cv-gutter);
 }
 
 /* The Product tabs have the first row to themselves, so every type stays
@@ -1262,7 +1269,7 @@ const collectionCss = `
 
 .cv-browse-label {
   font-family: var(--sans);
-  font-size: 0.6rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1315,7 +1322,7 @@ const collectionCss = `
   color: var(--cv-muted);
   display: inline-flex;
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   justify-content: center;
   min-height: 36px;
@@ -1353,7 +1360,7 @@ const collectionCss = `
   color: var(--cv-ink);
   cursor: pointer;
   font-family: var(--sans);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   min-height: 44px;
   padding: 0 34px 0 12px;
 }
@@ -1376,7 +1383,7 @@ const collectionCss = `
 
 .cv-filter-toggle {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1410,7 +1417,7 @@ const collectionCss = `
   flex-wrap: wrap;
   gap: clamp(20px, 3vw, 48px);
   align-items: flex-start;
-  padding: clamp(18px, 2.4vw, 30px) clamp(18px, 4vw, 70px);
+  padding: clamp(18px, 2.4vw, 30px) var(--cv-gutter);
   background:
     linear-gradient(135deg, rgba(255,255,255,0.48), transparent 46%),
     rgba(251,250,246,0.84);
@@ -1434,7 +1441,7 @@ const collectionCss = `
 
 .cv-facet-title {
   font-family: var(--sans);
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1447,7 +1454,7 @@ const collectionCss = `
   align-items: center;
   gap: 8px;
   font-family: var(--sans);
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   color: var(--cv-ink);
   cursor: pointer;
 }
@@ -1464,7 +1471,7 @@ const collectionCss = `
 
 .cv-facet-input {
   font-family: var(--sans);
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   color: var(--cv-ink);
   background: rgba(255,255,255,0.48);
   border: 1px solid rgba(38,35,31,0.13);
@@ -1488,7 +1495,7 @@ const collectionCss = `
 
 .cv-facet-apply {
   font-family: var(--sans);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1516,7 +1523,7 @@ const collectionCss = `
 
 .cv-facet-chip {
   font-family: var(--sans);
-  font-size: 0.74rem;
+  font-size: var(--text-xs);
   color: var(--cv-muted);
   backdrop-filter: blur(10px) saturate(1.14);
   -webkit-backdrop-filter: blur(10px) saturate(1.14);
@@ -1544,12 +1551,12 @@ const collectionCss = `
 
 .cv-facet-chip-count {
   opacity: 0.65;
-  font-size: 0.66rem;
+  font-size: var(--text-xs);
 }
 
 .cv-facet-clear {
   font-family: var(--sans);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1575,7 +1582,7 @@ const collectionCss = `
 
 .cv-sort-label {
   font-family: var(--sans);
-  font-size: 0.68rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1584,7 +1591,7 @@ const collectionCss = `
 
 .cv-sort-select {
   font-family: var(--sans);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   color: var(--cv-ink);
   backdrop-filter: blur(12px) saturate(1.16);
   -webkit-backdrop-filter: blur(12px) saturate(1.16);
@@ -1604,12 +1611,12 @@ const collectionCss = `
 /* Product count */
 .cv-count {
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--cv-muted);
-  padding: 18px clamp(18px, 4vw, 70px) 0;
+  padding: 18px var(--cv-gutter) 0;
   margin: 0;
   background: var(--cv-paper);
 }
@@ -1618,7 +1625,7 @@ const collectionCss = `
   display: grid;
   gap: clamp(28px, 3vw, 52px) clamp(18px, 2.4vw, 36px);
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  padding: clamp(24px, 3vw, 48px) clamp(18px, 4vw, 70px)
+  padding: clamp(24px, 3vw, 48px) var(--cv-gutter)
            clamp(36px, 5vw, 72px);
   background: var(--cv-paper);
 }
@@ -1636,7 +1643,7 @@ const collectionCss = `
   justify-content: center;
   color: var(--cv-ink);
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: var(--text-xs);
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1655,8 +1662,8 @@ const collectionCss = `
 }
 
 .collection-empty {
-  margin-left: clamp(18px, 4vw, 70px);
-  margin-right: clamp(18px, 4vw, 70px);
+  margin-left: var(--cv-gutter);
+  margin-right: var(--cv-gutter);
   max-width: min(680px, calc(100vw - 36px));
 }
 
@@ -1723,7 +1730,7 @@ const collectionCss = `
   }
 }
 
-/* Thumb-height shortcut back to the toolbar, shown on phones only. */
+/* Shortcut back to the toolbar once it has scrolled away (below). */
 .cv-jump {
   display: none;
 }
@@ -1731,15 +1738,21 @@ const collectionCss = `
 /* ── Mobile: compact hero, scrolling category chips, toolbar that scrolls
    away (a sticky one covered a third of a phone screen), 2-col grid ── */
 @media (max-width: 720px) {
+  /* A darker shade behind the words: on a phone the eyebrow otherwise
+     sits on the Christmas tree lights. */
   .cv-hero {
     background-image:
-      linear-gradient(180deg, rgba(30,28,24,0.35) 0%, rgba(107,101,91,0.05) 45%, rgba(107,101,91,0) 100%),
+      linear-gradient(180deg, rgba(20,18,14,0.62) 0%, rgba(20,18,14,0.4) 55%, rgba(20,18,14,0.18) 100%),
       ${HERO_BACKDROP.mobile};
     min-height: auto;
     padding: calc(var(--header-height) + 28px) 18px 26px;
   }
 
-  .cv-eyebrow { margin-bottom: 12px; }
+  .cv-eyebrow {
+    color: rgba(255,255,255,0.92);
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+  }
   .cv-title { font-size: clamp(2rem, 9vw, 3rem); margin: 0; }
 
   .cv-toolbar {
@@ -1792,7 +1805,7 @@ const collectionCss = `
     border: 1px solid rgba(38,35,31,0.14);
     border-radius: 999px;
     flex: none;
-    font-size: 0.8rem;
+    font-size: var(--text-xs);
     min-height: 44px;
     padding: 0 16px;
   }
@@ -1821,7 +1834,7 @@ const collectionCss = `
   .cv-category-select,
   .cv-collection-select,
   .cv-sort-select {
-    font-size: 16px;
+    font-size: var(--text-base);
     min-width: 0;
     width: 100%;
   }
@@ -1834,7 +1847,7 @@ const collectionCss = `
   }
 
   .cv-filter-toggle {
-    font-size: 0.74rem;
+    font-size: var(--text-xs);
     letter-spacing: 0.14em;
   }
 
@@ -1850,7 +1863,7 @@ const collectionCss = `
   }
 
   .cv-facet-check {
-    font-size: 0.92rem;
+    font-size: var(--text-sm);
     min-height: 44px;
   }
 
@@ -1860,7 +1873,7 @@ const collectionCss = `
   }
 
   .cv-facet-input {
-    font-size: 16px;
+    font-size: var(--text-base);
     min-height: 44px;
     width: 96px;
   }
@@ -1873,7 +1886,7 @@ const collectionCss = `
 
   .cv-count {
     padding: 12px 16px 0;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
   }
 
   .cv-grid {
@@ -1895,10 +1908,10 @@ const collectionCss = `
   }
 }
 
-/* Phones and tablets: the stacked toolbar would cover a quarter of the
-   screen if it stayed pinned, so it scrolls away and the shortcut below
-   brings it back. */
-@media (max-width: 980px) {
+/* Every width: the two-row toolbar covered a quarter of the screen while
+   pinned (a third on phones), so it scrolls away with the page and the
+   floating "Filter & sort" shortcut brings it back. */
+@media all {
   .cv-toolbar {
     position: relative;
     top: auto;
@@ -1914,7 +1927,7 @@ const collectionCss = `
     color: #fbfaf6;
     display: inline-flex;
     font-family: var(--sans);
-    font-size: 0.78rem;
+    font-size: var(--text-xs);
     font-weight: 600;
     gap: 8px;
     left: 50%;
@@ -1945,7 +1958,7 @@ const collectionCss = `
     border-radius: 999px;
     color: var(--cv-ink);
     display: inline-flex;
-    font-size: 0.7rem;
+    font-size: var(--text-xs);
     height: 20px;
     justify-content: center;
     letter-spacing: 0;
@@ -2009,7 +2022,7 @@ const collectionCss = `
   }
 
   .cv-hero-subtitle {
-    font-size: 0.9rem;
+    font-size: var(--text-sm);
     margin-top: 10px;
   }
 }

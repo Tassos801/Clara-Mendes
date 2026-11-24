@@ -21,10 +21,32 @@ Coarse-pointer devices avoid the most expensive fixed-surface blur, and
 near-opaque surfaces. These styles do not change catalog, pricing, or Shopify
 data behavior.
 
+Type and layout tokens (2026-11-24) also live in the `:root` of `app.css`:
+- Fonts: `--serif` is Georgia, then Gelasio (drawn to Georgia's metrics),
+  so Android and Linux get the same headings; a browser downloads Gelasio
+  only when Georgia is missing. `--sans` is Inter, loaded on every device.
+  Both come from `@fontsource-variable/*` packages imported at the top of
+  `app.css` (self-hosted, Latin subsets fetched by `unicode-range`).
+- Text below heading size uses five steps: `--text-xs` 12 px (the floor),
+  `--text-sm` 14, `--text-base` 16, `--text-lg` 18, `--text-xl` 20.
+  Headings keep their own `clamp()` sizes. New CSS should use these tokens
+  rather than fixed sizes.
+- `--color-tile` is the tile colour behind every card image (shop grid and
+  clothing cards); `--page-max` (1440 px with gutters) and `--page-gutter`
+  give the shop grid and the clothing page one content width.
+
+Product cards (`ClaraProductCard`, `ClothingProductCard`) share one layout:
+a small label (product type, the artist in an artist shop, the line on
+clothing), the name in the serif, then the price. Only the first word of an
+artwork or design name is italic (`app/lib/cardTitle.ts`). During a sale
+the card shows a small tag beside the price (`blackFridayCardTag`) with the
+full line as its tooltip. Artwork images keep square corners; only buttons
+and panels are rounded.
+
 Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 `app/routes/collections.all.tsx`, `app/routes/our-story.tsx`,
-`app/components/ClaraProductCard.tsx`,
-`app/components/reviews/ReviewsSection.tsx`.
+`app/components/ClaraProductCard.tsx`, `app/components/ClothingProductCard.tsx`,
+`app/lib/cardTitle.ts`, `app/components/reviews/ReviewsSection.tsx`.
 
 ## Main Storefront Routes
 
@@ -132,8 +154,9 @@ Collection pages support:
 - Removal of empty legacy categories from the previous catalog.
 - Infinite loading with an `IntersectionObserver` helper.
 
-At 980 px and below the toolbar scrolls away instead of staying pinned (on
-a phone it covered up to a third of the screen); categories are a row of
+At every width the toolbar scrolls away instead of staying pinned (on a
+phone it covered up to a third of the screen, on a desktop a quarter;
+pinned on desktop until 2026-11-24); on phones categories are a row of
 one-tap chips that scroll sideways, and a "Filter & sort" control appears at
 the bottom once the toolbar is out of view and returns to it with filters
 open. Grids stay two columns down to 320 px. Coming back from a product
@@ -144,8 +167,9 @@ the grid never blinks empty on return.
 Card quick-add (`cardQuickAddMode`, `app/lib/productCardPricing.ts`) adds the
 first variant only for single-variant products and art prints (whose
 variants are sizes of the artwork shown); for phone cases, canvases, cards
-and a sold-out first variant it links to the product page, so a phone model
-or artwork is never chosen for the shopper.
+and a sold-out first variant the card shows no button (since 2026-11-24;
+it used to show an arrow that repeated the card's own link), so a phone
+model or artwork is never chosen for the shopper.
 
 Sources: `app/routes/collections.all.tsx`,
 `app/routes/collections.$handle.tsx`, `app/lib/collectionSort.ts`,
