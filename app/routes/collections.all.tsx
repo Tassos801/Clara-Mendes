@@ -1311,8 +1311,13 @@ const collectionCss = `
     min-width: 9em;
   }
 
+  /* Every product type stays visible: the sixteen tabs need about
+     1,420 px and the row has about 1,170 inside the page column, so they
+     wrap to a second line instead of hiding past the right edge. */
   .cv-type-tabs {
+    flex-wrap: wrap;
     min-width: 0;
+    overflow-x: visible;
   }
 }
 

@@ -23,3 +23,12 @@ test('product cards contain their screen-reader text', () => {
   const card = read('app/components/ClaraProductCard.tsx');
   assert.match(card, /\n\.cm-card \{[^}]*position: relative;/);
 });
+
+test('desktop shop tabs wrap so every product type stays visible', () => {
+  // Sixteen tabs need about 1,420 px; the page column leaves about 1,170.
+  const shop = read('app/routes/collections.all.tsx');
+  assert.match(
+    shop,
+    /@media \(min-width: 981px\) \{[\s\S]*?\.cv-type-tabs \{[^}]*flex-wrap: wrap;[^}]*overflow-x: visible;/,
+  );
+});
