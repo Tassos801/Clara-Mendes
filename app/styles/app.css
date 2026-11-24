@@ -65,10 +65,13 @@ html {
   text-size-adjust: 100%;
 }
 
+/* The font again on body: reset.css gives body the system stack, which
+   otherwise beats the one inherited from html. */
 body {
   margin: 0;
   background: var(--color-page);
   color: var(--color-ink);
+  font-family: var(--sans);
   -webkit-font-smoothing: antialiased;
 }
 

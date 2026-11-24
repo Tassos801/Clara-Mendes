@@ -324,8 +324,12 @@ function QuickAddButton({
 }
 
 const cardCss = `
+/* Positioned, so the screen-reader text in the sale tag (absolutely
+   positioned) stays inside the card: in a sideways-scrolling row it would
+   otherwise sit beyond the row's clip and widen the whole page. */
 .cm-card {
   min-width: 0;
+  position: relative;
   --cm-ease: cubic-bezier(0.25, 1, 0.5, 1);
 }
 
