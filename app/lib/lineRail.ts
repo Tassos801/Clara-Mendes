@@ -50,7 +50,7 @@ const square = (src: string): RailPicture => ({
 });
 
 /**
- * Each line's circle picture, the rest of the year and at Christmas (1
+ * Each line's rail picture, the rest of the year and at Christmas (1
  * November to 6 January, christmasPicturesSeason; the homepage loader picks
  * per request). Files in public/ are cached by
  * browsers for a year, so a changed picture always gets a new file name.
@@ -67,7 +67,7 @@ const PICTURES: Record<
     },
     christmas: square('/images/line-rail/prints-christmas.jpg'),
   },
-  // The gift edit's circle shows Hiroshige's fireworks blanket (tied with a
+  // The gift edit's print shows Hiroshige's fireworks blanket (tied with a
   // bow at Christmas).
   gifts: {
     year: {
@@ -143,7 +143,7 @@ const POT_HANDLES: readonly string[] = pastelPots.designs.map(
 
 /**
  * The released product lines, in rail order; an unreleased line never
- * appears. The homepage renders one circle per entry under the hero, so the
+ * appears. The homepage renders one print per entry under the hero, so the
  * gates match the primary navigation's (app/lib/navLinks.ts).
  */
 export function lineRailEntries(gates: LineRailGates = {}): LineRailEntry[] {

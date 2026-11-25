@@ -191,7 +191,6 @@ export function ClaraProductCard({
             ) : (
               <div className="cm-card-img cm-card-img--empty" aria-hidden />
             )}
-            <div className="cm-card-veil" aria-hidden />
           </div>
         </Link>
         {firstVariant ? (
@@ -352,6 +351,7 @@ const cardCss = `
   isolation: isolate;
 }
 
+/* The photo in its own colours: no filter, and nothing laid over it. */
 .cm-card-img {
   position: absolute;
   inset: 0;
@@ -360,7 +360,6 @@ const cardCss = `
   height: 100% !important;
   object-fit: cover;
   transition: transform 900ms var(--cm-ease), opacity 700ms var(--cm-ease);
-  filter: saturate(0.92);
 }
 
 .cm-card-img--base { opacity: 1; z-index: 1; }
@@ -382,19 +381,6 @@ const cardCss = `
   opacity: 1;
   transform: scale(1.04);
 }
-
-.cm-card-veil {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(30,28,24,0) 55%, rgba(30,28,24,0.35) 100%);
-  opacity: 0;
-  transition: opacity 600ms var(--cm-ease);
-}
-
-.cm-card--hoverable:hover .cm-card-veil,
-.cm-card--hoverable:focus-within .cm-card-veil { opacity: 1; }
 
 /* Card copy: label, name, price. The clothing cards (clothing.css) use the
    same order and sizes. */
@@ -490,7 +476,9 @@ const cardCss = `
   margin: 8px 0 0;
 }
 
-/* Quick add (single-option products only), bottom-right of the image. */
+/* Quick add (single-option products only), bottom-right of the image. Its
+   own dark glass keeps the white "+" above 7:1 even on a white photo, with
+   no shade laid over the picture. */
 .cm-quick-add {
   position: absolute;
   bottom: 10px;
@@ -504,7 +492,7 @@ const cardCss = `
   border: 1px solid rgba(255,255,255,0.36);
   background:
     linear-gradient(135deg, rgba(255,255,255,0.14), transparent 52%),
-    rgba(30,28,24,0.58);
+    rgba(30,28,24,0.76);
   color: #fff;
   font-size: var(--text-xl);
   font-weight: 300;
@@ -538,7 +526,7 @@ const cardCss = `
 .cm-quick-add:hover:not(:disabled) {
   background:
     linear-gradient(135deg, rgba(255,255,255,0.2), transparent 52%),
-    rgba(30,28,24,0.76);
+    rgba(30,28,24,0.9);
 }
 .cm-quick-add[aria-busy="true"] {
   background: var(--color-clay, #9c6f5d);
@@ -612,7 +600,6 @@ const cardCss = `
 
 @media (prefers-reduced-motion: reduce) {
   .cm-card-img,
-  .cm-card-veil,
   .cm-quick-add {
     transition: none;
   }

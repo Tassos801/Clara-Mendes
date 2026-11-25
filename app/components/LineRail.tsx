@@ -2,11 +2,10 @@ import {Link} from 'react-router';
 import type {LineRailEntry} from '~/lib/lineRail';
 
 /**
- * The product lines as a row of circles under the homepage hero: one
- * centred row on desktop, a swipe row on phones and tablets whose last
- * visible circle is cut at the edge so the row reads as scrollable. Each
- * link is named by its
- * label, so the photo inside the ring is decorative.
+ * The product lines as a row of miniature mounted prints under the homepage
+ * hero: one centred row on desktop, a swipe row on phones and tablets whose
+ * last visible print is cut at the edge so the row reads as scrollable. Each
+ * link is named by its label, so the photo in the mount is decorative.
  */
 export function LineRail({entries}: {entries: readonly LineRailEntry[]}) {
   if (!entries.length) return null;
@@ -18,20 +17,23 @@ export function LineRail({entries}: {entries: readonly LineRailEntry[]}) {
         {entries.map((entry, index) => (
           <li className="line-rail__item" key={entry.key}>
             <Link className="line-rail__link" prefetch="intent" to={entry.href}>
-              <span className="line-rail__ring">
-                <img
-                  alt=""
-                  decoding="async"
-                  height={entry.image.height}
-                  loading={index < 2 ? 'eager' : 'lazy'}
-                  src={entry.image.src}
-                  style={
-                    entry.objectPosition
-                      ? {objectPosition: entry.objectPosition}
-                      : undefined
-                  }
-                  width={entry.image.width}
-                />
+              <span className="line-rail__mount">
+                {/* The window clips the hover zoom inside the paper inset. */}
+                <span className="line-rail__window">
+                  <img
+                    alt=""
+                    decoding="async"
+                    height={entry.image.height}
+                    loading={index < 2 ? 'eager' : 'lazy'}
+                    src={entry.image.src}
+                    style={
+                      entry.objectPosition
+                        ? {objectPosition: entry.objectPosition}
+                        : undefined
+                    }
+                    width={entry.image.width}
+                  />
+                </span>
               </span>
               <span className="line-rail__label">{entry.label}</span>
             </Link>
@@ -48,10 +50,10 @@ const lineRailCss = `
   padding: clamp(28px, 4vw, 44px) clamp(16px, 2.5vw, 48px);
 }
 
-/* Sized so eleven circles fit one row from 1200px: 80px rings there, 120px
+/* Sized so eleven prints fit one row from 1200px: 80px mounts there, 120px
    from about 1820px. */
 .line-rail__list {
-  --ring: clamp(80px, 6.6vw, 120px);
+  --mount: clamp(80px, 6.6vw, 120px);
   display: flex;
   gap: clamp(18px, 1.7vw, 36px);
   justify-content: center;
@@ -60,8 +62,9 @@ const lineRailCss = `
   padding: 0;
 }
 
+/* The label starts at the mount's left edge, as a caption under a print. */
 .line-rail__link {
-  align-items: center;
+  align-items: flex-start;
   color: var(--color-ink);
   display: flex;
   flex-direction: column;
@@ -75,21 +78,26 @@ const lineRailCss = `
   outline-offset: 4px;
 }
 
-.line-rail__ring {
-  background: #fff;
-  border: 2px solid var(--color-clay);
-  border-radius: 50%;
+/* A square paper mount: a 4px paper inset inside a fine neutral rule. */
+.line-rail__mount {
+  background: var(--color-paper);
+  border: 1px solid var(--color-soft);
   box-sizing: border-box;
   display: block;
-  height: var(--ring);
-  overflow: hidden;
-  padding: 3px;
-  transition: border-width 200ms ease;
-  width: var(--ring);
+  height: var(--mount);
+  padding: 4px;
+  transition: border-color 200ms ease;
+  width: var(--mount);
 }
 
-.line-rail__ring img {
-  border-radius: 50%;
+.line-rail__window {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+.line-rail__window img {
   display: block;
   height: 100%;
   object-fit: cover;
@@ -97,9 +105,9 @@ const lineRailCss = `
   width: 100%;
 }
 
-.line-rail__link:hover .line-rail__ring,
-.line-rail__link:focus-visible .line-rail__ring {
-  border-width: 3px;
+.line-rail__link:hover .line-rail__mount,
+.line-rail__link:focus-visible .line-rail__mount {
+  border-color: var(--color-clay);
 }
 
 .line-rail__link:hover img,
@@ -116,7 +124,7 @@ const lineRailCss = `
   white-space: nowrap;
 }
 
-/* Below 1200px eleven desktop circles no longer fit, so the row swipes. */
+/* Below 1200px eleven desktop prints no longer fit, so the row swipes. */
 @media (max-width: 1199px) {
   .line-rail {
     padding: 20px 0;
@@ -124,7 +132,7 @@ const lineRailCss = `
 
   /* The block padding keeps the focus outline inside the scroll box. */
   .line-rail__list {
-    --ring: 88px;
+    --mount: 88px;
     gap: 16px;
     justify-content: flex-start;
     overflow-x: auto;
@@ -175,8 +183,8 @@ const lineRailCss = `
 }
 
 @media (hover: none) {
-  .line-rail__link:hover:not(:focus-visible) .line-rail__ring {
-    border-width: 2px;
+  .line-rail__link:hover:not(:focus-visible) .line-rail__mount {
+    border-color: var(--color-soft);
   }
 
   .line-rail__link:hover:not(:focus-visible) img {
@@ -185,8 +193,8 @@ const lineRailCss = `
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .line-rail__ring,
-  .line-rail__ring img {
+  .line-rail__mount,
+  .line-rail__window img {
     transition: none;
   }
 

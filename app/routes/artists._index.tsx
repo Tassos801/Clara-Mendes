@@ -271,27 +271,30 @@ export default function Artists() {
                     style={wallStyle(artist.works.slice(0, WALL_WORKS))}
                   >
                     {artist.works.slice(0, WALL_WORKS).map((work, workIndex) => (
-                      <img
-                        alt={`${work.title} by ${artist.name}`}
-                        decoding="async"
-                        height={work.height}
+                      <figure
+                        className="artist-row__work"
                         key={work.src}
-                        // Narrow phones hide the third work; lazy keeps it
-                        // from loading there.
-                        loading={
-                          groupIndex === 0 && index === 0 && workIndex < 2
-                            ? 'eager'
-                            : 'lazy'
-                        }
-                        src={work.src}
                         // Grow in proportion to the shape, so a row of mixed
                         // landscape and portrait sheets shares one height.
-                        style={{
-                          aspectRatio: `${work.width} / ${work.height}`,
-                          flexGrow: work.width / work.height,
-                        }}
-                        width={work.width}
-                      />
+                        style={{flexGrow: work.width / work.height}}
+                      >
+                        <img
+                          alt={`${work.title} by ${artist.name}`}
+                          decoding="async"
+                          height={work.height}
+                          // Narrow phones hide the third work; lazy keeps it
+                          // from loading there.
+                          loading={
+                            groupIndex === 0 && index === 0 && workIndex < 2
+                              ? 'eager'
+                              : 'lazy'
+                          }
+                          src={work.src}
+                          style={{aspectRatio: `${work.width} / ${work.height}`}}
+                          width={work.width}
+                        />
+                        <figcaption>{work.title}</figcaption>
+                      </figure>
                     ))}
                   </div>
                 </li>
@@ -349,18 +352,23 @@ export default function Artists() {
                       },
                     ])}
                   >
-                    <img
-                      alt={row.image.alt}
-                      decoding="async"
-                      height={row.image.height}
-                      loading="lazy"
-                      src={row.image.src}
-                      style={{
-                        aspectRatio: `${row.image.width} / ${row.image.height}`,
-                        flexGrow: row.image.width / row.image.height,
-                      }}
-                      width={row.image.width}
-                    />
+                    {/* A photograph of the line, not a work: no caption. */}
+                    <figure
+                      className="artist-row__work"
+                      style={{flexGrow: row.image.width / row.image.height}}
+                    >
+                      <img
+                        alt={row.image.alt}
+                        decoding="async"
+                        height={row.image.height}
+                        loading="lazy"
+                        src={row.image.src}
+                        style={{
+                          aspectRatio: `${row.image.width} / ${row.image.height}`,
+                        }}
+                        width={row.image.width}
+                      />
+                    </figure>
                   </div>
                 ) : null}
               </li>
