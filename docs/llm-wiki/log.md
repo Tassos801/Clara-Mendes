@@ -3122,3 +3122,18 @@ store quality report scored "Images per offer" Low (1 image); built from
 the live catalogue, the site feed now averages 2.0 images per item and the
 Printful feed 4.8. Ids, titles, prices, main images and shipping values
 are unchanged. Meta reads the same column from these feeds.
+
+## 2026-11-25 — Storefront refinements: photos, rail prints, artwork titles
+
+Product cards show their photos in their own colours: the `saturate(0.92)`
+filter and the hover shade (`.cm-card-veil`) are gone from
+`app/components/ClaraProductCard.tsx`, so the photo on the card matches its
+source image at rest, on hover and on keyboard focus. The quick-add button's
+own glass is darker (0.58 → 0.76, hover 0.90) so its "+" stays above 7:1 on a
+white photo without the shade. The homepage line rail
+(`app/components/LineRail.tsx`) shows each line as a square paper mount
+(`--color-paper`, 4px inset, 1px `--color-soft` rule; hover turns the rule
+clay) with its label left-aligned beneath; sizes, order and links are
+unchanged. The artists index (`app/routes/artists._index.tsx`,
+`app/styles/artists.css`) puts each work in a `figure` with its short title
+in a serif caption; narrow phones hide the third figure.

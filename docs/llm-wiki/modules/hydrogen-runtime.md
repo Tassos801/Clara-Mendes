@@ -103,7 +103,7 @@ must get a new file name (browsers keep the old one for a year):
 
 - the hero backdrop in three files picked by media query
   (`app/lib/heroBackdrop.ts`, preloaded with the same queries) and the
-  line-rail circles at 360 px (`public/images/line-rail/`);
+  line-rail pictures at 360 px (`public/images/line-rail/`);
 - every curated (book nook) image as `.w360.jpg` / `.w720.jpg` /
   `.w1000.jpg` copies that `storefrontImageLoader` (`app/lib/imageLoader.ts`)
   picks for Hydrogen's `<Image>`; `npm run curated:images -- --copies`

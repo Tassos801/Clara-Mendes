@@ -41,7 +41,9 @@ clothing), the name in the serif, then the price. Only the first word of an
 artwork or design name is italic (`app/lib/cardTitle.ts`). During a sale
 the card shows a small tag beside the price (`blackFridayCardTag`) with the
 full line as its tooltip. Artwork images keep square corners; only buttons
-and panels are rounded.
+and panels are rounded. Card photos show in their own colours: no filter
+and no shade over them (removed 2026-11-25); the quick-add button carries
+its own dark glass, so its "+" stays legible on pale and dark photos.
 
 Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 `app/routes/collections.all.tsx`, `app/routes/our-story.tsx`,
@@ -56,7 +58,7 @@ Sources: `app/styles/app.css`, `app/routes/_index.tsx`,
 | `/collections/all`                              | `app/routes/collections.all.tsx`     | Shop-all collection, sorting, pagination, infinite loading, product grid.       |
 | `/collections/:handle`                          | `app/routes/collections.$handle.tsx` | Specific collection page, redirects demo/off-theme collections to all. Also renders the storefront-only capsule, gallery and edition pages (`app/lib/capsulePages.ts`, `galleryPages.ts`, `editionPages.ts`); `/collections/art-and-words` lists the catalog's released Art & Words products. |
 | `/clothing`                                     | `app/routes/clothing.tsx`            | Clothing destination: eligible garments; category links and sort above 8 pieces, capsule filter from 2 capsules, "Show more" past 12, colourway looks. See [Clothing](clothing.md). |
-| `/gifts`                                        | `app/routes/gifts.tsx`               | Gift edit: curated handles (`app/lib/giftPage.ts`) kept only when live and buyable by the buyer, grouped Under/€30–60/Over in the buyer's currency; Your Sky as a link tile; Christmas order-by dates for EU/US buyers in season. In the sitemap, the footer Shop column and the homepage rail (2nd circle). |
+| `/gifts`                                        | `app/routes/gifts.tsx`               | Gift edit: curated handles (`app/lib/giftPage.ts`) kept only when live and buyable by the buyer, grouped Under/€30–60/Over in the buyer's currency; Your Sky as a link tile; Christmas order-by dates for EU/US buyers in season. In the sitemap, the footer Shop column and the homepage rail (2nd print). |
 | `/black-friday`                                 | `app/routes/black-friday.tsx`        | Black Friday week 2026 (17–30 Nov, Nicosia time; `app/lib/blackFriday.ts`): the offer in plain words, EU Christmas order-by dates and best-selling grids per discounted product type (blankets first), "See all" to `/collections/all?type=…`. Before/after the window: a short not-on message, `noindex`. Linked from the sitewide announcement line; not in navigation. The custom sitemap lists it only while the sale is open and stops one cache lifetime (24 h) before the end (`seasonalSitemapPaths` in `app/lib/sitemap.ts`), so nothing needs removing afterwards. |
 | `/collections/clothing`                         | `app/routes/collections.clothing.tsx`| Permanent (301) redirect to `/clothing`, query string kept.                     |
 | `/products/:handle`                             | `app/routes/products.$handle.tsx`    | Product detail, variant selection, gallery, add to cart, Shop Pay, analytics.   |
