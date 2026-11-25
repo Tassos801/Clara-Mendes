@@ -167,6 +167,18 @@ const MERCHANT_FEED_PRODUCTS_QUERY = `#graphql
         featuredImage {
           url
         }
+        images(first: 100) {
+          nodes {
+            url
+            altText
+          }
+        }
+        options {
+          name
+          optionValues {
+            name
+          }
+        }
         collections(first: 20) {
           nodes {
             handle

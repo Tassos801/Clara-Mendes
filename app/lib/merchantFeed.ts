@@ -5,6 +5,7 @@ import {
   isClothingProduct,
   type ApprovalMetafield,
 } from './clothing.ts';
+import {imagesForColour, isColourOptionName} from './garmentColours.ts';
 import {MARKET_URL_PARAM} from './markets.ts';
 import {
   FIXED_RATES,
@@ -22,6 +23,10 @@ import {
   type ShippingFee,
 } from './printfulShipping.ts';
 import {getProductDescription} from './productCopy.ts';
+import {
+  filterGalleryImagesForSize,
+  selectedPrintSize,
+} from './productSizePresentation.ts';
 import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 
 // Merchant Center product feeds as tab-separated text, two per market:
@@ -48,10 +53,10 @@ import {APPAREL_PRODUCT_TYPES} from './storefrontBasics.ts';
 
 // prettier-ignore
 export const FEED_COLUMNS = [
-  'id', 'item_group_id', 'title', 'description', 'link', 'image_link', 'price',
-  'availability', 'condition', 'brand', 'google_product_category', 'size',
-  'material', 'color', 'identifier_exists', 'gender', 'age_group',
-  'custom_label_0',
+  'id', 'item_group_id', 'title', 'description', 'link', 'image_link',
+  'additional_image_link', 'price', 'availability', 'condition', 'brand',
+  'google_product_category', 'size', 'material', 'color', 'identifier_exists',
+  'gender', 'age_group', 'custom_label_0',
 ] as const;
 
 /** The market a feed lists, and the currency its prices must be in. */
@@ -83,6 +88,9 @@ export type FeedProduct = {
   fulfillmentVerified?: ApprovalMetafield | null;
   description: string;
   featuredImage?: {url: string} | null;
+  /** Every product image in the merchant's order (additional_image_link). */
+  images?: {nodes: Array<{url: string; altText?: string | null}>} | null;
+  options?: Array<{name: string; optionValues: Array<{name: string}>}> | null;
   variants: {nodes: FeedVariant[]};
   collections?: {
     nodes: Array<{
@@ -421,6 +429,7 @@ export function merchantFeedRows(
           .slice(0, 4900),
         link: `https://shopclaramendes.com/products/${p.handle}?${params}`,
         image_link: feedImageUrl(image),
+        additional_image_link: additionalFeedImages(p, v, image).join(','),
         price: `${Number(v.price.amount).toFixed(2)} ${v.price.currencyCode}`,
         availability: v.availableForSale ? 'in stock' : 'out of stock',
         condition: 'new',
@@ -535,6 +544,39 @@ export function metaCountryFeedTsv(rows: FeedRow[], country: 'US') {
       ].join('\t'),
     );
   return `${lines.join('\n')}\n`;
+}
+
+// Google reads at most ten more images per item (Meta twenty).
+const MAX_ADDITIONAL_IMAGES = 10;
+
+/**
+ * The other images of one variant (`additional_image_link`), picked the way
+ * the product page's gallery picks them: a garment's images for the
+ * variant's colour, an art print's room views at the variant's size. An
+ * image another variant has as its own (another artwork, a framed finish)
+ * shows that variant, so it stays out. Shoppers see more of the item, and
+ * Merchant Center's store quality score counts images per offer.
+ */
+export function additionalFeedImages(
+  p: FeedProduct,
+  v: FeedVariant,
+  main: string,
+): string[] {
+  const option = (p.options ?? []).find((o) => isColourOptionName(o.name));
+  const colours = option?.optionValues.map((value) => value.name) ?? [];
+  const colour = v.selectedOptions.find((o) => isColourOptionName(o.name));
+  const variantImages = new Set(p.variants.nodes.map((o) => o.image?.url));
+  const gallery = filterGalleryImagesForSize(
+    imagesForColour(p.images?.nodes ?? [], colours, colour?.value),
+    selectedPrintSize(v.selectedOptions).key,
+    p.productType === 'Art Prints',
+  );
+  const urls = gallery
+    .map((image) => image.url)
+    .filter((url) => url !== main && !variantImages.has(url));
+  return [...new Set(urls)]
+    .slice(0, MAX_ADDITIONAL_IMAGES)
+    .map((url) => feedImageUrl(url).replace(/,/g, '%2C'));
 }
 
 /**

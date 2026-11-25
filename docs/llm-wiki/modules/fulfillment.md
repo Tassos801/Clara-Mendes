@@ -123,6 +123,13 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
     cushion", and the metric size. An edition name (", Art & Words")
     follows the artist. Only the feed title changes: the Shopify title, the
     page title and the `size` attribute stay as they were.
+  - `additional_image_link` (since 2026-11-25) lists up to ten more images
+    per item: the images the product page's gallery shows for that
+    variant (`additionalFeedImages` in `app/lib/merchantFeed.ts`). A garment
+    gets its colour's images, an art print the room views at its size; an
+    image another variant has as its own stays out. A new image in Shopify
+    reaches the feed without a code change, but a garment image needs the
+    colour in its alt text ("… in Bone …"), or every colour lists it.
 
 ## Changing A Window
 
