@@ -5,8 +5,9 @@ import test from 'node:test';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
+// Line endings are normalised so the checks hold on a Windows (CRLF) checkout.
 const readSource = (relativePath) =>
-  readFileSync(path.join(ROOT, relativePath), 'utf8');
+  readFileSync(path.join(ROOT, relativePath), 'utf8').replace(/\r\n/g, '\n');
 
 const homepageSource = readSource('app/routes/_index.tsx');
 const appCss = readSource('app/styles/app.css');

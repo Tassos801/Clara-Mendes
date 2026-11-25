@@ -701,8 +701,10 @@ prints show `<print>.sheet-small.webp` (the bordered sheet at 560 px long
 side, written by `prepare` next to `<print>.sheet.webp`); studio prints show
 their 4:5 artwork (`printSheetImage` in `app/lib/printCatalog.ts`). Since
 2026-11-25 each work is a `figure` with its short title (`work.title`) in a
-serif `figcaption` under it; the figures are aligned at the top, so the
-images keep one top and bottom edge when a title wraps. Phones
+serif `figcaption` under it (`text-wrap: balance`, so a wrapped title has
+lines of even length); the figures are aligned at the top, so the
+images keep one top and bottom edge when a title wraps. A first sentence
+over 160 characters stops at its last whole word (`firstSentence`). Phones
 up to 520px show two works. A test fails when a museum sheet has no small
 copy. The page emits BreadcrumbList and CollectionPage/ItemList JSON-LD, and
 its title names the artists while there are three or fewer.

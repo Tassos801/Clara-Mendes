@@ -5,7 +5,9 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
-const read = (file) => readFileSync(path.join(ROOT, file), 'utf8');
+// Line endings are normalised so the checks hold on a Windows (CRLF) checkout.
+const read = (file) =>
+  readFileSync(path.join(ROOT, file), 'utf8').replace(/\r\n/g, '\n');
 
 const SHELL = read('app/components/ClaraShell.tsx');
 const CSS = read('app/styles/app.css');

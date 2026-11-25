@@ -234,7 +234,6 @@ const recsCss = `
 
 .cart-recs-media img {
   display: block;
-  filter: saturate(0.92);
   height: 100%;
   object-fit: cover;
   width: 100%;
