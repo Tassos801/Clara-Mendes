@@ -3107,3 +3107,18 @@ From a desktop and phone review of the live store. Changes:
 
 Not done: tile backgrounds baked into product photos (white, cream, warm
 grey) still differ; matching them needs the mockups re-rendered.
+
+## 2026-11-25 — Feeds list each item's other images
+
+The four Google feeds have a new column, `additional_image_link`: up to
+ten more images per item, as JPEG links, joined by commas
+(`additionalFeedImages` in `app/lib/merchantFeed.ts`). The feed query now
+reads every product image and the option values. An item gets the images
+its product page shows for that variant: a garment's images for its
+colour (`imagesForColour`), an art print's room views at its size
+(`filterGalleryImagesForSize`). An image that another variant has as its
+own (another artwork, a framed finish) stays out. Why: Merchant Center's
+store quality report scored "Images per offer" Low (1 image); built from
+the live catalogue, the site feed now averages 2.0 images per item and the
+Printful feed 4.8. Ids, titles, prices, main images and shipping values
+are unchanged. Meta reads the same column from these feeds.

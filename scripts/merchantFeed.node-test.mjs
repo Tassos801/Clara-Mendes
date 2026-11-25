@@ -6,6 +6,7 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {
+  additionalFeedImages,
   homeFeedTitle,
   FEED_COLUMNS,
   FEED_CURRENCY,
@@ -962,4 +963,109 @@ test('feed image links ask the Shopify CDN for a JPEG', () => {
     'not a link',
   ])
     assert.equal(feedImageUrl(url), url);
+});
+
+test('an item lists the other images its product page shows for that variant', () => {
+  const link = (name) => `https://cdn.example/${name}.jpg`;
+  const image = (name, altText = '') => ({url: link(name), altText});
+  const own = (name) => ({image: {url: link(name)}});
+
+  // A garment: its colour's images and those that name no colour.
+  const hoodie = product(
+    'hoodie',
+    'Hoodie',
+    'Hoodies',
+    [],
+    [
+      variant('H-BONE', {Colour: 'Bone', Size: 'S'}, '59.99', own('bone')),
+      variant(
+        'H-FADED',
+        {Colour: 'Faded Bone', Size: 'S'},
+        '59.99',
+        own('faded'),
+      ),
+    ],
+    {
+      options: [
+        {name: 'Colour', optionValues: [{name: 'Bone'}, {name: 'Faded Bone'}]},
+      ],
+      images: {
+        nodes: [
+          image('bone', 'Hoodie in Bone: back'),
+          image('bone-worn', 'Hoodie in Bone, worn'),
+          image('faded', 'Hoodie in Faded Bone: back'),
+          image('faded-worn', 'Hoodie in Faded Bone, worn'),
+          image('label', 'Inside label'),
+        ],
+      },
+    },
+  );
+  const [bone, faded] = hoodie.variants.nodes;
+  assert.deepEqual(additionalFeedImages(hoodie, bone, link('bone')), [
+    link('bone-worn'),
+    link('label'),
+  ]);
+  assert.deepEqual(additionalFeedImages(hoodie, faded, link('faded')), [
+    link('faded-worn'),
+    link('label'),
+  ]);
+
+  // An art print: room views at its size; a framed finish's own image and
+  // the other size's stay out.
+  const print = product(
+    'print',
+    'Print',
+    'Art Prints',
+    [],
+    [
+      variant('P-8', {Size: '8 × 10 in'}, '26.99', own('p-room-sofa-8x10')),
+      variant('P-16', {Size: '16 × 20 in'}, '35.99', own('p-room-sofa-16x20')),
+      variant('P-8-BLACK', {Size: '8 × 10 in'}, '89.99', own('p-frame-black')),
+    ],
+    {
+      images: {
+        nodes: [
+          'p',
+          'p-room-sofa-8x10',
+          'p-room-sofa-16x20',
+          'p-room-detail',
+          'p-room-detail-16x20',
+          'p-frame-black',
+        ].map((name) => image(name)),
+      },
+    },
+  );
+  const [small, large] = print.variants.nodes;
+  assert.deepEqual(
+    additionalFeedImages(print, small, link('p-room-sofa-8x10')),
+    [link('p'), link('p-room-detail')],
+  );
+  assert.deepEqual(
+    additionalFeedImages(print, large, link('p-room-sofa-16x20')),
+    [link('p'), link('p-room-detail-16x20')],
+  );
+
+  // At most ten, as JPEG links, with a comma in a link encoded (commas
+  // separate the links in the feed cell).
+  const blanket = product('b', 'B', 'Blankets', [], [variant('B-1', {})], {
+    images: {
+      nodes: Array.from({length: 14}, (_, i) => ({
+        url: `https://cdn.shopify.com/s/files/1/1/files/scene,${i}.webp?v=1`,
+      })),
+    },
+  });
+  const listed = additionalFeedImages(blanket, blanket.variants.nodes[0], '');
+  assert.equal(listed.length, 10);
+  assert.equal(
+    listed[0],
+    'https://cdn.shopify.com/s/files/1/1/files/scene%2C0.webp?v=1&format=pjpg',
+  );
+
+  // The feed cell: the links joined by commas, empty for a one-image product.
+  const [row] = merchantFeedRows(
+    [{...CATALOG[0], images: {nodes: [image('a'), image('b')]}}],
+    'fixed',
+  );
+  assert.equal(row.additional_image_link, `${link('a')},${link('b')}`);
+  assert.equal(merchantFeedRows(CATALOG, 'fixed')[0].additional_image_link, '');
 });
