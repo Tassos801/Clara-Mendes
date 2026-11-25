@@ -7,6 +7,7 @@ import {catalogCounts} from '../app/lib/catalogSummary.ts';
 import {computeSellableHandles} from '../app/lib/catalogFilters.ts';
 import * as prints from '../app/lib/printCatalog.ts';
 import {CUSTOM_SITEMAP_PATHS} from '../app/lib/sitemap.ts';
+import {DANGLING_END} from '../app/lib/textCut.ts';
 import sharp from 'sharp';
 import {existsSync} from 'node:fs';
 import path from 'node:path';
@@ -786,18 +787,34 @@ test('a long first sentence stops at a whole word, never mid-word', () => {
   // A comma before the cut does not stay in front of the ellipsis.
   const comma = `${'word '.repeat(30)}words, alphabetically and more of this long sentence.`;
   assert.match(shops.firstSentence(comma), /words…$/);
+  // Nor does a word left hanging: "… the end of…" stops at "end".
+  const hanging = `${'word '.repeat(30)}end of alphabetically long sentence that goes on.`;
+  assert.match(shops.firstSentence(hanging), /word end…$/);
 
-  // The shipped data: every row's note ends a sentence or a whole word.
+  // The shipped data: every row's note, and every artist shop's description
+  // (the biography's first sentence), ends a sentence or a whole word, and
+  // not on a hanging "of" or "and".
   for (const {artist, products: listed} of shops.publicArtists()) {
     const {note} = shops.artistIndexEntry(artist, listed);
-    const source = artist.curatorNote.trim() || artist.bio;
-    assert.ok(note.length <= 160, `${artist.name}: ${note.length} characters`);
-    if (!note.endsWith('…')) continue;
-    assert.match(
-      source.slice(note.length - 1),
-      /^[\s,;:–—-]/,
-      `${artist.name}: the note stops mid-word`,
-    );
+    const noteSource = artist.curatorNote.trim() || artist.bio;
+    for (const [cut, source] of [
+      [note, noteSource],
+      [shops.firstSentence(artist.bio), artist.bio],
+    ]) {
+      assert.ok(cut.length <= 160, `${artist.name}: ${cut.length} characters`);
+      if (!cut.endsWith('…')) continue;
+      const words = cut.slice(0, -1);
+      assert.match(
+        source.slice(words.length),
+        /^[\s,;:–—-]/,
+        `${artist.name}: "${cut.slice(-24)}" stops mid-word`,
+      );
+      assert.doesNotMatch(
+        words,
+        DANGLING_END,
+        `${artist.name}: "${cut.slice(-24)}" ends on a hanging word`,
+      );
+    }
   }
 });
 

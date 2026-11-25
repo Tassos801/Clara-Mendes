@@ -3147,8 +3147,22 @@ after it was up to 14px larger than the rest; the prints are now evenly
 spaced from 1280px up. Artists-index captions use `text-wrap: balance`
 (no lone "Bridge" or "Red" on a second line). `firstSentence`
 (`app/lib/artistShops.ts`) stops a long sentence at its last whole word:
-five artist rows ended mid-word ("left almost b…"), as did four artist-shop
-meta descriptions. Search results and the cart's suggestion thumbnails lose
+five artist rows ended mid-word ("left almost b…"). (Corrected the same
+day: the artist-shop meta descriptions never ended mid-word, because
+`truncate` in `app/lib/seo.ts` already tidied them; see the next entry.)
+Search results and the cart's suggestion thumbnails lose
 the same `saturate(0.92)` the product cards lost. The footer and home-rail
 source tests normalise line endings, so the suite passes on a Windows
 (CRLF) checkout.
+
+## 2026-11-25 — First sentences do not end on a hanging word
+
+The whole-word cut above let two artist-shop meta descriptions end on a
+hanging word ("worked through Cubism in…", "Monet, Sisley and…"): a cut
+of 155 characters or fewer passes through the SEO `truncate` untouched,
+which used to tidy every one. `firstSentence` now also backs past a
+hanging "of", "and", "in" and the like, with the word list the SEO
+descriptions use (`DANGLING_END`, moved to `app/lib/textCut.ts` so both
+share it without an import cycle). The four cut descriptions end on the
+same words as before the whole-word cut, and the Klimt row's note ends
+"against a field…" in place of "a field of…".
