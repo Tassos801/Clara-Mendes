@@ -211,7 +211,8 @@
   width: 100%;
 }
 
-/* The work's title under it, like a wall label; the full title wraps. */
+/* The work's title under it, like a wall label; the full title wraps, in
+   lines of even length so no word is left alone on the second line. */
 .artist-row__work figcaption {
   color: var(--color-muted);
   font-family: var(--serif);
@@ -220,6 +221,7 @@
   margin-top: 6px;
   overflow-wrap: break-word;
   text-align: left;
+  text-wrap: balance;
 }
 
 .artist-row:hover .artist-row__wall img {

@@ -3137,3 +3137,18 @@ clay) with its label left-aligned beneath; sizes, order and links are
 unchanged. The artists index (`app/routes/artists._index.tsx`,
 `app/styles/artists.css`) puts each work in a `figure` with its short title
 in a serif caption; narrow phones hide the third figure.
+
+## 2026-11-25 — Refinements polish: even rail, balanced titles, whole-word notes
+
+A second pass over the day's three refinements. The line rail's labels
+drop one type step (`--text-sm`) from 1200px to 1439px, where the mounts are
+80px to 95px wide: "Book Nooks" was wider than its mount there, so the gap
+after it was up to 14px larger than the rest; the prints are now evenly
+spaced from 1280px up. Artists-index captions use `text-wrap: balance`
+(no lone "Bridge" or "Red" on a second line). `firstSentence`
+(`app/lib/artistShops.ts`) stops a long sentence at its last whole word:
+five artist rows ended mid-word ("left almost b…"), as did four artist-shop
+meta descriptions. Search results and the cart's suggestion thumbnails lose
+the same `saturate(0.92)` the product cards lost. The footer and home-rail
+source tests normalise line endings, so the suite passes on a Windows
+(CRLF) checkout.

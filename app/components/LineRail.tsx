@@ -124,6 +124,15 @@ const lineRailCss = `
   white-space: nowrap;
 }
 
+/* From 1200px to 1439px the mounts are 80px to 95px wide. One type step
+   down keeps the longest label ("Book Nooks") within its mount, so the
+   prints stay evenly spaced. */
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .line-rail__label {
+    font-size: var(--text-sm);
+  }
+}
+
 /* Below 1200px eleven desktop prints no longer fit, so the row swipes. */
 @media (max-width: 1199px) {
   .line-rail {

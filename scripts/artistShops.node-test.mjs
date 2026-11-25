@@ -764,6 +764,43 @@ test('the artists index row shows the works as printed, one per artwork', () => 
   }
 });
 
+test('a long first sentence stops at a whole word, never mid-word', () => {
+  assert.equal(shops.firstSentence('Short. And more.'), 'Short.');
+  assert.equal(shops.firstSentence('No full stop'), 'No full stop');
+
+  // The Milkmaid note used to end "left almost b…".
+  const long =
+    'The Milkmaid is one of Vermeer’s few scenes of work: a kitchen maid pouring milk by the window, with bread on the table and the wall behind her left almost bare of ornament.';
+  const cut = shops.firstSentence(long);
+  assert.ok(cut.length <= 160, `${cut.length} characters`);
+  assert.match(cut, /…$/);
+  const words = cut.slice(0, -1);
+  assert.ok(long.startsWith(words), 'the cut is a prefix of the sentence');
+  assert.match(long.slice(words.length), /^\s/, 'the cut ends a whole word');
+  assert.doesNotMatch(words, /[\s,;:–—-]$/, 'no stray punctuation');
+
+  // A cut that lands on a space keeps the whole word before it.
+  const even = `${'word '.repeat(31)}wo and the rest of a very long sentence.`;
+  assert.equal(even[157], ' ');
+  assert.equal(shops.firstSentence(even), `${even.slice(0, 157)}…`);
+  // A comma before the cut does not stay in front of the ellipsis.
+  const comma = `${'word '.repeat(30)}words, alphabetically and more of this long sentence.`;
+  assert.match(shops.firstSentence(comma), /words…$/);
+
+  // The shipped data: every row's note ends a sentence or a whole word.
+  for (const {artist, products: listed} of shops.publicArtists()) {
+    const {note} = shops.artistIndexEntry(artist, listed);
+    const source = artist.curatorNote.trim() || artist.bio;
+    assert.ok(note.length <= 160, `${artist.name}: ${note.length} characters`);
+    if (!note.endsWith('…')) continue;
+    assert.match(
+      source.slice(note.length - 1),
+      /^[\s,;:–—-]/,
+      `${artist.name}: the note stops mid-word`,
+    );
+  }
+});
+
 test('every museum sheet has the small copy the artists index shows', async () => {
   for (const collection of prints.PRINT_CATALOG.collections) {
     if (prints.collectionKind(collection) !== 'museum') continue;
