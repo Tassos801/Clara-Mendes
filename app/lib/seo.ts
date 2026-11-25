@@ -13,6 +13,7 @@ import {
   STOREFRONT_ORIGIN,
   type PrintfulTechnique,
 } from './storefrontBasics.ts';
+import {DANGLING_END} from './textCut.ts';
 
 type MoneyAmount = {
   amount: string;
@@ -659,10 +660,6 @@ function gidNumber(value?: string | null) {
   if (!value) return undefined;
   return value.split('/').pop();
 }
-
-// Words a cut must not end on: "... Throw Blanket by...", "... Art &...".
-const DANGLING_END =
-  /\s+(?:&|a|an|and|as|at|by|for|from|in|of|on|or|the|to|with)$/i;
 
 function truncate(value: string, maxLength: number) {
   const normalized = value.replace(/\s+/g, ' ').trim();

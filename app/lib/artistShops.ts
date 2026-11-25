@@ -33,6 +33,7 @@ import {
   printSheetImage,
   type PrintCatalog,
 } from './printCatalog.ts';
+import {DANGLING_END} from './textCut.ts';
 
 /**
  * Dedicated artist shops (docs/artist-shops/brief.md §4), derived from the
@@ -357,15 +358,24 @@ export function titleWithArtist(
 
 /**
  * The first sentence of owner-approved text, kept to a card's length. A
- * longer sentence stops at its last whole word that fits, never mid-word.
+ * longer sentence stops at its last whole word that fits, never mid-word,
+ * and not on a word left hanging ("of", "and").
  */
 export function firstSentence(text: string) {
   const sentence = text.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? text;
   if (sentence.length <= 160) return sentence;
   const head = sentence.slice(0, 157);
-  // Drop the word the cut landed in, then any comma, colon or dash left over.
-  const words = /\s/.test(sentence[157]) ? head : head.replace(/\s+\S*$/, '');
-  return `${words.replace(/[\s,;:–—-]+$/, '')}…`;
+  // Drop the word the cut landed in, then back past punctuation and any
+  // word the cut left hanging, as the SEO descriptions do (seo.ts).
+  let words = /\s/.test(sentence[157]) ? head : head.replace(/\s+\S*$/, '');
+  for (;;) {
+    const shorter = words
+      .replace(/[\s,;:–—-]+$/, '')
+      .replace(DANGLING_END, '');
+    if (shorter === words) break;
+    words = shorter;
+  }
+  return `${words}…`;
 }
 
 /**
