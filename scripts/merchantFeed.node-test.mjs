@@ -7,6 +7,8 @@ import {fileURLToPath} from 'node:url';
 import ts from 'typescript';
 import {
   additionalFeedImages,
+  feedProductType,
+  homeFeedDescription,
   homeFeedTitle,
   FEED_COLUMNS,
   FEED_CURRENCY,
@@ -416,6 +418,217 @@ test('home titles lead with the product and name the artist from the art registr
   assert.equal(items['CM-MM-01-BLANKET50X60'].size, '50 × 60 in');
   for (const item of Object.values(items))
     assert.ok(item.title.length <= 150, item.title);
+  // The material each product page states for the Printful piece.
+  assert.equal(items['CM-MM-01-BLANKET50X60'].material, 'Polyester');
+  assert.equal(items['CM-MM-06-CUSH22-I'].material, 'Polyester');
+  assert.equal(items['CM-MM-05-MUG11-PF'].material, 'Ceramic');
+});
+
+test('a home description says what the item is before the story of the work', () => {
+  const tags = ['Museum Reproduction', 'Museum Masterpieces'];
+  // A product page's copy as Shopify stores it, and the plain text Shopify
+  // derives from it (tags taken out, list items run together).
+  const descriptionHtml = [
+    '<p>Van Gogh painted these irises at Saint-Rémy in May 1889.</p>',
+    '<p>Vincent van Gogh (1853–1890), <em>Irises</em>, 1889. Oil on canvas.</p>',
+    '<ul>',
+    '<li>Silk-touch 100% polyester throw, 50 × 60 in (127 × 152 cm)</li>',
+    '<li>Printed on one side, white on the back</li>',
+    '<li>Machine-washable &amp; quick to dry</li>',
+    '</ul>',
+    '<p>Printed to order. Screen and print colours can vary slightly.</p>',
+  ].join('\n');
+  const description =
+    'Van Gogh painted these irises at Saint-Rémy in May 1889. Vincent van Gogh (1853–1890), Irises, 1889. Oil on canvas. Silk-touch 100% polyester throw, 50 × 60 in (127 × 152 cm) Printed on one side, white on the back Machine-washable & quick to dry Printed to order. Screen and print colours can vary slightly.';
+  const blanket = (extra) =>
+    printfulRows([
+      product(
+        'irises-blanket',
+        'Irises Throw Blanket',
+        'Blankets',
+        tags,
+        [variant('CM-MM-01-BLANKET50X60', {Size: '50 × 60 in'}, '64.99')],
+        extra,
+      ),
+    ])[0].description;
+
+  // One sentence naming the product, the work and the size; then the
+  // page's own product facts; then the rest of the page's copy, in order.
+  assert.equal(
+    blanket({description, descriptionHtml}),
+    'Throw blanket printed with Irises by Vincent van Gogh, 50 × 60 in (127 × 152 cm). ' +
+      'Silk-touch 100% polyester throw, 50 × 60 in (127 × 152 cm). ' +
+      'Printed on one side, white on the back. ' +
+      'Machine-washable & quick to dry. ' +
+      'Van Gogh painted these irises at Saint-Rémy in May 1889. ' +
+      'Vincent van Gogh (1853–1890), Irises, 1889. Oil on canvas. ' +
+      'Printed to order. Screen and print colours can vary slightly.',
+  );
+  // No list in the page's copy: the sentence leads and the copy follows.
+  assert.equal(
+    blanket({description: 'The story of the work.'}),
+    'Throw blanket printed with Irises by Vincent van Gogh, 50 × 60 in (127 × 152 cm). The story of the work.',
+  );
+  // A fact the page's copy does not hold is not brought in.
+  assert.equal(
+    blanket({description: 'The story of the work.', descriptionHtml}),
+    'Throw blanket printed with Irises by Vincent van Gogh, 50 × 60 in (127 × 152 cm). The story of the work.',
+  );
+
+  // The sentence follows the variant: a cover and a cushion with its insert.
+  const cushion = (o) =>
+    homeFeedDescription(
+      {
+        handle: 'strawberry-thief-cushion',
+        title: 'Strawberry Thief Cushion',
+        productType: 'Cushions',
+        tags,
+      },
+      o,
+      'The story.',
+    );
+  assert.equal(
+    cushion({Size: '18 × 18 in', Filling: 'Cover only'}),
+    'Cushion cover printed with Strawberry Thief by William Morris, 18 × 18 in (46 × 46 cm). The story.',
+  );
+  assert.equal(
+    cushion({Size: '22 × 22 in', Filling: 'With insert'}),
+    'Cushion with insert printed with Strawberry Thief by William Morris, 22 × 22 in (56 × 56 cm). The story.',
+  );
+  // An unusual title and every other line keep the page's copy (null here).
+  assert.equal(
+    homeFeedDescription(
+      {
+        handle: 'irises-blanket',
+        title: 'Irises Blanket Deluxe',
+        productType: 'Blankets',
+        tags,
+      },
+      {},
+      'The story.',
+    ),
+    null,
+  );
+  const items = byId(merchantFeedTsv(printfulRows(CATALOG), EU));
+  assert.equal(items['CD-HOOD-M'].description, 'A line of copy.');
+  assert.equal(
+    items['CM-FW-01-MUG11-PF'].description,
+    'Ceramic mug printed with The Great Wave off Kanagawa by Katsushika Hokusai, 11 oz (325 ml). A line of copy.',
+  );
+  const fixed = byId(merchantFeedTsv(merchantFeedRows(CATALOG, 'fixed')));
+  for (const id of [
+    'CM-QF-01-8X10',
+    'CM-FW-01-HANG-A3-BLK',
+    'CM-FW-01-CFP16X20',
+  ])
+    assert.equal(fixed[id].description, 'A line of copy.', id);
+});
+
+test('product_type is the section, the shop type, then the artist or capsule', () => {
+  const type = (rows) =>
+    Object.fromEntries(rows.map((row) => [row.id, row.product_type]));
+  const fixed = type(merchantFeedRows(CATALOG, 'fixed'));
+  assert.equal(fixed['CM-QF-01-8X10'], 'Wall Art > Art Prints');
+  assert.equal(fixed['CM-QF-POST-7X5'], 'Stationery > Postcards');
+  assert.equal(fixed['CM-SKY-8X10-NAT'], 'Wall Art > Personalised Art');
+  assert.equal(fixed['CM-POT-BLUSH'], 'Home > Plant Pots');
+  assert.equal(
+    fixed['CM-FW-01-HANG-A3-BLK'],
+    'Wall Art > Hanger Prints > Katsushika Hokusai',
+  );
+  assert.equal(
+    fixed['CM-FW-01-CFP16X20'],
+    'Wall Art > Framed Art > Katsushika Hokusai',
+  );
+  const printful = type(merchantFeedRows(CATALOG, 'printful'));
+  assert.equal(
+    printful['CM-FW-01-MUG11-PF'],
+    'Home > Mugs > Katsushika Hokusai',
+  );
+  assert.equal(
+    printful['CM-FW-01-CUSH18-I'],
+    'Home > Cushions > Katsushika Hokusai',
+  );
+  // A garment names its capsule; one in no capsule stops at its type.
+  assert.equal(printful['CD-HOOD-M'], 'Clothing > Hoodies > Counter-Diagonal');
+  assert.equal(printful['CM-QC-121-MM-XS'], 'Clothing > Studio Top');
+  // The registry's artist, for a product with no artist tag.
+  assert.equal(
+    feedProductType(
+      {
+        handle: 'irises-blanket',
+        productType: 'Blankets',
+        tags: ['Museum Reproduction', 'Museum Masterpieces'],
+      },
+      {line: 'blanket'},
+    ),
+    'Home > Blankets > Vincent van Gogh',
+  );
+  // It is a column of every feed.
+  const items = byId(merchantFeedTsv(merchantFeedRows(CATALOG, 'fixed')));
+  assert.equal(items['CM-POT-BLUSH'].product_type, 'Home > Plant Pots');
+});
+
+test('a reduced price is the compare-at price as price and the price as sale_price', () => {
+  const row = (compareAtPrice, market = 'CY') => {
+    const catalog = [
+      product(
+        'quiet-form-i-art-print',
+        'Quiet Form I Art Print',
+        'Art Prints',
+        [STUDIO],
+        [
+          variant('CM-QF-01-8X10', {Size: '8 × 10 in'}, '21.59', {
+            compareAtPrice,
+          }),
+        ],
+      ),
+    ];
+    return merchantFeedRows(
+      market === 'US' ? inUsd(catalog) : catalog,
+      'fixed',
+      market,
+    )[0];
+  };
+  const prices = (r) => [r.price, r.sale_price];
+  // What the product page shows: the old price struck out, the price paid.
+  assert.deepEqual(prices(row({amount: '26.99', currencyCode: 'EUR'})), [
+    '26.99 EUR',
+    '21.59 EUR',
+  ]);
+  // No compare-at price, or one that is not above the price: no sale.
+  for (const none of [
+    undefined,
+    null,
+    {amount: '21.59', currencyCode: 'EUR'},
+    {amount: '19.99', currencyCode: 'EUR'},
+    // Never a price in another currency than the feed's.
+    {amount: '26.99', currencyCode: 'USD'},
+  ])
+    assert.deepEqual(
+      prices(row(none)),
+      ['21.59 EUR', ''],
+      JSON.stringify(none),
+    );
+
+  // The column sits beside the price, empty when nothing is reduced.
+  const item = (compareAtPrice) =>
+    byId(merchantFeedTsv([row(compareAtPrice)]))['CM-QF-01-8X10'];
+  assert.equal(item({amount: '26.99', currencyCode: 'EUR'}).price, '26.99 EUR');
+  assert.equal(
+    item({amount: '26.99', currencyCode: 'EUR'}).sale_price,
+    '21.59 EUR',
+  );
+  assert.equal(item(null).sale_price, '');
+  for (const r of merchantFeedRows(CATALOG, 'printful'))
+    assert.equal(r.sale_price, '', r.id);
+
+  // The Meta country feed overrides both prices for US viewers.
+  const us = row({amount: '26.99', currencyCode: 'USD'}, 'US');
+  assert.deepEqual(prices(us), ['26.99 USD', '21.59 USD']);
+  const [header, cells] = parse(metaCountryFeedTsv([us], 'US'));
+  assert.equal(cells[header.indexOf('price')], '26.99 USD');
+  assert.equal(cells[header.indexOf('sale_price')], '21.59 USD');
 });
 
 test('a home title keeps its edition and falls back when the title is unusual', () => {
@@ -741,11 +954,13 @@ test('the Meta country feed overrides price, link and availability by id', () =>
     // Product-level title: Meta cards drop the variant's size and colour.
     'Counter-Diagonal Premium Hoodie',
     '58.49 USD',
+    // No reduced price: nothing to override.
+    '',
     'https://shopclaramendes.com/products/counter-diagonal-premium-hoodie?country=US&Size=M&Color=Bone',
     'in stock',
   ]);
   // Not for sale in the US market: listed, but out of stock for US viewers.
-  assert.equal(byKey['CM-QF-01-16X20'][5], 'out of stock');
+  assert.equal(byKey['CM-QF-01-16X20'][6], 'out of stock');
   assert.equal(byKey['CM-QF-01-8X10'][2], 'Quiet Form I Art Print');
   assert.equal(byKey['CD-TEE-M'], undefined);
   for (const row of rows) assert.equal(row.length, header.length);

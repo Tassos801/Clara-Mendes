@@ -806,7 +806,13 @@ export type MerchantFeedProductsQuery = {
     nodes: Array<
       Pick<
         StorefrontAPI.Product,
-        'handle' | 'title' | 'productType' | 'tags' | 'vendor' | 'description'
+        | 'handle'
+        | 'title'
+        | 'productType'
+        | 'tags'
+        | 'vendor'
+        | 'description'
+        | 'descriptionHtml'
       > & {
         storefrontApproved?: StorefrontAPI.Maybe<
           Pick<StorefrontAPI.Metafield, 'type' | 'value'>
@@ -834,6 +840,9 @@ export type MerchantFeedProductsQuery = {
           nodes: Array<
             Pick<StorefrontAPI.ProductVariant, 'sku' | 'availableForSale'> & {
               price: Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>;
+              compareAtPrice?: StorefrontAPI.Maybe<
+                Pick<StorefrontAPI.MoneyV2, 'amount' | 'currencyCode'>
+              >;
               selectedOptions: Array<
                 Pick<StorefrontAPI.SelectedOption, 'name' | 'value'>
               >;
@@ -3581,7 +3590,7 @@ interface GeneratedQueryTypes {
     return: AvailableMarketCountriesQuery;
     variables: AvailableMarketCountriesQueryVariables;
   };
-  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        images(first: 100) {\n          nodes {\n            url\n            altText\n          }\n        }\n        options {\n          name\n          optionValues {\n            name\n          }\n        }\n        collections(first: 20) {\n          nodes {\n            handle\n            title\n            clothingKind: metafield(\n              namespace: "custom"\n              key: "collection_kind"\n            ) {\n              type\n              value\n            }\n          }\n        }\n        variants(first: 100) {\n          nodes {\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
+  '#graphql\n  query MerchantFeedProducts(\n    $country: CountryCode\n    $language: LanguageCode\n    $cursor: String\n  ) @inContext(country: $country, language: $language) {\n    products(first: 50, after: $cursor, query: "status:active") {\n      pageInfo {\n        hasNextPage\n        endCursor\n      }\n      nodes {\n        handle\n        title\n        productType\n        tags\n        vendor\n        description\n        descriptionHtml\n        storefrontApproved: metafield(\n          namespace: "custom"\n          key: "storefront_approved"\n        ) {\n          type\n          value\n        }\n        fulfillmentVerified: metafield(\n          namespace: "custom"\n          key: "fulfillment_verified"\n        ) {\n          type\n          value\n        }\n        featuredImage {\n          url\n        }\n        images(first: 100) {\n          nodes {\n            url\n            altText\n          }\n        }\n        options {\n          name\n          optionValues {\n            name\n          }\n        }\n        collections(first: 20) {\n          nodes {\n            handle\n            title\n            clothingKind: metafield(\n              namespace: "custom"\n              key: "collection_kind"\n            ) {\n              type\n              value\n            }\n          }\n        }\n        variants(first: 100) {\n          nodes {\n            sku\n            availableForSale\n            price {\n              amount\n              currencyCode\n            }\n            compareAtPrice {\n              amount\n              currencyCode\n            }\n            selectedOptions {\n              name\n              value\n            }\n            image {\n              url\n            }\n          }\n        }\n      }\n    }\n  }\n': {
     return: MerchantFeedProductsQuery;
     variables: MerchantFeedProductsQueryVariables;
   };

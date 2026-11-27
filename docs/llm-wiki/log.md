@@ -3166,3 +3166,19 @@ descriptions use (`DANGLING_END`, moved to `app/lib/textCut.ts` so both
 share it without an import cycle). The four cut descriptions end on the
 same words as before the whole-word cut, and the Klimt row's note ends
 "against a field…" in place of "a field of…".
+
+## 2026-11-27 — Feeds: product-first descriptions, material, product_type, sale_price
+
+The Printful home lines (blankets, cushions, mugs) now open their feed
+description with what the item is: one sentence naming the product, the
+work and the size, then the page's own product facts, then the rest of the
+page's copy (`homeFeedDescription` in `app/lib/merchantFeed.ts`). The page
+opens with the story of the work, and with that as the opening Google
+matched these items to searches for the painting, as the titles once did.
+`material` is filled for those lines (Polyester, Ceramic). Every feed gains
+`product_type` (section > Shopify product type > artist or capsule) and
+`sale_price` (a compare-at price above the price; empty today, no product
+has one). Checked against the live feeds: same items in the same order,
+and no other column changes. Product pages are unchanged. Details in
+[fulfillment](modules/fulfillment.md); the next-sale question in
+[open questions](open-questions.md) is updated.
