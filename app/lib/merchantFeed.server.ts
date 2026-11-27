@@ -150,6 +150,7 @@ const MERCHANT_FEED_PRODUCTS_QUERY = `#graphql
         tags
         vendor
         description
+        descriptionHtml
         storefrontApproved: metafield(
           namespace: "custom"
           key: "storefront_approved"
@@ -197,6 +198,10 @@ const MERCHANT_FEED_PRODUCTS_QUERY = `#graphql
             sku
             availableForSale
             price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
               amount
               currencyCode
             }

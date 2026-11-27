@@ -130,6 +130,28 @@ cards & postcards` profile (€2.90). Shopify only lets a zone include a
     image another variant has as its own stays out. A new image in Shopify
     reaches the feed without a code change, but a garment image needs the
     colour in its alt text ("… in Bone …"), or every colour lists it.
+  - The Printful home lines' descriptions say what the item is first (since
+    2026-11-27, `homeFeedDescription`). The page's copy opens with the
+    work's story, and the product facts come some 400 characters in; a
+    search engine reads the opening as what the item is. The feed opens
+    with one sentence ("Throw blanket printed with The Milkmaid by Johannes
+    Vermeer, 50 × 60 in (127 × 152 cm)."), then the page's own product
+    facts (the list items of the description's HTML), then the rest of the
+    copy in its order. Only that first sentence is added. Every other line
+    states the page's copy, and the product page is unchanged.
+  - `material` is "Polyester" for the Printful blankets and cushions and
+    "Ceramic" for the Printful mugs, as each product page states (the
+    `MUSEUM` table in `app/lib/merchantFeed.ts`). Clothing has none yet.
+  - `product_type` is the shop's own path: the section, the Shopify product
+    type, then a museum work's artist or a garment's capsule ("Home >
+    Blankets > Johannes Vermeer", "Clothing > Hoodies > Counter-Diagonal";
+    `feedProductType`). Google Ads can split a campaign's products by any
+    level of it.
+  - `sale_price`: a variant with a compare-at price above its price lists
+    the compare-at price as `price` and the price as `sale_price`, the two
+    prices the product page shows; the Meta country feed overrides both.
+    A discount that acts in the cart is not in the feeds, because the page
+    still shows the full price.
 
 ## Changing A Window
 

@@ -81,7 +81,12 @@ Sources: [Art for Everyday Living](../art-product-extensions.md).
   Belgium or Austria in November 2026). A sale that should show in every
   country's ads needs the reduced price on the product itself (compare-at
   price in Shopify, `sale_price` in the feeds, the same price on the page).
-  Owner decision before the next sale; not built.
+  The feeds and the page are ready since 2026-11-27: a compare-at price
+  above the price becomes `price` and `sale_price` in every feed, and the
+  product page already shows both. Still the owner's decision before the
+  next sale: reduced prices on the products (shows everywhere, and has to
+  be set and undone per variant) or cart discounts again (nothing to undo,
+  shows only where Google offers promotions).
 
 - Has Shopify analytics been verified for page, search, product, cart,
   add-to-cart, and checkout journey data?
